@@ -548,19 +548,19 @@ subtypes(AbstractString)    # 8-element Array{Any,1}:
                             #  UTF16String
                             #  UTF8String
 
-# Every type has a super type; use the `super` function to get it.
+# Every type has a supertype type; use the `supertype` function to get it.
 typeof(5) # => Int64
-super(Int64) # => Signed
-super(Signed) # => Integer
-super(Integer) # => Real
-super(Real) # => Number
-super(Number) # => Any
-super(super(Signed)) # => Real
-super(Any) # => Any
+supertype(Int64) # => Signed
+supertype(Signed) # => Integer
+supertype(Integer) # => Real
+supertype(Real) # => Number
+supertype(Number) # => Any
+supertype(supertype(Signed)) # => Real
+supertype(Any) # => Any
 # All of these type, except for Int64, are abstract.
 typeof("fire") # => ASCIIString
-super(ASCIIString) # => DirectIndexString
-super(DirectIndexString) # => AbstractString
+supertype(String) # => DirectIndexString
+supertype(DirectIndexString) # => AbstractString
 # Likewise here with ASCIIString
 
 # <: is the subtyping operator
