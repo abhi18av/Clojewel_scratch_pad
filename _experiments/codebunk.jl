@@ -161,15 +161,15 @@ show_s_expr(jl_bool_source_file)
 # """
 # 
 # 
-# function make_expr2(op, opr1, opr2)
-#            opr1f, opr2f = map(x -> isa(x, Number) ? 2*x : x, (opr1, opr2))
-#            retexpr = Expr(:call, op, opr1f, opr2f)
-#            return retexpr
-#        end
-# 
-#
-# Meta.show_sexpr((make_expr2))
-#  */
+ function make_expr2(op, opr1, opr2)
+            opr1f, opr2f = map(x -> isa(x, Number) ? 2*x : x, (opr1, opr2))
+            retexpr = Expr(:call, op, opr1f, opr2f)
+            return retexpr
+        end
+ 
+
+ Meta.show_sexpr((make_expr2))
+
 
 
 #Meta.show_sexpr(:(function f(x,y)                                        
