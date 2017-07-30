@@ -39,20 +39,6 @@
 
 
 
-function show_s_expr(jl_expr::Expr)
-    
-    jl_expr_str = string(jl_expr)
-    quoted_expr = parse(jl_expr_str)
-    s_expr = Meta.show_sexpr(quoted_expr)
-    
-    return s_expr
-    
-end
-
-
-
-
-
 jl_bool_source_file = quote 
 
 # This file is a part of Julia. License is MIT: https://julialang.org/license
@@ -131,6 +117,23 @@ mod(x::Bool, y::Bool) = rem(x,y)
 
 
 end
+
+
+
+
+
+
+function show_s_expr(jl_expr::Expr)
+    
+    jl_expr_str = string(jl_expr)
+    quoted_expr = parse(jl_expr_str)
+    s_expr = Meta.show_sexpr(quoted_expr)
+    #s_expr = Meta.show_sexpr(jl_expr)
+    
+    return s_expr
+    
+end
+
 
 
 
