@@ -1,4 +1,4 @@
-println("Hello, world!")
+#println("Hello, world!")
 
  
 #http://web.mit.edu/julia_v0.5.0/.julia-3c9d75391c.amd64_ubuntu1404/share/doc/julia/html/manual/metaprogramming.html
@@ -39,9 +39,10 @@ println("Hello, world!")
 
 
 
-function show_s_expr(jl_expr::String)
+function show_s_expr(jl_expr::Expr)
     
-    quoted_expr = parse(jl_expr)
+    jl_expr_str = string(jl_expr)
+    quoted_expr = parse(jl_expr_str)
     s_expr = Meta.show_sexpr(quoted_expr)
     
     return s_expr
@@ -52,7 +53,8 @@ end
 
 
 
-jl_bool_source_file = """
+jl_bool_source_file = quote 
+
 # This file is a part of Julia. License is MIT: https://julialang.org/license
 
 ## boolean conversions ##
@@ -125,17 +127,17 @@ cld(x::Bool, y::Bool) = div(x,y)
 rem(x::Bool, y::Bool) = y ? false : throw(DivideError())
 mod(x::Bool, y::Bool) = rem(x,y)
 
-"""
+
+
+
+end
 
 
 
 
 
 
-
-
-
-show_s_exp(jl_bool_source_file)
+show_s_expr(jl_bool_source_file)
 
 
 
