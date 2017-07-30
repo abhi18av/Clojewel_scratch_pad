@@ -1,13 +1,6 @@
 
-f = open("LearnJuliaTest.jl","r")
-content = readstring(f)
-close(f)
-
-
-
-f = open("test1.jl","r")
-content = readstring(f)
-close(f)
+#println(ARGS[1])
+fileName = ARGS[1]
 
 
 function convertFile(fileName::String)
@@ -27,4 +20,18 @@ end
 #eval(eval(parse(quoted_content)))
 
 
-convertFile("io.jl")
+convertFile(fileName)
+
+
+
+
+#f = open("LearnJuliaTest.jl","r")
+#content = readstring(f)
+#close(f)
+
+
+
+#f = open("test1.jl","r")
+#content = readstring(f)
+#close(f)
+
