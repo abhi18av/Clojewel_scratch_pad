@@ -10,8 +10,8 @@ content = readstring(f)
 close(f)
 
 
-
-f = open("array.jl","r")
+function convertFile(fileName::String)
+f = open(fileName,"r")
 content = readstring(f)
 close(f)
 
@@ -20,6 +20,11 @@ expr = parse(quoted_content)
 
 Meta.show_sexpr(expr)
 
+
+end
+
+
 #eval(eval(parse(quoted_content)))
 
 
+convertFile("io.jl")
