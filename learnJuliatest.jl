@@ -89,9 +89,9 @@
 println("I'm Julia. Nice to meet you!")
 
 # String can be compared lexicographically
-"good" > "bye" # => true
-"good" == "good" # => true
-"1 + 2 = 3" == "1 + 2 = $(1+2)" # => true
+#"good" > "bye" # => true
+#"good" == "good" # => true
+#"1 + 2 = 3" == "1 + 2 = $(1+2)" # => true
 
 ####################################################
 ## 2. Variables and Collections
@@ -99,7 +99,7 @@ println("I'm Julia. Nice to meet you!")
 
 # You don't declare variables before assigning to them.
 some_var = 5 # => 5
-some_var # => 5
+#some_var # => 5
 
 # Accessing a previously unassigned variable is an error
 try
@@ -115,7 +115,7 @@ SomeOtherVar123! = 6 # => 6
 # You can also use certain unicode characters
 ☃ = 8 # => 8
 # These are especially handy for mathematical notation
-2 * π # => 6.283185307179586
+#2 * π # => 6.283185307179586
 
 # A note on naming conventions in Julia:
 #
