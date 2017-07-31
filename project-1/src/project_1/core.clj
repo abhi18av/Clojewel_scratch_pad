@@ -2,7 +2,6 @@
   (:gen-class))
 
 
-(println "Clojure Spec !!")
 
 
 (defn -main
