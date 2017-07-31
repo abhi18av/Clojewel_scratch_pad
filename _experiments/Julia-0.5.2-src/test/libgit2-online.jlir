@@ -1,0 +1,53 @@
+(:quote, (:block,
+    (:line, 9, :none),
+    (:call, :mktempdir, (:->, (:tuple, :dir), (:block,
+          (:line, 10, :none),
+          (:(=), :repo_url, "https://github.com/JuliaLang/Example.jl"),
+          (:line, 13, :none),
+          (:(=), :repo_path, (:call, :joinpath, :dir, "Example1")),
+          (:line, 14, :none),
+          (:(=), :repo, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                  :clone
+                )), :repo_url, :repo_path)),
+          (:line, 15, :none),
+          (:try, (:block,
+              (:line, 16, :none),
+              (:macrocall, Symbol("@test"), (:call, :isdir, :repo_path)),
+              (:line, 17, :none),
+              (:macrocall, Symbol("@test"), (:call, :isdir, (:call, :joinpath, :repo_path, ".git")))
+            ), false, false, (:block,
+              (:line, 19, :none),
+              (:call, :finalize, :repo)
+            )),
+          (:line, 24, :none),
+          (:try, (:block,
+              (:line, 25, :none),
+              (:(=), :repo_path, (:call, :joinpath, :dir, "Example2")),
+              (:line, 27, :none),
+              (:(=), :cred, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                      :UserPasswordCredentials
+                    )), "", "")),
+              (:line, 28, :none),
+              (:call, (:., :LibGit2, (:quote, #QuoteNode
+                    :clone
+                  )), (:call, :*, :repo_url, (:call, :randstring, 10)), :repo_path, (:kw, :payload, (:call, :Nullable, :cred))),
+              (:line, 29, :none),
+              (:call, :error, "unexpected")
+            ), :ex, (:block,
+              (:line, 31, :none),
+              (:macrocall, Symbol("@test"), (:call, :isa, :ex, (:., (:., :LibGit2, (:quote, #QuoteNode
+                        :Error
+                      )), (:quote, #QuoteNode
+                      :GitError
+                    )))),
+              (:line, 32, :none),
+              (:macrocall, Symbol("@test"), (:call, :(==), (:., :ex, (:quote, #QuoteNode
+                      :code
+                    )), (:., (:., :LibGit2, (:quote, #QuoteNode
+                        :Error
+                      )), (:quote, #QuoteNode
+                      :EAUTH
+                    ))))
+            ))
+        )))
+  ))

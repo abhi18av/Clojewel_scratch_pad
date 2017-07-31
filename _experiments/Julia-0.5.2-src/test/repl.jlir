@@ -1,0 +1,1077 @@
+(:quote, (:block,
+    (:line, 4, :none),
+    (:||, (:call, :isdefined, (:quote, #QuoteNode
+          :TestHelpers
+        )), (:call, :include, (:call, :joinpath, (:call, :dirname, (:macrocall, Symbol("@__FILE__"))), "TestHelpers.jl"))),
+    (:line, 5, :none),
+    (:using, :TestHelpers),
+    (:line, 6, :none),
+    (:toplevel, (:import, :Base, :REPL), (:import, :Base, :LineEdit)),
+    (:line, 8, :none),
+    (:function, (:call, :fake_repl), (:block,
+        (:line, 12, :none),
+        (:(=), (:tuple, :stdin_read, :stdin_write), (:tuple, (:call, (:., :Base, (:quote, #QuoteNode
+                  :PipeEndpoint
+                ))), (:call, (:., :Base, (:quote, #QuoteNode
+                  :PipeEndpoint
+                ))))),
+        (:line, 13, :none),
+        (:(=), (:tuple, :stdout_read, :stdout_write), (:tuple, (:call, (:., :Base, (:quote, #QuoteNode
+                  :PipeEndpoint
+                ))), (:call, (:., :Base, (:quote, #QuoteNode
+                  :PipeEndpoint
+                ))))),
+        (:line, 14, :none),
+        (:(=), (:tuple, :stderr_read, :stderr_write), (:tuple, (:call, (:., :Base, (:quote, #QuoteNode
+                  :PipeEndpoint
+                ))), (:call, (:., :Base, (:quote, #QuoteNode
+                  :PipeEndpoint
+                ))))),
+        (:line, 15, :none),
+        (:call, (:., :Base, (:quote, #QuoteNode
+              :link_pipe
+            )), :stdin_read, true, :stdin_write, true),
+        (:line, 16, :none),
+        (:call, (:., :Base, (:quote, #QuoteNode
+              :link_pipe
+            )), :stdout_read, true, :stdout_write, true),
+        (:line, 17, :none),
+        (:call, (:., :Base, (:quote, #QuoteNode
+              :link_pipe
+            )), :stderr_read, true, :stderr_write, true),
+        (:line, 19, :none),
+        (:(=), :repl, (:call, (:., (:., :Base, (:quote, #QuoteNode
+                  :REPL
+                )), (:quote, #QuoteNode
+                :LineEditREPL
+              )), (:call, (:., :TestHelpers, (:quote, #QuoteNode
+                  :FakeTerminal
+                )), :stdin_read, :stdout_write, :stderr_write))),
+        (:line, 20, :none),
+        (:tuple, :stdin_write, :stdout_read, :stderr_read, :repl)
+      )),
+    (:line, 24, :none),
+    (:ccall, (:quote, #QuoteNode
+        :jl_exit_on_sigint
+      ), :Void, (:tuple, :Cint), 0),
+    (:line, 31, :none),
+    (:if, (:||, (:call, :!, (:call, :is_windows)), (:call, :(>=), (:call, (:., :Sys, (:quote, #QuoteNode
+                :windows_version
+              ))), (:., :Sys, (:quote, #QuoteNode
+              :WINDOWS_VISTA_VER
+            )))), (:block,
+        (:line, 32, :none),
+        (:(=), (:tuple, :stdin_write, :stdout_read, :stderr_read, :repl), (:call, :fake_repl)),
+        (:line, 34, :none),
+        (:(=), (:., :repl, (:quote, #QuoteNode
+              :specialdisplay
+            )), (:call, (:., (:., :Base, (:quote, #QuoteNode
+                  :REPL
+                )), (:quote, #QuoteNode
+                :REPLDisplay
+              )), :repl)),
+        (:line, 35, :none),
+        (:(=), (:., :repl, (:quote, #QuoteNode
+              :history_file
+            )), false),
+        (:line, 37, :none),
+        (:(=), :repltask, (:macrocall, Symbol("@async"), (:block,
+              (:line, 38, :none),
+              (:call, (:., (:., :Base, (:quote, #QuoteNode
+                      :REPL
+                    )), (:quote, #QuoteNode
+                    :run_repl
+                  )), :repl)
+            ))),
+        (:line, 41, :none),
+        (:(=), (:call, :sendrepl, :cmd), (:block,
+            (:line, 41, :none),
+            (:call, :write, :stdin_write, (:string, "inc || wait(b); r = ", :cmd, "; notify(c); r\r"))
+          )),
+        (:line, 43, :none),
+        (:(=), :inc, false),
+        (:line, 44, :none),
+        (:(=), :b, (:call, :Condition)),
+        (:line, 45, :none),
+        (:(=), :c, (:call, :Condition)),
+        (:line, 46, :none),
+        (:call, :sendrepl, "\"Hello REPL\""),
+        (:line, 47, :none),
+        (:(=), :inc, true),
+        (:line, 48, :none),
+        (:block,
+          (:line, 49, :none),
+          (:call, :notify, :b),
+          (:line, 50, :none),
+          (:call, :wait, :c)
+        ),
+        (:line, 53, :none),
+        (:call, :write, :stdin_write, "2\\alpha\t"),
+        (:line, 54, :none),
+        (:call, :readuntil, :stdout_read, "α"),
+        (:line, 56, :none),
+        (:call, :write, :stdin_write, "\e[200~paste here ;)\e[201~"),
+        (:line, 58, :none),
+        (:call, :write, :stdin_write, '\x03'),
+        (:line, 60, :none),
+        (:call, :write, :stdin_write, "Base.REP\t"),
+        (:line, 61, :none),
+        (:call, :readuntil, :stdout_read, "Base.REPL"),
+        (:line, 62, :none),
+        (:call, :write, :stdin_write, '\x03'),
+        (:line, 63, :none),
+        (:call, :write, :stdin_write, "\\alpha\t"),
+        (:line, 64, :none),
+        (:call, :readuntil, :stdout_read, "α"),
+        (:line, 65, :none),
+        (:call, :write, :stdin_write, '\x03'),
+        (:line, 69, :none),
+        (:(=), :origpwd, (:call, :pwd)),
+        (:line, 70, :none),
+        (:call, :mktempdir, (:->, (:tuple, :tmpdir), (:block,
+              (:line, 71, :none),
+              (:call, :write, :stdin_write, ";"),
+              (:line, 72, :none),
+              (:call, :readuntil, :stdout_read, "shell> "),
+              (:line, 73, :none),
+              (:call, :write, :stdin_write, (:string, "cd ", (:call, :escape_string, :tmpdir), "\n")),
+              (:line, 74, :none),
+              (:call, :readuntil, :stdout_read, (:ref, (:string, "cd ", (:call, :escape_string, :tmpdir)), (:(:), (:call, :max, 1, (:call, :-, :end, 39)), :end))),
+              (:line, 75, :none),
+              (:call, :readuntil, :stdout_read, (:ref, (:call, :realpath, :tmpdir), (:(:), (:call, :max, 1, (:call, :-, :end, 39)), :end))),
+              (:line, 76, :none),
+              (:call, :readuntil, :stdout_read, "\n"),
+              (:line, 77, :none),
+              (:call, :readuntil, :stdout_read, "\n"),
+              (:line, 78, :none),
+              (:macrocall, Symbol("@test"), (:call, :(==), (:call, :pwd), (:call, :realpath, :tmpdir))),
+              (:line, 79, :none),
+              (:call, :write, :stdin_write, ";"),
+              (:line, 80, :none),
+              (:call, :readuntil, :stdout_read, "shell> "),
+              (:line, 81, :none),
+              (:call, :write, :stdin_write, "cd -\n"),
+              (:line, 82, :none),
+              (:call, :readuntil, :stdout_read, (:ref, :origpwd, (:(:), (:call, :max, 1, (:call, :-, :end, 39)), :end))),
+              (:line, 83, :none),
+              (:call, :readuntil, :stdout_read, "\n"),
+              (:line, 84, :none),
+              (:call, :readuntil, :stdout_read, "\n"),
+              (:line, 85, :none),
+              (:macrocall, Symbol("@test"), (:call, :(==), (:call, :pwd), :origpwd)),
+              (:line, 86, :none),
+              (:call, :write, :stdin_write, ";"),
+              (:line, 87, :none),
+              (:call, :readuntil, :stdout_read, "shell> "),
+              (:line, 88, :none),
+              (:call, :write, :stdin_write, "cd\n"),
+              (:line, 89, :none),
+              (:call, :readuntil, :stdout_read, (:ref, (:call, :realpath, (:call, :homedir)), (:(:), (:call, :max, 1, (:call, :-, :end, 39)), :end))),
+              (:line, 90, :none),
+              (:call, :readuntil, :stdout_read, "\n"),
+              (:line, 91, :none),
+              (:call, :readuntil, :stdout_read, "\n"),
+              (:line, 92, :none),
+              (:macrocall, Symbol("@test"), (:call, :(==), (:call, :pwd), (:call, :realpath, (:call, :homedir))))
+            ))),
+        (:line, 94, :none),
+        (:call, :cd, :origpwd),
+        (:line, 98, :none),
+        (:call, :write, :stdin_write, "1+1\n"),
+        (:line, 99, :none),
+        (:call, :readline, :stdout_read),
+        (:line, 100, :none),
+        (:call, :write, :stdin_write, "\e[A\n"),
+        (:line, 101, :none),
+        (:(=), :t, (:call, :Timer, (:->, (:tuple, :t), (:block,
+                (:line, 102, :none),
+                (:||, (:call, :isopen, :t), (:return, nothing)),
+                (:line, 103, :none),
+                (:call, :error, "Stuck waiting for the repl to write `1+1`")
+              )), 10)),
+        (:line, 106, :none),
+        (:call, :readuntil, :stdout_read, "1+1"),
+        (:line, 107, :none),
+        (:call, :close, :t),
+        (:line, 111, :none),
+        (:call, :write, :stdin_write, "\e[2h\e[2h\n"),
+        (:line, 112, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :search, (:call, :readline, :stdout_read), "[2h"), (:(:), 0, -1))),
+        (:line, 113, :none),
+        (:call, :readline, :stdout_read),
+        (:line, 114, :none),
+        (:call, :write, :stdin_write, "\e[2~\e[2~\n"),
+        (:line, 115, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :search, (:call, :readline, :stdout_read), "[2~"), (:(:), 0, -1))),
+        (:line, 116, :none),
+        (:call, :readline, :stdout_read),
+        (:line, 117, :none),
+        (:call, :write, :stdin_write, "1+1\n"),
+        (:line, 118, :none),
+        (:call, :readline, :stdout_read),
+        (:line, 119, :none),
+        (:call, :write, :stdin_write, "\e[A\e[2h\n"),
+        (:line, 120, :none),
+        (:call, :readline, :stdout_read),
+        (:line, 121, :none),
+        (:call, :readline, :stdout_read),
+        (:line, 122, :none),
+        (:call, :write, :stdin_write, "\e[A\e[2~\n"),
+        (:line, 123, :none),
+        (:call, :readline, :stdout_read),
+        (:line, 124, :none),
+        (:call, :readline, :stdout_read),
+        (:line, 129, :none),
+        (:(=), :t, (:call, :Timer, (:->, (:tuple, :t), (:block,
+                (:line, 130, :none),
+                (:||, (:call, :isopen, :t), (:return, nothing)),
+                (:line, 131, :none),
+                (:call, :error, "Stuck waiting for history test")
+              )), 10)),
+        (:line, 133, :none),
+        (:(=), :s1, "12345678"),
+        (:line, 133, :none),
+        (:(=), :s2, "23456789"),
+        (:line, 134, :none),
+        (:call, :write, :stdin_write, :s1, '\n'),
+        (:line, 135, :none),
+        (:call, :readuntil, :stdout_read, :s1),
+        (:line, 136, :none),
+        (:call, :write, :stdin_write, :s2, '\n'),
+        (:line, 137, :none),
+        (:call, :readuntil, :stdout_read, :s2),
+        (:line, 139, :none),
+        (:call, :write, :stdin_write, "\e[A\e[A\n"),
+        (:line, 140, :none),
+        (:call, :readuntil, :stdout_read, :s1),
+        (:line, 142, :none),
+        (:call, :write, :stdin_write, "\e[B\n"),
+        (:line, 143, :none),
+        (:call, :readuntil, :stdout_read, :s2),
+        (:line, 144, :none),
+        (:call, :close, :t),
+        (:line, 147, :none),
+        (:call, :write, :stdin_write, '\x04'),
+        (:line, 148, :none),
+        (:call, :wait, :repltask)
+      )),
+    (:line, 151, :none),
+    (:function, (:call, :buffercontents, (:(::), :buf, :IOBuffer)), (:block,
+        (:line, 152, :none),
+        (:(=), :p, (:call, :position, :buf)),
+        (:line, 153, :none),
+        (:call, :seek, :buf, 0),
+        (:line, 154, :none),
+        (:(=), :c, (:call, :readstring, :buf)),
+        (:line, 155, :none),
+        (:call, :seek, :buf, :p),
+        (:line, 156, :none),
+        :c
+      )),
+    (:line, 159, :none),
+    (:function, (:call, :AddCustomMode, :repl), (:block,
+        (:line, 161, :none),
+        (:(=), :foobar_mode, (:call, (:., :LineEdit, (:quote, #QuoteNode
+                :Prompt
+              )), (:parameters, (:kw, :prompt_prefix, "\e[38;5;166m"), (:kw, :prompt_suffix, (:ref, (:., :Base, (:quote, #QuoteNode
+                      :text_colors
+                    )), (:quote, #QuoteNode
+                    :white
+                  ))), (:kw, :on_enter, (:->, :s, (:block,
+                    (:line, 164, :none),
+                    true
+                  ))), (:kw, :on_done, (:->, :line, (:block,
+                    (:line, 165, :none),
+                    true
+                  )))), "TestΠ")),
+        (:line, 167, :none),
+        (:(=), :main_mode, (:ref, (:., (:., :repl, (:quote, #QuoteNode
+                  :interface
+                )), (:quote, #QuoteNode
+                :modes
+              )), 1)),
+        (:line, 168, :none),
+        (:call, :push!, (:., (:., :repl, (:quote, #QuoteNode
+                :interface
+              )), (:quote, #QuoteNode
+              :modes
+            )), :foobar_mode),
+        (:line, 170, :none),
+        (:(=), :hp, (:., :main_mode, (:quote, #QuoteNode
+              :hist
+            ))),
+        (:line, 171, :none),
+        (:(=), (:ref, (:., :hp, (:quote, #QuoteNode
+                :mode_mapping
+              )), (:quote, #QuoteNode
+              :foobar
+            )), :foobar_mode),
+        (:line, 172, :none),
+        (:(=), (:., :foobar_mode, (:quote, #QuoteNode
+              :hist
+            )), :hp),
+        (:line, 174, :none),
+        (:const, (:(=), :foobar_keymap, (:call, (:curly, :Dict, :Any, :Any), (:(=>), '<', (:function, (:tuple, :s, (:..., :args)), (:block,
+                    (:line, 176, :none),
+                    (:if, (:call, :isempty, :s), (:block,
+                        (:line, 177, :none),
+                        (:if, (:call, :!, (:call, :haskey, (:., :s, (:quote, #QuoteNode
+                                  :mode_state
+                                )), :foobar_mode)), (:block,
+                            (:line, 178, :none),
+                            (:(=), (:ref, (:., :s, (:quote, #QuoteNode
+                                    :mode_state
+                                  )), :foobar_mode), (:call, (:., :LineEdit, (:quote, #QuoteNode
+                                    :init_state
+                                  )), (:., :repl, (:quote, #QuoteNode
+                                    :t
+                                  )), :foobar_mode))
+                          )),
+                        (:line, 180, :none),
+                        (:call, (:., :LineEdit, (:quote, #QuoteNode
+                              :transition
+                            )), :s, :foobar_mode)
+                      ), (:block,
+                        (:line, 182, :none),
+                        (:call, (:., :LineEdit, (:quote, #QuoteNode
+                              :edit_insert
+                            )), :s, '<')
+                      ))
+                  )))))),
+        (:line, 187, :none),
+        (:(=), (:tuple, :search_prompt, :skeymap), (:call, (:., :LineEdit, (:quote, #QuoteNode
+                :setup_search_keymap
+              )), :hp)),
+        (:line, 188, :none),
+        (:(=), :mk, (:call, (:., :REPL, (:quote, #QuoteNode
+                :mode_keymap
+              )), :main_mode)),
+        (:line, 190, :none),
+        (:(=), :b, (:ref, (:curly, :Dict, :Any, :Any), :skeymap, :mk, (:., :LineEdit, (:quote, #QuoteNode
+                :history_keymap
+              )), (:., :LineEdit, (:quote, #QuoteNode
+                :default_keymap
+              )), (:., :LineEdit, (:quote, #QuoteNode
+                :escape_defaults
+              )))),
+        (:line, 191, :none),
+        (:(=), (:., :foobar_mode, (:quote, #QuoteNode
+              :keymap_dict
+            )), (:call, (:., :LineEdit, (:quote, #QuoteNode
+                :keymap
+              )), :b)),
+        (:line, 193, :none),
+        (:(=), (:., :main_mode, (:quote, #QuoteNode
+              :keymap_dict
+            )), (:call, (:., :LineEdit, (:quote, #QuoteNode
+                :keymap_merge
+              )), (:., :main_mode, (:quote, #QuoteNode
+                :keymap_dict
+              )), :foobar_keymap)),
+        (:line, 194, :none),
+        (:tuple, :foobar_mode, :search_prompt)
+      )),
+    (:line, 200, :none),
+    (:(=), :fakehistory, "# time: 2014-06-29 20:44:29 EDT\n# mode: julia\n\té\n# time: 2014-06-29 21:44:29 EDT\n# mode: julia\n\téé\n# time: 2014-06-30 17:32:49 EDT\n# mode: julia\n\tshell\n# time: 2014-06-30 17:32:59 EDT\n# mode: shell\n\tll\n# time: 2014-06-30 17:32:49 EDT\n# mode: julia\n\t1 + 1\n# time: 2014-06-30 17:35:39 EDT\n# mode: foobar\n\tbarfoo\n# time: 2014-06-30 18:44:29 EDT\n# mode: shell\n\tls\n# time: 2014-06-30 19:44:29 EDT\n# mode: foobar\n\tls\n# time: 2014-06-30 20:44:29 EDT\n# mode: julia\n\t2 + 2\n"),
+    (:line, 231, :none),
+    (:block,
+      (:line, 232, :none),
+      (:(=), (:tuple, :stdin_write, :stdout_read, :stdout_read, :repl), (:call, :fake_repl)),
+      (:line, 235, :none),
+      (:(=), (:., :repl, (:quote, #QuoteNode
+            :specialdisplay
+          )), (:call, (:., (:., :Base, (:quote, #QuoteNode
+                :REPL
+              )), (:quote, #QuoteNode
+              :REPLDisplay
+            )), :repl)),
+      (:line, 237, :none),
+      (:(=), (:., :repl, (:quote, #QuoteNode
+            :interface
+          )), (:call, (:., :REPL, (:quote, #QuoteNode
+              :setup_interface
+            )), :repl)),
+      (:line, 238, :none),
+      (:(=), :repl_mode, (:ref, (:., (:., :repl, (:quote, #QuoteNode
+                :interface
+              )), (:quote, #QuoteNode
+              :modes
+            )), 1)),
+      (:line, 239, :none),
+      (:(=), :shell_mode, (:ref, (:., (:., :repl, (:quote, #QuoteNode
+                :interface
+              )), (:quote, #QuoteNode
+              :modes
+            )), 2)),
+      (:line, 240, :none),
+      (:(=), :help_mode, (:ref, (:., (:., :repl, (:quote, #QuoteNode
+                :interface
+              )), (:quote, #QuoteNode
+              :modes
+            )), 3)),
+      (:line, 241, :none),
+      (:(=), :histp, (:ref, (:., (:., :repl, (:quote, #QuoteNode
+                :interface
+              )), (:quote, #QuoteNode
+              :modes
+            )), 4)),
+      (:line, 242, :none),
+      (:(=), :prefix_mode, (:ref, (:., (:., :repl, (:quote, #QuoteNode
+                :interface
+              )), (:quote, #QuoteNode
+              :modes
+            )), 5)),
+      (:line, 244, :none),
+      (:(=), :hp, (:call, (:., :REPL, (:quote, #QuoteNode
+              :REPLHistoryProvider
+            )), (:call, (:curly, :Dict, :Symbol, :Any), (:(=>), (:quote, #QuoteNode
+                :julia
+              ), :repl_mode), (:(=>), (:quote, #QuoteNode
+                :shell
+              ), :shell_mode), (:(=>), (:quote, #QuoteNode
+                :help
+              ), :help_mode)))),
+      (:line, 248, :none),
+      (:call, (:., :REPL, (:quote, #QuoteNode
+            :hist_from_file
+          )), :hp, (:call, :IOBuffer, :fakehistory)),
+      (:line, 249, :none),
+      (:call, (:., :REPL, (:quote, #QuoteNode
+            :history_reset_state
+          )), :hp),
+      (:line, 251, :none),
+      (:(=), (:., :histp, (:quote, #QuoteNode
+            :hp
+          )), (:(=), (:., :repl_mode, (:quote, #QuoteNode
+              :hist
+            )), (:(=), (:., :shell_mode, (:quote, #QuoteNode
+                :hist
+              )), (:(=), (:., :help_mode, (:quote, #QuoteNode
+                  :hist
+                )), :hp)))),
+      (:line, 254, :none),
+      (:(=), :s, (:call, (:., :LineEdit, (:quote, #QuoteNode
+              :init_state
+            )), (:., :repl, (:quote, #QuoteNode
+              :t
+            )), (:., :repl, (:quote, #QuoteNode
+              :interface
+            )))),
+      (:line, 255, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :edit_insert
+          )), :s, "wip"),
+      (:line, 259, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :history_prev
+          )), :s, :hp),
+      (:line, 260, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LineEdit, (:quote, #QuoteNode
+                :mode
+              )), :s), :repl_mode)),
+      (:line, 261, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :buffercontents, (:call, (:., :LineEdit, (:quote, #QuoteNode
+                  :buffer
+                )), :s)), "2 + 2")),
+      (:line, 262, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :history_prev
+          )), :s, :hp),
+      (:line, 263, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LineEdit, (:quote, #QuoteNode
+                :mode
+              )), :s), :shell_mode)),
+      (:line, 264, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :buffercontents, (:call, (:., :LineEdit, (:quote, #QuoteNode
+                  :buffer
+                )), :s)), "ls")),
+      (:line, 265, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :history_prev
+          )), :s, :hp),
+      (:line, 266, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LineEdit, (:quote, #QuoteNode
+                :mode
+              )), :s), :repl_mode)),
+      (:line, 267, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :buffercontents, (:call, (:., :LineEdit, (:quote, #QuoteNode
+                  :buffer
+                )), :s)), "1 + 1")),
+      (:line, 268, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :history_next
+          )), :s, :hp),
+      (:line, 269, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LineEdit, (:quote, #QuoteNode
+                :mode
+              )), :s), :shell_mode)),
+      (:line, 270, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :buffercontents, (:call, (:., :LineEdit, (:quote, #QuoteNode
+                  :buffer
+                )), :s)), "ls")),
+      (:line, 271, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :history_next
+          )), :s, :hp),
+      (:line, 272, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LineEdit, (:quote, #QuoteNode
+                :mode
+              )), :s), :repl_mode)),
+      (:line, 273, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :buffercontents, (:call, (:., :LineEdit, (:quote, #QuoteNode
+                  :buffer
+                )), :s)), "2 + 2")),
+      (:line, 274, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :history_next
+          )), :s, :hp),
+      (:line, 275, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LineEdit, (:quote, #QuoteNode
+                :mode
+              )), :s), :repl_mode)),
+      (:line, 276, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :buffercontents, (:call, (:., :LineEdit, (:quote, #QuoteNode
+                  :buffer
+                )), :s)), "wip")),
+      (:line, 277, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :position, (:call, (:., :LineEdit, (:quote, #QuoteNode
+                  :buffer
+                )), :s)), 3)),
+      (:line, 278, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :move_line_start
+          )), :s),
+      (:line, 279, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :position, (:call, (:., :LineEdit, (:quote, #QuoteNode
+                  :buffer
+                )), :s)), 0)),
+      (:line, 282, :none),
+      (:(=), :ps, (:(::), (:call, (:., :LineEdit, (:quote, #QuoteNode
+                :state
+              )), :s, :prefix_mode), (:., :LineEdit, (:quote, #QuoteNode
+              :PrefixSearchState
+            )))),
+      (:line, 283, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LineEdit, (:quote, #QuoteNode
+                :input_string
+              )), :ps), "")),
+      (:line, 284, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :enter_prefix_search
+          )), :s, :prefix_mode, true),
+      (:line, 285, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :history_prev_prefix
+          )), :ps, :hp, ""),
+      (:line, 286, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:., :ps, (:quote, #QuoteNode
+              :prefix
+            )), "")),
+      (:line, 287, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:., :ps, (:quote, #QuoteNode
+              :parent
+            )), :repl_mode)),
+      (:line, 288, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LineEdit, (:quote, #QuoteNode
+                :input_string
+              )), :ps), "2 + 2")),
+      (:line, 289, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :position, (:call, (:., :LineEdit, (:quote, #QuoteNode
+                  :buffer
+                )), :s)), 5)),
+      (:line, 290, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :history_prev_prefix
+          )), :ps, :hp, ""),
+      (:line, 291, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:., :ps, (:quote, #QuoteNode
+              :parent
+            )), :shell_mode)),
+      (:line, 292, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LineEdit, (:quote, #QuoteNode
+                :input_string
+              )), :ps), "ls")),
+      (:line, 293, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :position, (:call, (:., :LineEdit, (:quote, #QuoteNode
+                  :buffer
+                )), :s)), 2)),
+      (:line, 294, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :history_prev_prefix
+          )), :ps, :hp, "sh"),
+      (:line, 295, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:., :ps, (:quote, #QuoteNode
+              :parent
+            )), :repl_mode)),
+      (:line, 296, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LineEdit, (:quote, #QuoteNode
+                :input_string
+              )), :ps), "shell")),
+      (:line, 297, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :position, (:call, (:., :LineEdit, (:quote, #QuoteNode
+                  :buffer
+                )), :s)), 2)),
+      (:line, 298, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :history_next_prefix
+          )), :ps, :hp, "sh"),
+      (:line, 299, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:., :ps, (:quote, #QuoteNode
+              :parent
+            )), :repl_mode)),
+      (:line, 300, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LineEdit, (:quote, #QuoteNode
+                :input_string
+              )), :ps), "wip")),
+      (:line, 301, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :position, (:call, (:., :LineEdit, (:quote, #QuoteNode
+                  :buffer
+                )), :s)), 0)),
+      (:line, 302, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :move_input_end
+          )), :s),
+      (:line, 303, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :history_prev_prefix
+          )), :ps, :hp, "é"),
+      (:line, 304, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:., :ps, (:quote, #QuoteNode
+              :parent
+            )), :repl_mode)),
+      (:line, 305, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LineEdit, (:quote, #QuoteNode
+                :input_string
+              )), :ps), "éé")),
+      (:line, 306, :none),
+      (:macrocall, Symbol("@test"), (:comparison, (:call, :position, (:call, (:., :LineEdit, (:quote, #QuoteNode
+                  :buffer
+                )), :s)), :(==), (:call, :sizeof, "é"), :>, 1)),
+      (:line, 307, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :history_prev_prefix
+          )), :ps, :hp, "é"),
+      (:line, 308, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:., :ps, (:quote, #QuoteNode
+              :parent
+            )), :repl_mode)),
+      (:line, 309, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LineEdit, (:quote, #QuoteNode
+                :input_string
+              )), :ps), "é")),
+      (:line, 310, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :position, (:call, (:., :LineEdit, (:quote, #QuoteNode
+                  :buffer
+                )), :s)), (:call, :sizeof, "é"))),
+      (:line, 311, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :history_next_prefix
+          )), :ps, :hp, "zzz"),
+      (:line, 312, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:., :ps, (:quote, #QuoteNode
+              :parent
+            )), :repl_mode)),
+      (:line, 313, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LineEdit, (:quote, #QuoteNode
+                :input_string
+              )), :ps), "wip")),
+      (:line, 314, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :position, (:call, (:., :LineEdit, (:quote, #QuoteNode
+                  :buffer
+                )), :s)), 3)),
+      (:line, 315, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :accept_result
+          )), :s, :prefix_mode),
+      (:line, 319, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :enter_search
+          )), :s, :histp, true),
+      (:line, 320, :none),
+      (:(=), :ss, (:call, (:., :LineEdit, (:quote, #QuoteNode
+              :state
+            )), :s, :histp)),
+      (:line, 321, :none),
+      (:call, :write, (:., :ss, (:quote, #QuoteNode
+            :query_buffer
+          )), "l"),
+      (:line, 322, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :update_display_buffer
+          )), :ss, :ss),
+      (:line, 323, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :accept_result
+          )), :s, :histp),
+      (:line, 324, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LineEdit, (:quote, #QuoteNode
+                :mode
+              )), :s), :shell_mode)),
+      (:line, 325, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :buffercontents, (:call, (:., :LineEdit, (:quote, #QuoteNode
+                  :buffer
+                )), :s)), "ls")),
+      (:line, 326, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :position, (:call, (:., :LineEdit, (:quote, #QuoteNode
+                  :buffer
+                )), :s)), 0)),
+      (:line, 330, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :history_prev
+          )), :s, :hp),
+      (:line, 331, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :enter_search
+          )), :s, :histp, true),
+      (:line, 332, :none),
+      (:call, :write, (:., :ss, (:quote, #QuoteNode
+            :query_buffer
+          )), "l"),
+      (:line, 333, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :update_display_buffer
+          )), :ss, :ss),
+      (:line, 334, :none),
+      (:call, :write, (:., :ss, (:quote, #QuoteNode
+            :query_buffer
+          )), "l"),
+      (:line, 335, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :update_display_buffer
+          )), :ss, :ss),
+      (:line, 336, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :accept_result
+          )), :s, :histp),
+      (:line, 337, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LineEdit, (:quote, #QuoteNode
+                :mode
+              )), :s), :shell_mode)),
+      (:line, 338, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :buffercontents, (:call, (:., :LineEdit, (:quote, #QuoteNode
+                  :buffer
+                )), :s)), "ll")),
+      (:line, 339, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :position, (:call, (:., :LineEdit, (:quote, #QuoteNode
+                  :buffer
+                )), :s)), 0)),
+      (:line, 343, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :enter_search
+          )), :s, :histp, true),
+      (:line, 344, :none),
+      (:call, :write, (:., :ss, (:quote, #QuoteNode
+            :query_buffer
+          )), "l"),
+      (:line, 345, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :update_display_buffer
+          )), :ss, :ss),
+      (:line, 346, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :history_next_result
+          )), :s, :ss),
+      (:line, 347, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :update_display_buffer
+          )), :ss, :ss),
+      (:line, 348, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :accept_result
+          )), :s, :histp),
+      (:line, 349, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LineEdit, (:quote, #QuoteNode
+                :mode
+              )), :s), :repl_mode)),
+      (:line, 350, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :buffercontents, (:call, (:., :LineEdit, (:quote, #QuoteNode
+                  :buffer
+                )), :s)), "shell")),
+      (:line, 351, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :position, (:call, (:., :LineEdit, (:quote, #QuoteNode
+                  :buffer
+                )), :s)), 4)),
+      (:line, 355, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :enter_search
+          )), :s, :histp, true),
+      (:line, 356, :none),
+      (:call, :write, (:., :ss, (:quote, #QuoteNode
+            :query_buffer
+          )), "é"),
+      (:line, 357, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :update_display_buffer
+          )), :ss, :ss),
+      (:line, 358, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :position, (:., :ss, (:quote, #QuoteNode
+                :query_buffer
+              ))), (:call, :sizeof, "é"))),
+      (:line, 359, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :history_next_result
+          )), :s, :ss),
+      (:line, 360, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :update_display_buffer
+          )), :ss, :ss),
+      (:line, 361, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :accept_result
+          )), :s, :histp),
+      (:line, 362, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :buffercontents, (:call, (:., :LineEdit, (:quote, #QuoteNode
+                  :buffer
+                )), :s)), "éé")),
+      (:line, 363, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :position, (:call, (:., :LineEdit, (:quote, #QuoteNode
+                  :buffer
+                )), :s)), 0)),
+      (:line, 367, :none),
+      (:call, (:., :REPL, (:quote, #QuoteNode
+            :history_reset_state
+          )), :hp),
+      (:line, 368, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :edit_clear
+          )), :s),
+      (:line, 369, :none),
+      (:(=), :cur_mode, (:call, (:., :LineEdit, (:quote, #QuoteNode
+              :mode
+            )), :s)),
+      (:line, 370, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :enter_search
+          )), :s, :histp, true),
+      (:line, 371, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :accept_result
+          )), :s, :histp),
+      (:line, 372, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LineEdit, (:quote, #QuoteNode
+                :mode
+              )), :s), :cur_mode)),
+      (:line, 373, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :buffercontents, (:call, (:., :LineEdit, (:quote, #QuoteNode
+                  :buffer
+                )), :s)), "")),
+      (:line, 374, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :position, (:call, (:., :LineEdit, (:quote, #QuoteNode
+                  :buffer
+                )), :s)), 0)),
+      (:line, 378, :none),
+      (:(=), (:tuple, :foobar_mode, :custom_histp), (:call, :AddCustomMode, :repl)),
+      (:line, 381, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :enter_search
+          )), :s, :histp, true),
+      (:line, 382, :none),
+      (:(=), :ss, (:call, (:., :LineEdit, (:quote, #QuoteNode
+              :state
+            )), :s, :histp)),
+      (:line, 383, :none),
+      (:call, :write, (:., :ss, (:quote, #QuoteNode
+            :query_buffer
+          )), "l"),
+      (:line, 384, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :update_display_buffer
+          )), :ss, :ss),
+      (:line, 385, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :accept_result
+          )), :s, :histp),
+      (:line, 386, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LineEdit, (:quote, #QuoteNode
+                :mode
+              )), :s), :foobar_mode)),
+      (:line, 387, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :buffercontents, (:call, (:., :LineEdit, (:quote, #QuoteNode
+                  :buffer
+                )), :s)), "ls")),
+      (:line, 388, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :position, (:call, (:., :LineEdit, (:quote, #QuoteNode
+                  :buffer
+                )), :s)), 0)),
+      (:line, 391, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :history_next
+          )), :s, :hp),
+      (:line, 392, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :history_prev_prefix
+          )), :ps, :hp, "l"),
+      (:line, 393, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:., :ps, (:quote, #QuoteNode
+              :parent
+            )), :foobar_mode)),
+      (:line, 394, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LineEdit, (:quote, #QuoteNode
+                :input_string
+              )), :ps), "ls")),
+      (:line, 395, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :position, (:call, (:., :LineEdit, (:quote, #QuoteNode
+                  :buffer
+                )), :s)), 1)),
+      (:line, 398, :none),
+      (:call, (:., :LineEdit, (:quote, #QuoteNode
+            :enter_search
+          )), :s, :custom_histp, true)
+    ),
+    (:line, 401, :none),
+    (:if, (:||, (:call, :!, (:call, :is_windows)), (:call, :(>=), (:call, (:., :Sys, (:quote, #QuoteNode
+                :windows_version
+              ))), (:., :Sys, (:quote, #QuoteNode
+              :WINDOWS_VISTA_VER
+            )))), (:block,
+        (:line, 402, :none),
+        (:(=), (:tuple, :stdin_write, :stdout_read, :stdout_read, :repl), (:call, :fake_repl)),
+        (:line, 403, :none),
+        (:(=), :panel, (:call, (:., :LineEdit, (:quote, #QuoteNode
+                :Prompt
+              )), (:parameters, (:kw, :prompt_prefix, "\e[38;5;166m"), (:kw, :prompt_suffix, (:ref, (:., :Base, (:quote, #QuoteNode
+                      :text_colors
+                    )), (:quote, #QuoteNode
+                    :white
+                  ))), (:kw, :on_enter, (:->, :s, (:block,
+                    (:line, 406, :none),
+                    true
+                  )))), "testπ")),
+        (:line, 408, :none),
+        (:(=), :hp, (:call, (:., :REPL, (:quote, #QuoteNode
+                :REPLHistoryProvider
+              )), (:call, (:curly, :Dict, :Symbol, :Any), (:(=>), (:quote, #QuoteNode
+                  :parse
+                ), :panel)))),
+        (:line, 409, :none),
+        (:(=), (:tuple, :search_prompt, :skeymap), (:call, (:., :LineEdit, (:quote, #QuoteNode
+                :setup_prefix_keymap
+              )), :hp, :panel)),
+        (:line, 410, :none),
+        (:call, (:., :REPL, (:quote, #QuoteNode
+              :history_reset_state
+            )), :hp),
+        (:line, 412, :none),
+        (:(=), (:., :panel, (:quote, #QuoteNode
+              :hist
+            )), :hp),
+        (:line, 413, :none),
+        (:(=), (:., :panel, (:quote, #QuoteNode
+              :keymap_dict
+            )), (:call, (:., :LineEdit, (:quote, #QuoteNode
+                :keymap
+              )), (:ref, (:curly, :Dict, :Any, :Any), :skeymap, (:., :LineEdit, (:quote, #QuoteNode
+                  :default_keymap
+                )), (:., :LineEdit, (:quote, #QuoteNode
+                  :escape_defaults
+                ))))),
+        (:line, 416, :none),
+        (:(=), :c, (:call, :Condition)),
+        (:line, 417, :none),
+        (:(=), (:., :panel, (:quote, #QuoteNode
+              :on_done
+            )), (:->, (:tuple, :s, :buf, :ok), (:block,
+              (:line, 417, :none),
+              (:block,
+                (:line, 418, :none),
+                (:if, (:call, :!, :ok), (:block,
+                    (:line, 419, :none),
+                    (:call, (:., :LineEdit, (:quote, #QuoteNode
+                          :transition
+                        )), :s, (:quote, #QuoteNode
+                        :abort
+                      ))
+                  )),
+                (:line, 421, :none),
+                (:(=), :line, (:call, :strip, (:call, :takebuf_string, :buf))),
+                (:line, 422, :none),
+                (:call, (:., :LineEdit, (:quote, #QuoteNode
+                      :reset_state
+                    )), :s),
+                (:line, 423, :none),
+                (:return, (:call, :notify, :c, :line))
+              )
+            ))),
+        (:line, 426, :none),
+        (:(=), :repltask, (:macrocall, Symbol("@async"), (:call, (:., (:., :Base, (:quote, #QuoteNode
+                    :REPL
+                  )), (:quote, #QuoteNode
+                  :run_interface
+                )), (:., :repl, (:quote, #QuoteNode
+                  :t
+                )), (:call, (:., :LineEdit, (:quote, #QuoteNode
+                    :ModalInterface
+                  )), (:vect, :panel, :search_prompt))))),
+        (:line, 428, :none),
+        (:call, :write, :stdin_write, "a\n"),
+        (:line, 429, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :wait, :c), "a")),
+        (:line, 431, :none),
+        (:call, :write, :stdin_write, "\e[A\n"),
+        (:line, 432, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :wait, :c), "a")),
+        (:line, 434, :none),
+        (:call, :write, :stdin_write, "\e[A\n"),
+        (:line, 435, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :wait, :c), "a")),
+        (:line, 437, :none),
+        (:call, :write, :stdin_write, '\x04'),
+        (:line, 438, :none),
+        (:call, :wait, :repltask)
+      )),
+    (:line, 441, :none),
+    (:ccall, (:quote, #QuoteNode
+        :jl_exit_on_sigint
+      ), :Void, (:tuple, :Cint), 1),
+    (:line, 443, :none),
+    (:let, (:block,
+        (:line, 446, :none),
+        (:if, (:call, :!, (:call, :is_windows)), (:block,
+            (:line, 447, :none),
+            (:call, (:., :TestHelpers, (:quote, #QuoteNode
+                  :with_fake_pty
+                )), (:->, (:tuple, :slave, :master), (:block,
+                  (:line, 449, :none),
+                  (:(=), :nENV, (:call, :copy, :ENV)),
+                  (:line, 450, :none),
+                  (:(=), (:ref, :nENV, "TERM"), "dumb"),
+                  (:line, 451, :none),
+                  (:(=), :p, (:call, :spawn, (:call, :setenv, (:macrocall, Symbol("@cmd"), "\$exename --startup-file=no --quiet"), :nENV), :slave, :slave, :slave)),
+                  (:line, 452, :none),
+                  (:(=), :output, (:call, :readuntil, :master, "julia> ")),
+                  (:line, 453, :none),
+                  (:if, (:call, :(==), (:ccall, (:quote, #QuoteNode
+                          :jl_running_on_valgrind
+                        ), :Cint, (:tuple,)), 0), (:block,
+                      (:line, 456, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), :output, "julia> "))
+                    )),
+                  (:line, 458, :none),
+                  (:call, :write, :master, "1\nquit()\n"),
+                  (:line, 460, :none),
+                  (:call, :wait, :p),
+                  (:line, 461, :none),
+                  (:(=), :output, (:call, :readuntil, :master, ' ')),
+                  (:line, 462, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), :output, "1\r\nquit()\r\n1\r\n\r\njulia> ")),
+                  (:line, 463, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), (:call, :nb_available, :master), 0))
+                )))
+          )),
+        (:line, 469, :none),
+        (:if, (:||, (:call, :!, (:call, :is_windows)), (:call, :(>=), (:call, (:., :Sys, (:quote, #QuoteNode
+                    :windows_version
+                  ))), (:., :Sys, (:quote, #QuoteNode
+                  :WINDOWS_VISTA_VER
+                )))), (:block,
+            (:line, 470, :none),
+            (:(=), (:tuple, :outs, :ins, :p), (:call, :readandwrite, (:macrocall, Symbol("@cmd"), "\$exename --startup-file=no --quiet"))),
+            (:line, 471, :none),
+            (:call, :write, :ins, "1\nquit()\n"),
+            (:line, 472, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:call, :readstring, :outs), "1\n"))
+          ))
+      ), (:(=), :exename, (:call, (:., :Base, (:quote, #QuoteNode
+              :julia_cmd
+            )))))
+  ))

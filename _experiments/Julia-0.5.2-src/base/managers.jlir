@@ -1,0 +1,607 @@
+(:quote, (:block,
+    (:line, 5, :none),
+    (:type, false, (:<:, :SSHManager, :ClusterManager), (:block,
+        (:line, 6, :none),
+        (:(::), :machines, :Dict),
+        (:line, 8, :none),
+        (:function, (:call, :SSHManager, :machines), (:block,
+            (:line, 15, :none),
+            (:(=), :mhist, (:call, :Dict)),
+            (:line, 16, :none),
+            (:for, (:(=), :m, :machines), (:block,
+                (:line, 17, :none),
+                (:if, (:call, :isa, :m, :Tuple), (:block,
+                    (:line, 18, :none),
+                    (:(=), :host, (:ref, :m, 1)),
+                    (:line, 19, :none),
+                    (:(=), :cnt, (:ref, :m, 2))
+                  ), (:block,
+                    (:line, 21, :none),
+                    (:(=), :host, :m),
+                    (:line, 22, :none),
+                    (:(=), :cnt, 1)
+                  )),
+                (:line, 24, :none),
+                (:(=), :current_cnt, (:call, :get, :mhist, :host, 0)),
+                (:line, 26, :none),
+                (:if, (:call, :isa, :cnt, :Number), (:block,
+                    (:line, 27, :none),
+                    (:(=), (:ref, :mhist, :host), (:if, (:call, :isa, :current_cnt, :Number), (:call, :+, :current_cnt, (:call, :Int, :cnt)), (:call, :Int, :cnt)))
+                  ), (:block,
+                    (:line, 29, :none),
+                    (:(=), (:ref, :mhist, :host), :cnt)
+                  ))
+              )),
+            (:line, 32, :none),
+            (:call, :new, :mhist)
+          ))
+      )),
+    (:line, 37, :none),
+    (:function, (:call, :check_addprocs_args, :kwargs), (:block,
+        (:line, 38, :none),
+        (:(=), :valid_kw_names, (:call, :collect, (:call, :keys, (:call, :default_addprocs_params)))),
+        (:line, 39, :none),
+        (:for, (:(=), :keyname, :kwargs), (:block,
+            (:line, 40, :none),
+            (:&&, (:call, :!, (:call, :in, (:ref, :keyname, 1), :valid_kw_names)), (:call, :throw, (:call, :ArgumentError, (:string, "Invalid keyword argument ", (:ref, :keyname, 1)))))
+          ))
+      )),
+    (:line, 51, :none),
+    "    addprocs(machines; tunnel=false, sshflags=``, max_parallel=10, kwargs...) -> List of process identifiers\n\nAdd processes on remote machines via SSH. Requires `julia` to be installed in the same\nlocation on each node, or to be available via a shared file system.\n\n`machines` is a vector of machine specifications. Workers are started for each specification.\n\nA machine specification is either a string `machine_spec` or a tuple - `(machine_spec, count)`.\n\n`machine_spec` is a string of the form `[user@]host[:port] [bind_addr[:port]]`. `user` defaults\nto current user, `port` to the standard ssh port. If `[bind_addr[:port]]` is specified, other\nworkers will connect to this worker at the specified `bind_addr` and `port`.\n\n`count` is the number of workers to be launched on the specified host. If specified as `:auto`\nit will launch as many workers as the number of cores on the specific host.\n\nKeyword arguments:\n\n* `tunnel`: if `true` then SSH tunneling will be used to connect to the worker from the\n            master process. Default is `false`.\n\n* `sshflags`: specifies additional ssh options, e.g.\n  ```sshflags=`-i /home/foo/bar.pem` ```\n\n* `max_parallel`: specifies the maximum number of workers connected to in parallel at a host.\n                  Defaults to 10.\n\n* `dir`: specifies the working directory on the workers. Defaults to the host's current\n         directory (as found by `pwd()`)\n\n* `exename`: name of the `julia` executable. Defaults to `\"\$JULIA_HOME/julia\"` or\n             `\"\$JULIA_HOME/julia-debug\"` as the case may be.\n\n* `exeflags`: additional flags passed to the worker processes.\n\n* `topology`: Specifies how the workers connect to each other. Sending a message\n            between unconnected workers results in an error.\n\n  + `topology=:all_to_all`  :  All processes are connected to each other.\n                      This is the default.\n\n  + `topology=:master_slave`  :  Only the driver process, i.e. `pid` 1 connects to the\n                        workers. The workers do not connect to each other.\n\n  + `topology=:custom`  :  The `launch` method of the cluster manager specifies the\n                  connection topology via fields `ident` and `connect_idents` in\n                  `WorkerConfig`. A worker with a cluster manager identity `ident`\n                  will connect to all workers specified in `connect_idents`.\n\n\nEnvironment variables :\n\nIf the master process fails to establish a connection with a newly launched worker within\n60.0 seconds, the worker treats it as a fatal situation and terminates.\nThis timeout can be controlled via environment variable `JULIA_WORKER_TIMEOUT`.\nThe value of `JULIA_WORKER_TIMEOUT` on the master process specifies the number of seconds a\nnewly launched worker waits for connection establishment.\n",
+    (:line, 110, :none),
+    (:function, (:call, :addprocs, (:parameters, (:kw, :tunnel, false), (:kw, :sshflags, (:macrocall, Symbol("@cmd"), "")), (:kw, :max_parallel, 10), (:..., :kwargs)), (:(::), :machines, :AbstractVector)), (:block,
+        (:line, 111, :none),
+        (:call, :check_addprocs_args, :kwargs),
+        (:line, 112, :none),
+        (:call, :addprocs, (:parameters, (:kw, :tunnel, :tunnel), (:kw, :sshflags, :sshflags), (:kw, :max_parallel, :max_parallel), (:..., :kwargs)), (:call, :SSHManager, :machines))
+      )),
+    (:line, 116, :none),
+    (:function, (:call, :launch, (:(::), :manager, :SSHManager), (:(::), :params, :Dict), (:(::), :launched, :Array), (:(::), :launch_ntfy, :Condition)), (:block,
+        (:line, 119, :none),
+        (:(=), :launch_tasks, (:call, (:curly, :Vector, :Any), (:call, :length, (:., :manager, (:quote, #QuoteNode
+                  :machines
+                ))))),
+        (:line, 121, :none),
+        (:for, (:(=), (:tuple, :i, (:tuple, :machine, :cnt)), (:call, :enumerate, (:., :manager, (:quote, #QuoteNode
+                  :machines
+                )))), (:block,
+            (:line, 122, :none),
+            (:let, (:block,
+                (:line, 123, :none),
+                (:(=), (:ref, :launch_tasks, :i), (:macrocall, Symbol("@schedule"), (:try, (:block,
+                        (:line, 124, :none),
+                        (:call, :launch_on_machine, :manager, :machine, :cnt, :params, :launched, :launch_ntfy)
+                      ), :e, (:block,
+                        (:line, 126, :none),
+                        (:call, :print, :STDERR, (:string, "exception launching on machine ", :machine, " : ", :e, "\n"))
+                      ))))
+              ), (:(=), :machine, :machine), (:(=), :cnt, :cnt))
+          )),
+        (:line, 131, :none),
+        (:for, (:(=), :t, :launch_tasks), (:block,
+            (:line, 132, :none),
+            (:call, :wait, :t)
+          )),
+        (:line, 135, :none),
+        (:call, :notify, :launch_ntfy)
+      )),
+    (:line, 139, :none),
+    (:(=), (:call, :show, (:(::), :io, :IO), (:(::), :manager, :SSHManager)), (:block,
+        (:line, 139, :none),
+        (:call, :println, :io, "SSHManager(machines=", (:., :manager, (:quote, #QuoteNode
+              :machines
+            )), ")")
+      )),
+    (:line, 142, :none),
+    (:function, (:call, :launch_on_machine, (:(::), :manager, :SSHManager), :machine, :cnt, :params, :launched, (:(::), :launch_ntfy, :Condition)), (:block,
+        (:line, 143, :none),
+        (:(=), :dir, (:ref, :params, (:quote, #QuoteNode
+              :dir
+            ))),
+        (:line, 144, :none),
+        (:(=), :exename, (:ref, :params, (:quote, #QuoteNode
+              :exename
+            ))),
+        (:line, 145, :none),
+        (:(=), :exeflags, (:ref, :params, (:quote, #QuoteNode
+              :exeflags
+            ))),
+        (:line, 149, :none),
+        (:(=), :machine_bind, (:call, :split, :machine)),
+        (:line, 150, :none),
+        (:if, (:call, :isempty, :machine_bind), (:block,
+            (:line, 151, :none),
+            (:call, :throw, (:call, :ArgumentError, (:string, "invalid machine definition format string: \"", :machine, "\$")))
+          )),
+        (:line, 153, :none),
+        (:if, (:call, :>, (:call, :length, :machine_bind), 1), (:block,
+            (:line, 154, :none),
+            (:(=), :exeflags, (:macrocall, Symbol("@cmd"), "--bind-to \$(machine_bind[2]) \$exeflags"))
+          )),
+        (:line, 156, :none),
+        (:(=), :exeflags, (:macrocall, Symbol("@cmd"), "\$exeflags --worker \$(cluster_cookie())")),
+        (:line, 158, :none),
+        (:(=), :machine_def, (:call, :split, (:ref, :machine_bind, 1), ':')),
+        (:line, 160, :none),
+        (:if, (:call, :>, (:call, :length, :machine_def), 2), (:block,
+            (:line, 161, :none),
+            (:call, :throw, (:call, :ArgumentError, (:string, "invalid machine definition format string: invalid port format \"", :machine_def, "\"")))
+          )),
+        (:line, 163, :none),
+        (:(=), :host, (:ref, :machine_def, 1)),
+        (:line, 164, :none),
+        (:(=), :portopt, (:macrocall, Symbol("@cmd"), "")),
+        (:line, 165, :none),
+        (:if, (:call, :(==), (:call, :length, :machine_def), 2), (:block,
+            (:line, 166, :none),
+            (:(=), :portstr, (:ref, :machine_def, 2)),
+            (:line, 167, :none),
+            (:if, (:||, (:call, :!, (:call, :isinteger, :portstr)), (:block,
+                  (:(=), :p, (:call, :parse, :Int, :portstr)),
+                  (:||, (:call, :<, :p, 1), (:call, :>, :p, 65535))
+                )), (:block,
+                (:line, 168, :none),
+                (:(=), :msg, (:string, "invalid machine definition format string: invalid port format \"", :machine_def, "\"")),
+                (:line, 169, :none),
+                (:call, :throw, (:call, :ArgumentError, :msg))
+              )),
+            (:line, 171, :none),
+            (:(=), :portopt, (:macrocall, Symbol("@cmd"), " -p \$(machine_def[2]) "))
+          )),
+        (:line, 173, :none),
+        (:(=), :sshflags, (:macrocall, Symbol("@cmd"), "\$(params[:sshflags]) \$portopt")),
+        (:line, 178, :none),
+        (:(=), :tval, (:if, (:call, :haskey, :ENV, "JULIA_WORKER_TIMEOUT"), (:macrocall, Symbol("@cmd"), "export JULIA_WORKER_TIMEOUT=\$(ENV[\"JULIA_WORKER_TIMEOUT\"]);"), (:macrocall, Symbol("@cmd"), ""))),
+        (:line, 182, :none),
+        (:(=), :cmd, (:macrocall, Symbol("@cmd"), "cd \$dir && \$tval \$exename \$exeflags")),
+        (:line, 185, :none),
+        (:(=), :cmd, (:macrocall, Symbol("@cmd"), "sh -l -c \$(shell_escape(cmd))")),
+        (:line, 195, :none),
+        (:(=), :cmd, (:macrocall, Symbol("@cmd"), "ssh -T -a -x -o ClearAllForwardings=yes -n \$sshflags \$host \$(shell_escape(cmd))")),
+        (:line, 202, :none),
+        (:(=), (:tuple, :io, :pobj), (:call, :open, (:call, :pipeline, (:call, :detach, :cmd), (:kw, :stderr, :STDERR)), "r")),
+        (:line, 204, :none),
+        (:(=), :wconfig, (:call, :WorkerConfig)),
+        (:line, 205, :none),
+        (:(=), (:., :wconfig, (:quote, #QuoteNode
+              :io
+            )), :io),
+        (:line, 206, :none),
+        (:(=), (:., :wconfig, (:quote, #QuoteNode
+              :host
+            )), :host),
+        (:line, 207, :none),
+        (:(=), (:., :wconfig, (:quote, #QuoteNode
+              :tunnel
+            )), (:ref, :params, (:quote, #QuoteNode
+              :tunnel
+            ))),
+        (:line, 208, :none),
+        (:(=), (:., :wconfig, (:quote, #QuoteNode
+              :sshflags
+            )), :sshflags),
+        (:line, 209, :none),
+        (:(=), (:., :wconfig, (:quote, #QuoteNode
+              :exeflags
+            )), :exeflags),
+        (:line, 210, :none),
+        (:(=), (:., :wconfig, (:quote, #QuoteNode
+              :exename
+            )), :exename),
+        (:line, 211, :none),
+        (:(=), (:., :wconfig, (:quote, #QuoteNode
+              :count
+            )), :cnt),
+        (:line, 212, :none),
+        (:(=), (:., :wconfig, (:quote, #QuoteNode
+              :max_parallel
+            )), (:ref, :params, (:quote, #QuoteNode
+              :max_parallel
+            ))),
+        (:line, 214, :none),
+        (:call, :push!, :launched, :wconfig),
+        (:line, 215, :none),
+        (:call, :notify, :launch_ntfy)
+      )),
+    (:line, 219, :none),
+    (:function, (:call, :manage, (:(::), :manager, :SSHManager), (:(::), :id, :Integer), (:(::), :config, :WorkerConfig), (:(::), :op, :Symbol)), (:block,
+        (:line, 220, :none),
+        (:if, (:call, :(==), :op, (:quote, #QuoteNode
+              :interrupt
+            )), (:block,
+            (:line, 221, :none),
+            (:(=), :ospid, (:call, :get, (:., :config, (:quote, #QuoteNode
+                    :ospid
+                  )), 0)),
+            (:line, 222, :none),
+            (:if, (:call, :>, :ospid, 0), (:block,
+                (:line, 223, :none),
+                (:(=), :host, (:call, :get, (:., :config, (:quote, #QuoteNode
+                        :host
+                      )))),
+                (:line, 224, :none),
+                (:(=), :sshflags, (:call, :get, (:., :config, (:quote, #QuoteNode
+                        :sshflags
+                      )))),
+                (:line, 225, :none),
+                (:if, (:call, :!, (:call, :success, (:macrocall, Symbol("@cmd"), "ssh -T -a -x -o ClearAllForwardings=yes -n \$sshflags \$host \"kill -2 \$ospid\""))), (:block,
+                    (:line, 226, :none),
+                    (:call, :warn, :STDERR, (:string, "error sending a Ctrl-C to julia worker ", :id, " on ", :host))
+                  ))
+              ), (:block,
+                (:line, 230, :none),
+                (:call, :warn, :STDERR, (:string, "worker ", :id, " cannot be presently interrupted."))
+              ))
+          ))
+      )),
+    (:line, 235, :none),
+    (:let, (:block,
+        (:line, 236, :none),
+        (:global, :next_tunnel_port),
+        (:line, 237, :none),
+        (:function, (:call, :next_tunnel_port), (:block,
+            (:line, 238, :none),
+            (:(=), :retval, :tunnel_port),
+            (:line, 239, :none),
+            (:if, (:call, :>, :tunnel_port, 32000), (:block,
+                (:line, 240, :none),
+                (:(=), :tunnel_port, 9201)
+              ), (:block,
+                (:line, 242, :none),
+                (:+=, :tunnel_port, 1)
+              )),
+            (:line, 244, :none),
+            :retval
+          ))
+      ), (:(=), :tunnel_port, 9201)),
+    (:line, 249, :none),
+    "    ssh_tunnel(user, host, bind_addr, port, sshflags) -> localport\n\nEstablish an SSH tunnel to a remote worker.\nReturns a port number `localport` such that `localhost:localport` connects to `host:port`.\n",
+    (:line, 255, :none),
+    (:function, (:call, :ssh_tunnel, :user, :host, :bind_addr, :port, :sshflags), (:block,
+        (:line, 256, :none),
+        (:(=), :port, (:call, :Int, :port)),
+        (:line, 257, :none),
+        (:(=), :cnt, 100),
+        (:line, 258, :none),
+        (:(=), :localport, (:call, :next_tunnel_port)),
+        (:line, 266, :none),
+        (:(=), :ssh, (:macrocall, Symbol("@cmd"), "ssh -T -a -x -o ExitOnForwardFailure=yes")),
+        (:line, 267, :none),
+        (:while, (:&&, (:call, :!, (:call, :success, (:call, :detach, (:macrocall, Symbol("@cmd"), "\$ssh -f \$sshflags \$user@\$host -L \$localport:\$bind_addr:\$port sleep 60")))), (:call, :>, :cnt, 0)), (:block,
+            (:line, 268, :none),
+            (:(=), :localport, (:call, :next_tunnel_port)),
+            (:line, 269, :none),
+            (:-=, :cnt, 1)
+          )),
+        (:line, 271, :none),
+        (:if, (:call, :(==), :cnt, 0), (:block,
+            (:line, 272, :none),
+            (:call, :throw, (:call, :ErrorException, (:string, "unable to create SSH tunnel after ", :cnt, " tries. No free port?")))
+          )),
+        (:line, 275, :none),
+        (:return, :localport)
+      )),
+    (:line, 280, :none),
+    (:type, false, (:<:, :LocalManager, :ClusterManager), (:block,
+        (:line, 281, :none),
+        (:(::), :np, :Integer),
+        (:line, 282, :none),
+        (:(::), :restrict, :Bool)
+      )),
+    (:line, 285, :none),
+    "    addprocs(; kwargs...) -> List of process identifiers\n\nEquivalent to `addprocs(Sys.CPU_CORES; kwargs...)`\n\nNote that workers do not run a `.juliarc.jl` startup script, nor do they synchronize their\nglobal state (such as global variables, new method definitions, and loaded modules) with any\nof the other running processes.\n",
+    (:line, 294, :none),
+    (:(=), (:call, :addprocs, (:parameters, (:..., :kwargs))), (:block,
+        (:line, 294, :none),
+        (:call, :addprocs, (:parameters, (:..., :kwargs)), (:., :Sys, (:quote, #QuoteNode
+              :CPU_CORES
+            )))
+      )),
+    (:line, 296, :none),
+    "    addprocs(np::Integer; restrict=true, kwargs...) -> List of process identifiers\n\nLaunches workers using the in-built `LocalManager` which only launches workers on the\nlocal host. This can be used to take advantage of multiple cores. `addprocs(4)` will add 4\nprocesses on the local machine. If `restrict` is `true`, binding is restricted to\n`127.0.0.1`.\n",
+    (:line, 304, :none),
+    (:function, (:call, :addprocs, (:parameters, (:kw, :restrict, true), (:..., :kwargs)), (:(::), :np, :Integer)), (:block,
+        (:line, 305, :none),
+        (:call, :check_addprocs_args, :kwargs),
+        (:line, 306, :none),
+        (:call, :addprocs, (:parameters, (:..., :kwargs)), (:call, :LocalManager, :np, :restrict))
+      )),
+    (:line, 309, :none),
+    (:(=), (:call, :show, (:(::), :io, :IO), (:(::), :manager, :LocalManager)), (:block,
+        (:line, 309, :none),
+        (:call, :println, :io, "LocalManager()")
+      )),
+    (:line, 311, :none),
+    (:function, (:call, :launch, (:(::), :manager, :LocalManager), (:(::), :params, :Dict), (:(::), :launched, :Array), (:(::), :c, :Condition)), (:block,
+        (:line, 312, :none),
+        (:(=), :dir, (:ref, :params, (:quote, #QuoteNode
+              :dir
+            ))),
+        (:line, 313, :none),
+        (:(=), :exename, (:ref, :params, (:quote, #QuoteNode
+              :exename
+            ))),
+        (:line, 314, :none),
+        (:(=), :exeflags, (:ref, :params, (:quote, #QuoteNode
+              :exeflags
+            ))),
+        (:line, 315, :none),
+        (:(=), :bind_to, (:if, (:., :manager, (:quote, #QuoteNode
+                :restrict
+              )), (:macrocall, Symbol("@cmd"), "127.0.0.1"), (:macrocall, Symbol("@cmd"), "\$(LPROC.bind_addr)"))),
+        (:line, 317, :none),
+        (:for, (:(=), :i, (:(:), 1, (:., :manager, (:quote, #QuoteNode
+                  :np
+                )))), (:block,
+            (:line, 318, :none),
+            (:(=), (:tuple, :io, :pobj), (:call, :open, (:call, :pipeline, (:call, :detach, (:call, :setenv, (:macrocall, Symbol("@cmd"), "\$(julia_cmd(exename)) \$exeflags --bind-to \$bind_to --worker \$(cluster_cookie())"), (:kw, :dir, :dir))), (:kw, :stderr, :STDERR)), "r")),
+            (:line, 321, :none),
+            (:(=), :wconfig, (:call, :WorkerConfig)),
+            (:line, 322, :none),
+            (:(=), (:., :wconfig, (:quote, #QuoteNode
+                  :process
+                )), :pobj),
+            (:line, 323, :none),
+            (:(=), (:., :wconfig, (:quote, #QuoteNode
+                  :io
+                )), :io),
+            (:line, 324, :none),
+            (:call, :push!, :launched, :wconfig)
+          )),
+        (:line, 327, :none),
+        (:call, :notify, :c)
+      )),
+    (:line, 330, :none),
+    (:function, (:call, :manage, (:(::), :manager, :LocalManager), (:(::), :id, :Integer), (:(::), :config, :WorkerConfig), (:(::), :op, :Symbol)), (:block,
+        (:line, 331, :none),
+        (:if, (:call, :(==), :op, (:quote, #QuoteNode
+              :interrupt
+            )), (:block,
+            (:line, 332, :none),
+            (:call, :kill, (:call, :get, (:., :config, (:quote, #QuoteNode
+                    :process
+                  ))), 2)
+          ))
+      )),
+    (:line, 336, :none),
+    "    launch(manager::ClusterManager, params::Dict, launched::Array, launch_ntfy::Condition)\n\nImplemented by cluster managers. For every Julia worker launched by this function, it should\nappend a `WorkerConfig` entry to `launched` and notify `launch_ntfy`. The function MUST exit\nonce all workers, requested by `manager` have been launched. `params` is a dictionary of all\nkeyword arguments `addprocs` was called with.\n",
+    (:line, 344, :none),
+    :launch,
+    (:line, 346, :none),
+    "    manage(manager::ClusterManager, id::Integer, config::WorkerConfig. op::Symbol)\n\nImplemented by cluster managers. It is called on the master process, during a worker's\nlifetime, with appropriate `op` values:\n\n- with `:register`/`:deregister` when a worker is added / removed from the Julia worker pool.\n- with `:interrupt` when `interrupt(workers)` is called. The [`ClusterManager`](:class:`ClusterManager`)\n  should signal the appropriate worker with an interrupt signal.\n- with `:finalize` for cleanup purposes.\n",
+    (:line, 357, :none),
+    :manage,
+    (:line, 361, :none),
+    (:type, false, (:<:, :DefaultClusterManager, :ClusterManager), (:block,
+        (:line, 362, :none)
+      )),
+    (:line, 364, :none),
+    (:const, (:(=), :tunnel_hosts_map, (:call, (:curly, :Dict, :AbstractString, :Semaphore)))),
+    (:line, 366, :none),
+    "    connect(manager::ClusterManager, pid::Int, config::WorkerConfig) -> (instrm::IO, outstrm::IO)\n\nImplemented by cluster managers using custom transports. It should establish a logical\nconnection to worker with id `pid`, specified by `config` and return a pair of `IO`\nobjects. Messages from `pid` to current process will be read off `instrm`, while messages to\nbe sent to `pid` will be written to `outstrm`. The custom transport implementation must\nensure that messages are delivered and received completely and in order.\n`Base.connect(manager::ClusterManager.....)` sets up TCP/IP socket connections in-between\nworkers.\n",
+    (:line, 377, :none),
+    (:function, (:call, :connect, (:(::), :manager, :ClusterManager), (:(::), :pid, :Int), (:(::), :config, :WorkerConfig)), (:block,
+        (:line, 378, :none),
+        (:if, (:call, :!, (:call, :isnull, (:., :config, (:quote, #QuoteNode
+                  :connect_at
+                )))), (:block,
+            (:line, 380, :none),
+            (:return, (:call, :connect_w2w, :pid, :config))
+          )),
+        (:line, 384, :none),
+        (:if, (:call, :!, (:call, :isnull, (:., :config, (:quote, #QuoteNode
+                  :io
+                )))), (:block,
+            (:line, 385, :none),
+            (:(=), (:tuple, :bind_addr, :port), (:call, :read_worker_host_port, (:call, :get, (:., :config, (:quote, #QuoteNode
+                      :io
+                    ))))),
+            (:line, 386, :none),
+            (:(=), :pubhost, (:call, :get, (:., :config, (:quote, #QuoteNode
+                    :host
+                  )), :bind_addr)),
+            (:line, 387, :none),
+            (:(=), (:., :config, (:quote, #QuoteNode
+                  :host
+                )), :pubhost),
+            (:line, 388, :none),
+            (:(=), (:., :config, (:quote, #QuoteNode
+                  :port
+                )), :port)
+          ), (:block,
+            (:line, 390, :none),
+            (:(=), :pubhost, (:call, :get, (:., :config, (:quote, #QuoteNode
+                    :host
+                  )))),
+            (:line, 391, :none),
+            (:(=), :port, (:call, :get, (:., :config, (:quote, #QuoteNode
+                    :port
+                  )))),
+            (:line, 392, :none),
+            (:(=), :bind_addr, (:call, :get, (:., :config, (:quote, #QuoteNode
+                    :bind_addr
+                  )), :pubhost))
+          )),
+        (:line, 395, :none),
+        (:(=), :tunnel, (:call, :get, (:., :config, (:quote, #QuoteNode
+                :tunnel
+              )), false)),
+        (:line, 397, :none),
+        (:(=), :s, (:call, :split, :pubhost, '@')),
+        (:line, 398, :none),
+        (:(=), :user, ""),
+        (:line, 399, :none),
+        (:if, (:call, :>, (:call, :length, :s), 1), (:block,
+            (:line, 400, :none),
+            (:(=), :user, (:ref, :s, 1)),
+            (:line, 401, :none),
+            (:(=), :pubhost, (:ref, :s, 2))
+          ), (:block,
+            (:line, 403, :none),
+            (:if, (:call, :haskey, :ENV, "USER"), (:block,
+                (:line, 404, :none),
+                (:(=), :user, (:ref, :ENV, "USER"))
+              ), (:block,
+                (:line, 405, :none),
+                (:if, :tunnel, (:block,
+                    (:line, 406, :none),
+                    (:call, :error, "USER must be specified either in the environment ", "or as part of the hostname when tunnel option is used")
+                  ))
+              ))
+          )),
+        (:line, 411, :none),
+        (:if, :tunnel, (:block,
+            (:line, 412, :none),
+            (:if, (:call, :!, (:call, :haskey, :tunnel_hosts_map, :pubhost)), (:block,
+                (:line, 413, :none),
+                (:(=), (:ref, :tunnel_hosts_map, :pubhost), (:call, :Semaphore, (:call, :get, (:., :config, (:quote, #QuoteNode
+                          :max_parallel
+                        )), (:call, :typemax, :Int))))
+              )),
+            (:line, 415, :none),
+            (:(=), :sem, (:ref, :tunnel_hosts_map, :pubhost)),
+            (:line, 417, :none),
+            (:(=), :sshflags, (:call, :get, (:., :config, (:quote, #QuoteNode
+                    :sshflags
+                  )))),
+            (:line, 418, :none),
+            (:call, :acquire, :sem),
+            (:line, 419, :none),
+            (:try, (:block,
+                (:line, 420, :none),
+                (:(=), (:tuple, :s, :bind_addr), (:call, :connect_to_worker, :pubhost, :bind_addr, :port, :user, :sshflags))
+              ), false, false, (:block,
+                (:line, 422, :none),
+                (:call, :release, :sem)
+              ))
+          ), (:block,
+            (:line, 425, :none),
+            (:(=), (:tuple, :s, :bind_addr), (:call, :connect_to_worker, :bind_addr, :port))
+          )),
+        (:line, 428, :none),
+        (:(=), (:., :config, (:quote, #QuoteNode
+              :bind_addr
+            )), :bind_addr),
+        (:line, 431, :none),
+        (:(=), (:., :config, (:quote, #QuoteNode
+              :connect_at
+            )), (:tuple, :bind_addr, :port)),
+        (:line, 433, :none),
+        (:if, (:call, :!, (:call, :isnull, (:., :config, (:quote, #QuoteNode
+                  :io
+                )))), (:block,
+            (:line, 434, :none),
+            (:let, (:block,
+                (:line, 435, :none),
+                (:call, :redirect_worker_output, :pid, (:call, :get, (:., :config, (:quote, #QuoteNode
+                        :io
+                      ))))
+              ), (:(=), :pid, :pid))
+          )),
+        (:line, 439, :none),
+        (:tuple, :s, :s)
+      )),
+    (:line, 442, :none),
+    (:function, (:call, :connect_w2w, (:(::), :pid, :Int), (:(::), :config, :WorkerConfig)), (:block,
+        (:line, 443, :none),
+        (:(=), (:tuple, :rhost, :rport), (:call, :get, (:., :config, (:quote, #QuoteNode
+                :connect_at
+              )))),
+        (:line, 444, :none),
+        (:(=), (:., :config, (:quote, #QuoteNode
+              :host
+            )), :rhost),
+        (:line, 445, :none),
+        (:(=), (:., :config, (:quote, #QuoteNode
+              :port
+            )), :rport),
+        (:line, 446, :none),
+        (:(=), (:tuple, :s, :bind_addr), (:call, :connect_to_worker, :rhost, :rport)),
+        (:line, 447, :none),
+        (:tuple, :s, :s)
+      )),
+    (:line, 450, :none),
+    (:const, (:(=), :client_port, (:call, (:curly, :Ref, :Cushort), 0))),
+    (:line, 452, :none),
+    (:function, (:call, :socket_reuse_port), (:block,
+        (:line, 453, :none),
+        (:(=), :s, (:call, :TCPSocket)),
+        (:line, 454, :none),
+        (:(=), :client_host, (:call, (:curly, :Ref, :Cuint), 0)),
+        (:line, 455, :none),
+        (:&&, (:call, :<, (:ccall, (:quote, #QuoteNode
+                :jl_tcp_bind
+              ), :Int32, (:tuple, (:curly, :Ptr, :Void), :UInt16, :UInt32, :Cuint), (:., :s, (:quote, #QuoteNode
+                  :handle
+                )), (:call, :hton, (:., :client_port, (:quote, #QuoteNode
+                    :x
+                  ))), (:call, :hton, (:call, :UInt32, 0)), 0), 0), (:call, :throw, (:call, :SystemError, "bind() : "))),
+        (:line, 462, :none),
+        (:macrocall, Symbol("@static"), (:if, (:call, :is_linux), (:block,
+              (:line, 463, :none),
+              (:try, (:block,
+                  (:line, 464, :none),
+                  (:(=), :rc, (:ccall, (:quote, #QuoteNode
+                        :jl_tcp_reuseport
+                      ), :Int32, (:tuple, (:curly, :Ptr, :Void)), (:., :s, (:quote, #QuoteNode
+                          :handle
+                        )))),
+                  (:line, 465, :none),
+                  (:if, (:call, :>, :rc, 0), (:block,
+                      (:line, 466, :none),
+                      (:return, :s)
+                    ), (:block,
+                      (:line, 467, :none),
+                      (:if, (:call, :<, :rc, 0), (:block,
+                          (:line, 468, :none),
+                          (:call, :throw, (:call, :SystemError, "setsockopt() SO_REUSEPORT : "))
+                        ))
+                    )),
+                  (:line, 470, :none),
+                  (:call, :getsockname, :s)
+                ), :e, (:block,
+                  (:line, 473, :none),
+                  (:&&, (:call, :>, (:call, :nworkers), 128), (:call, :warn_once, "Error trying to reuse client port number, falling back to plain socket : ", :e)),
+                  (:line, 475, :none),
+                  (:return, (:call, :TCPSocket))
+                ))
+            ))),
+        (:line, 478, :none),
+        (:return, :s)
+      )),
+    (:line, 481, :none),
+    (:function, (:call, :connect_to_worker, (:(::), :host, :AbstractString), (:(::), :port, :Integer)), (:block,
+        (:line, 482, :none),
+        (:(=), :s, (:call, :socket_reuse_port)),
+        (:line, 483, :none),
+        (:call, :connect, :s, :host, (:call, :UInt16, :port)),
+        (:line, 487, :none),
+        (:(=), :bind_addr, :nothing),
+        (:line, 488, :none),
+        (:try, (:block,
+            (:line, 489, :none),
+            (:(=), :bind_addr, (:call, :string, (:call, :parse, :IPAddr, :host)))
+          ), false, (:block,
+            (:line, 491, :none),
+            (:(=), :bind_addr, (:call, :string, (:call, :getaddrinfo, :host)))
+          )),
+        (:line, 493, :none),
+        (:tuple, :s, :bind_addr)
+      )),
+    (:line, 497, :none),
+    (:function, (:call, :connect_to_worker, (:(::), :host, :AbstractString), (:(::), :bind_addr, :AbstractString), (:(::), :port, :Integer), (:(::), :tunnel_user, :AbstractString), :sshflags), (:block,
+        (:line, 498, :none),
+        (:(=), :s, (:call, :connect, "localhost", (:call, :ssh_tunnel, :tunnel_user, :host, :bind_addr, (:call, :UInt16, :port), :sshflags))),
+        (:line, 499, :none),
+        (:tuple, :s, :bind_addr)
+      )),
+    (:line, 503, :none),
+    "    kill(manager::ClusterManager, pid::Int, config::WorkerConfig)\n\nImplemented by cluster managers. It is called on the master process, by `rmprocs`. It should\ncause the remote worker specified by `pid` to exit. `Base.kill(manager::ClusterManager.....)`\nexecutes a remote `exit()` on `pid`\n",
+    (:line, 510, :none),
+    (:function, (:call, :kill, (:(::), :manager, :ClusterManager), (:(::), :pid, :Int), (:(::), :config, :WorkerConfig)), (:block,
+        (:line, 511, :none),
+        (:call, :remote_do, :exit, :pid),
+        (:line, 513, :none),
+        :nothing
+      ))
+  ))

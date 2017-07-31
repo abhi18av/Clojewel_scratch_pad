@@ -1,0 +1,584 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:module, true, :Collections, (:block,
+        (:line, 3, :none),
+        (:line, 5, :none),
+        (:toplevel, (:import, :Base, :setindex!), (:import, :Base, :done), (:import, :Base, :get), (:import, :Base, :hash), (:import, :Base, :haskey), (:import, :Base, :isempty), (:import, :Base, :length), (:import, :Base, :next), (:import, :Base, :getindex), (:import, :Base, :start), (:import, :Base, :copymutable)),
+        (:line, 6, :none),
+        (:toplevel, (:import, :., :., :Order, :Forward), (:import, :., :., :Order, :Ordering), (:import, :., :., :Order, :lt)),
+        (:line, 8, :none),
+        (:export, :PriorityQueue, :dequeue!, :enqueue!, :heapify!, :heapify, :heappop!, :heappush!, :isheap, :peek),
+        (:line, 21, :none),
+        (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+                :append!
+              )), (:(::), :a, :Vector), :iter), (:block,
+            (:line, 21, :none),
+            (:call, :_append!, :a, (:call, (:., :Base, (:quote, #QuoteNode
+                    :iteratorsize
+                  )), :iter), :iter)
+          )),
+        (:line, 23, :none),
+        (:function, (:call, :_append!, :a, (:(::), (:., :Base, (:quote, #QuoteNode
+                  :HasLength
+                ))), :iter), (:block,
+            (:line, 24, :none),
+            (:(=), :n, (:call, :length, :a)),
+            (:line, 25, :none),
+            (:call, :resize!, :a, (:call, :+, :n, (:call, :length, :iter))),
+            (:line, 26, :none),
+            (:macrocall, Symbol("@inbounds"), (:for, (:(=), (:tuple, :i, :item), (:call, :zip, (:(:), (:call, :+, :n, 1), (:call, :length, :a)), :iter)), (:block,
+                  (:line, 27, :none),
+                  (:(=), (:ref, :a, :i), :item)
+                ))),
+            (:line, 29, :none),
+            :a
+          )),
+        (:line, 32, :none),
+        (:function, (:call, :_append!, :a, (:(::), (:., :Base, (:quote, #QuoteNode
+                  :IteratorSize
+                ))), :iter), (:block,
+            (:line, 33, :none),
+            (:for, (:(=), :item, :iter), (:block,
+                (:line, 34, :none),
+                (:call, :push!, :a, :item)
+              )),
+            (:line, 36, :none),
+            :a
+          )),
+        (:line, 44, :none),
+        (:(=), (:call, :heapleft, (:(::), :i, :Integer)), (:block,
+            (:line, 44, :none),
+            (:call, :*, 2, :i)
+          )),
+        (:line, 45, :none),
+        (:(=), (:call, :heapright, (:(::), :i, :Integer)), (:block,
+            (:line, 45, :none),
+            (:call, :+, (:call, :*, 2, :i), 1)
+          )),
+        (:line, 46, :none),
+        (:(=), (:call, :heapparent, (:(::), :i, :Integer)), (:block,
+            (:line, 46, :none),
+            (:call, :div, :i, 2)
+          )),
+        (:line, 50, :none),
+        (:function, (:call, :percolate_down!, (:(::), :xs, :AbstractArray), (:(::), :i, :Integer), (:kw, :x, (:ref, :xs, :i)), (:kw, (:(::), :o, :Ordering), :Forward), (:kw, (:(::), :len, :Integer), (:call, :length, :xs))), (:block,
+            (:line, 51, :none),
+            (:macrocall, Symbol("@inbounds"), (:while, (:call, :(<=), (:(=), :l, (:call, :heapleft, :i)), :len), (:block,
+                  (:line, 52, :none),
+                  (:(=), :r, (:call, :heapright, :i)),
+                  (:line, 53, :none),
+                  (:(=), :j, (:if, (:||, (:call, :>, :r, :len), (:call, :lt, :o, (:ref, :xs, :l), (:ref, :xs, :r))), :l, :r)),
+                  (:line, 54, :none),
+                  (:if, (:call, :lt, :o, (:ref, :xs, :j), :x), (:block,
+                      (:line, 55, :none),
+                      (:(=), (:ref, :xs, :i), (:ref, :xs, :j)),
+                      (:line, 56, :none),
+                      (:(=), :i, :j)
+                    ), (:block,
+                      (:line, 58, :none),
+                      (:break,)
+                    ))
+                ))),
+            (:line, 61, :none),
+            (:(=), (:ref, :xs, :i), :x)
+          )),
+        (:line, 64, :none),
+        (:(=), (:call, :percolate_down!, (:(::), :xs, :AbstractArray), (:(::), :i, :Integer), (:(::), :o, :Ordering), (:kw, (:(::), :len, :Integer), (:call, :length, :xs))), (:block,
+            (:line, 64, :none),
+            (:call, :percolate_down!, :xs, :i, (:ref, :xs, :i), :o, :len)
+          )),
+        (:line, 68, :none),
+        (:function, (:call, :percolate_up!, (:(::), :xs, :AbstractArray), (:(::), :i, :Integer), (:kw, :x, (:ref, :xs, :i)), (:kw, (:(::), :o, :Ordering), :Forward)), (:block,
+            (:line, 69, :none),
+            (:macrocall, Symbol("@inbounds"), (:while, (:call, :(>=), (:(=), :j, (:call, :heapparent, :i)), 1), (:block,
+                  (:line, 70, :none),
+                  (:if, (:call, :lt, :o, :x, (:ref, :xs, :j)), (:block,
+                      (:line, 71, :none),
+                      (:(=), (:ref, :xs, :i), (:ref, :xs, :j)),
+                      (:line, 72, :none),
+                      (:(=), :i, :j)
+                    ), (:block,
+                      (:line, 74, :none),
+                      (:break,)
+                    ))
+                ))),
+            (:line, 77, :none),
+            (:(=), (:ref, :xs, :i), :x)
+          )),
+        (:line, 80, :none),
+        (:(=), (:call, (:curly, :percolate_up!, :T), (:(::), :xs, (:curly, :AbstractArray, :T)), (:(::), :i, :Integer), (:(::), :o, :Ordering)), (:block,
+            (:line, 80, :none),
+            (:call, :percolate_up!, :xs, :i, (:ref, :xs, :i), :o)
+          )),
+        (:line, 82, :none),
+        (:macrocall, :(Core.@doc), "    heappop!(v, [ord])\n\nGiven a binary heap-ordered array, remove and return the lowest ordered element.\nFor efficiency, this function does not check that the array is indeed heap-ordered.\n", (:function, (:call, :heappop!, (:(::), :xs, :AbstractArray), (:kw, (:(::), :o, :Ordering), :Forward)), (:block,
+              (:line, 89, :none),
+              (:(=), :x, (:ref, :xs, 1)),
+              (:line, 90, :none),
+              (:(=), :y, (:call, :pop!, :xs)),
+              (:line, 91, :none),
+              (:if, (:call, :!, (:call, :isempty, :xs)), (:block,
+                  (:line, 92, :none),
+                  (:call, :percolate_down!, :xs, 1, :y, :o)
+                )),
+              (:line, 94, :none),
+              :x
+            ))),
+        (:line, 97, :none),
+        (:macrocall, :(Core.@doc), "    heappush!(v, x, [ord])\n\nGiven a binary heap-ordered array, push a new element `x`, preserving the heap property.\nFor efficiency, this function does not check that the array is indeed heap-ordered.\n", (:function, (:call, :heappush!, (:(::), :xs, :AbstractArray), :x, (:kw, (:(::), :o, :Ordering), :Forward)), (:block,
+              (:line, 104, :none),
+              (:call, :push!, :xs, :x),
+              (:line, 105, :none),
+              (:call, :percolate_up!, :xs, (:call, :length, :xs), :x, :o),
+              (:line, 106, :none),
+              :xs
+            ))),
+        (:line, 111, :none),
+        (:macrocall, :(Core.@doc), "    heapify!(v, ord::Ordering=Forward)\n\nIn-place [`heapify`](:func:`heapify`).\n", (:function, (:call, :heapify!, (:(::), :xs, :AbstractArray), (:kw, (:(::), :o, :Ordering), :Forward)), (:block,
+              (:line, 117, :none),
+              (:for, (:(=), :i, (:(:), (:call, :heapparent, (:call, :length, :xs)), -1, 1)), (:block,
+                  (:line, 118, :none),
+                  (:call, :percolate_down!, :xs, :i, :o)
+                )),
+              (:line, 120, :none),
+              :xs
+            ))),
+        (:line, 123, :none),
+        (:macrocall, :(Core.@doc), "    heapify(v, ord::Ordering=Forward)\n\nReturns a new vector in binary heap order, optionally using the given ordering.\n```jldoctest\njulia> a = [1,3,4,5,2];\n\njulia> Base.Collections.heapify(a)\n5-element Array{Int64,1}:\n 1\n 2\n 4\n 5\n 3\n\njulia> Base.Collections.heapify(a, Base.Order.Reverse)\n5-element Array{Int64,1}:\n 5\n 3\n 4\n 1\n 2\n```\n", (:(=), (:call, :heapify, (:(::), :xs, :AbstractArray), (:kw, (:(::), :o, :Ordering), :Forward)), (:block,
+              (:line, 147, :none),
+              (:call, :heapify!, (:call, :copymutable, :xs), :o)
+            ))),
+        (:line, 149, :none),
+        (:macrocall, :(Core.@doc), "    isheap(v, ord::Ordering=Forward)\n\nReturn `true` if an array is heap-ordered according to the given order.\n\n```jldoctest\njulia> a = [1,2,3]\n3-element Array{Int64,1}:\n 1\n 2\n 3\n\njulia> Base.Collections.isheap(a,Base.Order.Forward)\ntrue\n\njulia> Base.Collections.isheap(a,Base.Order.Reverse)\nfalse\n```\n", (:function, (:call, :isheap, (:(::), :xs, :AbstractArray), (:kw, (:(::), :o, :Ordering), :Forward)), (:block,
+              (:line, 169, :none),
+              (:for, (:(=), :i, (:(:), 1, (:call, :div, (:call, :length, :xs), 2))), (:block,
+                  (:line, 170, :none),
+                  (:if, (:||, (:call, :lt, :o, (:ref, :xs, (:call, :heapleft, :i)), (:ref, :xs, :i)), (:&&, (:call, :(<=), (:call, :heapright, :i), (:call, :length, :xs)), (:call, :lt, :o, (:ref, :xs, (:call, :heapright, :i)), (:ref, :xs, :i)))), (:block,
+                      (:line, 172, :none),
+                      (:return, false)
+                    ))
+                )),
+              (:line, 175, :none),
+              true
+            ))),
+        (:line, 182, :none),
+        (:macrocall, :(Core.@doc), "    PriorityQueue(K, V, [ord])\n\nConstruct a new [`PriorityQueue`](:obj:`PriorityQueue`), with keys of type\n`K` and values/priorites of type `V`.\nIf an order is not given, the priority queue is min-ordered using\nthe default comparison for `V`.\n\nA `PriorityQueue` acts like a `Dict`, mapping values to their\npriorities, with the addition of a `dequeue!` function to remove the\nlowest priority element.\n\n```jldoctest\njulia> a = Base.Collections.PriorityQueue([\"a\",\"b\",\"c\"],[2,3,1],Base.Order.Forward)\nBase.Collections.PriorityQueue{String,Int64,Base.Order.ForwardOrdering} with 3 entries:\n  \"c\" => 1\n  \"b\" => 3\n  \"a\" => 2\n```\n", (:type, true, (:<:, (:curly, :PriorityQueue, :K, :V, (:<:, :O, :Ordering)), (:curly, :Associative, :K, :V)), (:block,
+              (:line, 204, :none),
+              (:(::), :xs, (:curly, :Array, (:curly, :Pair, :K, :V), 1)),
+              (:line, 205, :none),
+              (:(::), :o, :O),
+              (:line, 208, :none),
+              (:(::), :index, (:curly, :Dict, :K, :Int)),
+              (:line, 210, :none),
+              (:function, (:call, :PriorityQueue, (:(::), :o, :O)), (:block,
+                  (:line, 211, :none),
+                  (:call, :new, (:call, (:curly, :Array, (:curly, :Pair, :K, :V)), 0), :o, (:call, (:curly, :Dict, :K, :Int)))
+                )),
+              (:line, 214, :none),
+              (:(=), (:call, :PriorityQueue), (:block,
+                  (:line, 214, :none),
+                  (:call, (:curly, :PriorityQueue, :K, :V, :O), :Forward)
+                )),
+              (:line, 216, :none),
+              (:function, (:call, :PriorityQueue, (:(::), :ks, (:curly, :AbstractArray, :K)), (:(::), :vs, (:curly, :AbstractArray, :V)), (:(::), :o, :O)), (:block,
+                  (:line, 219, :none),
+                  (:if, (:call, :(!=), (:call, :length, :ks), (:call, :length, :vs)), (:block,
+                      (:line, 220, :none),
+                      (:call, :throw, (:call, :ArgumentError, "key and value arrays must have equal lengths"))
+                    )),
+                  (:line, 222, :none),
+                  (:call, (:curly, :PriorityQueue, :K, :V, :O), (:call, :zip, :ks, :vs), :o)
+                )),
+              (:line, 225, :none),
+              (:function, (:call, :PriorityQueue, :itr, (:(::), :o, :O)), (:block,
+                  (:line, 226, :none),
+                  (:(=), :xs, (:call, (:curly, :Array, (:curly, :Pair, :K, :V)), (:call, :length, :itr))),
+                  (:line, 227, :none),
+                  (:(=), :index, (:call, (:curly, :Dict, :K, :Int))),
+                  (:line, 228, :none),
+                  (:for, (:(=), (:tuple, :i, (:tuple, :k, :v)), (:call, :enumerate, :itr)), (:block,
+                      (:line, 229, :none),
+                      (:(=), (:ref, :xs, :i), (:call, (:curly, :Pair, :K, :V), :k, :v)),
+                      (:line, 230, :none),
+                      (:if, (:call, :haskey, :index, :k), (:block,
+                          (:line, 231, :none),
+                          (:call, :throw, (:call, :ArgumentError, "PriorityQueue keys must be unique"))
+                        )),
+                      (:line, 233, :none),
+                      (:(=), (:ref, :index, :k), :i)
+                    )),
+                  (:line, 235, :none),
+                  (:(=), :pq, (:call, :new, :xs, :o, :index)),
+                  (:line, 238, :none),
+                  (:for, (:(=), :i, (:(:), (:call, :heapparent, (:call, :length, (:., :pq, (:quote, #QuoteNode
+                                :xs
+                              )))), -1, 1)), (:block,
+                      (:line, 239, :none),
+                      (:call, :percolate_down!, :pq, :i)
+                    )),
+                  (:line, 242, :none),
+                  :pq
+                ))
+            ))),
+        (:line, 246, :none),
+        (:(=), (:call, :PriorityQueue, (:kw, (:(::), :o, :Ordering), :Forward)), (:block,
+            (:line, 246, :none),
+            (:call, (:curly, :PriorityQueue, :Any, :Any, (:call, :typeof, :o)), :o)
+          )),
+        (:line, 247, :none),
+        (:(=), (:call, (:curly, :PriorityQueue, :K, :V), (:(::), (:curly, :Type, :K)), (:(::), (:curly, :Type, :V)), (:kw, (:(::), :o, :Ordering), :Forward)), (:block,
+            (:line, 247, :none),
+            (:call, (:curly, :PriorityQueue, :K, :V, (:call, :typeof, :o)), :o)
+          )),
+        (:line, 250, :none),
+        (:(=), (:call, (:curly, :PriorityQueue, :K, :V), (:(::), :ks, (:curly, :AbstractArray, :K)), (:(::), :vs, (:curly, :AbstractArray, :V)), (:kw, (:(::), :o, :Ordering), :Forward)), (:block,
+            (:line, 250, :none),
+            (:call, (:curly, :PriorityQueue, :K, :V, (:call, :typeof, :o)), :ks, :vs, :o)
+          )),
+        (:line, 253, :none),
+        (:(=), (:call, (:curly, :PriorityQueue, :K, :V), (:(::), :kvs, (:curly, :Associative, :K, :V)), (:kw, (:(::), :o, :Ordering), :Forward)), (:block,
+            (:line, 253, :none),
+            (:call, (:curly, :PriorityQueue, :K, :V, (:call, :typeof, :o)), :kvs, :o)
+          )),
+        (:line, 255, :none),
+        (:(=), (:call, (:curly, :PriorityQueue, :K, :V), (:(::), :a, (:curly, :AbstractArray, (:curly, :Tuple, :K, :V))), (:kw, (:(::), :o, :Ordering), :Forward)), (:block,
+            (:line, 255, :none),
+            (:call, (:curly, :PriorityQueue, :K, :V, (:call, :typeof, :o)), :a, :o)
+          )),
+        (:line, 257, :none),
+        (:(=), (:call, :length, (:(::), :pq, :PriorityQueue)), (:block,
+            (:line, 257, :none),
+            (:call, :length, (:., :pq, (:quote, #QuoteNode
+                  :xs
+                )))
+          )),
+        (:line, 258, :none),
+        (:(=), (:call, :isempty, (:(::), :pq, :PriorityQueue)), (:block,
+            (:line, 258, :none),
+            (:call, :isempty, (:., :pq, (:quote, #QuoteNode
+                  :xs
+                )))
+          )),
+        (:line, 259, :none),
+        (:(=), (:call, :haskey, (:(::), :pq, :PriorityQueue), :key), (:block,
+            (:line, 259, :none),
+            (:call, :haskey, (:., :pq, (:quote, #QuoteNode
+                  :index
+                )), :key)
+          )),
+        (:line, 261, :none),
+        (:macrocall, :(Core.@doc), "    peek(pq)\n\nReturn the lowest priority key from a priority queue without removing that\nkey from the queue.\n", (:(=), (:call, :peek, (:(::), :pq, :PriorityQueue)), (:block,
+              (:line, 267, :none),
+              (:ref, (:., :pq, (:quote, #QuoteNode
+                    :xs
+                  )), 1)
+            ))),
+        (:line, 269, :none),
+        (:function, (:call, :percolate_down!, (:(::), :pq, :PriorityQueue), (:(::), :i, :Integer)), (:block,
+            (:line, 270, :none),
+            (:(=), :x, (:ref, (:., :pq, (:quote, #QuoteNode
+                    :xs
+                  )), :i)),
+            (:line, 271, :none),
+            (:macrocall, Symbol("@inbounds"), (:while, (:call, :(<=), (:(=), :l, (:call, :heapleft, :i)), (:call, :length, :pq)), (:block,
+                  (:line, 272, :none),
+                  (:(=), :r, (:call, :heapright, :i)),
+                  (:line, 273, :none),
+                  (:(=), :j, (:if, (:||, (:call, :>, :r, (:call, :length, :pq)), (:call, :lt, (:., :pq, (:quote, #QuoteNode
+                              :o
+                            )), (:., (:ref, (:., :pq, (:quote, #QuoteNode
+                                  :xs
+                                )), :l), (:quote, #QuoteNode
+                              :second
+                            )), (:., (:ref, (:., :pq, (:quote, #QuoteNode
+                                  :xs
+                                )), :r), (:quote, #QuoteNode
+                              :second
+                            )))), :l, :r)),
+                  (:line, 274, :none),
+                  (:if, (:call, :lt, (:., :pq, (:quote, #QuoteNode
+                          :o
+                        )), (:., (:ref, (:., :pq, (:quote, #QuoteNode
+                              :xs
+                            )), :j), (:quote, #QuoteNode
+                          :second
+                        )), (:., :x, (:quote, #QuoteNode
+                          :second
+                        ))), (:block,
+                      (:line, 275, :none),
+                      (:(=), (:ref, (:., :pq, (:quote, #QuoteNode
+                              :index
+                            )), (:., (:ref, (:., :pq, (:quote, #QuoteNode
+                                  :xs
+                                )), :j), (:quote, #QuoteNode
+                              :first
+                            ))), :i),
+                      (:line, 276, :none),
+                      (:(=), (:ref, (:., :pq, (:quote, #QuoteNode
+                              :xs
+                            )), :i), (:ref, (:., :pq, (:quote, #QuoteNode
+                              :xs
+                            )), :j)),
+                      (:line, 277, :none),
+                      (:(=), :i, :j)
+                    ), (:block,
+                      (:line, 279, :none),
+                      (:break,)
+                    ))
+                ))),
+            (:line, 282, :none),
+            (:(=), (:ref, (:., :pq, (:quote, #QuoteNode
+                    :index
+                  )), (:., :x, (:quote, #QuoteNode
+                    :first
+                  ))), :i),
+            (:line, 283, :none),
+            (:(=), (:ref, (:., :pq, (:quote, #QuoteNode
+                    :xs
+                  )), :i), :x)
+          )),
+        (:line, 287, :none),
+        (:function, (:call, :percolate_up!, (:(::), :pq, :PriorityQueue), (:(::), :i, :Integer)), (:block,
+            (:line, 288, :none),
+            (:(=), :x, (:ref, (:., :pq, (:quote, #QuoteNode
+                    :xs
+                  )), :i)),
+            (:line, 289, :none),
+            (:macrocall, Symbol("@inbounds"), (:while, (:call, :>, :i, 1), (:block,
+                  (:line, 290, :none),
+                  (:(=), :j, (:call, :heapparent, :i)),
+                  (:line, 291, :none),
+                  (:if, (:call, :lt, (:., :pq, (:quote, #QuoteNode
+                          :o
+                        )), (:., :x, (:quote, #QuoteNode
+                          :second
+                        )), (:., (:ref, (:., :pq, (:quote, #QuoteNode
+                              :xs
+                            )), :j), (:quote, #QuoteNode
+                          :second
+                        ))), (:block,
+                      (:line, 292, :none),
+                      (:(=), (:ref, (:., :pq, (:quote, #QuoteNode
+                              :index
+                            )), (:., (:ref, (:., :pq, (:quote, #QuoteNode
+                                  :xs
+                                )), :j), (:quote, #QuoteNode
+                              :first
+                            ))), :i),
+                      (:line, 293, :none),
+                      (:(=), (:ref, (:., :pq, (:quote, #QuoteNode
+                              :xs
+                            )), :i), (:ref, (:., :pq, (:quote, #QuoteNode
+                              :xs
+                            )), :j)),
+                      (:line, 294, :none),
+                      (:(=), :i, :j)
+                    ), (:block,
+                      (:line, 296, :none),
+                      (:break,)
+                    ))
+                ))),
+            (:line, 299, :none),
+            (:(=), (:ref, (:., :pq, (:quote, #QuoteNode
+                    :index
+                  )), (:., :x, (:quote, #QuoteNode
+                    :first
+                  ))), :i),
+            (:line, 300, :none),
+            (:(=), (:ref, (:., :pq, (:quote, #QuoteNode
+                    :xs
+                  )), :i), :x)
+          )),
+        (:line, 304, :none),
+        (:function, (:call, :force_up!, (:(::), :pq, :PriorityQueue), (:(::), :i, :Integer)), (:block,
+            (:line, 305, :none),
+            (:(=), :x, (:ref, (:., :pq, (:quote, #QuoteNode
+                    :xs
+                  )), :i)),
+            (:line, 306, :none),
+            (:macrocall, Symbol("@inbounds"), (:while, (:call, :>, :i, 1), (:block,
+                  (:line, 307, :none),
+                  (:(=), :j, (:call, :heapparent, :i)),
+                  (:line, 308, :none),
+                  (:(=), (:ref, (:., :pq, (:quote, #QuoteNode
+                          :index
+                        )), (:., (:ref, (:., :pq, (:quote, #QuoteNode
+                              :xs
+                            )), :j), (:quote, #QuoteNode
+                          :first
+                        ))), :i),
+                  (:line, 309, :none),
+                  (:(=), (:ref, (:., :pq, (:quote, #QuoteNode
+                          :xs
+                        )), :i), (:ref, (:., :pq, (:quote, #QuoteNode
+                          :xs
+                        )), :j)),
+                  (:line, 310, :none),
+                  (:(=), :i, :j)
+                ))),
+            (:line, 312, :none),
+            (:(=), (:ref, (:., :pq, (:quote, #QuoteNode
+                    :index
+                  )), (:., :x, (:quote, #QuoteNode
+                    :first
+                  ))), :i),
+            (:line, 313, :none),
+            (:(=), (:ref, (:., :pq, (:quote, #QuoteNode
+                    :xs
+                  )), :i), :x)
+          )),
+        (:line, 316, :none),
+        (:function, (:call, (:curly, :getindex, :K, :V), (:(::), :pq, (:curly, :PriorityQueue, :K, :V)), :key), (:block,
+            (:line, 317, :none),
+            (:., (:ref, (:., :pq, (:quote, #QuoteNode
+                    :xs
+                  )), (:ref, (:., :pq, (:quote, #QuoteNode
+                      :index
+                    )), :key)), (:quote, #QuoteNode
+                :second
+              ))
+          )),
+        (:line, 321, :none),
+        (:function, (:call, (:curly, :get, :K, :V), (:(::), :pq, (:curly, :PriorityQueue, :K, :V)), :key, :deflt), (:block,
+            (:line, 322, :none),
+            (:(=), :i, (:call, :get, (:., :pq, (:quote, #QuoteNode
+                    :index
+                  )), :key, 0)),
+            (:line, 323, :none),
+            (:if, (:call, :(==), :i, 0), :deflt, (:., (:ref, (:., :pq, (:quote, #QuoteNode
+                      :xs
+                    )), :i), (:quote, #QuoteNode
+                  :second
+                )))
+          )),
+        (:line, 328, :none),
+        (:function, (:call, (:curly, :setindex!, :K, :V), (:(::), :pq, (:curly, :PriorityQueue, :K, :V)), :value, :key), (:block,
+            (:line, 329, :none),
+            (:if, (:call, :haskey, :pq, :key), (:block,
+                (:line, 330, :none),
+                (:(=), :i, (:ref, (:., :pq, (:quote, #QuoteNode
+                        :index
+                      )), :key)),
+                (:line, 331, :none),
+                (:(=), :oldvalue, (:., (:ref, (:., :pq, (:quote, #QuoteNode
+                          :xs
+                        )), :i), (:quote, #QuoteNode
+                      :second
+                    ))),
+                (:line, 332, :none),
+                (:(=), (:ref, (:., :pq, (:quote, #QuoteNode
+                        :xs
+                      )), :i), (:call, (:curly, :Pair, :K, :V), :key, :value)),
+                (:line, 333, :none),
+                (:if, (:call, :lt, (:., :pq, (:quote, #QuoteNode
+                        :o
+                      )), :oldvalue, :value), (:block,
+                    (:line, 334, :none),
+                    (:call, :percolate_down!, :pq, :i)
+                  ), (:block,
+                    (:line, 336, :none),
+                    (:call, :percolate_up!, :pq, :i)
+                  ))
+              ), (:block,
+                (:line, 339, :none),
+                (:call, :enqueue!, :pq, :key, :value)
+              )),
+            (:line, 341, :none),
+            :value
+          )),
+        (:line, 344, :none),
+        (:macrocall, :(Core.@doc), "    enqueue!(pq, k, v)\n\nInsert the a key `k` into a priority queue `pq` with priority `v`.\n\n```jldoctest\njulia> a = Base.Collections.PriorityQueue([\"a\",\"b\",\"c\"],[2,3,1],Base.Order.Forward)\nBase.Collections.PriorityQueue{String,Int64,Base.Order.ForwardOrdering} with 3 entries:\n  \"c\" => 1\n  \"b\" => 3\n  \"a\" => 2\n\njulia> Base.Collections.enqueue!(a, \"d\", 4)\nBase.Collections.PriorityQueue{String,Int64,Base.Order.ForwardOrdering} with 4 entries:\n  \"c\" => 1\n  \"b\" => 3\n  \"a\" => 2\n  \"d\" => 4\n```\n", (:function, (:call, (:curly, :enqueue!, :K, :V), (:(::), :pq, (:curly, :PriorityQueue, :K, :V)), :key, :value), (:block,
+              (:line, 365, :none),
+              (:if, (:call, :haskey, :pq, :key), (:block,
+                  (:line, 366, :none),
+                  (:call, :throw, (:call, :ArgumentError, "PriorityQueue keys must be unique"))
+                )),
+              (:line, 368, :none),
+              (:call, :push!, (:., :pq, (:quote, #QuoteNode
+                    :xs
+                  )), (:call, (:curly, :Pair, :K, :V), :key, :value)),
+              (:line, 369, :none),
+              (:(=), (:ref, (:., :pq, (:quote, #QuoteNode
+                      :index
+                    )), :key), (:call, :length, :pq)),
+              (:line, 370, :none),
+              (:call, :percolate_up!, :pq, (:call, :length, :pq)),
+              (:line, 371, :none),
+              :pq
+            ))),
+        (:line, 374, :none),
+        (:macrocall, :(Core.@doc), "    dequeue!(pq)\n\nRemove and return the lowest priority key from a priority queue.\n\n```jldoctest\njulia> a = Base.Collections.PriorityQueue([\"a\",\"b\",\"c\"],[2,3,1],Base.Order.Forward)\nBase.Collections.PriorityQueue{String,Int64,Base.Order.ForwardOrdering} with 3 entries:\n  \"c\" => 1\n  \"b\" => 3\n  \"a\" => 2\n\njulia> Base.Collections.dequeue!(a)\n\"c\"\n\njulia> a\nBase.Collections.PriorityQueue{String,Int64,Base.Order.ForwardOrdering} with 2 entries:\n  \"b\" => 3\n  \"a\" => 2\n```\n", (:function, (:call, :dequeue!, (:(::), :pq, :PriorityQueue)), (:block,
+              (:line, 396, :none),
+              (:(=), :x, (:ref, (:., :pq, (:quote, #QuoteNode
+                      :xs
+                    )), 1)),
+              (:line, 397, :none),
+              (:(=), :y, (:call, :pop!, (:., :pq, (:quote, #QuoteNode
+                      :xs
+                    )))),
+              (:line, 398, :none),
+              (:if, (:call, :!, (:call, :isempty, :pq)), (:block,
+                  (:line, 399, :none),
+                  (:(=), (:ref, (:., :pq, (:quote, #QuoteNode
+                          :xs
+                        )), 1), :y),
+                  (:line, 400, :none),
+                  (:(=), (:ref, (:., :pq, (:quote, #QuoteNode
+                          :index
+                        )), (:., :y, (:quote, #QuoteNode
+                          :first
+                        ))), 1),
+                  (:line, 401, :none),
+                  (:call, :percolate_down!, :pq, 1)
+                )),
+              (:line, 403, :none),
+              (:call, :delete!, (:., :pq, (:quote, #QuoteNode
+                    :index
+                  )), (:., :x, (:quote, #QuoteNode
+                    :first
+                  ))),
+              (:line, 404, :none),
+              (:., :x, (:quote, #QuoteNode
+                  :first
+                ))
+            ))),
+        (:line, 407, :none),
+        (:function, (:call, :dequeue!, (:(::), :pq, :PriorityQueue), :key), (:block,
+            (:line, 408, :none),
+            (:(=), :idx, (:ref, (:., :pq, (:quote, #QuoteNode
+                    :index
+                  )), :key)),
+            (:line, 409, :none),
+            (:call, :force_up!, :pq, :idx),
+            (:line, 410, :none),
+            (:call, :dequeue!, :pq),
+            (:line, 411, :none),
+            :key
+          )),
+        (:line, 415, :none),
+        (:(=), (:call, :start, (:(::), :pq, :PriorityQueue)), (:block,
+            (:line, 415, :none),
+            (:call, :start, (:., :pq, (:quote, #QuoteNode
+                  :index
+                )))
+          )),
+        (:line, 417, :none),
+        (:(=), (:call, :done, (:(::), :pq, :PriorityQueue), :i), (:block,
+            (:line, 417, :none),
+            (:call, :done, (:., :pq, (:quote, #QuoteNode
+                  :index
+                )), :i)
+          )),
+        (:line, 419, :none),
+        (:function, (:call, (:curly, :next, :K, :V), (:(::), :pq, (:curly, :PriorityQueue, :K, :V)), :i), (:block,
+            (:line, 420, :none),
+            (:(=), (:tuple, (:tuple, :k, :idx), :i), (:call, :next, (:., :pq, (:quote, #QuoteNode
+                    :index
+                  )), :i)),
+            (:line, 421, :none),
+            (:return, (:tuple, (:ref, (:., :pq, (:quote, #QuoteNode
+                      :xs
+                    )), :idx), :i))
+          ))
+      ))
+  ))

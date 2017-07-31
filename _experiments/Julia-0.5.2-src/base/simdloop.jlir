@@ -1,0 +1,184 @@
+(:quote, (:block,
+    (:line, 5, :none),
+    (:module, true, :SimdLoop, (:block,
+        (:line, 5, :none),
+        (:line, 7, :none),
+        (:export, Symbol("@simd"), :simd_outer_range, :simd_inner_length, :simd_index),
+        (:line, 10, :none),
+        (:type, true, (:<:, :SimdError, :Exception), (:block,
+            (:line, 11, :none),
+            (:(::), :msg, :String)
+          )),
+        (:line, 17, :none),
+        (:function, (:call, :parse_iteration_space, :x), (:block,
+            (:line, 18, :none),
+            (:||, (:&&, (:call, :isa, :x, :Expr), (:||, (:call, :(==), (:., :x, (:quote, #QuoteNode
+                        :head
+                      )), (:quote, #QuoteNode
+                      :(=)
+                    )), (:call, :(==), (:., :x, (:quote, #QuoteNode
+                        :head
+                      )), (:quote, #QuoteNode
+                      :in
+                    )))), (:call, :throw, (:call, :SimdError, "= or in expected"))),
+            (:line, 19, :none),
+            (:||, (:call, :(==), (:call, :length, (:., :x, (:quote, #QuoteNode
+                      :args
+                    ))), 2), (:call, :throw, (:call, :SimdError, "simd range syntax is wrong"))),
+            (:line, 20, :none),
+            (:||, (:call, :isa, (:ref, (:., :x, (:quote, #QuoteNode
+                      :args
+                    )), 1), :Symbol), (:call, :throw, (:call, :SimdError, "simd loop index must be a symbol"))),
+            (:line, 21, :none),
+            (:., :x, (:quote, #QuoteNode
+                :args
+              ))
+          )),
+        (:line, 25, :none),
+        (:function, (:call, :check_body!, (:(::), :x, :Expr)), (:block,
+            (:line, 26, :none),
+            (:if, (:||, (:call, :(===), (:., :x, (:quote, #QuoteNode
+                      :head
+                    )), (:quote, #QuoteNode
+                    :break
+                  )), (:call, :(==), (:., :x, (:quote, #QuoteNode
+                      :head
+                    )), (:quote, #QuoteNode
+                    :continue
+                  ))), (:block,
+                (:line, 27, :none),
+                (:call, :throw, (:call, :SimdError, (:string, (:., :x, (:quote, #QuoteNode
+                          :head
+                        )), " is not allowed inside a @simd loop body")))
+              ), (:block,
+                (:line, 28, :none),
+                (:if, (:&&, (:call, :(===), (:., :x, (:quote, #QuoteNode
+                          :head
+                        )), (:quote, #QuoteNode
+                        :macrocall
+                      )), (:call, :(===), (:ref, (:., :x, (:quote, #QuoteNode
+                            :args
+                          )), 1), (:call, :Symbol, "@goto"))), (:block,
+                    (:line, 29, :none),
+                    (:call, :throw, (:call, :SimdError, (:string, (:ref, (:., :x, (:quote, #QuoteNode
+                                :args
+                              )), 1), " is not allowed inside a @simd loop body")))
+                  ))
+              )),
+            (:line, 31, :none),
+            (:for, (:(=), :arg, (:., :x, (:quote, #QuoteNode
+                    :args
+                  ))), (:block,
+                (:line, 32, :none),
+                (:call, :check_body!, :arg)
+              )),
+            (:line, 34, :none),
+            (:return, true)
+          )),
+        (:line, 36, :none),
+        (:(=), (:call, :check_body!, (:(::), :x, :QuoteNode)), (:block,
+            (:line, 36, :none),
+            (:call, :check_body!, (:., :x, (:quote, #QuoteNode
+                  :value
+                )))
+          )),
+        (:line, 37, :none),
+        (:(=), (:call, :check_body!, :x), (:block,
+            (:line, 37, :none),
+            true
+          )),
+        (:line, 44, :none),
+        (:(=), (:call, :simd_outer_range, :r), (:block,
+            (:line, 44, :none),
+            (:(:), 0, 0)
+          )),
+        (:line, 47, :none),
+        (:(=), (:call, :simd_inner_length, :r, (:(::), :j, :Int)), (:block,
+            (:line, 47, :none),
+            (:call, :length, :r)
+          )),
+        (:line, 50, :none),
+        (:macrocall, Symbol("@inline"), (:(=), (:call, :simd_index, :r, (:(::), :j, :Int), :i), (:block,
+              (:line, 50, :none),
+              (:block,
+                (:macrocall, Symbol("@inbounds"), (:(=), :ret, (:ref, :r, (:call, :+, :i, 1)))),
+                :ret
+              )
+            ))),
+        (:line, 53, :none),
+        (:function, (:call, :compile, :x), (:block,
+            (:line, 54, :none),
+            (:||, (:&&, (:call, :isa, :x, :Expr), (:call, :(==), (:., :x, (:quote, #QuoteNode
+                      :head
+                    )), (:quote, #QuoteNode
+                    :for
+                  ))), (:call, :throw, (:call, :SimdError, "for loop expected"))),
+            (:line, 55, :none),
+            (:||, (:call, :(==), (:call, :length, (:., :x, (:quote, #QuoteNode
+                      :args
+                    ))), 2), (:call, :throw, (:call, :SimdError, "1D for loop expected"))),
+            (:line, 56, :none),
+            (:call, :check_body!, :x),
+            (:line, 58, :none),
+            (:(=), (:tuple, :var, :range), (:call, :parse_iteration_space, (:ref, (:., :x, (:quote, #QuoteNode
+                      :args
+                    )), 1))),
+            (:line, 59, :none),
+            (:(=), :r, (:call, :gensym, "r")),
+            (:line, 60, :none),
+            (:(=), :j, (:call, :gensym, "i")),
+            (:line, 61, :none),
+            (:(=), :n, (:call, :gensym, "n")),
+            (:line, 62, :none),
+            (:(=), :i, (:call, :gensym, "i")),
+            (:line, 63, :none),
+            (:quote, (:block,
+                (:line, 65, :none),
+                (:let, (:block,
+                    (:line, 66, :none),
+                    (:for, (:(=), (:$, :j), (:call, (:., :Base, (:quote, #QuoteNode
+                              :simd_outer_range
+                            )), (:$, :r))), (:block,
+                        (:line, 67, :none),
+                        (:let, (:block,
+                            (:line, 68, :none),
+                            (:if, (:call, :<, (:call, :zero, (:$, :n)), (:$, :n)), (:block,
+                                (:line, 70, :none),
+                                (:let, (:block,
+                                    (:line, 71, :none),
+                                    (:while, (:call, :<, (:$, :i), (:$, :n)), (:block,
+                                        (:line, 72, :none),
+                                        (:local, (:(=), (:$, :var), (:call, (:., :Base, (:quote, #QuoteNode
+                                                  :simd_index
+                                                )), (:$, :r), (:$, :j), (:$, :i)))),
+                                        (:line, 73, :none),
+                                        (:$, (:ref, (:., :x, (:quote, #QuoteNode
+                                                :args
+                                              )), 2)),
+                                        (:line, 74, :none),
+                                        (:+=, (:$, :i), 1),
+                                        (:line, 75, :none),
+                                        (:$, (:call, :Expr, (:quote, #QuoteNode
+                                              :simdloop
+                                            )))
+                                      ))
+                                  ), (:(=), (:$, :i), (:call, :zero, (:$, :n)))),
+                                (:line, 79, :none),
+                                (:(=), (:$, :var), (:call, :last, (:$, :r)))
+                              ))
+                          ), (:(=), (:$, :n), (:call, (:., :Base, (:quote, #QuoteNode
+                                  :simd_inner_length
+                                )), (:$, :r), (:$, :j))))
+                      ))
+                  ), (:(=), (:$, :r), (:$, :range))),
+                (:line, 84, :none),
+                :nothing
+              ))
+          )),
+        (:line, 88, :none),
+        (:macro, (:call, :simd, :forloop), (:block,
+            (:line, 89, :none),
+            (:call, :esc, (:call, :compile, :forloop))
+          ))
+      ))
+  ))

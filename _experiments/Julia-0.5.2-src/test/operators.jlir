@@ -1,0 +1,104 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :ifelse, true, 1, 2), 1)),
+    (:line, 4, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :ifelse, false, 1, 2), 2)),
+    (:line, 6, :none),
+    (:(=), :s, (:call, :Set)),
+    (:line, 7, :none),
+    (:call, :ifelse, true, (:call, :push!, :s, 1), (:call, :push!, :s, 2)),
+    (:line, 8, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), :s, (:call, :Set, (:vect, 1, 2)))),
+    (:line, 10, :none),
+    (:(=), :s, (:call, :Set)),
+    (:line, 11, :none),
+    (:if, true, (:call, :push!, :s, 1), (:call, :push!, :s, 2)),
+    (:line, 12, :none),
+    (:if, false, (:call, :push!, :s, 3), (:call, :push!, :s, 4)),
+    (:line, 13, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), :s, (:call, :Set, (:vect, 1, 4)))),
+    (:line, 15, :none),
+    (:(=), :B, (:hcat, true, true, false)),
+    (:line, 16, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :ifelse, :B, 1, 2), (:hcat, 1, 1, 2))),
+    (:line, 17, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :ifelse, :B, 1, (:hcat, 2, 3, 4)), (:hcat, 1, 1, 4))),
+    (:line, 18, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :ifelse, :B, (:hcat, 2, 3, 4), 1), (:hcat, 2, 3, 1))),
+    (:line, 19, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :ifelse, :B, (:hcat, 2, 3, 4), (:hcat, 5, 6, 7)), (:hcat, 2, 3, 7))),
+    (:line, 21, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :reverse, (:call, :Pair, 1, 2)), (:call, :Pair, 2, 1))),
+    (:line, 22, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :reverse, (:call, :Pair, "13", "24")), (:call, :Pair, "24", "13"))),
+    (:line, 23, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :typeof, (:call, :reverse, (:call, (:curly, :Pair, :String, :Int64), "a", 1))), (:curly, :Pair, :Int64, :String))),
+    (:line, 25, :none),
+    (:(=), :p, (:(=>), 1, (:quote, #QuoteNode
+          :foo
+        ))),
+    (:line, 26, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :first, :p), 1)),
+    (:line, 27, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :last, :p), (:quote, #QuoteNode
+          :foo
+        ))),
+    (:line, 28, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :first, (:call, :reverse, :p)), (:quote, #QuoteNode
+          :foo
+        ))),
+    (:line, 29, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :last, (:call, :reverse, :p)), 1)),
+    (:line, 30, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :endof, :p), 2)),
+    (:line, 31, :none),
+    (:macrocall, Symbol("@test"), (:comparison, (:ref, :p, (:call, :endof, :p)), :(==), (:ref, :p, :end), :(==), (:ref, :p, 2), :(==), (:quote, #QuoteNode
+          :foo
+        ))),
+    (:line, 33, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :|, 2), 2)),
+    (:line, 34, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :$, 2), 2)),
+    (:line, 38, :none),
+    (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, (:., :Base, (:quote, #QuoteNode
+            :scalarmin
+          )), (:vect, 'a', 'b'), (:vect, 'c', 'd'))),
+    (:line, 39, :none),
+    (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, (:., :Base, (:quote, #QuoteNode
+            :scalarmin
+          )), 'a', (:vect, 'c', 'd'))),
+    (:line, 40, :none),
+    (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, (:., :Base, (:quote, #QuoteNode
+            :scalarmin
+          )), (:vect, 'a', 'b'), 'c')),
+    (:line, 41, :none),
+    (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, (:., :Base, (:quote, #QuoteNode
+            :scalarmax
+          )), (:vect, 'a', 'b'), (:vect, 'c', 'd'))),
+    (:line, 42, :none),
+    (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, (:., :Base, (:quote, #QuoteNode
+            :scalarmax
+          )), 'a', (:vect, 'c', 'd'))),
+    (:line, 43, :none),
+    (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, (:., :Base, (:quote, #QuoteNode
+            :scalarmax
+          )), (:vect, 'a', 'b'), 'c')),
+    (:line, 45, :none),
+    (:macrocall, Symbol("@test"), (:call, :lexless, 'a', 'b')),
+    (:line, 47, :none),
+    (:macrocall, Symbol("@test"), (:call, :.!=, 1, 2)),
+    (:line, 48, :none),
+    (:macrocall, Symbol("@test"), (:call, :.==, 1, 1)),
+    (:line, 49, :none),
+    (:macrocall, Symbol("@test"), (:call, :.<, 1, 2)),
+    (:line, 50, :none),
+    (:macrocall, Symbol("@test"), (:call, :.<=, 1, 2)),
+    (:line, 53, :none),
+    (:let, (:block,
+        (:line, 54, :none),
+        (:for, (:(=), :n, (:(:), 2, 10)), (:block,
+            (:line, 55, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:call, :max, (:..., (:ref, :xs, (:(:), 1, :n)))), (:vcat, (:(:), :n, (:call, :+, :n, 4)))))
+          ))
+      ), (:(=), :xs, (:comprehension, (:generator, (:vcat, (:(:), :i, (:call, :+, :i, 4))), (:(=), :i, (:(:), 1, 10))))))
+  ))

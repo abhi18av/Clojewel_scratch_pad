@@ -1,0 +1,745 @@
+(:quote, (:block,
+    (:line, 4, :none),
+    (:macrocall, Symbol("@test"), true),
+    (:line, 5, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), 1, 1)),
+    (:line, 6, :none),
+    (:macrocall, Symbol("@test"), (:call, :(!=), 1, 2)),
+    (:line, 7, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :strip, "\t  hi   \n"), "hi")),
+    (:line, 8, :none),
+    (:macrocall, Symbol("@test"), (:call, :(!=), (:call, :strip, "\t  this should fail   \n"), "hi")),
+    (:line, 11, :none),
+    (:macrocall, Symbol("@test_broken"), false),
+    (:line, 12, :none),
+    (:macrocall, Symbol("@test_broken"), (:call, :(==), 1, 2)),
+    (:line, 13, :none),
+    (:macrocall, Symbol("@test_broken"), (:call, :(!=), 1, 1)),
+    (:line, 14, :none),
+    (:macrocall, Symbol("@test_broken"), (:call, :(!=), (:call, :strip, "\t  hi   \n"), "hi")),
+    (:line, 15, :none),
+    (:macrocall, Symbol("@test_broken"), (:call, :(==), (:call, :strip, "\t  this should fail   \n"), "hi")),
+    (:line, 17, :none),
+    (:macrocall, Symbol("@test_broken"), (:call, :error)),
+    (:line, 18, :none),
+    (:macrocall, Symbol("@test_broken"), :absolute_nonsense),
+    (:line, 21, :none),
+    (:macrocall, Symbol("@test_skip"), (:call, :error)),
+    (:line, 22, :none),
+    (:macrocall, Symbol("@test_skip"), true),
+    (:line, 23, :none),
+    (:macrocall, Symbol("@test_skip"), false),
+    (:line, 24, :none),
+    (:macrocall, Symbol("@test_skip"), :gobbeldygook),
+    (:line, 26, :none),
+    (:(=), :a, (:call, :Array, :Float64, 2, 2, 2, 2, 2)),
+    (:line, 27, :none),
+    (:(=), (:ref, :a, 1, 1, 1, 1, 1), 10),
+    (:line, 28, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :a, 1, 1, 1, 1, 1), 10)),
+    (:line, 29, :none),
+    (:macrocall, Symbol("@test"), (:call, :(!=), (:ref, :a, 1, 1, 1, 1, 1), 2)),
+    (:line, 31, :none),
+    (:macrocall, Symbol("@test"), (:call, :(!=), (:call, :rand), (:call, :rand))),
+    (:line, 35, :none),
+    (:macrocall, Symbol("@test"), (:call, :contains, (:call, :sprint, :show, (:macrocall, Symbol("@test"), true)), "Expression: true")),
+    (:line, 37, :none),
+    (:macrocall, Symbol("@test"), (:call, :contains, (:call, :sprint, :show, (:macrocall, Symbol("@test"), (:call, :(==), 10, (:call, :*, 2, 5)))), "Evaluated: 10 == 10")),
+    (:line, 38, :none),
+    (:macrocall, Symbol("@test"), (:call, :contains, (:call, :sprint, :show, (:macrocall, Symbol("@test"), (:call, :!, false))), "Expression: !false")),
+    (:line, 40, :none),
+    (:macrocall, Symbol("@test"), (:call, :contains, (:call, :sprint, :show, (:macrocall, Symbol("@test_throws"), :ErrorException, (:call, :error))), "Thrown: ErrorException")),
+    (:line, 44, :none),
+    (:type, true, (:<:, :NoThrowTestSet, (:., (:., :Base, (:quote, #QuoteNode
+              :Test
+            )), (:quote, #QuoteNode
+            :AbstractTestSet
+          ))), (:block,
+        (:line, 45, :none),
+        (:(::), :results, :Vector),
+        (:line, 46, :none),
+        (:(=), (:call, :NoThrowTestSet, :desc), (:block,
+            (:line, 46, :none),
+            (:call, :new, (:vect,))
+          ))
+      )),
+    (:line, 48, :none),
+    (:(=), (:call, (:., (:., :Base, (:quote, #QuoteNode
+              :Test
+            )), (:quote, #QuoteNode
+            :record
+          )), (:(::), :ts, :NoThrowTestSet), (:(::), :t, (:., (:., :Base, (:quote, #QuoteNode
+                :Test
+              )), (:quote, #QuoteNode
+              :Result
+            )))), (:block,
+        (:line, 48, :none),
+        (:block,
+          (:call, :push!, (:., :ts, (:quote, #QuoteNode
+                :results
+              )), :t),
+          :t
+        )
+      )),
+    (:line, 49, :none),
+    (:(=), (:call, (:., (:., :Base, (:quote, #QuoteNode
+              :Test
+            )), (:quote, #QuoteNode
+            :finish
+          )), (:(::), :ts, :NoThrowTestSet)), (:block,
+        (:line, 49, :none),
+        (:., :ts, (:quote, #QuoteNode
+            :results
+          ))
+      )),
+    (:line, 50, :none),
+    (:(=), :fails, (:macrocall, Symbol("@testset"), :NoThrowTestSet, (:block,
+          (:line, 52, :none),
+          (:macrocall, Symbol("@test_throws"), :OverflowError, (:call, :error)),
+          (:line, 54, :none),
+          (:macrocall, Symbol("@test_throws"), :OverflowError, (:call, :+, 1, 1)),
+          (:line, 56, :none),
+          (:macrocall, Symbol("@test"), (:call, :(==), (:call, :+, 1, 1), (:call, :+, 2, 2))),
+          (:line, 58, :none),
+          (:macrocall, Symbol("@test_broken"), true)
+        ))),
+    (:line, 60, :none),
+    (:for, (:(=), :i, (:(:), 1, 3)), (:block,
+        (:line, 61, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, (:ref, :fails, :i), (:., (:., :Base, (:quote, #QuoteNode
+                  :Test
+                )), (:quote, #QuoteNode
+                :Fail
+              ))))
+      )),
+    (:line, 63, :none),
+    (:macrocall, Symbol("@test"), (:call, :contains, (:call, :sprint, :show, (:ref, :fails, 1)), "Thrown: ErrorException")),
+    (:line, 64, :none),
+    (:macrocall, Symbol("@test"), (:call, :contains, (:call, :sprint, :show, (:ref, :fails, 2)), "No exception thrown")),
+    (:line, 65, :none),
+    (:macrocall, Symbol("@test"), (:call, :contains, (:call, :sprint, :show, (:ref, :fails, 3)), "Evaluated: 2 == 4")),
+    (:line, 66, :none),
+    (:macrocall, Symbol("@test"), (:call, :contains, (:call, :sprint, :show, (:ref, :fails, 4)), "Unexpected Pass")),
+    (:line, 69, :none),
+    (:(=), :tse_str, (:call, :sprint, :show, (:call, (:., :Test, (:quote, #QuoteNode
+              :TestSetException
+            )), 1, 2, 3, 4))),
+    (:line, 70, :none),
+    (:macrocall, Symbol("@test"), (:call, :contains, :tse_str, "1 passed")),
+    (:line, 71, :none),
+    (:macrocall, Symbol("@test"), (:call, :contains, :tse_str, "2 failed")),
+    (:line, 72, :none),
+    (:macrocall, Symbol("@test"), (:call, :contains, :tse_str, "3 errored")),
+    (:line, 73, :none),
+    (:macrocall, Symbol("@test"), (:call, :contains, :tse_str, "4 broken")),
+    (:line, 75, :none),
+    (:macrocall, Symbol("@test"), (:call, :(!==), (:call, (:., :Test, (:quote, #QuoteNode
+              :finish
+            )), (:call, (:., :Test, (:quote, #QuoteNode
+                :FallbackTestSet
+              )))), :nothing)),
+    (:line, 77, :none),
+    (:(=), :OLD_STDOUT, :STDOUT),
+    (:line, 78, :none),
+    (:(=), :catch_out, (:call, :IOStream, "")),
+    (:line, 79, :none),
+    (:(=), (:tuple, :rd, :wr), (:call, :redirect_stdout)),
+    (:line, 82, :none),
+    (:macrocall, Symbol("@test_throws"), :ErrorException, (:macrocall, Symbol("@test"), (:call, :(==), 1, 2))),
+    (:line, 84, :none),
+    (:macrocall, Symbol("@testset"), "no errors", (:block,
+        (:line, 85, :none),
+        (:macrocall, Symbol("@test"), true),
+        (:line, 86, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), 1, 1))
+      )),
+    (:line, 90, :none),
+    (:macrocall, Symbol("@testset"), "outer", (:block,
+        (:line, 91, :none),
+        (:macrocall, Symbol("@testset"), "inner", (:block,
+            (:line, 92, :none)
+          ))
+      )),
+    (:line, 95, :none),
+    (:try, (:block,
+        (:line, 95, :none),
+        (:macrocall, Symbol("@testset"), "outer", (:block,
+            (:line, 96, :none),
+            (:macrocall, Symbol("@testset"), "inner1", (:block,
+                (:line, 97, :none),
+                (:macrocall, Symbol("@test"), true),
+                (:line, 98, :none),
+                (:macrocall, Symbol("@test"), false),
+                (:line, 99, :none),
+                (:macrocall, Symbol("@test"), (:call, :(==), 1, 1)),
+                (:line, 100, :none),
+                (:macrocall, Symbol("@test"), (:call, :(==), 2, (:quote, #QuoteNode
+                      :foo
+                    ))),
+                (:line, 101, :none),
+                (:macrocall, Symbol("@test"), (:call, :(==), 3, 3)),
+                (:line, 102, :none),
+                (:macrocall, Symbol("@testset"), "d", (:block,
+                    (:line, 103, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), 4, 4))
+                  )),
+                (:line, 105, :none),
+                (:macrocall, Symbol("@testset"), (:block,
+                    (:line, 106, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(!=), (:quote, #QuoteNode
+                          :blank
+                        ), (:quote, #QuoteNode
+                          :notblank
+                        )))
+                  ))
+              )),
+            (:line, 109, :none),
+            (:macrocall, Symbol("@testset"), "inner1", (:block,
+                (:line, 110, :none),
+                (:macrocall, Symbol("@test"), (:call, :(==), 1, 1)),
+                (:line, 111, :none),
+                (:macrocall, Symbol("@test"), (:call, :(==), 2, 2)),
+                (:line, 112, :none),
+                (:macrocall, Symbol("@test"), (:call, :(==), 3, (:quote, #QuoteNode
+                      :bar
+                    ))),
+                (:line, 113, :none),
+                (:macrocall, Symbol("@test"), (:call, :(==), 4, 4)),
+                (:line, 114, :none),
+                (:macrocall, Symbol("@test_throws"), :ErrorException, (:call, :+, 1, 1)),
+                (:line, 115, :none),
+                (:macrocall, Symbol("@test_throws"), :ErrorException, (:call, :error)),
+                (:line, 116, :none),
+                (:macrocall, Symbol("@test_throws"), :RemoteException, (:call, :error)),
+                (:line, 117, :none),
+                (:macrocall, Symbol("@testset"), "errrrr", (:block,
+                    (:line, 118, :none),
+                    (:macrocall, Symbol("@test"), "not bool"),
+                    (:line, 119, :none),
+                    (:macrocall, Symbol("@test"), (:call, :error))
+                  )),
+                (:line, 122, :none),
+                (:call, :error, "exceptions in testsets should be caught"),
+                (:line, 123, :none),
+                (:macrocall, Symbol("@test"), (:call, :(==), 1, 1))
+              )),
+            (:line, 126, :none),
+            (:macrocall, Symbol("@testset"), "loop with desc", (:block,
+                (:line, 127, :none),
+                (:macrocall, Symbol("@testset"), (:string, "loop1 ", :T), (:for, (:(=), :T, (:tuple, :Float32, :Float64)), (:block,
+                      (:line, 128, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), 1, (:call, :T, 1)))
+                    )))
+              )),
+            (:line, 131, :none),
+            (:macrocall, Symbol("@testset"), "loops without desc", (:block,
+                (:line, 132, :none),
+                (:macrocall, Symbol("@testset"), (:for, (:(=), :T, (:tuple, :Float32, :Float64)), (:block,
+                      (:line, 133, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), 1, (:call, :T, 1)))
+                    ))),
+                (:line, 135, :none),
+                (:macrocall, Symbol("@testset"), (:for, (:block,
+                      (:(=), :T, (:tuple, :Float32, :Float64)),
+                      (:(=), :S, (:tuple, :Int32, :Int64))
+                    ), (:block,
+                      (:line, 136, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :S, 1), (:call, :T, 1)))
+                    )))
+              )),
+            (:line, 139, :none),
+            (:call, :srand, 123),
+            (:line, 140, :none),
+            (:macrocall, Symbol("@testset"), "some loops fail", (:block,
+                (:line, 141, :none),
+                (:macrocall, Symbol("@testset"), (:for, (:(=), :i, (:(:), 1, 5)), (:block,
+                      (:line, 142, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(<=), :i, (:call, :rand, (:(:), 1, 10))))
+                    ))),
+                (:line, 145, :none),
+                (:macrocall, Symbol("@testset"), (:for, (:(=), :i, (:(:), 1, 6)), (:block,
+                      (:line, 146, :none),
+                      (:||, (:call, :iseven, :i), (:call, :error, "error outside of test")),
+                      (:line, 147, :none),
+                      (:macrocall, Symbol("@test"), true)
+                    )))
+              ))
+          )),
+        (:line, 152, :none),
+        (:call, :redirect_stdout, :OLD_STDOUT),
+        (:line, 153, :none),
+        (:call, :error, "No exception was thrown!")
+      ), :ex, (:block,
+        (:line, 155, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, :ex, (:., :Test, (:quote, #QuoteNode
+                :TestSetException
+              )))),
+        (:line, 156, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :ex, (:quote, #QuoteNode
+                :pass
+              )), 24)),
+        (:line, 157, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :ex, (:quote, #QuoteNode
+                :fail
+              )), 6)),
+        (:line, 158, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :ex, (:quote, #QuoteNode
+                :error
+              )), 6)),
+        (:line, 159, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :ex, (:quote, #QuoteNode
+                :broken
+              )), 0))
+      )),
+    (:line, 164, :none),
+    (:macrocall, Symbol("@test"), (:call, :isapprox, (:call, :+, 0.1, 0.1, 0.1), 0.3)),
+    (:line, 165, :none),
+    (:macrocall, Symbol("@test"), (:call, :!, (:call, :isapprox, (:call, :+, 0.1, 0.1, 0.1), 0.4))),
+    (:line, 167, :none),
+    (:macrocall, Symbol("@test_throws"), :ErrorException, (:call, (:., :Test, (:quote, #QuoteNode
+            :test_approx_eq
+          )), (:call, :ones, 10), (:call, :ones, 11), 1.0e-8, "a", "b")),
+    (:line, 168, :none),
+    (:macrocall, Symbol("@test_throws"), :ErrorException, (:call, (:., :Test, (:quote, #QuoteNode
+            :test_approx_eq
+          )), (:call, :ones, 10), (:call, :zeros, 10), 1.0e-8, "a", "b")),
+    (:line, 173, :none),
+    (:(=), :ts, (:macrocall, Symbol("@testset"), "@testset should return the testset", (:block,
+          (:line, 174, :none),
+          (:macrocall, Symbol("@test"), true)
+        ))),
+    (:line, 176, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :typeof, :ts), (:., (:., :Base, (:quote, #QuoteNode
+              :Test
+            )), (:quote, #QuoteNode
+            :DefaultTestSet
+          )))),
+    (:line, 177, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:., :ts, (:quote, #QuoteNode
+            :n_passed
+          )), 1)),
+    (:line, 179, :none),
+    (:(=), :tss, (:macrocall, Symbol("@testset"), (:string, "@testset/for should return an array of testsets: ", :i), (:for, (:(=), :i, (:(:), 1, 3)), (:block,
+            (:line, 180, :none),
+            (:macrocall, Symbol("@test"), true)
+          )))),
+    (:line, 182, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :tss), 3)),
+    (:line, 183, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :typeof, (:ref, :tss, 1)), (:., (:., :Base, (:quote, #QuoteNode
+              :Test
+            )), (:quote, #QuoteNode
+            :DefaultTestSet
+          )))),
+    (:line, 184, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, :tss, 1), (:quote, #QuoteNode
+            :n_passed
+          )), 1)),
+    (:line, 187, :none),
+    (:(=), :testset_depth17908, (:call, (:., :Test, (:quote, #QuoteNode
+            :get_testset_depth
+          )))),
+    (:line, 188, :none),
+    (:macrocall, Symbol("@testset"), (:for, (:(=), :i, (:(:), 1, 3)), (:block,
+          (:line, 189, :none),
+          (:&&, (:call, :>, :i, 1), (:return, nothing)),
+          (:line, 190, :none),
+          (:macrocall, Symbol("@test"), (:call, :(==), :i, 1))
+        ))),
+    (:line, 195, :none),
+    (:macrocall, Symbol("@assert"), (:call, :(==), :testset_depth17908, (:call, (:., :Test, (:quote, #QuoteNode
+              :get_testset_depth
+            ))))),
+    (:line, 198, :none),
+    (:(=), :testset_depth17462, (:call, (:., :Test, (:quote, #QuoteNode
+            :get_testset_depth
+          )))),
+    (:line, 199, :none),
+    (:(=), :counter_17462_pre, 0),
+    (:line, 200, :none),
+    (:(=), :counter_17462_post, 0),
+    (:line, 201, :none),
+    (:(=), :tss17462, (:macrocall, Symbol("@testset"), (:for, (:(=), :x, (:vect, 1, 2, 3, 4)), (:block,
+            (:line, 202, :none),
+            (:+=, :counter_17462_pre, 1),
+            (:line, 203, :none),
+            (:if, (:call, :(==), :x, 1), (:block,
+                (:line, 204, :none),
+                (:macrocall, Symbol("@test"), (:call, :(==), :counter_17462_pre, :x)),
+                (:line, 205, :none),
+                (:continue,),
+                (:line, 206, :none),
+                (:macrocall, Symbol("@test"), false)
+              ), (:block,
+                (:line, 207, :none),
+                (:if, (:call, :(==), :x, 3), (:block,
+                    (:line, 208, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), :counter_17462_pre, :x)),
+                    (:line, 209, :none),
+                    (:break,),
+                    (:line, 210, :none),
+                    (:macrocall, Symbol("@test"), false)
+                  ), (:block,
+                    (:line, 211, :none),
+                    (:if, (:call, :(==), :x, 4), (:block,
+                        (:line, 212, :none),
+                        (:macrocall, Symbol("@test"), false)
+                      ), (:block,
+                        (:line, 214, :none),
+                        (:macrocall, Symbol("@test"), (:call, :(==), :counter_17462_pre, :x)),
+                        (:line, 215, :none),
+                        (:macrocall, Symbol("@test"), (:call, :(==), :x, 2)),
+                        (:line, 216, :none),
+                        (:macrocall, Symbol("@test"), (:call, :(==), :counter_17462_post, 0))
+                      ))
+                  ))
+              )),
+            (:line, 218, :none),
+            (:+=, :counter_17462_post, 1)
+          )))),
+    (:line, 222, :none),
+    (:macrocall, Symbol("@assert"), (:call, :(==), :testset_depth17462, (:call, (:., :Test, (:quote, #QuoteNode
+              :get_testset_depth
+            ))))),
+    (:line, 223, :none),
+    (:macrocall, Symbol("@assert"), (:call, :(==), (:call, :length, :tss17462), 3)),
+    (:line, 224, :none),
+    (:for, (:(=), :ts17462, :tss17462), (:block,
+        (:line, 225, :none),
+        (:macrocall, Symbol("@assert"), (:call, :isa, :ts17462, (:., (:., :Base, (:quote, #QuoteNode
+                  :Test
+                )), (:quote, #QuoteNode
+                :DefaultTestSet
+              ))))
+      )),
+    (:line, 227, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), :counter_17462_pre, 3)),
+    (:line, 228, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), :counter_17462_post, 1)),
+    (:line, 231, :none),
+    (:(=), :ts, (:try, (:block,
+          (:line, 232, :none),
+          (:macrocall, Symbol("@testset"), "@test_broken and @test_skip should not give an exception", (:block,
+              (:line, 233, :none),
+              (:macrocall, Symbol("@test_broken"), false),
+              (:line, 234, :none),
+              (:macrocall, Symbol("@test_skip"), true),
+              (:line, 235, :none),
+              (:macrocall, Symbol("@test_skip"), false)
+            ))
+        ), false, (:block,
+          (:line, 238, :none),
+          :nothing
+        ))),
+    (:line, 240, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :typeof, :ts), (:., (:., :Base, (:quote, #QuoteNode
+              :Test
+            )), (:quote, #QuoteNode
+            :DefaultTestSet
+          )))),
+    (:line, 243, :none),
+    (:call, :redirect_stdout, :OLD_STDOUT),
+    (:line, 246, :none),
+    (:toplevel, (:import, :Base, :Test, :record), (:import, :Base, :Test, :finish)),
+    (:line, 247, :none),
+    (:toplevel, (:using, :Base, :Test, :get_testset_depth), (:using, :Base, :Test, :get_testset)),
+    (:line, 248, :none),
+    (:toplevel, (:using, :Base, :Test, :AbstractTestSet), (:using, :Base, :Test, :Result), (:using, :Base, :Test, :Pass), (:using, :Base, :Test, :Fail), (:using, :Base, :Test, :Error)),
+    (:line, 249, :none),
+    (:type, false, (:<:, :CustomTestSet, (:., (:., :Base, (:quote, #QuoteNode
+              :Test
+            )), (:quote, #QuoteNode
+            :AbstractTestSet
+          ))), (:block,
+        (:line, 250, :none),
+        (:(::), :description, :AbstractString),
+        (:line, 251, :none),
+        (:(::), :foo, :Int),
+        (:line, 252, :none),
+        (:(::), :results, :Vector),
+        (:line, 254, :none),
+        (:(=), (:call, :CustomTestSet, (:parameters, (:kw, :foo, 1)), :desc), (:block,
+            (:line, 254, :none),
+            (:call, :new, :desc, :foo, (:vect,))
+          ))
+      )),
+    (:line, 257, :none),
+    (:(=), (:call, :record, (:(::), :ts, :CustomTestSet), (:(::), :child, :AbstractTestSet)), (:block,
+        (:line, 257, :none),
+        (:call, :push!, (:., :ts, (:quote, #QuoteNode
+              :results
+            )), :child)
+      )),
+    (:line, 258, :none),
+    (:(=), (:call, :record, (:(::), :ts, :CustomTestSet), (:(::), :res, :Result)), (:block,
+        (:line, 258, :none),
+        (:call, :push!, (:., :ts, (:quote, #QuoteNode
+              :results
+            )), :res)
+      )),
+    (:line, 259, :none),
+    (:function, (:call, :finish, (:(::), :ts, :CustomTestSet)), (:block,
+        (:line, 261, :none),
+        (:if, (:call, :>, (:call, :get_testset_depth), 0), (:block,
+            (:line, 262, :none),
+            (:call, :record, (:call, :get_testset), :ts)
+          )),
+        (:line, 264, :none),
+        :ts
+      )),
+    (:line, 267, :none),
+    (:(=), :ts, (:macrocall, Symbol("@testset"), :CustomTestSet, "Testing custom testsets", (:block,
+          (:line, 269, :none),
+          (:macrocall, Symbol("@testset"), "custom testset inner 1", (:block,
+              (:line, 270, :none),
+              (:macrocall, Symbol("@test"), true),
+              (:line, 271, :none),
+              (:macrocall, Symbol("@test"), false),
+              (:line, 272, :none),
+              (:macrocall, Symbol("@test"), (:call, :error, "this error will be reported as an error")),
+              (:line, 273, :none),
+              (:macrocall, Symbol("@test_throws"), :ErrorException, :nothing),
+              (:line, 274, :none),
+              (:macrocall, Symbol("@test_throws"), :ErrorException, (:call, :error, "this error is a success"))
+            )),
+          (:line, 277, :none),
+          (:macrocall, Symbol("@testset"), :CustomTestSet, (:(=), :foo, 4), "custom testset inner 2", (:block,
+              (:line, 281, :none),
+              (:macrocall, Symbol("@testset"), "custom testset inner 2 inner 1", (:block,
+                  (:line, 282, :none),
+                  (:macrocall, Symbol("@test"), true)
+                )),
+              (:line, 286, :none),
+              (:macrocall, Symbol("@testset"), (:(=), :foo, (:call, :+, 1, 2)), "custom testset inner 2 inner 2", (:block,
+                  (:line, 287, :none),
+                  (:macrocall, Symbol("@test"), true)
+                ))
+            ))
+        ))),
+    (:line, 292, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :typeof, :ts), :CustomTestSet)),
+    (:line, 293, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:., :ts, (:quote, #QuoteNode
+            :foo
+          )), 1)),
+    (:line, 294, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:., :ts, (:quote, #QuoteNode
+            :description
+          )), "Testing custom testsets")),
+    (:line, 295, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :typeof, (:ref, (:., :ts, (:quote, #QuoteNode
+                :results
+              )), 1)), :CustomTestSet)),
+    (:line, 296, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, (:., :ts, (:quote, #QuoteNode
+                :results
+              )), 1), (:quote, #QuoteNode
+            :description
+          )), "custom testset inner 1")),
+    (:line, 297, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, (:., :ts, (:quote, #QuoteNode
+                :results
+              )), 1), (:quote, #QuoteNode
+            :foo
+          )), 1)),
+    (:line, 298, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :typeof, (:ref, (:., (:ref, (:., :ts, (:quote, #QuoteNode
+                    :results
+                  )), 1), (:quote, #QuoteNode
+                :results
+              )), 1)), :Pass)),
+    (:line, 299, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :typeof, (:ref, (:., (:ref, (:., :ts, (:quote, #QuoteNode
+                    :results
+                  )), 1), (:quote, #QuoteNode
+                :results
+              )), 2)), :Fail)),
+    (:line, 300, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :typeof, (:ref, (:., (:ref, (:., :ts, (:quote, #QuoteNode
+                    :results
+                  )), 1), (:quote, #QuoteNode
+                :results
+              )), 3)), :Error)),
+    (:line, 301, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :typeof, (:ref, (:., (:ref, (:., :ts, (:quote, #QuoteNode
+                    :results
+                  )), 1), (:quote, #QuoteNode
+                :results
+              )), 4)), :Fail)),
+    (:line, 302, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :typeof, (:ref, (:., (:ref, (:., :ts, (:quote, #QuoteNode
+                    :results
+                  )), 1), (:quote, #QuoteNode
+                :results
+              )), 5)), :Pass)),
+    (:line, 304, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :typeof, (:ref, (:., :ts, (:quote, #QuoteNode
+                :results
+              )), 2)), :CustomTestSet)),
+    (:line, 305, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, (:., :ts, (:quote, #QuoteNode
+                :results
+              )), 2), (:quote, #QuoteNode
+            :description
+          )), "custom testset inner 2")),
+    (:line, 306, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, (:., :ts, (:quote, #QuoteNode
+                :results
+              )), 2), (:quote, #QuoteNode
+            :foo
+          )), 4)),
+    (:line, 307, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :typeof, (:ref, (:., (:ref, (:., :ts, (:quote, #QuoteNode
+                    :results
+                  )), 2), (:quote, #QuoteNode
+                :results
+              )), 1)), :CustomTestSet)),
+    (:line, 308, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, (:., (:ref, (:., :ts, (:quote, #QuoteNode
+                    :results
+                  )), 2), (:quote, #QuoteNode
+                :results
+              )), 1), (:quote, #QuoteNode
+            :foo
+          )), 1)),
+    (:line, 309, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :typeof, (:ref, (:., (:ref, (:., (:ref, (:., :ts, (:quote, #QuoteNode
+                        :results
+                      )), 2), (:quote, #QuoteNode
+                    :results
+                  )), 1), (:quote, #QuoteNode
+                :results
+              )), 1)), :Pass)),
+    (:line, 310, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :typeof, (:ref, (:., (:ref, (:., :ts, (:quote, #QuoteNode
+                    :results
+                  )), 2), (:quote, #QuoteNode
+                :results
+              )), 2)), :CustomTestSet)),
+    (:line, 311, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, (:., (:ref, (:., :ts, (:quote, #QuoteNode
+                    :results
+                  )), 2), (:quote, #QuoteNode
+                :results
+              )), 2), (:quote, #QuoteNode
+            :foo
+          )), 3)),
+    (:line, 314, :none),
+    (:(=), :tss, (:macrocall, Symbol("@testset"), :CustomTestSet, (:(=), :foo, 3), (:string, "custom testset ", :i), (:for, (:(=), :i, (:(:), 1, 6)), (:block,
+            (:line, 315, :none),
+            (:macrocall, Symbol("@testset"), (:string, "inner testset ", :i, "-", :j), (:for, (:(=), :j, (:(:), 1, 3)), (:block,
+                  (:line, 316, :none),
+                  (:macrocall, Symbol("@test"), (:call, :iseven, (:call, :+, :i, :j)))
+                ))),
+            (:line, 319, :none),
+            (:macrocall, Symbol("@testset"), (:string, "inner testset ", :i), (:block,
+                (:line, 320, :none),
+                (:macrocall, Symbol("@test"), (:call, :iseven, :i))
+              ))
+          )))),
+    (:line, 325, :none),
+    (:for, (:(=), :i, (:(:), 1, 6)), (:block,
+        (:line, 326, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :typeof, (:ref, :tss, :i)), :CustomTestSet)),
+        (:line, 327, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, :tss, :i), (:quote, #QuoteNode
+                :foo
+              )), 3)),
+        (:line, 328, :none),
+        (:for, (:(=), :j, (:(:), 1, 3)), (:block,
+            (:line, 329, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:call, :typeof, (:ref, (:., (:ref, :tss, :i), (:quote, #QuoteNode
+                        :results
+                      )), :j)), :CustomTestSet)),
+            (:line, 330, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, (:., (:ref, :tss, :i), (:quote, #QuoteNode
+                        :results
+                      )), :j), (:quote, #QuoteNode
+                    :foo
+                  )), 1)),
+            (:line, 331, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:call, :typeof, (:ref, (:., (:ref, (:., (:ref, :tss, :i), (:quote, #QuoteNode
+                            :results
+                          )), :j), (:quote, #QuoteNode
+                        :results
+                      )), 1)), (:if, (:call, :iseven, (:call, :+, :i, :j)), :Pass, :Fail)))
+          )),
+        (:line, 333, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :typeof, (:ref, (:., (:ref, :tss, :i), (:quote, #QuoteNode
+                    :results
+                  )), 4)), :CustomTestSet)),
+        (:line, 334, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :typeof, (:ref, (:., (:ref, (:., (:ref, :tss, :i), (:quote, #QuoteNode
+                        :results
+                      )), 4), (:quote, #QuoteNode
+                    :results
+                  )), 1)), (:if, (:call, :iseven, :i), :Pass, :Fail)))
+      )),
+    (:line, 338, :none),
+    (:function, (:call, :uninferrable_function, :i), (:block,
+        (:line, 339, :none),
+        (:(=), :q, (:vect, 1, "1")),
+        (:line, 340, :none),
+        (:return, (:ref, :q, :i))
+      )),
+    (:line, 343, :none),
+    (:macrocall, Symbol("@test_throws"), :ErrorException, (:macrocall, Symbol("@inferred"), (:call, :uninferrable_function, 1))),
+    (:line, 344, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@inferred"), (:call, :identity, 1)), 1)),
+    (:line, 347, :none),
+    (:(=), :inferred_test_global, 0),
+    (:line, 348, :none),
+    (:function, (:call, :inferred_test_function), (:block,
+        (:line, 349, :none),
+        (:global, :inferred_test_global),
+        (:line, 350, :none),
+        (:+=, :inferred_test_global, 1),
+        (:line, 351, :none),
+        true
+      )),
+    (:line, 353, :none),
+    (:macrocall, Symbol("@test"), (:macrocall, Symbol("@inferred"), (:call, :inferred_test_function))),
+    (:line, 354, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), :inferred_test_global, 1)),
+    (:line, 357, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@inferred"), (:ref, (:(:), 1, 3), 2)), 2)),
+    (:line, 358, :none),
+    (:type, false, (:<:, :SillyArray, (:curly, :AbstractArray, :Float64, 1)), (:block,
+        (:line, 358, :none)
+      )),
+    (:line, 359, :none),
+    (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+            :getindex
+          )), (:(::), :a, :SillyArray), :i), (:block,
+        (:line, 359, :none),
+        (:if, (:call, :>, (:call, :rand), 0.5), 0, false)
+      )),
+    (:line, 360, :none),
+    (:(=), :test_result, (:macrocall, Symbol("@test_throws"), :ErrorException, (:macrocall, Symbol("@inferred"), (:ref, (:call, :SillyArray), 2)))),
+    (:line, 361, :none),
+    (:macrocall, Symbol("@test"), (:call, :contains, (:., (:., :test_result, (:quote, #QuoteNode
+              :value
+            )), (:quote, #QuoteNode
+            :msg
+          )), "Bool")),
+    (:line, 365, :none),
+    (:macrocall, Symbol("@test_throws"), :Exception, (:call, :error, "")),
+    (:line, 369, :none),
+    (:function, (:call, :inferrable_kwtest, (:parameters, (:kw, :y, 1)), :x), (:block,
+        (:line, 370, :none),
+        (:call, :*, 2, :x)
+      )),
+    (:line, 372, :none),
+    (:function, (:call, :uninferrable_kwtest, (:parameters, (:kw, :y, 1)), :x), (:block,
+        (:line, 373, :none),
+        (:call, :+, (:call, :*, 2, :x), :y)
+      )),
+    (:line, 375, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@inferred"), (:call, :inferrable_kwtest, 1)), 2)),
+    (:line, 376, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@inferred"), (:call, :inferrable_kwtest, (:parameters, (:kw, :y, 1)), 1)), 2)),
+    (:line, 377, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@inferred"), (:call, :uninferrable_kwtest, 1)), 3)),
+    (:line, 378, :none),
+    (:macrocall, Symbol("@test_throws"), :ErrorException, (:call, :(==), (:macrocall, Symbol("@inferred"), (:call, :uninferrable_kwtest, (:parameters, (:kw, :y, 2)), 1)), 2))
+  ))

@@ -1,0 +1,126 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:export, :threadid, :nthreads, Symbol("@threads")),
+    (:line, 5, :none),
+    "    Threads.threadid()\n\nGet the ID number of the current thread of execution. The master thread has ID `1`.\n",
+    (:line, 10, :none),
+    (:(=), (:call, :threadid), (:block,
+        (:line, 10, :none),
+        (:call, :Int, (:call, :+, (:ccall, (:quote, #QuoteNode
+                :jl_threadid
+              ), :Int16, (:tuple,)), 1))
+      )),
+    (:line, 13, :none),
+    "    Threads.nthreads()\n\nGet the number of threads available to the Julia process. This is the inclusive upper bound\non `threadid()`.\n",
+    (:line, 19, :none),
+    (:(=), (:call, :nthreads), (:block,
+        (:line, 19, :none),
+        (:call, :Int, (:call, :unsafe_load, (:call, :cglobal, (:quote, #QuoteNode
+                :jl_n_threads
+              ), :Cint)))
+      )),
+    (:line, 21, :none),
+    (:function, (:call, :_threadsfor, :iter, :lbody), (:block,
+        (:line, 22, :none),
+        (:(=), :fun, (:call, :gensym, "_threadsfor")),
+        (:line, 23, :none),
+        (:(=), :lidx, (:ref, (:., :iter, (:quote, #QuoteNode
+                :args
+              )), 1)),
+        (:line, 24, :none),
+        (:(=), :range, (:ref, (:., :iter, (:quote, #QuoteNode
+                :args
+              )), 2)),
+        (:line, 25, :none),
+        (:quote, (:block,
+            (:line, 26, :none),
+            (:function, (:call, (:$, :fun)), (:block,
+                (:line, 27, :none),
+                (:(=), :tid, (:call, :threadid)),
+                (:line, 28, :none),
+                (:(=), :r, (:$, (:call, :esc, :range))),
+                (:line, 30, :none),
+                (:(=), (:tuple, :len, :rem), (:call, :divrem, (:call, :length, :r), (:call, :nthreads))),
+                (:line, 32, :none),
+                (:if, (:call, :(==), :len, 0), (:block,
+                    (:line, 33, :none),
+                    (:if, (:call, :>, :tid, :rem), (:block,
+                        (:line, 34, :none),
+                        (:return, nothing)
+                      )),
+                    (:line, 36, :none),
+                    (:(=), (:tuple, :len, :rem), (:tuple, 1, 0))
+                  )),
+                (:line, 39, :none),
+                (:(=), :f, (:call, :+, 1, (:call, :*, (:call, :-, :tid, 1), :len))),
+                (:line, 40, :none),
+                (:(=), :l, (:call, :-, (:call, :+, :f, :len), 1)),
+                (:line, 42, :none),
+                (:if, (:call, :>, :rem, 0), (:block,
+                    (:line, 43, :none),
+                    (:if, (:call, :(<=), :tid, :rem), (:block,
+                        (:line, 44, :none),
+                        (:(=), :f, (:call, :+, :f, (:call, :-, :tid, 1))),
+                        (:line, 45, :none),
+                        (:(=), :l, (:call, :+, :l, :tid))
+                      ), (:block,
+                        (:line, 47, :none),
+                        (:(=), :f, (:call, :+, :f, :rem)),
+                        (:line, 48, :none),
+                        (:(=), :l, (:call, :+, :l, :rem))
+                      ))
+                  )),
+                (:line, 52, :none),
+                (:for, (:(=), :i, (:(:), :f, :l)), (:block,
+                    (:line, 53, :none),
+                    (:local, (:(=), (:$, (:call, :esc, :lidx)), (:call, (:., :Base, (:quote, #QuoteNode
+                              :unsafe_getindex
+                            )), :r, :i))),
+                    (:line, 54, :none),
+                    (:$, (:call, :esc, :lbody))
+                  ))
+              )),
+            (:line, 57, :none),
+            (:ccall, (:quote, #QuoteNode
+                :jl_threading_run
+              ), :Void, (:tuple, :Any), (:call, (:., :Core, (:quote, #QuoteNode
+                    :svec
+                  )), (:$, :fun)))
+          ))
+      )),
+    (:line, 60, :none),
+    "    Threads.@threads\n\nA macro to parallelize a for-loop to run with multiple threads. This spawns `nthreads()`\nnumber of threads, splits the iteration space amongst them, and iterates in parallel.\nA barrier is placed at the end of the loop which waits for all the threads to finish\nexecution, and the loop returns.\n",
+    (:line, 68, :none),
+    (:macro, (:call, :threads, (:..., :args)), (:block,
+        (:line, 69, :none),
+        (:(=), :na, (:call, :length, :args)),
+        (:line, 70, :none),
+        (:if, (:call, :(!=), :na, 1), (:block,
+            (:line, 71, :none),
+            (:call, :throw, (:call, :ArgumentError, "wrong number of arguments in @threads"))
+          )),
+        (:line, 73, :none),
+        (:(=), :ex, (:ref, :args, 1)),
+        (:line, 74, :none),
+        (:if, (:call, :!, (:call, :isa, :ex, :Expr)), (:block,
+            (:line, 75, :none),
+            (:call, :throw, (:call, :ArgumentError, "need an expression argument to @threads"))
+          )),
+        (:line, 77, :none),
+        (:if, (:call, :is, (:., :ex, (:quote, #QuoteNode
+                :head
+              )), (:quote, #QuoteNode
+              :for
+            )), (:block,
+            (:line, 78, :none),
+            (:return, (:call, :_threadsfor, (:ref, (:., :ex, (:quote, #QuoteNode
+                      :args
+                    )), 1), (:ref, (:., :ex, (:quote, #QuoteNode
+                      :args
+                    )), 2)))
+          ), (:block,
+            (:line, 80, :none),
+            (:call, :throw, (:call, :ArgumentError, "unrecognized argument to @threads"))
+          ))
+      ))
+  ))

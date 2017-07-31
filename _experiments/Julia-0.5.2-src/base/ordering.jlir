@@ -1,0 +1,165 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:module, true, :Order, (:block,
+        (:line, 3, :none),
+        (:line, 7, :none),
+        (:export, :Ordering, :Forward, :Reverse, :Lexicographic, :By, :Lt, :Perm, :ReverseOrdering, :ForwardOrdering, :LexicographicOrdering, :DirectOrdering, :lt, :ord, :ordtype),
+        (:line, 14, :none),
+        (:abstract, :Ordering),
+        (:line, 16, :none),
+        (:type, false, (:<:, :ForwardOrdering, :Ordering), (:block,
+            (:line, 16, :none)
+          )),
+        (:line, 17, :none),
+        (:type, false, (:<:, (:curly, :ReverseOrdering, (:<:, :Fwd, :Ordering)), :Ordering), (:block,
+            (:line, 18, :none),
+            (:(::), :fwd, :Fwd)
+          )),
+        (:line, 21, :none),
+        (:(=), (:call, :ReverseOrdering, (:(::), :rev, :ReverseOrdering)), (:block,
+            (:line, 21, :none),
+            (:., :rev, (:quote, #QuoteNode
+                :fwd
+              ))
+          )),
+        (:line, 22, :none),
+        (:(=), (:call, (:curly, :ReverseOrdering, :Fwd), (:(::), :fwd, :Fwd)), (:block,
+            (:line, 22, :none),
+            (:call, (:curly, :ReverseOrdering, :Fwd), :fwd)
+          )),
+        (:line, 24, :none),
+        (:typealias, :DirectOrdering, (:curly, :Union, :ForwardOrdering, (:curly, :ReverseOrdering, :ForwardOrdering))),
+        (:line, 26, :none),
+        (:const, (:(=), :Forward, (:call, :ForwardOrdering))),
+        (:line, 27, :none),
+        (:const, (:(=), :Reverse, (:call, :ReverseOrdering, :Forward))),
+        (:line, 29, :none),
+        (:type, false, (:<:, :LexicographicOrdering, :Ordering), (:block,
+            (:line, 29, :none)
+          )),
+        (:line, 30, :none),
+        (:const, (:(=), :Lexicographic, (:call, :LexicographicOrdering))),
+        (:line, 32, :none),
+        (:type, false, (:<:, (:curly, :By, :T), :Ordering), (:block,
+            (:line, 33, :none),
+            (:(::), :by, :T)
+          )),
+        (:line, 36, :none),
+        (:type, false, (:<:, (:curly, :Lt, :T), :Ordering), (:block,
+            (:line, 37, :none),
+            (:(::), :lt, :T)
+          )),
+        (:line, 40, :none),
+        (:type, false, (:<:, (:curly, :Perm, (:<:, :O, :Ordering), (:<:, :V, :AbstractVector)), :Ordering), (:block,
+            (:line, 41, :none),
+            (:(::), :order, :O),
+            (:line, 42, :none),
+            (:(::), :data, :V)
+          )),
+        (:line, 45, :none),
+        (:(=), (:call, :lt, (:(::), :o, :ForwardOrdering), :a, :b), (:block,
+            (:line, 45, :none),
+            (:call, :isless, :a, :b)
+          )),
+        (:line, 46, :none),
+        (:(=), (:call, :lt, (:(::), :o, :ReverseOrdering), :a, :b), (:block,
+            (:line, 46, :none),
+            (:call, :lt, (:., :o, (:quote, #QuoteNode
+                  :fwd
+                )), :b, :a)
+          )),
+        (:line, 47, :none),
+        (:(=), (:call, :lt, (:(::), :o, :By), :a, :b), (:block,
+            (:line, 47, :none),
+            (:call, :isless, (:call, (:., :o, (:quote, #QuoteNode
+                    :by
+                  )), :a), (:call, (:., :o, (:quote, #QuoteNode
+                    :by
+                  )), :b))
+          )),
+        (:line, 48, :none),
+        (:(=), (:call, :lt, (:(::), :o, :Lt), :a, :b), (:block,
+            (:line, 48, :none),
+            (:call, (:., :o, (:quote, #QuoteNode
+                  :lt
+                )), :a, :b)
+          )),
+        (:line, 49, :none),
+        (:(=), (:call, :lt, (:(::), :o, :LexicographicOrdering), :a, :b), (:block,
+            (:line, 49, :none),
+            (:call, :<, (:call, :lexcmp, :a, :b), 0)
+          )),
+        (:line, 51, :none),
+        (:function, (:call, :lt, (:(::), :p, :Perm), (:(::), :a, :Integer), (:(::), :b, :Integer)), (:block,
+            (:line, 52, :none),
+            (:(=), :da, (:ref, (:., :p, (:quote, #QuoteNode
+                    :data
+                  )), :a)),
+            (:line, 53, :none),
+            (:(=), :db, (:ref, (:., :p, (:quote, #QuoteNode
+                    :data
+                  )), :b)),
+            (:line, 54, :none),
+            (:call, :|, (:call, :lt, (:., :p, (:quote, #QuoteNode
+                    :order
+                  )), :da, :db), (:call, :&, (:call, :!, (:call, :lt, (:., :p, (:quote, #QuoteNode
+                        :order
+                      )), :db, :da)), (:call, :<, :a, :b)))
+          )),
+        (:line, 56, :none),
+        (:function, (:call, :lt, (:(::), :p, (:curly, :Perm, :LexicographicOrdering)), (:(::), :a, :Integer), (:(::), :b, :Integer)), (:block,
+            (:line, 57, :none),
+            (:(=), :c, (:call, :lexcmp, (:ref, (:., :p, (:quote, #QuoteNode
+                      :data
+                    )), :a), (:ref, (:., :p, (:quote, #QuoteNode
+                      :data
+                    )), :b))),
+            (:line, 58, :none),
+            (:if, (:call, :(!=), :c, 0), (:call, :<, :c, 0), (:call, :<, :a, :b))
+          )),
+        (:line, 61, :none),
+        (:(=), (:call, :ordtype, (:(::), :o, :ReverseOrdering), (:(::), :vs, :AbstractArray)), (:block,
+            (:line, 61, :none),
+            (:call, :ordtype, (:., :o, (:quote, #QuoteNode
+                  :fwd
+                )), :vs)
+          )),
+        (:line, 62, :none),
+        (:(=), (:call, :ordtype, (:(::), :o, :Perm), (:(::), :vs, :AbstractArray)), (:block,
+            (:line, 62, :none),
+            (:call, :ordtype, (:., :o, (:quote, #QuoteNode
+                  :order
+                )), (:., :o, (:quote, #QuoteNode
+                  :data
+                )))
+          )),
+        (:line, 64, :none),
+        (:(=), (:call, :ordtype, (:(::), :o, :By), (:(::), :vs, :AbstractArray)), (:block,
+            (:line, 64, :none),
+            (:try, (:block,
+                (:line, 64, :none),
+                (:call, :typeof, (:call, (:., :o, (:quote, #QuoteNode
+                        :by
+                      )), (:ref, :vs, 1)))
+              ), false, (:block,
+                (:line, 64, :none),
+                :Any
+              ))
+          )),
+        (:line, 65, :none),
+        (:(=), (:call, :ordtype, (:(::), :o, :Ordering), (:(::), :vs, :AbstractArray)), (:block,
+            (:line, 65, :none),
+            (:call, :eltype, :vs)
+          )),
+        (:line, 67, :none),
+        (:function, (:call, :ord, :lt, :by, (:(::), :rev, :Bool), (:kw, (:(::), :order, :Ordering), :Forward)), (:block,
+            (:line, 68, :none),
+            (:(=), :o, (:if, (:call, :&, (:call, :(===), :lt, :isless), (:call, :(===), :by, :identity)), :order, (:if, (:call, :&, (:call, :(===), :lt, :isless), (:call, :(!==), :by, :identity)), (:call, :By, :by), (:if, (:call, :&, (:call, :(!==), :lt, :isless), (:call, :(===), :by, :identity)), (:call, :Lt, :lt), (:call, :Lt, (:->, (:tuple, :x, :y), (:block,
+                          (:line, 71, :none),
+                          (:call, :lt, (:call, :by, :x), (:call, :by, :y))
+                        ))))))),
+            (:line, 72, :none),
+            (:if, :rev, (:call, :ReverseOrdering, :o), :o)
+          ))
+      ))
+  ))

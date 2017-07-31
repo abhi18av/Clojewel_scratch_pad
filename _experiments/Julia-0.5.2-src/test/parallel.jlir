@@ -1,0 +1,38 @@
+(:quote, (:block,
+    (:line, 6, :none),
+    (:(=), :inline_flag, (:if, (:call, :(==), (:., (:call, (:., :Base, (:quote, #QuoteNode
+                  :JLOptions
+                ))), (:quote, #QuoteNode
+              :can_inline
+            )), 1), (:macrocall, Symbol("@cmd"), ""), (:macrocall, Symbol("@cmd"), "--inline=no"))),
+    (:line, 7, :none),
+    (:(=), :cov_flag, (:macrocall, Symbol("@cmd"), "")),
+    (:line, 8, :none),
+    (:if, (:call, :(==), (:., (:call, (:., :Base, (:quote, #QuoteNode
+                :JLOptions
+              ))), (:quote, #QuoteNode
+            :code_coverage
+          )), 1), (:block,
+        (:line, 9, :none),
+        (:(=), :cov_flag, (:macrocall, Symbol("@cmd"), "--code-coverage=user"))
+      ), (:block,
+        (:line, 10, :none),
+        (:if, (:call, :(==), (:., (:call, (:., :Base, (:quote, #QuoteNode
+                    :JLOptions
+                  ))), (:quote, #QuoteNode
+                :code_coverage
+              )), 2), (:block,
+            (:line, 11, :none),
+            (:(=), :cov_flag, (:macrocall, Symbol("@cmd"), "--code-coverage=all"))
+          ))
+      )),
+    (:line, 14, :none),
+    (:(=), :cmd, (:macrocall, Symbol("@cmd"), "\$(Base.julia_cmd()) \$inline_flag \$cov_flag --check-bounds=yes --startup-file=no --depwarn=error parallel_exec.jl")),
+    (:line, 16, :none),
+    (:if, (:&&, (:call, :!, (:call, :success, (:call, :pipeline, (:parameters, (:kw, :stdout, :STDOUT), (:kw, :stderr, :STDERR)), :cmd))), (:call, :(==), (:ccall, (:quote, #QuoteNode
+              :jl_running_on_valgrind
+            ), :Cint, (:tuple,)), 0)), (:block,
+        (:line, 17, :none),
+        (:call, :error, (:string, "Parallel test failed, cmd : ", :cmd))
+      ))
+  ))

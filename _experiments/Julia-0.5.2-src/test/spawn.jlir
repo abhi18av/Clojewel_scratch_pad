@@ -1,0 +1,717 @@
+(:quote, (:block,
+    (:line, 7, :none),
+    (:(=), :valgrind_off, (:call, :(==), (:ccall, (:quote, #QuoteNode
+            :jl_running_on_valgrind
+          ), :Cint, (:tuple,)), 0)),
+    (:line, 9, :none),
+    (:(=), :yes, (:macrocall, Symbol("@cmd"), "perl -le 'while (1) {print STDOUT \"y\"}'")),
+    (:line, 10, :none),
+    (:(=), :echo, (:macrocall, Symbol("@cmd"), "echo")),
+    (:line, 11, :none),
+    (:(=), :sortcmd, (:macrocall, Symbol("@cmd"), "sort")),
+    (:line, 12, :none),
+    (:(=), :printf, (:macrocall, Symbol("@cmd"), "printf")),
+    (:line, 13, :none),
+    (:(=), :truecmd, (:macrocall, Symbol("@cmd"), "true")),
+    (:line, 14, :none),
+    (:(=), :falsecmd, (:macrocall, Symbol("@cmd"), "false")),
+    (:line, 15, :none),
+    (:(=), :catcmd, (:macrocall, Symbol("@cmd"), "cat")),
+    (:line, 16, :none),
+    (:(=), :shcmd, (:macrocall, Symbol("@cmd"), "sh")),
+    (:line, 17, :none),
+    (:(=), :sleepcmd, (:macrocall, Symbol("@cmd"), "sleep")),
+    (:line, 18, :none),
+    (:if, (:call, :is_windows), (:block,
+        (:line, 19, :none),
+        (:try, (:block,
+            (:line, 20, :none),
+            (:call, :success, (:macrocall, Symbol("@cmd"), "busybox")),
+            (:line, 21, :none),
+            (:(=), :yes, (:macrocall, Symbol("@cmd"), "busybox yes")),
+            (:line, 22, :none),
+            (:(=), :echo, (:macrocall, Symbol("@cmd"), "busybox echo")),
+            (:line, 23, :none),
+            (:(=), :sortcmd, (:macrocall, Symbol("@cmd"), "busybox sort")),
+            (:line, 24, :none),
+            (:(=), :printf, (:macrocall, Symbol("@cmd"), "busybox printf")),
+            (:line, 25, :none),
+            (:(=), :truecmd, (:macrocall, Symbol("@cmd"), "busybox true")),
+            (:line, 26, :none),
+            (:(=), :falsecmd, (:macrocall, Symbol("@cmd"), "busybox false")),
+            (:line, 27, :none),
+            (:(=), :catcmd, (:macrocall, Symbol("@cmd"), "busybox cat")),
+            (:line, 28, :none),
+            (:(=), :shcmd, (:macrocall, Symbol("@cmd"), "busybox sh")),
+            (:line, 29, :none),
+            (:(=), :sleepcmd, (:macrocall, Symbol("@cmd"), "busybox sleep"))
+          ), false, (:block,))
+      )),
+    (:line, 35, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :readstring, (:macrocall, Symbol("@cmd"), "\$echo hello | sort")), "hello | sort\n")),
+    (:line, 36, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :readstring, (:call, :pipeline, (:macrocall, Symbol("@cmd"), "\$echo hello"), :sortcmd)), "hello\n")),
+    (:line, 37, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, (:., (:call, :spawn, (:call, :pipeline, (:macrocall, Symbol("@cmd"), "\$echo hello"), :sortcmd)), (:quote, #QuoteNode
+              :processes
+            ))), 2)),
+    (:line, 39, :none),
+    (:(=), :out, (:call, :readstring, (:call, :&, (:macrocall, Symbol("@cmd"), "\$echo hello"), (:macrocall, Symbol("@cmd"), "\$echo world")))),
+    (:line, 40, :none),
+    (:macrocall, Symbol("@test"), (:call, :(!=), (:call, :search, :out, "world"), (:(:), 0, -1))),
+    (:line, 41, :none),
+    (:macrocall, Symbol("@test"), (:call, :(!=), (:call, :search, :out, "hello"), (:(:), 0, -1))),
+    (:line, 42, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :readstring, (:call, :pipeline, (:call, :&, (:macrocall, Symbol("@cmd"), "\$echo hello"), (:macrocall, Symbol("@cmd"), "\$echo world")), :sortcmd)), "hello\nworld\n")),
+    (:line, 44, :none),
+    (:macrocall, Symbol("@test"), (:block,
+        (:call, :run, (:macrocall, Symbol("@cmd"), "\$printf \"       \\033[34m[stdio passthrough ok]\\033[0m\\n\"")),
+        true
+      )),
+    (:line, 47, :none),
+    (:&&, (:call, :is_unix), (:call, :run, (:call, :pipeline, :yes, (:macrocall, Symbol("@cmd"), "head"), :DevNull))),
+    (:line, 49, :none),
+    (:block,
+      (:line, 50, :none),
+      (:(=), :a, (:call, (:., :Base, (:quote, #QuoteNode
+              :Condition
+            )))),
+      (:line, 51, :none),
+      (:macrocall, Symbol("@schedule"), (:block,
+          (:line, 52, :none),
+          (:(=), :p, (:call, :spawn, (:call, :pipeline, :yes, :DevNull))),
+          (:line, 53, :none),
+          (:call, (:., :Base, (:quote, #QuoteNode
+                :notify
+              )), :a, :p),
+          (:line, 54, :none),
+          (:macrocall, Symbol("@test"), (:call, :!, (:call, :success, :p)))
+        )),
+      (:line, 56, :none),
+      (:(=), :p, (:call, :wait, :a)),
+      (:line, 57, :none),
+      (:call, :kill, :p)
+    ),
+    (:line, 60, :none),
+    (:if, :valgrind_off, (:block,
+        (:line, 63, :none),
+        (:macrocall, Symbol("@test_throws"), (:., :Base, (:quote, #QuoteNode
+              :UVError
+            )), (:call, :run, (:macrocall, Symbol("@cmd"), "foo_is_not_a_valid_command")))
+      )),
+    (:line, 66, :none),
+    (:if, (:call, :is_unix), (:block,
+        (:line, 67, :none),
+        (:(=), (:call, :prefixer, :prefix, :sleep), (:block,
+            (:line, 67, :none),
+            (:macrocall, Symbol("@cmd"), "perl -nle '\$|=1; print \"'\$prefix' \", \$_; sleep '\$sleep';'")
+          )),
+        (:line, 68, :none),
+        (:macrocall, Symbol("@test"), (:call, :success, (:call, :pipeline, (:macrocall, Symbol("@cmd"), "perl -le '\$|=1; for(0..2){ print; sleep 1 }'"), (:call, :&, (:call, :prefixer, "A", 2), (:call, :prefixer, "B", 2))))),
+        (:line, 70, :none),
+        (:macrocall, Symbol("@test"), (:call, :success, (:call, :pipeline, (:macrocall, Symbol("@cmd"), "perl -le '\$|=1; for(0..2){ print; sleep 1 }'"), (:call, :&, (:call, :&, (:call, :prefixer, "X", 3), (:call, :prefixer, "Y", 3)), (:call, :prefixer, "Z", 3)), (:call, :&, (:call, :prefixer, "A", 2), (:call, :prefixer, "B", 2)))))
+      )),
+    (:line, 75, :none),
+    (:macrocall, Symbol("@test"), (:call, :success, :truecmd)),
+    (:line, 76, :none),
+    (:macrocall, Symbol("@test"), (:call, :!, (:call, :success, :falsecmd))),
+    (:line, 77, :none),
+    (:macrocall, Symbol("@test"), (:call, :success, (:call, :pipeline, :truecmd, :truecmd))),
+    (:line, 78, :none),
+    (:macrocall, Symbol("@test_broken"), (:call, :success, (:call, :ignorestatus, :falsecmd))),
+    (:line, 79, :none),
+    (:macrocall, Symbol("@test_broken"), (:call, :success, (:call, :pipeline, (:call, :ignorestatus, :falsecmd), :truecmd))),
+    (:line, 80, :none),
+    (:macrocall, Symbol("@test"), (:call, :!, (:call, :success, (:call, :pipeline, (:call, :ignorestatus, :falsecmd), :falsecmd)))),
+    (:line, 81, :none),
+    (:macrocall, Symbol("@test"), (:call, :!, (:call, :success, (:call, :&, (:call, :ignorestatus, :falsecmd), :falsecmd)))),
+    (:line, 82, :none),
+    (:macrocall, Symbol("@test_broken"), (:call, :success, (:call, :ignorestatus, (:call, :pipeline, :falsecmd, :falsecmd)))),
+    (:line, 83, :none),
+    (:macrocall, Symbol("@test_broken"), (:call, :success, (:call, :ignorestatus, (:call, :&, :falsecmd, :falsecmd)))),
+    (:line, 86, :none),
+    (:let, (:block,
+        (:line, 87, :none),
+        (:call, :run, (:call, :pipeline, (:macrocall, Symbol("@cmd"), "\$echo hello world"), :file)),
+        (:line, 88, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :readstring, (:call, :pipeline, :file, :catcmd)), "hello world\n")),
+        (:line, 89, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :open, :readstring, (:call, :pipeline, :file, :catcmd), "r"), "hello world\n")),
+        (:line, 90, :none),
+        (:call, :rm, :file)
+      ), (:(=), :file, (:call, :tempname))),
+    (:line, 94, :none),
+    (:if, (:call, :!, (:call, :is_windows)), (:block,
+        (:line, 95, :none),
+        (:local, (:(=), :r, (:call, :Channel, 1)), :port, :server, :sock, :client, :t1, :t2),
+        (:line, 96, :none),
+        (:(=), :t1, (:macrocall, Symbol("@async"), (:block,
+              (:line, 97, :none),
+              (:(=), (:tuple, :port, :server), (:call, :listenany, 2326)),
+              (:line, 98, :none),
+              (:call, :put!, :r, :port),
+              (:line, 99, :none),
+              (:(=), :client, (:call, :accept, :server)),
+              (:line, 100, :none),
+              (:macrocall, Symbol("@test"), (:call, :(==), (:call, :readstring, (:call, :pipeline, :client, :catcmd)), "hello world\n")),
+              (:line, 101, :none),
+              (:call, :close, :server),
+              (:line, 102, :none),
+              (:return, true)
+            ))),
+        (:line, 104, :none),
+        (:(=), :t2, (:macrocall, Symbol("@async"), (:block,
+              (:line, 105, :none),
+              (:(=), :sock, (:call, :connect, (:call, :fetch, :r))),
+              (:line, 106, :none),
+              (:call, :run, (:call, :pipeline, (:macrocall, Symbol("@cmd"), "\$echo hello world"), :sock)),
+              (:line, 107, :none),
+              (:call, :close, :sock),
+              (:line, 108, :none),
+              (:return, true)
+            ))),
+        (:line, 110, :none),
+        (:macrocall, Symbol("@test"), (:call, :wait, :t1)),
+        (:line, 111, :none),
+        (:macrocall, Symbol("@test"), (:call, :wait, :t2))
+      )),
+    (:line, 114, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :readstring, (:call, :setenv, (:macrocall, Symbol("@cmd"), "\$shcmd -c \"echo \\\$TEST\""), (:vect, "TEST=Hello World"))), "Hello World\n")),
+    (:line, 115, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :readstring, (:call, :setenv, (:macrocall, Symbol("@cmd"), "\$shcmd -c \"echo \\\$TEST\""), (:call, :Dict, (:(=>), "TEST", "Hello World")))), "Hello World\n")),
+    (:line, 116, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :readstring, (:call, :setenv, (:macrocall, Symbol("@cmd"), "\$shcmd -c \"echo \\\$TEST\""), (:(=>), "TEST", "Hello World"))), "Hello World\n")),
+    (:line, 117, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :withenv, (:->, (:tuple,), (:block,
+              (:line, 118, :none),
+              (:call, :readstring, (:macrocall, Symbol("@cmd"), "\$shcmd -c \"echo \\\$TEST\""))
+            )), (:(=>), "TEST", "Hello World")), "Hello World\n")),
+    (:line, 119, :none),
+    (:let, (:block,
+        (:line, 121, :none),
+        (:if, (:call, :is_windows), (:block,
+            (:line, 123, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), :pathA, :pathB))
+          ), (:block,
+            (:line, 125, :none),
+            (:macrocall, Symbol("@test"), (:call, (:., :Base, (:quote, #QuoteNode
+                    :samefile
+                  )), :pathA, :pathB))
+          ))
+      ), (:(=), :pathA, (:call, :readchomp, (:call, :setenv, (:parameters, (:kw, :dir, "..")), (:macrocall, Symbol("@cmd"), "\$shcmd -c \"pwd -P\"")))), (:(=), :pathB, (:call, :readchomp, (:call, :setenv, (:macrocall, Symbol("@cmd"), "\$shcmd -c \"cd .. && pwd -P\""))))),
+    (:line, 129, :none),
+    (:let, (:block,
+        (:line, 130, :none),
+        (:for, (:(=), :i, (:(:), 1, 1000)), (:block,
+            (:line, 131, :none),
+            (:(=), :str, (:string, :str, "\n ", (:call, :randstring, 10)))
+          )),
+        (:line, 135, :none),
+        (:(=), (:tuple, :stdout, :stdin, :proc), (:call, :readandwrite, (:macrocall, Symbol("@cmd"), "\$catcmd -"))),
+        (:line, 136, :none),
+        (:call, :write, :stdin, :str),
+        (:line, 137, :none),
+        (:call, :close, :stdin),
+        (:line, 138, :none),
+        (:(=), :str2, (:call, :readstring, :stdout)),
+        (:line, 139, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :str2, :str)),
+        (:line, 142, :none),
+        (:(=), :file, (:call, :tempname)),
+        (:line, 143, :none),
+        (:call, :open, (:->, (:tuple, :io), (:block,
+              (:line, 144, :none),
+              (:call, :write, :io, :str)
+            )), (:call, :pipeline, (:macrocall, Symbol("@cmd"), "\$catcmd -"), :file), "w"),
+        (:line, 146, :none),
+        (:call, :rm, :file)
+      ), (:(=), :str, ""), :stdin, :stdout, :proc, :str2, :file),
+    (:line, 151, :none),
+    (:let, (:block,
+        (:line, 152, :none),
+        (:(=), :r, (:call, :Channel, 1)),
+        (:line, 153, :none),
+        (:(=), :t, (:macrocall, Symbol("@async"), (:block,
+              (:line, 154, :none),
+              (:try, (:block,
+                  (:line, 155, :none),
+                  (:call, :wait, :r)
+                ), false, (:block,)),
+              (:line, 157, :none),
+              (:(=), :p, (:call, :spawn, (:macrocall, Symbol("@cmd"), "\$sleepcmd 1"))),
+              (:line, 157, :none),
+              (:call, :wait, :p),
+              (:line, 158, :none),
+              (:macrocall, Symbol("@test"), (:call, :(==), (:., :p, (:quote, #QuoteNode
+                      :exitcode
+                    )), 0)),
+              (:line, 159, :none),
+              (:return, true)
+            ))),
+        (:line, 161, :none),
+        (:call, :yield),
+        (:line, 162, :none),
+        (:call, :schedule, :t, (:call, :InterruptException), (:kw, :error, true)),
+        (:line, 163, :none),
+        (:call, :yield),
+        (:line, 164, :none),
+        (:call, :put!, :r, 11),
+        (:line, 165, :none),
+        (:call, :yield),
+        (:line, 166, :none),
+        (:macrocall, Symbol("@test"), (:call, :wait, :t))
+      ), :r, :t),
+    (:line, 170, :none),
+    (:let, (:block,
+        (:line, 171, :none),
+        (:(=), :r, (:call, :Channel, 1)),
+        (:line, 172, :none),
+        (:(=), :t, (:macrocall, Symbol("@async"), (:block,
+              (:line, 173, :none),
+              (:(=), (:tuple, :port, :server), (:call, :listenany, 2327)),
+              (:line, 174, :none),
+              (:call, :put!, :r, :port),
+              (:line, 175, :none),
+              (:(=), :client, (:call, :accept, :server)),
+              (:line, 176, :none),
+              (:call, :write, :client, "Hello, world!\n"),
+              (:line, 177, :none),
+              (:call, :write, :client, "Goodbye, world...\n"),
+              (:line, 178, :none),
+              (:call, :close, :server),
+              (:line, 179, :none),
+              (:return, true)
+            ))),
+        (:line, 181, :none),
+        (:(=), :sock, (:call, :connect, (:call, :fetch, :r))),
+        (:line, 182, :none),
+        (:call, :mark, :sock),
+        (:line, 183, :none),
+        (:macrocall, Symbol("@test"), (:call, :ismarked, :sock)),
+        (:line, 184, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :readline, :sock), "Hello, world!\n")),
+        (:line, 185, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :readline, :sock), "Goodbye, world...\n")),
+        (:line, 186, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :reset, :sock), 0)),
+        (:line, 187, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:call, :ismarked, :sock))),
+        (:line, 188, :none),
+        (:call, :mark, :sock),
+        (:line, 189, :none),
+        (:macrocall, Symbol("@test"), (:call, :ismarked, :sock)),
+        (:line, 190, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :readline, :sock), "Hello, world!\n")),
+        (:line, 191, :none),
+        (:call, :unmark, :sock),
+        (:line, 192, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:call, :ismarked, :sock))),
+        (:line, 193, :none),
+        (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, :reset, :sock)),
+        (:line, 194, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:call, :unmark, :sock))),
+        (:line, 195, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :readline, :sock), "Goodbye, world...\n")),
+        (:line, 197, :none),
+        (:call, :close, :sock),
+        (:line, 198, :none),
+        (:macrocall, Symbol("@test"), (:call, :wait, :t))
+      ), :r, :t, :sock),
+    (:line, 201, :none),
+    (:(=), :exename, (:call, (:., :Base, (:quote, #QuoteNode
+            :julia_cmd
+          )))),
+    (:line, 202, :none),
+    (:if, :valgrind_off, (:block,
+        (:line, 205, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :readstring, (:call, :pipeline, (:macrocall, Symbol("@cmd"), "\$exename --startup-file=no -e 'println(STDERR,\"Hello World\")'"), (:kw, :stderr, :catcmd))), "Hello World\n")),
+        (:line, 206, :none),
+        (:(=), :out, (:call, :Pipe)),
+        (:line, 207, :none),
+        (:(=), :proc, (:call, :spawn, (:call, :pipeline, (:macrocall, Symbol("@cmd"), "\$exename --startup-file=no -e 'println(STDERR,\"Hello World\")'"), (:kw, :stderr, :out)))),
+        (:line, 208, :none),
+        (:call, :close, (:., :out, (:quote, #QuoteNode
+              :in
+            ))),
+        (:line, 209, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :readstring, :out), "Hello World\n")),
+        (:line, 210, :none),
+        (:macrocall, Symbol("@test"), (:call, :success, :proc))
+      )),
+    (:line, 214, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :readstring, (:call, :pipeline, (:macrocall, Symbol("@cmd"), "\$echo \"2+2\""), (:macrocall, Symbol("@cmd"), "\$exename --startup-file=no"))), "4\n")),
+    (:line, 217, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :run, (:call, :pipeline, (:call, :ignorestatus, :falsecmd), :truecmd)), :nothing)),
+    (:line, 222, :none),
+    (:(=), :ducer, (:macrocall, Symbol("@async"), (:for, (:(=), :i, (:(:), 1, 100)), (:block,
+            (:line, 222, :none),
+            (:call, :produce, :i)
+          )))),
+    (:line, 223, :none),
+    (:call, :yield),
+    (:line, 224, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :consume, :ducer), 1)),
+    (:line, 225, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :consume, :ducer), 2)),
+    (:line, 228, :none),
+    (:let, (:block,
+        (:line, 232, :none),
+        (:call, :redirect_stdout, :f),
+        (:line, 233, :none),
+        (:call, :println, "Hello World"),
+        (:line, 234, :none),
+        (:call, :redirect_stdout, :OLD_STDOUT),
+        (:line, 235, :none),
+        (:call, :close, :f),
+        (:line, 236, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), "Hello World\n", (:call, :readstring, :fname))),
+        (:line, 237, :none),
+        (:macrocall, Symbol("@test"), (:call, :is, :OLD_STDOUT, :STDOUT)),
+        (:line, 238, :none),
+        (:call, :rm, :fname)
+      ), (:(=), :OLD_STDOUT, :STDOUT), (:(=), :fname, (:call, :tempname)), (:(=), :f, (:call, :open, :fname, "w"))),
+    (:line, 242, :none),
+    (:let, (:block,
+        (:line, 243, :none),
+        (:(=), :cmd, (:string, "# Overwrite libuv memory before freeing it, to make sure that a use after free\n# triggers an assertion.\nfunction thrash(handle::Ptr{Void})\n    # Kill the memory, but write a nice low value in the libuv type field to\n    # trigger the right code path\n    ccall(:memset,Ptr{Void},(Ptr{Void},Cint,Csize_t),handle,0xee,3*sizeof(Ptr{Void}))\n    unsafe_store!(convert(Ptr{Cint},handle+2*sizeof(Ptr{Void})),15)\n    nothing\nend\nOLD_STDERR = STDERR\nredirect_stderr(open(\"", (:call, :escape_string, :fname), "\",\"w\"))\n# Usually this would be done by GC. Do it manually, to make the failure\n# case more reliable.\noldhandle = OLD_STDERR.handle\nOLD_STDERR.status = Base.StatusClosing\nOLD_STDERR.handle = C_NULL\nccall(:uv_close,Void,(Ptr{Void},Ptr{Void}),oldhandle,cfunction(thrash,Void,(Ptr{Void},)))\nsleep(1)\nimport Base.zzzInvalidIdentifier\n")),
+        (:line, 264, :none),
+        (:try, (:block,
+            (:line, 265, :none),
+            (:(=), (:tuple, :in, :p), (:call, :open, (:call, :pipeline, (:macrocall, Symbol("@cmd"), "\$exename --startup-file=no"), (:kw, :stderr, :STDERR)), "w")),
+            (:line, 266, :none),
+            (:call, :write, :in, :cmd),
+            (:line, 267, :none),
+            (:call, :close, :in),
+            (:line, 268, :none),
+            (:call, :wait, :p)
+          ), false, (:block,
+            (:line, 270, :none),
+            (:call, :error, (:string, "IOStream redirect failed. Child stderr was \n", (:call, :readstring, :fname), "\n"))
+          ), (:block,
+            (:line, 272, :none),
+            (:call, :rm, :fname)
+          ))
+      ), (:(=), :fname, (:call, :tempname))),
+    (:line, 277, :none),
+    (:let, (:block,
+        (:line, 278, :none),
+        (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, :run, (:macrocall, Symbol("@cmd"), "\$bad"))),
+        (:line, 279, :none),
+        (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, :run, (:macrocall, Symbol("@cmd"), "\$echo \$bad"))),
+        (:line, 280, :none),
+        (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, :run, (:call, :setenv, (:macrocall, Symbol("@cmd"), "\$echo hello"), (:(=>), :bad, "good")))),
+        (:line, 281, :none),
+        (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, :run, (:call, :setenv, (:macrocall, Symbol("@cmd"), "\$echo hello"), (:(=>), "good", :bad))))
+      ), (:(=), :bad, "bad\0name")),
+    (:line, 285, :none),
+    (:let, (:block,
+        (:line, 286, :none),
+        (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, :write, :out, "not open error")),
+        (:line, 287, :none),
+        (:(=), :t, (:macrocall, Symbol("@async"), (:block,
+              (:line, 288, :none),
+              (:call, :open, (:->, (:tuple, :in1), (:block,
+                    (:line, 289, :none),
+                    (:call, :open, (:->, (:tuple, :in2), (:block,
+                          (:line, 290, :none),
+                          (:call, :notify, :ready),
+                          (:line, 291, :none),
+                          (:call, :write, :in1, 'h'),
+                          (:line, 292, :none),
+                          (:call, :write, :in2, (:ref, :UInt8, 'w')),
+                          (:line, 293, :none),
+                          (:call, :println, :in1, "ello"),
+                          (:line, 294, :none),
+                          (:call, :write, :in2, "orld\n")
+                        )), :echo, "w", :out)
+                  )), :echo, "w", :out),
+              (:line, 297, :none),
+              (:call, :show, :out, :out),
+              (:line, 298, :none),
+              (:call, :notify, :ready),
+              (:line, 299, :none),
+              (:macrocall, Symbol("@test"), (:call, :isreadable, :out)),
+              (:line, 300, :none),
+              (:macrocall, Symbol("@test"), (:call, :iswritable, :out)),
+              (:line, 301, :none),
+              (:call, :close, (:., :out, (:quote, #QuoteNode
+                    :in
+                  ))),
+              (:line, 302, :none),
+              (:macrocall, Symbol("@test"), (:call, :!, (:call, :isopen, (:., :out, (:quote, #QuoteNode
+                        :in
+                      ))))),
+              (:line, 303, :none),
+              (:||, (:call, :is_windows), (:macrocall, Symbol("@test"), (:call, :!, (:call, :isopen, (:., :out, (:quote, #QuoteNode
+                          :out
+                        )))))),
+              (:line, 304, :none),
+              (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, :write, :out, "now closed error")),
+              (:line, 305, :none),
+              (:macrocall, Symbol("@test"), (:call, :isreadable, :out)),
+              (:line, 306, :none),
+              (:macrocall, Symbol("@test"), (:call, :!, (:call, :iswritable, :out))),
+              (:line, 307, :none),
+              (:if, (:call, :is_windows), (:block,
+                  (:line, 311, :none),
+                  (:call, (:., :Base, (:quote, #QuoteNode
+                        :wait_close
+                      )), :out)
+                )),
+              (:line, 313, :none),
+              (:macrocall, Symbol("@test"), (:call, :!, (:call, :isopen, :out)))
+            ))),
+        (:line, 315, :none),
+        (:call, :wait, :ready),
+        (:line, 316, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :nb_available, :out), 0)),
+        (:line, 317, :none),
+        (:macrocall, Symbol("@test"), (:call, :endswith, (:call, :readuntil, :out, '1'), '1')),
+        (:line, 318, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :Char, (:call, :read, :out, :UInt8)), '\t')),
+        (:line, 319, :none),
+        (:(=), :c, (:ref, :UInt8, 0)),
+        (:line, 320, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :c, (:call, :read!, :out, :c))),
+        (:line, 321, :none),
+        (:call, (:., :Base, (:quote, #QuoteNode
+              :wait_readnb
+            )), :out, 1),
+        (:line, 322, :none),
+        (:macrocall, Symbol("@test"), (:call, :>, (:call, :nb_available, :out), 0)),
+        (:line, 323, :none),
+        (:(=), :ln1, (:call, :readline, :out)),
+        (:line, 324, :none),
+        (:(=), :ln2, (:call, :readline, :out)),
+        (:line, 325, :none),
+        (:(=), :desc, (:call, :readstring, :out)),
+        (:line, 326, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:call, :isreadable, :out))),
+        (:line, 327, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:call, :iswritable, :out))),
+        (:line, 328, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:call, :isopen, :out))),
+        (:line, 329, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :nb_available, :out), 0)),
+        (:line, 330, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :c, (:ref, :UInt8, 'w'))),
+        (:line, 331, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :lstrip, :ln2), "1\thello\n")),
+        (:line, 332, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :ln1, "orld\n")),
+        (:line, 333, :none),
+        (:macrocall, Symbol("@test"), (:call, :isempty, (:call, :read, :out))),
+        (:line, 334, :none),
+        (:macrocall, Symbol("@test"), (:call, :eof, :out)),
+        (:line, 335, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :desc, "Pipe(open => active, 0 bytes waiting)")),
+        (:line, 336, :none),
+        (:call, :wait, :t)
+      ), (:(=), :out, (:call, :Pipe)), (:(=), :echo, (:macrocall, Symbol("@cmd"), "\$exename --startup-file=no -e 'print(STDOUT, \" 1\\t\", readstring(STDIN))'")), (:(=), :ready, (:call, :Condition)), :t),
+    (:line, 340, :none),
+    (:let, (:block,
+        (:line, 341, :none),
+        (:call, :write, :fname, "test\n"),
+        (:line, 342, :none),
+        (:(=), :code, "cmd = pipeline(`echo asdf`,`cat`)\nif is_windows()\n    try\n        success(`busybox`)\n        cmd = pipeline(`busybox echo asdf`,`busybox cat`)\n    end\nend\nfor line in eachline(STDIN)\n    run(cmd)\nend\n"),
+        (:line, 354, :none),
+        (:macrocall, Symbol("@test"), (:call, :success, (:call, :pipeline, (:macrocall, Symbol("@cmd"), "\$catcmd \$fname"), (:macrocall, Symbol("@cmd"), "\$exename --startup-file=no -e \$code")))),
+        (:line, 355, :none),
+        (:call, :rm, :fname)
+      ), (:(=), :fname, (:call, :tempname))),
+    (:line, 359, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+              :shell_split
+            )), "foo bar baz"), (:vect, "foo", "bar", "baz"))),
+    (:line, 360, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+              :shell_split
+            )), "foo\\ bar baz"), (:vect, "foo bar", "baz"))),
+    (:line, 361, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+              :shell_split
+            )), "'foo bar' baz"), (:vect, "foo bar", "baz"))),
+    (:line, 362, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+              :shell_split
+            )), "\"foo bar\" baz"), (:vect, "foo bar", "baz"))),
+    (:line, 365, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+              :shell_split
+            )), "'foo\\ bar' baz"), (:vect, "foo\\ bar", "baz"))),
+    (:line, 366, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+              :shell_split
+            )), "\"foo\\ bar\" baz"), (:vect, "foo\\ bar", "baz"))),
+    (:line, 369, :none),
+    (:let, (:block,
+        (:line, 370, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+                  :shell_split
+                )), "/Volumes/External\\ HD/program -a"), :cmd)),
+        (:line, 371, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+                  :shell_split
+                )), "'/Volumes/External HD/program' -a"), :cmd)),
+        (:line, 372, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+                  :shell_split
+                )), "\"/Volumes/External HD/program\" -a"), :cmd))
+      ), (:(=), :cmd, (:vect, "/Volumes/External HD/program", "-a"))),
+    (:line, 376, :none),
+    (:let, (:block,
+        (:line, 377, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :string, (:macrocall, Symbol("@cmd"), "\$cmd")), "`'foo bar' baz`"))
+      ), (:(=), :cmd, (:vect, "foo bar", "baz"))),
+    (:line, 380, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+              :shell_split
+            )), "\"\\\\\""), (:vect, "\\"))),
+    (:line, 383, :none),
+    (:macrocall, Symbol("@test_throws"), :ErrorException, (:call, :collect, (:call, :eachline, (:call, :pipeline, (:macrocall, Symbol("@cmd"), "\$catcmd _doesnt_exist__111_"), (:kw, :stderr, :DevNull))))),
+    (:line, 386, :none),
+    (:if, (:call, :is_windows), (:block,
+        (:line, 387, :none),
+        (:call, :(==), (:call, :readstring, (:macrocall, Symbol("@cmd"), "cmd.exe /c dir /b spawn.jl")), (:call, :readstring, (:call, :Cmd, (:macrocall, Symbol("@cmd"), "cmd.exe /c dir /b \"\\\"spawn.jl\\\"\""), (:kw, :windows_verbatim, true))))
+      )),
+    (:line, 391, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :string, (:call, :Cmd, (:call, :Cmd, (:macrocall, Symbol("@cmd"), "ls"), (:kw, :detach, true)))), "`ls`")),
+    (:line, 394, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+              :Cmd
+            )), (:macrocall, Symbol("@cmd"), "")), (:call, (:., :Base, (:quote, #QuoteNode
+              :Cmd
+            )), (:macrocall, Symbol("@cmd"), "")))),
+    (:line, 395, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+              :Cmd
+            )), (:macrocall, Symbol("@cmd"), "lsof -i :9090")), (:call, (:., :Base, (:quote, #QuoteNode
+              :Cmd
+            )), (:macrocall, Symbol("@cmd"), "lsof -i :9090")))),
+    (:line, 396, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+              :Cmd
+            )), (:macrocall, Symbol("@cmd"), "\$echo test")), (:call, (:., :Base, (:quote, #QuoteNode
+              :Cmd
+            )), (:macrocall, Symbol("@cmd"), "\$echo test")))),
+    (:line, 397, :none),
+    (:macrocall, Symbol("@test"), (:call, :(!=), (:call, (:., :Base, (:quote, #QuoteNode
+              :Cmd
+            )), (:macrocall, Symbol("@cmd"), "")), (:call, (:., :Base, (:quote, #QuoteNode
+              :Cmd
+            )), (:macrocall, Symbol("@cmd"), "\$echo test")))),
+    (:line, 398, :none),
+    (:macrocall, Symbol("@test"), (:call, :(!=), (:call, (:., :Base, (:quote, #QuoteNode
+              :Cmd
+            )), (:macrocall, Symbol("@cmd"), ""), (:kw, :ignorestatus, true)), (:call, (:., :Base, (:quote, #QuoteNode
+              :Cmd
+            )), (:macrocall, Symbol("@cmd"), ""), (:kw, :ignorestatus, false)))),
+    (:line, 399, :none),
+    (:macrocall, Symbol("@test"), (:call, :(!=), (:call, (:., :Base, (:quote, #QuoteNode
+              :Cmd
+            )), (:macrocall, Symbol("@cmd"), ""), (:kw, :dir, "TESTS")), (:call, (:., :Base, (:quote, #QuoteNode
+              :Cmd
+            )), (:macrocall, Symbol("@cmd"), ""), (:kw, :dir, "TEST")))),
+    (:line, 400, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+              :Set
+            )), (:vect, (:macrocall, Symbol("@cmd"), ""), (:macrocall, Symbol("@cmd"), ""))), (:call, (:., :Base, (:quote, #QuoteNode
+              :Set
+            )), (:vect, (:macrocall, Symbol("@cmd"), ""))))),
+    (:line, 401, :none),
+    (:macrocall, Symbol("@test"), (:call, :(!=), (:call, :Set, (:vect, (:macrocall, Symbol("@cmd"), ""), :echo)), (:call, :Set, (:vect, (:macrocall, Symbol("@cmd"), ""), (:macrocall, Symbol("@cmd"), ""))))),
+    (:line, 402, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :Set, (:vect, :echo, (:macrocall, Symbol("@cmd"), ""), (:macrocall, Symbol("@cmd"), ""), :echo)), (:call, :Set, (:vect, :echo, (:macrocall, Symbol("@cmd"), ""))))),
+    (:line, 405, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+              :AndCmds
+            )), (:macrocall, Symbol("@cmd"), "\$echo abc"), (:macrocall, Symbol("@cmd"), "\$echo def")), (:call, (:., :Base, (:quote, #QuoteNode
+              :AndCmds
+            )), (:macrocall, Symbol("@cmd"), "\$echo abc"), (:macrocall, Symbol("@cmd"), "\$echo def")))),
+    (:line, 406, :none),
+    (:macrocall, Symbol("@test"), (:call, :(!=), (:call, (:., :Base, (:quote, #QuoteNode
+              :AndCmds
+            )), (:macrocall, Symbol("@cmd"), "\$echo abc"), (:macrocall, Symbol("@cmd"), "\$echo def")), (:call, (:., :Base, (:quote, #QuoteNode
+              :AndCmds
+            )), (:macrocall, Symbol("@cmd"), "\$echo abc"), (:macrocall, Symbol("@cmd"), "\$echo xyz")))),
+    (:line, 409, :none),
+    (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, :reduce, :&, (:ref, (:., :Base, (:quote, #QuoteNode
+              :AbstractCmd
+            ))))),
+    (:line, 410, :none),
+    (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, :reduce, :&, (:ref, (:., :Base, (:quote, #QuoteNode
+              :Cmd
+            ))))),
+    (:line, 411, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :reduce, :&, (:vect, (:macrocall, Symbol("@cmd"), "\$echo abc"), (:macrocall, Symbol("@cmd"), "\$echo def"), (:macrocall, Symbol("@cmd"), "\$echo hij"))), (:call, :&, (:call, :&, (:macrocall, Symbol("@cmd"), "\$echo abc"), (:macrocall, Symbol("@cmd"), "\$echo def")), (:macrocall, Symbol("@cmd"), "\$echo hij")))),
+    (:line, 414, :none),
+    (:if, (:call, :is_unix), (:block,
+        (:line, 415, :none),
+        (:let, (:block,
+            (:line, 416, :none),
+            (:(=), :ulimit_n, (:call, :tryparse, :Int, (:call, :readchomp, (:macrocall, Symbol("@cmd"), "sh -c 'ulimit -n'")))),
+            (:line, 417, :none),
+            (:try, (:block,
+                (:line, 418, :none),
+                (:for, (:(=), :i, (:(:), 1, (:call, :*, 100, (:call, :get, :ulimit_n, 1000)))), (:block,
+                    (:line, 419, :none),
+                    (:(=), :p, (:call, :Pipe)),
+                    (:line, 420, :none),
+                    (:call, (:., :Base, (:quote, #QuoteNode
+                          :link_pipe
+                        )), :p),
+                    (:line, 421, :none),
+                    (:call, :push!, :ps, :p)
+                  )),
+                (:line, 423, :none),
+                (:if, (:call, :isnull, :ulimit_n), (:block,
+                    (:line, 424, :none),
+                    (:call, :warn, "`ulimit -n` is set to unlimited, fd exhaustion cannot be tested"),
+                    (:line, 425, :none),
+                    (:macrocall, Symbol("@test_broken"), false)
+                  ), (:block,
+                    (:line, 427, :none),
+                    (:macrocall, Symbol("@test"), false)
+                  ))
+              ), :ex, (:block,
+                (:line, 430, :none),
+                (:||, (:call, :isa, :ex, (:., :Base, (:quote, #QuoteNode
+                        :UVError
+                      ))), (:call, :rethrow, :ex)),
+                (:line, 431, :none),
+                (:macrocall, Symbol("@test"), (:call, :(==), (:., :ex, (:quote, #QuoteNode
+                        :code
+                      )), (:., :Base, (:quote, #QuoteNode
+                        :UV_EMFILE
+                      ))))
+              ), (:block,
+                (:line, 433, :none),
+                (:for, (:(=), :p, :ps), (:block,
+                    (:line, 434, :none),
+                    (:call, :close, :p)
+                  ))
+              ))
+          ), (:(=), :ps, (:ref, :Pipe)))
+      )),
+    (:line, 441, :none),
+    (:let, (:block,
+        (:line, 442, :none),
+        (:call, (:., :Base, (:quote, #QuoteNode
+              :link_pipe
+            )), (:parameters, (:kw, :julia_only_read, true), (:kw, :julia_only_write, true)), :p),
+        (:line, 443, :none),
+        (:ccall, (:quote, #QuoteNode
+            :jl_static_show
+          ), :Void, (:tuple, (:curly, :Ptr, :Void), :Any), (:., :p, (:quote, #QuoteNode
+              :in
+            )), (:call, :Int128, -1)),
+        (:line, 444, :none),
+        (:macrocall, Symbol("@async"), (:call, :close, (:., :p, (:quote, #QuoteNode
+                :in
+              )))),
+        (:line, 445, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :readstring, (:., :p, (:quote, #QuoteNode
+                  :out
+                ))), "Int128(0xffffffffffffffffffffffffffffffff)"))
+      ), (:(=), :p, (:call, :Pipe)))
+  ))

@@ -1,0 +1,17 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:call, :include, "sparsedir/sparse.jl"),
+    (:line, 4, :none),
+    (:call, :include, "sparsedir/sparsevector.jl"),
+    (:line, 5, :none),
+    (:if, (:., :Base, (:quote, #QuoteNode
+          :USE_GPL_LIBS
+        )), (:block,
+        (:line, 6, :none),
+        (:call, :include, "sparsedir/umfpack.jl"),
+        (:line, 7, :none),
+        (:call, :include, "sparsedir/cholmod.jl"),
+        (:line, 8, :none),
+        (:call, :include, "sparsedir/spqr.jl")
+      ))
+  ))

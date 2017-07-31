@@ -1,0 +1,141 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:using, :Base, :Test),
+    (:line, 5, :none),
+    "Helper to walk the AST and call a function on every node.\n",
+    (:line, 8, :none),
+    (:function, (:call, :walk, :func, :expr), (:block,
+        (:line, 9, :none),
+        (:call, :func, :expr),
+        (:line, 10, :none),
+        (:if, (:call, :isa, :expr, :Expr), (:block,
+            (:line, 11, :none),
+            (:call, :func, (:., :expr, (:quote, #QuoteNode
+                  :head
+                ))),
+            (:line, 12, :none),
+            (:for, (:(=), :o, (:., :expr, (:quote, #QuoteNode
+                    :args
+                  ))), (:block,
+                (:line, 13, :none),
+                (:call, :walk, :func, :o)
+              ))
+          ))
+      )),
+    (:line, 18, :none),
+    "Helper to test that every slot is in range after inlining.\n",
+    (:line, 21, :none),
+    (:function, (:call, :test_inlined_symbols, :func, :argtypes), (:block,
+        (:line, 22, :none),
+        (:(=), :linfo, (:ref, (:call, :code_typed, :func, :argtypes), 1)),
+        (:line, 23, :none),
+        (:(=), :nl, (:call, :length, (:., :linfo, (:quote, #QuoteNode
+                :slottypes
+              )))),
+        (:line, 24, :none),
+        (:(=), :ast, (:call, :Expr, (:quote, #QuoteNode
+              :body
+            ))),
+        (:line, 24, :none),
+        (:(=), (:., :ast, (:quote, #QuoteNode
+              :args
+            )), (:call, (:., :Base, (:quote, #QuoteNode
+                :uncompressed_ast
+              )), :linfo)),
+        (:line, 25, :none),
+        (:call, :walk, (:->, (:tuple, :e), (:block,
+              (:line, 26, :none),
+              (:if, (:call, :isa, :e, :Slot), (:block,
+                  (:line, 27, :none),
+                  (:macrocall, Symbol("@test"), (:comparison, 1, :(<=), (:., :e, (:quote, #QuoteNode
+                          :id
+                        )), :(<=), :nl))
+                )),
+              (:line, 29, :none),
+              (:if, (:call, :isa, :e, :NewvarNode), (:block,
+                  (:line, 30, :none),
+                  (:macrocall, Symbol("@test"), (:comparison, 1, :(<=), (:., (:., :e, (:quote, #QuoteNode
+                            :slot
+                          )), (:quote, #QuoteNode
+                          :id
+                        )), :(<=), :nl))
+                ))
+            )), :ast)
+      )),
+    (:line, 38, :none),
+    (:macrocall, Symbol("@inline"), (:function, (:call, :test_inner, :count), (:block,
+          (:line, 39, :none),
+          (:(=), :x, 1),
+          (:line, 40, :none),
+          (:(=), :i, 0),
+          (:line, 41, :none),
+          (:while, (:call, :(<=), :i, :count), (:block,
+              (:line, 42, :none),
+              (:(=), :y, :x),
+              (:line, 43, :none),
+              (:(=), :x, (:call, :+, :x, :y)),
+              (:line, 44, :none),
+              (:+=, :i, 1)
+            ))
+        ))),
+    (:line, 47, :none),
+    (:function, (:call, :test_outer, :a), (:block,
+        (:line, 48, :none),
+        (:call, :test_inner, :a)
+      )),
+    (:line, 50, :none),
+    (:call, :test_inlined_symbols, :test_outer, (:curly, :Tuple, :Int64)),
+    (:line, 56, :none),
+    (:macrocall, Symbol("@inline"), (:function, (:call, :foo_inl, :x), (:block,
+          (:line, 57, :none),
+          (:if, :x, (:block,
+              (:line, 58, :none),
+              (:(=), :y, 2)
+            ), (:block,
+              (:line, 60, :none),
+              (:return, :y)
+            ))
+        ))),
+    (:line, 63, :none),
+    (:function, (:call, :bar12620), (:block,
+        (:line, 64, :none),
+        (:for, (:(=), :i, (:(:), 1, 3)), (:block,
+            (:line, 65, :none),
+            (:call, :foo_inl, (:call, :(==), :i, 1))
+          ))
+      )),
+    (:line, 68, :none),
+    (:macrocall, Symbol("@test_throws"), :UndefVarError, (:call, :bar12620)),
+    (:line, 71, :none),
+    (:macrocall, Symbol("@inline"), (:(=), (:call, :f16165, :x), (:block,
+          (:line, 71, :none),
+          (:(=), :x, (:call, :+, (:call, :UInt, :x), 1))
+        ))),
+    (:line, 72, :none),
+    (:(=), (:call, :g16165, :x), (:block,
+        (:line, 72, :none),
+        (:call, :f16165, :x)
+      )),
+    (:line, 73, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :g16165, 1), (:call, :+, (:call, :UInt, 1), 1))),
+    (:line, 76, :none),
+    (:(=), (:call, :f18948), (:block,
+        (:line, 76, :none),
+        (:block,
+          (:local, (:(::), :bar, :Int64)),
+          (:(=), :bar, 1.5)
+        )
+      )),
+    (:line, 77, :none),
+    (:(=), (:call, :g18948), (:block,
+        (:line, 77, :none),
+        (:block,
+          (:local, (:(::), :bar, :Int32)),
+          (:(=), :bar, 0x80000000)
+        )
+      )),
+    (:line, 78, :none),
+    (:macrocall, Symbol("@test_throws"), :InexactError, (:call, :f18948)),
+    (:line, 79, :none),
+    (:macrocall, Symbol("@test_throws"), :InexactError, (:call, :g18948))
+  ))

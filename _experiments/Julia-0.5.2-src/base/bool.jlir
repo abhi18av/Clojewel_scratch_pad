@@ -1,0 +1,212 @@
+(:quote, (:block,
+    (:line, 5, :none),
+    (:(=), (:call, :convert, (:(::), (:curly, :Type, :Bool)), (:(::), :x, :Bool)), (:block,
+        (:line, 5, :none),
+        :x
+      )),
+    (:line, 6, :none),
+    (:(=), (:call, :convert, (:(::), (:curly, :Type, :Bool)), (:(::), :x, :Real)), (:block,
+        (:line, 6, :none),
+        (:if, (:call, :(==), :x, 0), false, (:if, (:call, :(==), :x, 1), true, (:call, :throw, (:call, :InexactError))))
+      )),
+    (:line, 9, :none),
+    (:(=), (:call, (:curly, :promote_rule, (:<:, :T, :Number)), (:(::), (:curly, :Type, :Bool)), (:(::), (:curly, :Type, :T))), (:block,
+        (:line, 9, :none),
+        :T
+      )),
+    (:line, 11, :none),
+    (:(=), (:call, :typemin, (:(::), (:curly, :Type, :Bool))), (:block,
+        (:line, 11, :none),
+        false
+      )),
+    (:line, 12, :none),
+    (:(=), (:call, :typemax, (:(::), (:curly, :Type, :Bool))), (:block,
+        (:line, 12, :none),
+        true
+      )),
+    (:line, 16, :none),
+    (:(=), (:call, :!, (:(::), :x, :Bool)), (:block,
+        (:line, 16, :none),
+        (:call, :box, :Bool, (:call, :not_int, (:call, :unbox, :Bool, :x)))
+      )),
+    (:line, 18, :none),
+    (:(=), (:call, :~, (:(::), :x, :Bool)), (:block,
+        (:line, 18, :none),
+        (:call, :!, :x)
+      )),
+    (:line, 19, :none),
+    (:(=), (:call, :&, (:(::), :x, :Bool), (:(::), :y, :Bool)), (:block,
+        (:line, 19, :none),
+        (:call, :box, :Bool, (:call, :and_int, (:call, :unbox, :Bool, :x), (:call, :unbox, :Bool, :y)))
+      )),
+    (:line, 20, :none),
+    (:(=), (:call, :|, (:(::), :x, :Bool), (:(::), :y, :Bool)), (:block,
+        (:line, 20, :none),
+        (:call, :box, :Bool, (:call, :or_int, (:call, :unbox, :Bool, :x), (:call, :unbox, :Bool, :y)))
+      )),
+    (:line, 21, :none),
+    (:(=), (:call, :$, (:(::), :x, :Bool), (:(::), :y, :Bool)), (:block,
+        (:line, 21, :none),
+        (:call, :(!=), :x, :y)
+      )),
+    (:line, 23, :none),
+    (:(=), (:call, :>>, (:(::), :x, :Bool), (:(::), :c, :Unsigned)), (:block,
+        (:line, 23, :none),
+        (:call, :>>, (:call, :Int, :x), :c)
+      )),
+    (:line, 24, :none),
+    (:(=), (:call, :<<, (:(::), :x, :Bool), (:(::), :c, :Unsigned)), (:block,
+        (:line, 24, :none),
+        (:call, :<<, (:call, :Int, :x), :c)
+      )),
+    (:line, 25, :none),
+    (:(=), (:call, :>>>, (:(::), :x, :Bool), (:(::), :c, :Unsigned)), (:block,
+        (:line, 25, :none),
+        (:call, :>>>, (:call, :Int, :x), :c)
+      )),
+    (:line, 27, :none),
+    (:(=), (:call, :>>, (:(::), :x, :Bool), (:(::), :c, :Int)), (:block,
+        (:line, 27, :none),
+        (:call, :>>, (:call, :Int, :x), :c)
+      )),
+    (:line, 28, :none),
+    (:(=), (:call, :<<, (:(::), :x, :Bool), (:(::), :c, :Int)), (:block,
+        (:line, 28, :none),
+        (:call, :<<, (:call, :Int, :x), :c)
+      )),
+    (:line, 29, :none),
+    (:(=), (:call, :>>>, (:(::), :x, :Bool), (:(::), :c, :Int)), (:block,
+        (:line, 29, :none),
+        (:call, :>>>, (:call, :Int, :x), :c)
+      )),
+    (:line, 31, :none),
+    (:(=), (:call, :>>, (:(::), :x, :Bool), (:(::), :c, :Integer)), (:block,
+        (:line, 31, :none),
+        (:call, :>>, (:call, :Int, :x), :c)
+      )),
+    (:line, 32, :none),
+    (:(=), (:call, :<<, (:(::), :x, :Bool), (:(::), :c, :Integer)), (:block,
+        (:line, 32, :none),
+        (:call, :<<, (:call, :Int, :x), :c)
+      )),
+    (:line, 33, :none),
+    (:(=), (:call, :>>>, (:(::), :x, :Bool), (:(::), :c, :Integer)), (:block,
+        (:line, 33, :none),
+        (:call, :>>>, (:call, :Int, :x), :c)
+      )),
+    (:line, 35, :none),
+    (:(=), (:call, :signbit, (:(::), :x, :Bool)), (:block,
+        (:line, 35, :none),
+        false
+      )),
+    (:line, 36, :none),
+    (:(=), (:call, :sign, (:(::), :x, :Bool)), (:block,
+        (:line, 36, :none),
+        :x
+      )),
+    (:line, 37, :none),
+    (:(=), (:call, :abs, (:(::), :x, :Bool)), (:block,
+        (:line, 37, :none),
+        :x
+      )),
+    (:line, 38, :none),
+    (:(=), (:call, :abs2, (:(::), :x, :Bool)), (:block,
+        (:line, 38, :none),
+        :x
+      )),
+    (:line, 40, :none),
+    (:(=), (:call, :<, (:(::), :x, :Bool), (:(::), :y, :Bool)), (:block,
+        (:line, 40, :none),
+        (:call, :&, :y, (:call, :!, :x))
+      )),
+    (:line, 41, :none),
+    (:(=), (:call, :(<=), (:(::), :x, :Bool), (:(::), :y, :Bool)), (:block,
+        (:line, 41, :none),
+        (:call, :|, :y, (:call, :!, :x))
+      )),
+    (:line, 45, :none),
+    (:(=), (:call, :+, (:(::), :x, :Bool)), (:block,
+        (:line, 45, :none),
+        (:call, :Int, :x)
+      )),
+    (:line, 46, :none),
+    (:(=), (:call, :-, (:(::), :x, :Bool)), (:block,
+        (:line, 46, :none),
+        (:call, :-, (:call, :Int, :x))
+      )),
+    (:line, 48, :none),
+    (:(=), (:call, :+, (:(::), :x, :Bool), (:(::), :y, :Bool)), (:block,
+        (:line, 48, :none),
+        (:call, :+, (:call, :Int, :x), (:call, :Int, :y))
+      )),
+    (:line, 49, :none),
+    (:(=), (:call, :-, (:(::), :x, :Bool), (:(::), :y, :Bool)), (:block,
+        (:line, 49, :none),
+        (:call, :-, (:call, :Int, :x), (:call, :Int, :y))
+      )),
+    (:line, 50, :none),
+    (:(=), (:call, :*, (:(::), :x, :Bool), (:(::), :y, :Bool)), (:block,
+        (:line, 50, :none),
+        (:call, :&, :x, :y)
+      )),
+    (:line, 51, :none),
+    (:(=), (:call, :^, (:(::), :x, :Bool), (:(::), :y, :Bool)), (:block,
+        (:line, 51, :none),
+        (:call, :|, :x, (:call, :!, :y))
+      )),
+    (:line, 52, :none),
+    (:(=), (:call, :^, (:(::), :x, :Integer), (:(::), :y, :Bool)), (:block,
+        (:line, 52, :none),
+        (:call, :ifelse, :y, :x, (:call, :one, :x))
+      )),
+    (:line, 54, :none),
+    (:function, (:(::), (:call, (:curly, :+, (:<:, :T, :AbstractFloat)), (:(::), :x, :Bool), (:(::), :y, :T)), (:call, :promote_type, :Bool, :T)), (:block,
+        (:line, 55, :none),
+        (:return, (:call, :ifelse, :x, (:call, :+, (:call, :one, :y), :y), :y))
+      )),
+    (:line, 57, :none),
+    (:(=), (:call, :+, (:(::), :y, :AbstractFloat), (:(::), :x, :Bool)), (:block,
+        (:line, 57, :none),
+        (:call, :+, :x, :y)
+      )),
+    (:line, 59, :none),
+    (:function, (:(::), (:call, (:curly, :*, (:<:, :T, :Number)), (:(::), :x, :Bool), (:(::), :y, :T)), (:call, :promote_type, :Bool, :T)), (:block,
+        (:line, 60, :none),
+        (:return, (:call, :ifelse, :x, :y, (:call, :copysign, (:call, :zero, :y), :y)))
+      )),
+    (:line, 62, :none),
+    (:function, (:(::), (:call, (:curly, :*, (:<:, :T, :Unsigned)), (:(::), :x, :Bool), (:(::), :y, :T)), (:call, :promote_type, :Bool, :T)), (:block,
+        (:line, 63, :none),
+        (:return, (:call, :ifelse, :x, :y, (:call, :zero, :y)))
+      )),
+    (:line, 65, :none),
+    (:(=), (:call, :*, (:(::), :y, :Number), (:(::), :x, :Bool)), (:block,
+        (:line, 65, :none),
+        (:call, :*, :x, :y)
+      )),
+    (:line, 67, :none),
+    (:(=), (:call, :div, (:(::), :x, :Bool), (:(::), :y, :Bool)), (:block,
+        (:line, 67, :none),
+        (:if, :y, :x, (:call, :throw, (:call, :DivideError)))
+      )),
+    (:line, 68, :none),
+    (:(=), (:call, :fld, (:(::), :x, :Bool), (:(::), :y, :Bool)), (:block,
+        (:line, 68, :none),
+        (:call, :div, :x, :y)
+      )),
+    (:line, 69, :none),
+    (:(=), (:call, :cld, (:(::), :x, :Bool), (:(::), :y, :Bool)), (:block,
+        (:line, 69, :none),
+        (:call, :div, :x, :y)
+      )),
+    (:line, 70, :none),
+    (:(=), (:call, :rem, (:(::), :x, :Bool), (:(::), :y, :Bool)), (:block,
+        (:line, 70, :none),
+        (:if, :y, false, (:call, :throw, (:call, :DivideError)))
+      )),
+    (:line, 71, :none),
+    (:(=), (:call, :mod, (:(::), :x, :Bool), (:(::), :y, :Bool)), (:block,
+        (:line, 71, :none),
+        (:call, :rem, :x, :y)
+      ))
+  ))

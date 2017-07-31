@@ -1,0 +1,1426 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:(=), (:call, :isempty, :itr), (:block,
+        (:line, 3, :none),
+        (:call, :done, :itr, (:call, :start, :itr))
+      )),
+    (:line, 5, :none),
+    (:(=), (:call, :_min_length, :a, :b, (:(::), :IsInfinite), (:(::), :IsInfinite)), (:block,
+        (:line, 5, :none),
+        (:call, :min, (:call, :length, :a), (:call, :length, :b))
+      )),
+    (:line, 6, :none),
+    (:(=), (:call, :_min_length, :a, :b, :A, (:(::), :IsInfinite)), (:block,
+        (:line, 6, :none),
+        (:call, :length, :a)
+      )),
+    (:line, 7, :none),
+    (:(=), (:call, :_min_length, :a, :b, (:(::), :IsInfinite), :B), (:block,
+        (:line, 7, :none),
+        (:call, :length, :b)
+      )),
+    (:line, 8, :none),
+    (:(=), (:call, :_min_length, :a, :b, :A, :B), (:block,
+        (:line, 8, :none),
+        (:call, :min, (:call, :length, :a), (:call, :length, :b))
+      )),
+    (:line, 10, :none),
+    (:(=), (:call, :_diff_length, :a, :b, :A, (:(::), :IsInfinite)), (:block,
+        (:line, 10, :none),
+        0
+      )),
+    (:line, 11, :none),
+    (:(=), (:call, :_diff_length, :a, :b, (:(::), :IsInfinite), (:(::), :IsInfinite)), (:block,
+        (:line, 11, :none),
+        0
+      )),
+    (:line, 12, :none),
+    (:(=), (:call, :_diff_length, :a, :b, (:(::), :IsInfinite), :B), (:block,
+        (:line, 12, :none),
+        (:call, :length, :a)
+      )),
+    (:line, 13, :none),
+    (:(=), (:call, :_diff_length, :a, :b, :A, :B), (:block,
+        (:line, 13, :none),
+        (:call, :max, (:call, :-, (:call, :length, :a), (:call, :length, :b)), 0)
+      )),
+    (:line, 17, :none),
+    (:type, false, (:curly, :Enumerate, :I), (:block,
+        (:line, 18, :none),
+        (:(::), :itr, :I)
+      )),
+    (:line, 21, :none),
+    "    enumerate(iter)\n\nAn iterator that yields `(i, x)` where `i` is a counter starting at 1,\nand `x` is the `i`th value from the given iterator. It's useful when\nyou need not only the values `x` over which you are iterating, but\nalso the number of iterations so far. Note that `i` may not be valid\nfor indexing `iter`; it's also possible that `x != iter[i]`, if `iter`\nhas indices that do not start at 1.\n\n```jldoctest\njulia> a = [\"a\", \"b\", \"c\"];\n\njulia> for (index, value) in enumerate(a)\n           println(\"\$index \$value\")\n       end\n1 a\n2 b\n3 c\n```\n",
+    (:line, 42, :none),
+    (:(=), (:call, :enumerate, :iter), (:block,
+        (:line, 42, :none),
+        (:call, :Enumerate, :iter)
+      )),
+    (:line, 44, :none),
+    (:(=), (:call, :length, (:(::), :e, :Enumerate)), (:block,
+        (:line, 44, :none),
+        (:call, :length, (:., :e, (:quote, #QuoteNode
+              :itr
+            )))
+      )),
+    (:line, 45, :none),
+    (:(=), (:call, :size, (:(::), :e, :Enumerate)), (:block,
+        (:line, 45, :none),
+        (:call, :size, (:., :e, (:quote, #QuoteNode
+              :itr
+            )))
+      )),
+    (:line, 46, :none),
+    (:(=), (:call, :start, (:(::), :e, :Enumerate)), (:block,
+        (:line, 46, :none),
+        (:tuple, 1, (:call, :start, (:., :e, (:quote, #QuoteNode
+                :itr
+              ))))
+      )),
+    (:line, 47, :none),
+    (:function, (:call, :next, (:(::), :e, :Enumerate), :state), (:block,
+        (:line, 48, :none),
+        (:(=), :n, (:call, :next, (:., :e, (:quote, #QuoteNode
+                :itr
+              )), (:ref, :state, 2))),
+        (:line, 49, :none),
+        (:tuple, (:tuple, (:ref, :state, 1), (:ref, :n, 1)), (:tuple, (:call, :+, (:ref, :state, 1), 1), (:ref, :n, 2)))
+      )),
+    (:line, 51, :none),
+    (:(=), (:call, :done, (:(::), :e, :Enumerate), :state), (:block,
+        (:line, 51, :none),
+        (:call, :done, (:., :e, (:quote, #QuoteNode
+              :itr
+            )), (:ref, :state, 2))
+      )),
+    (:line, 53, :none),
+    (:(=), (:call, (:curly, :eltype, :I), (:(::), (:curly, :Type, (:curly, :Enumerate, :I)))), (:block,
+        (:line, 53, :none),
+        (:curly, :Tuple, :Int, (:call, :eltype, :I))
+      )),
+    (:line, 55, :none),
+    (:(=), (:call, (:curly, :iteratorsize, :I), (:(::), (:curly, :Type, (:curly, :Enumerate, :I)))), (:block,
+        (:line, 55, :none),
+        (:call, :iteratorsize, :I)
+      )),
+    (:line, 56, :none),
+    (:(=), (:call, (:curly, :iteratoreltype, :I), (:(::), (:curly, :Type, (:curly, :Enumerate, :I)))), (:block,
+        (:line, 56, :none),
+        (:call, :iteratoreltype, :I)
+      )),
+    (:line, 60, :none),
+    (:abstract, :AbstractZipIterator),
+    (:line, 62, :none),
+    (:(=), (:call, :zip_iteratorsize, :a, :b), (:block,
+        (:line, 62, :none),
+        (:call, :and_iteratorsize, :a, :b)
+      )),
+    (:line, 63, :none),
+    (:(=), (:call, :zip_iteratorsize, (:(::), :HasLength), (:(::), :IsInfinite)), (:block,
+        (:line, 63, :none),
+        (:call, :HasLength)
+      )),
+    (:line, 64, :none),
+    (:(=), (:call, :zip_iteratorsize, (:(::), :HasShape), (:(::), :IsInfinite)), (:block,
+        (:line, 64, :none),
+        (:call, :HasLength)
+      )),
+    (:line, 65, :none),
+    (:(=), (:call, :zip_iteratorsize, (:(::), :a, :IsInfinite), :b), (:block,
+        (:line, 65, :none),
+        (:call, :zip_iteratorsize, :b, :a)
+      )),
+    (:line, 66, :none),
+    (:(=), (:call, :zip_iteratorsize, (:(::), :a, :IsInfinite), (:(::), :b, :IsInfinite)), (:block,
+        (:line, 66, :none),
+        (:call, :IsInfinite)
+      )),
+    (:line, 69, :none),
+    (:type, false, (:<:, (:curly, :Zip1, :I), :AbstractZipIterator), (:block,
+        (:line, 70, :none),
+        (:(::), :a, :I)
+      )),
+    (:line, 72, :none),
+    (:(=), (:call, :zip, :a), (:block,
+        (:line, 72, :none),
+        (:call, :Zip1, :a)
+      )),
+    (:line, 73, :none),
+    (:(=), (:call, :length, (:(::), :z, :Zip1)), (:block,
+        (:line, 73, :none),
+        (:call, :length, (:., :z, (:quote, #QuoteNode
+              :a
+            )))
+      )),
+    (:line, 74, :none),
+    (:(=), (:call, :size, (:(::), :z, :Zip1)), (:block,
+        (:line, 74, :none),
+        (:call, :size, (:., :z, (:quote, #QuoteNode
+              :a
+            )))
+      )),
+    (:line, 75, :none),
+    (:(=), (:call, :indices, (:(::), :z, :Zip1)), (:block,
+        (:line, 75, :none),
+        (:call, :indices, (:., :z, (:quote, #QuoteNode
+              :a
+            )))
+      )),
+    (:line, 76, :none),
+    (:(=), (:call, (:curly, :eltype, :I), (:(::), (:curly, :Type, (:curly, :Zip1, :I)))), (:block,
+        (:line, 76, :none),
+        (:curly, :Tuple, (:call, :eltype, :I))
+      )),
+    (:line, 77, :none),
+    (:macrocall, Symbol("@inline"), (:(=), (:call, :start, (:(::), :z, :Zip1)), (:block,
+          (:line, 77, :none),
+          (:call, :start, (:., :z, (:quote, #QuoteNode
+                :a
+              )))
+        ))),
+    (:line, 78, :none),
+    (:macrocall, Symbol("@inline"), (:function, (:call, :next, (:(::), :z, :Zip1), :st), (:block,
+          (:line, 79, :none),
+          (:(=), :n, (:call, :next, (:., :z, (:quote, #QuoteNode
+                  :a
+                )), :st)),
+          (:line, 80, :none),
+          (:return, (:tuple, (:tuple, (:ref, :n, 1)), (:ref, :n, 2)))
+        ))),
+    (:line, 82, :none),
+    (:macrocall, Symbol("@inline"), (:(=), (:call, :done, (:(::), :z, :Zip1), :st), (:block,
+          (:line, 82, :none),
+          (:call, :done, (:., :z, (:quote, #QuoteNode
+                :a
+              )), :st)
+        ))),
+    (:line, 84, :none),
+    (:(=), (:call, (:curly, :iteratorsize, :I), (:(::), (:curly, :Type, (:curly, :Zip1, :I)))), (:block,
+        (:line, 84, :none),
+        (:call, :iteratorsize, :I)
+      )),
+    (:line, 85, :none),
+    (:(=), (:call, (:curly, :iteratoreltype, :I), (:(::), (:curly, :Type, (:curly, :Zip1, :I)))), (:block,
+        (:line, 85, :none),
+        (:call, :iteratoreltype, :I)
+      )),
+    (:line, 87, :none),
+    (:type, false, (:<:, (:curly, :Zip2, :I1, :I2), :AbstractZipIterator), (:block,
+        (:line, 88, :none),
+        (:(::), :a, :I1),
+        (:line, 89, :none),
+        (:(::), :b, :I2)
+      )),
+    (:line, 91, :none),
+    (:(=), (:call, :zip, :a, :b), (:block,
+        (:line, 91, :none),
+        (:call, :Zip2, :a, :b)
+      )),
+    (:line, 92, :none),
+    (:(=), (:call, :length, (:(::), :z, :Zip2)), (:block,
+        (:line, 92, :none),
+        (:call, :_min_length, (:., :z, (:quote, #QuoteNode
+              :a
+            )), (:., :z, (:quote, #QuoteNode
+              :b
+            )), (:call, :iteratorsize, (:., :z, (:quote, #QuoteNode
+                :a
+              ))), (:call, :iteratorsize, (:., :z, (:quote, #QuoteNode
+                :b
+              ))))
+      )),
+    (:line, 93, :none),
+    (:(=), (:call, :size, (:(::), :z, :Zip2)), (:block,
+        (:line, 93, :none),
+        (:call, :promote_shape, (:call, :size, (:., :z, (:quote, #QuoteNode
+                :a
+              ))), (:call, :size, (:., :z, (:quote, #QuoteNode
+                :b
+              ))))
+      )),
+    (:line, 94, :none),
+    (:(=), (:call, :indices, (:(::), :z, :Zip2)), (:block,
+        (:line, 94, :none),
+        (:call, :promote_shape, (:call, :indices, (:., :z, (:quote, #QuoteNode
+                :a
+              ))), (:call, :indices, (:., :z, (:quote, #QuoteNode
+                :b
+              ))))
+      )),
+    (:line, 95, :none),
+    (:(=), (:call, (:curly, :eltype, :I1, :I2), (:(::), (:curly, :Type, (:curly, :Zip2, :I1, :I2)))), (:block,
+        (:line, 95, :none),
+        (:curly, :Tuple, (:call, :eltype, :I1), (:call, :eltype, :I2))
+      )),
+    (:line, 96, :none),
+    (:macrocall, Symbol("@inline"), (:(=), (:call, :start, (:(::), :z, :Zip2)), (:block,
+          (:line, 96, :none),
+          (:tuple, (:call, :start, (:., :z, (:quote, #QuoteNode
+                  :a
+                ))), (:call, :start, (:., :z, (:quote, #QuoteNode
+                  :b
+                ))))
+        ))),
+    (:line, 97, :none),
+    (:macrocall, Symbol("@inline"), (:function, (:call, :next, (:(::), :z, :Zip2), :st), (:block,
+          (:line, 98, :none),
+          (:(=), :n1, (:call, :next, (:., :z, (:quote, #QuoteNode
+                  :a
+                )), (:ref, :st, 1))),
+          (:line, 99, :none),
+          (:(=), :n2, (:call, :next, (:., :z, (:quote, #QuoteNode
+                  :b
+                )), (:ref, :st, 2))),
+          (:line, 100, :none),
+          (:return, (:tuple, (:tuple, (:ref, :n1, 1), (:ref, :n2, 1)), (:tuple, (:ref, :n1, 2), (:ref, :n2, 2))))
+        ))),
+    (:line, 102, :none),
+    (:macrocall, Symbol("@inline"), (:(=), (:call, :done, (:(::), :z, :Zip2), :st), (:block,
+          (:line, 102, :none),
+          (:call, :|, (:call, :done, (:., :z, (:quote, #QuoteNode
+                  :a
+                )), (:ref, :st, 1)), (:call, :done, (:., :z, (:quote, #QuoteNode
+                  :b
+                )), (:ref, :st, 2)))
+        ))),
+    (:line, 104, :none),
+    (:(=), (:call, (:curly, :iteratorsize, :I1, :I2), (:(::), (:curly, :Type, (:curly, :Zip2, :I1, :I2)))), (:block,
+        (:line, 104, :none),
+        (:call, :zip_iteratorsize, (:call, :iteratorsize, :I1), (:call, :iteratorsize, :I2))
+      )),
+    (:line, 105, :none),
+    (:(=), (:call, (:curly, :iteratoreltype, :I1, :I2), (:(::), (:curly, :Type, (:curly, :Zip2, :I1, :I2)))), (:block,
+        (:line, 105, :none),
+        (:call, :and_iteratoreltype, (:call, :iteratoreltype, :I1), (:call, :iteratoreltype, :I2))
+      )),
+    (:line, 107, :none),
+    (:type, false, (:<:, (:curly, :Zip, :I, (:<:, :Z, :AbstractZipIterator)), :AbstractZipIterator), (:block,
+        (:line, 108, :none),
+        (:(::), :a, :I),
+        (:line, 109, :none),
+        (:(::), :z, :Z)
+      )),
+    (:line, 112, :none),
+    "    zip(iters...)\n\nFor a set of iterable objects, returns an iterable of tuples, where the `i`th tuple contains\nthe `i`th component of each input iterable.\n\nNote that [`zip`](:func:`zip`) is its own inverse: `collect(zip(zip(a...)...)) == collect(a)`.\n\n```jldoctest\njulia> a = 1:5\n1:5\n\njulia> b = [\"e\",\"d\",\"b\",\"c\",\"a\"]\n5-element Array{String,1}:\n \"e\"\n \"d\"\n \"b\"\n \"c\"\n \"a\"\n\njulia> c = zip(a,b)\nBase.Zip2{UnitRange{Int64},Array{String,1}}(1:5,String[\"e\",\"d\",\"b\",\"c\",\"a\"])\n\njulia> length(c)\n5\n\njulia> first(c)\n(1,\"e\")\n```\n",
+    (:line, 142, :none),
+    (:(=), (:call, :zip, :a, :b, (:..., :c)), (:block,
+        (:line, 142, :none),
+        (:call, :Zip, :a, (:call, :zip, :b, (:..., :c)))
+      )),
+    (:line, 143, :none),
+    (:(=), (:call, :length, (:(::), :z, :Zip)), (:block,
+        (:line, 143, :none),
+        (:call, :_min_length, (:., :z, (:quote, #QuoteNode
+              :a
+            )), (:., :z, (:quote, #QuoteNode
+              :z
+            )), (:call, :iteratorsize, (:., :z, (:quote, #QuoteNode
+                :a
+              ))), (:call, :iteratorsize, (:., :z, (:quote, #QuoteNode
+                :z
+              ))))
+      )),
+    (:line, 144, :none),
+    (:(=), (:call, :size, (:(::), :z, :Zip)), (:block,
+        (:line, 144, :none),
+        (:call, :promote_shape, (:call, :size, (:., :z, (:quote, #QuoteNode
+                :a
+              ))), (:call, :size, (:., :z, (:quote, #QuoteNode
+                :z
+              ))))
+      )),
+    (:line, 145, :none),
+    (:(=), (:call, :indices, (:(::), :z, :Zip)), (:block,
+        (:line, 145, :none),
+        (:call, :promote_shape, (:call, :indices, (:., :z, (:quote, #QuoteNode
+                :a
+              ))), (:call, :indices, (:., :z, (:quote, #QuoteNode
+                :z
+              ))))
+      )),
+    (:line, 146, :none),
+    (:(=), (:call, (:curly, :tuple_type_cons, :S), (:(::), (:curly, :Type, :S)), (:(::), (:curly, :Type, (:curly, :Union)))), (:block,
+        (:line, 146, :none),
+        (:curly, :Union)
+      )),
+    (:line, 147, :none),
+    (:function, (:call, (:curly, :tuple_type_cons, :S, (:<:, :T, :Tuple)), (:(::), (:curly, :Type, :S)), (:(::), (:curly, :Type, :T))), (:block,
+        (:line, 148, :none),
+        (:macrocall, Symbol("@_pure_meta")),
+        (:line, 149, :none),
+        (:curly, :Tuple, :S, (:..., (:., :T, (:quote, #QuoteNode
+                :parameters
+              ))))
+      )),
+    (:line, 151, :none),
+    (:(=), (:call, (:curly, :eltype, :I, :Z), (:(::), (:curly, :Type, (:curly, :Zip, :I, :Z)))), (:block,
+        (:line, 151, :none),
+        (:call, :tuple_type_cons, (:call, :eltype, :I), (:call, :eltype, :Z))
+      )),
+    (:line, 152, :none),
+    (:macrocall, Symbol("@inline"), (:(=), (:call, :start, (:(::), :z, :Zip)), (:block,
+          (:line, 152, :none),
+          (:call, :tuple, (:call, :start, (:., :z, (:quote, #QuoteNode
+                  :a
+                ))), (:call, :start, (:., :z, (:quote, #QuoteNode
+                  :z
+                ))))
+        ))),
+    (:line, 153, :none),
+    (:macrocall, Symbol("@inline"), (:function, (:call, :next, (:(::), :z, :Zip), :st), (:block,
+          (:line, 154, :none),
+          (:(=), :n1, (:call, :next, (:., :z, (:quote, #QuoteNode
+                  :a
+                )), (:ref, :st, 1))),
+          (:line, 155, :none),
+          (:(=), :n2, (:call, :next, (:., :z, (:quote, #QuoteNode
+                  :z
+                )), (:ref, :st, 2))),
+          (:line, 156, :none),
+          (:tuple, (:call, :tuple, (:ref, :n1, 1), (:..., (:ref, :n2, 1))), (:tuple, (:ref, :n1, 2), (:ref, :n2, 2)))
+        ))),
+    (:line, 158, :none),
+    (:macrocall, Symbol("@inline"), (:(=), (:call, :done, (:(::), :z, :Zip), :st), (:block,
+          (:line, 158, :none),
+          (:call, :|, (:call, :done, (:., :z, (:quote, #QuoteNode
+                  :a
+                )), (:ref, :st, 1)), (:call, :done, (:., :z, (:quote, #QuoteNode
+                  :z
+                )), (:ref, :st, 2)))
+        ))),
+    (:line, 160, :none),
+    (:(=), (:call, (:curly, :iteratorsize, :I1, :I2), (:(::), (:curly, :Type, (:curly, :Zip, :I1, :I2)))), (:block,
+        (:line, 160, :none),
+        (:call, :zip_iteratorsize, (:call, :iteratorsize, :I1), (:call, :iteratorsize, :I2))
+      )),
+    (:line, 161, :none),
+    (:(=), (:call, (:curly, :iteratoreltype, :I1, :I2), (:(::), (:curly, :Type, (:curly, :Zip, :I1, :I2)))), (:block,
+        (:line, 161, :none),
+        (:call, :and_iteratoreltype, (:call, :iteratoreltype, :I1), (:call, :iteratoreltype, :I2))
+      )),
+    (:line, 165, :none),
+    (:type, false, (:curly, :Filter, :F, :I), (:block,
+        (:line, 166, :none),
+        (:(::), :flt, :F),
+        (:line, 167, :none),
+        (:(::), :itr, :I)
+      )),
+    (:line, 170, :none),
+    "    filter(function, collection)\n\nReturn a copy of `collection`, removing elements for which `function` is `false`. For\nassociative collections, the function is passed two arguments (key and value).\n\n```jldocttest\njulia> a = 1:10\n1:10\n\njulia> filter(isodd, a)\n5-element Array{Int64,1}:\n 1\n 3\n 5\n 7\n 9\n```\n",
+    (:line, 189, :none),
+    (:(=), (:call, :filter, :flt, :itr), (:block,
+        (:line, 189, :none),
+        (:call, :Filter, :flt, :itr)
+      )),
+    (:line, 191, :none),
+    (:(=), (:call, :start, (:(::), :f, :Filter)), (:block,
+        (:line, 191, :none),
+        (:call, :start_filter, (:., :f, (:quote, #QuoteNode
+              :flt
+            )), (:., :f, (:quote, #QuoteNode
+              :itr
+            )))
+      )),
+    (:line, 192, :none),
+    (:function, (:call, :start_filter, :pred, :itr), (:block,
+        (:line, 193, :none),
+        (:(=), :s, (:call, :start, :itr)),
+        (:line, 194, :none),
+        (:while, (:call, :!, (:call, :done, :itr, :s)), (:block,
+            (:line, 195, :none),
+            (:(=), (:tuple, :v, :t), (:call, :next, :itr, :s)),
+            (:line, 196, :none),
+            (:if, (:call, :pred, :v), (:block,
+                (:line, 197, :none),
+                (:return, (:tuple, false, :v, :t))
+              )),
+            (:line, 199, :none),
+            (:(=), :s, :t)
+          )),
+        (:line, 201, :none),
+        (:tuple, true)
+      )),
+    (:line, 204, :none),
+    (:(=), (:call, :next, (:(::), :f, :Filter), :s), (:block,
+        (:line, 204, :none),
+        (:call, :advance_filter, (:., :f, (:quote, #QuoteNode
+              :flt
+            )), (:., :f, (:quote, #QuoteNode
+              :itr
+            )), :s)
+      )),
+    (:line, 205, :none),
+    (:function, (:call, :advance_filter, :pred, :itr, :st), (:block,
+        (:line, 206, :none),
+        (:(=), (:tuple, :_, :v, :s), :st),
+        (:line, 207, :none),
+        (:while, (:call, :!, (:call, :done, :itr, :s)), (:block,
+            (:line, 208, :none),
+            (:(=), (:tuple, :w, :t), (:call, :next, :itr, :s)),
+            (:line, 209, :none),
+            (:if, (:call, :pred, :w), (:block,
+                (:line, 210, :none),
+                (:return, (:tuple, :v, (:tuple, false, :w, :t)))
+              )),
+            (:line, 212, :none),
+            (:(=), :s, :t)
+          )),
+        (:line, 214, :none),
+        (:tuple, :v, (:tuple, true, :v, :s))
+      )),
+    (:line, 217, :none),
+    (:(=), (:call, :done, (:(::), :f, :Filter), :s), (:block,
+        (:line, 217, :none),
+        (:ref, :s, 1)
+      )),
+    (:line, 219, :none),
+    (:(=), (:call, (:curly, :eltype, :F, :I), (:(::), (:curly, :Type, (:curly, :Filter, :F, :I)))), (:block,
+        (:line, 219, :none),
+        (:call, :eltype, :I)
+      )),
+    (:line, 220, :none),
+    (:(=), (:call, (:curly, :iteratoreltype, :F, :I), (:(::), (:curly, :Type, (:curly, :Filter, :F, :I)))), (:block,
+        (:line, 220, :none),
+        (:call, :iteratoreltype, :I)
+      )),
+    (:line, 221, :none),
+    (:(=), (:call, (:curly, :iteratorsize, (:<:, :T, :Filter)), (:(::), (:curly, :Type, :T))), (:block,
+        (:line, 221, :none),
+        (:call, :SizeUnknown)
+      )),
+    (:line, 225, :none),
+    (:type, false, (:curly, :Rest, :I, :S), (:block,
+        (:line, 226, :none),
+        (:(::), :itr, :I),
+        (:line, 227, :none),
+        (:(::), :st, :S)
+      )),
+    (:line, 229, :none),
+    (:(=), (:call, :rest, :itr, :state), (:block,
+        (:line, 229, :none),
+        (:call, :Rest, :itr, :state)
+      )),
+    (:line, 231, :none),
+    (:(=), (:call, :start, (:(::), :i, :Rest)), (:block,
+        (:line, 231, :none),
+        (:., :i, (:quote, #QuoteNode
+            :st
+          ))
+      )),
+    (:line, 232, :none),
+    (:(=), (:call, :next, (:(::), :i, :Rest), :st), (:block,
+        (:line, 232, :none),
+        (:call, :next, (:., :i, (:quote, #QuoteNode
+              :itr
+            )), :st)
+      )),
+    (:line, 233, :none),
+    (:(=), (:call, :done, (:(::), :i, :Rest), :st), (:block,
+        (:line, 233, :none),
+        (:call, :done, (:., :i, (:quote, #QuoteNode
+              :itr
+            )), :st)
+      )),
+    (:line, 235, :none),
+    (:(=), (:call, (:curly, :eltype, :I), (:(::), (:curly, :Type, (:curly, :Rest, :I)))), (:block,
+        (:line, 235, :none),
+        (:call, :eltype, :I)
+      )),
+    (:line, 236, :none),
+    (:(=), (:call, (:curly, :iteratoreltype, :I, :S), (:(::), (:curly, :Type, (:curly, :Rest, :I, :S)))), (:block,
+        (:line, 236, :none),
+        (:call, :iteratoreltype, :I)
+      )),
+    (:line, 237, :none),
+    (:(=), (:call, :rest_iteratorsize, :a), (:block,
+        (:line, 237, :none),
+        (:call, :SizeUnknown)
+      )),
+    (:line, 238, :none),
+    (:(=), (:call, :rest_iteratorsize, (:(::), :IsInfinite)), (:block,
+        (:line, 238, :none),
+        (:call, :IsInfinite)
+      )),
+    (:line, 239, :none),
+    (:(=), (:call, (:curly, :iteratorsize, :I, :S), (:(::), (:curly, :Type, (:curly, :Rest, :I, :S)))), (:block,
+        (:line, 239, :none),
+        (:call, :rest_iteratorsize, (:call, :iteratorsize, :I))
+      )),
+    (:line, 242, :none),
+    "    head_and_tail(c, n) -> head, tail\n\nReturns `head`: the first `n` elements of `c`;\nand `tail`: an iterator over the remaining elements.\n",
+    (:line, 248, :none),
+    (:function, (:call, :head_and_tail, :c, :n), (:block,
+        (:line, 249, :none),
+        (:(=), :head, (:call, (:curly, :Vector, (:call, :eltype, :c)), :n)),
+        (:line, 250, :none),
+        (:(=), :s, (:call, :start, :c)),
+        (:line, 251, :none),
+        (:(=), :i, 0),
+        (:line, 252, :none),
+        (:while, (:&&, (:call, :<, :i, :n), (:call, :!, (:call, :done, :c, :s))), (:block,
+            (:line, 253, :none),
+            (:+=, :i, 1),
+            (:line, 254, :none),
+            (:(=), (:tuple, (:ref, :head, :i), :s), (:call, :next, :c, :s))
+          )),
+        (:line, 256, :none),
+        (:return, (:tuple, (:call, :resize!, :head, :i), (:call, :rest, :c, :s)))
+      )),
+    (:line, 262, :none),
+    (:type, false, (:curly, :Count, (:<:, :S, :Number)), (:block,
+        (:line, 263, :none),
+        (:(::), :start, :S),
+        (:line, 264, :none),
+        (:(::), :step, :S)
+      )),
+    (:line, 266, :none),
+    (:(=), (:call, :countfrom, (:(::), :start, :Number), (:(::), :step, :Number)), (:block,
+        (:line, 266, :none),
+        (:call, :Count, (:..., (:call, :promote, :start, :step)))
+      )),
+    (:line, 267, :none),
+    (:(=), (:call, :countfrom, (:(::), :start, :Number)), (:block,
+        (:line, 267, :none),
+        (:call, :Count, :start, (:call, :one, :start))
+      )),
+    (:line, 268, :none),
+    (:(=), (:call, :countfrom), (:block,
+        (:line, 268, :none),
+        (:call, :Count, 1, 1)
+      )),
+    (:line, 270, :none),
+    (:(=), (:call, (:curly, :eltype, :S), (:(::), (:curly, :Type, (:curly, :Count, :S)))), (:block,
+        (:line, 270, :none),
+        :S
+      )),
+    (:line, 272, :none),
+    (:(=), (:call, :start, (:(::), :it, :Count)), (:block,
+        (:line, 272, :none),
+        (:., :it, (:quote, #QuoteNode
+            :start
+          ))
+      )),
+    (:line, 273, :none),
+    (:(=), (:call, :next, (:(::), :it, :Count), :state), (:block,
+        (:line, 273, :none),
+        (:tuple, :state, (:call, :+, :state, (:., :it, (:quote, #QuoteNode
+                :step
+              ))))
+      )),
+    (:line, 274, :none),
+    (:(=), (:call, :done, (:(::), :it, :Count), :state), (:block,
+        (:line, 274, :none),
+        false
+      )),
+    (:line, 276, :none),
+    (:(=), (:call, (:curly, :iteratorsize, :S), (:(::), (:curly, :Type, (:curly, :Count, :S)))), (:block,
+        (:line, 276, :none),
+        (:call, :IsInfinite)
+      )),
+    (:line, 280, :none),
+    (:type, false, (:curly, :Take, :I), (:block,
+        (:line, 281, :none),
+        (:(::), :xs, :I),
+        (:line, 282, :none),
+        (:(::), :n, :Int)
+      )),
+    (:line, 285, :none),
+    "    take(iter, n)\n\nAn iterator that generates at most the first `n` elements of `iter`.\n\n```jldoctest\njulia> a = 1:2:11\n1:2:11\n\njulia> collect(a)\n6-element Array{Int64,1}:\n  1\n  3\n  5\n  7\n  9\n 11\n\njulia> collect(take(a,3))\n3-element Array{Int64,1}:\n 1\n 3\n 5\n```\n",
+    (:line, 310, :none),
+    (:(=), (:call, :take, :xs, (:(::), :n, :Int)), (:block,
+        (:line, 310, :none),
+        (:call, :Take, :xs, :n)
+      )),
+    (:line, 312, :none),
+    (:(=), (:call, (:curly, :eltype, :I), (:(::), (:curly, :Type, (:curly, :Take, :I)))), (:block,
+        (:line, 312, :none),
+        (:call, :eltype, :I)
+      )),
+    (:line, 313, :none),
+    (:(=), (:call, (:curly, :iteratoreltype, :I), (:(::), (:curly, :Type, (:curly, :Take, :I)))), (:block,
+        (:line, 313, :none),
+        (:call, :iteratoreltype, :I)
+      )),
+    (:line, 314, :none),
+    (:(=), (:call, :take_iteratorsize, :a), (:block,
+        (:line, 314, :none),
+        (:call, :HasLength)
+      )),
+    (:line, 315, :none),
+    (:(=), (:call, :take_iteratorsize, (:(::), :SizeUnknown)), (:block,
+        (:line, 315, :none),
+        (:call, :SizeUnknown)
+      )),
+    (:line, 316, :none),
+    (:(=), (:call, (:curly, :iteratorsize, :I), (:(::), (:curly, :Type, (:curly, :Take, :I)))), (:block,
+        (:line, 316, :none),
+        (:call, :take_iteratorsize, (:call, :iteratorsize, :I))
+      )),
+    (:line, 317, :none),
+    (:(=), (:call, :length, (:(::), :t, :Take)), (:block,
+        (:line, 317, :none),
+        (:call, :_min_length, (:., :t, (:quote, #QuoteNode
+              :xs
+            )), (:(:), 1, (:., :t, (:quote, #QuoteNode
+                :n
+              ))), (:call, :iteratorsize, (:., :t, (:quote, #QuoteNode
+                :xs
+              ))), (:call, :HasLength))
+      )),
+    (:line, 319, :none),
+    (:(=), (:call, :start, (:(::), :it, :Take)), (:block,
+        (:line, 319, :none),
+        (:tuple, (:., :it, (:quote, #QuoteNode
+              :n
+            )), (:call, :start, (:., :it, (:quote, #QuoteNode
+                :xs
+              ))))
+      )),
+    (:line, 321, :none),
+    (:function, (:call, :next, (:(::), :it, :Take), :state), (:block,
+        (:line, 322, :none),
+        (:(=), (:tuple, :n, :xs_state), :state),
+        (:line, 323, :none),
+        (:(=), (:tuple, :v, :xs_state), (:call, :next, (:., :it, (:quote, #QuoteNode
+                :xs
+              )), :xs_state)),
+        (:line, 324, :none),
+        (:return, (:tuple, :v, (:tuple, (:call, :-, :n, 1), :xs_state)))
+      )),
+    (:line, 327, :none),
+    (:function, (:call, :done, (:(::), :it, :Take), :state), (:block,
+        (:line, 328, :none),
+        (:(=), (:tuple, :n, :xs_state), :state),
+        (:line, 329, :none),
+        (:return, (:||, (:call, :(<=), :n, 0), (:call, :done, (:., :it, (:quote, #QuoteNode
+                  :xs
+                )), :xs_state)))
+      )),
+    (:line, 334, :none),
+    (:type, false, (:curly, :Drop, :I), (:block,
+        (:line, 335, :none),
+        (:(::), :xs, :I),
+        (:line, 336, :none),
+        (:(::), :n, :Int)
+      )),
+    (:line, 339, :none),
+    "    drop(iter, n)\n\nAn iterator that generates all but the first `n` elements of `iter`.\n\n```jldoctest\njulia> a = 1:2:11\n1:2:11\n\njulia> collect(a)\n6-element Array{Int64,1}:\n  1\n  3\n  5\n  7\n  9\n 11\n\njulia> collect(drop(a,4))\n2-element Array{Int64,1}:\n  9\n 11\n```\n",
+    (:line, 363, :none),
+    (:(=), (:call, :drop, :xs, (:(::), :n, :Int)), (:block,
+        (:line, 363, :none),
+        (:call, :Drop, :xs, :n)
+      )),
+    (:line, 365, :none),
+    (:(=), (:call, (:curly, :eltype, :I), (:(::), (:curly, :Type, (:curly, :Drop, :I)))), (:block,
+        (:line, 365, :none),
+        (:call, :eltype, :I)
+      )),
+    (:line, 366, :none),
+    (:(=), (:call, (:curly, :iteratoreltype, :I), (:(::), (:curly, :Type, (:curly, :Drop, :I)))), (:block,
+        (:line, 366, :none),
+        (:call, :iteratoreltype, :I)
+      )),
+    (:line, 367, :none),
+    (:(=), (:call, :drop_iteratorsize, (:(::), :SizeUnknown)), (:block,
+        (:line, 367, :none),
+        (:call, :SizeUnknown)
+      )),
+    (:line, 368, :none),
+    (:(=), (:call, :drop_iteratorsize, (:(::), (:curly, :Union, :HasShape, :HasLength))), (:block,
+        (:line, 368, :none),
+        (:call, :HasLength)
+      )),
+    (:line, 369, :none),
+    (:(=), (:call, :drop_iteratorsize, (:(::), :IsInfinite)), (:block,
+        (:line, 369, :none),
+        (:call, :IsInfinite)
+      )),
+    (:line, 370, :none),
+    (:(=), (:call, (:curly, :iteratorsize, :I), (:(::), (:curly, :Type, (:curly, :Drop, :I)))), (:block,
+        (:line, 370, :none),
+        (:call, :drop_iteratorsize, (:call, :iteratorsize, :I))
+      )),
+    (:line, 371, :none),
+    (:(=), (:call, :length, (:(::), :d, :Drop)), (:block,
+        (:line, 371, :none),
+        (:call, :_diff_length, (:., :d, (:quote, #QuoteNode
+              :xs
+            )), (:(:), 1, (:., :d, (:quote, #QuoteNode
+                :n
+              ))), (:call, :iteratorsize, (:., :d, (:quote, #QuoteNode
+                :xs
+              ))), (:call, :HasLength))
+      )),
+    (:line, 373, :none),
+    (:function, (:call, :start, (:(::), :it, :Drop)), (:block,
+        (:line, 374, :none),
+        (:(=), :xs_state, (:call, :start, (:., :it, (:quote, #QuoteNode
+                :xs
+              )))),
+        (:line, 375, :none),
+        (:for, (:(=), :i, (:(:), 1, (:., :it, (:quote, #QuoteNode
+                  :n
+                )))), (:block,
+            (:line, 376, :none),
+            (:if, (:call, :done, (:., :it, (:quote, #QuoteNode
+                    :xs
+                  )), :xs_state), (:block,
+                (:line, 377, :none),
+                (:break,)
+              )),
+            (:line, 380, :none),
+            (:(=), (:tuple, :_, :xs_state), (:call, :next, (:., :it, (:quote, #QuoteNode
+                    :xs
+                  )), :xs_state))
+          )),
+        (:line, 382, :none),
+        :xs_state
+      )),
+    (:line, 385, :none),
+    (:(=), (:call, :next, (:(::), :it, :Drop), :state), (:block,
+        (:line, 385, :none),
+        (:call, :next, (:., :it, (:quote, #QuoteNode
+              :xs
+            )), :state)
+      )),
+    (:line, 386, :none),
+    (:(=), (:call, :done, (:(::), :it, :Drop), :state), (:block,
+        (:line, 386, :none),
+        (:call, :done, (:., :it, (:quote, #QuoteNode
+              :xs
+            )), :state)
+      )),
+    (:line, 390, :none),
+    (:type, false, (:curly, :Cycle, :I), (:block,
+        (:line, 391, :none),
+        (:(::), :xs, :I)
+      )),
+    (:line, 393, :none),
+    (:(=), (:call, :cycle, :xs), (:block,
+        (:line, 393, :none),
+        (:call, :Cycle, :xs)
+      )),
+    (:line, 395, :none),
+    (:(=), (:call, (:curly, :eltype, :I), (:(::), (:curly, :Type, (:curly, :Cycle, :I)))), (:block,
+        (:line, 395, :none),
+        (:call, :eltype, :I)
+      )),
+    (:line, 396, :none),
+    (:(=), (:call, (:curly, :iteratoreltype, :I), (:(::), (:curly, :Type, (:curly, :Cycle, :I)))), (:block,
+        (:line, 396, :none),
+        (:call, :iteratoreltype, :I)
+      )),
+    (:line, 397, :none),
+    (:(=), (:call, (:curly, :iteratorsize, :I), (:(::), (:curly, :Type, (:curly, :Cycle, :I)))), (:block,
+        (:line, 397, :none),
+        (:call, :IsInfinite)
+      )),
+    (:line, 399, :none),
+    (:function, (:call, :start, (:(::), :it, :Cycle)), (:block,
+        (:line, 400, :none),
+        (:(=), :s, (:call, :start, (:., :it, (:quote, #QuoteNode
+                :xs
+              )))),
+        (:line, 401, :none),
+        (:return, (:tuple, :s, (:call, :done, (:., :it, (:quote, #QuoteNode
+                  :xs
+                )), :s)))
+      )),
+    (:line, 404, :none),
+    (:function, (:call, :next, (:(::), :it, :Cycle), :state), (:block,
+        (:line, 405, :none),
+        (:(=), (:tuple, :s, :d), :state),
+        (:line, 406, :none),
+        (:if, (:call, :done, (:., :it, (:quote, #QuoteNode
+                :xs
+              )), :s), (:block,
+            (:line, 407, :none),
+            (:(=), :s, (:call, :start, (:., :it, (:quote, #QuoteNode
+                    :xs
+                  ))))
+          )),
+        (:line, 409, :none),
+        (:(=), (:tuple, :v, :s), (:call, :next, (:., :it, (:quote, #QuoteNode
+                :xs
+              )), :s)),
+        (:line, 410, :none),
+        (:return, (:tuple, :v, (:tuple, :s, false)))
+      )),
+    (:line, 413, :none),
+    (:(=), (:call, :done, (:(::), :it, :Cycle), :state), (:block,
+        (:line, 413, :none),
+        (:ref, :state, 2)
+      )),
+    (:line, 418, :none),
+    (:type, false, (:curly, :Repeated, :O), (:block,
+        (:line, 419, :none),
+        (:(::), :x, :O)
+      )),
+    (:line, 421, :none),
+    (:(=), (:call, :repeated, :x), (:block,
+        (:line, 421, :none),
+        (:call, :Repeated, :x)
+      )),
+    (:line, 422, :none),
+    (:(=), (:call, :repeated, :x, (:(::), :n, :Int)), (:block,
+        (:line, 422, :none),
+        (:call, :take, (:call, :repeated, :x), :n)
+      )),
+    (:line, 424, :none),
+    (:(=), (:call, (:curly, :eltype, :O), (:(::), (:curly, :Type, (:curly, :Repeated, :O)))), (:block,
+        (:line, 424, :none),
+        :O
+      )),
+    (:line, 426, :none),
+    (:(=), (:call, :start, (:(::), :it, :Repeated)), (:block,
+        (:line, 426, :none),
+        :nothing
+      )),
+    (:line, 427, :none),
+    (:(=), (:call, :next, (:(::), :it, :Repeated), :state), (:block,
+        (:line, 427, :none),
+        (:tuple, (:., :it, (:quote, #QuoteNode
+              :x
+            )), :nothing)
+      )),
+    (:line, 428, :none),
+    (:(=), (:call, :done, (:(::), :it, :Repeated), :state), (:block,
+        (:line, 428, :none),
+        false
+      )),
+    (:line, 430, :none),
+    (:(=), (:call, (:curly, :iteratorsize, :O), (:(::), (:curly, :Type, (:curly, :Repeated, :O)))), (:block,
+        (:line, 430, :none),
+        (:call, :IsInfinite)
+      )),
+    (:line, 431, :none),
+    (:(=), (:call, (:curly, :iteratoreltype, :O), (:(::), (:curly, :Type, (:curly, :Repeated, :O)))), (:block,
+        (:line, 431, :none),
+        (:call, :HasEltype)
+      )),
+    (:line, 436, :none),
+    (:abstract, :AbstractProdIterator),
+    (:line, 438, :none),
+    (:(=), (:call, :length, (:(::), :p, :AbstractProdIterator)), (:block,
+        (:line, 438, :none),
+        (:call, :prod, (:call, :size, :p))
+      )),
+    (:line, 439, :none),
+    (:(=), (:call, :_length, (:(::), :p, :AbstractProdIterator)), (:block,
+        (:line, 439, :none),
+        (:call, :prod, (:call, :map, :unsafe_length, (:call, :indices, :p)))
+      )),
+    (:line, 440, :none),
+    (:(=), (:call, :size, (:(::), :p, :AbstractProdIterator)), (:block,
+        (:line, 440, :none),
+        (:call, :_prod_size, (:., :p, (:quote, #QuoteNode
+              :a
+            )), (:., :p, (:quote, #QuoteNode
+              :b
+            )), (:call, :iteratorsize, (:., :p, (:quote, #QuoteNode
+                :a
+              ))), (:call, :iteratorsize, (:., :p, (:quote, #QuoteNode
+                :b
+              ))))
+      )),
+    (:line, 441, :none),
+    (:(=), (:call, :indices, (:(::), :p, :AbstractProdIterator)), (:block,
+        (:line, 441, :none),
+        (:call, :_prod_indices, (:., :p, (:quote, #QuoteNode
+              :a
+            )), (:., :p, (:quote, #QuoteNode
+              :b
+            )), (:call, :iteratorsize, (:., :p, (:quote, #QuoteNode
+                :a
+              ))), (:call, :iteratorsize, (:., :p, (:quote, #QuoteNode
+                :b
+              ))))
+      )),
+    (:line, 442, :none),
+    (:(=), (:call, :ndims, (:(::), :p, :AbstractProdIterator)), (:block,
+        (:line, 442, :none),
+        (:call, :length, (:call, :indices, :p))
+      )),
+    (:line, 445, :none),
+    (:(=), (:call, :_prod_size, :a, (:(::), :HasShape)), (:block,
+        (:line, 445, :none),
+        (:call, :size, :a)
+      )),
+    (:line, 446, :none),
+    (:(=), (:call, :_prod_size, :a, (:(::), :HasLength)), (:block,
+        (:line, 446, :none),
+        (:tuple, (:call, :length, :a))
+      )),
+    (:line, 447, :none),
+    (:(=), (:call, :_prod_size, :a, :A), (:block,
+        (:line, 447, :none),
+        (:call, :throw, (:call, :ArgumentError, (:string, "Cannot compute size for object of type ", (:call, :typeof, :a))))
+      )),
+    (:line, 449, :none),
+    (:(=), (:call, :_prod_size, :a, :b, (:(::), :HasLength), (:(::), :HasLength)), (:block,
+        (:line, 449, :none),
+        (:tuple, (:call, :length, :a), (:call, :length, :b))
+      )),
+    (:line, 450, :none),
+    (:(=), (:call, :_prod_size, :a, :b, (:(::), :HasLength), (:(::), :HasShape)), (:block,
+        (:line, 450, :none),
+        (:tuple, (:call, :length, :a), (:..., (:call, :size, :b)))
+      )),
+    (:line, 451, :none),
+    (:(=), (:call, :_prod_size, :a, :b, (:(::), :HasShape), (:(::), :HasLength)), (:block,
+        (:line, 451, :none),
+        (:tuple, (:..., (:call, :size, :a)), (:call, :length, :b))
+      )),
+    (:line, 452, :none),
+    (:(=), (:call, :_prod_size, :a, :b, (:(::), :HasShape), (:(::), :HasShape)), (:block,
+        (:line, 452, :none),
+        (:tuple, (:..., (:call, :size, :a)), (:..., (:call, :size, :b)))
+      )),
+    (:line, 453, :none),
+    (:(=), (:call, :_prod_size, :a, :b, :A, :B), (:block,
+        (:line, 453, :none),
+        (:call, :throw, (:call, :ArgumentError, (:string, "Cannot construct size for objects of types ", (:call, :typeof, :a), " and ", (:call, :typeof, :b))))
+      )),
+    (:line, 456, :none),
+    (:(=), (:call, :_prod_indices, :a, (:(::), :HasShape)), (:block,
+        (:line, 456, :none),
+        (:call, :indices, :a)
+      )),
+    (:line, 457, :none),
+    (:(=), (:call, :_prod_indices, :a, (:(::), :HasLength)), (:block,
+        (:line, 457, :none),
+        (:tuple, (:call, :OneTo, (:call, :length, :a)))
+      )),
+    (:line, 458, :none),
+    (:(=), (:call, :_prod_indices, :a, :A), (:block,
+        (:line, 458, :none),
+        (:call, :throw, (:call, :ArgumentError, (:string, "Cannot compute indices for object of type ", (:call, :typeof, :a))))
+      )),
+    (:line, 460, :none),
+    (:(=), (:call, :_prod_indices, :a, :b, (:(::), :HasLength), (:(::), :HasLength)), (:block,
+        (:line, 460, :none),
+        (:tuple, (:call, :OneTo, (:call, :length, :a)), (:call, :OneTo, (:call, :length, :b)))
+      )),
+    (:line, 461, :none),
+    (:(=), (:call, :_prod_indices, :a, :b, (:(::), :HasLength), (:(::), :HasShape)), (:block,
+        (:line, 461, :none),
+        (:tuple, (:call, :OneTo, (:call, :length, :a)), (:..., (:call, :indices, :b)))
+      )),
+    (:line, 462, :none),
+    (:(=), (:call, :_prod_indices, :a, :b, (:(::), :HasShape), (:(::), :HasLength)), (:block,
+        (:line, 462, :none),
+        (:tuple, (:..., (:call, :indices, :a)), (:call, :OneTo, (:call, :length, :b)))
+      )),
+    (:line, 463, :none),
+    (:(=), (:call, :_prod_indices, :a, :b, (:(::), :HasShape), (:(::), :HasShape)), (:block,
+        (:line, 463, :none),
+        (:tuple, (:..., (:call, :indices, :a)), (:..., (:call, :indices, :b)))
+      )),
+    (:line, 464, :none),
+    (:(=), (:call, :_prod_indices, :a, :b, :A, :B), (:block,
+        (:line, 464, :none),
+        (:call, :throw, (:call, :ArgumentError, (:string, "Cannot construct indices for objects of types ", (:call, :typeof, :a), " and ", (:call, :typeof, :b))))
+      )),
+    (:line, 468, :none),
+    (:type, false, (:<:, (:curly, :Prod1, :I), :AbstractProdIterator), (:block,
+        (:line, 469, :none),
+        (:(::), :a, :I)
+      )),
+    (:line, 471, :none),
+    (:(=), (:call, :product, :a), (:block,
+        (:line, 471, :none),
+        (:call, :Prod1, :a)
+      )),
+    (:line, 473, :none),
+    (:(=), (:call, (:curly, :eltype, :I), (:(::), (:curly, :Type, (:curly, :Prod1, :I)))), (:block,
+        (:line, 473, :none),
+        (:curly, :Tuple, (:call, :eltype, :I))
+      )),
+    (:line, 474, :none),
+    (:(=), (:call, :size, (:(::), :p, :Prod1)), (:block,
+        (:line, 474, :none),
+        (:call, :_prod_size, (:., :p, (:quote, #QuoteNode
+              :a
+            )), (:call, :iteratorsize, (:., :p, (:quote, #QuoteNode
+                :a
+              ))))
+      )),
+    (:line, 475, :none),
+    (:(=), (:call, :indices, (:(::), :p, :Prod1)), (:block,
+        (:line, 475, :none),
+        (:call, :_prod_indices, (:., :p, (:quote, #QuoteNode
+              :a
+            )), (:call, :iteratorsize, (:., :p, (:quote, #QuoteNode
+                :a
+              ))))
+      )),
+    (:line, 477, :none),
+    (:macrocall, Symbol("@inline"), (:(=), (:call, :start, (:(::), :p, :Prod1)), (:block,
+          (:line, 477, :none),
+          (:call, :start, (:., :p, (:quote, #QuoteNode
+                :a
+              )))
+        ))),
+    (:line, 478, :none),
+    (:macrocall, Symbol("@inline"), (:function, (:call, :next, (:(::), :p, :Prod1), :st), (:block,
+          (:line, 479, :none),
+          (:(=), (:tuple, :n, :st), (:call, :next, (:., :p, (:quote, #QuoteNode
+                  :a
+                )), :st)),
+          (:line, 480, :none),
+          (:tuple, (:tuple, :n), :st)
+        ))),
+    (:line, 482, :none),
+    (:macrocall, Symbol("@inline"), (:(=), (:call, :done, (:(::), :p, :Prod1), :st), (:block,
+          (:line, 482, :none),
+          (:call, :done, (:., :p, (:quote, #QuoteNode
+                :a
+              )), :st)
+        ))),
+    (:line, 484, :none),
+    (:(=), (:call, (:curly, :iteratoreltype, :I), (:(::), (:curly, :Type, (:curly, :Prod1, :I)))), (:block,
+        (:line, 484, :none),
+        (:call, :iteratoreltype, :I)
+      )),
+    (:line, 485, :none),
+    (:(=), (:call, (:curly, :iteratorsize, :I), (:(::), (:curly, :Type, (:curly, :Prod1, :I)))), (:block,
+        (:line, 485, :none),
+        (:call, :iteratorsize, :I)
+      )),
+    (:line, 488, :none),
+    (:type, false, (:<:, (:curly, :Prod2, :I1, :I2), :AbstractProdIterator), (:block,
+        (:line, 489, :none),
+        (:(::), :a, :I1),
+        (:line, 490, :none),
+        (:(::), :b, :I2)
+      )),
+    (:line, 493, :none),
+    "    product(iters...)\n\nReturns an iterator over the product of several iterators. Each generated element is\na tuple whose `i`th element comes from the `i`th argument iterator. The first iterator\nchanges the fastest. Example:\n\n    julia> collect(product(1:2,3:5))\n    6-element Array{Tuple{Int64,Int64},1}:\n     (1,3)\n     (2,3)\n     (1,4)\n     (2,4)\n     (1,5)\n     (2,5)\n",
+    (:line, 509, :none),
+    (:(=), (:call, :product, :a, :b), (:block,
+        (:line, 509, :none),
+        (:call, :Prod2, :a, :b)
+      )),
+    (:line, 511, :none),
+    (:(=), (:call, (:curly, :eltype, :I1, :I2), (:(::), (:curly, :Type, (:curly, :Prod2, :I1, :I2)))), (:block,
+        (:line, 511, :none),
+        (:curly, :Tuple, (:call, :eltype, :I1), (:call, :eltype, :I2))
+      )),
+    (:line, 513, :none),
+    (:(=), (:call, (:curly, :iteratoreltype, :I1, :I2), (:(::), (:curly, :Type, (:curly, :Prod2, :I1, :I2)))), (:block,
+        (:line, 513, :none),
+        (:call, :and_iteratoreltype, (:call, :iteratoreltype, :I1), (:call, :iteratoreltype, :I2))
+      )),
+    (:line, 514, :none),
+    (:(=), (:call, (:curly, :iteratorsize, :I1, :I2), (:(::), (:curly, :Type, (:curly, :Prod2, :I1, :I2)))), (:block,
+        (:line, 514, :none),
+        (:call, :prod_iteratorsize, (:call, :iteratorsize, :I1), (:call, :iteratorsize, :I2))
+      )),
+    (:line, 516, :none),
+    (:function, (:call, :start, (:(::), :p, :AbstractProdIterator)), (:block,
+        (:line, 517, :none),
+        (:(=), (:tuple, :s1, :s2), (:tuple, (:call, :start, (:., :p, (:quote, #QuoteNode
+                  :a
+                ))), (:call, :start, (:., :p, (:quote, #QuoteNode
+                  :b
+                ))))),
+        (:line, 518, :none),
+        (:tuple, :s1, :s2, (:call, (:curly, :Nullable, (:call, :eltype, (:., :p, (:quote, #QuoteNode
+                    :b
+                  ))))), (:||, (:call, :done, (:., :p, (:quote, #QuoteNode
+                  :a
+                )), :s1), (:call, :done, (:., :p, (:quote, #QuoteNode
+                  :b
+                )), :s2)))
+      )),
+    (:line, 521, :none),
+    (:macrocall, Symbol("@inline"), (:function, (:call, :prod_next, :p, :st), (:block,
+          (:line, 522, :none),
+          (:(=), (:tuple, :s1, :s2), (:tuple, (:ref, :st, 1), (:ref, :st, 2))),
+          (:line, 523, :none),
+          (:(=), (:tuple, :v1, :s1), (:call, :next, (:., :p, (:quote, #QuoteNode
+                  :a
+                )), :s1)),
+          (:line, 525, :none),
+          (:(=), :nv2, (:ref, :st, 3)),
+          (:line, 526, :none),
+          (:if, (:call, :isnull, :nv2), (:block,
+              (:line, 527, :none),
+              (:(=), (:tuple, :v2, :s2), (:call, :next, (:., :p, (:quote, #QuoteNode
+                      :b
+                    )), :s2))
+            ), (:block,
+              (:line, 529, :none),
+              (:(=), :v2, (:., :nv2, (:quote, #QuoteNode
+                    :value
+                  )))
+            )),
+          (:line, 532, :none),
+          (:if, (:call, :done, (:., :p, (:quote, #QuoteNode
+                  :a
+                )), :s1), (:block,
+              (:line, 533, :none),
+              (:return, (:tuple, (:tuple, :v1, :v2), (:tuple, (:call, :start, (:., :p, (:quote, #QuoteNode
+                          :a
+                        ))), :s2, (:call, :oftype, :nv2, :nothing), (:call, :done, (:., :p, (:quote, #QuoteNode
+                          :b
+                        )), :s2))))
+            )),
+          (:line, 535, :none),
+          (:return, (:tuple, (:tuple, :v1, :v2), (:tuple, :s1, :s2, (:call, :Nullable, :v2), false)))
+        ))),
+    (:line, 538, :none),
+    (:macrocall, Symbol("@inline"), (:(=), (:call, :next, (:(::), :p, :Prod2), :st), (:block,
+          (:line, 538, :none),
+          (:call, :prod_next, :p, :st)
+        ))),
+    (:line, 539, :none),
+    (:macrocall, Symbol("@inline"), (:(=), (:call, :done, (:(::), :p, :AbstractProdIterator), :st), (:block,
+          (:line, 539, :none),
+          (:ref, :st, 4)
+        ))),
+    (:line, 542, :none),
+    (:type, false, (:<:, (:curly, :Prod, :I1, (:<:, :I2, :AbstractProdIterator)), :AbstractProdIterator), (:block,
+        (:line, 543, :none),
+        (:(::), :a, :I1),
+        (:line, 544, :none),
+        (:(::), :b, :I2)
+      )),
+    (:line, 546, :none),
+    (:(=), (:call, :product, :a, :b, (:..., :c)), (:block,
+        (:line, 546, :none),
+        (:call, :Prod, :a, (:call, :product, :b, (:..., :c)))
+      )),
+    (:line, 548, :none),
+    (:(=), (:call, (:curly, :eltype, :I1, :I2), (:(::), (:curly, :Type, (:curly, :Prod, :I1, :I2)))), (:block,
+        (:line, 548, :none),
+        (:call, :tuple_type_cons, (:call, :eltype, :I1), (:call, :eltype, :I2))
+      )),
+    (:line, 550, :none),
+    (:(=), (:call, (:curly, :iteratoreltype, :I1, :I2), (:(::), (:curly, :Type, (:curly, :Prod, :I1, :I2)))), (:block,
+        (:line, 550, :none),
+        (:call, :and_iteratoreltype, (:call, :iteratoreltype, :I1), (:call, :iteratoreltype, :I2))
+      )),
+    (:line, 551, :none),
+    (:(=), (:call, (:curly, :iteratorsize, :I1, :I2), (:(::), (:curly, :Type, (:curly, :Prod, :I1, :I2)))), (:block,
+        (:line, 551, :none),
+        (:call, :prod_iteratorsize, (:call, :iteratorsize, :I1), (:call, :iteratorsize, :I2))
+      )),
+    (:line, 553, :none),
+    (:macrocall, Symbol("@inline"), (:function, (:call, (:curly, :next, :I1, :I2), (:(::), :p, (:curly, :Prod, :I1, :I2)), :st), (:block,
+          (:line, 554, :none),
+          (:(=), :x, (:call, :prod_next, :p, :st)),
+          (:line, 555, :none),
+          (:tuple, (:tuple, (:ref, (:ref, :x, 1), 1), (:..., (:ref, (:ref, :x, 1), 2))), (:ref, :x, 2))
+        ))),
+    (:line, 558, :none),
+    (:(=), (:call, :prod_iteratorsize, (:(::), (:curly, :Union, :HasLength, :HasShape)), (:(::), (:curly, :Union, :HasLength, :HasShape))), (:block,
+        (:line, 558, :none),
+        (:call, :HasShape)
+      )),
+    (:line, 560, :none),
+    (:(=), (:call, :prod_iteratorsize, (:(::), :IsInfinite), (:(::), :IsInfinite)), (:block,
+        (:line, 560, :none),
+        (:call, :IsInfinite)
+      )),
+    (:line, 561, :none),
+    (:(=), (:call, :prod_iteratorsize, :a, (:(::), :IsInfinite)), (:block,
+        (:line, 561, :none),
+        (:call, :IsInfinite)
+      )),
+    (:line, 562, :none),
+    (:(=), (:call, :prod_iteratorsize, (:(::), :IsInfinite), :b), (:block,
+        (:line, 562, :none),
+        (:call, :IsInfinite)
+      )),
+    (:line, 563, :none),
+    (:(=), (:call, :prod_iteratorsize, :a, :b), (:block,
+        (:line, 563, :none),
+        (:call, :SizeUnknown)
+      )),
+    (:line, 568, :none),
+    (:type, false, (:curly, :Flatten, :I), (:block,
+        (:line, 569, :none),
+        (:(::), :it, :I)
+      )),
+    (:line, 572, :none),
+    "    flatten(iter)\n\nGiven an iterator that yields iterators, return an iterator that yields the\nelements of those iterators.\nPut differently, the elements of the argument iterator are concatenated. Example:\n\n    julia> collect(flatten((1:2, 8:9)))\n    4-element Array{Int64,1}:\n     1\n     2\n     8\n     9\n",
+    (:line, 586, :none),
+    (:(=), (:call, :flatten, :itr), (:block,
+        (:line, 586, :none),
+        (:call, :Flatten, :itr)
+      )),
+    (:line, 588, :none),
+    (:(=), (:call, (:curly, :eltype, :I), (:(::), (:curly, :Type, (:curly, :Flatten, :I)))), (:block,
+        (:line, 588, :none),
+        (:call, :eltype, (:call, :eltype, :I))
+      )),
+    (:line, 589, :none),
+    (:(=), (:call, (:curly, :iteratorsize, :I), (:(::), (:curly, :Type, (:curly, :Flatten, :I)))), (:block,
+        (:line, 589, :none),
+        (:call, :SizeUnknown)
+      )),
+    (:line, 590, :none),
+    (:(=), (:call, (:curly, :iteratoreltype, :I), (:(::), (:curly, :Type, (:curly, :Flatten, :I)))), (:block,
+        (:line, 590, :none),
+        (:call, :_flatteneltype, :I, (:call, :iteratoreltype, :I))
+      )),
+    (:line, 591, :none),
+    (:(=), (:call, :_flatteneltype, :I, (:(::), :HasEltype)), (:block,
+        (:line, 591, :none),
+        (:call, :iteratoreltype, (:call, :eltype, :I))
+      )),
+    (:line, 592, :none),
+    (:(=), (:call, :_flatteneltype, :I, :et), (:block,
+        (:line, 592, :none),
+        (:call, :EltypeUnknown)
+      )),
+    (:line, 594, :none),
+    (:function, (:call, :start, (:(::), :f, :Flatten)), (:block,
+        (:line, 595, :none),
+        (:local, :inner, :s2),
+        (:line, 596, :none),
+        (:(=), :s, (:call, :start, (:., :f, (:quote, #QuoteNode
+                :it
+              )))),
+        (:line, 597, :none),
+        (:(=), :d, (:call, :done, (:., :f, (:quote, #QuoteNode
+                :it
+              )), :s)),
+        (:line, 599, :none),
+        (:&&, :d, (:call, :throw, (:call, :ArgumentError, "argument to Flatten must contain at least one iterator"))),
+        (:line, 600, :none),
+        (:while, (:call, :!, :d), (:block,
+            (:line, 601, :none),
+            (:(=), (:tuple, :inner, :s), (:call, :next, (:., :f, (:quote, #QuoteNode
+                    :it
+                  )), :s)),
+            (:line, 602, :none),
+            (:(=), :s2, (:call, :start, :inner)),
+            (:line, 603, :none),
+            (:&&, (:call, :!, (:call, :done, :inner, :s2)), (:break,)),
+            (:line, 604, :none),
+            (:(=), :d, (:call, :done, (:., :f, (:quote, #QuoteNode
+                    :it
+                  )), :s))
+          )),
+        (:line, 606, :none),
+        (:return, (:tuple, :s, :inner, :s2))
+      )),
+    (:line, 609, :none),
+    (:macrocall, Symbol("@inline"), (:function, (:call, :next, (:(::), :f, :Flatten), :state), (:block,
+          (:line, 610, :none),
+          (:(=), (:tuple, :s, :inner, :s2), :state),
+          (:line, 611, :none),
+          (:(=), (:tuple, :val, :s2), (:call, :next, :inner, :s2)),
+          (:line, 612, :none),
+          (:while, (:&&, (:call, :done, :inner, :s2), (:call, :!, (:call, :done, (:., :f, (:quote, #QuoteNode
+                      :it
+                    )), :s))), (:block,
+              (:line, 613, :none),
+              (:(=), (:tuple, :inner, :s), (:call, :next, (:., :f, (:quote, #QuoteNode
+                      :it
+                    )), :s)),
+              (:line, 614, :none),
+              (:(=), :s2, (:call, :start, :inner))
+            )),
+          (:line, 616, :none),
+          (:return, (:tuple, :val, (:tuple, :s, :inner, :s2)))
+        ))),
+    (:line, 619, :none),
+    (:macrocall, Symbol("@inline"), (:function, (:call, :done, (:(::), :f, :Flatten), :state), (:block,
+          (:line, 620, :none),
+          (:(=), (:tuple, :s, :inner, :s2), :state),
+          (:line, 621, :none),
+          (:return, (:&&, (:call, :done, (:., :f, (:quote, #QuoteNode
+                    :it
+                  )), :s), (:call, :done, :inner, :s2)))
+        ))),
+    (:line, 625, :none),
+    "    partition(collection, n) -> iterator\n\nIterate over a collection `n` elements at a time.\n\n```jldoctest\njulia> collect(partition([1,2,3,4,5], 2))\n3-element Array{Array{Int64,1},1}:\n [1,2]\n [3,4]\n [5]\n```\n",
+    (:line, 638, :none),
+    (:(=), (:call, (:curly, :partition, :T), (:(::), :c, :T), (:(::), :n, :Int)), (:block,
+        (:line, 638, :none),
+        (:call, (:curly, :PartitionIterator, :T), :c, :n)
+      )),
+    (:line, 641, :none),
+    (:type, true, (:curly, :PartitionIterator, :T), (:block,
+        (:line, 642, :none),
+        (:(::), :c, :T),
+        (:line, 643, :none),
+        (:(::), :n, :Int)
+      )),
+    (:line, 646, :none),
+    (:(=), (:call, (:curly, :eltype, :T), (:(::), (:curly, :Type, (:curly, :PartitionIterator, :T)))), (:block,
+        (:line, 646, :none),
+        (:curly, :Vector, (:call, :eltype, :T))
+      )),
+    (:line, 648, :none),
+    (:function, (:call, :length, (:(::), :itr, :PartitionIterator)), (:block,
+        (:line, 649, :none),
+        (:(=), :l, (:call, :length, (:., :itr, (:quote, #QuoteNode
+                :c
+              )))),
+        (:line, 650, :none),
+        (:return, (:call, :+, (:call, :div, :l, (:., :itr, (:quote, #QuoteNode
+                  :n
+                ))), (:if, (:call, :>, (:call, :mod, :l, (:., :itr, (:quote, #QuoteNode
+                      :n
+                    ))), 0), 1, 0)))
+      )),
+    (:line, 653, :none),
+    (:(=), (:call, :start, (:(::), :itr, :PartitionIterator)), (:block,
+        (:line, 653, :none),
+        (:call, :start, (:., :itr, (:quote, #QuoteNode
+              :c
+            )))
+      )),
+    (:line, 655, :none),
+    (:(=), (:call, :done, (:(::), :itr, :PartitionIterator), :state), (:block,
+        (:line, 655, :none),
+        (:call, :done, (:., :itr, (:quote, #QuoteNode
+              :c
+            )), :state)
+      )),
+    (:line, 657, :none),
+    (:function, (:call, (:curly, :next, (:<:, :T, :Vector)), (:(::), :itr, (:curly, :PartitionIterator, :T)), :state), (:block,
+        (:line, 658, :none),
+        (:(=), :l, :state),
+        (:line, 659, :none),
+        (:(=), :r, (:call, :min, (:call, :-, (:call, :+, :state, (:., :itr, (:quote, #QuoteNode
+                    :n
+                  ))), 1), (:call, :length, (:., :itr, (:quote, #QuoteNode
+                  :c
+                ))))),
+        (:line, 660, :none),
+        (:return, (:tuple, (:call, :view, (:., :itr, (:quote, #QuoteNode
+                  :c
+                )), (:(:), :l, :r)), (:call, :+, :r, 1)))
+      )),
+    (:line, 663, :none),
+    (:function, (:call, :next, (:(::), :itr, :PartitionIterator), :state), (:block,
+        (:line, 664, :none),
+        (:(=), :v, (:call, (:curly, :Vector, (:call, :eltype, (:., :itr, (:quote, #QuoteNode
+                    :c
+                  )))), (:., :itr, (:quote, #QuoteNode
+                :n
+              )))),
+        (:line, 665, :none),
+        (:(=), :i, 0),
+        (:line, 666, :none),
+        (:while, (:&&, (:call, :!, (:call, :done, (:., :itr, (:quote, #QuoteNode
+                    :c
+                  )), :state)), (:call, :<, :i, (:., :itr, (:quote, #QuoteNode
+                  :n
+                )))), (:block,
+            (:line, 667, :none),
+            (:+=, :i, 1),
+            (:line, 668, :none),
+            (:(=), (:tuple, (:ref, :v, :i), :state), (:call, :next, (:., :itr, (:quote, #QuoteNode
+                    :c
+                  )), :state))
+          )),
+        (:line, 670, :none),
+        (:return, (:tuple, (:call, :resize!, :v, :i), :state))
+      ))
+  ))

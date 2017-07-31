@@ -1,0 +1,1114 @@
+(:quote, (:block,
+    (:line, 4, :none),
+    (:(=), (:call, :module_name, (:(::), :m, :Module)), (:block,
+        (:line, 4, :none),
+        (:ccall, (:quote, #QuoteNode
+            :jl_module_name
+          ), (:curly, :Ref, :Symbol), (:tuple, :Any), :m)
+      )),
+    (:line, 5, :none),
+    (:(=), (:call, :module_parent, (:(::), :m, :Module)), (:block,
+        (:line, 5, :none),
+        (:ccall, (:quote, #QuoteNode
+            :jl_module_parent
+          ), (:curly, :Ref, :Module), (:tuple, :Any), :m)
+      )),
+    (:line, 6, :none),
+    (:(=), (:call, :current_module), (:block,
+        (:line, 6, :none),
+        (:ccall, (:quote, #QuoteNode
+            :jl_get_current_module
+          ), (:curly, :Ref, :Module), (:tuple,))
+      )),
+    (:line, 8, :none),
+    (:function, (:call, :fullname, (:(::), :m, :Module)), (:block,
+        (:line, 9, :none),
+        (:&&, (:call, :(===), :m, :Main), (:return, (:tuple,))),
+        (:line, 10, :none),
+        (:&&, (:call, :(===), :m, :Base), (:return, (:tuple, (:quote, #QuoteNode
+                :Base
+              )))),
+        (:line, 11, :none),
+        (:(=), :mn, (:call, :module_name, :m)),
+        (:line, 12, :none),
+        (:(=), :mp, (:call, :module_parent, :m)),
+        (:line, 13, :none),
+        (:if, (:call, :(===), :mp, :m), (:block,
+            (:line, 15, :none),
+            (:(=), :n, (:tuple,)),
+            (:line, 16, :none),
+            (:(=), :this, :Main),
+            (:line, 17, :none),
+            (:while, (:call, :(!==), :this, :m), (:block,
+                (:line, 18, :none),
+                (:if, (:call, :isdefined, :this, (:quote, #QuoteNode
+                      :LastMain
+                    )), (:block,
+                    (:line, 19, :none),
+                    (:(=), :n, (:call, :tuple, (:..., :n), (:quote, #QuoteNode
+                          :LastMain
+                        ))),
+                    (:line, 20, :none),
+                    (:(=), :this, (:., :this, (:quote, #QuoteNode
+                          :LastMain
+                        )))
+                  ), (:block,
+                    (:line, 22, :none),
+                    (:call, :error, "no reference to module ", :mn)
+                  ))
+              )),
+            (:line, 25, :none),
+            (:return, :n)
+          )),
+        (:line, 27, :none),
+        (:return, (:call, :tuple, (:..., (:call, :fullname, :mp)), :mn))
+      )),
+    (:line, 30, :none),
+    (:(=), (:call, :names, (:(::), :m, :Module), (:kw, (:(::), :all, :Bool), false), (:kw, (:(::), :imported, :Bool), false)), (:block,
+        (:line, 30, :none),
+        (:call, :sort!, (:ccall, (:quote, #QuoteNode
+              :jl_module_names
+            ), (:curly, :Array, :Symbol, 1), (:tuple, :Any, :Int32, :Int32), :m, :all, :imported))
+      )),
+    (:line, 32, :none),
+    (:(=), (:call, :isexported, (:(::), :m, :Module), (:(::), :s, :Symbol)), (:block,
+        (:line, 32, :none),
+        (:call, :(!=), (:ccall, (:quote, #QuoteNode
+              :jl_module_exports_p
+            ), :Cint, (:tuple, :Any, :Any), :m, :s), 0)
+      )),
+    (:line, 33, :none),
+    (:(=), (:call, :isdeprecated, (:(::), :m, :Module), (:(::), :s, :Symbol)), (:block,
+        (:line, 33, :none),
+        (:call, :(!=), (:ccall, (:quote, #QuoteNode
+              :jl_is_binding_deprecated
+            ), :Cint, (:tuple, :Any, :Any), :m, :s), 0)
+      )),
+    (:line, 34, :none),
+    (:(=), (:call, :isbindingresolved, (:(::), :m, :Module), (:(::), :var, :Symbol)), (:block,
+        (:line, 34, :none),
+        (:call, :(!=), (:ccall, (:quote, #QuoteNode
+              :jl_binding_resolved_p
+            ), :Cint, (:tuple, :Any, :Any), :m, :var), 0)
+      )),
+    (:line, 36, :none),
+    (:(=), (:call, :binding_module, (:(::), :s, :Symbol)), (:block,
+        (:line, 36, :none),
+        (:call, :binding_module, (:call, :current_module), :s)
+      )),
+    (:line, 37, :none),
+    (:function, (:call, :binding_module, (:(::), :m, :Module), (:(::), :s, :Symbol)), (:block,
+        (:line, 38, :none),
+        (:(=), :p, (:ccall, (:quote, #QuoteNode
+              :jl_get_module_of_binding
+            ), (:curly, :Ptr, :Void), (:tuple, :Any, :Any), :m, :s)),
+        (:line, 39, :none),
+        (:&&, (:call, :(==), :p, :C_NULL), (:return, :m)),
+        (:line, 40, :none),
+        (:return, (:(::), (:call, :unsafe_pointer_to_objref, :p), :Module))
+      )),
+    (:line, 43, :none),
+    (:function, (:call, :resolve, (:parameters, (:kw, (:(::), :force, :Bool), false)), (:(::), :g, :GlobalRef)), (:block,
+        (:line, 44, :none),
+        (:if, (:||, :force, (:call, :isbindingresolved, (:., :g, (:quote, #QuoteNode
+                  :mod
+                )), (:., :g, (:quote, #QuoteNode
+                  :name
+                )))), (:block,
+            (:line, 45, :none),
+            (:return, (:call, :GlobalRef, (:call, :binding_module, (:., :g, (:quote, #QuoteNode
+                      :mod
+                    )), (:., :g, (:quote, #QuoteNode
+                      :name
+                    ))), (:., :g, (:quote, #QuoteNode
+                    :name
+                  ))))
+          )),
+        (:line, 47, :none),
+        (:return, :g)
+      )),
+    (:line, 50, :none),
+    "    fieldname(x::DataType, i)\n\nGet the name of field `i` of a `DataType`.\n",
+    (:line, 55, :none),
+    (:(=), (:call, :fieldname, (:(::), :t, :DataType), (:(::), :i, :Integer)), (:block,
+        (:line, 55, :none),
+        (:(::), (:ref, (:., (:., :t, (:quote, #QuoteNode
+                  :name
+                )), (:quote, #QuoteNode
+                :names
+              )), :i), :Symbol)
+      )),
+    (:line, 56, :none),
+    (:(=), (:call, (:curly, :fieldname, (:<:, :T, :Tuple)), (:(::), :t, (:curly, :Type, :T)), (:(::), :i, :Integer)), (:block,
+        (:line, 56, :none),
+        (:if, (:||, (:call, :<, :i, 1), (:call, :>, :i, (:call, :nfields, :t))), (:call, :throw, (:call, :BoundsError, :t, :i)), (:call, :Int, :i))
+      )),
+    (:line, 58, :none),
+    "    fieldnames(x::DataType)\n\nGet an array of the fields of a `DataType`.\n",
+    (:line, 63, :none),
+    (:function, (:call, :fieldnames, :v), (:block,
+        (:line, 64, :none),
+        (:(=), :t, (:call, :typeof, :v)),
+        (:line, 65, :none),
+        (:if, (:call, :!, (:call, :isa, :t, :DataType)), (:block,
+            (:line, 66, :none),
+            (:call, :throw, (:call, :ArgumentError, "cannot call fieldnames() on a non-composite type"))
+          )),
+        (:line, 68, :none),
+        (:return, (:call, :fieldnames, :t))
+      )),
+    (:line, 70, :none),
+    (:(=), (:call, :fieldnames, (:(::), :t, :DataType)), (:block,
+        (:line, 70, :none),
+        (:typed_comprehension, :Symbol, (:generator, (:call, :fieldname, :t, :n), (:(=), :n, (:(:), 1, (:call, :nfields, :t)))))
+      )),
+    (:line, 71, :none),
+    (:(=), (:call, (:curly, :fieldnames, (:<:, :T, :Tuple)), (:(::), :t, (:curly, :Type, :T))), (:block,
+        (:line, 71, :none),
+        (:typed_comprehension, :Int, (:generator, :n, (:(=), :n, (:(:), 1, (:call, :nfields, :t)))))
+      )),
+    (:line, 73, :none),
+    "    Base.datatype_module(t::DataType) -> Module\n\nDetermine the module containing the definition of a `DataType`.\n",
+    (:line, 78, :none),
+    (:(=), (:call, :datatype_module, (:(::), :t, :DataType)), (:block,
+        (:line, 78, :none),
+        (:., (:., :t, (:quote, #QuoteNode
+              :name
+            )), (:quote, #QuoteNode
+            :module
+          ))
+      )),
+    (:line, 80, :none),
+    (:(=), (:call, :isconst, (:(::), :s, :Symbol)), (:block,
+        (:line, 80, :none),
+        (:call, :(!=), (:ccall, (:quote, #QuoteNode
+              :jl_is_const
+            ), :Int32, (:tuple, (:curly, :Ptr, :Void), :Any), :C_NULL, :s), 0)
+      )),
+    (:line, 82, :none),
+    (:(=), (:call, :isconst, (:(::), :m, :Module), (:(::), :s, :Symbol)), (:block,
+        (:line, 82, :none),
+        (:call, :(!=), (:ccall, (:quote, #QuoteNode
+              :jl_is_const
+            ), :Int32, (:tuple, :Any, :Any), :m, :s), 0)
+      )),
+    (:line, 86, :none),
+    (:(=), (:call, :object_id, (:(::), :x, :ANY)), (:block,
+        (:line, 86, :none),
+        (:ccall, (:quote, #QuoteNode
+            :jl_object_id
+          ), :UInt, (:tuple, :Any), :x)
+      )),
+    (:line, 88, :none),
+    (:type, false, :DataTypeLayout, (:block,
+        (:line, 89, :none),
+        (:(::), :nfields, :UInt32),
+        (:line, 90, :none),
+        (:(::), :alignment, :UInt32)
+      )),
+    (:line, 99, :none),
+    (:(=), (:call, :datatype_alignment, (:(::), :dt, :DataType)), (:block,
+        (:line, 99, :none),
+        (:if, (:call, :(==), (:., :dt, (:quote, #QuoteNode
+                :layout
+              )), :C_NULL), (:call, :throw, (:call, :UndefRefError)), (:call, :Int, (:call, :&, (:., (:call, :unsafe_load, (:call, :convert, (:curly, :Ptr, :DataTypeLayout), (:., :dt, (:quote, #QuoteNode
+                        :layout
+                      )))), (:quote, #QuoteNode
+                  :alignment
+                )), 0x0fffffff)))
+      )),
+    (:line, 102, :none),
+    (:(=), (:call, :datatype_haspadding, (:(::), :dt, :DataType)), (:block,
+        (:line, 102, :none),
+        (:if, (:call, :(==), (:., :dt, (:quote, #QuoteNode
+                :layout
+              )), :C_NULL), (:call, :throw, (:call, :UndefRefError)), (:call, :(==), (:call, :&, (:call, :>>, (:., (:call, :unsafe_load, (:call, :convert, (:curly, :Ptr, :DataTypeLayout), (:., :dt, (:quote, #QuoteNode
+                          :layout
+                        )))), (:quote, #QuoteNode
+                    :alignment
+                  )), 28), 1), 1))
+      )),
+    (:line, 105, :none),
+    (:(=), (:call, :datatype_pointerfree, (:(::), :dt, :DataType)), (:block,
+        (:line, 105, :none),
+        (:if, (:call, :(==), (:., :dt, (:quote, #QuoteNode
+                :layout
+              )), :C_NULL), (:call, :throw, (:call, :UndefRefError)), (:call, :(==), (:call, :&, (:call, :>>, (:., (:call, :unsafe_load, (:call, :convert, (:curly, :Ptr, :DataTypeLayout), (:., :dt, (:quote, #QuoteNode
+                          :layout
+                        )))), (:quote, #QuoteNode
+                    :alignment
+                  )), 29), 1), 1))
+      )),
+    (:line, 108, :none),
+    (:(=), (:call, :datatype_fielddesc_type, (:(::), :dt, :DataType)), (:block,
+        (:line, 108, :none),
+        (:if, (:call, :(==), (:., :dt, (:quote, #QuoteNode
+                :layout
+              )), :C_NULL), (:call, :throw, (:call, :UndefRefError)), (:call, :&, (:call, :>>, (:., (:call, :unsafe_load, (:call, :convert, (:curly, :Ptr, :DataTypeLayout), (:., :dt, (:quote, #QuoteNode
+                        :layout
+                      )))), (:quote, #QuoteNode
+                  :alignment
+                )), 30), 3))
+      )),
+    (:line, 111, :none),
+    (:(=), (:call, :isimmutable, (:(::), :x, :ANY)), (:block,
+        (:line, 111, :none),
+        (:block,
+          (:macrocall, Symbol("@_pure_meta")),
+          (:||, (:call, :isa, :x, :Tuple), (:call, :!, (:., (:call, :typeof, :x), (:quote, #QuoteNode
+                  :mutable
+                ))))
+        )
+      )),
+    (:line, 112, :none),
+    (:(=), (:call, :isstructtype, (:(::), :t, :DataType)), (:block,
+        (:line, 112, :none),
+        (:block,
+          (:macrocall, Symbol("@_pure_meta")),
+          (:||, (:call, :(!=), (:call, :nfields, :t), 0), (:&&, (:call, :(==), (:., :t, (:quote, #QuoteNode
+                    :size
+                  )), 0), (:call, :!, (:., :t, (:quote, #QuoteNode
+                    :abstract
+                  )))))
+        )
+      )),
+    (:line, 113, :none),
+    (:(=), (:call, :isstructtype, :x), (:block,
+        (:line, 113, :none),
+        (:block,
+          (:macrocall, Symbol("@_pure_meta")),
+          false
+        )
+      )),
+    (:line, 114, :none),
+    (:(=), (:call, :isbits, (:(::), :t, :DataType)), (:block,
+        (:line, 114, :none),
+        (:block,
+          (:macrocall, Symbol("@_pure_meta")),
+          (:&&, (:call, :&, (:call, :!, (:., :t, (:quote, #QuoteNode
+                    :mutable
+                  ))), (:call, :(!=), (:., :t, (:quote, #QuoteNode
+                    :layout
+                  )), :C_NULL)), (:call, :datatype_pointerfree, :t))
+        )
+      )),
+    (:line, 115, :none),
+    (:(=), (:call, :isbits, (:(::), :t, :Type)), (:block,
+        (:line, 115, :none),
+        (:block,
+          (:macrocall, Symbol("@_pure_meta")),
+          false
+        )
+      )),
+    (:line, 116, :none),
+    (:(=), (:call, :isbits, :x), (:block,
+        (:line, 116, :none),
+        (:block,
+          (:macrocall, Symbol("@_pure_meta")),
+          (:call, :isbits, (:call, :typeof, :x))
+        )
+      )),
+    (:line, 117, :none),
+    (:(=), (:call, :isleaftype, (:(::), :t, :ANY)), (:block,
+        (:line, 117, :none),
+        (:block,
+          (:macrocall, Symbol("@_pure_meta")),
+          (:&&, (:call, :isa, :t, :DataType), (:., :t, (:quote, #QuoteNode
+                :isleaftype
+              )))
+        )
+      )),
+    (:line, 119, :none),
+    (:(=), (:call, :typeintersect, (:(::), :a, :ANY), (:(::), :b, :ANY)), (:block,
+        (:line, 119, :none),
+        (:block,
+          (:macrocall, Symbol("@_pure_meta")),
+          (:ccall, (:quote, #QuoteNode
+              :jl_type_intersection
+            ), :Any, (:tuple, :Any, :Any), :a, :b)
+        )
+      )),
+    (:line, 120, :none),
+    (:(=), (:call, :typeseq, (:(::), :a, :ANY), (:(::), :b, :ANY)), (:block,
+        (:line, 120, :none),
+        (:block,
+          (:macrocall, Symbol("@_pure_meta")),
+          (:&&, (:<:, :a, :b), (:<:, :b, :a))
+        )
+      )),
+    (:line, 122, :none),
+    "    fieldoffset(type, i)\n\nThe byte offset of field `i` of a type relative to the data start. For example, we could\nuse it in the following manner to summarize information about a struct type:\n\n```jldoctest\njulia> structinfo(T) = [(fieldoffset(T,i), fieldname(T,i), fieldtype(T,i)) for i = 1:nfields(T)];\n\njulia> structinfo(Base.Filesystem.StatStruct)\n12-element Array{Tuple{UInt64,Symbol,DataType},1}:\n (0x0000000000000000,:device,UInt64)\n (0x0000000000000008,:inode,UInt64)\n (0x0000000000000010,:mode,UInt64)\n (0x0000000000000018,:nlink,Int64)\n (0x0000000000000020,:uid,UInt64)\n (0x0000000000000028,:gid,UInt64)\n (0x0000000000000030,:rdev,UInt64)\n (0x0000000000000038,:size,Int64)\n (0x0000000000000040,:blksize,Int64)\n (0x0000000000000048,:blocks,Int64)\n (0x0000000000000050,:mtime,Float64)\n (0x0000000000000058,:ctime,Float64)\n```\n",
+    (:line, 147, :none),
+    (:(=), (:call, :fieldoffset, (:(::), :x, :DataType), (:(::), :idx, :Integer)), (:block,
+        (:line, 147, :none),
+        (:block,
+          (:macrocall, Symbol("@_pure_meta")),
+          (:ccall, (:quote, #QuoteNode
+              :jl_get_field_offset
+            ), :Csize_t, (:tuple, :Any, :Cint), :x, :idx)
+        )
+      )),
+    (:line, 149, :none),
+    "    fieldtype(T, name::Symbol | index::Int)\n\nDetermine the declared type of a field (specified by name or index) in a composite DataType `T`.\n",
+    (:line, 154, :none),
+    :fieldtype,
+    (:line, 156, :none),
+    (:(=), (:call, :type_alignment, (:(::), :x, :DataType)), (:block,
+        (:line, 156, :none),
+        (:block,
+          (:macrocall, Symbol("@_pure_meta")),
+          (:ccall, (:quote, #QuoteNode
+              :jl_get_alignment
+            ), :Csize_t, (:tuple, :Any), :x)
+        )
+      )),
+    (:line, 159, :none),
+    (:function, :instances),
+    (:line, 162, :none),
+    (:function, (:call, :_subtypes, (:(::), :m, :Module), (:(::), :x, :DataType), (:kw, :sts, (:call, :Set)), (:kw, :visited, (:call, :Set))), (:block,
+        (:line, 163, :none),
+        (:call, :push!, :visited, :m),
+        (:line, 164, :none),
+        (:for, (:(=), :s, (:call, :names, :m, true)), (:block,
+            (:line, 165, :none),
+            (:if, (:&&, (:call, :isdefined, :m, :s), (:call, :!, (:call, :isdeprecated, :m, :s))), (:block,
+                (:line, 166, :none),
+                (:(=), :t, (:call, :getfield, :m, :s)),
+                (:line, 167, :none),
+                (:if, (:&&, (:call, :isa, :t, :DataType), (:&&, (:call, :(==), (:., (:., :t, (:quote, #QuoteNode
+                              :name
+                            )), (:quote, #QuoteNode
+                            :name
+                          )), :s), (:call, :(==), (:., (:call, :supertype, :t), (:quote, #QuoteNode
+                            :name
+                          )), (:., :x, (:quote, #QuoteNode
+                            :name
+                          ))))), (:block,
+                    (:line, 168, :none),
+                    (:(=), :ti, (:call, :typeintersect, :t, :x)),
+                    (:line, 169, :none),
+                    (:&&, (:call, :(!=), :ti, :Bottom), (:call, :push!, :sts, :ti))
+                  ), (:block,
+                    (:line, 170, :none),
+                    (:if, (:&&, (:call, :isa, :t, :Module), (:call, :!, (:call, :in, :t, :visited))), (:block,
+                        (:line, 171, :none),
+                        (:call, :_subtypes, :t, :x, :sts, :visited)
+                      ))
+                  ))
+              ))
+          )),
+        (:line, 175, :none),
+        (:return, :sts)
+      )),
+    (:line, 177, :none),
+    (:(=), (:call, :subtypes, (:(::), :m, :Module), (:(::), :x, :DataType)), (:block,
+        (:line, 177, :none),
+        (:call, :sort, (:call, :collect, (:call, :_subtypes, :m, :x)), (:kw, :by, :string))
+      )),
+    (:line, 178, :none),
+    (:(=), (:call, :subtypes, (:(::), :x, :DataType)), (:block,
+        (:line, 178, :none),
+        (:call, :subtypes, :Main, :x)
+      )),
+    (:line, 180, :none),
+    (:function, (:call, :to_tuple_type, (:(::), :t, :ANY)), (:block,
+        (:line, 181, :none),
+        (:macrocall, Symbol("@_pure_meta")),
+        (:line, 182, :none),
+        (:if, (:||, (:call, :isa, :t, :Tuple), (:||, (:call, :isa, :t, :AbstractArray), (:call, :isa, :t, :SimpleVector))), (:block,
+            (:line, 183, :none),
+            (:(=), :t, (:curly, :Tuple, (:..., :t)))
+          )),
+        (:line, 185, :none),
+        (:if, (:&&, (:call, :isa, :t, :Type), (:<:, :t, :Tuple)), (:block,
+            (:line, 186, :none),
+            (:if, (:call, :!, (:call, :all, (:->, :p, (:block,
+                      (:line, 186, :none),
+                      (:||, (:call, :isa, :p, :Type), (:call, :isa, :p, :TypeVar))
+                    )), (:., :t, (:quote, #QuoteNode
+                      :parameters
+                    )))), (:block,
+                (:line, 187, :none),
+                (:call, :error, "argument tuple type must contain only types")
+              ))
+          ), (:block,
+            (:line, 190, :none),
+            (:call, :error, "expected tuple type")
+          )),
+        (:line, 192, :none),
+        :t
+      )),
+    (:line, 195, :none),
+    (:(=), (:call, :tt_cons, (:(::), :t, :ANY), (:(::), :tup, :ANY)), (:block,
+        (:line, 195, :none),
+        (:block,
+          (:macrocall, Symbol("@_pure_meta")),
+          (:curly, :Tuple, :t, (:..., (:if, (:call, :isa, :tup, :Type), (:., :tup, (:quote, #QuoteNode
+                    :parameters
+                  )), :tup)))
+        )
+      )),
+    (:line, 197, :none),
+    "    code_lowered(f, types)\n\nReturns an array of lowered ASTs for the methods matching the given generic function and type signature.\n",
+    (:line, 202, :none),
+    (:(=), (:call, :code_lowered, :f, (:kw, (:(::), :t, :ANY), :Tuple)), (:block,
+        (:line, 202, :none),
+        (:call, :map, (:->, :m, (:block,
+              (:line, 202, :none),
+              (:., (:(::), :m, :Method), (:quote, #QuoteNode
+                  :lambda_template
+                ))
+            )), (:call, :methods, :f, :t))
+      )),
+    (:line, 206, :none),
+    (:function, (:call, :_methods, (:(::), :f, :ANY), (:(::), :t, :ANY), :lim), (:block,
+        (:line, 207, :none),
+        (:(=), :ft, (:if, (:call, :isa, :f, :Type), (:curly, :Type, :f), (:call, :typeof, :f))),
+        (:line, 208, :none),
+        (:(=), :tt, (:if, (:call, :isa, :t, :Type), (:curly, :Tuple, :ft, (:..., (:., :t, (:quote, #QuoteNode
+                    :parameters
+                  )))), (:curly, :Tuple, :ft, (:..., :t)))),
+        (:line, 209, :none),
+        (:return, (:call, :_methods_by_ftype, :tt, :lim))
+      )),
+    (:line, 211, :none),
+    (:function, (:call, :_methods_by_ftype, (:(::), :t, :ANY), :lim), (:block,
+        (:line, 212, :none),
+        (:(=), :tp, (:(::), (:., :t, (:quote, #QuoteNode
+                :parameters
+              )), :SimpleVector)),
+        (:line, 213, :none),
+        (:(=), :nu, 1),
+        (:line, 214, :none),
+        (:for, (:(=), :ti, :tp), (:block,
+            (:line, 215, :none),
+            (:if, (:call, :isa, :ti, :Union), (:block,
+                (:line, 216, :none),
+                (:*=, :nu, (:call, :length, (:., (:(::), :ti, :Union), (:quote, #QuoteNode
+                        :types
+                      ))))
+              ))
+          )),
+        (:line, 219, :none),
+        (:if, (:comparison, 1, :<, :nu, :(<=), 64), (:block,
+            (:line, 220, :none),
+            (:return, (:call, :_methods, (:ref, :Any, (:..., :tp)), (:call, :length, :tp), :lim, (:vect,)))
+          )),
+        (:line, 223, :none),
+        (:return, (:ccall, (:quote, #QuoteNode
+              :jl_matching_methods
+            ), :Any, (:tuple, :Any, :Cint, :Cint), :t, :lim, 0))
+      )),
+    (:line, 225, :none),
+    (:function, (:call, :_methods, (:(::), :t, :Array), :i, (:(::), :lim, :Integer), (:(::), :matching, (:curly, :Array, :Any, 1))), (:block,
+        (:line, 226, :none),
+        (:if, (:call, :(==), :i, 0), (:block,
+            (:line, 227, :none),
+            (:(=), :new, (:ccall, (:quote, #QuoteNode
+                  :jl_matching_methods
+                ), :Any, (:tuple, :Any, :Cint, :Cint), (:curly, :Tuple, (:..., :t)), :lim, 0)),
+            (:line, 228, :none),
+            (:&&, (:call, :(===), :new, false), (:return, false)),
+            (:line, 229, :none),
+            (:call, :append!, :matching, (:(::), :new, (:curly, :Array, :Any, 1)))
+          ), (:block,
+            (:line, 231, :none),
+            (:(=), :ti, (:ref, :t, :i)),
+            (:line, 232, :none),
+            (:if, (:call, :isa, :ti, :Union), (:block,
+                (:line, 233, :none),
+                (:for, (:(=), :ty, (:., (:(::), :ti, :Union), (:quote, #QuoteNode
+                        :types
+                      ))), (:block,
+                    (:line, 234, :none),
+                    (:(=), (:ref, :t, :i), :ty),
+                    (:line, 235, :none),
+                    (:if, (:call, :(===), (:call, :_methods, :t, (:call, :-, :i, 1), :lim, :matching), false), (:block,
+                        (:line, 236, :none),
+                        (:(=), (:ref, :t, :i), :ti),
+                        (:line, 237, :none),
+                        (:return, false)
+                      ))
+                  )),
+                (:line, 240, :none),
+                (:(=), (:ref, :t, :i), :ti)
+              ), (:block,
+                (:line, 242, :none),
+                (:return, (:call, :_methods, :t, (:call, :-, :i, 1), :lim, :matching))
+              ))
+          )),
+        (:line, 245, :none),
+        (:return, :matching)
+      )),
+    (:line, 251, :none),
+    (:type, true, :MethodList, (:block,
+        (:line, 252, :none),
+        (:(::), :ms, (:curly, :Array, :Method, 1)),
+        (:line, 253, :none),
+        (:(::), :mt, :MethodTable)
+      )),
+    (:line, 256, :none),
+    (:(=), (:call, :length, (:(::), :m, :MethodList)), (:block,
+        (:line, 256, :none),
+        (:call, :length, (:., :m, (:quote, #QuoteNode
+              :ms
+            )))
+      )),
+    (:line, 257, :none),
+    (:(=), (:call, :isempty, (:(::), :m, :MethodList)), (:block,
+        (:line, 257, :none),
+        (:call, :isempty, (:., :m, (:quote, #QuoteNode
+              :ms
+            )))
+      )),
+    (:line, 258, :none),
+    (:(=), (:call, :start, (:(::), :m, :MethodList)), (:block,
+        (:line, 258, :none),
+        (:call, :start, (:., :m, (:quote, #QuoteNode
+              :ms
+            )))
+      )),
+    (:line, 259, :none),
+    (:(=), (:call, :done, (:(::), :m, :MethodList), :s), (:block,
+        (:line, 259, :none),
+        (:call, :done, (:., :m, (:quote, #QuoteNode
+              :ms
+            )), :s)
+      )),
+    (:line, 260, :none),
+    (:(=), (:call, :next, (:(::), :m, :MethodList), :s), (:block,
+        (:line, 260, :none),
+        (:call, :next, (:., :m, (:quote, #QuoteNode
+              :ms
+            )), :s)
+      )),
+    (:line, 262, :none),
+    (:function, (:call, :MethodList, (:(::), :mt, :MethodTable)), (:block,
+        (:line, 263, :none),
+        (:(=), :ms, (:ref, :Method)),
+        (:line, 264, :none),
+        (:call, :visit, (:->, (:tuple, :m), (:block,
+              (:line, 265, :none),
+              (:call, :push!, :ms, :m)
+            )), :mt),
+        (:line, 267, :none),
+        (:call, :MethodList, :ms, :mt)
+      )),
+    (:line, 270, :none),
+    (:function, (:call, :methods, (:(::), :f, :ANY), (:(::), :t, :ANY)), (:block,
+        (:line, 271, :none),
+        (:if, (:call, :isa, :f, (:., :Core, (:quote, #QuoteNode
+                :Builtin
+              ))), (:block,
+            (:line, 272, :none),
+            (:call, :throw, (:call, :ArgumentError, "argument is not a generic function"))
+          )),
+        (:line, 274, :none),
+        (:(=), :t, (:call, :to_tuple_type, :t)),
+        (:line, 275, :none),
+        (:return, (:call, :MethodList, (:typed_comprehension, :Method, (:generator, (:ref, :m, 3), (:(=), :m, (:call, :_methods, :f, :t, -1)))), (:., (:., (:call, :typeof, :f), (:quote, #QuoteNode
+                  :name
+                )), (:quote, #QuoteNode
+                :mt
+              ))))
+      )),
+    (:line, 278, :none),
+    (:(=), (:call, :methods, (:(::), :f, (:., :Core, (:quote, #QuoteNode
+              :Builtin
+            )))), (:block,
+        (:line, 278, :none),
+        (:call, :MethodList, (:ref, :Method), (:., (:., (:call, :typeof, :f), (:quote, #QuoteNode
+                :name
+              )), (:quote, #QuoteNode
+              :mt
+            )))
+      )),
+    (:line, 280, :none),
+    (:function, (:call, :methods_including_ambiguous, (:(::), :f, :ANY), (:(::), :t, :ANY)), (:block,
+        (:line, 281, :none),
+        (:(=), :ft, (:if, (:call, :isa, :f, :Type), (:curly, :Type, :f), (:call, :typeof, :f))),
+        (:line, 282, :none),
+        (:(=), :tt, (:if, (:call, :isa, :t, :Type), (:curly, :Tuple, :ft, (:..., (:., :t, (:quote, #QuoteNode
+                    :parameters
+                  )))), (:curly, :Tuple, :ft, (:..., :t)))),
+        (:line, 283, :none),
+        (:(=), :ms, (:(::), (:ccall, (:quote, #QuoteNode
+                :jl_matching_methods
+              ), :Any, (:tuple, :Any, :Cint, :Cint), :tt, -1, 1), (:curly, :Array, :Any, 1))),
+        (:line, 284, :none),
+        (:return, (:call, :MethodList, (:typed_comprehension, :Method, (:generator, (:ref, :m, 3), (:(=), :m, :ms))), (:., (:., (:call, :typeof, :f), (:quote, #QuoteNode
+                  :name
+                )), (:quote, #QuoteNode
+                :mt
+              ))))
+      )),
+    (:line, 287, :none),
+    (:function, (:call, :methods, (:(::), :f, :ANY)), (:block,
+        (:line, 289, :none),
+        (:return, (:call, :methods, :f, (:curly, :Tuple, (:curly, :Vararg, :Any))))
+      )),
+    (:line, 292, :none),
+    (:function, (:call, :visit, :f, (:(::), :mt, :MethodTable)), (:block,
+        (:line, 293, :none),
+        (:&&, (:call, :(!==), (:., :mt, (:quote, #QuoteNode
+                :defs
+              )), :nothing), (:call, :visit, :f, (:., :mt, (:quote, #QuoteNode
+                :defs
+              )))),
+        (:line, 294, :none),
+        :nothing
+      )),
+    (:line, 296, :none),
+    (:function, (:call, :visit, :f, (:(::), :mc, :TypeMapLevel)), (:block,
+        (:line, 297, :none),
+        (:if, (:call, :(!==), (:., :mc, (:quote, #QuoteNode
+                :targ
+              )), :nothing), (:block,
+            (:line, 298, :none),
+            (:(=), :e, (:(::), (:., :mc, (:quote, #QuoteNode
+                    :targ
+                  )), (:curly, :Vector, :Any))),
+            (:line, 299, :none),
+            (:for, (:(=), :i, (:(:), 1, (:call, :length, :e))), (:block,
+                (:line, 300, :none),
+                (:&&, (:call, :isdefined, :e, :i), (:call, :visit, :f, (:ref, :e, :i)))
+              ))
+          )),
+        (:line, 303, :none),
+        (:if, (:call, :(!==), (:., :mc, (:quote, #QuoteNode
+                :arg1
+              )), :nothing), (:block,
+            (:line, 304, :none),
+            (:(=), :e, (:(::), (:., :mc, (:quote, #QuoteNode
+                    :arg1
+                  )), (:curly, :Vector, :Any))),
+            (:line, 305, :none),
+            (:for, (:(=), :i, (:(:), 1, (:call, :length, :e))), (:block,
+                (:line, 306, :none),
+                (:&&, (:call, :isdefined, :e, :i), (:call, :visit, :f, (:ref, :e, :i)))
+              ))
+          )),
+        (:line, 309, :none),
+        (:&&, (:call, :(!==), (:., :mc, (:quote, #QuoteNode
+                :list
+              )), :nothing), (:call, :visit, :f, (:., :mc, (:quote, #QuoteNode
+                :list
+              )))),
+        (:line, 310, :none),
+        (:&&, (:call, :(!==), (:., :mc, (:quote, #QuoteNode
+                :any
+              )), :nothing), (:call, :visit, :f, (:., :mc, (:quote, #QuoteNode
+                :any
+              )))),
+        (:line, 311, :none),
+        :nothing
+      )),
+    (:line, 313, :none),
+    (:function, (:call, :visit, :f, (:(::), :d, :TypeMapEntry)), (:block,
+        (:line, 314, :none),
+        (:while, (:call, :!, (:call, :is, :d, :nothing)), (:block,
+            (:line, 315, :none),
+            (:call, :f, (:., :d, (:quote, #QuoteNode
+                  :func
+                ))),
+            (:line, 316, :none),
+            (:(=), :d, (:., :d, (:quote, #QuoteNode
+                  :next
+                )))
+          )),
+        (:line, 318, :none),
+        :nothing
+      )),
+    (:line, 321, :none),
+    (:function, (:call, :length, (:(::), :mt, :MethodTable)), (:block,
+        (:line, 322, :none),
+        (:(=), :n, 0),
+        (:line, 323, :none),
+        (:call, :visit, (:->, (:tuple, :m), (:block,
+              (:line, 324, :none),
+              (:+=, :n, 1)
+            )), :mt),
+        (:line, 326, :none),
+        (:return, (:(::), :n, :Int))
+      )),
+    (:line, 328, :none),
+    (:(=), (:call, :isempty, (:(::), :mt, :MethodTable)), (:block,
+        (:line, 328, :none),
+        (:call, :(===), (:., :mt, (:quote, #QuoteNode
+              :defs
+            )), :nothing)
+      )),
+    (:line, 330, :none),
+    (:(=), (:call, :uncompressed_ast, (:(::), :l, :Method)), (:block,
+        (:line, 330, :none),
+        (:call, :uncompressed_ast, (:., :l, (:quote, #QuoteNode
+              :lambda_template
+            )))
+      )),
+    (:line, 331, :none),
+    (:(=), (:call, :uncompressed_ast, (:(::), :l, :LambdaInfo)), (:block,
+        (:line, 331, :none),
+        (:if, (:call, :isa, (:., :l, (:quote, #QuoteNode
+                :code
+              )), (:curly, :Array, :UInt8, 1)), (:ccall, (:quote, #QuoteNode
+              :jl_uncompress_ast
+            ), (:curly, :Array, :Any, 1), (:tuple, :Any, :Any), :l, (:., :l, (:quote, #QuoteNode
+                :code
+              ))), (:., :l, (:quote, #QuoteNode
+              :code
+            )))
+      )),
+    (:line, 335, :none),
+    (:function, (:call, :_dump_function, :f, (:(::), :t, :ANY), :native, :wrapper, :strip_ir_metadata, :dump_module), (:block,
+        (:line, 336, :none),
+        (:&&, (:ccall, (:quote, #QuoteNode
+              :jl_is_in_pure_context
+            ), :Bool, (:tuple,)), (:call, :error, "native reflection cannot be used from generated functions")),
+        (:line, 337, :none),
+        (:if, (:call, :isa, :f, (:., :Core, (:quote, #QuoteNode
+                :Builtin
+              ))), (:block,
+            (:line, 338, :none),
+            (:call, :throw, (:call, :ArgumentError, "argument is not a generic function"))
+          )),
+        (:line, 340, :none),
+        (:(=), :t, (:call, :tt_cons, (:call, (:., :Core, (:quote, #QuoteNode
+                  :Typeof
+                )), :f), (:call, :to_tuple_type, :t))),
+        (:line, 341, :none),
+        (:(=), :llvmf, (:ccall, (:quote, #QuoteNode
+              :jl_get_llvmf
+            ), (:curly, :Ptr, :Void), (:tuple, :Any, :Bool, :Bool), :t, :wrapper, :native)),
+        (:line, 343, :none),
+        (:if, (:call, :(==), :llvmf, :C_NULL), (:block,
+            (:line, 344, :none),
+            (:call, :error, "did not find a unique method for the specified argument types")
+          )),
+        (:line, 347, :none),
+        (:if, :native, (:block,
+            (:line, 348, :none),
+            (:(=), :str, (:ccall, (:quote, #QuoteNode
+                  :jl_dump_function_asm
+                ), (:curly, :Ref, :String), (:tuple, (:curly, :Ptr, :Void), :Cint), :llvmf, 0))
+          ), (:block,
+            (:line, 350, :none),
+            (:(=), :str, (:ccall, (:quote, #QuoteNode
+                  :jl_dump_function_ir
+                ), (:curly, :Ref, :String), (:tuple, (:curly, :Ptr, :Void), :Bool, :Bool), :llvmf, :strip_ir_metadata, :dump_module))
+          )),
+        (:line, 354, :none),
+        (:||, (:call, :isleaftype, :t), (:(=), :str, (:call, :*, "# WARNING: This code may not match what actually runs.\n", :str))),
+        (:line, 355, :none),
+        (:return, :str)
+      )),
+    (:line, 358, :none),
+    "    code_llvm([io], f, types)\n\nPrints the LLVM bitcodes generated for running the method matching the given generic\nfunction and type signature to `io` which defaults to `STDOUT`.\n\nAll metadata and dbg.* calls are removed from the printed bitcode. Use code_llvm_raw for the full IR.\n",
+    (:line, 366, :none),
+    (:(=), (:call, :code_llvm, (:(::), :io, :IO), (:(::), :f, :ANY), (:kw, (:(::), :types, :ANY), :Tuple), (:kw, :strip_ir_metadata, true), (:kw, :dump_module, false)), (:block,
+        (:line, 366, :none),
+        (:call, :print, :io, (:call, :_dump_function, :f, :types, false, false, :strip_ir_metadata, :dump_module))
+      )),
+    (:line, 368, :none),
+    (:(=), (:call, :code_llvm, (:(::), :f, :ANY), (:kw, (:(::), :types, :ANY), :Tuple)), (:block,
+        (:line, 368, :none),
+        (:call, :code_llvm, :STDOUT, :f, :types)
+      )),
+    (:line, 369, :none),
+    (:(=), (:call, :code_llvm_raw, (:(::), :f, :ANY), (:kw, (:(::), :types, :ANY), :Tuple)), (:block,
+        (:line, 369, :none),
+        (:call, :code_llvm, :STDOUT, :f, :types, false)
+      )),
+    (:line, 371, :none),
+    "    code_native([io], f, types)\n\nPrints the native assembly instructions generated for running the method matching the given\ngeneric function and type signature to `io` which defaults to `STDOUT`.\n",
+    (:line, 377, :none),
+    (:(=), (:call, :code_native, (:(::), :io, :IO), (:(::), :f, :ANY), (:kw, (:(::), :types, :ANY), :Tuple)), (:block,
+        (:line, 377, :none),
+        (:call, :print, :io, (:call, :_dump_function, :f, :types, true, false, false, false))
+      )),
+    (:line, 379, :none),
+    (:(=), (:call, :code_native, (:(::), :f, :ANY), (:kw, (:(::), :types, :ANY), :Tuple)), (:block,
+        (:line, 379, :none),
+        (:call, :code_native, :STDOUT, :f, :types)
+      )),
+    (:line, 382, :none),
+    (:function, (:call, :func_for_method_checked, (:(::), :m, :Method), :types), (:block,
+        (:line, 383, :none),
+        (:if, (:&&, (:., :m, (:quote, #QuoteNode
+                :isstaged
+              )), (:call, :!, (:call, :isleaftype, :types))), (:block,
+            (:line, 384, :none),
+            (:call, :error, "cannot call @generated function `", :m, "` ", "with abstract argument types: ", :types)
+          )),
+        (:line, 387, :none),
+        (:return, :m)
+      )),
+    (:line, 391, :none),
+    "    code_typed(f, types; optimize=true)\n\nReturns an array of lowered and type-inferred ASTs for the methods matching the given\ngeneric function and type signature. The keyword argument `optimize` controls whether\nadditional optimizations, such as inlining, are also applied.\n",
+    (:line, 398, :none),
+    (:function, (:call, :code_typed, (:parameters, (:kw, :optimize, true)), (:(::), :f, :ANY), (:kw, (:(::), :types, :ANY), :Tuple)), (:block,
+        (:line, 399, :none),
+        (:&&, (:ccall, (:quote, #QuoteNode
+              :jl_is_in_pure_context
+            ), :Bool, (:tuple,)), (:call, :error, "code reflection cannot be used from generated functions")),
+        (:line, 400, :none),
+        (:if, (:call, :isa, :f, (:., :Core, (:quote, #QuoteNode
+                :Builtin
+              ))), (:block,
+            (:line, 401, :none),
+            (:call, :throw, (:call, :ArgumentError, "argument is not a generic function"))
+          )),
+        (:line, 403, :none),
+        (:(=), :types, (:call, :to_tuple_type, :types)),
+        (:line, 404, :none),
+        (:(=), :asts, (:vect,)),
+        (:line, 405, :none),
+        (:for, (:(=), :x, (:call, :_methods, :f, :types, -1)), (:block,
+            (:line, 406, :none),
+            (:(=), :linfo, (:call, :func_for_method_checked, (:ref, :x, 3), :types)),
+            (:line, 407, :none),
+            (:if, :optimize, (:block,
+                (:line, 408, :none),
+                (:(=), (:tuple, :li, :ty, :inf), (:call, (:., (:., :Core, (:quote, #QuoteNode
+                          :Inference
+                        )), (:quote, #QuoteNode
+                        :typeinf
+                      )), :linfo, (:ref, :x, 1), (:ref, :x, 2), true))
+              ), (:block,
+                (:line, 410, :none),
+                (:(=), (:tuple, :li, :ty, :inf), (:call, (:., (:., :Core, (:quote, #QuoteNode
+                          :Inference
+                        )), (:quote, #QuoteNode
+                        :typeinf_uncached
+                      )), :linfo, (:ref, :x, 1), (:ref, :x, 2), (:kw, :optimize, false)))
+              )),
+            (:line, 412, :none),
+            (:||, :inf, (:call, :error, "inference not successful")),
+            (:line, 413, :none),
+            (:call, :push!, :asts, :li)
+          )),
+        (:line, 415, :none),
+        :asts
+      )),
+    (:line, 418, :none),
+    (:function, (:call, :return_types, (:(::), :f, :ANY), (:kw, (:(::), :types, :ANY), :Tuple)), (:block,
+        (:line, 419, :none),
+        (:&&, (:ccall, (:quote, #QuoteNode
+              :jl_is_in_pure_context
+            ), :Bool, (:tuple,)), (:call, :error, "code reflection cannot be used from generated functions")),
+        (:line, 420, :none),
+        (:if, (:call, :isa, :f, (:., :Core, (:quote, #QuoteNode
+                :Builtin
+              ))), (:block,
+            (:line, 421, :none),
+            (:call, :throw, (:call, :ArgumentError, "argument is not a generic function"))
+          )),
+        (:line, 423, :none),
+        (:(=), :types, (:call, :to_tuple_type, :types)),
+        (:line, 424, :none),
+        (:(=), :rt, (:vect,)),
+        (:line, 425, :none),
+        (:for, (:(=), :x, (:call, :_methods, :f, :types, -1)), (:block,
+            (:line, 426, :none),
+            (:(=), :linfo, (:call, :func_for_method_checked, (:ref, :x, 3), :types)),
+            (:line, 427, :none),
+            (:(=), (:tuple, :_li, :ty, :inf), (:call, (:., (:., :Core, (:quote, #QuoteNode
+                      :Inference
+                    )), (:quote, #QuoteNode
+                    :typeinf
+                  )), :linfo, (:ref, :x, 1), (:ref, :x, 2))),
+            (:line, 428, :none),
+            (:||, :inf, (:call, :error, "inference not successful")),
+            (:line, 429, :none),
+            (:call, :push!, :rt, :ty)
+          )),
+        (:line, 431, :none),
+        :rt
+      )),
+    (:line, 434, :none),
+    (:function, (:call, :which, (:(::), :f, :ANY), (:(::), :t, :ANY)), (:block,
+        (:line, 435, :none),
+        (:if, (:call, :isa, :f, (:., :Core, (:quote, #QuoteNode
+                :Builtin
+              ))), (:block,
+            (:line, 436, :none),
+            (:call, :throw, (:call, :ArgumentError, "argument is not a generic function"))
+          )),
+        (:line, 438, :none),
+        (:(=), :t, (:call, :to_tuple_type, :t)),
+        (:line, 439, :none),
+        (:if, (:call, :isleaftype, :t), (:block,
+            (:line, 440, :none),
+            (:(=), :ms, (:call, :methods, :f, :t)),
+            (:line, 441, :none),
+            (:&&, (:call, :isempty, :ms), (:call, :error, "no method found for the specified argument types")),
+            (:line, 442, :none),
+            (:&&, (:call, :(!=), (:call, :length, :ms), 1), (:call, :error, "no unique matching method for the specified argument types")),
+            (:line, 443, :none),
+            (:return, (:call, :first, :ms))
+          ), (:block,
+            (:line, 445, :none),
+            (:(=), :ft, (:if, (:call, :isa, :f, :Type), (:curly, :Type, :f), (:call, :typeof, :f))),
+            (:line, 446, :none),
+            (:(=), :m, (:ccall, (:quote, #QuoteNode
+                  :jl_gf_invoke_lookup
+                ), :Any, (:tuple, :Any), (:curly, :Tuple, :ft, (:..., (:., :t, (:quote, #QuoteNode
+                        :parameters
+                      )))))),
+            (:line, 447, :none),
+            (:if, (:call, :(===), :m, :nothing), (:block,
+                (:line, 448, :none),
+                (:call, :error, "no method found for the specified argument types")
+              )),
+            (:line, 450, :none),
+            (:return, (:(::), (:., :m, (:quote, #QuoteNode
+                    :func
+                  )), :Method))
+          ))
+      )),
+    (:line, 454, :none),
+    (:(=), (:call, :which, (:(::), :s, :Symbol)), (:block,
+        (:line, 454, :none),
+        (:call, :which_module, (:call, :current_module), :s)
+      )),
+    (:line, 456, :none),
+    (:function, (:call, :which_module, (:(::), :m, :Module), (:(::), :s, :Symbol)), (:block,
+        (:line, 457, :none),
+        (:if, (:call, :!, (:call, :isdefined, :m, :s)), (:block,
+            (:line, 458, :none),
+            (:call, :error, (:string, "\"", :s, "\" is not defined in module ", :m))
+          )),
+        (:line, 460, :none),
+        (:call, :binding_module, :m, :s)
+      )),
+    (:line, 464, :none),
+    "    Base.function_name(f::Function) -> Symbol\n\nGet the name of a generic `Function` as a symbol, or `:anonymous`.\n",
+    (:line, 469, :none),
+    (:(=), (:call, :function_name, (:(::), :f, :Function)), (:block,
+        (:line, 469, :none),
+        (:., (:., (:., (:call, :typeof, :f), (:quote, #QuoteNode
+                :name
+              )), (:quote, #QuoteNode
+              :mt
+            )), (:quote, #QuoteNode
+            :name
+          ))
+      )),
+    (:line, 471, :none),
+    (:(=), (:call, :functionloc, (:(::), :m, :LambdaInfo)), (:block,
+        (:line, 471, :none),
+        (:call, :functionloc, (:., :m, (:quote, #QuoteNode
+              :def
+            )))
+      )),
+    (:line, 472, :none),
+    (:function, (:call, :functionloc, (:(::), :m, :Method)), (:block,
+        (:line, 473, :none),
+        (:(=), :ln, (:., :m, (:quote, #QuoteNode
+              :line
+            ))),
+        (:line, 474, :none),
+        (:if, (:call, :(<=), :ln, 0), (:block,
+            (:line, 475, :none),
+            (:call, :error, "could not determine location of method definition")
+          )),
+        (:line, 477, :none),
+        (:tuple, (:call, :find_source_file, (:call, :string, (:., :m, (:quote, #QuoteNode
+                  :file
+                )))), :ln)
+      )),
+    (:line, 480, :none),
+    (:(=), (:call, :functionloc, (:(::), :f, :ANY), (:(::), :types, :ANY)), (:block,
+        (:line, 480, :none),
+        (:call, :functionloc, (:call, :which, :f, :types))
+      )),
+    (:line, 482, :none),
+    (:function, (:call, :functionloc, :f), (:block,
+        (:line, 483, :none),
+        (:(=), :mt, (:call, :methods, :f)),
+        (:line, 484, :none),
+        (:if, (:call, :isempty, :mt), (:block,
+            (:line, 485, :none),
+            (:if, (:call, :isa, :f, :Function), (:block,
+                (:line, 486, :none),
+                (:call, :error, "function has no definitions")
+              ), (:block,
+                (:line, 488, :none),
+                (:call, :error, "object is not callable")
+              ))
+          )),
+        (:line, 491, :none),
+        (:if, (:call, :>, (:call, :length, :mt), 1), (:block,
+            (:line, 492, :none),
+            (:call, :error, "function has multiple methods; please specify a type signature")
+          )),
+        (:line, 494, :none),
+        (:call, :functionloc, (:call, :first, :mt))
+      )),
+    (:line, 497, :none),
+    "    Base.function_module(f::Function) -> Module\n\nDetermine the module containing the (first) definition of a generic\nfunction.\n",
+    (:line, 503, :none),
+    (:(=), (:call, :function_module, (:(::), :f, :Function)), (:block,
+        (:line, 503, :none),
+        (:call, :datatype_module, (:call, :typeof, :f))
+      )),
+    (:line, 505, :none),
+    "    Base.function_module(f::Function, types) -> Module\n\nDetermine the module containing a given definition of a generic function.\n",
+    (:line, 510, :none),
+    (:function, (:call, :function_module, :f, (:(::), :types, :ANY)), (:block,
+        (:line, 511, :none),
+        (:(=), :m, (:call, :methods, :f, :types)),
+        (:line, 512, :none),
+        (:if, (:call, :isempty, :m), (:block,
+            (:line, 513, :none),
+            (:call, :error, "no matching methods")
+          )),
+        (:line, 515, :none),
+        (:., (:call, :first, :m), (:quote, #QuoteNode
+            :module
+          ))
+      )),
+    (:line, 518, :none),
+    (:function, (:call, :method_exists, (:(::), :f, :ANY), (:(::), :t, :ANY)), (:block,
+        (:line, 519, :none),
+        (:(=), :t, (:call, :to_tuple_type, :t)),
+        (:line, 520, :none),
+        (:(=), :t, (:curly, :Tuple, (:if, (:call, :isa, :f, :Type), (:curly, :Type, :f), (:call, :typeof, :f)), (:..., (:., :t, (:quote, #QuoteNode
+                  :parameters
+                ))))),
+        (:line, 521, :none),
+        (:return, (:call, :(!=), (:ccall, (:quote, #QuoteNode
+                :jl_method_exists
+              ), :Cint, (:tuple, :Any, :Any), (:., (:., (:call, :typeof, :f), (:quote, #QuoteNode
+                    :name
+                  )), (:quote, #QuoteNode
+                  :mt
+                )), :t), 0))
+      )),
+    (:line, 524, :none),
+    (:function, (:call, :isambiguous, (:(::), :m1, :Method), (:(::), :m2, :Method)), (:block,
+        (:line, 525, :none),
+        (:(=), :ti, (:call, :typeintersect, (:., :m1, (:quote, #QuoteNode
+                :sig
+              )), (:., :m2, (:quote, #QuoteNode
+                :sig
+              )))),
+        (:line, 526, :none),
+        (:&&, (:call, :(===), :ti, :Bottom), (:return, false)),
+        (:line, 527, :none),
+        (:(=), :ml, (:call, :_methods_by_ftype, :ti, -1)),
+        (:line, 528, :none),
+        (:&&, (:call, :isempty, :ml), (:return, true)),
+        (:line, 529, :none),
+        (:for, (:(=), :m, :ml), (:block,
+            (:line, 530, :none),
+            (:if, (:<:, :ti, (:., (:ref, :m, 3), (:quote, #QuoteNode
+                    :sig
+                  ))), (:block,
+                (:line, 531, :none),
+                (:return, false)
+              ))
+          )),
+        (:line, 534, :none),
+        (:return, true)
+      ))
+  ))

@@ -1,0 +1,258 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:module, true, :PermutedDimsArrays, (:block,
+        (:line, 3, :none),
+        (:line, 5, :none),
+        (:export, :permutedims),
+        (:line, 8, :none),
+        (:type, false, (:<:, (:curly, :PermutedDimsArray, :T, :N, :perm, :iperm, (:<:, :AA, :AbstractArray)), (:curly, :AbstractArray, :T, :N)), (:block,
+            (:line, 9, :none),
+            (:(::), :parent, :AA),
+            (:line, 11, :none),
+            (:function, (:call, :PermutedDimsArray, (:(::), :data, :AA)), (:block,
+                (:line, 12, :none),
+                (:||, (:&&, (:call, :isa, :perm, (:curly, :NTuple, :N, :Int)), (:call, :isa, :iperm, (:curly, :NTuple, :N, :Int))), (:call, :error, (:string, "perm and iperm must both be NTuple{", :N, ",Int}"))),
+                (:line, 13, :none),
+                (:||, (:call, :isperm, :perm), (:call, :throw, (:call, :ArgumentError, (:call, :string, :perm, " is not a valid permutation of dimensions 1:", :N)))),
+                (:line, 14, :none),
+                (:||, (:call, :all, (:call, :map, (:->, :d, (:block,
+                          (:line, 14, :none),
+                          (:call, :(==), (:ref, :iperm, (:ref, :perm, :d)), :d)
+                        )), (:(:), 1, :N))), (:call, :throw, (:call, :ArgumentError, (:call, :string, :perm, " and ", :iperm, " must be inverses")))),
+                (:line, 15, :none),
+                (:call, :new, :data)
+              ))
+          )),
+        (:line, 19, :none),
+        (:function, (:call, (:curly, :PermutedDimsArray, :T, :N), (:(::), :data, (:curly, :AbstractArray, :T, :N)), :perm), (:block,
+            (:line, 20, :none),
+            (:||, (:call, :(==), (:call, :length, :perm), :N), (:call, :throw, (:call, :ArgumentError, (:call, :string, :perm, " is not a valid permutation of dimensions 1:", :N)))),
+            (:line, 21, :none),
+            (:(=), :iperm, (:call, :invperm, :perm)),
+            (:line, 22, :none),
+            (:call, (:curly, :PermutedDimsArray, :T, :N, (:tuple, (:..., :perm)), (:tuple, (:..., :iperm)), (:call, :typeof, :data)), :data)
+          )),
+        (:line, 25, :none),
+        (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+                :parent
+              )), (:(::), :A, :PermutedDimsArray)), (:block,
+            (:line, 25, :none),
+            (:., :A, (:quote, #QuoteNode
+                :parent
+              ))
+          )),
+        (:line, 26, :none),
+        (:(=), (:call, (:curly, (:., :Base, (:quote, #QuoteNode
+                  :size
+                )), :T, :N, :perm), (:(::), :A, (:curly, :PermutedDimsArray, :T, :N, :perm))), (:block,
+            (:line, 26, :none),
+            (:call, :genperm, (:call, :size, (:call, :parent, :A)), :perm)
+          )),
+        (:line, 27, :none),
+        (:(=), (:call, (:curly, (:., :Base, (:quote, #QuoteNode
+                  :indices
+                )), :T, :N, :perm), (:(::), :A, (:curly, :PermutedDimsArray, :T, :N, :perm))), (:block,
+            (:line, 27, :none),
+            (:call, :genperm, (:call, :indices, (:call, :parent, :A)), :perm)
+          )),
+        (:line, 29, :none),
+        (:(=), (:call, (:curly, (:., :Base, (:quote, #QuoteNode
+                  :unsafe_convert
+                )), :T), (:(::), (:curly, :Type, (:curly, :Ptr, :T))), (:(::), :A, (:curly, :PermutedDimsArray, :T))), (:block,
+            (:line, 29, :none),
+            (:call, (:., :Base, (:quote, #QuoteNode
+                  :unsafe_convert
+                )), (:curly, :Ptr, :T), (:call, :parent, :A))
+          )),
+        (:line, 36, :none),
+        (:(=), (:call, (:curly, (:., :Base, (:quote, #QuoteNode
+                  :pointer
+                )), :T), (:(::), :A, (:curly, :PermutedDimsArray, :T)), (:(::), :i, :Integer)), (:block,
+            (:line, 36, :none),
+            (:call, :throw, (:call, :ArgumentError, "pointer(A, i) is deliberately unsupported for PermutedDimsArray"))
+          )),
+        (:line, 38, :none),
+        (:function, (:call, (:curly, (:., :Base, (:quote, #QuoteNode
+                  :strides
+                )), :T, :N, :perm), (:(::), :A, (:curly, :PermutedDimsArray, :T, :N, :perm))), (:block,
+            (:line, 39, :none),
+            (:(=), :s, (:call, :strides, (:call, :parent, :A))),
+            (:line, 40, :none),
+            (:call, :ntuple, (:->, :d, (:block,
+                  (:line, 40, :none),
+                  (:ref, :s, (:ref, :perm, :d))
+                )), (:curly, :Val, :N))
+          )),
+        (:line, 43, :none),
+        (:macrocall, Symbol("@inline"), (:function, (:call, (:curly, (:., :Base, (:quote, #QuoteNode
+                    :getindex
+                  )), :T, :N, :perm, :iperm), (:(::), :A, (:curly, :PermutedDimsArray, :T, :N, :perm, :iperm)), (:(::), :I, (:curly, :Vararg, :Int, :N))), (:block,
+              (:line, 44, :none),
+              (:macrocall, Symbol("@boundscheck"), (:call, :checkbounds, :A, (:..., :I))),
+              (:line, 45, :none),
+              (:macrocall, Symbol("@inbounds"), (:(=), :val, (:call, :getindex, (:., :A, (:quote, #QuoteNode
+                        :parent
+                      )), (:..., (:call, :genperm, :I, :iperm))))),
+              (:line, 46, :none),
+              :val
+            ))),
+        (:line, 48, :none),
+        (:macrocall, Symbol("@inline"), (:function, (:call, (:curly, (:., :Base, (:quote, #QuoteNode
+                    :setindex!
+                  )), :T, :N, :perm, :iperm), (:(::), :A, (:curly, :PermutedDimsArray, :T, :N, :perm, :iperm)), :val, (:(::), :I, (:curly, :Vararg, :Int, :N))), (:block,
+              (:line, 49, :none),
+              (:macrocall, Symbol("@boundscheck"), (:call, :checkbounds, :A, (:..., :I))),
+              (:line, 50, :none),
+              (:macrocall, Symbol("@inbounds"), (:call, :setindex!, (:., :A, (:quote, #QuoteNode
+                      :parent
+                    )), :val, (:..., (:call, :genperm, :I, :iperm)))),
+              (:line, 51, :none),
+              :val
+            ))),
+        (:line, 55, :none),
+        (:macrocall, Symbol("@inline"), (:(=), (:call, (:curly, :genperm, :N), (:(::), :I, (:curly, :NTuple, :N)), (:(::), :perm, (:curly, :Dims, :N))), (:block,
+              (:line, 55, :none),
+              (:call, :_genperm, (:tuple,), :I, (:..., :perm))
+            ))),
+        (:line, 56, :none),
+        (:(=), (:call, :_genperm, :out, :I), (:block,
+            (:line, 56, :none),
+            :out
+          )),
+        (:line, 57, :none),
+        (:macrocall, Symbol("@inline"), (:(=), (:call, :_genperm, :out, :I, :p, (:..., :perm)), (:block,
+              (:line, 57, :none),
+              (:call, :_genperm, (:tuple, (:..., :out), (:ref, :I, :p)), :I, (:..., :perm))
+            ))),
+        (:line, 58, :none),
+        (:macrocall, Symbol("@inline"), (:(=), (:call, :genperm, :I, (:(::), :perm, (:curly, :AbstractVector, :Int))), (:block,
+              (:line, 58, :none),
+              (:call, :genperm, :I, (:tuple, (:..., :perm)))
+            ))),
+        (:line, 60, :none),
+        (:function, (:call, (:curly, (:., :Base, (:quote, #QuoteNode
+                  :permutedims
+                )), :T, :N), (:(::), :A, (:curly, :AbstractArray, :T, :N)), :perm), (:block,
+            (:line, 61, :none),
+            (:(=), :dest, (:call, :similar, :A, (:call, :genperm, (:call, :indices, :A), :perm))),
+            (:line, 62, :none),
+            (:call, :permutedims!, :dest, :A, :perm)
+          )),
+        (:line, 65, :none),
+        (:function, (:call, (:., :Base, (:quote, #QuoteNode
+                :permutedims!
+              )), :dest, (:(::), :src, :AbstractArray), :perm), (:block,
+            (:line, 66, :none),
+            (:call, (:., :Base, (:quote, #QuoteNode
+                  :checkdims_perm
+                )), :dest, :src, :perm),
+            (:line, 67, :none),
+            (:(=), :P, (:call, :PermutedDimsArray, :dest, (:call, :invperm, :perm))),
+            (:line, 68, :none),
+            (:call, :_copy!, :P, :src),
+            (:line, 69, :none),
+            (:return, :dest)
+          )),
+        (:line, 72, :none),
+        (:function, (:call, (:curly, (:., :Base, (:quote, #QuoteNode
+                  :copy!
+                )), :T, :N), (:(::), :dest, (:curly, :PermutedDimsArray, :T, :N)), (:(::), :src, (:curly, :AbstractArray, :T, :N))), (:block,
+            (:line, 73, :none),
+            (:call, :checkbounds, :dest, (:..., (:call, :indices, :src))),
+            (:line, 74, :none),
+            (:call, :_copy!, :dest, :src)
+          )),
+        (:line, 76, :none),
+        (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+                :copy!
+              )), (:(::), :dest, :PermutedDimsArray), (:(::), :src, :AbstractArray)), (:block,
+            (:line, 76, :none),
+            (:call, :_copy!, :dest, :src)
+          )),
+        (:line, 78, :none),
+        (:function, (:call, (:curly, :_copy!, :T, :N, :perm), (:(::), :P, (:curly, :PermutedDimsArray, :T, :N, :perm)), :src), (:block,
+            (:line, 81, :none),
+            (:(=), :d, 0),
+            (:line, 82, :none),
+            (:while, (:&&, (:call, :<, :d, (:call, :ndims, :src)), (:call, :(==), (:ref, :perm, (:call, :+, :d, 1)), (:call, :+, :d, 1))), (:block,
+                (:line, 83, :none),
+                (:+=, :d, 1)
+              )),
+            (:line, 85, :none),
+            (:if, (:call, :(==), :d, (:call, :ndims, :src)), (:block,
+                (:line, 86, :none),
+                (:call, :copy!, (:call, :parent, :P), :src)
+              ), (:block,
+                (:line, 88, :none),
+                (:(=), :R1, (:call, :CartesianRange, (:ref, (:call, :indices, :src), (:(:), 1, :d)))),
+                (:line, 89, :none),
+                (:(=), :d1, (:call, :findfirst, :perm, (:call, :+, :d, 1))),
+                (:line, 90, :none),
+                (:(=), :R2, (:call, :CartesianRange, (:ref, (:call, :indices, :src), (:(:), (:call, :+, :d, 2), (:call, :-, :d1, 1))))),
+                (:line, 91, :none),
+                (:(=), :R3, (:call, :CartesianRange, (:ref, (:call, :indices, :src), (:(:), (:call, :+, :d1, 1), :end)))),
+                (:line, 92, :none),
+                (:call, :_permutedims!, :P, :src, :R1, :R2, :R3, (:call, :+, :d, 1), :d1)
+              )),
+            (:line, 94, :none),
+            (:return, :P)
+          )),
+        (:line, 97, :none),
+        (:macrocall, Symbol("@noinline"), (:function, (:call, :_permutedims!, (:(::), :P, :PermutedDimsArray), :src, (:(::), :R1, (:curly, :CartesianRange, (:curly, :CartesianIndex, 0))), :R2, :R3, :ds, :dp), (:block,
+              (:line, 98, :none),
+              (:(=), (:tuple, :ip, :is), (:tuple, (:call, :indices, :src, :dp), (:call, :indices, :src, :ds))),
+              (:line, 99, :none),
+              (:for, (:block,
+                  (:(=), :jo, (:(:), (:call, :first, :ip), 8, (:call, :last, :ip))),
+                  (:(=), :io, (:(:), (:call, :first, :is), 8, (:call, :last, :is)))
+                ), (:block,
+                  (:line, 100, :none),
+                  (:for, (:block,
+                      (:(=), :I3, :R3),
+                      (:(=), :I2, :R2)
+                    ), (:block,
+                      (:line, 101, :none),
+                      (:for, (:(=), :j, (:(:), :jo, (:call, :min, (:call, :+, :jo, 7), (:call, :last, :ip)))), (:block,
+                          (:line, 102, :none),
+                          (:for, (:(=), :i, (:(:), :io, (:call, :min, (:call, :+, :io, 7), (:call, :last, :is)))), (:block,
+                              (:line, 103, :none),
+                              (:macrocall, Symbol("@inbounds"), (:(=), (:ref, :P, :i, :I2, :j, :I3), (:ref, :src, :i, :I2, :j, :I3)))
+                            ))
+                        ))
+                    ))
+                )),
+              (:line, 108, :none),
+              :P
+            ))),
+        (:line, 111, :none),
+        (:macrocall, Symbol("@noinline"), (:function, (:call, :_permutedims!, (:(::), :P, :PermutedDimsArray), :src, :R1, :R2, :R3, :ds, :dp), (:block,
+              (:line, 112, :none),
+              (:(=), (:tuple, :ip, :is), (:tuple, (:call, :indices, :src, :dp), (:call, :indices, :src, :ds))),
+              (:line, 113, :none),
+              (:for, (:block,
+                  (:(=), :jo, (:(:), (:call, :first, :ip), 8, (:call, :last, :ip))),
+                  (:(=), :io, (:(:), (:call, :first, :is), 8, (:call, :last, :is)))
+                ), (:block,
+                  (:line, 114, :none),
+                  (:for, (:block,
+                      (:(=), :I3, :R3),
+                      (:(=), :I2, :R2)
+                    ), (:block,
+                      (:line, 115, :none),
+                      (:for, (:(=), :j, (:(:), :jo, (:call, :min, (:call, :+, :jo, 7), (:call, :last, :ip)))), (:block,
+                          (:line, 116, :none),
+                          (:for, (:(=), :i, (:(:), :io, (:call, :min, (:call, :+, :io, 7), (:call, :last, :is)))), (:block,
+                              (:line, 117, :none),
+                              (:for, (:(=), :I1, :R1), (:block,
+                                  (:line, 118, :none),
+                                  (:macrocall, Symbol("@inbounds"), (:(=), (:ref, :P, :I1, :i, :I2, :j, :I3), (:ref, :src, :I1, :i, :I2, :j, :I3)))
+                                ))
+                            ))
+                        ))
+                    ))
+                )),
+              (:line, 124, :none),
+              :P
+            )))
+      ))
+  ))

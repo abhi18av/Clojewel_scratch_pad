@@ -1,0 +1,8 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:call, :include, "unicode/UnicodeError.jl"),
+    (:line, 4, :none),
+    (:call, :include, "unicode/utf8.jl"),
+    (:line, 5, :none),
+    (:call, :include, "unicode/utf8proc.jl")
+  ))

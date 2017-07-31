@@ -1,0 +1,261 @@
+(:quote, (:block,
+    (:line, 6, :none),
+    (:if, (:call, :(===), :Int, :Int64), (:block,
+        (:line, 7, :none),
+        (:bitstype, 64, :Cstring),
+        (:line, 8, :none),
+        (:bitstype, 64, :Cwstring)
+      ), (:block,
+        (:line, 10, :none),
+        (:bitstype, 32, :Cstring),
+        (:line, 11, :none),
+        (:bitstype, 32, :Cwstring)
+      )),
+    (:line, 16, :none),
+    (:(=), (:call, (:curly, :eltype, :T), (:(::), :x, (:curly, :Type, (:curly, :Ref, :T)))), (:block,
+        (:line, 16, :none),
+        :T
+      )),
+    (:line, 17, :none),
+    (:(=), (:call, (:curly, :convert, :T), (:(::), (:curly, :Type, (:curly, :Ref, :T))), (:(::), :x, (:curly, :Ref, :T))), (:block,
+        (:line, 17, :none),
+        :x
+      )),
+    (:line, 20, :none),
+    (:(=), (:call, (:curly, :unsafe_convert, :T), (:(::), (:curly, :Type, (:curly, :Ref, :T))), :x), (:block,
+        (:line, 20, :none),
+        (:call, :unsafe_convert, (:curly, :Ptr, :T), :x)
+      )),
+    (:line, 24, :none),
+    (:type, true, (:<:, (:curly, :RefValue, :T), (:curly, :Ref, :T)), (:block,
+        (:line, 25, :none),
+        (:(::), :x, :T),
+        (:line, 26, :none),
+        (:(=), (:call, :RefValue), (:block,
+            (:line, 26, :none),
+            (:call, :new)
+          )),
+        (:line, 27, :none),
+        (:(=), (:call, :RefValue, :x), (:block,
+            (:line, 27, :none),
+            (:call, :new, :x)
+          ))
+      )),
+    (:line, 29, :none),
+    (:(=), (:call, (:curly, :RefValue, :T), (:(::), :x, :T)), (:block,
+        (:line, 29, :none),
+        (:call, (:curly, :RefValue, :T), :x)
+      )),
+    (:line, 31, :none),
+    (:(=), (:call, :Ref, (:(::), :x, :Ref)), (:block,
+        (:line, 31, :none),
+        :x
+      )),
+    (:line, 32, :none),
+    (:(=), (:call, :Ref, (:(::), :x, :Any)), (:block,
+        (:line, 32, :none),
+        (:call, :RefValue, :x)
+      )),
+    (:line, 33, :none),
+    (:(=), (:call, (:curly, :Ref, :T), (:(::), :x, (:curly, :Ptr, :T)), (:kw, (:(::), :i, :Integer), 1)), (:block,
+        (:line, 33, :none),
+        (:call, :+, :x, (:call, :*, (:call, :-, :i, 1), (:call, (:., :Core, (:quote, #QuoteNode
+                  :sizeof
+                )), :T)))
+      )),
+    (:line, 34, :none),
+    (:(=), (:call, :Ref, :x, (:(::), :i, :Integer)), (:block,
+        (:line, 34, :none),
+        (:block,
+          (:&&, (:call, :(!=), :i, 1), (:call, :error, "Object only has one element")),
+          (:call, :Ref, :x)
+        )
+      )),
+    (:line, 35, :none),
+    (:(=), (:call, (:curly, (:(::), (:curly, :Type, (:curly, :Ref, :T))), :T)), (:block,
+        (:line, 35, :none),
+        (:call, (:curly, :RefValue, :T))
+      )),
+    (:line, 36, :none),
+    (:(=), (:call, (:curly, (:(::), (:curly, :Type, (:curly, :Ref, :T))), :T), :x), (:block,
+        (:line, 36, :none),
+        (:call, (:curly, :RefValue, :T), :x)
+      )),
+    (:line, 37, :none),
+    (:(=), (:call, (:curly, :convert, :T), (:(::), (:curly, :Type, (:curly, :Ref, :T))), :x), (:block,
+        (:line, 37, :none),
+        (:call, (:curly, :RefValue, :T), :x)
+      )),
+    (:line, 39, :none),
+    (:function, (:call, (:curly, :unsafe_convert, :T), (:(::), :P, (:curly, :Type, (:curly, :Ptr, :T))), (:(::), :b, (:curly, :RefValue, :T))), (:block,
+        (:line, 40, :none),
+        (:if, (:call, :isbits, :T), (:block,
+            (:line, 41, :none),
+            (:return, (:call, :convert, :P, (:call, :data_pointer_from_objref, :b)))
+          ), (:block,
+            (:line, 43, :none),
+            (:return, (:call, :convert, :P, (:call, :data_pointer_from_objref, (:., :b, (:quote, #QuoteNode
+                      :x
+                    )))))
+          ))
+      )),
+    (:line, 46, :none),
+    (:function, (:call, :unsafe_convert, (:(::), :P, (:curly, :Type, (:curly, :Ptr, :Any))), (:(::), :b, (:curly, :RefValue, :Any))), (:block,
+        (:line, 47, :none),
+        (:return, (:call, :convert, :P, (:call, :data_pointer_from_objref, :b)))
+      )),
+    (:line, 49, :none),
+    (:(=), (:call, (:curly, :unsafe_convert, :T), (:(::), (:curly, :Type, (:curly, :Ptr, :Void))), (:(::), :b, (:curly, :RefValue, :T))), (:block,
+        (:line, 49, :none),
+        (:call, :convert, (:curly, :Ptr, :Void), (:call, :unsafe_convert, (:curly, :Ptr, :T), :b))
+      )),
+    (:line, 52, :none),
+    (:type, false, (:<:, (:curly, :RefArray, :T, (:<:, :A, :AbstractArray), :R), (:curly, :Ref, :T)), (:block,
+        (:line, 53, :none),
+        (:(::), :x, :A),
+        (:line, 54, :none),
+        (:(::), :i, :Int),
+        (:line, 55, :none),
+        (:(::), :roots, :R),
+        (:line, 56, :none),
+        (:(=), (:call, :RefArray, :x, :i, (:kw, :roots, :nothing)), (:block,
+            (:line, 56, :none),
+            (:block,
+              (:macrocall, Symbol("@assert"), (:call, :(==), (:call, :eltype, :A), :T)),
+              (:call, :new, :x, :i, :roots)
+            )
+          ))
+      )),
+    (:line, 58, :none),
+    (:(=), (:call, (:curly, :RefArray, :T), (:(::), :x, (:curly, :AbstractArray, :T)), (:(::), :i, :Int), (:(::), :roots, :Any)), (:block,
+        (:line, 58, :none),
+        (:call, (:curly, :RefArray, :T, (:call, :typeof, :x), :Any), :x, :i, :roots)
+      )),
+    (:line, 59, :none),
+    (:(=), (:call, (:curly, :RefArray, :T), (:(::), :x, (:curly, :AbstractArray, :T)), (:kw, (:(::), :i, :Int), 1), (:kw, (:(::), :roots, :Void), :nothing)), (:block,
+        (:line, 59, :none),
+        (:call, (:curly, :RefArray, :T, (:call, :typeof, :x), :Void), :x, :i, :nothing)
+      )),
+    (:line, 60, :none),
+    (:(=), (:call, (:curly, :convert, :T), (:(::), (:curly, :Type, (:curly, :Ref, :T))), (:(::), :x, (:curly, :AbstractArray, :T))), (:block,
+        (:line, 60, :none),
+        (:call, :RefArray, :x, 1)
+      )),
+    (:line, 61, :none),
+    (:(=), (:call, :Ref, (:(::), :x, :AbstractArray), (:kw, (:(::), :i, :Integer), 1)), (:block,
+        (:line, 61, :none),
+        (:call, :RefArray, :x, :i)
+      )),
+    (:line, 63, :none),
+    (:function, (:call, (:curly, :unsafe_convert, :T), (:(::), :P, (:curly, :Type, (:curly, :Ptr, :T))), (:(::), :b, (:curly, :RefArray, :T))), (:block,
+        (:line, 64, :none),
+        (:if, (:call, :isbits, :T), (:block,
+            (:line, 65, :none),
+            (:call, :convert, :P, (:call, :pointer, (:., :b, (:quote, #QuoteNode
+                    :x
+                  )), (:., :b, (:quote, #QuoteNode
+                    :i
+                  ))))
+          ), (:block,
+            (:line, 67, :none),
+            (:call, :convert, :P, (:call, :data_pointer_from_objref, (:ref, (:., :b, (:quote, #QuoteNode
+                      :x
+                    )), (:., :b, (:quote, #QuoteNode
+                      :i
+                    )))))
+          ))
+      )),
+    (:line, 70, :none),
+    (:function, (:call, :unsafe_convert, (:(::), :P, (:curly, :Type, (:curly, :Ptr, :Any))), (:(::), :b, (:curly, :RefArray, :Any))), (:block,
+        (:line, 71, :none),
+        (:return, (:call, :convert, :P, (:call, :pointer, (:., :b, (:quote, #QuoteNode
+                  :x
+                )), (:., :b, (:quote, #QuoteNode
+                  :i
+                )))))
+      )),
+    (:line, 73, :none),
+    (:(=), (:call, (:curly, :unsafe_convert, :T), (:(::), (:curly, :Type, (:curly, :Ptr, :Void))), (:(::), :b, (:curly, :RefArray, :T))), (:block,
+        (:line, 73, :none),
+        (:call, :convert, (:curly, :Ptr, :Void), (:call, :unsafe_convert, (:curly, :Ptr, :T), :b))
+      )),
+    (:line, 76, :none),
+    (:function, (:call, (:curly, (:(::), (:curly, :Type, (:curly, :Ref, :P))), (:<:, :P, (:curly, :Union, :Ptr, :Cwstring, :Cstring)), (:<:, :T, (:curly, :Union, :Ptr, :Cwstring, :Cstring))), (:(::), :a, (:curly, :Array, :T))), (:block,
+        (:line, 77, :none),
+        (:return, (:call, :RefArray, :a))
+      )),
+    (:line, 79, :none),
+    (:function, (:call, (:curly, (:(::), (:curly, :Type, (:curly, :Ref, :P))), (:<:, :P, (:curly, :Union, :Ptr, :Cwstring, :Cstring)), :T), (:(::), :a, (:curly, :Array, :T))), (:block,
+        (:line, 80, :none),
+        (:if, (:&&, (:call, :!, (:call, :isbits, :T)), (:<:, :T, (:call, :eltype, :P))), (:block,
+            (:line, 82, :none),
+            (:return, (:call, :RefArray, :a, 1, false))
+          ), (:block,
+            (:line, 84, :none),
+            (:(=), :ptrs, (:call, (:curly, :Array, :P), (:call, :+, (:call, :length, :a), 1))),
+            (:line, 85, :none),
+            (:(=), :roots, (:call, (:curly, :Array, :Any), (:call, :length, :a))),
+            (:line, 86, :none),
+            (:for, (:(=), :i, (:(:), 1, (:call, :length, :a))), (:block,
+                (:line, 87, :none),
+                (:(=), :root, (:call, :cconvert, :P, (:ref, :a, :i))),
+                (:line, 88, :none),
+                (:(=), (:ref, :ptrs, :i), (:(::), (:call, :unsafe_convert, :P, :root), :P)),
+                (:line, 89, :none),
+                (:(=), (:ref, :roots, :i), :root)
+              )),
+            (:line, 91, :none),
+            (:(=), (:ref, :ptrs, (:call, :+, (:call, :length, :a), 1)), :C_NULL),
+            (:line, 92, :none),
+            (:return, (:call, :RefArray, :ptrs, 1, :roots))
+          ))
+      )),
+    (:line, 95, :none),
+    (:(=), (:call, (:curly, :cconvert, (:<:, :P, :Ptr), (:<:, :T, :Ptr)), (:(::), (:curly, :Union, (:curly, :Type, (:curly, :Ptr, :P)), (:curly, :Type, (:curly, :Ref, :P)))), (:(::), :a, (:curly, :Array, :T))), (:block,
+        (:line, 95, :none),
+        :a
+      )),
+    (:line, 96, :none),
+    (:(=), (:call, (:curly, :cconvert, (:<:, :P, (:curly, :Union, :Ptr, :Cwstring, :Cstring))), (:(::), (:curly, :Union, (:curly, :Type, (:curly, :Ptr, :P)), (:curly, :Type, (:curly, :Ref, :P)))), (:(::), :a, :Array)), (:block,
+        (:line, 96, :none),
+        (:call, (:curly, :Ref, :P), :a)
+      )),
+    (:line, 100, :none),
+    (:(=), (:call, :getindex, (:(::), :b, :RefValue)), (:block,
+        (:line, 100, :none),
+        (:., :b, (:quote, #QuoteNode
+            :x
+          ))
+      )),
+    (:line, 101, :none),
+    (:(=), (:call, :getindex, (:(::), :b, :RefArray)), (:block,
+        (:line, 101, :none),
+        (:ref, (:., :b, (:quote, #QuoteNode
+              :x
+            )), (:., :b, (:quote, #QuoteNode
+              :i
+            )))
+      )),
+    (:line, 103, :none),
+    (:(=), (:call, :setindex!, (:(::), :b, :RefValue), :x), (:block,
+        (:line, 103, :none),
+        (:block,
+          (:(=), (:., :b, (:quote, #QuoteNode
+                :x
+              )), :x),
+          :b
+        )
+      )),
+    (:line, 104, :none),
+    (:(=), (:call, :setindex!, (:(::), :b, :RefArray), :x), (:block,
+        (:line, 104, :none),
+        (:block,
+          (:(=), (:ref, (:., :b, (:quote, #QuoteNode
+                  :x
+                )), (:., :b, (:quote, #QuoteNode
+                  :i
+                ))), :x),
+          :b
+        )
+      ))
+  ))

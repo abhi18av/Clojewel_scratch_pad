@@ -1,0 +1,548 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:module, true, :DFT, (:block,
+        (:line, 3, :none),
+        (:line, 6, :none),
+        (:abstract, (:curly, :Plan, :T)),
+        (:line, 8, :none),
+        (:toplevel, (:import, :Base, :show), (:import, :Base, :summary), (:import, :Base, :size), (:import, :Base, :ndims), (:import, :Base, :length), (:import, :Base, :eltype), (:import, :Base, :*), (:import, :Base, :A_mul_B!), (:import, :Base, :inv), (:import, :Base, :\), (:import, :Base, :A_ldiv_B!)),
+        (:line, 11, :none),
+        (:(=), (:call, (:curly, :eltype, :T), (:(::), (:curly, :Type, (:curly, :Plan, :T)))), (:block,
+            (:line, 11, :none),
+            :T
+          )),
+        (:line, 14, :none),
+        (:(=), (:call, :size, (:(::), :p, :Plan), :d), (:block,
+            (:line, 14, :none),
+            (:ref, (:call, :size, :p), :d)
+          )),
+        (:line, 15, :none),
+        (:(=), (:call, :ndims, (:(::), :p, :Plan)), (:block,
+            (:line, 15, :none),
+            (:call, :length, (:call, :size, :p))
+          )),
+        (:line, 16, :none),
+        (:(=), (:call, :length, (:(::), :p, :Plan)), (:block,
+            (:line, 16, :none),
+            (:(::), (:call, :prod, (:call, :size, :p)), :Int)
+          )),
+        (:line, 19, :none),
+        (:export, :fft, :ifft, :bfft, :fft!, :ifft!, :bfft!, :plan_fft, :plan_ifft, :plan_bfft, :plan_fft!, :plan_ifft!, :plan_bfft!, :rfft, :irfft, :brfft, :plan_rfft, :plan_irfft, :plan_brfft),
+        (:line, 23, :none),
+        (:typealias, :FFTWFloat, (:curly, :Union, :Float32, :Float64)),
+        (:line, 24, :none),
+        (:(=), (:call, :fftwfloat, :x), (:block,
+            (:line, 24, :none),
+            (:call, :_fftwfloat, (:call, :float, :x))
+          )),
+        (:line, 25, :none),
+        (:(=), (:call, (:curly, :_fftwfloat, (:<:, :T, :FFTWFloat)), (:(::), (:curly, :Type, :T))), (:block,
+            (:line, 25, :none),
+            :T
+          )),
+        (:line, 26, :none),
+        (:(=), (:call, :_fftwfloat, (:(::), (:curly, :Type, :Float16))), (:block,
+            (:line, 26, :none),
+            :Float32
+          )),
+        (:line, 27, :none),
+        (:(=), (:call, (:curly, :_fftwfloat, :T), (:(::), (:curly, :Type, (:curly, :Complex, :T)))), (:block,
+            (:line, 27, :none),
+            (:curly, :Complex, (:call, :_fftwfloat, :T))
+          )),
+        (:line, 28, :none),
+        (:(=), (:call, (:curly, :_fftwfloat, :T), (:(::), (:curly, :Type, :T))), (:block,
+            (:line, 28, :none),
+            (:call, :error, (:string, "type ", :T, " not supported"))
+          )),
+        (:line, 29, :none),
+        (:(=), (:call, (:curly, :_fftwfloat, :T), (:(::), :x, :T)), (:block,
+            (:line, 29, :none),
+            (:call, (:call, :_fftwfloat, :T), :x)
+          )),
+        (:line, 31, :none),
+        (:(=), (:call, (:curly, :complexfloat, (:<:, :T, :FFTWFloat)), (:(::), :x, (:curly, :StridedArray, (:curly, :Complex, :T)))), (:block,
+            (:line, 31, :none),
+            :x
+          )),
+        (:line, 32, :none),
+        (:(=), (:call, (:curly, :realfloat, (:<:, :T, :FFTWFloat)), (:(::), :x, (:curly, :StridedArray, :T))), (:block,
+            (:line, 32, :none),
+            :x
+          )),
+        (:line, 36, :none),
+        (:(=), (:call, (:curly, :complexfloat, (:<:, :T, :Complex)), (:(::), :x, (:curly, :AbstractArray, :T))), (:block,
+            (:line, 36, :none),
+            (:call, :copy1, (:call, :typeof, (:call, :fftwfloat, (:call, :one, :T))), :x)
+          )),
+        (:line, 37, :none),
+        (:(=), (:call, (:curly, :complexfloat, (:<:, :T, :Real)), (:(::), :x, (:curly, :AbstractArray, :T))), (:block,
+            (:line, 37, :none),
+            (:call, :copy1, (:call, :typeof, (:call, :complex, (:call, :fftwfloat, (:call, :one, :T)))), :x)
+          )),
+        (:line, 39, :none),
+        (:(=), (:call, (:curly, :realfloat, (:<:, :T, :Real)), (:(::), :x, (:curly, :AbstractArray, :T))), (:block,
+            (:line, 39, :none),
+            (:call, :copy1, (:call, :typeof, (:call, :fftwfloat, (:call, :one, :T))), :x)
+          )),
+        (:line, 42, :none),
+        (:function, (:call, (:curly, :copy1, :T), (:(::), (:curly, :Type, :T)), :x), (:block,
+            (:line, 43, :none),
+            (:(=), :y, (:call, (:curly, :Array, :T), (:call, :map, :length, (:call, :indices, :x)))),
+            (:line, 44, :none),
+            (:call, (:., :Base, (:quote, #QuoteNode
+                  :circcopy!
+                )), :y, :x)
+          )),
+        (:line, 47, :none),
+        (:(=), (:call, :to1, (:(::), :x, :AbstractArray)), (:block,
+            (:line, 47, :none),
+            (:call, :_to1, (:call, :indices, :x), :x)
+          )),
+        (:line, 48, :none),
+        (:(=), (:call, :_to1, (:(::), (:curly, :Tuple, (:., :Base, (:quote, #QuoteNode
+                    :OneTo
+                  )), (:curly, :Vararg, (:., :Base, (:quote, #QuoteNode
+                      :OneTo
+                    ))))), :x), (:block,
+            (:line, 48, :none),
+            :x
+          )),
+        (:line, 49, :none),
+        (:(=), (:call, :_to1, (:(::), :Tuple), :x), (:block,
+            (:line, 49, :none),
+            (:call, :copy1, (:call, :eltype, :x), :x)
+          )),
+        (:line, 53, :none),
+        (:for, (:(=), :f, (:tuple, (:quote, #QuoteNode
+                :fft
+              ), (:quote, #QuoteNode
+                :bfft
+              ), (:quote, #QuoteNode
+                :ifft
+              ), (:quote, #QuoteNode
+                :fft!
+              ), (:quote, #QuoteNode
+                :bfft!
+              ), (:quote, #QuoteNode
+                :ifft!
+              ), (:quote, #QuoteNode
+                :rfft
+              ))), (:block,
+            (:line, 54, :none),
+            (:(=), :pf, (:call, :Symbol, "plan_", :f)),
+            (:line, 55, :none),
+            (:macrocall, Symbol("@eval"), (:block,
+                (:line, 56, :none),
+                (:(=), (:call, (:$, :f), (:(::), :x, :AbstractArray)), (:block,
+                    (:line, 56, :none),
+                    (:block,
+                      (:(=), :y, (:call, :to1, :x)),
+                      (:call, :*, (:call, (:$, :pf), :y), :y)
+                    )
+                  )),
+                (:line, 57, :none),
+                (:(=), (:call, (:$, :f), (:(::), :x, :AbstractArray), :region), (:block,
+                    (:line, 57, :none),
+                    (:block,
+                      (:(=), :y, (:call, :to1, :x)),
+                      (:call, :*, (:call, (:$, :pf), :y, :region), :y)
+                    )
+                  )),
+                (:line, 58, :none),
+                (:(=), (:call, (:$, :pf), (:parameters, (:..., :kws)), (:(::), :x, :AbstractArray)), (:block,
+                    (:line, 58, :none),
+                    (:block,
+                      (:(=), :y, (:call, :to1, :x)),
+                      (:call, (:$, :pf), (:parameters, (:..., :kws)), :y, (:(:), 1, (:call, :ndims, :y)))
+                    )
+                  ))
+              ))
+          )),
+        (:line, 62, :none),
+        (:macrocall, :(Core.@doc), "    plan_ifft(A [, dims]; flags=FFTW.ESTIMATE;  timelimit=Inf)\n\nSame as [`plan_fft`](:func:`plan_fft`), but produces a plan that performs inverse transforms\n[`ifft`](:func:`ifft`).\n", :plan_ifft),
+        (:line, 70, :none),
+        (:macrocall, :(Core.@doc), "    plan_ifft!(A [, dims]; flags=FFTW.ESTIMATE;  timelimit=Inf)\n\nSame as [`plan_ifft`](:func:`plan_ifft`), but operates in-place on `A`.\n", :plan_ifft!),
+        (:line, 77, :none),
+        (:macrocall, :(Core.@doc), "    plan_bfft!(A [, dims]; flags=FFTW.ESTIMATE;  timelimit=Inf)\n\nSame as [`plan_bfft`](:func:`plan_bfft`), but operates in-place on `A`.\n", :plan_bfft!),
+        (:line, 84, :none),
+        (:macrocall, :(Core.@doc), "    plan_bfft(A [, dims]; flags=FFTW.ESTIMATE;  timelimit=Inf)\n\nSame as [`plan_fft`](:func:`plan_fft`), but produces a plan that performs an unnormalized\nbackwards transform [`bfft`](:func:`bfft`).\n", :plan_bfft),
+        (:line, 92, :none),
+        (:macrocall, :(Core.@doc), "    plan_fft(A [, dims]; flags=FFTW.ESTIMATE;  timelimit=Inf)\n\nPre-plan an optimized FFT along given dimensions (`dims`) of arrays matching the shape and\ntype of `A`.  (The first two arguments have the same meaning as for [`fft`](:func:`fft`).)\nReturns an object `P` which represents the linear operator computed by the FFT, and which\ncontains all of the information needed to compute `fft(A, dims)` quickly.\n\nTo apply `P` to an array `A`, use `P * A`; in general, the syntax for applying plans is much\nlike that of matrices.  (A plan can only be applied to arrays of the same size as the `A`\nfor which the plan was created.)  You can also apply a plan with a preallocated output array `Â`\nby calling `A_mul_B!(Â, plan, A)`.  (For `A_mul_B!`, however, the input array `A` must\nbe a complex floating-point array like the output `Â`.) You can compute the inverse-transform plan by `inv(P)`\nand apply the inverse plan with `P \\ Â` (the inverse plan is cached and reused for\nsubsequent calls to `inv` or `\\`), and apply the inverse plan to a pre-allocated output\narray `A` with `A_ldiv_B!(A, P, Â)`.\n\nThe `flags` argument is a bitwise-or of FFTW planner flags, defaulting to `FFTW.ESTIMATE`.\ne.g. passing `FFTW.MEASURE` or `FFTW.PATIENT` will instead spend several seconds (or more)\nbenchmarking different possible FFT algorithms and picking the fastest one; see the FFTW\nmanual for more information on planner flags.  The optional `timelimit` argument specifies a\nrough upper bound on the allowed planning time, in seconds. Passing `FFTW.MEASURE` or\n`FFTW.PATIENT` may cause the input array `A` to be overwritten with zeros during plan\ncreation.\n\n[`plan_fft!`](:func:`plan_fft!`) is the same as [`plan_fft`](:func:`plan_fft`) but creates a\nplan that operates in-place on its argument (which must be an array of complex\nfloating-point numbers). [`plan_ifft`](:func:`plan_ifft`) and so on are similar but produce\nplans that perform the equivalent of the inverse transforms [`ifft`](:func:`ifft`) and so on.\n", :plan_fft),
+        (:line, 124, :none),
+        (:macrocall, :(Core.@doc), "    plan_fft!(A [, dims]; flags=FFTW.ESTIMATE;  timelimit=Inf)\n\nSame as [`plan_fft`](:func:`plan_fft`), but operates in-place on `A`.\n", :plan_fft!),
+        (:line, 131, :none),
+        (:macrocall, :(Core.@doc), "    rfft(A [, dims])\n\nMultidimensional FFT of a real array `A`, exploiting the fact that the transform has\nconjugate symmetry in order to save roughly half the computational time and storage costs\ncompared with [`fft`](:func:`fft`). If `A` has size `(n_1, ..., n_d)`, the result has size\n`(div(n_1,2)+1, ..., n_d)`.\n\nThe optional `dims` argument specifies an iterable subset of one or more dimensions of `A`\nto transform, similar to [`fft`](:func:`fft`). Instead of (roughly) halving the first\ndimension of `A` in the result, the `dims[1]` dimension is (roughly) halved in the same way.\n", :rfft),
+        (:line, 145, :none),
+        (:macrocall, :(Core.@doc), "    ifft!(A [, dims])\n\nSame as [`ifft`](:func:`ifft`), but operates in-place on `A`.\n", :ifft!),
+        (:line, 152, :none),
+        (:macrocall, :(Core.@doc), "    ifft(A [, dims])\n\nMultidimensional inverse FFT.\n\nA one-dimensional inverse FFT computes\n\n```math\n\\operatorname{IDFT}(A)[k] = \\frac{1}{\\operatorname{length}(A)}\n\\sum_{n=1}^{\\operatorname{length}(A)} \\exp\\left(+i\\frac{2\\pi (n-1)(k-1)}\n{\\operatorname{length}(A)} \\right) A[n].\n```\n\nA multidimensional inverse FFT simply performs this operation along each transformed dimension of `A`.\n", :ifft),
+        (:line, 169, :none),
+        (:macrocall, :(Core.@doc), "    fft!(A [, dims])\n\nSame as [`fft`](:func:`fft`), but operates in-place on `A`, which must be an array of\ncomplex floating-point numbers.\n", :fft!),
+        (:line, 177, :none),
+        (:macrocall, :(Core.@doc), "    bfft(A [, dims])\n\nSimilar to [`ifft`](:func:`ifft`), but computes an unnormalized inverse (backward)\ntransform, which must be divided by the product of the sizes of the transformed dimensions\nin order to obtain the inverse. (This is slightly more efficient than [`ifft`](:func:`ifft`)\nbecause it omits a scaling step, which in some applications can be combined with other\ncomputational steps elsewhere.)\n\n```math\n\\operatorname{BDFT}(A)[k] = \\operatorname{length}(A) \\operatorname{IDFT}(A)[k]\n```\n", :bfft),
+        (:line, 192, :none),
+        (:macrocall, :(Core.@doc), "    bfft!(A [, dims])\n\nSame as [`bfft`](:func:`bfft`), but operates in-place on `A`.\n", :bfft!),
+        (:line, 201, :none),
+        (:for, (:(=), :f, (:tuple, (:quote, #QuoteNode
+                :fft
+              ), (:quote, #QuoteNode
+                :bfft
+              ), (:quote, #QuoteNode
+                :ifft
+              ))), (:block,
+            (:line, 202, :none),
+            (:(=), :pf, (:call, :Symbol, "plan_", :f)),
+            (:line, 203, :none),
+            (:macrocall, Symbol("@eval"), (:block,
+                (:line, 204, :none),
+                (:(=), (:call, (:curly, (:$, :f), (:<:, :T, :Real)), (:(::), :x, (:curly, :AbstractArray, :T)), (:kw, :region, (:(:), 1, (:call, :ndims, :x)))), (:block,
+                    (:line, 204, :none),
+                    (:call, (:$, :f), (:call, :complexfloat, :x), :region)
+                  )),
+                (:line, 205, :none),
+                (:(=), (:call, (:curly, (:$, :pf), (:<:, :T, :Real)), (:parameters, (:..., :kws)), (:(::), :x, (:curly, :AbstractArray, :T)), :region), (:block,
+                    (:line, 205, :none),
+                    (:call, (:$, :pf), (:parameters, (:..., :kws)), (:call, :complexfloat, :x), :region)
+                  )),
+                (:line, 206, :none),
+                (:(=), (:call, (:curly, (:$, :f), (:<:, :T, (:curly, :Union, :Integer, :Rational))), (:(::), :x, (:curly, :AbstractArray, (:curly, :Complex, :T))), (:kw, :region, (:(:), 1, (:call, :ndims, :x)))), (:block,
+                    (:line, 206, :none),
+                    (:call, (:$, :f), (:call, :complexfloat, :x), :region)
+                  )),
+                (:line, 207, :none),
+                (:(=), (:call, (:curly, (:$, :pf), (:<:, :T, (:curly, :Union, :Integer, :Rational))), (:parameters, (:..., :kws)), (:(::), :x, (:curly, :AbstractArray, (:curly, :Complex, :T))), :region), (:block,
+                    (:line, 207, :none),
+                    (:call, (:$, :pf), (:parameters, (:..., :kws)), (:call, :complexfloat, :x), :region)
+                  ))
+              ))
+          )),
+        (:line, 210, :none),
+        (:(=), (:call, (:curly, :rfft, (:<:, :T, (:curly, :Union, :Integer, :Rational))), (:(::), :x, (:curly, :AbstractArray, :T)), (:kw, :region, (:(:), 1, (:call, :ndims, :x)))), (:block,
+            (:line, 210, :none),
+            (:call, :rfft, (:call, :realfloat, :x), :region)
+          )),
+        (:line, 211, :none),
+        (:(=), (:call, :plan_rfft, (:parameters, (:..., :kws)), (:(::), :x, :AbstractArray), :region), (:block,
+            (:line, 211, :none),
+            (:call, :plan_rfft, (:parameters, (:..., :kws)), (:call, :realfloat, :x), :region)
+          )),
+        (:line, 214, :none),
+        (:(=), (:call, (:curly, :*, :T), (:(::), :p, (:curly, :Plan, :T)), (:(::), :x, :AbstractArray)), (:block,
+            (:line, 214, :none),
+            (:call, :*, :p, (:call, :copy1, :T, :x))
+          )),
+        (:line, 228, :none),
+        (:(=), (:call, :_pinv_type, (:(::), :p, :Plan)), (:block,
+            (:line, 228, :none),
+            (:call, :typeof, (:comprehension, (:generator, (:call, :plan_inv, :x), (:(=), :x, (:ref, (:call, :typeof, :p))))))
+          )),
+        (:line, 229, :none),
+        (:(=), (:call, :pinv_type, (:(::), :p, :Plan)), (:block,
+            (:line, 229, :none),
+            (:call, :eltype, (:call, :_pinv_type, :p))
+          )),
+        (:line, 231, :none),
+        (:(=), (:call, :inv, (:(::), :p, :Plan)), (:block,
+            (:line, 231, :none),
+            (:if, (:call, :isdefined, :p, (:quote, #QuoteNode
+                  :pinv
+                )), (:(::), (:., :p, (:quote, #QuoteNode
+                    :pinv
+                  )), (:call, :pinv_type, :p)), (:(=), (:., :p, (:quote, #QuoteNode
+                    :pinv
+                  )), (:call, :plan_inv, :p)))
+          )),
+        (:line, 233, :none),
+        (:(=), (:call, :\, (:(::), :p, :Plan), (:(::), :x, :AbstractArray)), (:block,
+            (:line, 233, :none),
+            (:call, :*, (:call, :inv, :p), :x)
+          )),
+        (:line, 234, :none),
+        (:(=), (:call, :A_ldiv_B!, (:(::), :y, :AbstractArray), (:(::), :p, :Plan), (:(::), :x, :AbstractArray)), (:block,
+            (:line, 234, :none),
+            (:call, :A_mul_B!, :y, (:call, :inv, :p), :x)
+          )),
+        (:line, 240, :none),
+        (:type, true, (:<:, (:curly, :ScaledPlan, :T, :P, :N), (:curly, :Plan, :T)), (:block,
+            (:line, 241, :none),
+            (:(::), :p, :P),
+            (:line, 242, :none),
+            (:(::), :scale, :N),
+            (:line, 243, :none),
+            (:(::), :pinv, :Plan),
+            (:line, 244, :none),
+            (:(=), (:call, :ScaledPlan, :p, :scale), (:block,
+                (:line, 244, :none),
+                (:call, :new, :p, :scale)
+              ))
+          )),
+        (:line, 246, :none),
+        (:(=), (:call, (:curly, (:(::), (:curly, :Type, (:curly, :ScaledPlan, :T))), :T, :P, :N), (:(::), :p, :P), (:(::), :scale, :N)), (:block,
+            (:line, 246, :none),
+            (:call, (:curly, :ScaledPlan, :T, :P, :N), :p, :scale)
+          )),
+        (:line, 247, :none),
+        (:(=), (:call, (:curly, :ScaledPlan, :T), (:(::), :p, (:curly, :Plan, :T)), (:(::), :scale, :Number)), (:block,
+            (:line, 247, :none),
+            (:call, (:curly, :ScaledPlan, :T), :p, :scale)
+          )),
+        (:line, 248, :none),
+        (:(=), (:call, :ScaledPlan, (:(::), :p, :ScaledPlan), (:(::), :α, :Number)), (:block,
+            (:line, 248, :none),
+            (:call, :ScaledPlan, (:., :p, (:quote, #QuoteNode
+                  :p
+                )), (:call, :*, (:., :p, (:quote, #QuoteNode
+                    :scale
+                  )), :α))
+          )),
+        (:line, 250, :none),
+        (:(=), (:call, :size, (:(::), :p, :ScaledPlan)), (:block,
+            (:line, 250, :none),
+            (:call, :size, (:., :p, (:quote, #QuoteNode
+                  :p
+                )))
+          )),
+        (:line, 252, :none),
+        (:(=), (:call, :show, (:(::), :io, :IO), (:(::), :p, :ScaledPlan)), (:block,
+            (:line, 252, :none),
+            (:call, :print, :io, (:., :p, (:quote, #QuoteNode
+                  :scale
+                )), " * ", (:., :p, (:quote, #QuoteNode
+                  :p
+                )))
+          )),
+        (:line, 253, :none),
+        (:(=), (:call, :summary, (:(::), :p, :ScaledPlan)), (:block,
+            (:line, 253, :none),
+            (:call, :string, (:., :p, (:quote, #QuoteNode
+                  :scale
+                )), " * ", (:call, :summary, (:., :p, (:quote, #QuoteNode
+                    :p
+                  ))))
+          )),
+        (:line, 255, :none),
+        (:(=), (:call, :*, (:(::), :p, :ScaledPlan), (:(::), :x, :AbstractArray)), (:block,
+            (:line, 255, :none),
+            (:call, :scale!, (:call, :*, (:., :p, (:quote, #QuoteNode
+                    :p
+                  )), :x), (:., :p, (:quote, #QuoteNode
+                  :scale
+                )))
+          )),
+        (:line, 257, :none),
+        (:(=), (:call, :*, (:(::), :α, :Number), (:(::), :p, :Plan)), (:block,
+            (:line, 257, :none),
+            (:call, :ScaledPlan, :p, :α)
+          )),
+        (:line, 258, :none),
+        (:(=), (:call, :*, (:(::), :p, :Plan), (:(::), :α, :Number)), (:block,
+            (:line, 258, :none),
+            (:call, :ScaledPlan, :p, :α)
+          )),
+        (:line, 259, :none),
+        (:(=), (:call, :*, (:(::), :I, :UniformScaling), (:(::), :p, :ScaledPlan)), (:block,
+            (:line, 259, :none),
+            (:call, :ScaledPlan, :p, (:., :I, (:quote, #QuoteNode
+                  :λ
+                )))
+          )),
+        (:line, 260, :none),
+        (:(=), (:call, :*, (:(::), :p, :ScaledPlan), (:(::), :I, :UniformScaling)), (:block,
+            (:line, 260, :none),
+            (:call, :ScaledPlan, :p, (:., :I, (:quote, #QuoteNode
+                  :λ
+                )))
+          )),
+        (:line, 261, :none),
+        (:(=), (:call, :*, (:(::), :I, :UniformScaling), (:(::), :p, :Plan)), (:block,
+            (:line, 261, :none),
+            (:call, :ScaledPlan, :p, (:., :I, (:quote, #QuoteNode
+                  :λ
+                )))
+          )),
+        (:line, 262, :none),
+        (:(=), (:call, :*, (:(::), :p, :Plan), (:(::), :I, :UniformScaling)), (:block,
+            (:line, 262, :none),
+            (:call, :ScaledPlan, :p, (:., :I, (:quote, #QuoteNode
+                  :λ
+                )))
+          )),
+        (:line, 265, :none),
+        (:(=), (:call, :normalization, :T, :sz, :region), (:block,
+            (:line, 265, :none),
+            (:(::), (:call, :/, (:call, :one, :T), (:call, :prod, (:ref, (:vect, (:..., :sz)), (:vect, (:..., :region))))), :T)
+          )),
+        (:line, 266, :none),
+        (:(=), (:call, :normalization, :X, :region), (:block,
+            (:line, 266, :none),
+            (:call, :normalization, (:call, :real, (:call, :eltype, :X)), (:call, :size, :X), :region)
+          )),
+        (:line, 268, :none),
+        (:(=), (:call, :plan_ifft, (:parameters, (:..., :kws)), (:(::), :x, :AbstractArray), :region), (:block,
+            (:line, 268, :none),
+            (:call, :ScaledPlan, (:call, :plan_bfft, (:parameters, (:..., :kws)), :x, :region), (:call, :normalization, :x, :region))
+          )),
+        (:line, 270, :none),
+        (:(=), (:call, :plan_ifft!, (:parameters, (:..., :kws)), (:(::), :x, :AbstractArray), :region), (:block,
+            (:line, 270, :none),
+            (:call, :ScaledPlan, (:call, :plan_bfft!, (:parameters, (:..., :kws)), :x, :region), (:call, :normalization, :x, :region))
+          )),
+        (:line, 273, :none),
+        (:(=), (:call, :plan_inv, (:(::), :p, :ScaledPlan)), (:block,
+            (:line, 273, :none),
+            (:call, :ScaledPlan, (:call, :plan_inv, (:., :p, (:quote, #QuoteNode
+                    :p
+                  ))), (:call, :inv, (:., :p, (:quote, #QuoteNode
+                    :scale
+                  ))))
+          )),
+        (:line, 275, :none),
+        (:(=), (:call, :A_mul_B!, (:(::), :y, :AbstractArray), (:(::), :p, :ScaledPlan), (:(::), :x, :AbstractArray)), (:block,
+            (:line, 275, :none),
+            (:call, :scale!, (:., :p, (:quote, #QuoteNode
+                  :scale
+                )), (:call, :A_mul_B!, :y, (:., :p, (:quote, #QuoteNode
+                    :p
+                  )), :x))
+          )),
+        (:line, 286, :none),
+        (:for, (:(=), :f, (:tuple, (:quote, #QuoteNode
+                :brfft
+              ), (:quote, #QuoteNode
+                :irfft
+              ))), (:block,
+            (:line, 287, :none),
+            (:(=), :pf, (:call, :Symbol, "plan_", :f)),
+            (:line, 288, :none),
+            (:macrocall, Symbol("@eval"), (:block,
+                (:line, 289, :none),
+                (:(=), (:call, (:$, :f), (:(::), :x, :AbstractArray), (:(::), :d, :Integer)), (:block,
+                    (:line, 289, :none),
+                    (:call, :*, (:call, (:$, :pf), :x, :d), :x)
+                  )),
+                (:line, 290, :none),
+                (:(=), (:call, (:$, :f), (:(::), :x, :AbstractArray), (:(::), :d, :Integer), :region), (:block,
+                    (:line, 290, :none),
+                    (:call, :*, (:call, (:$, :pf), :x, :d, :region), :x)
+                  )),
+                (:line, 291, :none),
+                (:(=), (:call, (:$, :pf), (:parameters, (:..., :kws)), (:(::), :x, :AbstractArray), (:(::), :d, :Integer)), (:block,
+                    (:line, 291, :none),
+                    (:call, (:$, :pf), (:parameters, (:..., :kws)), :x, :d, (:(:), 1, (:call, :ndims, :x)))
+                  ))
+              ))
+          )),
+        (:line, 295, :none),
+        (:for, (:(=), :f, (:tuple, (:quote, #QuoteNode
+                :brfft
+              ), (:quote, #QuoteNode
+                :irfft
+              ))), (:block,
+            (:line, 296, :none),
+            (:macrocall, Symbol("@eval"), (:block,
+                (:line, 297, :none),
+                (:(=), (:call, (:curly, (:$, :f), (:<:, :T, :Real)), (:(::), :x, (:curly, :AbstractArray, :T)), (:(::), :d, :Integer), (:kw, :region, (:(:), 1, (:call, :ndims, :x)))), (:block,
+                    (:line, 297, :none),
+                    (:call, (:$, :f), (:call, :complexfloat, :x), :d, :region)
+                  )),
+                (:line, 298, :none),
+                (:(=), (:call, (:curly, (:$, :f), (:<:, :T, (:curly, :Union, :Integer, :Rational))), (:(::), :x, (:curly, :AbstractArray, (:curly, :Complex, :T))), (:(::), :d, :Integer), (:kw, :region, (:(:), 1, (:call, :ndims, :x)))), (:block,
+                    (:line, 298, :none),
+                    (:call, (:$, :f), (:call, :complexfloat, :x), :d, :region)
+                  ))
+              ))
+          )),
+        (:line, 302, :none),
+        (:macrocall, :(Core.@doc), "    irfft(A, d [, dims])\n\nInverse of [`rfft`](:func:`rfft`): for a complex array `A`, gives the corresponding real\narray whose FFT yields `A` in the first half. As for [`rfft`](:func:`rfft`), `dims` is an\noptional subset of dimensions to transform, defaulting to `1:ndims(A)`.\n\n`d` is the length of the transformed real array along the `dims[1]` dimension, which must\nsatisfy `div(d,2)+1 == size(A,dims[1])`. (This parameter cannot be inferred from `size(A)`\nsince both `2*size(A,dims[1])-2` as well as `2*size(A,dims[1])-1` are valid sizes for the\ntransformed real array.)\n", :irfft),
+        (:line, 316, :none),
+        (:macrocall, :(Core.@doc), "    brfft(A, d [, dims])\n\nSimilar to [`irfft`](:func:`irfft`) but computes an unnormalized inverse transform (similar\nto [`bfft`](:func:`bfft`)), which must be divided by the product of the sizes of the\ntransformed dimensions (of the real output array) in order to obtain the inverse transform.\n", :brfft),
+        (:line, 325, :none),
+        (:function, (:call, :rfft_output_size, (:(::), :x, :AbstractArray), :region), (:block,
+            (:line, 326, :none),
+            (:(=), :d1, (:call, :first, :region)),
+            (:line, 327, :none),
+            (:(=), :osize, (:vect, (:..., (:call, :size, :x)))),
+            (:line, 328, :none),
+            (:(=), (:ref, :osize, :d1), (:call, :+, (:call, :>>, (:ref, :osize, :d1), 1), 1)),
+            (:line, 329, :none),
+            (:return, :osize)
+          )),
+        (:line, 332, :none),
+        (:function, (:call, :brfft_output_size, (:(::), :x, :AbstractArray), (:(::), :d, :Integer), :region), (:block,
+            (:line, 333, :none),
+            (:(=), :d1, (:call, :first, :region)),
+            (:line, 334, :none),
+            (:(=), :osize, (:vect, (:..., (:call, :size, :x)))),
+            (:line, 335, :none),
+            (:macrocall, Symbol("@assert"), (:call, :(==), (:ref, :osize, :d1), (:call, :+, (:call, :>>, :d, 1), 1))),
+            (:line, 336, :none),
+            (:(=), (:ref, :osize, :d1), :d),
+            (:line, 337, :none),
+            (:return, :osize)
+          )),
+        (:line, 340, :none),
+        (:(=), (:call, (:curly, :plan_irfft, :T), (:parameters, (:..., :kws)), (:(::), :x, (:curly, :AbstractArray, (:curly, :Complex, :T))), (:(::), :d, :Integer), :region), (:block,
+            (:line, 340, :none),
+            (:call, :ScaledPlan, (:call, :plan_brfft, (:parameters, (:..., :kws)), :x, :d, :region), (:call, :normalization, :T, (:call, :brfft_output_size, :x, :d, :region), :region))
+          )),
+        (:line, 344, :none),
+        (:macrocall, :(Core.@doc), "    plan_irfft(A, d [, dims]; flags=FFTW.ESTIMATE;  timelimit=Inf)\n\nPre-plan an optimized inverse real-input FFT, similar to [`plan_rfft`](:func:`plan_rfft`)\nexcept for [`irfft`](:func:`irfft`) and [`brfft`](:func:`brfft`), respectively. The first\nthree arguments have the same meaning as for [`irfft`](:func:`irfft`).\n", :plan_irfft),
+        (:line, 355, :none),
+        (:export, :fftshift, :ifftshift),
+        (:line, 357, :none),
+        (:(=), (:call, :fftshift, :x), (:block,
+            (:line, 357, :none),
+            (:call, :circshift, :x, (:call, :div, (:vect, (:..., (:call, :size, :x))), 2))
+          )),
+        (:line, 359, :none),
+        (:macrocall, :(Core.@doc), "    fftshift(x)\n\nSwap the first and second halves of each dimension of `x`.\n", (:call, :fftshift, :x)),
+        (:line, 366, :none),
+        (:function, (:call, :fftshift, :x, :dim), (:block,
+            (:line, 367, :none),
+            (:(=), :s, (:call, :zeros, :Int, (:call, :ndims, :x))),
+            (:line, 368, :none),
+            (:(=), (:ref, :s, :dim), (:call, :div, (:call, :size, :x, :dim), 2)),
+            (:line, 369, :none),
+            (:call, :circshift, :x, :s)
+          )),
+        (:line, 372, :none),
+        (:macrocall, :(Core.@doc), "    fftshift(x,dim)\n\nSwap the first and second halves of the given dimension of array `x`.\n", (:call, :fftshift, :x, :dim)),
+        (:line, 379, :none),
+        (:(=), (:call, :ifftshift, :x), (:block,
+            (:line, 379, :none),
+            (:call, :circshift, :x, (:call, :div, (:vect, (:..., (:call, :size, :x))), -2))
+          )),
+        (:line, 381, :none),
+        (:macrocall, :(Core.@doc), "    ifftshift(x, [dim])\n\nUndoes the effect of `fftshift`.\n", :ifftshift),
+        (:line, 388, :none),
+        (:function, (:call, :ifftshift, :x, :dim), (:block,
+            (:line, 389, :none),
+            (:(=), :s, (:call, :zeros, :Int, (:call, :ndims, :x))),
+            (:line, 390, :none),
+            (:(=), (:ref, :s, :dim), (:call, :-, (:call, :div, (:call, :size, :x, :dim), 2))),
+            (:line, 391, :none),
+            (:call, :circshift, :x, :s)
+          )),
+        (:line, 397, :none),
+        (:if, (:||, (:., :Base, (:quote, #QuoteNode
+                :USE_GPL_LIBS
+              )), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+                    :fftw_vendor
+                  ))), (:quote, #QuoteNode
+                :mkl
+              ))), (:block,
+            (:line, 398, :none),
+            (:macrocall, Symbol("@doc"), (:->, "    fft(A [, dims])\n\nPerforms a multidimensional FFT of the array `A`. The optional `dims` argument specifies an\niterable subset of dimensions (e.g. an integer, range, tuple, or array) to transform along.\nMost efficient if the size of `A` along the transformed dimensions is a product of small\nprimes; see `nextprod()`. See also `plan_fft()` for even greater efficiency.\n\nA one-dimensional FFT computes the one-dimensional discrete Fourier transform (DFT) as\ndefined by\n\n```math\n\\operatorname{DFT}(A)[k] =\n  \\sum_{n=1}^{\\operatorname{length}(A)}\n  \\exp\\left(-i\\frac{2\\pi\n  (n-1)(k-1)}{\\operatorname{length}(A)} \\right) A[n].\n```\n\nA multidimensional FFT simply performs this operation along each transformed dimension of `A`.\n\n!!! note\n    * Julia starts FFTW up with 1 thread by default. Higher performance is usually possible by\n      increasing number of threads. Use `FFTW.set_num_threads(Sys.CPU_CORES)` to use as many\n      threads as cores on your system.\n\n    * This performs a multidimensional FFT by default. FFT libraries in other languages such as\n      Python and Octave perform a one-dimensional FFT along the first non-singleton dimension\n      of the array. This is worth noting while performing comparisons. For more details,\n      refer to the [\"Noteworthy Differences from other Languages\"](:ref:`man-noteworthy-differences`)\n      section of the manual.\n", (:block,
+                  (:line, 428, :none),
+                  :fft
+                ))),
+            (:line, 431, :none),
+            (:call, :include, "fft/FFTW.jl"),
+            (:line, 432, :none),
+            (:importall, :., :FFTW),
+            (:line, 433, :none),
+            (:export, :FFTW, :dct, :idct, :dct!, :idct!, :plan_dct, :plan_idct, :plan_dct!, :plan_idct!)
+          ))
+      ))
+  ))

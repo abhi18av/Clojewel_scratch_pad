@@ -1,0 +1,264 @@
+(:quote, (:block,
+    (:line, 5, :none),
+    (:call, :include, (:call, :string, (:if, (:call, :(>=), (:call, :length, (:., :Core, (:quote, #QuoteNode
+                  :ARGS
+                ))), 2), (:ref, (:., :Core, (:quote, #QuoteNode
+                :ARGS
+              )), 2), ""), "uv_constants.jl")),
+    (:line, 8, :none),
+    (:function, (:call, :uv_sizeof_handle, :handle), (:block,
+        (:line, 9, :none),
+        (:if, (:call, :!, (:comparison, :UV_UNKNOWN_HANDLE, :<, :handle, :<, :UV_HANDLE_TYPE_MAX)), (:block,
+            (:line, 10, :none),
+            (:call, :throw, (:call, :DomainError))
+          )),
+        (:line, 12, :none),
+        (:ccall, (:quote, #QuoteNode
+            :uv_handle_size
+          ), :Csize_t, (:tuple, :Int32), :handle)
+      )),
+    (:line, 15, :none),
+    (:function, (:call, :uv_sizeof_req, :req), (:block,
+        (:line, 16, :none),
+        (:if, (:call, :!, (:comparison, :UV_UNKNOWN_REQ, :<, :req, :<, :UV_REQ_TYPE_MAX)), (:block,
+            (:line, 17, :none),
+            (:call, :throw, (:call, :DomainError))
+          )),
+        (:line, 19, :none),
+        (:ccall, (:quote, #QuoteNode
+            :uv_req_size
+          ), :Csize_t, (:tuple, :Int32), :req)
+      )),
+    (:line, 22, :none),
+    (:for, (:(=), :h, :uv_handle_types), (:block,
+        (:line, 23, :none),
+        (:macrocall, Symbol("@eval"), (:const, (:(=), (:$, (:call, :Symbol, "_sizeof_", (:call, :lowercase, (:call, :string, :h)))), (:call, :uv_sizeof_handle, (:$, :h)))))
+      )),
+    (:line, 25, :none),
+    (:for, (:(=), :r, :uv_req_types), (:block,
+        (:line, 26, :none),
+        (:macrocall, Symbol("@eval"), (:const, (:(=), (:$, (:call, :Symbol, "_sizeof_", (:call, :lowercase, (:call, :string, :r)))), (:call, :uv_sizeof_req, (:$, :r)))))
+      )),
+    (:line, 29, :none),
+    (:(=), (:call, :uv_handle_data, :handle), (:block,
+        (:line, 29, :none),
+        (:ccall, (:quote, #QuoteNode
+            :jl_uv_handle_data
+          ), (:curly, :Ptr, :Void), (:tuple, (:curly, :Ptr, :Void)), :handle)
+      )),
+    (:line, 30, :none),
+    (:(=), (:call, :uv_req_data, :handle), (:block,
+        (:line, 30, :none),
+        (:ccall, (:quote, #QuoteNode
+            :jl_uv_req_data
+          ), (:curly, :Ptr, :Void), (:tuple, (:curly, :Ptr, :Void)), :handle)
+      )),
+    (:line, 31, :none),
+    (:(=), (:call, :uv_req_set_data, :req, :data), (:block,
+        (:line, 31, :none),
+        (:ccall, (:quote, #QuoteNode
+            :jl_uv_req_set_data
+          ), :Void, (:tuple, (:curly, :Ptr, :Void), :Any), :req, :data)
+      )),
+    (:line, 32, :none),
+    (:(=), (:call, :uv_req_set_data, :req, (:(::), :data, (:curly, :Ptr, :Void))), (:block,
+        (:line, 32, :none),
+        (:ccall, (:quote, #QuoteNode
+            :jl_uv_req_set_data
+          ), :Void, (:tuple, (:curly, :Ptr, :Void), (:curly, :Ptr, :Void)), :req, :data)
+      )),
+    (:line, 34, :none),
+    (:macro, (:call, :handle_as, :hand, :typ), (:block,
+        (:line, 35, :none),
+        (:quote, (:block,
+            (:line, 36, :none),
+            (:(=), :data, (:call, :uv_handle_data, (:$, (:call, :esc, :hand)))),
+            (:line, 37, :none),
+            (:&&, (:call, :(==), :data, :C_NULL), (:return, nothing)),
+            (:line, 38, :none),
+            (:(::), (:call, :unsafe_pointer_to_objref, :data), (:$, (:call, :esc, :typ)))
+          ))
+      )),
+    (:line, 42, :none),
+    (:(=), (:call, :associate_julia_struct, (:(::), :handle, (:curly, :Ptr, :Void)), (:(::), :jlobj, :ANY)), (:block,
+        (:line, 42, :none),
+        (:ccall, (:quote, #QuoteNode
+            :jl_uv_associate_julia_struct
+          ), :Void, (:tuple, (:curly, :Ptr, :Void), :Any), :handle, :jlobj)
+      )),
+    (:line, 44, :none),
+    (:(=), (:call, :disassociate_julia_struct, :uv), (:block,
+        (:line, 44, :none),
+        (:call, :disassociate_julia_struct, (:., :uv, (:quote, #QuoteNode
+              :handle
+            )))
+      )),
+    (:line, 45, :none),
+    (:(=), (:call, :disassociate_julia_struct, (:(::), :handle, (:curly, :Ptr, :Void))), (:block,
+        (:line, 45, :none),
+        (:&&, (:call, :(!=), :handle, :C_NULL), (:ccall, (:quote, #QuoteNode
+              :jl_uv_disassociate_julia_struct
+            ), :Void, (:tuple, (:curly, :Ptr, :Void)), :handle))
+      )),
+    (:line, 50, :none),
+    (:const, (:(=), :uvhandles, (:call, :ObjectIdDict))),
+    (:line, 51, :none),
+    (:(=), (:call, :preserve_handle, :x), (:block,
+        (:line, 51, :none),
+        (:(=), (:ref, :uvhandles, :x), (:call, :+, (:(::), (:call, :get, :uvhandles, :x, 0), :Int), 1))
+      )),
+    (:line, 52, :none),
+    (:(=), (:call, :unpreserve_handle, :x), (:block,
+        (:line, 52, :none),
+        (:block,
+          (:(=), :v, (:(::), (:ref, :uvhandles, :x), :Int)),
+          (:if, (:call, :(==), :v, 1), (:call, :pop!, :uvhandles, :x), (:(=), (:ref, :uvhandles, :x), (:call, :-, :v, 1))),
+          :nothing
+        )
+      )),
+    (:line, 56, :none),
+    (:type, true, (:<:, :UVError, :Exception), (:block,
+        (:line, 57, :none),
+        (:(::), :prefix, :AbstractString),
+        (:line, 58, :none),
+        (:(::), :code, :Int32),
+        (:line, 59, :none),
+        (:(=), (:call, :UVError, (:(::), :p, :AbstractString), (:(::), :code, :Integer)), (:block,
+            (:line, 59, :none),
+            (:call, :new, :p, :code)
+          ))
+      )),
+    (:line, 62, :none),
+    (:(=), (:call, :struverror, (:(::), :err, :Int32)), (:block,
+        (:line, 62, :none),
+        (:call, :unsafe_string, (:ccall, (:quote, #QuoteNode
+              :uv_strerror
+            ), :Cstring, (:tuple, :Int32), :err))
+      )),
+    (:line, 63, :none),
+    (:(=), (:call, :struverror, (:(::), :err, :UVError)), (:block,
+        (:line, 63, :none),
+        (:call, :struverror, (:., :err, (:quote, #QuoteNode
+              :code
+            )))
+      )),
+    (:line, 64, :none),
+    (:(=), (:call, :uverrorname, (:(::), :err, :Int32)), (:block,
+        (:line, 64, :none),
+        (:call, :unsafe_string, (:ccall, (:quote, #QuoteNode
+              :uv_err_name
+            ), :Cstring, (:tuple, :Int32), :err))
+      )),
+    (:line, 65, :none),
+    (:(=), (:call, :uverrorname, (:(::), :err, :UVError)), (:block,
+        (:line, 65, :none),
+        (:call, :uverrorname, (:., :err, (:quote, #QuoteNode
+              :code
+            )))
+      )),
+    (:line, 67, :none),
+    (:(=), (:call, :uv_error, (:(::), :prefix, :Symbol), (:(::), :c, :Integer)), (:block,
+        (:line, 67, :none),
+        (:call, :uv_error, (:call, :string, :prefix), :c)
+      )),
+    (:line, 68, :none),
+    (:(=), (:call, :uv_error, (:(::), :prefix, :AbstractString), (:(::), :c, :Integer)), (:block,
+        (:line, 68, :none),
+        (:if, (:call, :<, :c, 0), (:call, :throw, (:call, :UVError, :prefix, :c)), :nothing)
+      )),
+    (:line, 69, :none),
+    (:(=), (:call, :show, (:(::), :io, :IO), (:(::), :e, :UVError)), (:block,
+        (:line, 69, :none),
+        (:call, :print, :io, (:call, :*, (:., :e, (:quote, #QuoteNode
+                :prefix
+              )), ": ", (:call, :struverror, :e), " (", (:call, :uverrorname, :e), ")"))
+      )),
+    (:line, 73, :none),
+    (:(=), (:call, :eventloop), (:block,
+        (:line, 73, :none),
+        (:(::), :uv_eventloop, (:curly, :Ptr, :Void))
+      )),
+    (:line, 76, :none),
+    (:function, (:call, :run_event_loop), (:block,
+        (:line, 77, :none),
+        (:ccall, (:quote, #QuoteNode
+            :jl_run_event_loop
+          ), :Void, (:tuple, (:curly, :Ptr, :Void)), (:call, :eventloop))
+      )),
+    (:line, 79, :none),
+    (:function, (:call, :process_events, (:(::), :block, :Bool)), (:block,
+        (:line, 80, :none),
+        (:(=), :loop, (:call, :eventloop)),
+        (:line, 81, :none),
+        (:if, :block, (:block,
+            (:line, 82, :none),
+            (:return, (:ccall, (:quote, #QuoteNode
+                  :jl_run_once
+                ), :Int32, (:tuple, (:curly, :Ptr, :Void)), :loop))
+          ), (:block,
+            (:line, 84, :none),
+            (:return, (:ccall, (:quote, #QuoteNode
+                  :jl_process_events
+                ), :Int32, (:tuple, (:curly, :Ptr, :Void)), :loop))
+          ))
+      )),
+    (:line, 88, :none),
+    (:function, (:call, :reinit_stdio), (:block,
+        (:line, 89, :none),
+        (:global, (:(=), :uv_jl_alloc_buf, (:call, :cfunction, :uv_alloc_buf, :Void, (:tuple, (:curly, :Ptr, :Void), :Csize_t, (:curly, :Ptr, :Void))))),
+        (:line, 90, :none),
+        (:global, (:(=), :uv_jl_readcb, (:call, :cfunction, :uv_readcb, :Void, (:tuple, (:curly, :Ptr, :Void), :Cssize_t, (:curly, :Ptr, :Void))))),
+        (:line, 91, :none),
+        (:global, (:(=), :uv_jl_connectioncb, (:call, :cfunction, :uv_connectioncb, :Void, (:tuple, (:curly, :Ptr, :Void), :Cint)))),
+        (:line, 92, :none),
+        (:global, (:(=), :uv_jl_connectcb, (:call, :cfunction, :uv_connectcb, :Void, (:tuple, (:curly, :Ptr, :Void), :Cint)))),
+        (:line, 93, :none),
+        (:global, (:(=), :uv_jl_writecb_task, (:call, :cfunction, :uv_writecb_task, :Void, (:tuple, (:curly, :Ptr, :Void), :Cint)))),
+        (:line, 94, :none),
+        (:global, (:(=), :uv_jl_getaddrinfocb, (:call, :cfunction, :uv_getaddrinfocb, :Void, (:tuple, (:curly, :Ptr, :Void), :Cint, (:curly, :Ptr, :Void))))),
+        (:line, 95, :none),
+        (:global, (:(=), :uv_jl_recvcb, (:call, :cfunction, :uv_recvcb, :Void, (:tuple, (:curly, :Ptr, :Void), :Cssize_t, (:curly, :Ptr, :Void), (:curly, :Ptr, :Void), :Cuint)))),
+        (:line, 96, :none),
+        (:global, (:(=), :uv_jl_sendcb, (:call, :cfunction, :uv_sendcb, :Void, (:tuple, (:curly, :Ptr, :Void), :Cint)))),
+        (:line, 97, :none),
+        (:global, (:(=), :uv_jl_return_spawn, (:call, :cfunction, :uv_return_spawn, :Void, (:tuple, (:curly, :Ptr, :Void), :Int64, :Int32)))),
+        (:line, 98, :none),
+        (:global, (:(=), :uv_jl_asynccb, (:call, :cfunction, :uv_asynccb, :Void, (:tuple, (:curly, :Ptr, :Void))))),
+        (:line, 99, :none),
+        (:global, (:(=), :uv_jl_timercb, (:call, :cfunction, :uv_timercb, :Void, (:tuple, (:curly, :Ptr, :Void))))),
+        (:line, 101, :none),
+        (:global, (:(=), :uv_eventloop, (:ccall, (:quote, #QuoteNode
+                :jl_global_event_loop
+              ), (:curly, :Ptr, :Void), (:tuple,)))),
+        (:line, 102, :none),
+        (:global, (:(=), :STDIN, (:call, :init_stdio, (:ccall, (:quote, #QuoteNode
+                  :jl_stdin_stream
+                ), (:curly, :Ptr, :Void), (:tuple,))))),
+        (:line, 103, :none),
+        (:global, (:(=), :STDOUT, (:call, :init_stdio, (:ccall, (:quote, #QuoteNode
+                  :jl_stdout_stream
+                ), (:curly, :Ptr, :Void), (:tuple,))))),
+        (:line, 104, :none),
+        (:global, (:(=), :STDERR, (:call, :init_stdio, (:ccall, (:quote, #QuoteNode
+                  :jl_stderr_stream
+                ), (:curly, :Ptr, :Void), (:tuple,)))))
+      )),
+    (:line, 107, :none),
+    "    STDIN\n\nGlobal variable referring to the standard input stream.\n",
+    (:line, 112, :none),
+    (:quote, #QuoteNode
+      :STDIN
+    ),
+    (:line, 114, :none),
+    "    STDOUT\n\nGlobal variable referring to the standard out stream.\n",
+    (:line, 119, :none),
+    (:quote, #QuoteNode
+      :STDOUT
+    ),
+    (:line, 121, :none),
+    "    STDERR\n\nGlobal variable referring to the standard error stream.\n",
+    (:line, 126, :none),
+    (:quote, #QuoteNode
+      :STDERR
+    )
+  ))

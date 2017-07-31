@@ -1,0 +1,310 @@
+(:quote, (:block,
+    (:line, 5, :none),
+    (:(=), :dlls, (:call, (:., :Libdl, (:quote, #QuoteNode
+            :dllist
+          )))),
+    (:line, 6, :none),
+    (:macrocall, Symbol("@test"), (:call, :!, (:call, :isempty, :dlls))),
+    (:line, 7, :none),
+    (:macrocall, Symbol("@test"), (:call, :>, (:call, :length, :dlls), 3)),
+    (:line, 8, :none),
+    (:if, (:||, (:call, :!, (:call, :is_windows)), (:call, :(>=), (:call, (:., :Sys, (:quote, #QuoteNode
+                :windows_version
+              ))), (:., :Sys, (:quote, #QuoteNode
+              :WINDOWS_VISTA_VER
+            )))), (:block,
+        (:line, 9, :none),
+        (:for, (:(=), :dl, :dlls), (:block,
+            (:line, 10, :none),
+            (:if, (:&&, (:call, :isfile, :dl), (:call, :(!=), (:call, (:., :Libdl, (:quote, #QuoteNode
+                        :dlopen_e
+                      )), :dl), :C_NULL)), (:block,
+                (:line, 11, :none),
+                (:macrocall, Symbol("@test"), (:call, (:., :Base, (:quote, #QuoteNode
+                        :samefile
+                      )), (:call, (:., :Libdl, (:quote, #QuoteNode
+                          :dlpath
+                        )), :dl), :dl))
+              ))
+          ))
+      )),
+    (:line, 15, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, (:call, :filter, (:->, (:tuple, :dl), (:block,
+                (:line, 16, :none),
+                (:return, (:call, :ismatch, (:call, :Regex, (:string, "^libjulia(?:.*).", (:., :Libdl, (:quote, #QuoteNode
+                            :dlext
+                          )), "(?:..+)?\$")), (:call, :basename, :dl)))
+              )), :dlls)), 1)),
+    (:line, 20, :none),
+    (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, (:., :Libdl, (:quote, #QuoteNode
+            :dlsym
+          )), :C_NULL, (:quote, #QuoteNode
+          :foo
+        ))),
+    (:line, 21, :none),
+    (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, (:., :Libdl, (:quote, #QuoteNode
+            :dlsym_e
+          )), :C_NULL, (:quote, #QuoteNode
+          :foo
+        ))),
+    (:line, 23, :none),
+    (:call, :cd, (:->, (:tuple,), (:block,
+          (:line, 28, :none),
+          (:(=), :private_libdir, (:if, (:call, :(!=), (:ccall, (:quote, #QuoteNode
+                    :jl_is_debugbuild
+                  ), :Cint, (:tuple,)), 0), (:block,
+                (:line, 29, :none),
+                (:call, :dirname, (:call, :abspath, (:call, (:., :Libdl, (:quote, #QuoteNode
+                          :dlpath
+                        )), "libjulia-debug")))
+              ), (:block,
+                (:line, 31, :none),
+                (:call, :dirname, (:call, :abspath, (:call, (:., :Libdl, (:quote, #QuoteNode
+                          :dlpath
+                        )), "libjulia")))
+              ))),
+          (:line, 34, :none),
+          (:if, (:call, :isfile, (:call, :joinpath, :private_libdir, "julia", (:call, :*, "libccalltest.", (:., :Libdl, (:quote, #QuoteNode
+                      :dlext
+                    ))))), (:block,
+              (:line, 35, :none),
+              (:(=), :private_libdir, (:call, :joinpath, :private_libdir, "julia"))
+            )),
+          (:line, 38, :none),
+          (:macrocall, Symbol("@test"), (:call, :!, (:call, :isempty, (:call, (:., :Libdl, (:quote, #QuoteNode
+                      :find_library
+                    )), (:vect, "libccalltest"), (:vect, :private_libdir))))),
+          (:line, 39, :none),
+          (:macrocall, Symbol("@test"), (:call, :!, (:call, :isempty, (:call, (:., :Libdl, (:quote, #QuoteNode
+                      :find_library
+                    )), "libccalltest", (:vect, :private_libdir))))),
+          (:line, 40, :none),
+          (:macrocall, Symbol("@test"), (:call, :!, (:call, :isempty, (:call, (:., :Libdl, (:quote, #QuoteNode
+                      :find_library
+                    )), (:quote, #QuoteNode
+                    :libccalltest
+                  ), (:vect, :private_libdir))))),
+          (:line, 43, :none),
+          (:let, (:block,
+              (:line, 44, :none),
+              (:try, (:block,
+                  (:line, 45, :none),
+                  (:(=), :dl, (:call, (:., :Libdl, (:quote, #QuoteNode
+                          :dlopen_e
+                        )), (:call, :abspath, (:call, :joinpath, :private_libdir, "libccalltest")))),
+                  (:line, 46, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(!=), :dl, :C_NULL))
+                ), false, false, (:block,
+                  (:line, 48, :none),
+                  (:call, (:., :Libdl, (:quote, #QuoteNode
+                        :dlclose
+                      )), :dl)
+                ))
+            ), (:(=), :dl, :C_NULL)),
+          (:line, 52, :none),
+          (:let, (:block,
+              (:line, 53, :none),
+              (:try, (:block,
+                  (:line, 54, :none),
+                  (:(=), :dl, (:call, (:., :Libdl, (:quote, #QuoteNode
+                          :dlopen_e
+                        )), (:call, :abspath, (:call, :joinpath, :private_libdir, (:string, "libccalltest.", (:., :Libdl, (:quote, #QuoteNode
+                                :dlext
+                              ))))))),
+                  (:line, 55, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(!=), :dl, :C_NULL))
+                ), false, false, (:block,
+                  (:line, 57, :none),
+                  (:call, (:., :Libdl, (:quote, #QuoteNode
+                        :dlclose
+                      )), :dl)
+                ))
+            ), (:(=), :dl, :C_NULL)),
+          (:line, 61, :none),
+          (:let, (:block,
+              (:line, 62, :none),
+              (:try, (:block,
+                  (:line, 63, :none),
+                  (:(=), :dl, (:call, (:., :Libdl, (:quote, #QuoteNode
+                          :dlopen_e
+                        )), (:call, :relpath, (:call, :joinpath, :private_libdir, "libccalltest")))),
+                  (:line, 64, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(!=), :dl, :C_NULL))
+                ), false, false, (:block,
+                  (:line, 66, :none),
+                  (:call, (:., :Libdl, (:quote, #QuoteNode
+                        :dlclose
+                      )), :dl)
+                ))
+            ), (:(=), :dl, :C_NULL)),
+          (:line, 70, :none),
+          (:let, (:block,
+              (:line, 71, :none),
+              (:try, (:block,
+                  (:line, 72, :none),
+                  (:(=), :dl, (:call, (:., :Libdl, (:quote, #QuoteNode
+                          :dlopen_e
+                        )), (:call, :relpath, (:call, :joinpath, :private_libdir, (:string, "libccalltest.", (:., :Libdl, (:quote, #QuoteNode
+                                :dlext
+                              ))))))),
+                  (:line, 73, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(!=), :dl, :C_NULL))
+                ), false, false, (:block,
+                  (:line, 75, :none),
+                  (:call, (:., :Libdl, (:quote, #QuoteNode
+                        :dlclose
+                      )), :dl)
+                ))
+            ), (:(=), :dl, :C_NULL)),
+          (:line, 79, :none),
+          (:let, (:block,
+              (:line, 80, :none),
+              (:try, (:block,
+                  (:line, 81, :none),
+                  (:(=), :dl, (:call, (:., :Libdl, (:quote, #QuoteNode
+                          :dlopen_e
+                        )), "./foo")),
+                  (:line, 82, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), :dl, :C_NULL))
+                ), false, false, (:block,
+                  (:line, 84, :none),
+                  (:call, (:., :Libdl, (:quote, #QuoteNode
+                        :dlclose
+                      )), :dl)
+                ))
+            ), (:(=), :dl, :C_NULL)),
+          (:line, 89, :none),
+          (:let, (:block,
+              (:line, 90, :none),
+              (:try, (:block,
+                  (:line, 91, :none),
+                  (:(=), :dl, (:call, (:., :Libdl, (:quote, #QuoteNode
+                          :dlopen_e
+                        )), "libccalltest")),
+                  (:line, 92, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(!=), :dl, :C_NULL))
+                ), false, false, (:block,
+                  (:line, 94, :none),
+                  (:call, (:., :Libdl, (:quote, #QuoteNode
+                        :dlclose
+                      )), :dl)
+                ))
+            ), (:(=), :dl, :C_NULL)),
+          (:line, 98, :none),
+          (:let, (:block,
+              (:line, 99, :none),
+              (:try, (:block,
+                  (:line, 100, :none),
+                  (:(=), :dl, (:call, (:., :Libdl, (:quote, #QuoteNode
+                          :dlopen_e
+                        )), (:call, :string, "libccalltest", ".", (:., :Libdl, (:quote, #QuoteNode
+                            :dlext
+                          ))))),
+                  (:line, 101, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(!=), :dl, :C_NULL))
+                ), false, false, (:block,
+                  (:line, 103, :none),
+                  (:call, (:., :Libdl, (:quote, #QuoteNode
+                        :dlclose
+                      )), :dl)
+                ))
+            ), (:(=), :dl, :C_NULL)),
+          (:line, 146, :none),
+          (:let, (:block,
+              (:line, 147, :none),
+              (:try, (:block,
+                  (:line, 148, :none),
+                  (:(=), :path, (:call, :abspath, (:call, :joinpath, :private_libdir, "libccalltest"))),
+                  (:line, 149, :none),
+                  (:(=), :dl, (:call, (:., :Libdl, (:quote, #QuoteNode
+                          :dlopen
+                        )), :path)),
+                  (:line, 150, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(!=), :dl, :C_NULL)),
+                  (:line, 151, :none),
+                  (:macrocall, Symbol("@test"), (:call, (:., :Base, (:quote, #QuoteNode
+                          :samefile
+                        )), (:call, :abspath, (:call, (:., :Libdl, (:quote, #QuoteNode
+                              :dlpath
+                            )), :dl)), (:call, :abspath, (:call, (:., :Libdl, (:quote, #QuoteNode
+                              :dlpath
+                            )), :path)))),
+                  (:line, 153, :none),
+                  (:macrocall, Symbol("@test"), (:call, (:., :Base, (:quote, #QuoteNode
+                          :samefile
+                        )), (:call, :abspath, (:call, (:., :Libdl, (:quote, #QuoteNode
+                              :dlpath
+                            )), :dl)), (:call, :string, :path, ".", (:., :Libdl, (:quote, #QuoteNode
+                            :dlext
+                          )))))
+                ), false, false, (:block,
+                  (:line, 156, :none),
+                  (:call, (:., :Libdl, (:quote, #QuoteNode
+                        :dlclose
+                      )), :dl)
+                ))
+            ), (:(=), :dl, :C_NULL)),
+          (:line, 161, :none),
+          (:macrocall, Symbol("@test_throws"), :ErrorException, (:call, (:., :Libdl, (:quote, #QuoteNode
+                  :dlopen
+                )), "./foo")),
+          (:line, 164, :none),
+          (:let, (:block,
+              (:line, 165, :none),
+              (:try, (:block,
+                  (:line, 166, :none),
+                  (:(=), :dl, (:call, (:., :Libdl, (:quote, #QuoteNode
+                          :dlopen
+                        )), (:call, :abspath, (:call, :joinpath, :private_libdir, "libccalltest")))),
+                  (:line, 167, :none),
+                  (:(=), :fptr, (:call, (:., :Libdl, (:quote, #QuoteNode
+                          :dlsym
+                        )), :dl, (:quote, #QuoteNode
+                        :set_verbose
+                      ))),
+                  (:line, 168, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(!=), :fptr, :C_NULL)),
+                  (:line, 169, :none),
+                  (:macrocall, Symbol("@test_throws"), :ErrorException, (:call, (:., :Libdl, (:quote, #QuoteNode
+                          :dlsym
+                        )), :dl, (:quote, #QuoteNode
+                        :foo
+                      ))),
+                  (:line, 171, :none),
+                  (:(=), :fptr, (:call, (:., :Libdl, (:quote, #QuoteNode
+                          :dlsym_e
+                        )), :dl, (:quote, #QuoteNode
+                        :set_verbose
+                      ))),
+                  (:line, 172, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(!=), :fptr, :C_NULL)),
+                  (:line, 173, :none),
+                  (:(=), :fptr, (:call, (:., :Libdl, (:quote, #QuoteNode
+                          :dlsym_e
+                        )), :dl, (:quote, #QuoteNode
+                        :foo
+                      ))),
+                  (:line, 174, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), :fptr, :C_NULL))
+                ), false, false, (:block,
+                  (:line, 176, :none),
+                  (:call, (:., :Libdl, (:quote, #QuoteNode
+                        :dlclose
+                      )), :dl)
+                ))
+            ), (:(=), :dl, :C_NULL)),
+          (:line, 180, :none),
+          (:if, (:call, :in, (:., :Sys, (:quote, #QuoteNode
+                  :KERNEL
+                )), (:tuple, (:quote, #QuoteNode
+                  :Linux
+                ), (:quote, #QuoteNode
+                  :FreeBSD
+                ))), (:block,
+              (:line, 181, :none),
+              (:ccall, (:quote, #QuoteNode
+                  :jl_read_sonames
+                ), :Void, (:tuple,))
+            ))
+        )), (:call, :dirname, (:macrocall, Symbol("@__FILE__"))))
+  ))

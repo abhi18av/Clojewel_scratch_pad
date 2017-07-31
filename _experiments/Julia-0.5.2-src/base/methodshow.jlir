@@ -1,0 +1,665 @@
+(:quote, (:block,
+    (:line, 5, :none),
+    (:function, (:call, :argtype_decl, :env, :n, :sig, :i, :nargs, :isva), (:block,
+        (:line, 6, :none),
+        (:(=), :t, (:ref, (:., :sig, (:quote, #QuoteNode
+                :parameters
+              )), :i)),
+        (:line, 7, :none),
+        (:if, (:&&, (:call, :(==), :i, :nargs), (:&&, :isva, (:call, :!, (:call, :isvarargtype, :t)))), (:block,
+            (:line, 8, :none),
+            (:(=), :t, (:curly, :Vararg, :t, (:call, :+, (:call, :-, (:call, :length, (:., :sig, (:quote, #QuoteNode
+                          :parameters
+                        ))), :nargs), 1)))
+          )),
+        (:line, 10, :none),
+        (:if, (:call, :isa, :n, :Expr), (:block,
+            (:line, 11, :none),
+            (:(=), :n, (:ref, (:., :n, (:quote, #QuoteNode
+                    :args
+                  )), 1))
+          )),
+        (:line, 13, :none),
+        (:(=), :s, (:call, :string, :n)),
+        (:line, 14, :none),
+        (:(=), :i, (:call, :search, :s, '#')),
+        (:line, 15, :none),
+        (:if, (:call, :>, :i, 0), (:block,
+            (:line, 16, :none),
+            (:(=), :s, (:ref, :s, (:(:), 1, (:call, :-, :i, 1))))
+          )),
+        (:line, 18, :none),
+        (:if, (:&&, (:call, :(===), :t, :Any), (:call, :!, (:call, :isempty, :s))), (:block,
+            (:line, 19, :none),
+            (:return, (:tuple, :s, ""))
+          )),
+        (:line, 21, :none),
+        (:if, (:call, :isvarargtype, :t), (:block,
+            (:line, 22, :none),
+            (:(=), (:tuple, :tt, :tn), (:tuple, (:ref, (:., :t, (:quote, #QuoteNode
+                      :parameters
+                    )), 1), (:ref, (:., :t, (:quote, #QuoteNode
+                      :parameters
+                    )), 2))),
+            (:line, 23, :none),
+            (:if, (:&&, (:call, :isa, :tn, :TypeVar), (:call, :!, (:., :tn, (:quote, #QuoteNode
+                      :bound
+                    )))), (:block,
+                (:line, 24, :none),
+                (:if, (:||, (:call, :(===), :tt, :Any), (:&&, (:call, :isa, :tt, :TypeVar), (:call, :!, (:., :tt, (:quote, #QuoteNode
+                            :bound
+                          ))))), (:block,
+                    (:line, 25, :none),
+                    (:return, (:tuple, (:call, :string, :s, "..."), ""))
+                  ), (:block,
+                    (:line, 27, :none),
+                    (:return, (:tuple, :s, (:call, :*, (:call, :string_with_env, :env, :tt), "...")))
+                  ))
+              )),
+            (:line, 30, :none),
+            (:return, (:tuple, :s, (:call, :string_with_env, :env, "Vararg{", :tt, ",", :tn, "}")))
+          )),
+        (:line, 32, :none),
+        (:return, (:tuple, :s, (:call, :string_with_env, :env, :t)))
+      )),
+    (:line, 35, :none),
+    (:function, (:call, :arg_decl_parts, (:(::), :m, :Method)), (:block,
+        (:line, 36, :none),
+        (:(=), :tv, (:., :m, (:quote, #QuoteNode
+              :tvars
+            ))),
+        (:line, 37, :none),
+        (:if, (:call, :!, (:call, :isa, :tv, :SimpleVector)), (:block,
+            (:line, 38, :none),
+            (:(=), :tv, (:ref, :Any, :tv))
+          ), (:block,
+            (:line, 40, :none),
+            (:(=), :tv, (:ref, :Any, (:..., :tv)))
+          )),
+        (:line, 42, :none),
+        (:(=), :li, (:., :m, (:quote, #QuoteNode
+              :lambda_template
+            ))),
+        (:line, 43, :none),
+        (:(=), (:tuple, :file, :line), (:tuple, "", 0)),
+        (:line, 44, :none),
+        (:if, (:&&, (:call, :(!==), :li, :nothing), (:call, :isdefined, :li, (:quote, #QuoteNode
+                :slotnames
+              ))), (:block,
+            (:line, 45, :none),
+            (:(=), :argnames, (:ref, (:., :li, (:quote, #QuoteNode
+                    :slotnames
+                  )), (:(:), 1, (:., :li, (:quote, #QuoteNode
+                      :nargs
+                    ))))),
+            (:line, 46, :none),
+            (:(=), :decls, (:typed_comprehension, :Any, (:generator, (:call, :argtype_decl, (:(=>), (:quote, #QuoteNode
+                        :tvar_env
+                      ), :tv), (:ref, :argnames, :i), (:., :m, (:quote, #QuoteNode
+                        :sig
+                      )), :i, (:., :li, (:quote, #QuoteNode
+                        :nargs
+                      )), (:., :li, (:quote, #QuoteNode
+                        :isva
+                      ))), (:(=), :i, (:(:), 1, (:., :li, (:quote, #QuoteNode
+                          :nargs
+                        ))))))),
+            (:line, 48, :none),
+            (:if, (:call, :isdefined, :li, (:quote, #QuoteNode
+                  :def
+                )), (:block,
+                (:line, 49, :none),
+                (:(=), (:tuple, :file, :line), (:tuple, (:., (:., :li, (:quote, #QuoteNode
+                          :def
+                        )), (:quote, #QuoteNode
+                        :file
+                      )), (:., (:., :li, (:quote, #QuoteNode
+                          :def
+                        )), (:quote, #QuoteNode
+                        :line
+                      ))))
+              ))
+          ), (:block,
+            (:line, 52, :none),
+            (:(=), :decls, (:typed_comprehension, :Any, (:generator, (:tuple, "", ""), (:(=), :i, (:(:), 1, (:call, :length, (:., (:., :m, (:quote, #QuoteNode
+                              :sig
+                            )), (:quote, #QuoteNode
+                            :parameters
+                          ))))))))
+          )),
+        (:line, 54, :none),
+        (:return, (:tuple, :tv, :decls, :file, :line))
+      )),
+    (:line, 57, :none),
+    (:function, (:call, :kwarg_decl, (:(::), :sig, :ANY), (:(::), :kwtype, :DataType)), (:block,
+        (:line, 58, :none),
+        (:(=), :sig, (:curly, :Tuple, :kwtype, (:., :Core, (:quote, #QuoteNode
+                :AnyVector
+              )), (:..., (:., :sig, (:quote, #QuoteNode
+                  :parameters
+                ))))),
+        (:line, 59, :none),
+        (:(=), :kwli, (:ccall, (:quote, #QuoteNode
+              :jl_methtable_lookup
+            ), :Any, (:tuple, :Any, :Any), (:., (:., :kwtype, (:quote, #QuoteNode
+                  :name
+                )), (:quote, #QuoteNode
+                :mt
+              )), :sig)),
+        (:line, 60, :none),
+        (:if, (:call, :(!==), :kwli, :nothing), (:block,
+            (:line, 61, :none),
+            (:(=), :kwli, (:(::), :kwli, :Method)),
+            (:line, 62, :none),
+            (:(=), :kws, (:call, :filter, (:->, :x, (:block,
+                    (:line, 62, :none),
+                    (:call, :!, (:call, :in, '#', (:call, :string, :x)))
+                  )), (:ref, (:., (:., :kwli, (:quote, #QuoteNode
+                        :lambda_template
+                      )), (:quote, #QuoteNode
+                      :slotnames
+                    )), (:(:), (:call, :+, (:., (:., :kwli, (:quote, #QuoteNode
+                            :lambda_template
+                          )), (:quote, #QuoteNode
+                          :nargs
+                        )), 1), :end)))),
+            (:line, 65, :none),
+            (:(=), :i, (:call, :findfirst, (:->, :x, (:block,
+                    (:line, 65, :none),
+                    (:call, :endswith, (:call, :string, :x), "...")
+                  )), :kws)),
+            (:line, 66, :none),
+            (:&&, (:call, :(==), :i, 0), (:return, :kws)),
+            (:line, 67, :none),
+            (:call, :push!, :kws, (:ref, :kws, :i)),
+            (:line, 68, :none),
+            (:return, (:call, :deleteat!, :kws, :i))
+          )),
+        (:line, 70, :none),
+        (:return, (:tuple,))
+      )),
+    (:line, 73, :none),
+    (:function, (:call, :show, (:parameters, (:kw, (:(::), :kwtype, (:curly, :Nullable, :DataType)), (:call, (:curly, :Nullable, :DataType)))), (:(::), :io, :IO), (:(::), :m, :Method)), (:block,
+        (:line, 74, :none),
+        (:(=), (:tuple, :tv, :decls, :file, :line), (:call, :arg_decl_parts, :m)),
+        (:line, 75, :none),
+        (:(=), :ft, (:ref, (:., (:., :m, (:quote, #QuoteNode
+                  :sig
+                )), (:quote, #QuoteNode
+                :parameters
+              )), 1)),
+        (:line, 76, :none),
+        (:(=), :d1, (:ref, :decls, 1)),
+        (:line, 77, :none),
+        (:if, (:call, :(===), (:., :m, (:quote, #QuoteNode
+                :sig
+              )), :Tuple), (:block,
+            (:line, 78, :none),
+            (:call, :print, :io, (:., :m, (:quote, #QuoteNode
+                  :name
+                ))),
+            (:line, 79, :none),
+            (:(=), :decls, (:ref, :Any, (:tuple,), (:tuple, "...", "")))
+          ), (:block,
+            (:line, 80, :none),
+            (:if, (:&&, (:<:, :ft, :Function), (:&&, (:call, :isdefined, (:., (:., :ft, (:quote, #QuoteNode
+                          :name
+                        )), (:quote, #QuoteNode
+                        :module
+                      )), (:., (:., (:., :ft, (:quote, #QuoteNode
+                            :name
+                          )), (:quote, #QuoteNode
+                          :mt
+                        )), (:quote, #QuoteNode
+                        :name
+                      ))), (:call, :(==), :ft, (:call, :typeof, (:call, :getfield, (:., (:., :ft, (:quote, #QuoteNode
+                              :name
+                            )), (:quote, #QuoteNode
+                            :module
+                          )), (:., (:., (:., :ft, (:quote, #QuoteNode
+                                :name
+                              )), (:quote, #QuoteNode
+                              :mt
+                            )), (:quote, #QuoteNode
+                            :name
+                          ))))))), (:block,
+                (:line, 84, :none),
+                (:call, :print, :io, (:., (:., (:., :ft, (:quote, #QuoteNode
+                          :name
+                        )), (:quote, #QuoteNode
+                        :mt
+                      )), (:quote, #QuoteNode
+                      :name
+                    )))
+              ), (:block,
+                (:line, 85, :none),
+                (:if, (:&&, (:call, :isa, :ft, :DataType), (:&&, (:call, :is, (:., :ft, (:quote, #QuoteNode
+                            :name
+                          )), (:., :Type, (:quote, #QuoteNode
+                            :name
+                          ))), (:call, :isleaftype, :ft))), (:block,
+                    (:line, 86, :none),
+                    (:(=), :f, (:ref, (:., :ft, (:quote, #QuoteNode
+                            :parameters
+                          )), 1)),
+                    (:line, 87, :none),
+                    (:if, (:&&, (:call, :isa, :f, :DataType), (:call, :isempty, (:., :f, (:quote, #QuoteNode
+                              :parameters
+                            )))), (:block,
+                        (:line, 88, :none),
+                        (:call, :print, :io, :f)
+                      ), (:block,
+                        (:line, 90, :none),
+                        (:call, :print, :io, "(", (:ref, :d1, 1), "::", (:ref, :d1, 2), ")")
+                      ))
+                  ), (:block,
+                    (:line, 93, :none),
+                    (:call, :print, :io, "(", (:ref, :d1, 1), "::", (:ref, :d1, 2), ")")
+                  ))
+              ))
+          )),
+        (:line, 95, :none),
+        (:if, (:call, :!, (:call, :isempty, :tv)), (:block,
+            (:line, 96, :none),
+            (:call, :show_delim_array, :io, :tv, '{', ',', '}', false)
+          )),
+        (:line, 98, :none),
+        (:call, :print, :io, "("),
+        (:line, 99, :none),
+        (:call, :join, :io, (:comprehension, (:generator, (:if, (:call, :isempty, (:ref, :d, 2)), (:ref, :d, 1), (:call, :*, (:ref, :d, 1), "::", (:ref, :d, 2))), (:(=), :d, (:ref, :decls, (:(:), 2, :end))))), ", ", ", "),
+        (:line, 101, :none),
+        (:if, (:call, :!, (:call, :isnull, :kwtype)), (:block,
+            (:line, 102, :none),
+            (:(=), :kwargs, (:call, :kwarg_decl, (:., :m, (:quote, #QuoteNode
+                    :sig
+                  )), (:call, :get, :kwtype))),
+            (:line, 103, :none),
+            (:if, (:call, :!, (:call, :isempty, :kwargs)), (:block,
+                (:line, 104, :none),
+                (:call, :print, :io, "; "),
+                (:line, 105, :none),
+                (:call, :join, :io, :kwargs, ", ", ", ")
+              ))
+          )),
+        (:line, 108, :none),
+        (:call, :print, :io, ")"),
+        (:line, 109, :none),
+        (:if, (:call, :>, :line, 0), (:block,
+            (:line, 110, :none),
+            (:call, :print, :io, " at ", :file, ":", :line)
+          ))
+      )),
+    (:line, 114, :none),
+    (:function, (:call, :show_method_table, (:(::), :io, :IO), (:(::), :ms, :MethodList), (:kw, (:(::), :max, :Int), -1), (:kw, (:(::), :header, :Bool), true)), (:block,
+        (:line, 115, :none),
+        (:(=), :mt, (:., :ms, (:quote, #QuoteNode
+              :mt
+            ))),
+        (:line, 116, :none),
+        (:(=), :name, (:., :mt, (:quote, #QuoteNode
+              :name
+            ))),
+        (:line, 117, :none),
+        (:(=), :isself, (:&&, (:call, :isdefined, (:., :mt, (:quote, #QuoteNode
+                  :module
+                )), :name), (:<:, (:call, :typeof, (:call, :getfield, (:., :mt, (:quote, #QuoteNode
+                      :module
+                    )), :name)), :Function))),
+        (:line, 119, :none),
+        (:(=), :n, (:call, :length, :ms)),
+        (:line, 120, :none),
+        (:if, :header, (:block,
+            (:line, 121, :none),
+            (:(=), :m, (:if, (:call, :(==), :n, 1), "method", "methods")),
+            (:line, 122, :none),
+            (:(=), :ns, (:if, :isself, (:call, :string, :name), (:call, :string, "(::", :name, ")"))),
+            (:line, 123, :none),
+            (:(=), :what, (:if, (:call, :startswith, :ns, '@'), "macro", "generic function")),
+            (:line, 124, :none),
+            (:call, :print, :io, (:string, "# ", :n, " ", :m, " for "), :what, " \"", :ns, "\":")
+          )),
+        (:line, 126, :none),
+        (:(=), :kwtype, (:if, (:call, :isdefined, :mt, (:quote, #QuoteNode
+                :kwsorter
+              )), (:call, (:curly, :Nullable, :DataType), (:call, :typeof, (:., :mt, (:quote, #QuoteNode
+                    :kwsorter
+                  )))), (:call, (:curly, :Nullable, :DataType)))),
+        (:line, 127, :none),
+        (:(=), :n, (:(=), :rest, 0)),
+        (:line, 128, :none),
+        (:local, :last),
+        (:line, 129, :none),
+        (:for, (:(=), :meth, :ms), (:block,
+            (:line, 130, :none),
+            (:if, (:||, (:call, :(==), :max, -1), (:call, :<, :n, :max)), (:block,
+                (:line, 131, :none),
+                (:call, :println, :io),
+                (:line, 132, :none),
+                (:call, :show, (:parameters, (:kw, :kwtype, :kwtype)), :io, :meth),
+                (:line, 133, :none),
+                (:+=, :n, 1)
+              ), (:block,
+                (:line, 135, :none),
+                (:+=, :rest, 1),
+                (:line, 136, :none),
+                (:(=), :last, :meth)
+              ))
+          )),
+        (:line, 139, :none),
+        (:if, (:call, :>, :rest, 0), (:block,
+            (:line, 140, :none),
+            (:call, :println, :io),
+            (:line, 141, :none),
+            (:if, (:call, :(==), :rest, 1), (:block,
+                (:line, 142, :none),
+                (:call, :show, (:parameters, (:kw, :kwtype, :kwtype)), :io, :last)
+              ), (:block,
+                (:line, 144, :none),
+                (:call, :print, :io, (:string, "... ", :rest, " methods not shown (use methods(", :name, ") to see them all)"))
+              ))
+          ))
+      )),
+    (:line, 149, :none),
+    (:(=), (:call, :show, (:(::), :io, :IO), (:(::), :ms, :MethodList)), (:block,
+        (:line, 149, :none),
+        (:call, :show_method_table, :io, :ms)
+      )),
+    (:line, 150, :none),
+    (:(=), (:call, :show, (:(::), :io, :IO), (:(::), :mt, :MethodTable)), (:block,
+        (:line, 150, :none),
+        (:call, :show_method_table, :io, (:call, :MethodList, :mt))
+      )),
+    (:line, 152, :none),
+    (:function, (:call, :inbase, (:(::), :m, :Module)), (:block,
+        (:line, 153, :none),
+        (:if, (:call, :(==), :m, :Base), (:block,
+            (:line, 154, :none),
+            true
+          ), (:block,
+            (:line, 156, :none),
+            (:(=), :parent, (:call, :module_parent, :m)),
+            (:line, 157, :none),
+            (:if, (:call, :(===), :parent, :m), false, (:call, :inbase, :parent))
+          ))
+      )),
+    (:line, 160, :none),
+    (:(=), (:call, :fileurl, :file), (:block,
+        (:line, 160, :none),
+        (:let, (:block,
+            (:line, 160, :none),
+            (:if, (:call, :(===), :f, :nothing), "", (:call, :*, "file://", :f))
+          ), (:(=), :f, (:call, :find_source_file, :file)))
+      )),
+    (:line, 162, :none),
+    (:function, (:call, :url, (:(::), :m, :Method)), (:block,
+        (:line, 163, :none),
+        (:(=), :M, (:., :m, (:quote, #QuoteNode
+              :module
+            ))),
+        (:line, 164, :none),
+        (:&&, (:||, (:call, :(==), (:., :m, (:quote, #QuoteNode
+                  :file
+                )), (:quote, #QuoteNode
+                :null
+              )), (:call, :(==), (:., :m, (:quote, #QuoteNode
+                  :file
+                )), (:quote, #QuoteNode
+                :string
+              ))), (:return, "")),
+        (:line, 165, :none),
+        (:(=), :file, (:call, :string, (:., :m, (:quote, #QuoteNode
+                :file
+              )))),
+        (:line, 166, :none),
+        (:(=), :line, (:., :m, (:quote, #QuoteNode
+              :line
+            ))),
+        (:line, 167, :none),
+        (:||, (:call, :(<=), :line, 0), (:&&, (:call, :ismatch, (:macrocall, Symbol("@r_str"), "In\\[[0-9]+\\]"), :file), (:return, ""))),
+        (:line, 168, :none),
+        (:&&, (:call, :is_windows), (:(=), :file, (:call, :replace, :file, '\\', '/'))),
+        (:line, 169, :none),
+        (:if, (:call, :inbase, :M), (:block,
+            (:line, 170, :none),
+            (:if, (:call, :isempty, (:., (:., :Base, (:quote, #QuoteNode
+                      :GIT_VERSION_INFO
+                    )), (:quote, #QuoteNode
+                    :commit
+                  ))), (:block,
+                (:line, 172, :none),
+                (:return, (:string, "https://github.com/JuliaLang/julia/tree/v", :VERSION, "/base/", :file, "#L", :line))
+              ), (:block,
+                (:line, 174, :none),
+                (:return, (:string, "https://github.com/JuliaLang/julia/tree/", (:., (:., :Base, (:quote, #QuoteNode
+                          :GIT_VERSION_INFO
+                        )), (:quote, #QuoteNode
+                        :commit
+                      )), "/base/", :file, "#L", :line))
+              ))
+          ), (:block,
+            (:line, 177, :none),
+            (:try, (:block,
+                (:line, 178, :none),
+                (:(=), :d, (:call, :dirname, :file)),
+                (:line, 179, :none),
+                (:return, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :with
+                      )), (:->, (:tuple, :repo), (:block,
+                        (:line, 180, :none),
+                        (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :with
+                            )), (:->, (:tuple, :cfg), (:block,
+                              (:line, 181, :none),
+                              (:(=), :u, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                      :get
+                                    )), :cfg, "remote.origin.url", "")),
+                              (:line, 182, :none),
+                              (:(=), :u, (:ref, (:., (:call, :match, (:., :LibGit2, (:quote, #QuoteNode
+                                          :GITHUB_REGEX
+                                        )), :u), (:quote, #QuoteNode
+                                      :captures
+                                    )), 1)),
+                              (:line, 183, :none),
+                              (:(=), :commit, (:call, :string, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                        :head_oid
+                                      )), :repo))),
+                              (:line, 184, :none),
+                              (:(=), :root, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                      :path
+                                    )), :repo)),
+                              (:line, 185, :none),
+                              (:if, (:||, (:call, :startswith, :file, :root), (:call, :startswith, (:call, :realpath, :file), :root)), (:block,
+                                  (:line, 186, :none),
+                                  (:call, :*, (:string, "https://github.com/", :u, "/tree/", :commit, "/"), (:ref, :file, (:(:), (:call, :+, (:call, :length, :root), 1), :end)), (:string, "#L", :line))
+                                ), (:block,
+                                  (:line, 188, :none),
+                                  (:call, :fileurl, :file)
+                                ))
+                            )), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :GitConfig
+                              )), :repo))
+                      )), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :GitRepoExt
+                        )), :d)))
+              ), false, (:block,
+                (:line, 193, :none),
+                (:return, (:call, :fileurl, :file))
+              ))
+          ))
+      )),
+    (:line, 198, :none),
+    (:function, (:call, :show, (:parameters, (:kw, (:(::), :kwtype, (:curly, :Nullable, :DataType)), (:call, (:curly, :Nullable, :DataType)))), (:(::), :io, :IO), (:(::), (:macrocall, Symbol("@MIME_str"), "text/html")), (:(::), :m, :Method)), (:block,
+        (:line, 199, :none),
+        (:(=), (:tuple, :tv, :decls, :file, :line), (:call, :arg_decl_parts, :m)),
+        (:line, 200, :none),
+        (:(=), :ft, (:ref, (:., (:., :m, (:quote, #QuoteNode
+                  :sig
+                )), (:quote, #QuoteNode
+                :parameters
+              )), 1)),
+        (:line, 201, :none),
+        (:(=), :d1, (:ref, :decls, 1)),
+        (:line, 202, :none),
+        (:if, (:&&, (:<:, :ft, :Function), (:&&, (:call, :isdefined, (:., (:., :ft, (:quote, #QuoteNode
+                      :name
+                    )), (:quote, #QuoteNode
+                    :module
+                  )), (:., (:., (:., :ft, (:quote, #QuoteNode
+                        :name
+                      )), (:quote, #QuoteNode
+                      :mt
+                    )), (:quote, #QuoteNode
+                    :name
+                  ))), (:call, :(==), :ft, (:call, :typeof, (:call, :getfield, (:., (:., :ft, (:quote, #QuoteNode
+                          :name
+                        )), (:quote, #QuoteNode
+                        :module
+                      )), (:., (:., (:., :ft, (:quote, #QuoteNode
+                            :name
+                          )), (:quote, #QuoteNode
+                          :mt
+                        )), (:quote, #QuoteNode
+                        :name
+                      ))))))), (:block,
+            (:line, 205, :none),
+            (:call, :print, :io, (:., (:., (:., :ft, (:quote, #QuoteNode
+                      :name
+                    )), (:quote, #QuoteNode
+                    :mt
+                  )), (:quote, #QuoteNode
+                  :name
+                )))
+          ), (:block,
+            (:line, 206, :none),
+            (:if, (:&&, (:call, :isa, :ft, :DataType), (:&&, (:call, :is, (:., :ft, (:quote, #QuoteNode
+                        :name
+                      )), (:., :Type, (:quote, #QuoteNode
+                        :name
+                      ))), (:call, :isleaftype, :ft))), (:block,
+                (:line, 207, :none),
+                (:(=), :f, (:ref, (:., :ft, (:quote, #QuoteNode
+                        :parameters
+                      )), 1)),
+                (:line, 208, :none),
+                (:if, (:&&, (:call, :isa, :f, :DataType), (:call, :isempty, (:., :f, (:quote, #QuoteNode
+                          :parameters
+                        )))), (:block,
+                    (:line, 209, :none),
+                    (:call, :print, :io, :f)
+                  ), (:block,
+                    (:line, 211, :none),
+                    (:call, :print, :io, "(", (:ref, :d1, 1), "::<b>", (:ref, :d1, 2), "</b>)")
+                  ))
+              ), (:block,
+                (:line, 214, :none),
+                (:call, :print, :io, "(", (:ref, :d1, 1), "::<b>", (:ref, :d1, 2), "</b>)")
+              ))
+          )),
+        (:line, 216, :none),
+        (:if, (:call, :!, (:call, :isempty, :tv)), (:block,
+            (:line, 217, :none),
+            (:call, :print, :io, "<i>"),
+            (:line, 218, :none),
+            (:call, :show_delim_array, :io, :tv, '{', ',', '}', false),
+            (:line, 219, :none),
+            (:call, :print, :io, "</i>")
+          )),
+        (:line, 221, :none),
+        (:call, :print, :io, "("),
+        (:line, 222, :none),
+        (:call, :join, :io, (:comprehension, (:generator, (:if, (:call, :isempty, (:ref, :d, 2)), (:ref, :d, 1), (:call, :*, (:ref, :d, 1), "::<b>", (:ref, :d, 2), "</b>")), (:(=), :d, (:ref, :decls, (:(:), 2, :end))))), ", ", ", "),
+        (:line, 224, :none),
+        (:if, (:call, :!, (:call, :isnull, :kwtype)), (:block,
+            (:line, 225, :none),
+            (:(=), :kwargs, (:call, :kwarg_decl, (:., :m, (:quote, #QuoteNode
+                    :sig
+                  )), (:call, :get, :kwtype))),
+            (:line, 226, :none),
+            (:if, (:call, :!, (:call, :isempty, :kwargs)), (:block,
+                (:line, 227, :none),
+                (:call, :print, :io, "; <i>"),
+                (:line, 228, :none),
+                (:call, :join, :io, :kwargs, ", ", ", "),
+                (:line, 229, :none),
+                (:call, :print, :io, "</i>")
+              ))
+          )),
+        (:line, 232, :none),
+        (:call, :print, :io, ")"),
+        (:line, 233, :none),
+        (:if, (:call, :>, :line, 0), (:block,
+            (:line, 234, :none),
+            (:(=), :u, (:call, :url, :m)),
+            (:line, 235, :none),
+            (:if, (:call, :isempty, :u), (:block,
+                (:line, 236, :none),
+                (:call, :print, :io, " at ", :file, ":", :line)
+              ), (:block,
+                (:line, 238, :none),
+                (:call, :print, :io, (:string, " at <a href=\"", :u, "\" target=\"_blank\">"), :file, ":", :line, "</a>")
+              ))
+          ))
+      )),
+    (:line, 244, :none),
+    (:function, (:call, :show, (:(::), :io, :IO), (:(::), :mime, (:macrocall, Symbol("@MIME_str"), "text/html")), (:(::), :ms, :MethodList)), (:block,
+        (:line, 245, :none),
+        (:(=), :mt, (:., :ms, (:quote, #QuoteNode
+              :mt
+            ))),
+        (:line, 246, :none),
+        (:(=), :name, (:., :mt, (:quote, #QuoteNode
+              :name
+            ))),
+        (:line, 247, :none),
+        (:(=), :n, (:call, :length, :ms)),
+        (:line, 248, :none),
+        (:(=), :meths, (:if, (:call, :(==), :n, 1), "method", "methods")),
+        (:line, 249, :none),
+        (:(=), :ns, (:call, :string, :name)),
+        (:line, 250, :none),
+        (:(=), :what, (:if, (:call, :startswith, :ns, '@'), "macro", "generic function")),
+        (:line, 251, :none),
+        (:call, :print, :io, (:string, :n, " ", :meths, " for "), :what, (:string, " <b>", :ns, "</b>:<ul>")),
+        (:line, 252, :none),
+        (:(=), :kwtype, (:if, (:call, :isdefined, :mt, (:quote, #QuoteNode
+                :kwsorter
+              )), (:call, (:curly, :Nullable, :DataType), (:call, :typeof, (:., :mt, (:quote, #QuoteNode
+                    :kwsorter
+                  )))), (:call, (:curly, :Nullable, :DataType)))),
+        (:line, 253, :none),
+        (:for, (:(=), :meth, :ms), (:block,
+            (:line, 254, :none),
+            (:call, :print, :io, "<li> "),
+            (:line, 255, :none),
+            (:call, :show, (:parameters, (:kw, :kwtype, :kwtype)), :io, :mime, :meth),
+            (:line, 256, :none),
+            (:call, :print, :io, "</li> ")
+          )),
+        (:line, 258, :none),
+        (:call, :print, :io, "</ul>")
+      )),
+    (:line, 261, :none),
+    (:(=), (:call, :show, (:(::), :io, :IO), (:(::), :mime, (:macrocall, Symbol("@MIME_str"), "text/html")), (:(::), :mt, :MethodTable)), (:block,
+        (:line, 261, :none),
+        (:call, :show, :io, :mime, (:call, :MethodList, :mt))
+      )),
+    (:line, 265, :none),
+    (:function, (:call, :show, (:(::), :io, :IO), (:(::), :mime, (:macrocall, Symbol("@MIME_str"), "text/html")), (:(::), :mt, (:curly, :AbstractVector, :Method))), (:block,
+        (:line, 266, :none),
+        (:call, :print, :io, (:call, :summary, :mt)),
+        (:line, 267, :none),
+        (:if, (:call, :!, (:call, :isempty, :mt)), (:block,
+            (:line, 268, :none),
+            (:call, :print, :io, ":<ul>"),
+            (:line, 269, :none),
+            (:for, (:(=), :d, :mt), (:block,
+                (:line, 270, :none),
+                (:call, :print, :io, "<li> "),
+                (:line, 271, :none),
+                (:call, :show, :io, :mime, :d)
+              )),
+            (:line, 273, :none),
+            (:call, :print, :io, "</ul>")
+          ))
+      ))
+  ))

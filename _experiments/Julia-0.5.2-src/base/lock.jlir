@@ -1,0 +1,225 @@
+(:quote, (:block,
+    (:line, 4, :none),
+    "    ReentrantLock()\n\nCreates a reentrant lock for synchronizing Tasks.\nThe same task can acquire the lock as many times as required.\nEach `lock` must be matched with an `unlock`.\n\nThis lock is NOT threadsafe. See `Threads.Mutex` for a threadsafe lock.\n",
+    (:line, 13, :none),
+    (:type, true, :ReentrantLock, (:block,
+        (:line, 14, :none),
+        (:(::), :locked_by, (:curly, :Nullable, :Task)),
+        (:line, 15, :none),
+        (:(::), :cond_wait, :Condition),
+        (:line, 16, :none),
+        (:(::), :reentrancy_cnt, :Int),
+        (:line, 18, :none),
+        (:(=), (:call, :ReentrantLock), (:block,
+            (:line, 18, :none),
+            (:call, :new, :nothing, (:call, :Condition), 0)
+          ))
+      )),
+    (:line, 21, :none),
+    "    islocked(the_lock) -> Status (Boolean)\n\nCheck whether the lock is held by any task/thread.\nThis should not be used for synchronization (see instead `trylock`).\n",
+    (:line, 27, :none),
+    (:function, (:call, :islocked, (:(::), :rl, :ReentrantLock)), (:block,
+        (:line, 28, :none),
+        (:return, (:call, :(!=), (:., :rl, (:quote, #QuoteNode
+                :reentrancy_cnt
+              )), 0))
+      )),
+    (:line, 31, :none),
+    "    trylock(the_lock) -> Success (Boolean)\n\nAcquires the lock if it is available,\nreturning `true` if successful.\nIf the lock is already locked by a different task/thread,\nreturns `false`.\n\nEach successful `trylock` must be matched by an `unlock`.\n",
+    (:line, 41, :none),
+    (:function, (:call, :trylock, (:(::), :rl, :ReentrantLock)), (:block,
+        (:line, 42, :none),
+        (:(=), :t, (:call, :current_task)),
+        (:line, 43, :none),
+        (:if, (:call, :(==), (:., :rl, (:quote, #QuoteNode
+                :reentrancy_cnt
+              )), 0), (:block,
+            (:line, 44, :none),
+            (:(=), (:., :rl, (:quote, #QuoteNode
+                  :locked_by
+                )), :t),
+            (:line, 45, :none),
+            (:(=), (:., :rl, (:quote, #QuoteNode
+                  :reentrancy_cnt
+                )), 1),
+            (:line, 46, :none),
+            (:return, true)
+          ), (:block,
+            (:line, 47, :none),
+            (:if, (:call, :(==), :t, (:call, :get, (:., :rl, (:quote, #QuoteNode
+                      :locked_by
+                    )))), (:block,
+                (:line, 48, :none),
+                (:+=, (:., :rl, (:quote, #QuoteNode
+                      :reentrancy_cnt
+                    )), 1),
+                (:line, 49, :none),
+                (:return, true)
+              ))
+          )),
+        (:line, 51, :none),
+        (:return, false)
+      )),
+    (:line, 54, :none),
+    "    lock(the_lock)\n\nAcquires the lock when it becomes available.\nIf the lock is already locked by a different task/thread,\nit waits for it to become available.\n\nEach `lock` must be matched by an `unlock`.\n",
+    (:line, 63, :none),
+    (:function, (:call, :lock, (:(::), :rl, :ReentrantLock)), (:block,
+        (:line, 64, :none),
+        (:(=), :t, (:call, :current_task)),
+        (:line, 65, :none),
+        (:while, true, (:block,
+            (:line, 66, :none),
+            (:if, (:call, :(==), (:., :rl, (:quote, #QuoteNode
+                    :reentrancy_cnt
+                  )), 0), (:block,
+                (:line, 67, :none),
+                (:(=), (:., :rl, (:quote, #QuoteNode
+                      :locked_by
+                    )), :t),
+                (:line, 68, :none),
+                (:(=), (:., :rl, (:quote, #QuoteNode
+                      :reentrancy_cnt
+                    )), 1),
+                (:line, 69, :none),
+                (:return, nothing)
+              ), (:block,
+                (:line, 70, :none),
+                (:if, (:call, :(==), :t, (:call, :get, (:., :rl, (:quote, #QuoteNode
+                          :locked_by
+                        )))), (:block,
+                    (:line, 71, :none),
+                    (:+=, (:., :rl, (:quote, #QuoteNode
+                          :reentrancy_cnt
+                        )), 1),
+                    (:line, 72, :none),
+                    (:return, nothing)
+                  ))
+              )),
+            (:line, 74, :none),
+            (:call, :wait, (:., :rl, (:quote, #QuoteNode
+                  :cond_wait
+                )))
+          ))
+      )),
+    (:line, 78, :none),
+    "    unlock(the_lock)\n\nReleases ownership of the lock.\n\nIf this is a recursive lock which has been acquired before, it\njust decrements an internal counter and returns immediately.\n",
+    (:line, 86, :none),
+    (:function, (:call, :unlock, (:(::), :rl, :ReentrantLock)), (:block,
+        (:line, 87, :none),
+        (:if, (:call, :(==), (:., :rl, (:quote, #QuoteNode
+                :reentrancy_cnt
+              )), 0), (:block,
+            (:line, 88, :none),
+            (:call, :error, "unlock count must match lock count")
+          )),
+        (:line, 90, :none),
+        (:-=, (:., :rl, (:quote, #QuoteNode
+              :reentrancy_cnt
+            )), 1),
+        (:line, 91, :none),
+        (:if, (:call, :(==), (:., :rl, (:quote, #QuoteNode
+                :reentrancy_cnt
+              )), 0), (:block,
+            (:line, 92, :none),
+            (:(=), (:., :rl, (:quote, #QuoteNode
+                  :locked_by
+                )), :nothing),
+            (:line, 93, :none),
+            (:call, :notify, (:., :rl, (:quote, #QuoteNode
+                  :cond_wait
+                )))
+          )),
+        (:line, 95, :none),
+        (:return, nothing)
+      )),
+    (:line, 98, :none),
+    (:function, (:call, :lock, :f, :l), (:block,
+        (:line, 99, :none),
+        (:call, :lock, :l),
+        (:line, 100, :none),
+        (:try, (:block,
+            (:line, 101, :none),
+            (:return, (:call, :f))
+          ), false, false, (:block,
+            (:line, 103, :none),
+            (:call, :unlock, :l)
+          ))
+      )),
+    (:line, 107, :none),
+    (:function, (:call, :trylock, :f, :l), (:block,
+        (:line, 108, :none),
+        (:if, (:call, :trylock, :l), (:block,
+            (:line, 109, :none),
+            (:try, (:block,
+                (:line, 110, :none),
+                (:return, (:call, :f))
+              ), false, false, (:block,
+                (:line, 112, :none),
+                (:call, :unlock, :l)
+              ))
+          )),
+        (:line, 115, :none),
+        (:return, false)
+      )),
+    (:line, 118, :none),
+    "    Semaphore(sem_size)\n\nCreates a counting semaphore that allows at most `sem_size`\nacquires to be in use at any time.\nEach acquire must be mached with a release.\n\nThis construct is NOT threadsafe.\n",
+    (:line, 127, :none),
+    (:type, true, :Semaphore, (:block,
+        (:line, 128, :none),
+        (:(::), :sem_size, :Int),
+        (:line, 129, :none),
+        (:(::), :curr_cnt, :Int),
+        (:line, 130, :none),
+        (:(::), :cond_wait, :Condition),
+        (:line, 131, :none),
+        (:(=), (:call, :Semaphore, :sem_size), (:block,
+            (:line, 131, :none),
+            (:if, (:call, :>, :sem_size, 0), (:call, :new, :sem_size, 0, (:call, :Condition)), (:call, :throw, (:call, :ArgumentError, "Semaphore size must be > 0")))
+          ))
+      )),
+    (:line, 134, :none),
+    "    acquire(s::Semaphore)\n\nWait for one of the `sem_size` permits to be available,\nblocking until one can be acquired.\n",
+    (:line, 140, :none),
+    (:function, (:call, :acquire, (:(::), :s, :Semaphore)), (:block,
+        (:line, 141, :none),
+        (:while, true, (:block,
+            (:line, 142, :none),
+            (:if, (:call, :<, (:., :s, (:quote, #QuoteNode
+                    :curr_cnt
+                  )), (:., :s, (:quote, #QuoteNode
+                    :sem_size
+                  ))), (:block,
+                (:line, 143, :none),
+                (:(=), (:., :s, (:quote, #QuoteNode
+                      :curr_cnt
+                    )), (:call, :+, (:., :s, (:quote, #QuoteNode
+                        :curr_cnt
+                      )), 1)),
+                (:line, 144, :none),
+                (:return, nothing)
+              ), (:block,
+                (:line, 146, :none),
+                (:call, :wait, (:., :s, (:quote, #QuoteNode
+                      :cond_wait
+                    )))
+              ))
+          ))
+      )),
+    (:line, 151, :none),
+    "    release(s::Semaphore)\n\nReturn one permit to the pool,\npossibly allowing another task to acquire it\nand resume execution.\n",
+    (:line, 158, :none),
+    (:function, (:call, :release, (:(::), :s, :Semaphore)), (:block,
+        (:line, 159, :none),
+        (:macrocall, Symbol("@assert"), (:call, :>, (:., :s, (:quote, #QuoteNode
+                :curr_cnt
+              )), 0), "release count must match acquire count"),
+        (:line, 160, :none),
+        (:-=, (:., :s, (:quote, #QuoteNode
+              :curr_cnt
+            )), 1),
+        (:line, 161, :none),
+        (:call, :notify, (:parameters, (:kw, :all, false)), (:., :s, (:quote, #QuoteNode
+              :cond_wait
+            )))
+      ))
+  ))

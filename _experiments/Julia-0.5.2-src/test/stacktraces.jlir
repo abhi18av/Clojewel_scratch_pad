@@ -1,0 +1,306 @@
+(:quote, (:block,
+    (:line, 5, :none),
+    (:let, (:block,
+        (:line, 6, :none),
+        (:macrocall, Symbol("@noinline"), (:(=), (:call, :child), (:block,
+              (:line, 6, :none),
+              (:call, :stacktrace)
+            ))),
+        (:line, 7, :none),
+        (:macrocall, Symbol("@noinline"), (:(=), (:call, :parent), (:block,
+              (:line, 7, :none),
+              (:call, :child)
+            ))),
+        (:line, 8, :none),
+        (:macrocall, Symbol("@noinline"), (:(=), (:call, :grandparent), (:block,
+              (:line, 8, :none),
+              (:call, :parent)
+            ))),
+        (:line, 9, :none),
+        (:(=), :line_numbers, (:call, :-, 9, (:vect, 3, 2, 1))),
+        (:line, 10, :none),
+        (:(=), :stack, (:call, :grandparent)),
+        (:line, 13, :none),
+        (:macrocall, Symbol("@assert"), (:call, :(>=), (:call, :length, :stack), 3), "Compiler has unexpectedly inlined functions"),
+        (:line, 15, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:vect, (:quote, #QuoteNode
+                :child
+              ), (:quote, #QuoteNode
+                :parent
+              ), (:quote, #QuoteNode
+                :grandparent
+              )), (:comprehension, (:generator, (:., :f, (:quote, #QuoteNode
+                    :func
+                  )), (:(=), :f, (:ref, :stack, (:(:), 1, 3))))))),
+        (:line, 16, :none),
+        (:for, (:(=), (:tuple, :line, :frame), (:call, :zip, :line_numbers, (:ref, :stack, (:(:), 1, 3)))), (:block,
+            (:line, 17, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:vect, (:call, :Symbol, (:macrocall, Symbol("@__FILE__"))), :line), (:vect, (:., :frame, (:quote, #QuoteNode
+                      :file
+                    )), (:., :frame, (:quote, #QuoteNode
+                      :line
+                    )))))
+          )),
+        (:line, 19, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:vect, false, false, false), (:comprehension, (:generator, (:., :f, (:quote, #QuoteNode
+                    :from_c
+                  )), (:(=), :f, (:ref, :stack, (:(:), 1, 3))))))),
+        (:line, 22, :none),
+        (:(=), :stack, (:call, (:., :StackTraces, (:quote, #QuoteNode
+                :remove_frames!
+              )), (:call, :grandparent), (:quote, #QuoteNode
+              :parent
+            ))),
+        (:line, 23, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :stack, 1), (:call, :StackFrame, (:quote, #QuoteNode
+                :grandparent
+              ), (:macrocall, Symbol("@__FILE__")), (:ref, :line_numbers, 3)))),
+        (:line, 25, :none),
+        (:(=), :stack, (:call, (:., :StackTraces, (:quote, #QuoteNode
+                :remove_frames!
+              )), (:call, :grandparent), (:vect, (:quote, #QuoteNode
+                :child
+              ), (:quote, #QuoteNode
+                :something_nonexistent
+              )))),
+        (:line, 26, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :stack, (:(:), 1, 2)), (:vect, (:call, :StackFrame, (:quote, #QuoteNode
+                  :parent
+                ), (:macrocall, Symbol("@__FILE__")), (:ref, :line_numbers, 2)), (:call, :StackFrame, (:quote, #QuoteNode
+                  :grandparent
+                ), (:macrocall, Symbol("@__FILE__")), (:ref, :line_numbers, 3))))),
+        (:line, 31, :none),
+        (:(=), :b, (:call, :PipeBuffer)),
+        (:line, 32, :none),
+        (:(=), :frame, (:ref, :stack, 1)),
+        (:line, 33, :none),
+        (:call, :serialize, :b, :frame),
+        (:line, 34, :none),
+        (:(=), :frame2, (:call, :deserialize, :b)),
+        (:line, 35, :none),
+        (:macrocall, Symbol("@test"), (:call, :(!==), :frame, :frame2)),
+        (:line, 36, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :frame, :frame2)),
+        (:line, 37, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:call, :isnull, (:., :frame, (:quote, #QuoteNode
+                  :linfo
+                ))))),
+        (:line, 38, :none),
+        (:macrocall, Symbol("@test"), (:call, :isnull, (:., :frame2, (:quote, #QuoteNode
+                :linfo
+              ))))
+      )),
+    (:line, 41, :none),
+    (:let, (:block,
+        (:line, 43, :none),
+        (:(=), (:tuple, :default, :with_c, :without_c), (:tuple, (:call, :stacktrace), (:call, :stacktrace, true), (:call, :stacktrace, false))),
+        (:line, 44, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :default, :without_c)),
+        (:line, 45, :none),
+        (:macrocall, Symbol("@test"), (:call, :>, (:call, :length, :with_c), (:call, :length, :without_c))),
+        (:line, 46, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:call, :isempty, (:call, :filter, (:->, :frame, (:block,
+                    (:line, 46, :none),
+                    (:., :frame, (:quote, #QuoteNode
+                        :from_c
+                      ))
+                  )), :with_c)))),
+        (:line, 47, :none),
+        (:macrocall, Symbol("@test"), (:call, :isempty, (:call, :filter, (:->, :frame, (:block,
+                  (:line, 47, :none),
+                  (:., :frame, (:quote, #QuoteNode
+                      :from_c
+                    ))
+                )), :without_c)))
+      )),
+    (:line, 50, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :StackTraces, (:quote, #QuoteNode
+              :lookup
+            )), :C_NULL), (:vect, (:., :StackTraces, (:quote, #QuoteNode
+              :UNKNOWN
+            ))))),
+    (:line, 52, :none),
+    (:let, (:block,
+        (:line, 54, :none),
+        (:call, :yieldto, (:macrocall, Symbol("@task"), (:call, :yieldto, :ct))),
+        (:line, 55, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :catch_backtrace), (:ref, :StackFrame))),
+        (:line, 57, :none),
+        (:macrocall, Symbol("@noinline"), (:(=), (:call, :bad_function), (:block,
+              (:line, 57, :none),
+              (:call, :throw, (:call, :UndefVarError, (:quote, #QuoteNode
+                    :nonexistent
+                  )))
+            ))),
+        (:line, 58, :none),
+        (:macrocall, Symbol("@noinline"), (:function, (:call, :try_stacktrace), (:block,
+              (:line, 59, :none),
+              (:try, (:block,
+                  (:line, 60, :none),
+                  (:call, :bad_function)
+                ), false, (:block,
+                  (:line, 62, :none),
+                  (:return, (:call, :stacktrace))
+                ))
+            ))),
+        (:line, 65, :none),
+        (:macrocall, Symbol("@noinline"), (:function, (:call, :try_catch), (:block,
+              (:line, 66, :none),
+              (:try, (:block,
+                  (:line, 67, :none),
+                  (:call, :bad_function)
+                ), false, (:block,
+                  (:line, 69, :none),
+                  (:return, (:call, :catch_stacktrace))
+                ))
+            ))),
+        (:line, 72, :none),
+        (:(=), :line_numbers, (:call, :.-, 72, (:vect, 15, 10, 5))),
+        (:line, 75, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:ref, (:call, :try_stacktrace), 1), (:call, :StackFrame, (:quote, #QuoteNode
+                :try_stacktrace
+              ), (:macrocall, Symbol("@__FILE__")), (:ref, :line_numbers, 2)))),
+        (:line, 78, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:ref, (:call, :try_catch), (:(:), 1, 2)), (:vect, (:call, :StackFrame, (:quote, #QuoteNode
+                  :bad_function
+                ), (:macrocall, Symbol("@__FILE__")), (:ref, :line_numbers, 1)), (:call, :StackFrame, (:quote, #QuoteNode
+                  :try_catch
+                ), (:macrocall, Symbol("@__FILE__")), (:ref, :line_numbers, 3)))))
+      ), (:(=), :ct, (:call, :current_task))),
+    (:line, 84, :none),
+    (:module, true, :inlined_test, (:block,
+        (:line, 84, :none),
+        (:line, 85, :none),
+        (:using, :Base, :Test),
+        (:line, 86, :none),
+        (:macrocall, Symbol("@inline"), (:(=), (:call, :g, :x), (:block,
+              (:line, 86, :none),
+              (:block,
+                (:(=), :y, (:call, :throw, "a")),
+                :y
+              )
+            ))),
+        (:line, 87, :none),
+        (:macrocall, Symbol("@inline"), (:(=), (:call, :h, :x), (:block,
+              (:line, 87, :none),
+              (:block,
+                (:(=), :y, (:call, :g, :x)),
+                :y
+              )
+            ))),
+        (:line, 88, :none),
+        (:(=), (:call, :f, :x), (:block,
+            (:line, 88, :none),
+            (:block,
+              (:(=), :y, (:call, :h, :x)),
+              :y
+            )
+          )),
+        (:line, 89, :none),
+        (:(=), :trace, (:ref, (:try, (:block,
+                (:line, 89, :none),
+                (:call, :f, 3)
+              ), false, (:block,
+                (:line, 89, :none),
+                (:call, :catch_stacktrace)
+              )), (:(:), 1, 3))),
+        (:line, 90, :none),
+        (:(=), :can_inline, (:call, :Bool, (:., (:call, (:., :Base, (:quote, #QuoteNode
+                    :JLOptions
+                  ))), (:quote, #QuoteNode
+                :can_inline
+              )))),
+        (:line, 91, :none),
+        (:for, (:(=), (:tuple, :frame, :func, :inlined), (:call, :zip, :trace, (:vect, :g, :h, :f), (:tuple, :can_inline, :can_inline, false))), (:block,
+            (:line, 92, :none),
+            (:macrocall, Symbol("@test"), (:call, :(===), (:., :frame, (:quote, #QuoteNode
+                    :func
+                  )), (:., (:., (:., (:call, :typeof, :func), (:quote, #QuoteNode
+                        :name
+                      )), (:quote, #QuoteNode
+                      :mt
+                    )), (:quote, #QuoteNode
+                    :name
+                  )))),
+            (:line, 96, :none),
+            (:macrocall, Symbol("@test"), (:call, :(===), (:., :frame, (:quote, #QuoteNode
+                    :file
+                  )), (:call, :Symbol, (:macrocall, Symbol("@__FILE__"))))),
+            (:line, 97, :none),
+            (:macrocall, Symbol("@test"), (:call, :!, (:., :frame, (:quote, #QuoteNode
+                    :from_c
+                  )))),
+            (:line, 98, :none),
+            (:macrocall, Symbol("@test"), (:call, :(===), (:., :frame, (:quote, #QuoteNode
+                    :inlined
+                  )), :inlined))
+          ))
+      )),
+    (:line, 102, :none),
+    (:let, (:block,
+        (:line, 105, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :repr, " in Toplevel LambdaInfo thunk at b:3"))
+      ), (:(=), :li, (:(::), (:ref, (:., (:call, :expand, (:quote, (:block,
+                    (:line, 102, :none),
+                    (:let, (:block,), (:(=), :x, 1))
+                  ))), (:quote, #QuoteNode
+                :args
+              )), 1), :LambdaInfo)), (:(=), :sf, (:call, :StackFrame, (:quote, #QuoteNode
+            :a
+          ), (:quote, #QuoteNode
+            :b
+          ), 3, :li, false, false, 0)), (:(=), :repr, (:call, :string, :sf))),
+    (:line, 107, :none),
+    (:let, (:block,
+        (:line, 110, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :repr, " in getfield(...) at b:3"))
+      ), (:(=), :li, (:(::), (:., (:., (:., (:., (:call, :typeof, :getfield), (:quote, #QuoteNode
+                    :name
+                  )), (:quote, #QuoteNode
+                  :mt
+                )), (:quote, #QuoteNode
+                :cache
+              )), (:quote, #QuoteNode
+              :func
+            )), :LambdaInfo)), (:(=), :sf, (:call, :StackFrame, (:quote, #QuoteNode
+            :a
+          ), (:quote, #QuoteNode
+            :b
+          ), 3, :li, false, false, 0)), (:(=), :repr, (:call, :string, :sf))),
+    (:line, 113, :none),
+    (:let, (:block,
+        (:line, 116, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :ctest), 1)),
+        (:line, 117, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), (:., (:ref, :ctest, 1), (:quote, #QuoteNode
+                :func
+              )), (:quote, #QuoteNode
+              :ctest
+            ))),
+        (:line, 118, :none),
+        (:macrocall, Symbol("@test"), (:call, :isnull, (:., (:ref, :ctest, 1), (:quote, #QuoteNode
+                :linfo
+              )))),
+        (:line, 119, :none),
+        (:macrocall, Symbol("@test"), (:., (:ref, :ctest, 1), (:quote, #QuoteNode
+              :from_c
+            ))),
+        (:line, 120, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), (:., (:ref, :ctest, 1), (:quote, #QuoteNode
+                :pointer
+              )), (:call, :UInt64, :ctestptr)))
+      ), (:(=), :ctestptr, (:call, :cglobal, (:tuple, (:quote, #QuoteNode
+              :ctest
+            ), "libccalltest"))), (:(=), :ctest, (:call, (:., :StackTraces, (:quote, #QuoteNode
+              :lookup
+            )), (:call, :+, :ctestptr, 1)))),
+    (:line, 124, :none),
+    (:let, (:block,
+        (:line, 126, :none),
+        (:(=), :st, (:call, :stacktrace, (:call, :empty!, (:call, :backtrace)))),
+        (:line, 128, :none),
+        (:macrocall, Symbol("@test"), (:call, :isempty, :st)),
+        (:line, 129, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, :st, :StackTrace))
+      ))
+  ))

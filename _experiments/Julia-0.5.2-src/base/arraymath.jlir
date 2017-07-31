@@ -1,0 +1,733 @@
+(:quote, (:block,
+    (:line, 5, :none),
+    (:function, (:call, (:curly, :conj!, (:<:, :T, :Number)), (:(::), :A, (:curly, :AbstractArray, :T))), (:block,
+        (:line, 6, :none),
+        (:for, (:(=), :i, (:call, :eachindex, :A)), (:block,
+            (:line, 7, :none),
+            (:(=), (:ref, :A, :i), (:call, :conj, (:ref, :A, :i)))
+          )),
+        (:line, 9, :none),
+        (:return, :A)
+      )),
+    (:line, 12, :none),
+    (:for, (:(=), :f, (:tuple, (:quote, #QuoteNode
+            :-
+          ), (:quote, #QuoteNode
+            :~
+          ), (:quote, #QuoteNode
+            :conj
+          ), (:quote, #QuoteNode
+            :sign
+          ))), (:block,
+        (:line, 13, :none),
+        (:macrocall, Symbol("@eval"), (:block,
+            (:line, 14, :none),
+            (:function, (:call, (:$, :f), (:(::), :A, :AbstractArray)), (:block,
+                (:line, 15, :none),
+                (:(=), :F, (:call, :similar, :A)),
+                (:line, 16, :none),
+                (:(=), (:tuple, :RF, :RA), (:tuple, (:call, :eachindex, :F), (:call, :eachindex, :A))),
+                (:line, 17, :none),
+                (:if, (:call, :(==), :RF, :RA), (:block,
+                    (:line, 18, :none),
+                    (:for, (:(=), :i, :RA), (:block,
+                        (:line, 19, :none),
+                        (:(=), (:ref, :F, :i), (:call, (:$, :f), (:ref, :A, :i)))
+                      ))
+                  ), (:block,
+                    (:line, 22, :none),
+                    (:for, (:(=), (:tuple, :iF, :iA), (:call, :zip, :RF, :RA)), (:block,
+                        (:line, 23, :none),
+                        (:(=), (:ref, :F, :iF), (:call, (:$, :f), (:ref, :A, :iA)))
+                      ))
+                  )),
+                (:line, 26, :none),
+                (:return, :F)
+              ))
+          ))
+      )),
+    (:line, 31, :none),
+    (:(=), (:call, :-, (:(::), :A, (:curly, :AbstractArray, :Bool))), (:block,
+        (:line, 31, :none),
+        (:call, :reshape, (:comprehension, (:generator, (:call, :-, (:ref, :A, :i)), (:(=), :i, (:call, :eachindex, :A)))), (:call, :size, :A))
+      )),
+    (:line, 33, :none),
+    (:(=), (:call, :real, (:(::), :A, :AbstractArray)), (:block,
+        (:line, 33, :none),
+        (:call, :reshape, (:comprehension, (:generator, (:call, :real, :x), (:(=), :x, :A))), (:call, :size, :A))
+      )),
+    (:line, 34, :none),
+    (:(=), (:call, :imag, (:(::), :A, :AbstractArray)), (:block,
+        (:line, 34, :none),
+        (:call, :reshape, (:comprehension, (:generator, (:call, :imag, :x), (:(=), :x, :A))), (:call, :size, :A))
+      )),
+    (:line, 36, :none),
+    (:function, (:call, :!, (:(::), :A, (:curly, :AbstractArray, :Bool))), (:block,
+        (:line, 37, :none),
+        (:(=), :F, (:call, :similar, :A)),
+        (:line, 38, :none),
+        (:(=), (:tuple, :RF, :RA), (:tuple, (:call, :eachindex, :F), (:call, :eachindex, :A))),
+        (:line, 39, :none),
+        (:if, (:call, :(==), :RF, :RA), (:block,
+            (:line, 40, :none),
+            (:for, (:(=), :i, :RA), (:block,
+                (:line, 41, :none),
+                (:(=), (:ref, :F, :i), (:call, :!, (:ref, :A, :i)))
+              ))
+          ), (:block,
+            (:line, 44, :none),
+            (:for, (:(=), (:tuple, :iF, :iA), (:call, :zip, :RF, :RA)), (:block,
+                (:line, 45, :none),
+                (:(=), (:ref, :F, :iF), (:call, :!, (:ref, :A, :iA)))
+              ))
+          )),
+        (:line, 48, :none),
+        (:return, :F)
+      )),
+    (:line, 53, :none),
+    (:(=), (:call, :promote_array_type, :F, (:(::), :Type), (:(::), :Type), (:(::), :T, :Type)), (:block,
+        (:line, 53, :none),
+        :T
+      )),
+    (:line, 54, :none),
+    (:(=), (:call, (:curly, :promote_array_type, (:<:, :S, :Real), (:<:, :A, :AbstractFloat)), :F, (:(::), (:curly, :Type, :S)), (:(::), (:curly, :Type, :A)), (:(::), :Type)), (:block,
+        (:line, 54, :none),
+        :A
+      )),
+    (:line, 55, :none),
+    (:(=), (:call, (:curly, :promote_array_type, (:<:, :S, :Integer), (:<:, :A, :Integer)), :F, (:(::), (:curly, :Type, :S)), (:(::), (:curly, :Type, :A)), (:(::), :Type)), (:block,
+        (:line, 55, :none),
+        :A
+      )),
+    (:line, 56, :none),
+    (:(=), (:call, (:curly, :promote_array_type, (:<:, :S, :Integer), (:<:, :A, :Integer)), (:(::), (:call, :typeof, :./)), (:(::), (:curly, :Type, :S)), (:(::), (:curly, :Type, :A)), (:(::), :T, :Type)), (:block,
+        (:line, 56, :none),
+        :T
+      )),
+    (:line, 57, :none),
+    (:(=), (:call, (:curly, :promote_array_type, (:<:, :S, :Integer), (:<:, :A, :Integer)), (:(::), (:call, :typeof, :.\)), (:(::), (:curly, :Type, :S)), (:(::), (:curly, :Type, :A)), (:(::), :T, :Type)), (:block,
+        (:line, 57, :none),
+        :T
+      )),
+    (:line, 58, :none),
+    (:(=), (:call, (:curly, :promote_array_type, (:<:, :S, :Integer)), (:(::), (:call, :typeof, :./)), (:(::), (:curly, :Type, :S)), (:(::), (:curly, :Type, :Bool)), (:(::), :T, :Type)), (:block,
+        (:line, 58, :none),
+        :T
+      )),
+    (:line, 59, :none),
+    (:(=), (:call, (:curly, :promote_array_type, (:<:, :S, :Integer)), (:(::), (:call, :typeof, :.\)), (:(::), (:curly, :Type, :S)), (:(::), (:curly, :Type, :Bool)), (:(::), :T, :Type)), (:block,
+        (:line, 59, :none),
+        :T
+      )),
+    (:line, 60, :none),
+    (:(=), (:call, (:curly, :promote_array_type, (:<:, :S, :Integer)), :F, (:(::), (:curly, :Type, :S)), (:(::), (:curly, :Type, :Bool)), (:(::), :T, :Type)), (:block,
+        (:line, 60, :none),
+        :T
+      )),
+    (:line, 62, :none),
+    (:for, (:(=), :f, (:tuple, (:quote, #QuoteNode
+            :+
+          ), (:quote, #QuoteNode
+            :-
+          ), (:quote, #QuoteNode
+            :div
+          ), (:quote, #QuoteNode
+            :mod
+          ), (:quote, #QuoteNode
+            :&
+          ), (:quote, #QuoteNode
+            :|
+          ), (:quote, #QuoteNode
+            :$
+          ))), (:block,
+        (:line, 63, :none),
+        (:macrocall, Symbol("@eval"), (:(=), (:call, (:curly, (:$, :f), :R, :S), (:(::), :A, (:curly, :AbstractArray, :R)), (:(::), :B, (:curly, :AbstractArray, :S))), (:block,
+              (:line, 63, :none),
+              (:call, :_elementwise, (:$, :f), (:call, :promote_op, (:$, :f), :R, :S), :A, :B)
+            )))
+      )),
+    (:line, 66, :none),
+    (:function, (:call, :_elementwise, :op, (:(::), (:curly, :Type, :Any)), (:(::), :A, :AbstractArray), (:(::), :B, :AbstractArray)), (:block,
+        (:line, 67, :none),
+        (:call, :promote_shape, :A, :B),
+        (:line, 68, :none),
+        (:return, (:call, :broadcast, :op, :A, :B))
+      )),
+    (:line, 70, :none),
+    (:function, (:call, (:curly, :_elementwise, :T), :op, (:(::), (:curly, :Type, :T)), (:(::), :A, :AbstractArray), (:(::), :B, :AbstractArray)), (:block,
+        (:line, 71, :none),
+        (:(=), :F, (:call, :similar, :A, :T, (:call, :promote_shape, :A, :B))),
+        (:line, 72, :none),
+        (:(=), (:tuple, :RF, :RA, :RB), (:tuple, (:call, :eachindex, :F), (:call, :eachindex, :A), (:call, :eachindex, :B))),
+        (:line, 73, :none),
+        (:if, (:comparison, :RF, :(==), :RA, :(==), :RB), (:block,
+            (:line, 74, :none),
+            (:for, (:(=), :i, :RA), (:block,
+                (:line, 75, :none),
+                (:macrocall, Symbol("@inbounds"), (:(=), (:ref, :F, :i), (:call, :op, (:ref, :A, :i), (:ref, :B, :i))))
+              ))
+          ), (:block,
+            (:line, 78, :none),
+            (:for, (:(=), (:tuple, :iF, :iA, :iB), (:call, :zip, :RF, :RA, :RB)), (:block,
+                (:line, 79, :none),
+                (:macrocall, Symbol("@inbounds"), (:(=), (:ref, :F, :iF), (:call, :op, (:ref, :A, :iA), (:ref, :B, :iB))))
+              ))
+          )),
+        (:line, 82, :none),
+        (:return, :F)
+      )),
+    (:line, 85, :none),
+    (:for, (:(=), :f, (:tuple, (:quote, #QuoteNode
+            :.+
+          ), (:quote, #QuoteNode
+            :.-
+          ), (:quote, #QuoteNode
+            :.*
+          ), (:quote, #QuoteNode
+            :./
+          ), (:quote, #QuoteNode
+            :.\
+          ), (:quote, #QuoteNode
+            :.^
+          ), (:quote, #QuoteNode
+            :.÷
+          ), (:quote, #QuoteNode
+            :.%
+          ), (:quote, #QuoteNode
+            :.<<
+          ), (:quote, #QuoteNode
+            :.>>
+          ), (:quote, #QuoteNode
+            :div
+          ), (:quote, #QuoteNode
+            :mod
+          ), (:quote, #QuoteNode
+            :rem
+          ), (:quote, #QuoteNode
+            :&
+          ), (:quote, #QuoteNode
+            :|
+          ), (:quote, #QuoteNode
+            :$
+          ))), (:block,
+        (:line, 86, :none),
+        (:macrocall, Symbol("@eval"), (:block,
+            (:line, 87, :none),
+            (:function, (:call, (:curly, (:$, :f), :T), (:(::), :A, :Number), (:(::), :B, (:curly, :AbstractArray, :T))), (:block,
+                (:line, 88, :none),
+                (:(=), :R, (:call, :promote_op, (:$, :f), (:call, :typeof, :A), :T)),
+                (:line, 89, :none),
+                (:(=), :S, (:call, :promote_array_type, (:$, :f), (:call, :typeof, :A), :T, :R)),
+                (:line, 90, :none),
+                (:&&, (:call, :(===), :S, :Any), (:return, (:comprehension, (:generator, (:call, (:$, :f), :A, :b), (:(=), :b, :B))))),
+                (:line, 91, :none),
+                (:(=), :F, (:call, :similar, :B, :S)),
+                (:line, 92, :none),
+                (:(=), (:tuple, :RF, :RB), (:tuple, (:call, :eachindex, :F), (:call, :eachindex, :B))),
+                (:line, 93, :none),
+                (:if, (:call, :(==), :RF, :RB), (:block,
+                    (:line, 94, :none),
+                    (:for, (:(=), :i, :RB), (:block,
+                        (:line, 95, :none),
+                        (:macrocall, Symbol("@inbounds"), (:(=), (:ref, :F, :i), (:call, (:$, :f), :A, (:ref, :B, :i))))
+                      ))
+                  ), (:block,
+                    (:line, 98, :none),
+                    (:for, (:(=), (:tuple, :iF, :iB), (:call, :zip, :RF, :RB)), (:block,
+                        (:line, 99, :none),
+                        (:macrocall, Symbol("@inbounds"), (:(=), (:ref, :F, :iF), (:call, (:$, :f), :A, (:ref, :B, :iB))))
+                      ))
+                  )),
+                (:line, 102, :none),
+                (:return, :F)
+              )),
+            (:line, 104, :none),
+            (:function, (:call, (:curly, (:$, :f), :T), (:(::), :A, (:curly, :AbstractArray, :T)), (:(::), :B, :Number)), (:block,
+                (:line, 105, :none),
+                (:(=), :R, (:call, :promote_op, (:$, :f), :T, (:call, :typeof, :B))),
+                (:line, 106, :none),
+                (:(=), :S, (:call, :promote_array_type, (:$, :f), (:call, :typeof, :B), :T, :R)),
+                (:line, 107, :none),
+                (:&&, (:call, :(===), :S, :Any), (:return, (:comprehension, (:generator, (:call, (:$, :f), :a, :B), (:(=), :a, :A))))),
+                (:line, 108, :none),
+                (:(=), :F, (:call, :similar, :A, :S)),
+                (:line, 109, :none),
+                (:(=), (:tuple, :RF, :RA), (:tuple, (:call, :eachindex, :F), (:call, :eachindex, :A))),
+                (:line, 110, :none),
+                (:if, (:call, :(==), :RF, :RA), (:block,
+                    (:line, 111, :none),
+                    (:for, (:(=), :i, :RA), (:block,
+                        (:line, 112, :none),
+                        (:macrocall, Symbol("@inbounds"), (:(=), (:ref, :F, :i), (:call, (:$, :f), (:ref, :A, :i), :B)))
+                      ))
+                  ), (:block,
+                    (:line, 115, :none),
+                    (:for, (:(=), (:tuple, :iF, :iA), (:call, :zip, :RF, :RA)), (:block,
+                        (:line, 116, :none),
+                        (:macrocall, Symbol("@inbounds"), (:(=), (:ref, :F, :iF), (:call, (:$, :f), (:ref, :A, :iA), :B)))
+                      ))
+                  )),
+                (:line, 119, :none),
+                (:return, :F)
+              ))
+          ))
+      )),
+    (:line, 125, :none),
+    (:(=), (:call, :+, (:(::), :A, (:curly, :AbstractArray, :Bool)), (:(::), :x, :Bool)), (:block,
+        (:line, 125, :none),
+        (:call, :.+, :A, :x)
+      )),
+    (:line, 126, :none),
+    (:(=), (:call, :+, (:(::), :x, :Bool), (:(::), :A, (:curly, :AbstractArray, :Bool))), (:block,
+        (:line, 126, :none),
+        (:call, :.+, :x, :A)
+      )),
+    (:line, 127, :none),
+    (:(=), (:call, :-, (:(::), :A, (:curly, :AbstractArray, :Bool)), (:(::), :x, :Bool)), (:block,
+        (:line, 127, :none),
+        (:call, :.-, :A, :x)
+      )),
+    (:line, 128, :none),
+    (:(=), (:call, :-, (:(::), :x, :Bool), (:(::), :A, (:curly, :AbstractArray, :Bool))), (:block,
+        (:line, 128, :none),
+        (:call, :.-, :x, :A)
+      )),
+    (:line, 129, :none),
+    (:(=), (:call, :+, (:(::), :A, :AbstractArray), (:(::), :x, :Number)), (:block,
+        (:line, 129, :none),
+        (:call, :.+, :A, :x)
+      )),
+    (:line, 130, :none),
+    (:(=), (:call, :+, (:(::), :x, :Number), (:(::), :A, :AbstractArray)), (:block,
+        (:line, 130, :none),
+        (:call, :.+, :x, :A)
+      )),
+    (:line, 131, :none),
+    (:(=), (:call, :-, (:(::), :A, :AbstractArray), (:(::), :x, :Number)), (:block,
+        (:line, 131, :none),
+        (:call, :.-, :A, :x)
+      )),
+    (:line, 132, :none),
+    (:(=), (:call, :-, (:(::), :x, :Number), (:(::), :A, :AbstractArray)), (:block,
+        (:line, 132, :none),
+        (:call, :.-, :x, :A)
+      )),
+    (:line, 136, :none),
+    (:function, (:call, (:curly, :flipdim, :T), (:(::), :A, (:curly, :Array, :T)), (:(::), :d, :Integer)), (:block,
+        (:line, 137, :none),
+        (:(=), :nd, (:call, :ndims, :A)),
+        (:line, 138, :none),
+        (:||, (:comparison, 1, :≤, :d, :≤, :nd), (:call, :throw, (:call, :ArgumentError, (:string, "dimension ", :d, " is not 1 ≤ ", :d, " ≤ ", :nd)))),
+        (:line, 139, :none),
+        (:(=), :sd, (:call, :size, :A, :d)),
+        (:line, 140, :none),
+        (:if, (:||, (:call, :(==), :sd, 1), (:call, :isempty, :A)), (:block,
+            (:line, 141, :none),
+            (:return, (:call, :copy, :A))
+          )),
+        (:line, 144, :none),
+        (:(=), :B, (:call, :similar, :A)),
+        (:line, 146, :none),
+        (:(=), :nnd, 0),
+        (:line, 147, :none),
+        (:for, (:(=), :i, (:(:), 1, :nd)), (:block,
+            (:line, 148, :none),
+            (:+=, :nnd, (:call, :Int, (:||, (:call, :(==), (:call, :size, :A, :i), 1), (:call, :(==), :i, :d))))
+          )),
+        (:line, 150, :none),
+        (:if, (:call, :(==), :nnd, :nd), (:block,
+            (:line, 152, :none),
+            (:for, (:(=), :i, (:(:), 1, :sd)), (:block,
+                (:line, 153, :none),
+                (:(=), (:ref, :B, :i), (:ref, :A, (:call, :-, (:call, :+, :sd, 1), :i)))
+              )),
+            (:line, 155, :none),
+            (:return, :B)
+          )),
+        (:line, 158, :none),
+        (:(=), :d_in, (:call, :size, :A)),
+        (:line, 159, :none),
+        (:(=), :leading, (:ref, :d_in, (:(:), 1, (:call, :-, :d, 1)))),
+        (:line, 160, :none),
+        (:(=), :M, (:call, :prod, :leading)),
+        (:line, 161, :none),
+        (:(=), :N, (:call, :length, :A)),
+        (:line, 162, :none),
+        (:(=), :stride, (:call, :*, :M, :sd)),
+        (:line, 164, :none),
+        (:if, (:call, :(==), :M, 1), (:block,
+            (:line, 165, :none),
+            (:for, (:(=), :j, (:(:), 0, :stride, (:call, :-, :N, :stride))), (:block,
+                (:line, 166, :none),
+                (:for, (:(=), :i, (:(:), 1, :sd)), (:block,
+                    (:line, 167, :none),
+                    (:(=), :ri, (:call, :-, (:call, :+, :sd, 1), :i)),
+                    (:line, 168, :none),
+                    (:(=), (:ref, :B, (:call, :+, :j, :ri)), (:ref, :A, (:call, :+, :j, :i)))
+                  ))
+              ))
+          ), (:block,
+            (:line, 172, :none),
+            (:if, (:&&, (:call, :isbits, :T), (:call, :>, :M, 200)), (:block,
+                (:line, 173, :none),
+                (:for, (:(=), :i, (:(:), 1, :sd)), (:block,
+                    (:line, 174, :none),
+                    (:(=), :ri, (:call, :-, (:call, :+, :sd, 1), :i)),
+                    (:line, 175, :none),
+                    (:for, (:(=), :j, (:(:), 0, :stride, (:call, :-, :N, :stride))), (:block,
+                        (:line, 176, :none),
+                        (:(=), :offs, (:call, :+, :j, 1, (:call, :*, (:call, :-, :i, 1), :M))),
+                        (:line, 177, :none),
+                        (:(=), :boffs, (:call, :+, :j, 1, (:call, :*, (:call, :-, :ri, 1), :M))),
+                        (:line, 178, :none),
+                        (:call, :copy!, :B, :boffs, :A, :offs, :M)
+                      ))
+                  ))
+              ), (:block,
+                (:line, 182, :none),
+                (:for, (:(=), :i, (:(:), 1, :sd)), (:block,
+                    (:line, 183, :none),
+                    (:(=), :ri, (:call, :-, (:call, :+, :sd, 1), :i)),
+                    (:line, 184, :none),
+                    (:for, (:(=), :j, (:(:), 0, :stride, (:call, :-, :N, :stride))), (:block,
+                        (:line, 185, :none),
+                        (:(=), :offs, (:call, :+, :j, 1, (:call, :*, (:call, :-, :i, 1), :M))),
+                        (:line, 186, :none),
+                        (:(=), :boffs, (:call, :+, :j, 1, (:call, :*, (:call, :-, :ri, 1), :M))),
+                        (:line, 187, :none),
+                        (:for, (:(=), :k, (:(:), 0, (:call, :-, :M, 1))), (:block,
+                            (:line, 188, :none),
+                            (:(=), (:ref, :B, (:call, :+, :boffs, :k)), (:ref, :A, (:call, :+, :offs, :k)))
+                          ))
+                      ))
+                  ))
+              ))
+          )),
+        (:line, 194, :none),
+        (:return, :B)
+      )),
+    (:line, 197, :none),
+    "    rotl90(A)\n\nRotate matrix `A` left 90 degrees.\n\n```jldoctest\njulia> a = [1 2; 3 4]\n2×2 Array{Int64,2}:\n 1  2\n 3  4\n\njulia> rotl90(a)\n2×2 Array{Int64,2}:\n 2  4\n 1  3\n```\n",
+    (:line, 214, :none),
+    (:function, (:call, :rotl90, (:(::), :A, :AbstractMatrix)), (:block,
+        (:line, 215, :none),
+        (:(=), (:tuple, :ind1, :ind2), (:call, :indices, :A)),
+        (:line, 216, :none),
+        (:(=), :B, (:call, :similar, :A, (:tuple, :ind2, :ind1))),
+        (:line, 217, :none),
+        (:(=), :n, (:call, :+, (:call, :first, :ind2), (:call, :last, :ind2))),
+        (:line, 218, :none),
+        (:for, (:block,
+            (:(=), :i, (:call, :indices, :A, 1)),
+            (:(=), :j, :ind2)
+          ), (:block,
+            (:line, 219, :none),
+            (:(=), (:ref, :B, (:call, :-, :n, :j), :i), (:ref, :A, :i, :j))
+          )),
+        (:line, 221, :none),
+        (:return, :B)
+      )),
+    (:line, 224, :none),
+    "    rotr90(A)\n\nRotate matrix `A` right 90 degrees.\n\n```jldoctest\njulia> a = [1 2; 3 4]\n2×2 Array{Int64,2}:\n 1  2\n 3  4\n\njulia> rotr90(a)\n2×2 Array{Int64,2}:\n 3  1\n 4  2\n```\n",
+    (:line, 241, :none),
+    (:function, (:call, :rotr90, (:(::), :A, :AbstractMatrix)), (:block,
+        (:line, 242, :none),
+        (:(=), (:tuple, :ind1, :ind2), (:call, :indices, :A)),
+        (:line, 243, :none),
+        (:(=), :B, (:call, :similar, :A, (:tuple, :ind2, :ind1))),
+        (:line, 244, :none),
+        (:(=), :m, (:call, :+, (:call, :first, :ind1), (:call, :last, :ind1))),
+        (:line, 245, :none),
+        (:for, (:block,
+            (:(=), :i, :ind1),
+            (:(=), :j, (:call, :indices, :A, 2))
+          ), (:block,
+            (:line, 246, :none),
+            (:(=), (:ref, :B, :j, (:call, :-, :m, :i)), (:ref, :A, :i, :j))
+          )),
+        (:line, 248, :none),
+        (:return, :B)
+      )),
+    (:line, 250, :none),
+    "    rot180(A)\n\nRotate matrix `A` 180 degrees.\n\n```jldoctest\njulia> a = [1 2; 3 4]\n2×2 Array{Int64,2}:\n 1  2\n 3  4\n\njulia> rot180(a)\n2×2 Array{Int64,2}:\n 4  3\n 2  1\n```\n",
+    (:line, 267, :none),
+    (:function, (:call, :rot180, (:(::), :A, :AbstractMatrix)), (:block,
+        (:line, 268, :none),
+        (:(=), :B, (:call, :similar, :A)),
+        (:line, 269, :none),
+        (:(=), (:tuple, :ind1, :ind2), (:tuple, (:call, :indices, :A, 1), (:call, :indices, :A, 2))),
+        (:line, 270, :none),
+        (:(=), (:tuple, :m, :n), (:tuple, (:call, :+, (:call, :first, :ind1), (:call, :last, :ind1)), (:call, :+, (:call, :first, :ind2), (:call, :last, :ind2)))),
+        (:line, 271, :none),
+        (:for, (:block,
+            (:(=), :j, :ind2),
+            (:(=), :i, :ind1)
+          ), (:block,
+            (:line, 272, :none),
+            (:(=), (:ref, :B, (:call, :-, :m, :i), (:call, :-, :n, :j)), (:ref, :A, :i, :j))
+          )),
+        (:line, 274, :none),
+        (:return, :B)
+      )),
+    (:line, 276, :none),
+    "    rotl90(A, k)\n\nRotate matrix `A` left 90 degrees an integer `k` number of times.\nIf `k` is zero or a multiple of four, this is equivalent to a `copy`.\n\n```jldoctest\njulia> a = [1 2; 3 4]\n2×2 Array{Int64,2}:\n 1  2\n 3  4\n\njulia> rotl90(a,1)\n2×2 Array{Int64,2}:\n 2  4\n 1  3\n\njulia> rotl90(a,2)\n2×2 Array{Int64,2}:\n 4  3\n 2  1\n\njulia> rotl90(a,3)\n2×2 Array{Int64,2}:\n 3  1\n 4  2\n\njulia> rotl90(a,4)\n2×2 Array{Int64,2}:\n 1  2\n 3  4\n```\n",
+    (:line, 309, :none),
+    (:function, (:call, :rotl90, (:(::), :A, :AbstractMatrix), (:(::), :k, :Integer)), (:block,
+        (:line, 310, :none),
+        (:(=), :k, (:call, :mod, :k, 4)),
+        (:line, 311, :none),
+        (:if, (:call, :(==), :k, 1), (:call, :rotl90, :A), (:if, (:call, :(==), :k, 2), (:call, :rot180, :A), (:if, (:call, :(==), :k, 3), (:call, :rotr90, :A), (:call, :copy, :A))))
+      )),
+    (:line, 315, :none),
+    "    rotr90(A, k)\n\nRotate matrix `A` right 90 degrees an integer `k` number of times. If `k` is zero or a\nmultiple of four, this is equivalent to a `copy`.\n\n```jldoctest\njulia> a = [1 2; 3 4]\n2×2 Array{Int64,2}:\n 1  2\n 3  4\n\njulia> rotr90(a,1)\n2×2 Array{Int64,2}:\n 3  1\n 4  2\n\njulia> rotr90(a,2)\n2×2 Array{Int64,2}:\n 4  3\n 2  1\n\njulia> rotr90(a,3)\n2×2 Array{Int64,2}:\n 2  4\n 1  3\n\njulia> rotr90(a,4)\n2×2 Array{Int64,2}:\n 1  2\n 3  4\n```\n",
+    (:line, 348, :none),
+    (:(=), (:call, :rotr90, (:(::), :A, :AbstractMatrix), (:(::), :k, :Integer)), (:block,
+        (:line, 348, :none),
+        (:call, :rotl90, :A, (:call, :-, :k))
+      )),
+    (:line, 349, :none),
+    "    rot180(A, k)\n\nRotate matrix `A` 180 degrees an integer `k` number of times.\nIf `k` is even, this is equivalent to a `copy`.\n\n```jldoctest\njulia> a = [1 2; 3 4]\n2×2 Array{Int64,2}:\n 1  2\n 3  4\n\njulia> rot180(a,1)\n2×2 Array{Int64,2}:\n 4  3\n 2  1\n\njulia> rot180(a,2)\n2×2 Array{Int64,2}:\n 1  2\n 3  4\n```\n",
+    (:line, 372, :none),
+    (:(=), (:call, :rot180, (:(::), :A, :AbstractMatrix), (:(::), :k, :Integer)), (:block,
+        (:line, 372, :none),
+        (:if, (:call, :(==), (:call, :mod, :k, 2), 1), (:call, :rot180, :A), (:call, :copy, :A))
+      )),
+    (:line, 375, :none),
+    (:(=), (:call, :transpose!, (:(::), :B, :AbstractMatrix), (:(::), :A, :AbstractMatrix)), (:block,
+        (:line, 375, :none),
+        (:call, :transpose_f!, :transpose, :B, :A)
+      )),
+    (:line, 376, :none),
+    (:(=), (:call, :ctranspose!, (:(::), :B, :AbstractMatrix), (:(::), :A, :AbstractMatrix)), (:block,
+        (:line, 376, :none),
+        (:call, :transpose_f!, :ctranspose, :B, :A)
+      )),
+    (:line, 377, :none),
+    (:function, (:call, :transpose!, (:(::), :B, :AbstractVector), (:(::), :A, :AbstractMatrix)), (:block,
+        (:line, 378, :none),
+        (:||, (:&&, (:call, :(==), (:call, :indices, :B, 1), (:call, :indices, :A, 2)), (:call, :(==), (:call, :indices, :A, 1), (:(:), 1, 1))), (:call, :throw, (:call, :DimensionMismatch, "transpose"))),
+        (:line, 379, :none),
+        (:call, :copy!, :B, :A)
+      )),
+    (:line, 381, :none),
+    (:function, (:call, :transpose!, (:(::), :B, :AbstractMatrix), (:(::), :A, :AbstractVector)), (:block,
+        (:line, 382, :none),
+        (:||, (:&&, (:call, :(==), (:call, :indices, :B, 2), (:call, :indices, :A, 1)), (:call, :(==), (:call, :indices, :B, 1), (:(:), 1, 1))), (:call, :throw, (:call, :DimensionMismatch, "transpose"))),
+        (:line, 383, :none),
+        (:call, :copy!, :B, :A)
+      )),
+    (:line, 385, :none),
+    (:function, (:call, :ctranspose!, (:(::), :B, :AbstractVector), (:(::), :A, :AbstractMatrix)), (:block,
+        (:line, 386, :none),
+        (:||, (:&&, (:call, :(==), (:call, :indices, :B, 1), (:call, :indices, :A, 2)), (:call, :(==), (:call, :indices, :A, 1), (:(:), 1, 1))), (:call, :throw, (:call, :DimensionMismatch, "transpose"))),
+        (:line, 387, :none),
+        (:call, :ccopy!, :B, :A)
+      )),
+    (:line, 389, :none),
+    (:function, (:call, :ctranspose!, (:(::), :B, :AbstractMatrix), (:(::), :A, :AbstractVector)), (:block,
+        (:line, 390, :none),
+        (:||, (:&&, (:call, :(==), (:call, :indices, :B, 2), (:call, :indices, :A, 1)), (:call, :(==), (:call, :indices, :B, 1), (:(:), 1, 1))), (:call, :throw, (:call, :DimensionMismatch, "transpose"))),
+        (:line, 391, :none),
+        (:call, :ccopy!, :B, :A)
+      )),
+    (:line, 394, :none),
+    (:const, (:(=), :transposebaselength, 64)),
+    (:line, 395, :none),
+    (:function, (:call, :transpose_f!, :f, (:(::), :B, :AbstractMatrix), (:(::), :A, :AbstractMatrix)), (:block,
+        (:line, 396, :none),
+        (:(=), :inds, (:call, :indices, :A)),
+        (:line, 397, :none),
+        (:||, (:&&, (:call, :(==), (:call, :indices, :B, 1), (:ref, :inds, 2)), (:call, :(==), (:call, :indices, :B, 2), (:ref, :inds, 1))), (:call, :throw, (:call, :DimensionMismatch, (:call, :string, :f)))),
+        (:line, 399, :none),
+        (:(=), (:tuple, :m, :n), (:tuple, (:call, :length, (:ref, :inds, 1)), (:call, :length, (:ref, :inds, 2)))),
+        (:line, 400, :none),
+        (:if, (:call, :(<=), (:call, :*, :m, :n), (:call, :*, 4, :transposebaselength)), (:block,
+            (:line, 401, :none),
+            (:macrocall, Symbol("@inbounds"), (:block,
+                (:line, 402, :none),
+                (:for, (:(=), :j, (:ref, :inds, 2)), (:block,
+                    (:line, 403, :none),
+                    (:for, (:(=), :i, (:ref, :inds, 1)), (:block,
+                        (:line, 404, :none),
+                        (:(=), (:ref, :B, :j, :i), (:call, :f, (:ref, :A, :i, :j)))
+                      ))
+                  ))
+              ))
+          ), (:block,
+            (:line, 409, :none),
+            (:call, :transposeblock!, :f, :B, :A, :m, :n, (:call, :-, (:call, :first, (:ref, :inds, 1)), 1), (:call, :-, (:call, :first, (:ref, :inds, 2)), 1))
+          )),
+        (:line, 411, :none),
+        (:return, :B)
+      )),
+    (:line, 413, :none),
+    (:function, (:call, :transposeblock!, :f, (:(::), :B, :AbstractMatrix), (:(::), :A, :AbstractMatrix), (:(::), :m, :Int), (:(::), :n, :Int), (:(::), :offseti, :Int), (:(::), :offsetj, :Int)), (:block,
+        (:line, 414, :none),
+        (:if, (:call, :(<=), (:call, :*, :m, :n), :transposebaselength), (:block,
+            (:line, 415, :none),
+            (:macrocall, Symbol("@inbounds"), (:block,
+                (:line, 416, :none),
+                (:for, (:(=), :j, (:call, :+, :offsetj, (:(:), 1, :n))), (:block,
+                    (:line, 417, :none),
+                    (:for, (:(=), :i, (:call, :+, :offseti, (:(:), 1, :m))), (:block,
+                        (:line, 418, :none),
+                        (:(=), (:ref, :B, :j, :i), (:call, :f, (:ref, :A, :i, :j)))
+                      ))
+                  ))
+              ))
+          ), (:block,
+            (:line, 422, :none),
+            (:if, (:call, :>, :m, :n), (:block,
+                (:line, 423, :none),
+                (:(=), :newm, (:call, :>>, :m, 1)),
+                (:line, 424, :none),
+                (:call, :transposeblock!, :f, :B, :A, :newm, :n, :offseti, :offsetj),
+                (:line, 425, :none),
+                (:call, :transposeblock!, :f, :B, :A, (:call, :-, :m, :newm), :n, (:call, :+, :offseti, :newm), :offsetj)
+              ), (:block,
+                (:line, 427, :none),
+                (:(=), :newn, (:call, :>>, :n, 1)),
+                (:line, 428, :none),
+                (:call, :transposeblock!, :f, :B, :A, :m, :newn, :offseti, :offsetj),
+                (:line, 429, :none),
+                (:call, :transposeblock!, :f, :B, :A, :m, (:call, :-, :n, :newn), :offseti, (:call, :+, :offsetj, :newn))
+              ))
+          )),
+        (:line, 431, :none),
+        (:return, :B)
+      )),
+    (:line, 434, :none),
+    (:function, (:call, :ccopy!, :B, :A), (:block,
+        (:line, 435, :none),
+        (:(=), (:tuple, :RB, :RA), (:tuple, (:call, :eachindex, :B), (:call, :eachindex, :A))),
+        (:line, 436, :none),
+        (:if, (:call, :(==), :RB, :RA), (:block,
+            (:line, 437, :none),
+            (:for, (:(=), :i, :RB), (:block,
+                (:line, 438, :none),
+                (:(=), (:ref, :B, :i), (:call, :ctranspose, (:ref, :A, :i)))
+              ))
+          ), (:block,
+            (:line, 441, :none),
+            (:for, (:(=), (:tuple, :i, :j), (:call, :zip, :RB, :RA)), (:block,
+                (:line, 442, :none),
+                (:(=), (:ref, :B, :i), (:call, :ctranspose, (:ref, :A, :j)))
+              ))
+          ))
+      )),
+    (:line, 447, :none),
+    (:function, (:call, :transpose, (:(::), :A, :AbstractMatrix)), (:block,
+        (:line, 448, :none),
+        (:(=), (:tuple, :ind1, :ind2), (:call, :indices, :A)),
+        (:line, 449, :none),
+        (:(=), :B, (:call, :similar, :A, (:tuple, :ind2, :ind1))),
+        (:line, 450, :none),
+        (:call, :transpose!, :B, :A)
+      )),
+    (:line, 452, :none),
+    (:function, (:call, :ctranspose, (:(::), :A, :AbstractMatrix)), (:block,
+        (:line, 453, :none),
+        (:(=), (:tuple, :ind1, :ind2), (:call, :indices, :A)),
+        (:line, 454, :none),
+        (:(=), :B, (:call, :similar, :A, (:tuple, :ind2, :ind1))),
+        (:line, 455, :none),
+        (:call, :ctranspose!, :B, :A)
+      )),
+    (:line, 457, :none),
+    (:(=), (:call, (:curly, :ctranspose, (:<:, :T, :Real)), (:(::), :A, (:curly, :AbstractVecOrMat, :T))), (:block,
+        (:line, 457, :none),
+        (:call, :transpose, :A)
+      )),
+    (:line, 459, :none),
+    (:(=), (:call, :transpose, (:(::), :x, :AbstractVector)), (:block,
+        (:line, 459, :none),
+        (:comprehension, (:generator, (:call, :transpose, :v), (:(=), :i, (:call, :of_indices, :x, (:call, :OneTo, 1))), (:(=), :v, :x)))
+      )),
+    (:line, 460, :none),
+    (:(=), (:call, (:curly, :ctranspose, :T), (:(::), :x, (:curly, :AbstractVector, :T))), (:block,
+        (:line, 460, :none),
+        (:typed_comprehension, :T, (:generator, (:call, :ctranspose, :v), (:(=), :i, (:call, :of_indices, :x, (:call, :OneTo, 1))), (:(=), :v, :x)))
+      )),
+    (:line, 462, :none),
+    (:(=), (:call, (:curly, :_cumsum_type, (:<:, :T, :Number)), (:(::), :v, (:curly, :AbstractArray, :T))), (:block,
+        (:line, 462, :none),
+        (:call, :typeof, (:call, :+, (:call, :zero, :T)))
+      )),
+    (:line, 463, :none),
+    (:(=), (:call, :_cumsum_type, :v), (:block,
+        (:line, 463, :none),
+        (:call, :typeof, (:call, :+, (:ref, :v, 1), (:ref, :v, 1)))
+      )),
+    (:line, 465, :none),
+    (:for, (:(=), (:tuple, :f, :f!, :fp, :op), (:tuple, (:tuple, (:quote, #QuoteNode
+              :cumsum
+            ), (:quote, #QuoteNode
+              :cumsum!
+            ), (:quote, #QuoteNode
+              :cumsum_pairwise!
+            ), (:quote, #QuoteNode
+              :+
+            )), (:tuple, (:quote, #QuoteNode
+              :cumprod
+            ), (:quote, #QuoteNode
+              :cumprod!
+            ), (:quote, #QuoteNode
+              :cumprod_pairwise!
+            ), (:quote, #QuoteNode
+              :*
+            )))), (:block,
+        (:line, 468, :none),
+        (:macrocall, Symbol("@eval"), (:function, (:call, (:curly, (:$, :fp), :T), (:(::), :v, :AbstractVector), (:(::), :c, (:curly, :AbstractVector, :T)), :s, :i1, :n), (:block,
+              (:line, 469, :none),
+              (:local, (:(::), :s_, :T)),
+              (:line, 470, :none),
+              (:if, (:call, :<, :n, 128), (:block,
+                  (:line, 471, :none),
+                  (:macrocall, Symbol("@inbounds"), (:(=), :s_, (:ref, :v, :i1))),
+                  (:line, 472, :none),
+                  (:macrocall, Symbol("@inbounds"), (:(=), (:ref, :c, :i1), (:call, (:$, :op), :s, :s_))),
+                  (:line, 473, :none),
+                  (:for, (:(=), :i, (:(:), (:call, :+, :i1, 1), (:call, :-, (:call, :+, :i1, :n), 1))), (:block,
+                      (:line, 474, :none),
+                      (:macrocall, Symbol("@inbounds"), (:(=), :s_, (:call, (:$, :op), :s_, (:ref, :v, :i)))),
+                      (:line, 475, :none),
+                      (:macrocall, Symbol("@inbounds"), (:(=), (:ref, :c, :i), (:call, (:$, :op), :s, :s_)))
+                    ))
+                ), (:block,
+                  (:line, 478, :none),
+                  (:(=), :n2, (:call, :>>, :n, 1)),
+                  (:line, 479, :none),
+                  (:(=), :s_, (:call, (:$, :fp), :v, :c, :s, :i1, :n2)),
+                  (:line, 480, :none),
+                  (:(=), :s_, (:call, (:$, :op), :s_, (:call, (:$, :fp), :v, :c, (:call, (:$, :op), :s, :s_), (:call, :+, :i1, :n2), (:call, :-, :n, :n2))))
+                )),
+              (:line, 482, :none),
+              (:return, :s_)
+            ))),
+        (:line, 485, :none),
+        (:macrocall, Symbol("@eval"), (:function, (:call, (:$, :f!), (:(::), :result, :AbstractVector), (:(::), :v, :AbstractVector)), (:block,
+              (:line, 486, :none),
+              (:(=), :n, (:call, :length, :v)),
+              (:line, 487, :none),
+              (:if, (:call, :(==), :n, 0), (:block,
+                  (:line, 487, :none),
+                  (:return, :result)
+                )),
+              (:line, 488, :none),
+              (:call, (:$, :fp), :v, :result, (:$, (:if, (:call, :(==), :op, (:quote, #QuoteNode
+                        :+
+                      )), (:quote, (:call, :zero, (:call, :first, :v))), (:quote, (:call, :one, (:call, :first, :v))))), (:call, :first, (:call, :indices, :v, 1)), :n),
+              (:line, 489, :none),
+              (:return, :result)
+            ))),
+        (:line, 492, :none),
+        (:macrocall, Symbol("@eval"), (:function, (:call, (:$, :f), (:(::), :v, :AbstractVector)), (:block,
+              (:line, 493, :none),
+              (:(=), :c, (:$, (:if, (:call, :(===), :op, (:quote, #QuoteNode
+                        :+
+                      )), (:quote, (:call, :similar, :v, (:call, :_cumsum_type, :v))), (:quote, (:call, :similar, :v))))),
+              (:line, 494, :none),
+              (:return, (:call, (:$, :f!), :c, :v))
+            )))
+      ))
+  ))

@@ -1,0 +1,226 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:module, true, :Rounding, (:block,
+        (:line, 3, :none),
+        (:line, 5, :none),
+        (:let, (:block,
+            (:line, 6, :none),
+            (:ccall, (:quote, #QuoteNode
+                :jl_get_fenv_consts
+              ), :Void, (:tuple, (:curly, :Ptr, :Int32)), :fenv_consts),
+            (:line, 7, :none),
+            (:const, (:global, (:(=), :JL_FE_INEXACT, (:ref, :fenv_consts, 1)))),
+            (:line, 8, :none),
+            (:const, (:global, (:(=), :JL_FE_UNDERFLOW, (:ref, :fenv_consts, 2)))),
+            (:line, 9, :none),
+            (:const, (:global, (:(=), :JL_FE_OVERFLOW, (:ref, :fenv_consts, 3)))),
+            (:line, 10, :none),
+            (:const, (:global, (:(=), :JL_FE_DIVBYZERO, (:ref, :fenv_consts, 4)))),
+            (:line, 11, :none),
+            (:const, (:global, (:(=), :JL_FE_INVALID, (:ref, :fenv_consts, 5)))),
+            (:line, 13, :none),
+            (:const, (:global, (:(=), :JL_FE_TONEAREST, (:ref, :fenv_consts, 6)))),
+            (:line, 14, :none),
+            (:const, (:global, (:(=), :JL_FE_UPWARD, (:ref, :fenv_consts, 7)))),
+            (:line, 15, :none),
+            (:const, (:global, (:(=), :JL_FE_DOWNWARD, (:ref, :fenv_consts, 8)))),
+            (:line, 16, :none),
+            (:const, (:global, (:(=), :JL_FE_TOWARDZERO, (:ref, :fenv_consts, 9))))
+          ), (:(=), :fenv_consts, (:call, (:curly, :Vector, :Int32), 9))),
+        (:line, 19, :none),
+        (:export, :RoundingMode, :RoundNearest, :RoundToZero, :RoundUp, :RoundDown, :RoundFromZero, :RoundNearestTiesAway, :RoundNearestTiesUp, :rounding, :setrounding, :get_zero_subnormals, :set_zero_subnormals),
+        (:line, 26, :none),
+        (:macrocall, :(Core.@doc), "    RoundingMode\n\nA type used for controlling the rounding mode of floating point operations (via\n[`rounding`](:func:`rounding`)/[`setrounding`](:func:`setrounding`) functions), or as\noptional arguments for rounding to the nearest integer (via the [`round`](:func:`round`)\nfunction).\n\nCurrently supported rounding modes are:\n\n- [`RoundNearest`](:obj:`RoundNearest`) (default)\n- [`RoundNearestTiesAway`](:obj:`RoundNearestTiesAway`)\n- [`RoundNearestTiesUp`](:obj:`RoundNearestTiesUp`)\n- [`RoundToZero`](:obj:`RoundToZero`)\n- [`RoundFromZero`](:obj:`RoundFromZero`) (`BigFloat` only)\n- [`RoundUp`](:obj:`RoundUp`)\n- [`RoundDown`](:obj:`RoundDown`)\n", (:type, false, (:curly, :RoundingMode, :T), (:block,
+              (:line, 44, :none)
+            ))),
+        (:line, 46, :none),
+        (:macrocall, :(Core.@doc), "    RoundNearest\n\nThe default rounding mode. Rounds to the nearest integer, with ties (fractional values of\n0.5) being rounded to the nearest even integer.\n", (:const, (:(=), :RoundNearest, (:call, (:curly, :RoundingMode, (:quote, #QuoteNode
+                    :Nearest
+                  )))))),
+        (:line, 54, :none),
+        (:macrocall, :(Core.@doc), "    RoundToZero\n\n[`round`](:func:`round`) using this rounding mode is an alias for [`trunc`](:func:`trunc`).\n", (:const, (:(=), :RoundToZero, (:call, (:curly, :RoundingMode, (:quote, #QuoteNode
+                    :ToZero
+                  )))))),
+        (:line, 61, :none),
+        (:macrocall, :(Core.@doc), "    RoundUp\n\n[`round`](:func:`round`) using this rounding mode is an alias for [`ceil`](:func:`ceil`).\n", (:const, (:(=), :RoundUp, (:call, (:curly, :RoundingMode, (:quote, #QuoteNode
+                    :Up
+                  )))))),
+        (:line, 68, :none),
+        (:macrocall, :(Core.@doc), "    RoundDown\n\n[`round`](:func:`round`) using this rounding mode is an alias for [`floor`](:func:`floor`).\n", (:const, (:(=), :RoundDown, (:call, (:curly, :RoundingMode, (:quote, #QuoteNode
+                    :Down
+                  )))))),
+        (:line, 75, :none),
+        (:const, (:(=), :RoundFromZero, (:call, (:curly, :RoundingMode, (:quote, #QuoteNode
+                  :FromZero
+                ))))),
+        (:line, 77, :none),
+        (:macrocall, :(Core.@doc), "    RoundNearestTiesAway\n\nRounds to nearest integer, with ties rounded away from zero (C/C++\n[`round`](:func:`round`) behaviour).\n", (:const, (:(=), :RoundNearestTiesAway, (:call, (:curly, :RoundingMode, (:quote, #QuoteNode
+                    :NearestTiesAway
+                  )))))),
+        (:line, 85, :none),
+        (:macrocall, :(Core.@doc), "    RoundNearestTiesUp\n\nRounds to nearest integer, with ties rounded toward positive infinity (Java/JavaScript\n[`round`](:func:`round`) behaviour).\n", (:const, (:(=), :RoundNearestTiesUp, (:call, (:curly, :RoundingMode, (:quote, #QuoteNode
+                    :NearestTiesUp
+                  )))))),
+        (:line, 93, :none),
+        (:(=), (:call, :to_fenv, (:(::), (:curly, :RoundingMode, (:quote, #QuoteNode
+                  :Nearest
+                )))), (:block,
+            (:line, 93, :none),
+            :JL_FE_TONEAREST
+          )),
+        (:line, 94, :none),
+        (:(=), (:call, :to_fenv, (:(::), (:curly, :RoundingMode, (:quote, #QuoteNode
+                  :ToZero
+                )))), (:block,
+            (:line, 94, :none),
+            :JL_FE_TOWARDZERO
+          )),
+        (:line, 95, :none),
+        (:(=), (:call, :to_fenv, (:(::), (:curly, :RoundingMode, (:quote, #QuoteNode
+                  :Up
+                )))), (:block,
+            (:line, 95, :none),
+            :JL_FE_UPWARD
+          )),
+        (:line, 96, :none),
+        (:(=), (:call, :to_fenv, (:(::), (:curly, :RoundingMode, (:quote, #QuoteNode
+                  :Down
+                )))), (:block,
+            (:line, 96, :none),
+            :JL_FE_DOWNWARD
+          )),
+        (:line, 98, :none),
+        (:function, (:call, :from_fenv, (:(::), :r, :Integer)), (:block,
+            (:line, 99, :none),
+            (:if, (:call, :(==), :r, :JL_FE_TONEAREST), (:block,
+                (:line, 100, :none),
+                (:return, :RoundNearest)
+              ), (:block,
+                (:line, 101, :none),
+                (:if, (:call, :(==), :r, :JL_FE_DOWNWARD), (:block,
+                    (:line, 102, :none),
+                    (:return, :RoundDown)
+                  ), (:block,
+                    (:line, 103, :none),
+                    (:if, (:call, :(==), :r, :JL_FE_UPWARD), (:block,
+                        (:line, 104, :none),
+                        (:return, :RoundUp)
+                      ), (:block,
+                        (:line, 105, :none),
+                        (:if, (:call, :(==), :r, :JL_FE_TOWARDZERO), (:block,
+                            (:line, 106, :none),
+                            (:return, :RoundToZero)
+                          ), (:block,
+                            (:line, 108, :none),
+                            (:call, :throw, (:call, :ArgumentError, (:string, "invalid rounding mode code: ", :r)))
+                          ))
+                      ))
+                  ))
+              ))
+          )),
+        (:line, 112, :none),
+        (:macrocall, :(Core.@doc), "    setrounding(T, mode)\n\nSet the rounding mode of floating point type `T`, controlling the rounding of basic\narithmetic functions ([`+`](:func:`+`), [`-`](:func:`-`), [`*`](:func:`*`),\n[`/`](:func:`/`) and [`sqrt`](:func:`sqrt`)) and type conversion. Other numerical\nfunctions may give incorrect or invalid values when using rounding modes other than the\ndefault `RoundNearest`.\n\nNote that this may affect other types, for instance changing the rounding mode of `Float64`\nwill change the rounding mode of `Float32`. See [`RoundingMode`](:obj:`RoundingMode`) for\navailable modes.\n\n!!! warning\n\n    This feature is still experimental, and may give unexpected or incorrect values.\n", (:call, :setrounding, (:(::), :T, :Type), :mode)),
+        (:line, 131, :none),
+        (:macrocall, :(Core.@doc), "    rounding(T)\n\nGet the current floating point rounding mode for type `T`, controlling the rounding of basic\narithmetic functions ([`+`](:func:`+`), [`-`](:func:`-`), [`*`](:func:`*`), [`/`](:func:`/`)\nand [`sqrt`](:func:`sqrt`)) and type conversion.\n\nSee [`RoundingMode`](:obj:`RoundingMode`) for available modes.\n", (:quote, #QuoteNode
+            :rounding
+          )),
+        (:line, 142, :none),
+        (:(=), (:call, (:curly, :setrounding_raw, (:<:, :T, (:curly, :Union, :Float32, :Float64))), (:(::), (:curly, :Type, :T)), (:(::), :i, :Integer)), (:block,
+            (:line, 142, :none),
+            (:ccall, (:quote, #QuoteNode
+                :fesetround
+              ), :Int32, (:tuple, :Int32), :i)
+          )),
+        (:line, 143, :none),
+        (:(=), (:call, (:curly, :rounding_raw, (:<:, :T, (:curly, :Union, :Float32, :Float64))), (:(::), (:curly, :Type, :T))), (:block,
+            (:line, 143, :none),
+            (:ccall, (:quote, #QuoteNode
+                :fegetround
+              ), :Int32, (:tuple,))
+          )),
+        (:line, 145, :none),
+        (:(=), (:call, (:curly, :setrounding, (:<:, :T, (:curly, :Union, :Float32, :Float64))), (:(::), (:curly, :Type, :T)), (:(::), :r, :RoundingMode)), (:block,
+            (:line, 145, :none),
+            (:call, :setrounding_raw, :T, (:call, :to_fenv, :r))
+          )),
+        (:line, 146, :none),
+        (:(=), (:call, (:curly, :rounding, (:<:, :T, (:curly, :Union, :Float32, :Float64))), (:(::), (:curly, :Type, :T))), (:block,
+            (:line, 146, :none),
+            (:call, :from_fenv, (:call, :rounding_raw, :T))
+          )),
+        (:line, 148, :none),
+        (:macrocall, :(Core.@doc), "    setrounding(f::Function, T, mode)\n\nChange the rounding mode of floating point type `T` for the duration of `f`. It is logically\nequivalent to:\n\n    old = rounding(T)\n    setrounding(T, mode)\n    f()\n    setrounding(T, old)\n\nSee [`RoundingMode`](:obj:`RoundingMode`) for available rounding modes.\n\n!!! warning\n\n    This feature is still experimental, and may give unexpected or incorrect values. A\n    known problem is the interaction with compiler optimisations, e.g.\n\n        julia> setrounding(Float64,RoundDown) do\n            1.1 + 0.1\n        end\n        1.2000000000000002\n\n    Here the compiler is *constant folding*, that is evaluating a known constant\n    expression at compile time, however the rounding mode is only changed at runtime, so\n    this is not reflected in the function result. This can be avoided by moving constants\n    outside the expression, e.g.\n\n        julia> x = 1.1; y = 0.1;\n\n        julia> setrounding(Float64,RoundDown) do\n            x + y\n        end\n        1.2\n", (:function, (:call, (:curly, :setrounding, :T), (:(::), :f, :Function), (:(::), (:curly, :Type, :T)), (:(::), :rounding, :RoundingMode)), (:block,
+              (:line, 184, :none),
+              (:(=), :old_rounding_raw, (:call, :rounding_raw, :T)),
+              (:line, 185, :none),
+              (:call, :setrounding, :T, :rounding),
+              (:line, 186, :none),
+              (:try, (:block,
+                  (:line, 187, :none),
+                  (:return, (:call, :f))
+                ), false, false, (:block,
+                  (:line, 189, :none),
+                  (:call, :setrounding_raw, :T, :old_rounding_raw)
+                ))
+            ))),
+        (:line, 202, :none),
+        (:(=), (:call, (:curly, (:(::), (:curly, :Type, :T)), (:<:, :T, :AbstractFloat)), (:(::), :x, :Real), (:(::), :r, :RoundingMode)), (:block,
+            (:line, 202, :none),
+            (:call, :_convert_rounding, :T, :x, :r)
+          )),
+        (:line, 204, :none),
+        (:(=), (:call, (:curly, :_convert_rounding, (:<:, :T, :AbstractFloat)), (:(::), (:curly, :Type, :T)), (:(::), :x, :Real), (:(::), :r, (:curly, :RoundingMode, (:quote, #QuoteNode
+                  :Nearest
+                )))), (:block,
+            (:line, 204, :none),
+            (:call, :convert, :T, :x)
+          )),
+        (:line, 205, :none),
+        (:function, (:call, (:curly, :_convert_rounding, (:<:, :T, :AbstractFloat)), (:(::), (:curly, :Type, :T)), (:(::), :x, :Real), (:(::), :r, (:curly, :RoundingMode, (:quote, #QuoteNode
+                  :Down
+                )))), (:block,
+            (:line, 206, :none),
+            (:(=), :y, (:call, :convert, :T, :x)),
+            (:line, 207, :none),
+            (:if, (:call, :>, :y, :x), (:call, :prevfloat, :y), :y)
+          )),
+        (:line, 209, :none),
+        (:function, (:call, (:curly, :_convert_rounding, (:<:, :T, :AbstractFloat)), (:(::), (:curly, :Type, :T)), (:(::), :x, :Real), (:(::), :r, (:curly, :RoundingMode, (:quote, #QuoteNode
+                  :Up
+                )))), (:block,
+            (:line, 210, :none),
+            (:(=), :y, (:call, :convert, :T, :x)),
+            (:line, 211, :none),
+            (:if, (:call, :<, :y, :x), (:call, :nextfloat, :y), :y)
+          )),
+        (:line, 213, :none),
+        (:function, (:call, (:curly, :_convert_rounding, (:<:, :T, :AbstractFloat)), (:(::), (:curly, :Type, :T)), (:(::), :x, :Real), (:(::), :r, (:curly, :RoundingMode, (:quote, #QuoteNode
+                  :ToZero
+                )))), (:block,
+            (:line, 214, :none),
+            (:(=), :y, (:call, :convert, :T, :x)),
+            (:line, 215, :none),
+            (:if, (:call, :>, :x, 0.0), (:block,
+                (:line, 216, :none),
+                (:if, (:call, :>, :y, :x), (:call, :prevfloat, :y), :y)
+              ), (:block,
+                (:line, 218, :none),
+                (:if, (:call, :<, :y, :x), (:call, :nextfloat, :y), :y)
+              ))
+          )),
+        (:line, 222, :none),
+        (:(=), (:call, :set_zero_subnormals, (:(::), :yes, :Bool)), (:block,
+            (:line, 222, :none),
+            (:call, :(==), (:ccall, (:quote, #QuoteNode
+                  :jl_set_zero_subnormals
+                ), :Int32, (:tuple, :Int8), :yes), 0)
+          )),
+        (:line, 223, :none),
+        (:(=), (:call, :get_zero_subnormals), (:block,
+            (:line, 223, :none),
+            (:call, :(!=), (:ccall, (:quote, #QuoteNode
+                  :jl_get_zero_subnormals
+                ), :Int32, (:tuple,)), 0)
+          ))
+      ))
+  ))

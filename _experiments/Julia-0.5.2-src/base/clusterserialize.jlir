@@ -1,0 +1,83 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:toplevel, (:import, :., :Serializer, :known_object_data), (:import, :., :Serializer, :object_number), (:import, :., :Serializer, :serialize_cycle), (:import, :., :Serializer, :deserialize_cycle), (:import, :., :Serializer, :writetag), (:import, :., :Serializer, :__deserialized_types__), (:import, :., :Serializer, :serialize_typename), (:import, :., :Serializer, :deserialize_typename), (:import, :., :Serializer, :TYPENAME_TAG), (:import, :., :Serializer, :object_numbers)),
+    (:line, 7, :none),
+    (:type, true, (:<:, (:curly, :ClusterSerializer, (:<:, :I, :IO)), :AbstractSerializer), (:block,
+        (:line, 8, :none),
+        (:(::), :io, :I),
+        (:line, 9, :none),
+        (:(::), :counter, :Int),
+        (:line, 10, :none),
+        (:(::), :table, :ObjectIdDict),
+        (:line, 12, :none),
+        (:(::), :sent_objects, (:curly, :Set, :UInt64)),
+        (:line, 14, :none),
+        (:(=), (:call, :ClusterSerializer, (:(::), :io, :I)), (:block,
+            (:line, 14, :none),
+            (:call, :new, :io, 0, (:call, :ObjectIdDict), (:call, (:curly, :Set, :UInt64)))
+          ))
+      )),
+    (:line, 16, :none),
+    (:(=), (:call, :ClusterSerializer, (:(::), :io, :IO)), (:block,
+        (:line, 16, :none),
+        (:call, (:curly, :ClusterSerializer, (:call, :typeof, :io)), :io)
+      )),
+    (:line, 18, :none),
+    (:function, (:call, :deserialize, (:(::), :s, :ClusterSerializer), (:(::), (:curly, :Type, :TypeName))), (:block,
+        (:line, 19, :none),
+        (:(=), :full_body_sent, (:call, :deserialize, :s)),
+        (:line, 20, :none),
+        (:(=), :number, (:call, :read, (:., :s, (:quote, #QuoteNode
+                :io
+              )), :UInt64)),
+        (:line, 21, :none),
+        (:if, (:call, :!, :full_body_sent), (:block,
+            (:line, 22, :none),
+            (:(=), :tn, (:(::), (:call, :get, :known_object_data, :number, :nothing), :TypeName)),
+            (:line, 23, :none),
+            (:if, (:call, :!, (:call, :haskey, :object_numbers, :tn)), (:block,
+                (:line, 25, :none),
+                (:(=), (:ref, :object_numbers, :tn), :number)
+              )),
+            (:line, 27, :none),
+            (:call, :deserialize_cycle, :s, :tn)
+          ), (:block,
+            (:line, 29, :none),
+            (:(=), :tn, (:call, :deserialize_typename, :s, :number))
+          )),
+        (:line, 31, :none),
+        (:return, :tn)
+      )),
+    (:line, 34, :none),
+    (:function, (:call, :serialize, (:(::), :s, :ClusterSerializer), (:(::), :t, :TypeName)), (:block,
+        (:line, 35, :none),
+        (:&&, (:call, :serialize_cycle, :s, :t), (:return, nothing)),
+        (:line, 36, :none),
+        (:call, :writetag, (:., :s, (:quote, #QuoteNode
+              :io
+            )), :TYPENAME_TAG),
+        (:line, 38, :none),
+        (:(=), :identifier, (:call, :object_number, :t)),
+        (:line, 39, :none),
+        (:(=), :send_whole, (:call, :!, (:call, :in, :identifier, (:., :s, (:quote, #QuoteNode
+                  :sent_objects
+                ))))),
+        (:line, 40, :none),
+        (:call, :serialize, :s, :send_whole),
+        (:line, 41, :none),
+        (:call, :write, (:., :s, (:quote, #QuoteNode
+              :io
+            )), :identifier),
+        (:line, 42, :none),
+        (:if, :send_whole, (:block,
+            (:line, 43, :none),
+            (:call, :serialize_typename, :s, :t),
+            (:line, 44, :none),
+            (:call, :push!, (:., :s, (:quote, #QuoteNode
+                  :sent_objects
+                )), :identifier)
+          )),
+        (:line, 47, :none),
+        :nothing
+      ))
+  ))

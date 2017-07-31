@@ -1,0 +1,886 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:function, (:call, :test_have_color, :buf, :color, :no_color), (:block,
+        (:line, 4, :none),
+        (:if, (:., :Base, (:quote, #QuoteNode
+              :have_color
+            )), (:block,
+            (:line, 5, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:call, :takebuf_string, :buf), :color))
+          ), (:block,
+            (:line, 7, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:call, :takebuf_string, :buf), :no_color))
+          ))
+      )),
+    (:line, 11, :none),
+    (:(=), :cfile, (:string, " at ", (:macrocall, Symbol("@__FILE__")), ":")),
+    (:line, 12, :none),
+    (:(=), :c1line, (:call, :+, 12, 1)),
+    (:line, 13, :none),
+    (:(=), (:call, :method_c1, (:(::), :x, :Float64), (:..., (:(::), :s, :AbstractString))), (:block,
+        (:line, 13, :none),
+        true
+      )),
+    (:line, 15, :none),
+    (:(=), :buf, (:call, :IOBuffer)),
+    (:line, 16, :none),
+    (:call, (:., :Base, (:quote, #QuoteNode
+          :show_method_candidates
+        )), :buf, (:call, (:., :Base, (:quote, #QuoteNode
+            :MethodError
+          )), :method_c1, (:tuple, 1, 1, ""))),
+    (:line, 17, :none),
+    (:(=), :no_color, (:string, "\nClosest candidates are:\n  method_c1(!Matched::Float64, !Matched::AbstractString...)", :cfile, :c1line)),
+    (:line, 18, :none),
+    (:call, :test_have_color, :buf, (:string, "\e[0m\nClosest candidates are:\n  method_c1(\e[1m\e[31m::Float64\e[0m, \e[1m\e[31m::AbstractString...\e[0m)", :cfile, :c1line, "\e[0m"), :no_color),
+    (:line, 22, :none),
+    (:(=), :no_color, (:string, "\nClosest candidates are:\n  method_c1(!Matched::Float64, ::AbstractString...)", :cfile, :c1line)),
+    (:line, 23, :none),
+    (:call, (:., :Base, (:quote, #QuoteNode
+          :show_method_candidates
+        )), :buf, (:call, (:., :Base, (:quote, #QuoteNode
+            :MethodError
+          )), :method_c1, (:tuple, 1, "", ""))),
+    (:line, 24, :none),
+    (:call, :test_have_color, :buf, (:string, "\e[0m\nClosest candidates are:\n  method_c1(\e[1m\e[31m::Float64\e[0m, ::AbstractString...)", :cfile, :c1line, "\e[0m"), :no_color),
+    (:line, 29, :none),
+    (:(=), :no_color, (:string, "\nClosest candidates are:\n  method_c1(::Float64, ::AbstractString...)", :cfile, :c1line)),
+    (:line, 30, :none),
+    (:call, (:., :Base, (:quote, #QuoteNode
+          :show_method_candidates
+        )), :buf, (:call, (:., :Base, (:quote, #QuoteNode
+            :MethodError
+          )), :method_c1, (:tuple, 1.0, "", ""))),
+    (:line, 31, :none),
+    (:call, :test_have_color, :buf, (:string, "\e[0m\nClosest candidates are:\n  method_c1(::Float64, ::AbstractString...)", :cfile, :c1line, "\e[0m"), :no_color),
+    (:line, 36, :none),
+    (:call, (:., :Base, (:quote, #QuoteNode
+          :show_method_candidates
+        )), :buf, (:call, (:., :Base, (:quote, #QuoteNode
+            :MethodError
+          )), :method_c1, (:tuple, 1, 1, 1))),
+    (:line, 37, :none),
+    (:call, :test_have_color, :buf, "", ""),
+    (:line, 40, :none),
+    (:call, (:., :Base, (:quote, #QuoteNode
+          :show_method_candidates
+        )), :buf, (:call, (:., :Base, (:quote, #QuoteNode
+            :MethodError
+          )), (:curly, :Tuple), (:tuple, 1, 1, 1))),
+    (:line, 41, :none),
+    (:let, (:block,
+        (:line, 42, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, :mc, "\nClosest candidates are:\n  Tuple{}{T}(")),
+        (:line, 43, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:call, :contains, :mc, :cfile)))
+      ), (:(=), :mc, (:call, :takebuf_string, :buf))),
+    (:line, 46, :none),
+    (:(=), :c2line, 46),
+    (:line, 47, :none),
+    (:(=), (:call, :method_c2, (:(::), :x, :Int32), (:..., :args)), (:block,
+        (:line, 47, :none),
+        true
+      )),
+    (:line, 48, :none),
+    (:(=), (:call, :method_c2, (:(::), :x, :Int32), (:(::), :y, :Float64), (:..., :args)), (:block,
+        (:line, 48, :none),
+        true
+      )),
+    (:line, 49, :none),
+    (:(=), (:call, :method_c2, (:(::), :x, :Int32), (:(::), :y, :Float64)), (:block,
+        (:line, 49, :none),
+        true
+      )),
+    (:line, 50, :none),
+    (:(=), (:call, :method_c2, (:(::), :x, :Int32), (:(::), :y, :Int32), (:(::), :z, :Int32)), (:block,
+        (:line, 50, :none),
+        true
+      )),
+    (:line, 51, :none),
+    (:(=), (:call, (:curly, :method_c2, (:<:, :T, :Real)), (:(::), :x, :T), (:(::), :y, :T), (:(::), :z, :T)), (:block,
+        (:line, 51, :none),
+        true
+      )),
+    (:line, 53, :none),
+    (:call, (:., :Base, (:quote, #QuoteNode
+          :show_method_candidates
+        )), :buf, (:call, (:., :Base, (:quote, #QuoteNode
+            :MethodError
+          )), :method_c2, (:tuple, 1.0, 1.0, 2))),
+    (:line, 54, :none),
+    (:(=), :color, (:string, "\e[0m\nClosest candidates are:\n  method_c2(\e[1m\e[31m::Int32\e[0m, ::Float64, ::Any...)", :cfile, (:call, :+, :c2line, 2), "\n  method_c2(\e[1m\e[31m::Int32\e[0m, ::Any...)", :cfile, (:call, :+, :c2line, 1), "\n  method_c2{T<:Real}(::T<:Real, ::T<:Real, \e[1m\e[31m::T<:Real\e[0m)", :cfile, (:call, :+, :c2line, 5), "\n  ...\e[0m")),
+    (:line, 55, :none),
+    (:(=), :no_color, (:(=), :no_color, (:string, "\nClosest candidates are:\n  method_c2(!Matched::Int32, ::Float64, ::Any...)", :cfile, (:call, :+, :c2line, 2), "\n  method_c2(!Matched::Int32, ::Any...)", :cfile, (:call, :+, :c2line, 1), "\n  method_c2{T<:Real}(::T<:Real, ::T<:Real, !Matched::T<:Real)", :cfile, (:call, :+, :c2line, 5), "\n  ..."))),
+    (:line, 56, :none),
+    (:call, :test_have_color, :buf, :color, :no_color),
+    (:line, 58, :none),
+    (:(=), :c3line, (:call, :+, 58, 1)),
+    (:line, 59, :none),
+    (:(=), (:call, :method_c3, (:(::), :x, :Float64), (:(::), :y, :Float64)), (:block,
+        (:line, 59, :none),
+        true
+      )),
+    (:line, 60, :none),
+    (:call, (:., :Base, (:quote, #QuoteNode
+          :show_method_candidates
+        )), :buf, (:call, (:., :Base, (:quote, #QuoteNode
+            :MethodError
+          )), :method_c3, (:tuple, 1.0))),
+    (:line, 61, :none),
+    (:(=), :color, (:string, "\e[0m\nClosest candidates are:\n  method_c3(::Float64, \e[1m\e[31m::Float64\e[0m)", :cfile, :c3line, "\e[0m")),
+    (:line, 62, :none),
+    (:(=), :no_color, (:(=), :no_color, (:string, "\nClosest candidates are:\n  method_c3(::Float64, !Matched::Float64)", :cfile, :c3line))),
+    (:line, 63, :none),
+    (:call, :test_have_color, :buf, :color, :no_color),
+    (:line, 66, :none),
+    (:(=), :c4line, 66),
+    (:line, 67, :none),
+    (:(=), (:call, :method_c4), (:block,
+        (:line, 67, :none),
+        true
+      )),
+    (:line, 68, :none),
+    (:(=), (:call, :method_c4, (:(::), :x, :AbstractString)), (:block,
+        (:line, 68, :none),
+        false
+      )),
+    (:line, 69, :none),
+    (:call, (:., :Base, (:quote, #QuoteNode
+          :show_method_candidates
+        )), :buf, (:call, :MethodError, :method_c4, (:tuple, ""))),
+    (:line, 70, :none),
+    (:call, :test_have_color, :buf, (:string, "\e[0m\nClosest candidates are:\n  method_c4(::AbstractString)", :cfile, (:call, :+, :c4line, 2), "\n  method_c4()", :cfile, (:call, :+, :c4line, 1), "\e[0m"), (:string, "\nClosest candidates are:\n  method_c4(::AbstractString)", :cfile, (:call, :+, :c4line, 2), "\n  method_c4()", :cfile, (:call, :+, :c4line, 1))),
+    (:line, 74, :none),
+    (:(=), :c5line, (:call, :+, 74, 1)),
+    (:line, 75, :none),
+    (:(=), (:call, :method_c5, (:(::), (:curly, :Type, :Float64))), (:block,
+        (:line, 75, :none),
+        true
+      )),
+    (:line, 76, :none),
+    (:call, (:., :Base, (:quote, #QuoteNode
+          :show_method_candidates
+        )), :buf, (:call, :MethodError, :method_c5, (:tuple, :Float64))),
+    (:line, 77, :none),
+    (:call, :test_have_color, :buf, (:string, "\e[0m\nClosest candidates are:\n  method_c5(::Type{Float64})", :cfile, :c5line, "\e[0m"), (:string, "\nClosest candidates are:\n  method_c5(::Type{Float64})", :cfile, :c5line)),
+    (:line, 80, :none),
+    (:call, (:., :Base, (:quote, #QuoteNode
+          :show_method_candidates
+        )), :buf, (:call, :MethodError, :method_c5, (:tuple, :Int32))),
+    (:line, 81, :none),
+    (:call, :test_have_color, :buf, (:string, "\e[0m\nClosest candidates are:\n  method_c5(\e[1m\e[31m::Type{Float64}\e[0m)", :cfile, :c5line, "\e[0m"), (:string, "\nClosest candidates are:\n  method_c5(!Matched::Type{Float64})", :cfile, :c5line)),
+    (:line, 84, :none),
+    (:type, true, :Test_type, (:block,
+        (:line, 84, :none)
+      )),
+    (:line, 85, :none),
+    (:(=), :test_type, (:call, :Test_type)),
+    (:line, 86, :none),
+    (:for, (:(=), :f, (:vect, :getindex, :setindex!)), (:block,
+        (:line, 87, :none),
+        (:call, (:., :Base, (:quote, #QuoteNode
+              :show_method_candidates
+            )), :buf, (:call, :MethodError, :f, (:tuple, :test_type, 1, 1))),
+        (:line, 88, :none),
+        (:call, :test_have_color, :buf, "", "")
+      )),
+    (:line, 91, :none),
+    (:(=), :PR16155line, (:call, :+, 91, 2)),
+    (:line, 92, :none),
+    (:type, true, :PR16155, (:block,
+        (:line, 93, :none),
+        (:(::), :a, :Int64),
+        (:line, 94, :none),
+        :b
+      )),
+    (:line, 96, :none),
+    (:(=), :PR16155line2, (:call, :+, 96, 1)),
+    (:line, 97, :none),
+    (:(=), (:call, (:curly, (:(::), (:curly, :Type, :T)), (:<:, :T, :PR16155)), (:(::), :arg, :Any)), (:block,
+        (:line, 97, :none),
+        "replace call-to-convert method from sysimg"
+      )),
+    (:line, 99, :none),
+    (:call, (:., :Base, (:quote, #QuoteNode
+          :show_method_candidates
+        )), :buf, (:call, :MethodError, :PR16155, (:tuple, 1.0, 2.0, (:call, :Int64, 3)))),
+    (:line, 100, :none),
+    (:call, :test_have_color, :buf, (:string, "\e[0m\nClosest candidates are:\n  PR16155(::Any, ::Any)", :cfile, :PR16155line, "\n  PR16155(\e[1m\e[31m::Int64\e[0m, ::Any)", :cfile, :PR16155line, "\n  PR16155{T<:PR16155}(::Any)", :cfile, :PR16155line2, "\n  ...\e[0m"), (:string, "\nClosest candidates are:\n  PR16155(::Any, ::Any)", :cfile, :PR16155line, "\n  PR16155(!Matched::Int64, ::Any)", :cfile, :PR16155line, "\n  PR16155{T<:PR16155}(::Any)", :cfile, :PR16155line2, "\n  ...")),
+    (:line, 103, :none),
+    (:call, (:., :Base, (:quote, #QuoteNode
+          :show_method_candidates
+        )), :buf, (:call, :MethodError, :PR16155, (:tuple, (:call, :Int64, 3), 2.0, (:call, :Int64, 3)))),
+    (:line, 104, :none),
+    (:call, :test_have_color, :buf, (:string, "\e[0m\nClosest candidates are:\n  PR16155(::Int64, ::Any)", :cfile, :PR16155line, "\n  PR16155(::Any, ::Any)", :cfile, :PR16155line, "\n  PR16155{T<:PR16155}(::Any)", :cfile, :PR16155line2, "\n  ...\e[0m"), (:string, "\nClosest candidates are:\n  PR16155(::Int64, ::Any)", :cfile, :PR16155line, "\n  PR16155(::Any, ::Any)", :cfile, :PR16155line, "\n  PR16155{T<:PR16155}(::Any)", :cfile, :PR16155line2, "\n  ...")),
+    (:line, 107, :none),
+    (:(=), :c6line, 107),
+    (:line, 108, :none),
+    (:(=), (:call, :method_c6, (:parameters, (:kw, :x, 1))), (:block,
+        (:line, 108, :none),
+        :x
+      )),
+    (:line, 109, :none),
+    (:(=), (:call, :method_c6, (:parameters, (:kw, :y, 1)), :a), (:block,
+        (:line, 109, :none),
+        :y
+      )),
+    (:line, 110, :none),
+    (:(=), :m_error, (:try, (:block,
+          (:line, 110, :none),
+          (:call, :method_c6, (:kw, :y, 1))
+        ), :e, (:block,
+          (:line, 110, :none),
+          :e
+        ))),
+    (:line, 111, :none),
+    (:call, :showerror, :buf, :m_error),
+    (:line, 112, :none),
+    (:(=), :error_out, (:call, :takebuf_string, :buf)),
+    (:line, 113, :none),
+    (:(=), :m_error, (:try, (:block,
+          (:line, 113, :none),
+          (:call, :method_c6, 1, (:kw, :x, 1))
+        ), :e, (:block,
+          (:line, 113, :none),
+          :e
+        ))),
+    (:line, 114, :none),
+    (:call, :showerror, :buf, :m_error),
+    (:line, 115, :none),
+    (:(=), :error_out1, (:call, :takebuf_string, :buf)),
+    (:line, 117, :none),
+    (:(=), :c6mline, 117),
+    (:line, 118, :none),
+    (:module, true, :TestKWError, (:block,
+        (:line, 118, :none),
+        (:line, 119, :none),
+        (:(=), (:call, :method_c6_in_module, (:parameters, (:kw, :x, 1))), (:block,
+            (:line, 119, :none),
+            :x
+          )),
+        (:line, 120, :none),
+        (:(=), (:call, :method_c6_in_module, (:parameters, (:kw, :y, 1)), :a), (:block,
+            (:line, 120, :none),
+            :y
+          ))
+      )),
+    (:line, 122, :none),
+    (:(=), :m_error, (:try, (:block,
+          (:line, 122, :none),
+          (:call, (:., :TestKWError, (:quote, #QuoteNode
+                :method_c6_in_module
+              )), (:kw, :y, 1))
+        ), :e, (:block,
+          (:line, 122, :none),
+          :e
+        ))),
+    (:line, 123, :none),
+    (:call, :showerror, :buf, :m_error),
+    (:line, 124, :none),
+    (:(=), :error_out2, (:call, :takebuf_string, :buf)),
+    (:line, 125, :none),
+    (:(=), :m_error, (:try, (:block,
+          (:line, 125, :none),
+          (:call, (:., :TestKWError, (:quote, #QuoteNode
+                :method_c6_in_module
+              )), 1, (:kw, :x, 1))
+        ), :e, (:block,
+          (:line, 125, :none),
+          :e
+        ))),
+    (:line, 126, :none),
+    (:call, :showerror, :buf, :m_error),
+    (:line, 127, :none),
+    (:(=), :error_out3, (:call, :takebuf_string, :buf)),
+    (:line, 129, :none),
+    (:if, (:., :Base, (:quote, #QuoteNode
+          :have_color
+        )), (:block,
+        (:line, 130, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, :error_out, (:string, "method_c6(; x)", :cfile, (:call, :+, :c6line, 1), "\e[1m\e[31m got unsupported keyword argument \"y\"\e[0m"))),
+        (:line, 131, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, :error_out, (:string, "method_c6(\e[1m\e[31m::Any\e[0m; y)", :cfile, (:call, :+, :c6line, 2)))),
+        (:line, 132, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, :error_out1, (:string, "method_c6(::Any; y)", :cfile, (:call, :+, :c6line, 2), "\e[1m\e[31m got unsupported keyword argument \"x\"\e[0m"))),
+        (:line, 133, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, :error_out2, (:string, "method_c6_in_module(; x)", :cfile, (:call, :+, :c6mline, 2), "\e[1m\e[31m got unsupported keyword argument \"y\"\e[0m"))),
+        (:line, 134, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, :error_out2, (:string, "method_c6_in_module(\e[1m\e[31m::Any\e[0m; y)", :cfile, (:call, :+, :c6mline, 3)))),
+        (:line, 135, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, :error_out3, (:string, "method_c6_in_module(::Any; y)", :cfile, (:call, :+, :c6mline, 3), "\e[1m\e[31m got unsupported keyword argument \"x\"\e[0m")))
+      ), (:block,
+        (:line, 137, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, :error_out, (:string, "method_c6(; x)", :cfile, (:call, :+, :c6line, 1), " got unsupported keyword argument \"y\""))),
+        (:line, 138, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, :error_out, (:string, "method_c6(!Matched::Any; y)", :cfile, (:call, :+, :c6line, 2)))),
+        (:line, 139, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, :error_out1, (:string, "method_c6(::Any; y)", :cfile, (:call, :+, :c6line, 2), " got unsupported keyword argument \"x\""))),
+        (:line, 140, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, :error_out2, (:string, "method_c6_in_module(; x)", :cfile, (:call, :+, :c6mline, 2), " got unsupported keyword argument \"y\""))),
+        (:line, 141, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, :error_out2, (:string, "method_c6_in_module(!Matched::Any; y)", :cfile, (:call, :+, :c6mline, 3)))),
+        (:line, 142, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, :error_out3, (:string, "method_c6_in_module(::Any; y)", :cfile, (:call, :+, :c6mline, 3), " got unsupported keyword argument \"x\"")))
+      )),
+    (:line, 145, :none),
+    (:(=), :c7line, (:call, :+, 145, 1)),
+    (:line, 146, :none),
+    (:(=), (:call, :method_c7, (:parameters, (:..., :kargs)), :a, :b), (:block,
+        (:line, 146, :none),
+        :a
+      )),
+    (:line, 147, :none),
+    (:call, (:., :Base, (:quote, #QuoteNode
+          :show_method_candidates
+        )), :buf, (:call, :MethodError, :method_c7, (:tuple, 1, 1)), (:vect, (:tuple, (:quote, #QuoteNode
+            :x
+          ), 1), (:tuple, (:quote, #QuoteNode
+            :y
+          ), 2))),
+    (:line, 148, :none),
+    (:call, :test_have_color, :buf, (:string, "\e[0m\nClosest candidates are:\n  method_c7(::Any, ::Any; kargs...)", :cfile, :c7line, "\e[0m"), (:string, "\nClosest candidates are:\n  method_c7(::Any, ::Any; kargs...)", :cfile, :c7line)),
+    (:line, 150, :none),
+    (:(=), :c8line, (:call, :+, 150, 1)),
+    (:line, 151, :none),
+    (:(=), (:call, :method_c8, (:parameters, (:kw, :y, 1), (:kw, :w, 1)), :a, :b), (:block,
+        (:line, 151, :none),
+        :a
+      )),
+    (:line, 152, :none),
+    (:call, (:., :Base, (:quote, #QuoteNode
+          :show_method_candidates
+        )), :buf, (:call, :MethodError, :method_c8, (:tuple, 1, 1)), (:vect, (:tuple, (:quote, #QuoteNode
+            :x
+          ), 1), (:tuple, (:quote, #QuoteNode
+            :y
+          ), 2), (:tuple, (:quote, #QuoteNode
+            :z
+          ), 1), (:tuple, (:quote, #QuoteNode
+            :w
+          ), 1))),
+    (:line, 153, :none),
+    (:call, :test_have_color, :buf, (:string, "\e[0m\nClosest candidates are:\n  method_c8(::Any, ::Any; y, w)", :cfile, :c8line, "\e[1m\e[31m got unsupported keyword arguments \"x\", \"z\"\e[0m\e[0m"), (:string, "\nClosest candidates are:\n  method_c8(::Any, ::Any; y, w)", :cfile, :c8line, " got unsupported keyword arguments \"x\", \"z\"")),
+    (:line, 156, :none),
+    (:(=), :ac15639line, 156),
+    (:line, 157, :none),
+    (:(=), (:call, :addConstraint_15639, (:(::), :c, :Int32)), (:block,
+        (:line, 157, :none),
+        :c
+      )),
+    (:line, 158, :none),
+    (:(=), (:call, :addConstraint_15639, (:parameters, (:kw, :uncset, :nothing)), (:(::), :c, :Int64)), (:block,
+        (:line, 158, :none),
+        (:call, :addConstraint_15639, (:call, :Int32, :c), (:kw, :uncset, :uncset))
+      )),
+    (:line, 160, :none),
+    (:call, (:., :Base, (:quote, #QuoteNode
+          :show_method_candidates
+        )), :buf, (:call, :MethodError, :addConstraint_15639, (:tuple, (:call, :Int32, 1))), (:vect, (:tuple, (:quote, #QuoteNode
+            :uncset
+          ), :nothing))),
+    (:line, 161, :none),
+    (:call, :test_have_color, :buf, (:string, "\e[0m\nClosest candidates are:\n  addConstraint_15639(::Int32)", :cfile, (:call, :+, :ac15639line, 1), "\e[1m\e[31m got unsupported keyword argument \"uncset\"\e[0m\n  addConstraint_15639(\e[1m\e[31m::Int64\e[0m; uncset)", :cfile, (:call, :+, :ac15639line, 2), "\e[0m"), (:string, "\nClosest candidates are:\n  addConstraint_15639(::Int32)", :cfile, (:call, :+, :ac15639line, 1), " got unsupported keyword argument \"uncset\"\n  addConstraint_15639(!Matched::Int64; uncset)", :cfile, (:call, :+, :ac15639line, 2))),
+    (:line, 164, :none),
+    (:macro, (:call, :except_str, :expr, :err_type), (:block,
+        (:line, 165, :none),
+        (:return, (:quote, (:block,
+              (:line, 166, :none),
+              (:let, (:block,
+                  (:line, 167, :none),
+                  (:try, (:block,
+                      (:line, 168, :none),
+                      (:$, (:call, :esc, :expr))
+                    ), :err, (:block,
+                      (:line, 170, :none)
+                    )),
+                  (:line, 171, :none),
+                  (:&&, (:call, :(===), :err, :nothing), (:call, :error, "expected failure, but no exception thrown")),
+                  (:line, 172, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(===), (:call, :typeof, :err), (:$, (:call, :esc, :err_type)))),
+                  (:line, 173, :none),
+                  (:(=), :buff, (:call, :IOBuffer)),
+                  (:line, 174, :none),
+                  (:call, :showerror, :buff, :err),
+                  (:line, 175, :none),
+                  (:call, :takebuf_string, :buff)
+                ), (:(=), :err, :nothing))
+            )))
+      )),
+    (:line, 180, :none),
+    (:macro, (:call, :except_strbt, :expr, :err_type), (:block,
+        (:line, 181, :none),
+        (:return, (:quote, (:block,
+              (:line, 182, :none),
+              (:let, (:block,
+                  (:line, 183, :none),
+                  (:try, (:block,
+                      (:line, 184, :none),
+                      (:$, (:call, :esc, :expr))
+                    ), :err, (:block,
+                      (:line, 186, :none)
+                    )),
+                  (:line, 187, :none),
+                  (:&&, (:call, :(===), :err, :nothing), (:call, :error, "expected failure, but no exception thrown")),
+                  (:line, 188, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(===), (:call, :typeof, :err), (:$, (:call, :esc, :err_type)))),
+                  (:line, 189, :none),
+                  (:(=), :buff, (:call, :IOBuffer)),
+                  (:line, 190, :none),
+                  (:call, :showerror, :buff, :err, (:call, :catch_backtrace)),
+                  (:line, 191, :none),
+                  (:call, :takebuf_string, :buff)
+                ), (:(=), :err, :nothing))
+            )))
+      )),
+    (:line, 196, :none),
+    (:macro, (:call, :except_stackframe, :expr, :err_type), (:block,
+        (:line, 197, :none),
+        (:return, (:quote, (:block,
+              (:line, 198, :none),
+              (:let, (:block,
+                  (:line, 199, :none),
+                  (:local, :st),
+                  (:line, 200, :none),
+                  (:try, (:block,
+                      (:line, 201, :none),
+                      (:$, (:call, :esc, :expr))
+                    ), :err, (:block,
+                      (:line, 203, :none),
+                      (:(=), :st, (:call, :catch_stacktrace))
+                    )),
+                  (:line, 205, :none),
+                  (:&&, (:call, :(===), :err, :nothing), (:call, :error, "expected failure, but no exception thrown")),
+                  (:line, 206, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(===), (:call, :typeof, :err), (:$, (:call, :esc, :err_type)))),
+                  (:line, 207, :none),
+                  (:call, :sprint, :show, (:ref, :st, 1))
+                ), (:(=), :err, :nothing))
+            )))
+      )),
+    (:line, 213, :none),
+    (:abstract, :InvokeType11007),
+    (:line, 214, :none),
+    (:abstract, (:<:, :MethodType11007, :InvokeType11007)),
+    (:line, 215, :none),
+    (:type, true, (:<:, :InstanceType11007, :MethodType11007), (:block,
+        (:line, 216, :none)
+      )),
+    (:line, 217, :none),
+    (:let, (:block,
+        (:line, 218, :none),
+        (:(=), (:call, :f11007, (:(::), :MethodType11007)), (:block,
+            (:line, 218, :none),
+            :nothing
+          )),
+        (:line, 219, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_str"), (:call, :invoke, :f11007, (:curly, :Tuple, :InvokeType11007), (:call, :InstanceType11007)), :MethodError)),
+        (:line, 221, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:call, :contains, :err_str, "::InstanceType11007"))),
+        (:line, 222, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, :err_str, "::InvokeType11007"))
+      )),
+    (:line, 225, :none),
+    (:module, true, :__tmp_replutil, (:block,
+        (:line, 225, :none),
+        (:line, 227, :none),
+        (:using, :Base, :Test),
+        (:line, 228, :none),
+        (:import, :Main, Symbol("@except_str")),
+        (:line, 229, :none),
+        (:global, :+),
+        (:line, 230, :none),
+        (:(=), (:call, :+), (:block,
+            (:line, 230, :none),
+            :nothing
+          )),
+        (:line, 231, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_str"), (:call, :+, 1, 2), :MethodError)),
+        (:line, 232, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, :err_str, "import Base.+")),
+        (:line, 234, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_str"), (:call, (:ref, :Float64), 1), :MethodError)),
+        (:line, 235, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:call, :contains, :err_str, "import Base.Array"))),
+        (:line, 237, :none),
+        (:(=), (:call, :Array), (:block,
+            (:line, 237, :none),
+            1
+          )),
+        (:line, 238, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_str"), (:call, :Array, 1), :MethodError)),
+        (:line, 239, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, :err_str, "import Base.Array"))
+      )),
+    (:line, 243, :none),
+    (:let, (:block,
+        (:line, 244, :none),
+        (:(=), (:call, :g11007, (:(::), :AbstractVector)), (:block,
+            (:line, 244, :none),
+            :nothing
+          )),
+        (:line, 245, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_str"), (:call, :g11007, (:hcat, (:vect, 1), (:vect, 1))), :MethodError)),
+        (:line, 246, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, :err_str, "row vector")),
+        (:line, 247, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, :err_str, "column vector"))
+      )),
+    (:line, 250, :none),
+    (:abstract, :T11007),
+    (:line, 251, :none),
+    (:let, (:block,
+        (:line, 252, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_str"), (:call, :T11007), :MethodError)),
+        (:line, 253, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, :err_str, "no method matching T11007()"))
+      )),
+    (:line, 256, :none),
+    (:type, false, (:curly, :TypeWithIntParam, (:<:, :T, :Integer)), (:block,
+        (:line, 256, :none)
+      )),
+    (:line, 257, :none),
+    (:let, (:block,
+        (:line, 258, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_strbt"), (:call, :sqrt, -1), :DomainError)),
+        (:line, 259, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, :err_str, "Try sqrt(complex(x)).")),
+        (:line, 260, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_strbt"), (:call, :^, 1, -1), :DomainError)),
+        (:line, 261, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, :err_str, "Cannot raise an integer x to a negative power -n")),
+        (:line, 262, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_strbt"), (:call, :^, -1, 0.25), :DomainError)),
+        (:line, 263, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, :err_str, "Exponentiation yielding a complex result requires a complex argument")),
+        (:line, 265, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_str"), (:ref, (:tuple, 1, 2, 3), 4), :BoundsError)),
+        (:line, 266, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :err_str, "BoundsError: attempt to access (1,2,3)\n  at index [4]")),
+        (:line, 268, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_str"), (:ref, (:vect, 5, 4, 3), -2, 1), :BoundsError)),
+        (:line, 269, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :err_str, (:string, "BoundsError: attempt to access 3-element Array{", :Int, ",1} at index [-2,1]"))),
+        (:line, 270, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_str"), (:ref, (:vect, 5, 4, 3), (:(:), 1, 5)), :BoundsError)),
+        (:line, 271, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :err_str, (:string, "BoundsError: attempt to access 3-element Array{", :Int, ",1} at index [1:5]"))),
+        (:line, 273, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_str"), (:(::), 0, :Bool), :TypeError)),
+        (:line, 274, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :err_str, (:string, "TypeError: non-boolean (", :Int, ") used in boolean context"))),
+        (:line, 275, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_str"), (:(::), 0, :AbstractFloat), :TypeError)),
+        (:line, 276, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :err_str, (:string, "TypeError: typeassert: expected AbstractFloat, got ", :Int))),
+        (:line, 277, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_str"), (:(::), 0, 7), :TypeError)),
+        (:line, 278, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :err_str, (:string, "TypeError: typeassert: expected Type{T}, got ", :Int))),
+        (:line, 279, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_str"), (:<:, "", :AbstractString), :TypeError)),
+        (:line, 280, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :err_str, "TypeError: subtype: expected Type{T}, got String")),
+        (:line, 281, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_str"), (:<:, :AbstractString, ""), :TypeError)),
+        (:line, 282, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :err_str, "TypeError: subtype: expected Type{T}, got String")),
+        (:line, 283, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_str"), (:curly, :Type, ""), :TypeError)),
+        (:line, 284, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :err_str, "TypeError: Type: in parameter, expected Type{T}, got String")),
+        (:line, 285, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_str"), (:curly, :TypeWithIntParam, :Any), :TypeError)),
+        (:line, 286, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :err_str, "TypeError: TypeWithIntParam: in T, expected T<:Integer, got Type{Any}")),
+        (:line, 288, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_str"), (:call, :mod, 1, 0), :DivideError)),
+        (:line, 289, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :err_str, "DivideError: integer division error")),
+        (:line, 290, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_str"), (:ref, (:call, (:curly, :Array, :Any, 1), 1), 1), :UndefRefError)),
+        (:line, 291, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :err_str, "UndefRefError: access to undefined reference")),
+        (:line, 292, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_str"), :undefvar, :UndefVarError)),
+        (:line, 293, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :err_str, "UndefVarError: undefvar not defined")),
+        (:line, 294, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_str"), (:call, :read, (:call, :IOBuffer), :UInt8), :EOFError)),
+        (:line, 295, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :err_str, "EOFError: read end of file")),
+        (:line, 296, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_str"), (:ref, (:call, :Dict), (:quote, #QuoteNode
+                :doesnotexist
+              )), :KeyError)),
+        (:line, 297, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :err_str, "KeyError: key :doesnotexist not found")),
+        (:line, 298, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_str"), (:call, :throw, (:call, :InterruptException)), :InterruptException)),
+        (:line, 299, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :err_str, "InterruptException:")),
+        (:line, 300, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_str"), (:call, :throw, (:call, :ArgumentError, "not an error")), :ArgumentError)),
+        (:line, 301, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :err_str, "ArgumentError: not an error")),
+        (:line, 302, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_str"), (:macrocall, Symbol("@assert"), false), :AssertionError)),
+        (:line, 303, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :err_str, "AssertionError: false"))
+      ), :undefvar),
+    (:line, 308, :none),
+    (:let, (:block,
+        (:line, 309, :none),
+        (:(=), :buff, (:call, :IOBuffer)),
+        (:line, 310, :none),
+        (:call, :showerror, :buff, (:call, :MethodError, :convert, (:tuple, 3, 1.0))),
+        (:line, 311, :none),
+        (:call, :showerror, :buff, (:call, :MethodError, :convert, (:tuple, :Int, 1.0))),
+        (:line, 312, :none),
+        (:call, :showerror, :buff, (:call, :MethodError, :convert, (:curly, :Tuple, :Type, :Float64))),
+        (:line, 313, :none),
+        (:call, :showerror, :buff, (:call, :MethodError, :convert, (:curly, :Tuple, :DataType, :Float64)))
+      )),
+    (:line, 317, :none),
+    (:bitstype, 8, :EightBitType),
+    (:line, 318, :none),
+    (:bitstype, 8, (:curly, :EightBitTypeT, :T)),
+    (:line, 319, :none),
+    (:type, false, (:<:, :FunctionLike, :Function), (:block,
+        (:line, 319, :none)
+      )),
+    (:line, 320, :none),
+    (:let, (:block,
+        (:line, 324, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_str"), (:call, :Bool), :MethodError)),
+        (:line, 325, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, :err_str, "MethodError: no method matching Bool()")),
+        (:line, 326, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_str"), (:call, (:quote, #QuoteNode
+                :a
+              )), :MethodError)),
+        (:line, 327, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, :err_str, "MethodError: objects of type Symbol are not callable")),
+        (:line, 328, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_str"), (:call, :EightBitType), :MethodError)),
+        (:line, 329, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, :err_str, "MethodError: no method matching EightBitType()")),
+        (:line, 330, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_str"), (:call, :i), :MethodError)),
+        (:line, 331, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, :err_str, "MethodError: objects of type EightBitType are not callable")),
+        (:line, 332, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_str"), (:call, :EightBitTypeT), :MethodError)),
+        (:line, 333, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, :err_str, "MethodError: no method matching EightBitTypeT{T}()")),
+        (:line, 334, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_str"), (:call, (:curly, :EightBitTypeT, :Int32)), :MethodError)),
+        (:line, 335, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, :err_str, "MethodError: no method matching EightBitTypeT{Int32}()")),
+        (:line, 336, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_str"), (:call, :j), :MethodError)),
+        (:line, 337, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, :err_str, "MethodError: objects of type EightBitTypeT{Int32} are not callable")),
+        (:line, 338, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_str"), (:call, (:call, :FunctionLike)), :MethodError)),
+        (:line, 339, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, :err_str, "MethodError: no method matching (::FunctionLike)()")),
+        (:line, 340, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_str"), (:call, (:vect, 1, 2), 1), :MethodError)),
+        (:line, 341, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, :err_str, (:string, "MethodError: objects of type Array{", :Int, ",1} are not callable\nUse square brackets [] for indexing an Array."))),
+        (:line, 343, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_str"), (:call, (:call, :randn, 1)), :MethodError)),
+        (:line, 344, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, :err_str, "MethodError: objects of type Array{Float64,1} are not callable"))
+      ), :err_str, (:(=), :i, (:call, :reinterpret, :EightBitType, 0x54)), (:(=), :j, (:call, :reinterpret, (:curly, :EightBitTypeT, :Int32), 0x54))),
+    (:line, 346, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :stringmime, "text/plain", (:call, :FunctionLike)), "(::FunctionLike) (generic function with 0 methods)")),
+    (:line, 347, :none),
+    (:macrocall, Symbol("@test"), (:call, :ismatch, (:macrocall, Symbol("@r_str"), "^@doc \\(macro with \\d+ method[s]?\\)\$"), (:call, :stringmime, "text/plain", (:call, :getfield, :Base, (:call, :Symbol, "@doc"))))),
+    (:line, 349, :none),
+    (:(=), :method_defs_lineno, (:call, :+, 349, 1)),
+    (:line, 350, :none),
+    (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+            :Symbol
+          ))), (:block,
+        (:line, 350, :none),
+        (:call, :throw, (:call, :ErrorException, "1"))
+      )),
+    (:line, 351, :none),
+    (:(=), (:call, (:(::), :Symbol)), (:block,
+        (:line, 351, :none),
+        (:call, :throw, (:call, :ErrorException, "2"))
+      )),
+    (:line, 352, :none),
+    (:(=), (:call, :EightBitType), (:block,
+        (:line, 352, :none),
+        (:call, :throw, (:call, :ErrorException, "3"))
+      )),
+    (:line, 353, :none),
+    (:(=), (:call, (:(::), :EightBitType)), (:block,
+        (:line, 353, :none),
+        (:call, :throw, (:call, :ErrorException, "4"))
+      )),
+    (:line, 354, :none),
+    (:(=), (:call, :EightBitTypeT), (:block,
+        (:line, 354, :none),
+        (:call, :throw, (:call, :ErrorException, "5"))
+      )),
+    (:line, 355, :none),
+    (:(=), (:call, (:curly, (:(::), (:curly, :Type, (:curly, :EightBitTypeT, :T))), :T)), (:block,
+        (:line, 355, :none),
+        (:call, :throw, (:call, :ErrorException, "6"))
+      )),
+    (:line, 356, :none),
+    (:(=), (:call, (:(::), :EightBitTypeT)), (:block,
+        (:line, 356, :none),
+        (:call, :throw, (:call, :ErrorException, "7"))
+      )),
+    (:line, 357, :none),
+    (:(=), (:call, (:(::), :FunctionLike)), (:block,
+        (:line, 357, :none),
+        (:call, :throw, (:call, :ErrorException, "8"))
+      )),
+    (:line, 360, :none),
+    (:let, (:block,
+        (:line, 364, :none),
+        (:(=), :sn, (:call, :basename, :sp)),
+        (:line, 366, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :sprint, :show, (:call, :which, :Symbol, (:curly, :Tuple))), (:string, "Symbol() at ", :sp, ":", (:call, :+, :method_defs_lineno, 0)))),
+        (:line, 367, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :sprint, :show, (:call, :which, (:quote, #QuoteNode
+                  :a
+                ), (:curly, :Tuple))), (:string, "(::Symbol)() at ", :sp, ":", (:call, :+, :method_defs_lineno, 1)))),
+        (:line, 368, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :sprint, :show, (:call, :which, :EightBitType, (:curly, :Tuple))), (:string, "EightBitType() at ", :sp, ":", (:call, :+, :method_defs_lineno, 2)))),
+        (:line, 369, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :sprint, :show, (:call, :which, (:call, :reinterpret, :EightBitType, 0x54), (:curly, :Tuple))), (:string, "(::EightBitType)() at ", :sp, ":", (:call, :+, :method_defs_lineno, 3)))),
+        (:line, 370, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :sprint, :show, (:call, :which, :EightBitTypeT, (:curly, :Tuple))), (:string, "(::Type{EightBitTypeT})() at ", :sp, ":", (:call, :+, :method_defs_lineno, 4)))),
+        (:line, 371, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :sprint, :show, (:call, :which, (:curly, :EightBitTypeT, :Int32), (:curly, :Tuple))), (:string, "(::Type{EightBitTypeT{T}}){T}() at ", :sp, ":", (:call, :+, :method_defs_lineno, 5)))),
+        (:line, 372, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :sprint, :show, (:call, :which, (:call, :reinterpret, (:curly, :EightBitTypeT, :Int32), 0x54), (:curly, :Tuple))), (:string, "(::EightBitTypeT)() at ", :sp, ":", (:call, :+, :method_defs_lineno, 6)))),
+        (:line, 373, :none),
+        (:macrocall, Symbol("@test"), (:call, :startswith, (:call, :sprint, :show, (:call, :which, (:call, :getfield, :Base, (:call, :Symbol, "@doc")), (:curly, :Tuple, (:curly, :Vararg, :Any)))), "@doc(x...) at boot.jl:")),
+        (:line, 374, :none),
+        (:macrocall, Symbol("@test"), (:call, :startswith, (:call, :sprint, :show, (:call, :which, (:call, :FunctionLike), (:curly, :Tuple))), (:string, "(::FunctionLike)() at ", :sp, ":", (:call, :+, :method_defs_lineno, 7)))),
+        (:line, 375, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :stringmime, "text/plain", (:call, :FunctionLike)), "(::FunctionLike) (generic function with 1 method)")),
+        (:line, 376, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :stringmime, "text/plain", (:., :Core, (:quote, #QuoteNode
+                  :arraysize
+                ))), "arraysize (built-in function)")),
+        (:line, 378, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_stackframe"), (:call, :Symbol), :ErrorException)),
+        (:line, 379, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :err_str, (:string, " in Symbol() at ", :sn, ":", (:call, :+, :method_defs_lineno, 0)))),
+        (:line, 380, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_stackframe"), (:call, (:quote, #QuoteNode
+                :a
+              )), :ErrorException)),
+        (:line, 381, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :err_str, (:string, " in (::Symbol)() at ", :sn, ":", (:call, :+, :method_defs_lineno, 1)))),
+        (:line, 382, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_stackframe"), (:call, :EightBitType), :ErrorException)),
+        (:line, 383, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :err_str, (:string, " in EightBitType() at ", :sn, ":", (:call, :+, :method_defs_lineno, 2)))),
+        (:line, 384, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_stackframe"), (:call, :i), :ErrorException)),
+        (:line, 385, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :err_str, (:string, " in (::EightBitType)() at ", :sn, ":", (:call, :+, :method_defs_lineno, 3)))),
+        (:line, 386, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_stackframe"), (:call, :EightBitTypeT), :ErrorException)),
+        (:line, 387, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :err_str, (:string, " in EightBitTypeT{T}() at ", :sn, ":", (:call, :+, :method_defs_lineno, 4)))),
+        (:line, 388, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_stackframe"), (:call, (:curly, :EightBitTypeT, :Int32)), :ErrorException)),
+        (:line, 389, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :err_str, (:string, " in EightBitTypeT{Int32}() at ", :sn, ":", (:call, :+, :method_defs_lineno, 5)))),
+        (:line, 390, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_stackframe"), (:call, :j), :ErrorException)),
+        (:line, 391, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :err_str, (:string, " in (::EightBitTypeT{Int32})() at ", :sn, ":", (:call, :+, :method_defs_lineno, 6)))),
+        (:line, 392, :none),
+        (:(=), :err_str, (:macrocall, Symbol("@except_stackframe"), (:call, (:call, :FunctionLike)), :ErrorException)),
+        (:line, 393, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :err_str, (:string, " in (::FunctionLike)() at ", :sn, ":", (:call, :+, :method_defs_lineno, 7))))
+      ), :err_str, (:(=), :i, (:call, :reinterpret, :EightBitType, 0x54)), (:(=), :j, (:call, :reinterpret, (:curly, :EightBitTypeT, :Int32), 0x54)), (:(=), :sp, (:call, (:., :Base, (:quote, #QuoteNode
+              :source_path
+            ))))),
+    (:line, 397, :none),
+    (:call, :withenv, (:->, (:tuple,), (:block,
+          (:line, 399, :none),
+          (:macrocall, Symbol("@test"), (:call, :isa, (:call, (:., :Base, (:quote, #QuoteNode
+                    :editor
+                  ))), :Array)),
+          (:line, 402, :none),
+          (:(=), (:ref, :ENV, "JULIA_EDITOR"), ""),
+          (:line, 403, :none),
+          (:macrocall, Symbol("@test_throws"), :ErrorException, (:call, (:., :Base, (:quote, #QuoteNode
+                  :editor
+                )))),
+          (:line, 409, :none),
+          (:(=), (:ref, :ENV, "JULIA_EDITOR"), "vim"),
+          (:line, 410, :none),
+          (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+                    :editor
+                  ))), (:vect, "vim"))),
+          (:line, 413, :none),
+          (:(=), (:ref, :ENV, "JULIA_EDITOR"), "/usr/bin/vim"),
+          (:line, 414, :none),
+          (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+                    :editor
+                  ))), (:vect, "/usr/bin/vim"))),
+          (:line, 417, :none),
+          (:(=), (:ref, :ENV, "JULIA_EDITOR"), "subl -w"),
+          (:line, 418, :none),
+          (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+                    :editor
+                  ))), (:vect, "subl", "-w"))),
+          (:line, 421, :none),
+          (:(=), (:ref, :ENV, "JULIA_EDITOR"), "/Applications/Sublime\\ Text.app/Contents/SharedSupport/bin/subl"),
+          (:line, 422, :none),
+          (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+                    :editor
+                  ))), (:vect, "/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl"))),
+          (:line, 425, :none),
+          (:(=), (:ref, :ENV, "JULIA_EDITOR"), "/Applications/Sublime\\ Text.app/Contents/SharedSupport/bin/subl -w"),
+          (:line, 426, :none),
+          (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+                    :editor
+                  ))), (:vect, "/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl", "-w"))),
+          (:line, 428, :none),
+          (:(=), (:ref, :ENV, "JULIA_EDITOR"), "'/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl' -w"),
+          (:line, 429, :none),
+          (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+                    :editor
+                  ))), (:vect, "/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl", "-w"))),
+          (:line, 431, :none),
+          (:(=), (:ref, :ENV, "JULIA_EDITOR"), "\"/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl\" -w"),
+          (:line, 432, :none),
+          (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+                    :editor
+                  ))), (:vect, "/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl", "-w")))
+        )), (:(=>), "JULIA_EDITOR", :nothing), (:(=>), "VISUAL", :nothing), (:(=>), "EDITOR", :nothing)),
+    (:line, 436, :none),
+    (:let, (:block,
+        (:line, 437, :none),
+        (:(=), :buf, (:call, :IOBuffer)),
+        (:line, 438, :none),
+        (:(=), :td, (:call, :TextDisplay, :buf)),
+        (:line, 439, :none),
+        (:call, :display, :td, :d),
+        (:line, 440, :none),
+        (:(=), :result, (:call, :String, (:., :td, (:quote, #QuoteNode
+                :io
+              )))),
+        (:line, 442, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, :result, (:call, :summary, :d))),
+        (:line, 446, :none),
+        (:for, (:(=), :el, :d), (:block,
+            (:line, 447, :none),
+            (:macrocall, Symbol("@test"), (:call, :contains, (:call, :replace, :result, " ", ""), (:call, :string, :el)))
+          ))
+      ), (:(=), :d, (:call, :Dict, (:(=>), 1, 2), (:(=>), 3, 45))))
+  ))

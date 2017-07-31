@@ -1,0 +1,1497 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:abstract, :AbstractCmd),
+    (:line, 6, :none),
+    (:const, (:(=), :UV_PROCESS_WINDOWS_VERBATIM_ARGUMENTS, (:call, :UInt8, (:call, :<<, 1, 2)))),
+    (:line, 7, :none),
+    (:const, (:(=), :UV_PROCESS_DETACHED, (:call, :UInt8, (:call, :<<, 1, 3)))),
+    (:line, 8, :none),
+    (:const, (:(=), :UV_PROCESS_WINDOWS_HIDE, (:call, :UInt8, (:call, :<<, 1, 4)))),
+    (:line, 10, :none),
+    (:type, false, (:<:, :Cmd, :AbstractCmd), (:block,
+        (:line, 11, :none),
+        (:(::), :exec, (:curly, :Vector, :String)),
+        (:line, 12, :none),
+        (:(::), :ignorestatus, :Bool),
+        (:line, 13, :none),
+        (:(::), :flags, :UInt32),
+        (:line, 14, :none),
+        (:(::), :env, (:curly, :Union, (:curly, :Array, :String), :Void)),
+        (:line, 15, :none),
+        (:(::), :dir, :String),
+        (:line, 16, :none),
+        (:(=), (:call, :Cmd, (:(::), :exec, (:curly, :Vector, :String))), (:block,
+            (:line, 16, :none),
+            (:call, :new, :exec, false, 0x00, :nothing, "")
+          )),
+        (:line, 18, :none),
+        (:(=), (:call, :Cmd, (:(::), :cmd, :Cmd), :ignorestatus, :flags, :env, :dir), (:block,
+            (:line, 18, :none),
+            (:call, :new, (:., :cmd, (:quote, #QuoteNode
+                  :exec
+                )), :ignorestatus, :flags, :env, (:if, (:call, :(===), :dir, (:., :cmd, (:quote, #QuoteNode
+                      :dir
+                    ))), :dir, (:call, :cstr, :dir)))
+          )),
+        (:line, 21, :none),
+        (:function, (:call, :Cmd, (:parameters, (:kw, (:(::), :ignorestatus, :Bool), (:., :cmd, (:quote, #QuoteNode
+                    :ignorestatus
+                  ))), (:kw, :env, (:., :cmd, (:quote, #QuoteNode
+                    :env
+                  ))), (:kw, (:(::), :dir, :AbstractString), (:., :cmd, (:quote, #QuoteNode
+                    :dir
+                  ))), (:kw, (:(::), :detach, :Bool), (:call, :(!=), 0, (:call, :&, (:., :cmd, (:quote, #QuoteNode
+                        :flags
+                      )), :UV_PROCESS_DETACHED))), (:kw, (:(::), :windows_verbatim, :Bool), (:call, :(!=), 0, (:call, :&, (:., :cmd, (:quote, #QuoteNode
+                        :flags
+                      )), :UV_PROCESS_WINDOWS_VERBATIM_ARGUMENTS))), (:kw, (:(::), :windows_hide, :Bool), (:call, :(!=), 0, (:call, :&, (:., :cmd, (:quote, #QuoteNode
+                        :flags
+                      )), :UV_PROCESS_WINDOWS_HIDE)))), (:(::), :cmd, :Cmd)), (:block,
+            (:line, 25, :none),
+            (:(=), :flags, (:call, :|, (:call, :|, (:call, :*, :detach, :UV_PROCESS_DETACHED), (:call, :*, :windows_verbatim, :UV_PROCESS_WINDOWS_VERBATIM_ARGUMENTS)), (:call, :*, :windows_hide, :UV_PROCESS_WINDOWS_HIDE))),
+            (:line, 28, :none),
+            (:call, :new, (:., :cmd, (:quote, #QuoteNode
+                  :exec
+                )), :ignorestatus, :flags, (:call, :byteenv, :env), (:if, (:call, :(===), :dir, (:., :cmd, (:quote, #QuoteNode
+                      :dir
+                    ))), :dir, (:call, :cstr, :dir)))
+          ))
+      )),
+    (:line, 33, :none),
+    "    Cmd(cmd::Cmd; ignorestatus, detach, windows_verbatim, windows_hide,\n                  env, dir)\n\nConstruct a new `Cmd` object, representing an external program and\narguments, from `cmd`, while changing the settings of the optional\nkeyword arguments:\n\n* `ignorestatus::Bool`: If `true` (defaults to `false`), then the `Cmd`\n  will not throw an error if the return code is nonzero.\n* `detach::Bool`: If `true` (defaults to `false`), then the `Cmd` will be\n  run in a new process group, allowing it to outlive the `julia` process\n  and not have Ctrl-C passed to it.\n* `windows_verbatim::Bool`: If `true` (defaults to `false`), then on Windows\n  the `Cmd` will send a command-line string to the process with no quoting\n  or escaping of arguments, even arguments containing spaces.  (On Windows,\n  arguments are sent to a program as a single \"command-line\" string, and\n  programs are responsible for parsing it into arguments.  By default,\n  empty arguments and arguments with spaces or tabs are quoted with double\n  quotes `\"` in the command line, and `\\` or `\"` are preceded by backslashes.\n  `windows_verbatim=true` is useful for launching programs that parse their\n  command line in nonstandard ways.)  Has no effect on non-Windows systems.\n* `windows_hide::Bool`: If `true` (defaults to `false`), then on Windows no\n  new console window is displayed when the `Cmd` is executed.  This has\n  no effect if a console is already open or on non-Windows systems.\n* `env`: Set environment variables to use when running the `Cmd`.  `env`\n  is either a dictionary mapping strings to strings, an array\n  of strings of the form `\"var=val\"`, an array or tuple of `\"var\"=>val`\n  pairs, or `nothing`.  In order to modify (rather than replace)\n  the existing environment, create `env` by `copy(ENV)` and then\n  set `env[\"var\"]=val` as desired.\n* `dir::AbstractString`: Specify a working directory for the command (instead\n  of the current directory).\n\nFor any keywords that are not specified, the current settings from `cmd` are\nused.   Normally, to create a `Cmd` object in the first place, one uses\nbackticks, e.g.\n\n    Cmd(`echo \"Hello world\"`, ignorestatus=true, detach=false)\n",
+    (:line, 73, :none),
+    :Cmd,
+    (:line, 75, :none),
+    (:(=), (:call, :hash, (:(::), :x, :Cmd), (:(::), :h, :UInt)), (:block,
+        (:line, 75, :none),
+        (:call, :hash, (:., :x, (:quote, #QuoteNode
+              :exec
+            )), (:call, :hash, (:., :x, (:quote, #QuoteNode
+                :env
+              )), (:call, :hash, (:., :x, (:quote, #QuoteNode
+                  :ignorestatus
+                )), (:call, :hash, (:., :x, (:quote, #QuoteNode
+                    :dir
+                  )), (:call, :hash, (:., :x, (:quote, #QuoteNode
+                      :flags
+                    )), :h)))))
+      )),
+    (:line, 76, :none),
+    (:(=), (:call, :(==), (:(::), :x, :Cmd), (:(::), :y, :Cmd)), (:block,
+        (:line, 76, :none),
+        (:&&, (:call, :(==), (:., :x, (:quote, #QuoteNode
+                :exec
+              )), (:., :y, (:quote, #QuoteNode
+                :exec
+              ))), (:&&, (:call, :(==), (:., :x, (:quote, #QuoteNode
+                  :env
+                )), (:., :y, (:quote, #QuoteNode
+                  :env
+                ))), (:&&, (:call, :(==), (:., :x, (:quote, #QuoteNode
+                    :ignorestatus
+                  )), (:., :y, (:quote, #QuoteNode
+                    :ignorestatus
+                  ))), (:&&, (:call, :(==), (:., :x, (:quote, #QuoteNode
+                      :dir
+                    )), (:., :y, (:quote, #QuoteNode
+                      :dir
+                    ))), (:call, :isequal, (:., :x, (:quote, #QuoteNode
+                      :flags
+                    )), (:., :y, (:quote, #QuoteNode
+                      :flags
+                    )))))))
+      )),
+    (:line, 79, :none),
+    (:type, false, (:<:, :OrCmds, :AbstractCmd), (:block,
+        (:line, 80, :none),
+        (:(::), :a, :AbstractCmd),
+        (:line, 81, :none),
+        (:(::), :b, :AbstractCmd),
+        (:line, 82, :none),
+        (:(=), (:call, :OrCmds, (:(::), :a, :AbstractCmd), (:(::), :b, :AbstractCmd)), (:block,
+            (:line, 82, :none),
+            (:call, :new, :a, :b)
+          ))
+      )),
+    (:line, 85, :none),
+    (:type, false, (:<:, :ErrOrCmds, :AbstractCmd), (:block,
+        (:line, 86, :none),
+        (:(::), :a, :AbstractCmd),
+        (:line, 87, :none),
+        (:(::), :b, :AbstractCmd),
+        (:line, 88, :none),
+        (:(=), (:call, :ErrOrCmds, (:(::), :a, :AbstractCmd), (:(::), :b, :AbstractCmd)), (:block,
+            (:line, 88, :none),
+            (:call, :new, :a, :b)
+          ))
+      )),
+    (:line, 91, :none),
+    (:type, false, (:<:, :AndCmds, :AbstractCmd), (:block,
+        (:line, 92, :none),
+        (:(::), :a, :AbstractCmd),
+        (:line, 93, :none),
+        (:(::), :b, :AbstractCmd),
+        (:line, 94, :none),
+        (:(=), (:call, :AndCmds, (:(::), :a, :AbstractCmd), (:(::), :b, :AbstractCmd)), (:block,
+            (:line, 94, :none),
+            (:call, :new, :a, :b)
+          ))
+      )),
+    (:line, 97, :none),
+    (:(=), (:call, :hash, (:(::), :x, :AndCmds), (:(::), :h, :UInt)), (:block,
+        (:line, 97, :none),
+        (:call, :hash, (:., :x, (:quote, #QuoteNode
+              :a
+            )), (:call, :hash, (:., :x, (:quote, #QuoteNode
+                :b
+              )), :h))
+      )),
+    (:line, 98, :none),
+    (:(=), (:call, :(==), (:(::), :x, :AndCmds), (:(::), :y, :AndCmds)), (:block,
+        (:line, 98, :none),
+        (:&&, (:call, :(==), (:., :x, (:quote, #QuoteNode
+                :a
+              )), (:., :y, (:quote, #QuoteNode
+                :a
+              ))), (:call, :(==), (:., :x, (:quote, #QuoteNode
+                :b
+              )), (:., :y, (:quote, #QuoteNode
+                :b
+              ))))
+      )),
+    (:line, 100, :none),
+    (:(=), (:call, :shell_escape, (:(::), :cmd, :Cmd)), (:block,
+        (:line, 100, :none),
+        (:call, :shell_escape, (:..., (:., :cmd, (:quote, #QuoteNode
+                :exec
+              ))))
+      )),
+    (:line, 102, :none),
+    (:function, (:call, :show, (:(::), :io, :IO), (:(::), :cmd, :Cmd)), (:block,
+        (:line, 103, :none),
+        (:(=), :print_env, (:call, :(!==), (:., :cmd, (:quote, #QuoteNode
+                :env
+              )), :nothing)),
+        (:line, 104, :none),
+        (:(=), :print_dir, (:call, :!, (:call, :isempty, (:., :cmd, (:quote, #QuoteNode
+                  :dir
+                ))))),
+        (:line, 105, :none),
+        (:&&, (:||, :print_env, :print_dir), (:call, :print, :io, "setenv(")),
+        (:line, 106, :none),
+        (:(=), :esc, (:call, :shell_escape, :cmd)),
+        (:line, 107, :none),
+        (:call, :print, :io, '`'),
+        (:line, 108, :none),
+        (:for, (:(=), :c, :esc), (:block,
+            (:line, 109, :none),
+            (:if, (:call, :(==), :c, '`'), (:block,
+                (:line, 110, :none),
+                (:call, :print, :io, '\\')
+              )),
+            (:line, 112, :none),
+            (:call, :print, :io, :c)
+          )),
+        (:line, 114, :none),
+        (:call, :print, :io, '`'),
+        (:line, 115, :none),
+        (:&&, :print_env, (:block,
+            (:call, :print, :io, ","),
+            (:call, :show, :io, (:., :cmd, (:quote, #QuoteNode
+                  :env
+                )))
+          )),
+        (:line, 116, :none),
+        (:&&, :print_dir, (:block,
+            (:call, :print, :io, "; dir="),
+            (:call, :show, :io, (:., :cmd, (:quote, #QuoteNode
+                  :dir
+                )))
+          )),
+        (:line, 117, :none),
+        (:&&, (:||, :print_dir, :print_env), (:call, :print, :io, ")"))
+      )),
+    (:line, 120, :none),
+    (:function, (:call, :show, (:(::), :io, :IO), (:(::), :cmds, (:curly, :Union, :OrCmds, :ErrOrCmds))), (:block,
+        (:line, 121, :none),
+        (:call, :print, :io, "pipeline("),
+        (:line, 122, :none),
+        (:call, :show, :io, (:., :cmds, (:quote, #QuoteNode
+              :a
+            ))),
+        (:line, 123, :none),
+        (:call, :print, :io, ", "),
+        (:line, 124, :none),
+        (:call, :print, :io, (:if, (:call, :isa, :cmds, :ErrOrCmds), "stderr=", "stdout=")),
+        (:line, 125, :none),
+        (:call, :show, :io, (:., :cmds, (:quote, #QuoteNode
+              :b
+            ))),
+        (:line, 126, :none),
+        (:call, :print, :io, ")")
+      )),
+    (:line, 129, :none),
+    (:function, (:call, :show, (:(::), :io, :IO), (:(::), :cmds, :AndCmds)), (:block,
+        (:line, 130, :none),
+        (:call, :show, :io, (:., :cmds, (:quote, #QuoteNode
+              :a
+            ))),
+        (:line, 131, :none),
+        (:call, :print, :io, " & "),
+        (:line, 132, :none),
+        (:call, :show, :io, (:., :cmds, (:quote, #QuoteNode
+              :b
+            )))
+      )),
+    (:line, 135, :none),
+    (:const, (:(=), :STDIN_NO, 0)),
+    (:line, 136, :none),
+    (:const, (:(=), :STDOUT_NO, 1)),
+    (:line, 137, :none),
+    (:const, (:(=), :STDERR_NO, 2)),
+    (:line, 139, :none),
+    (:type, false, :FileRedirect, (:block,
+        (:line, 140, :none),
+        (:(::), :filename, :AbstractString),
+        (:line, 141, :none),
+        (:(::), :append, :Bool),
+        (:line, 142, :none),
+        (:function, (:call, :FileRedirect, :filename, :append), (:block,
+            (:line, 143, :none),
+            (:if, (:call, :(==), (:call, :lowercase, :filename), (:macrocall, Symbol("@static"), (:if, (:call, :is_windows), "nul", "/dev/null"))), (:block,
+                (:line, 144, :none),
+                (:call, :warn_once, "for portability use DevNull instead of a file redirect")
+              )),
+            (:line, 146, :none),
+            (:call, :new, :filename, :append)
+          ))
+      )),
+    (:line, 150, :none),
+    (:(=), (:call, :uvhandle, (:(::), :DevNullStream)), (:block,
+        (:line, 150, :none),
+        :C_NULL
+      )),
+    (:line, 151, :none),
+    (:(=), (:call, :uvtype, (:(::), :DevNullStream)), (:block,
+        (:line, 151, :none),
+        :UV_STREAM
+      )),
+    (:line, 153, :none),
+    (:(=), (:call, :uvhandle, (:(::), :x, :Ptr)), (:block,
+        (:line, 153, :none),
+        :x
+      )),
+    (:line, 154, :none),
+    (:(=), (:call, :uvtype, (:(::), :Ptr)), (:block,
+        (:line, 154, :none),
+        :UV_STREAM
+      )),
+    (:line, 157, :none),
+    (:(=), (:call, :uvhandle, (:(::), :x, :RawFD)), (:block,
+        (:line, 157, :none),
+        (:call, :convert, (:curly, :Ptr, :Void), (:call, :%, (:., :x, (:quote, #QuoteNode
+                :fd
+              )), :UInt))
+      )),
+    (:line, 158, :none),
+    (:(=), (:call, :uvtype, (:(::), :x, :RawFD)), (:block,
+        (:line, 158, :none),
+        :UV_RAW_FD
+      )),
+    (:line, 160, :none),
+    (:typealias, :Redirectable, (:curly, :Union, :IO, :FileRedirect, :RawFD)),
+    (:line, 161, :none),
+    (:typealias, :StdIOSet, (:curly, :NTuple, 3, (:curly, :Union, :Redirectable, (:curly, :Ptr, :Void)))),
+    (:line, 163, :none),
+    (:type, false, (:<:, :CmdRedirect, :AbstractCmd), (:block,
+        (:line, 164, :none),
+        (:(::), :cmd, :AbstractCmd),
+        (:line, 165, :none),
+        (:(::), :handle, :Redirectable),
+        (:line, 166, :none),
+        (:(::), :stream_no, :Int)
+      )),
+    (:line, 169, :none),
+    (:function, (:call, :show, (:(::), :io, :IO), (:(::), :cr, :CmdRedirect)), (:block,
+        (:line, 170, :none),
+        (:call, :print, :io, "pipeline("),
+        (:line, 171, :none),
+        (:call, :show, :io, (:., :cr, (:quote, #QuoteNode
+              :cmd
+            ))),
+        (:line, 172, :none),
+        (:call, :print, :io, ", "),
+        (:line, 173, :none),
+        (:if, (:call, :(==), (:., :cr, (:quote, #QuoteNode
+                :stream_no
+              )), :STDOUT_NO), (:block,
+            (:line, 174, :none),
+            (:call, :print, :io, "stdout=")
+          ), (:block,
+            (:line, 175, :none),
+            (:if, (:call, :(==), (:., :cr, (:quote, #QuoteNode
+                    :stream_no
+                  )), :STDERR_NO), (:block,
+                (:line, 176, :none),
+                (:call, :print, :io, "stderr=")
+              ), (:block,
+                (:line, 177, :none),
+                (:if, (:call, :(==), (:., :cr, (:quote, #QuoteNode
+                        :stream_no
+                      )), :STDIN_NO), (:block,
+                    (:line, 178, :none),
+                    (:call, :print, :io, "stdin=")
+                  ))
+              ))
+          )),
+        (:line, 180, :none),
+        (:call, :show, :io, (:., :cr, (:quote, #QuoteNode
+              :handle
+            ))),
+        (:line, 181, :none),
+        (:call, :print, :io, ")")
+      )),
+    (:line, 184, :none),
+    "    ignorestatus(command)\n\nMark a command object so that running it will not throw an error if the result code is non-zero.\n",
+    (:line, 189, :none),
+    (:(=), (:call, :ignorestatus, (:(::), :cmd, :Cmd)), (:block,
+        (:line, 189, :none),
+        (:call, :Cmd, :cmd, (:kw, :ignorestatus, true))
+      )),
+    (:line, 190, :none),
+    (:(=), (:call, :ignorestatus, (:(::), :cmd, (:curly, :Union, :OrCmds, :AndCmds))), (:block,
+        (:line, 190, :none),
+        (:call, (:call, :typeof, :cmd), (:call, :ignorestatus, (:., :cmd, (:quote, #QuoteNode
+                :a
+              ))), (:call, :ignorestatus, (:., :cmd, (:quote, #QuoteNode
+                :b
+              ))))
+      )),
+    (:line, 193, :none),
+    "    detach(command)\n\nMark a command object so that it will be run in a new process group, allowing it to outlive the julia process, and not have Ctrl-C interrupts passed to it.\n",
+    (:line, 198, :none),
+    (:(=), (:call, :detach, (:(::), :cmd, :Cmd)), (:block,
+        (:line, 198, :none),
+        (:call, :Cmd, (:parameters, (:kw, :detach, true)), :cmd)
+      )),
+    (:line, 202, :none),
+    (:function, (:call, :cstr, :s), (:block,
+        (:line, 203, :none),
+        (:if, (:call, (:., :Base, (:quote, #QuoteNode
+                :containsnul
+              )), :s), (:block,
+            (:line, 204, :none),
+            (:call, :throw, (:call, :ArgumentError, "strings containing NUL cannot be passed to spawned processes"))
+          )),
+        (:line, 206, :none),
+        (:return, (:call, :String, :s))
+      )),
+    (:line, 210, :none),
+    (:(=), (:call, (:curly, :byteenv, (:<:, :S, :AbstractString)), (:(::), :env, (:curly, :AbstractArray, :S))), (:block,
+        (:line, 210, :none),
+        (:typed_comprehension, :String, (:generator, (:call, :cstr, :x), (:(=), :x, :env)))
+      )),
+    (:line, 212, :none),
+    (:(=), (:call, :byteenv, (:(::), :env, :Associative)), (:block,
+        (:line, 212, :none),
+        (:typed_comprehension, :String, (:generator, (:call, :cstr, (:call, :*, (:call, :string, :k), "=", (:call, :string, :v))), (:(=), (:tuple, :k, :v), :env)))
+      )),
+    (:line, 214, :none),
+    (:(=), (:call, :byteenv, (:(::), :env, :Void)), (:block,
+        (:line, 214, :none),
+        :nothing
+      )),
+    (:line, 215, :none),
+    (:(=), (:call, (:curly, :byteenv, (:<:, :T, :AbstractString)), (:(::), :env, (:curly, :Union, (:curly, :AbstractVector, (:curly, :Pair, :T)), (:curly, :Tuple, (:curly, :Vararg, (:curly, :Pair, :T)))))), (:block,
+        (:line, 215, :none),
+        (:typed_comprehension, :String, (:generator, (:call, :cstr, (:call, :*, :k, "=", (:call, :string, :v))), (:(=), (:tuple, :k, :v), :env)))
+      )),
+    (:line, 218, :none),
+    (:(=), (:call, :setenv, (:parameters, (:kw, :dir, "")), (:(::), :cmd, :Cmd), :env), (:block,
+        (:line, 218, :none),
+        (:call, :Cmd, (:parameters, (:kw, :env, (:call, :byteenv, :env)), (:kw, :dir, :dir)), :cmd)
+      )),
+    (:line, 219, :none),
+    (:(=), (:call, (:curly, :setenv, (:<:, :T, :AbstractString)), (:parameters, (:kw, :dir, "")), (:(::), :cmd, :Cmd), (:..., (:(::), :env, (:curly, :Pair, :T)))), (:block,
+        (:line, 219, :none),
+        (:call, :setenv, (:parameters, (:kw, :dir, :dir)), :cmd, :env)
+      )),
+    (:line, 221, :none),
+    (:(=), (:call, :setenv, (:parameters, (:kw, :dir, "")), (:(::), :cmd, :Cmd)), (:block,
+        (:line, 221, :none),
+        (:call, :Cmd, (:parameters, (:kw, :dir, :dir)), :cmd)
+      )),
+    (:line, 223, :none),
+    (:(=), (:call, :&, (:(::), :left, :AbstractCmd), (:(::), :right, :AbstractCmd)), (:block,
+        (:line, 223, :none),
+        (:call, :AndCmds, :left, :right)
+      )),
+    (:line, 224, :none),
+    (:(=), (:call, :redir_out, (:(::), :src, :AbstractCmd), (:(::), :dest, :AbstractCmd)), (:block,
+        (:line, 224, :none),
+        (:call, :OrCmds, :src, :dest)
+      )),
+    (:line, 225, :none),
+    (:(=), (:call, :redir_err, (:(::), :src, :AbstractCmd), (:(::), :dest, :AbstractCmd)), (:block,
+        (:line, 225, :none),
+        (:call, :ErrOrCmds, :src, :dest)
+      )),
+    (:line, 226, :none),
+    (:(=), (:call, (:curly, (:., :Base, (:quote, #QuoteNode
+              :mr_empty
+            )), (:<:, :T2, (:., :Base, (:quote, #QuoteNode
+                :AbstractCmd
+              )))), :f, (:(::), :op, (:call, :typeof, :&)), (:(::), :T1, (:curly, :Type, :T2))), (:block,
+        (:line, 226, :none),
+        (:call, :throw, (:call, :ArgumentError, (:string, "reducing over an empty collection of type ", :T1, " with operator & is not allowed")))
+      )),
+    (:line, 230, :none),
+    (:(=), (:call, :redir_out, (:(::), :dest, :Redirectable), (:(::), :src, :AbstractCmd)), (:block,
+        (:line, 230, :none),
+        (:call, :CmdRedirect, :src, :dest, :STDIN_NO)
+      )),
+    (:line, 231, :none),
+    (:(=), (:call, :redir_out, (:(::), :src, :AbstractCmd), (:(::), :dest, :Redirectable)), (:block,
+        (:line, 231, :none),
+        (:call, :CmdRedirect, :src, :dest, :STDOUT_NO)
+      )),
+    (:line, 232, :none),
+    (:(=), (:call, :redir_err, (:(::), :src, :AbstractCmd), (:(::), :dest, :Redirectable)), (:block,
+        (:line, 232, :none),
+        (:call, :CmdRedirect, :src, :dest, :STDERR_NO)
+      )),
+    (:line, 235, :none),
+    (:(=), (:call, :redir_out, (:(::), :src, :AbstractCmd), (:(::), :dest, :AbstractString)), (:block,
+        (:line, 235, :none),
+        (:call, :CmdRedirect, :src, (:call, :FileRedirect, :dest, false), :STDOUT_NO)
+      )),
+    (:line, 236, :none),
+    (:(=), (:call, :redir_out, (:(::), :src, :AbstractString), (:(::), :dest, :AbstractCmd)), (:block,
+        (:line, 236, :none),
+        (:call, :CmdRedirect, :dest, (:call, :FileRedirect, :src, false), :STDIN_NO)
+      )),
+    (:line, 237, :none),
+    (:(=), (:call, :redir_err, (:(::), :src, :AbstractCmd), (:(::), :dest, :AbstractString)), (:block,
+        (:line, 237, :none),
+        (:call, :CmdRedirect, :src, (:call, :FileRedirect, :dest, false), :STDERR_NO)
+      )),
+    (:line, 238, :none),
+    (:(=), (:call, :redir_out_append, (:(::), :src, :AbstractCmd), (:(::), :dest, :AbstractString)), (:block,
+        (:line, 238, :none),
+        (:call, :CmdRedirect, :src, (:call, :FileRedirect, :dest, true), :STDOUT_NO)
+      )),
+    (:line, 239, :none),
+    (:(=), (:call, :redir_err_append, (:(::), :src, :AbstractCmd), (:(::), :dest, :AbstractString)), (:block,
+        (:line, 239, :none),
+        (:call, :CmdRedirect, :src, (:call, :FileRedirect, :dest, true), :STDERR_NO)
+      )),
+    (:line, 241, :none),
+    (:function, (:call, :pipeline, (:parameters, (:kw, :stdin, :nothing), (:kw, :stdout, :nothing), (:kw, :stderr, :nothing), (:kw, (:(::), :append, :Bool), false)), (:(::), :cmd, :AbstractCmd)), (:block,
+        (:line, 242, :none),
+        (:if, (:&&, :append, (:&&, (:call, :(===), :stdout, :nothing), (:call, :(===), :stderr, :nothing))), (:block,
+            (:line, 243, :none),
+            (:call, :error, "append set to true, but no output redirections specified")
+          )),
+        (:line, 245, :none),
+        (:if, (:call, :(!==), :stdin, :nothing), (:block,
+            (:line, 246, :none),
+            (:(=), :cmd, (:call, :redir_out, :stdin, :cmd))
+          )),
+        (:line, 248, :none),
+        (:if, (:call, :(!==), :stdout, :nothing), (:block,
+            (:line, 249, :none),
+            (:(=), :cmd, (:if, :append, (:call, :redir_out_append, :cmd, :stdout), (:call, :redir_out, :cmd, :stdout)))
+          )),
+        (:line, 251, :none),
+        (:if, (:call, :(!==), :stderr, :nothing), (:block,
+            (:line, 252, :none),
+            (:(=), :cmd, (:if, :append, (:call, :redir_err_append, :cmd, :stderr), (:call, :redir_err, :cmd, :stderr)))
+          )),
+        (:line, 254, :none),
+        (:return, :cmd)
+      )),
+    (:line, 257, :none),
+    (:(=), (:call, :pipeline, (:(::), :cmd, :AbstractCmd), :dest), (:block,
+        (:line, 257, :none),
+        (:call, :pipeline, :cmd, (:kw, :stdout, :dest))
+      )),
+    (:line, 258, :none),
+    (:(=), (:call, :pipeline, (:(::), :src, (:curly, :Union, :Redirectable, :AbstractString)), (:(::), :cmd, :AbstractCmd)), (:block,
+        (:line, 258, :none),
+        (:call, :pipeline, :cmd, (:kw, :stdin, :src))
+      )),
+    (:line, 260, :none),
+    (:(=), (:call, :pipeline, :a, :b, :c, (:..., :d)), (:block,
+        (:line, 260, :none),
+        (:call, :pipeline, (:call, :pipeline, :a, :b), :c, (:..., :d))
+      )),
+    (:line, 262, :none),
+    (:type, true, (:<:, :Process, :AbstractPipe), (:block,
+        (:line, 263, :none),
+        (:(::), :cmd, :Cmd),
+        (:line, 264, :none),
+        (:(::), :handle, (:curly, :Ptr, :Void)),
+        (:line, 265, :none),
+        (:(::), :in, :IO),
+        (:line, 266, :none),
+        (:(::), :out, :IO),
+        (:line, 267, :none),
+        (:(::), :err, :IO),
+        (:line, 268, :none),
+        (:(::), :exitcode, :Int64),
+        (:line, 269, :none),
+        (:(::), :termsignal, :Int32),
+        (:line, 270, :none),
+        (:(::), :exitcb, :Callback),
+        (:line, 271, :none),
+        (:(::), :exitnotify, :Condition),
+        (:line, 272, :none),
+        (:(::), :closecb, :Callback),
+        (:line, 273, :none),
+        (:(::), :closenotify, :Condition),
+        (:line, 274, :none),
+        (:function, (:call, :Process, (:(::), :cmd, :Cmd), (:(::), :handle, (:curly, :Ptr, :Void)), (:(::), :in, (:curly, :Union, :Redirectable, (:curly, :Ptr, :Void))), (:(::), :out, (:curly, :Union, :Redirectable, (:curly, :Ptr, :Void))), (:(::), :err, (:curly, :Union, :Redirectable, (:curly, :Ptr, :Void)))), (:block,
+            (:line, 278, :none),
+            (:if, (:call, :!, (:call, :isa, :in, :IO)), (:block,
+                (:line, 279, :none),
+                (:(=), :in, :DevNull)
+              )),
+            (:line, 281, :none),
+            (:if, (:call, :!, (:call, :isa, :out, :IO)), (:block,
+                (:line, 282, :none),
+                (:(=), :out, :DevNull)
+              )),
+            (:line, 284, :none),
+            (:if, (:call, :!, (:call, :isa, :err, :IO)), (:block,
+                (:line, 285, :none),
+                (:(=), :err, :DevNull)
+              )),
+            (:line, 287, :none),
+            (:(=), :this, (:call, :new, :cmd, :handle, :in, :out, :err, (:call, :typemin, (:call, :fieldtype, :Process, (:quote, #QuoteNode
+                      :exitcode
+                    ))), (:call, :typemin, (:call, :fieldtype, :Process, (:quote, #QuoteNode
+                      :termsignal
+                    ))), false, (:call, :Condition), false, (:call, :Condition))),
+            (:line, 291, :none),
+            (:call, :finalizer, :this, :uvfinalize),
+            (:line, 292, :none),
+            (:return, :this)
+          ))
+      )),
+    (:line, 295, :none),
+    (:(=), (:call, :pipe_reader, (:(::), :p, :Process)), (:block,
+        (:line, 295, :none),
+        (:., :p, (:quote, #QuoteNode
+            :out
+          ))
+      )),
+    (:line, 296, :none),
+    (:(=), (:call, :pipe_writer, (:(::), :p, :Process)), (:block,
+        (:line, 296, :none),
+        (:., :p, (:quote, #QuoteNode
+            :in
+          ))
+      )),
+    (:line, 298, :none),
+    (:type, false, (:<:, :ProcessChain, :AbstractPipe), (:block,
+        (:line, 299, :none),
+        (:(::), :processes, (:curly, :Vector, :Process)),
+        (:line, 300, :none),
+        (:(::), :in, :Redirectable),
+        (:line, 301, :none),
+        (:(::), :out, :Redirectable),
+        (:line, 302, :none),
+        (:(::), :err, :Redirectable),
+        (:line, 303, :none),
+        (:(=), (:call, :ProcessChain, (:(::), :stdios, :StdIOSet)), (:block,
+            (:line, 303, :none),
+            (:call, :new, (:ref, :Process), (:ref, :stdios, 1), (:ref, :stdios, 2), (:ref, :stdios, 3))
+          ))
+      )),
+    (:line, 305, :none),
+    (:(=), (:call, :pipe_reader, (:(::), :p, :ProcessChain)), (:block,
+        (:line, 305, :none),
+        (:., :p, (:quote, #QuoteNode
+            :out
+          ))
+      )),
+    (:line, 306, :none),
+    (:(=), (:call, :pipe_writer, (:(::), :p, :ProcessChain)), (:block,
+        (:line, 306, :none),
+        (:., :p, (:quote, #QuoteNode
+            :in
+          ))
+      )),
+    (:line, 308, :none),
+    (:function, (:call, :_jl_spawn, :cmd, :argv, (:(::), :loop, (:curly, :Ptr, :Void)), (:(::), :pp, :Process), :in, :out, :err), (:block,
+        (:line, 310, :none),
+        (:(=), :proc, (:call, (:., :Libc, (:quote, #QuoteNode
+                :malloc
+              )), :_sizeof_uv_process)),
+        (:line, 311, :none),
+        (:call, :disassociate_julia_struct, :proc),
+        (:line, 312, :none),
+        (:(=), :error, (:ccall, (:quote, #QuoteNode
+              :jl_spawn
+            ), :Int32, (:tuple, :Cstring, (:curly, :Ptr, :Cstring), (:curly, :Ptr, :Void), (:curly, :Ptr, :Void), :Any, :Int32, (:curly, :Ptr, :Void), :Int32, (:curly, :Ptr, :Void), :Int32, (:curly, :Ptr, :Void), :Int32, (:curly, :Ptr, :Cstring), :Cstring, (:curly, :Ptr, :Void)), :cmd, :argv, :loop, :proc, :pp, (:call, :uvtype, :in), (:call, :uvhandle, :in), (:call, :uvtype, :out), (:call, :uvhandle, :out), (:call, :uvtype, :err), (:call, :uvhandle, :err), (:., (:., :pp, (:quote, #QuoteNode
+                  :cmd
+                )), (:quote, #QuoteNode
+                :flags
+              )), (:if, (:call, :(===), (:., (:., :pp, (:quote, #QuoteNode
+                      :cmd
+                    )), (:quote, #QuoteNode
+                    :env
+                  )), :nothing), :C_NULL, (:., (:., :pp, (:quote, #QuoteNode
+                    :cmd
+                  )), (:quote, #QuoteNode
+                  :env
+                ))), (:if, (:call, :isempty, (:., (:., :pp, (:quote, #QuoteNode
+                      :cmd
+                    )), (:quote, #QuoteNode
+                    :dir
+                  ))), :C_NULL, (:., (:., :pp, (:quote, #QuoteNode
+                    :cmd
+                  )), (:quote, #QuoteNode
+                  :dir
+                ))), (:(::), :uv_jl_return_spawn, (:curly, :Ptr, :Void)))),
+        (:line, 319, :none),
+        (:if, (:call, :(!=), :error, 0), (:block,
+            (:line, 320, :none),
+            (:ccall, (:quote, #QuoteNode
+                :jl_forceclose_uv
+              ), :Void, (:tuple, (:curly, :Ptr, :Void)), :proc),
+            (:line, 321, :none),
+            (:call, :throw, (:call, :UVError, (:call, :*, "could not spawn ", (:call, :string, (:., :pp, (:quote, #QuoteNode
+                        :cmd
+                      )))), :error))
+          )),
+        (:line, 323, :none),
+        (:call, :associate_julia_struct, :proc, :pp),
+        (:line, 324, :none),
+        (:return, :proc)
+      )),
+    (:line, 327, :none),
+    (:function, (:call, :uvfinalize, (:(::), :proc, :Process)), (:block,
+        (:line, 328, :none),
+        (:if, (:call, :(!=), (:., :proc, (:quote, #QuoteNode
+                :handle
+              )), :C_NULL), (:block,
+            (:line, 329, :none),
+            (:call, :disassociate_julia_struct, (:., :proc, (:quote, #QuoteNode
+                  :handle
+                ))),
+            (:line, 330, :none),
+            (:ccall, (:quote, #QuoteNode
+                :jl_close_uv
+              ), :Void, (:tuple, (:curly, :Ptr, :Void)), (:., :proc, (:quote, #QuoteNode
+                  :handle
+                ))),
+            (:line, 331, :none),
+            (:(=), (:., :proc, (:quote, #QuoteNode
+                  :handle
+                )), :C_NULL)
+          )),
+        (:line, 333, :none),
+        :nothing
+      )),
+    (:line, 336, :none),
+    (:function, (:call, :uv_return_spawn, (:(::), :p, (:curly, :Ptr, :Void)), (:(::), :exit_status, :Int64), (:(::), :termsignal, :Int32)), (:block,
+        (:line, 337, :none),
+        (:(=), :data, (:ccall, (:quote, #QuoteNode
+              :jl_uv_process_data
+            ), (:curly, :Ptr, :Void), (:tuple, (:curly, :Ptr, :Void)), :p)),
+        (:line, 338, :none),
+        (:&&, (:call, :(==), :data, :C_NULL), (:return, nothing)),
+        (:line, 339, :none),
+        (:(=), :proc, (:(::), (:call, :unsafe_pointer_to_objref, :data), :Process)),
+        (:line, 340, :none),
+        (:(=), (:., :proc, (:quote, #QuoteNode
+              :exitcode
+            )), :exit_status),
+        (:line, 341, :none),
+        (:(=), (:., :proc, (:quote, #QuoteNode
+              :termsignal
+            )), :termsignal),
+        (:line, 342, :none),
+        (:if, (:call, :isa, (:., :proc, (:quote, #QuoteNode
+                :exitcb
+              )), :Function), (:block,
+            (:line, 343, :none),
+            (:call, (:., :proc, (:quote, #QuoteNode
+                  :exitcb
+                )), :proc, :exit_status, :termsignal)
+          )),
+        (:line, 345, :none),
+        (:ccall, (:quote, #QuoteNode
+            :jl_close_uv
+          ), :Void, (:tuple, (:curly, :Ptr, :Void)), (:., :proc, (:quote, #QuoteNode
+              :handle
+            ))),
+        (:line, 346, :none),
+        (:call, :notify, (:., :proc, (:quote, #QuoteNode
+              :exitnotify
+            ))),
+        (:line, 347, :none),
+        :nothing
+      )),
+    (:line, 350, :none),
+    (:function, (:call, :_uv_hook_close, (:(::), :proc, :Process)), (:block,
+        (:line, 351, :none),
+        (:(=), (:., :proc, (:quote, #QuoteNode
+              :handle
+            )), :C_NULL),
+        (:line, 352, :none),
+        (:if, (:call, :isa, (:., :proc, (:quote, #QuoteNode
+                :closecb
+              )), :Function), (:block,
+            (:line, 353, :none),
+            (:call, (:., :proc, (:quote, #QuoteNode
+                  :closecb
+                )), :proc)
+          )),
+        (:line, 355, :none),
+        (:call, :notify, (:., :proc, (:quote, #QuoteNode
+              :closenotify
+            )))
+      )),
+    (:line, 358, :none),
+    (:function, (:call, :spawn, (:parameters, (:kw, (:(::), :chain, (:curly, :Nullable, :ProcessChain)), (:call, (:curly, :Nullable, :ProcessChain)))), (:(::), :redirect, :CmdRedirect), (:(::), :stdios, :StdIOSet), (:(::), :exitcb, :Callback), (:(::), :closecb, :Callback)), (:block,
+        (:line, 359, :none),
+        (:call, :spawn, (:., :redirect, (:quote, #QuoteNode
+              :cmd
+            )), (:tuple, (:if, (:call, :(==), (:., :redirect, (:quote, #QuoteNode
+                    :stream_no
+                  )), :STDIN_NO), (:., :redirect, (:quote, #QuoteNode
+                  :handle
+                )), (:ref, :stdios, 1)), (:if, (:call, :(==), (:., :redirect, (:quote, #QuoteNode
+                    :stream_no
+                  )), :STDOUT_NO), (:., :redirect, (:quote, #QuoteNode
+                  :handle
+                )), (:ref, :stdios, 2)), (:if, (:call, :(==), (:., :redirect, (:quote, #QuoteNode
+                    :stream_no
+                  )), :STDERR_NO), (:., :redirect, (:quote, #QuoteNode
+                  :handle
+                )), (:ref, :stdios, 3))), :exitcb, :closecb, (:kw, :chain, :chain))
+      )),
+    (:line, 366, :none),
+    (:function, (:call, :spawn, (:parameters, (:kw, (:(::), :chain, (:curly, :Nullable, :ProcessChain)), (:call, (:curly, :Nullable, :ProcessChain)))), (:(::), :cmds, :OrCmds), (:(::), :stdios, :StdIOSet), (:(::), :exitcb, :Callback), (:(::), :closecb, :Callback)), (:block,
+        (:line, 367, :none),
+        (:(=), :out_pipe, (:call, (:., :Libc, (:quote, #QuoteNode
+                :malloc
+              )), :_sizeof_uv_named_pipe)),
+        (:line, 368, :none),
+        (:(=), :in_pipe, (:call, (:., :Libc, (:quote, #QuoteNode
+                :malloc
+              )), :_sizeof_uv_named_pipe)),
+        (:line, 369, :none),
+        (:call, :link_pipe, :in_pipe, false, :out_pipe, false),
+        (:line, 370, :none),
+        (:if, (:call, :isnull, :chain), (:block,
+            (:line, 371, :none),
+            (:(=), :chain, (:call, :Nullable, (:call, :ProcessChain, :stdios)))
+          )),
+        (:line, 373, :none),
+        (:try, (:block,
+            (:line, 374, :none),
+            (:call, :spawn, (:., :cmds, (:quote, #QuoteNode
+                  :a
+                )), (:tuple, (:ref, :stdios, 1), :out_pipe, (:ref, :stdios, 3)), :exitcb, :closecb, (:kw, :chain, :chain)),
+            (:line, 375, :none),
+            (:call, :spawn, (:., :cmds, (:quote, #QuoteNode
+                  :b
+                )), (:tuple, :in_pipe, (:ref, :stdios, 2), (:ref, :stdios, 3)), :exitcb, :closecb, (:kw, :chain, :chain))
+          ), false, false, (:block,
+            (:line, 377, :none),
+            (:call, :close_pipe_sync, :out_pipe),
+            (:line, 378, :none),
+            (:call, :close_pipe_sync, :in_pipe),
+            (:line, 379, :none),
+            (:call, (:., :Libc, (:quote, #QuoteNode
+                  :free
+                )), :out_pipe),
+            (:line, 380, :none),
+            (:call, (:., :Libc, (:quote, #QuoteNode
+                  :free
+                )), :in_pipe)
+          )),
+        (:line, 382, :none),
+        (:call, :get, :chain)
+      )),
+    (:line, 385, :none),
+    (:function, (:call, :spawn, (:parameters, (:kw, (:(::), :chain, (:curly, :Nullable, :ProcessChain)), (:call, (:curly, :Nullable, :ProcessChain)))), (:(::), :cmds, :ErrOrCmds), (:(::), :stdios, :StdIOSet), (:(::), :exitcb, :Callback), (:(::), :closecb, :Callback)), (:block,
+        (:line, 386, :none),
+        (:(=), :out_pipe, (:call, (:., :Libc, (:quote, #QuoteNode
+                :malloc
+              )), :_sizeof_uv_named_pipe)),
+        (:line, 387, :none),
+        (:(=), :in_pipe, (:call, (:., :Libc, (:quote, #QuoteNode
+                :malloc
+              )), :_sizeof_uv_named_pipe)),
+        (:line, 388, :none),
+        (:call, :link_pipe, :in_pipe, false, :out_pipe, false),
+        (:line, 389, :none),
+        (:if, (:call, :isnull, :chain), (:block,
+            (:line, 390, :none),
+            (:(=), :chain, (:call, :Nullable, (:call, :ProcessChain, :stdios)))
+          )),
+        (:line, 392, :none),
+        (:try, (:block,
+            (:line, 393, :none),
+            (:call, :spawn, (:., :cmds, (:quote, #QuoteNode
+                  :a
+                )), (:tuple, (:ref, :stdios, 1), (:ref, :stdios, 2), :out_pipe), :exitcb, :closecb, (:kw, :chain, :chain)),
+            (:line, 394, :none),
+            (:call, :spawn, (:., :cmds, (:quote, #QuoteNode
+                  :b
+                )), (:tuple, :in_pipe, (:ref, :stdios, 2), (:ref, :stdios, 3)), :exitcb, :closecb, (:kw, :chain, :chain))
+          ), false, false, (:block,
+            (:line, 396, :none),
+            (:call, :close_pipe_sync, :out_pipe),
+            (:line, 397, :none),
+            (:call, :close_pipe_sync, :in_pipe),
+            (:line, 398, :none),
+            (:call, (:., :Libc, (:quote, #QuoteNode
+                  :free
+                )), :out_pipe),
+            (:line, 399, :none),
+            (:call, (:., :Libc, (:quote, #QuoteNode
+                  :free
+                )), :in_pipe)
+          )),
+        (:line, 401, :none),
+        (:call, :get, :chain)
+      )),
+    (:line, 404, :none),
+    (:function, (:call, :setup_stdio, (:(::), :stdio, :PipeEndpoint), (:(::), :readable, :Bool)), (:block,
+        (:line, 405, :none),
+        (:(=), :closeafter, false),
+        (:line, 406, :none),
+        (:if, (:call, :(==), (:., :stdio, (:quote, #QuoteNode
+                :status
+              )), :StatusUninit), (:block,
+            (:line, 407, :none),
+            (:if, :readable, (:block,
+                (:line, 408, :none),
+                (:call, :link_pipe, :io, false, :stdio, true)
+              ), (:block,
+                (:line, 410, :none),
+                (:call, :link_pipe, :stdio, true, :io, false)
+              )),
+            (:line, 412, :none),
+            (:(=), :closeafter, true)
+          )),
+        (:line, 414, :none),
+        (:return, (:tuple, (:., :stdio, (:quote, #QuoteNode
+                :handle
+              )), :closeafter))
+      )),
+    (:line, 417, :none),
+    (:function, (:call, :setup_stdio, (:(::), :stdio, :Pipe), (:(::), :readable, :Bool)), (:block,
+        (:line, 418, :none),
+        (:if, (:&&, (:call, :(==), (:., (:., :stdio, (:quote, #QuoteNode
+                    :in
+                  )), (:quote, #QuoteNode
+                  :status
+                )), :StatusUninit), (:call, :(==), (:., (:., :stdio, (:quote, #QuoteNode
+                    :out
+                  )), (:quote, #QuoteNode
+                  :status
+                )), :StatusUninit)), (:block,
+            (:line, 419, :none),
+            (:call, :link_pipe, :stdio)
+          )),
+        (:line, 421, :none),
+        (:(=), :io, (:if, :readable, (:., :stdio, (:quote, #QuoteNode
+                :out
+              )), (:., :stdio, (:quote, #QuoteNode
+                :in
+              )))),
+        (:line, 422, :none),
+        (:return, (:tuple, :io, false))
+      )),
+    (:line, 425, :none),
+    (:function, (:call, :setup_stdio, (:(::), :stdio, :IOStream), (:(::), :readable, :Bool)), (:block,
+        (:line, 426, :none),
+        (:(=), :io, (:call, (:., :Filesystem, (:quote, #QuoteNode
+                :File
+              )), (:call, :RawFD, (:call, :fd, :stdio)))),
+        (:line, 427, :none),
+        (:return, (:tuple, :io, false))
+      )),
+    (:line, 430, :none),
+    (:function, (:call, :setup_stdio, (:(::), :stdio, :FileRedirect), (:(::), :readable, :Bool)), (:block,
+        (:line, 431, :none),
+        (:if, :readable, (:block,
+            (:line, 432, :none),
+            (:(=), :attr, :JL_O_RDONLY),
+            (:line, 433, :none),
+            (:(=), :perm, (:call, :zero, :S_IRUSR))
+          ), (:block,
+            (:line, 435, :none),
+            (:(=), :attr, (:call, :|, :JL_O_WRONLY, :JL_O_CREAT)),
+            (:line, 436, :none),
+            (:|=, :attr, (:if, (:., :stdio, (:quote, #QuoteNode
+                    :append
+                  )), :JL_O_APPEND, :JL_O_TRUNC)),
+            (:line, 437, :none),
+            (:(=), :perm, (:call, :|, (:call, :|, (:call, :|, :S_IRUSR, :S_IWUSR), :S_IRGRP), :S_IROTH))
+          )),
+        (:line, 439, :none),
+        (:(=), :io, (:call, (:., :Filesystem, (:quote, #QuoteNode
+                :open
+              )), (:., :stdio, (:quote, #QuoteNode
+                :filename
+              )), :attr, :perm)),
+        (:line, 440, :none),
+        (:return, (:tuple, :io, true))
+      )),
+    (:line, 443, :none),
+    (:function, (:call, :setup_stdio, :io, (:(::), :readable, :Bool)), (:block,
+        (:line, 446, :none),
+        (:return, (:tuple, :io, false))
+      )),
+    (:line, 449, :none),
+    (:function, (:call, :setup_stdio, (:(::), :stdio, (:curly, :Ptr, :Void)), (:(::), :readable, :Bool)), (:block,
+        (:line, 450, :none),
+        (:return, (:tuple, :stdio, false))
+      )),
+    (:line, 453, :none),
+    (:function, (:call, :close_stdio, (:(::), :stdio, (:curly, :Ptr, :Void))), (:block,
+        (:line, 454, :none),
+        (:call, :close_pipe_sync, :stdio),
+        (:line, 455, :none),
+        (:call, (:., :Libc, (:quote, #QuoteNode
+              :free
+            )), :stdio)
+      )),
+    (:line, 458, :none),
+    (:function, (:call, :close_stdio, :stdio), (:block,
+        (:line, 459, :none),
+        (:call, :close, :stdio)
+      )),
+    (:line, 462, :none),
+    (:function, (:call, :setup_stdio, (:(::), :anon, :Function), (:(::), :stdio, :StdIOSet)), (:block,
+        (:line, 463, :none),
+        (:(=), (:tuple, :in, :close_in), (:call, :setup_stdio, (:ref, :stdio, 1), true)),
+        (:line, 464, :none),
+        (:(=), (:tuple, :out, :close_out), (:call, :setup_stdio, (:ref, :stdio, 2), false)),
+        (:line, 465, :none),
+        (:(=), (:tuple, :err, :close_err), (:call, :setup_stdio, (:ref, :stdio, 3), false)),
+        (:line, 466, :none),
+        (:call, :anon, :in, :out, :err),
+        (:line, 467, :none),
+        (:&&, :close_in, (:call, :close_stdio, :in)),
+        (:line, 468, :none),
+        (:&&, :close_out, (:call, :close_stdio, :out)),
+        (:line, 469, :none),
+        (:&&, :close_err, (:call, :close_stdio, :err))
+      )),
+    (:line, 472, :none),
+    (:function, (:call, :spawn, (:parameters, (:kw, (:(::), :chain, (:curly, :Nullable, :ProcessChain)), (:call, (:curly, :Nullable, :ProcessChain)))), (:(::), :cmd, :Cmd), (:(::), :stdios, :StdIOSet), (:(::), :exitcb, :Callback), (:(::), :closecb, :Callback)), (:block,
+        (:line, 473, :none),
+        (:(=), :loop, (:call, :eventloop)),
+        (:line, 474, :none),
+        (:(=), :pp, (:call, :Process, :cmd, :C_NULL, (:ref, :stdios, 1), (:ref, :stdios, 2), (:ref, :stdios, 3))),
+        (:line, 475, :none),
+        (:(=), (:., :pp, (:quote, #QuoteNode
+              :exitcb
+            )), :exitcb),
+        (:line, 476, :none),
+        (:(=), (:., :pp, (:quote, #QuoteNode
+              :closecb
+            )), :closecb),
+        (:line, 477, :none),
+        (:call, :setup_stdio, (:->, (:tuple, :in, :out, :err), (:block,
+              (:line, 478, :none),
+              (:(=), (:., :pp, (:quote, #QuoteNode
+                    :handle
+                  )), (:call, :_jl_spawn, (:ref, (:., :cmd, (:quote, #QuoteNode
+                        :exec
+                      )), 1), (:., :cmd, (:quote, #QuoteNode
+                      :exec
+                    )), :loop, :pp, :in, :out, :err))
+            )), :stdios),
+        (:line, 481, :none),
+        (:if, (:call, :!, (:call, :isnull, :chain)), (:block,
+            (:line, 482, :none),
+            (:call, :push!, (:., (:call, :get, :chain), (:quote, #QuoteNode
+                  :processes
+                )), :pp)
+          )),
+        (:line, 484, :none),
+        :pp
+      )),
+    (:line, 487, :none),
+    (:function, (:call, :spawn, (:parameters, (:kw, (:(::), :chain, (:curly, :Nullable, :ProcessChain)), (:call, (:curly, :Nullable, :ProcessChain)))), (:(::), :cmds, :AndCmds), (:(::), :stdios, :StdIOSet), (:(::), :exitcb, :Callback), (:(::), :closecb, :Callback)), (:block,
+        (:line, 488, :none),
+        (:if, (:call, :isnull, :chain), (:block,
+            (:line, 489, :none),
+            (:(=), :chain, (:call, :Nullable, (:call, :ProcessChain, :stdios)))
+          )),
+        (:line, 491, :none),
+        (:call, :setup_stdio, (:->, (:tuple, :in, :out, :err), (:block,
+              (:line, 492, :none),
+              (:call, :spawn, (:., :cmds, (:quote, #QuoteNode
+                    :a
+                  )), (:tuple, :in, :out, :err), :exitcb, :closecb, (:kw, :chain, :chain)),
+              (:line, 493, :none),
+              (:call, :spawn, (:., :cmds, (:quote, #QuoteNode
+                    :b
+                  )), (:tuple, :in, :out, :err), :exitcb, :closecb, (:kw, :chain, :chain))
+            )), :stdios),
+        (:line, 495, :none),
+        (:call, :get, :chain)
+      )),
+    (:line, 509, :none),
+    (:(=), (:call, :spawn_opts_swallow, (:(::), :stdios, :StdIOSet), (:kw, (:(::), :exitcb, :Callback), false), (:kw, (:(::), :closecb, :Callback), false)), (:block,
+        (:line, 509, :none),
+        (:tuple, :stdios, :exitcb, :closecb)
+      )),
+    (:line, 511, :none),
+    (:(=), (:call, :spawn_opts_swallow, (:kw, (:(::), :in, :Redirectable), :DevNull), (:kw, (:(::), :out, :Redirectable), :DevNull), (:kw, (:(::), :err, :Redirectable), :DevNull), (:..., :args)), (:block,
+        (:line, 511, :none),
+        (:tuple, (:call, :tuple, :in, :out, :err, (:..., :args)), false, false)
+      )),
+    (:line, 513, :none),
+    (:(=), (:call, :spawn_opts_inherit, (:(::), :stdios, :StdIOSet), (:kw, (:(::), :exitcb, :Callback), false), (:kw, (:(::), :closecb, :Callback), false)), (:block,
+        (:line, 513, :none),
+        (:tuple, :stdios, :exitcb, :closecb)
+      )),
+    (:line, 518, :none),
+    (:(=), (:call, :spawn_opts_inherit, (:kw, (:(::), :in, :Redirectable), (:call, :RawFD, 0)), (:kw, (:(::), :out, :Redirectable), (:call, :RawFD, 1)), (:kw, (:(::), :err, :Redirectable), (:call, :RawFD, 2)), (:..., :args)), (:block,
+        (:line, 518, :none),
+        (:tuple, (:call, :tuple, :in, :out, :err, (:..., :args)), false, false)
+      )),
+    (:line, 521, :none),
+    (:(=), (:call, :spawn, (:parameters, (:kw, (:(::), :chain, (:curly, :Nullable, :ProcessChain)), (:call, (:curly, :Nullable, :ProcessChain)))), (:(::), :cmds, :AbstractCmd), (:..., :args)), (:block,
+        (:line, 521, :none),
+        (:call, :spawn, (:parameters, (:kw, :chain, :chain)), :cmds, (:..., (:call, :spawn_opts_swallow, (:..., :args))))
+      )),
+    (:line, 524, :none),
+    (:function, (:call, :eachline, (:(::), :cmd, :AbstractCmd), :stdin), (:block,
+        (:line, 525, :none),
+        (:(=), :stdout, (:call, :Pipe)),
+        (:line, 526, :none),
+        (:(=), :processes, (:call, :spawn, :cmd, (:tuple, :stdin, :stdout, :STDERR))),
+        (:line, 527, :none),
+        (:call, :close, (:., :stdout, (:quote, #QuoteNode
+              :in
+            ))),
+        (:line, 528, :none),
+        (:(=), :out, (:., :stdout, (:quote, #QuoteNode
+              :out
+            ))),
+        (:line, 530, :none),
+        (:return, (:call, :EachLine, :out, (:->, (:tuple,), (:block,
+                (:line, 530, :none),
+                (:block,
+                  (:call, :close, :out),
+                  (:||, (:call, :success, :processes), (:call, :pipeline_error, :processes))
+                )
+              ))))
+      )),
+    (:line, 532, :none),
+    (:(=), (:call, :eachline, (:(::), :cmd, :AbstractCmd)), (:block,
+        (:line, 532, :none),
+        (:call, :eachline, :cmd, :DevNull)
+      )),
+    (:line, 535, :none),
+    (:function, (:call, :open, (:(::), :cmds, :AbstractCmd), (:kw, (:(::), :mode, :AbstractString), "r"), (:kw, (:(::), :other, :Redirectable), :DevNull)), (:block,
+        (:line, 536, :none),
+        (:if, (:call, :(==), :mode, "r"), (:block,
+            (:line, 537, :none),
+            (:(=), :in, :other),
+            (:line, 538, :none),
+            (:(=), :out, (:(=), :io, (:call, :Pipe))),
+            (:line, 539, :none),
+            (:(=), :processes, (:call, :spawn, :cmds, (:tuple, :in, :out, :STDERR))),
+            (:line, 540, :none),
+            (:call, :close, (:., :out, (:quote, #QuoteNode
+                  :in
+                )))
+          ), (:block,
+            (:line, 541, :none),
+            (:if, (:call, :(==), :mode, "w"), (:block,
+                (:line, 542, :none),
+                (:(=), :in, (:(=), :io, (:call, :Pipe))),
+                (:line, 543, :none),
+                (:(=), :out, :other),
+                (:line, 544, :none),
+                (:(=), :processes, (:call, :spawn, :cmds, (:tuple, :in, :out, :STDERR))),
+                (:line, 545, :none),
+                (:call, :close, (:., :in, (:quote, #QuoteNode
+                      :out
+                    )))
+              ), (:block,
+                (:line, 547, :none),
+                (:call, :throw, (:call, :ArgumentError, (:string, "mode must be \"r\" or \"w\", not \"", :mode, "\"")))
+              ))
+          )),
+        (:line, 549, :none),
+        (:return, (:tuple, :io, :processes))
+      )),
+    (:line, 552, :none),
+    (:function, (:call, :open, (:(::), :f, :Function), (:(::), :cmds, :AbstractCmd), (:..., :args)), (:block,
+        (:line, 553, :none),
+        (:(=), (:tuple, :io, :P), (:call, :open, :cmds, (:..., :args))),
+        (:line, 554, :none),
+        (:(=), :ret, (:try, (:block,
+              (:line, 555, :none),
+              (:call, :f, :io)
+            ), false, (:block,
+              (:line, 557, :none),
+              (:call, :kill, :P),
+              (:line, 558, :none),
+              (:call, :rethrow)
+            ), (:block,
+              (:line, 560, :none),
+              (:call, :close, :io)
+            ))),
+        (:line, 562, :none),
+        (:||, (:call, :success, :P), (:call, :pipeline_error, :P)),
+        (:line, 563, :none),
+        (:return, :ret)
+      )),
+    (:line, 567, :none),
+    (:function, (:call, :readandwrite, (:(::), :cmds, :AbstractCmd)), (:block,
+        (:line, 568, :none),
+        (:(=), :in, (:call, :Pipe)),
+        (:line, 569, :none),
+        (:(=), (:tuple, :out, :processes), (:call, :open, :cmds, "r", :in)),
+        (:line, 570, :none),
+        (:tuple, :out, :in, :processes)
+      )),
+    (:line, 573, :none),
+    (:function, (:call, :read, (:(::), :cmd, :AbstractCmd), (:kw, (:(::), :stdin, :Redirectable), :DevNull)), (:block,
+        (:line, 574, :none),
+        (:(=), (:tuple, :out, :procs), (:call, :open, :cmd, "r", :stdin)),
+        (:line, 575, :none),
+        (:(=), :bytes, (:call, :read, :out)),
+        (:line, 576, :none),
+        (:&&, (:call, :!, (:call, :success, :procs)), (:call, :pipeline_error, :procs)),
+        (:line, 577, :none),
+        (:return, :bytes)
+      )),
+    (:line, 580, :none),
+    (:function, (:call, :readstring, (:(::), :cmd, :AbstractCmd), (:kw, (:(::), :stdin, :Redirectable), :DevNull)), (:block,
+        (:line, 581, :none),
+        (:return, (:call, :String, (:call, :read, :cmd, :stdin)))
+      )),
+    (:line, 584, :none),
+    (:function, (:call, :writeall, (:(::), :cmd, :AbstractCmd), (:(::), :stdin, :AbstractString), (:kw, (:(::), :stdout, :Redirectable), :DevNull)), (:block,
+        (:line, 585, :none),
+        (:call, :open, (:->, (:tuple, :io), (:block,
+              (:line, 586, :none),
+              (:call, :write, :io, :stdin)
+            )), :cmd, "w", :stdout)
+      )),
+    (:line, 590, :none),
+    (:function, (:call, :run, (:(::), :cmds, :AbstractCmd), (:..., :args)), (:block,
+        (:line, 591, :none),
+        (:(=), :ps, (:call, :spawn, :cmds, (:..., (:call, :spawn_opts_inherit, (:..., :args))))),
+        (:line, 592, :none),
+        (:if, (:call, :success, :ps), :nothing, (:call, :pipeline_error, :ps))
+      )),
+    (:line, 595, :none),
+    (:const, (:(=), :SIGPIPE, 13)),
+    (:line, 596, :none),
+    (:function, (:call, :test_success, (:(::), :proc, :Process)), (:block,
+        (:line, 597, :none),
+        (:call, :assert, (:call, :process_exited, :proc)),
+        (:line, 598, :none),
+        (:if, (:call, :<, (:., :proc, (:quote, #QuoteNode
+                :exitcode
+              )), 0), (:block,
+            (:line, 600, :none),
+            (:call, :throw, (:call, :UVError, (:string, "could not start process ", (:call, :string, (:., :proc, (:quote, #QuoteNode
+                        :cmd
+                      )))), (:., :proc, (:quote, #QuoteNode
+                    :exitcode
+                  ))))
+          )),
+        (:line, 602, :none),
+        (:&&, (:call, :(==), (:., :proc, (:quote, #QuoteNode
+                :exitcode
+              )), 0), (:||, (:call, :(==), (:., :proc, (:quote, #QuoteNode
+                  :termsignal
+                )), 0), (:call, :(==), (:., :proc, (:quote, #QuoteNode
+                  :termsignal
+                )), :SIGPIPE)))
+      )),
+    (:line, 605, :none),
+    (:function, (:call, :success, (:(::), :x, :Process)), (:block,
+        (:line, 606, :none),
+        (:call, :wait, :x),
+        (:line, 607, :none),
+        (:call, :kill, :x),
+        (:line, 608, :none),
+        (:call, :test_success, :x)
+      )),
+    (:line, 610, :none),
+    (:(=), (:call, :success, (:(::), :procs, (:curly, :Vector, :Process))), (:block,
+        (:line, 610, :none),
+        (:call, :mapreduce, :success, :&, :procs)
+      )),
+    (:line, 611, :none),
+    (:(=), (:call, :success, (:(::), :procs, :ProcessChain)), (:block,
+        (:line, 611, :none),
+        (:call, :success, (:., :procs, (:quote, #QuoteNode
+              :processes
+            )))
+      )),
+    (:line, 612, :none),
+    (:(=), (:call, :success, (:(::), :cmd, :AbstractCmd)), (:block,
+        (:line, 612, :none),
+        (:call, :success, (:call, :spawn, :cmd))
+      )),
+    (:line, 614, :none),
+    (:function, (:call, :pipeline_error, (:(::), :proc, :Process)), (:block,
+        (:line, 615, :none),
+        (:if, (:call, :!, (:., (:., :proc, (:quote, #QuoteNode
+                  :cmd
+                )), (:quote, #QuoteNode
+                :ignorestatus
+              ))), (:block,
+            (:line, 616, :none),
+            (:call, :error, "failed process: ", :proc, " [", (:., :proc, (:quote, #QuoteNode
+                  :exitcode
+                )), "]")
+          )),
+        (:line, 618, :none),
+        :nothing
+      )),
+    (:line, 621, :none),
+    (:function, (:call, :pipeline_error, (:(::), :procs, :ProcessChain)), (:block,
+        (:line, 622, :none),
+        (:(=), :failed, (:ref, :Process)),
+        (:line, 623, :none),
+        (:for, (:(=), :p, (:., :procs, (:quote, #QuoteNode
+                :processes
+              ))), (:block,
+            (:line, 624, :none),
+            (:if, (:&&, (:call, :!, (:call, :test_success, :p)), (:call, :!, (:., (:., :p, (:quote, #QuoteNode
+                        :cmd
+                      )), (:quote, #QuoteNode
+                      :ignorestatus
+                    )))), (:block,
+                (:line, 625, :none),
+                (:call, :push!, :failed, :p)
+              ))
+          )),
+        (:line, 628, :none),
+        (:&&, (:call, :isempty, :failed), (:return, :nothing)),
+        (:line, 629, :none),
+        (:&&, (:call, :(==), (:call, :length, :failed), 1), (:call, :pipeline_error, (:ref, :failed, 1))),
+        (:line, 630, :none),
+        (:(=), :msg, "failed processes:"),
+        (:line, 631, :none),
+        (:for, (:(=), :proc, :failed), (:block,
+            (:line, 632, :none),
+            (:(=), :msg, (:call, :string, :msg, "\n  ", :proc, " [", (:., :proc, (:quote, #QuoteNode
+                    :exitcode
+                  )), "]"))
+          )),
+        (:line, 634, :none),
+        (:call, :error, :msg)
+      )),
+    (:line, 637, :none),
+    (:(=), (:call, :_jl_kill, (:(::), :p, :Process), (:(::), :signum, :Integer)), (:block,
+        (:line, 637, :none),
+        (:ccall, (:quote, #QuoteNode
+            :uv_process_kill
+          ), :Int32, (:tuple, (:curly, :Ptr, :Void), :Int32), (:., :p, (:quote, #QuoteNode
+              :handle
+            )), :signum)
+      )),
+    (:line, 638, :none),
+    (:function, (:call, :kill, (:(::), :p, :Process), (:(::), :signum, :Integer)), (:block,
+        (:line, 639, :none),
+        (:if, (:call, :process_running, :p), (:block,
+            (:line, 640, :none),
+            (:macrocall, Symbol("@assert"), (:call, :(!=), (:., :p, (:quote, #QuoteNode
+                    :handle
+                  )), :C_NULL)),
+            (:line, 641, :none),
+            (:call, :_jl_kill, :p, :signum)
+          ), (:block,
+            (:line, 643, :none),
+            (:call, :Int32, -1)
+          ))
+      )),
+    (:line, 646, :none),
+    (:(=), (:call, :kill, (:(::), :ps, (:curly, :Vector, :Process))), (:block,
+        (:line, 646, :none),
+        (:call, :map, :kill, :ps)
+      )),
+    (:line, 647, :none),
+    (:(=), (:call, :kill, (:(::), :ps, :ProcessChain)), (:block,
+        (:line, 647, :none),
+        (:call, :map, :kill, (:., :ps, (:quote, #QuoteNode
+              :processes
+            )))
+      )),
+    (:line, 648, :none),
+    (:(=), (:call, :kill, (:(::), :p, :Process)), (:block,
+        (:line, 648, :none),
+        (:call, :kill, :p, 15)
+      )),
+    (:line, 650, :none),
+    (:function, (:call, :_contains_newline, (:(::), :bufptr, (:curly, :Ptr, :Void)), (:(::), :len, :Int32)), (:block,
+        (:line, 651, :none),
+        (:return, (:call, :(!=), (:ccall, (:quote, #QuoteNode
+                :memchr
+              ), (:curly, :Ptr, :Void), (:tuple, (:curly, :Ptr, :Void), :Int32, :Csize_t), :bufptr, '\n', :len), :C_NULL))
+      )),
+    (:line, 655, :none),
+    (:(=), (:call, :process_running, (:(::), :s, :Process)), (:block,
+        (:line, 655, :none),
+        (:call, :(==), (:., :s, (:quote, #QuoteNode
+              :exitcode
+            )), (:call, :typemin, (:call, :fieldtype, :Process, (:quote, #QuoteNode
+                :exitcode
+              ))))
+      )),
+    (:line, 656, :none),
+    (:(=), (:call, :process_running, (:(::), :s, (:curly, :Vector, :Process))), (:block,
+        (:line, 656, :none),
+        (:call, :any, :process_running, :s)
+      )),
+    (:line, 657, :none),
+    (:(=), (:call, :process_running, (:(::), :s, :ProcessChain)), (:block,
+        (:line, 657, :none),
+        (:call, :process_running, (:., :s, (:quote, #QuoteNode
+              :processes
+            )))
+      )),
+    (:line, 659, :none),
+    (:(=), (:call, :process_exited, (:(::), :s, :Process)), (:block,
+        (:line, 659, :none),
+        (:call, :!, (:call, :process_running, :s))
+      )),
+    (:line, 660, :none),
+    (:(=), (:call, :process_exited, (:(::), :s, (:curly, :Vector, :Process))), (:block,
+        (:line, 660, :none),
+        (:call, :all, :process_exited, :s)
+      )),
+    (:line, 661, :none),
+    (:(=), (:call, :process_exited, (:(::), :s, :ProcessChain)), (:block,
+        (:line, 661, :none),
+        (:call, :process_exited, (:., :s, (:quote, #QuoteNode
+              :processes
+            )))
+      )),
+    (:line, 663, :none),
+    (:(=), (:call, :process_signaled, (:(::), :s, :Process)), (:block,
+        (:line, 663, :none),
+        (:call, :>, (:., :s, (:quote, #QuoteNode
+              :termsignal
+            )), 0)
+      )),
+    (:line, 668, :none),
+    (:function, (:call, :process_status, (:(::), :s, :Process)), (:block,
+        (:line, 669, :none),
+        (:if, (:call, :process_running, :s), "ProcessRunning", (:if, (:call, :process_signaled, :s), (:call, :*, "ProcessSignaled(", (:call, :string, (:., :s, (:quote, #QuoteNode
+                    :termsignal
+                  ))), ")"), (:if, (:call, :process_exited, :s), (:call, :*, "ProcessExited(", (:call, :string, (:., :s, (:quote, #QuoteNode
+                      :exitcode
+                    ))), ")"), (:call, :error, "process status error"))))
+      )),
+    (:line, 678, :none),
+    (:(=), (:call, :arg_gen), (:block,
+        (:line, 678, :none),
+        (:ref, :String)
+      )),
+    (:line, 679, :none),
+    (:(=), (:call, :arg_gen, (:(::), :x, :AbstractString)), (:block,
+        (:line, 679, :none),
+        (:ref, :String, (:call, :cstr, :x))
+      )),
+    (:line, 680, :none),
+    (:(=), (:call, :arg_gen, (:(::), :cmd, :Cmd)), (:block,
+        (:line, 680, :none),
+        (:., :cmd, (:quote, #QuoteNode
+            :exec
+          ))
+      )),
+    (:line, 682, :none),
+    (:function, (:call, :arg_gen, :head), (:block,
+        (:line, 683, :none),
+        (:if, (:call, :applicable, :start, :head), (:block,
+            (:line, 684, :none),
+            (:(=), :vals, (:ref, :String)),
+            (:line, 685, :none),
+            (:for, (:(=), :x, :head), (:block,
+                (:line, 686, :none),
+                (:call, :push!, :vals, (:call, :cstr, (:call, :string, :x)))
+              )),
+            (:line, 688, :none),
+            (:return, :vals)
+          ), (:block,
+            (:line, 690, :none),
+            (:return, (:ref, :String, (:call, :cstr, (:call, :string, :head))))
+          ))
+      )),
+    (:line, 694, :none),
+    (:function, (:call, :arg_gen, :head, (:..., :tail)), (:block,
+        (:line, 695, :none),
+        (:(=), :head, (:call, :arg_gen, :head)),
+        (:line, 696, :none),
+        (:(=), :tail, (:call, :arg_gen, (:..., :tail))),
+        (:line, 697, :none),
+        (:(=), :vals, (:ref, :String)),
+        (:line, 698, :none),
+        (:for, (:block,
+            (:(=), :h, :head),
+            (:(=), :t, :tail)
+          ), (:block,
+            (:line, 699, :none),
+            (:call, :push!, :vals, (:call, :cstr, (:call, :string, :h, :t)))
+          )),
+        (:line, 701, :none),
+        (:return, :vals)
+      )),
+    (:line, 704, :none),
+    (:function, (:call, :cmd_gen, :parsed), (:block,
+        (:line, 705, :none),
+        (:(=), :args, (:ref, :String)),
+        (:line, 706, :none),
+        (:for, (:(=), :arg, :parsed), (:block,
+            (:line, 707, :none),
+            (:call, :append!, :args, (:call, :arg_gen, (:..., :arg)))
+          )),
+        (:line, 709, :none),
+        (:return, (:call, :Cmd, :args))
+      )),
+    (:line, 712, :none),
+    (:macro, (:call, :cmd, :str), (:block,
+        (:line, 713, :none),
+        (:return, (:quote, (:call, :cmd_gen, (:$, (:ref, (:call, :shell_parse, :str), 1)))))
+      )),
+    (:line, 716, :none),
+    (:(=), (:call, :wait, (:(::), :x, :Process)), (:block,
+        (:line, 716, :none),
+        (:if, (:call, :!, (:call, :process_exited, :x)), (:block,
+            (:line, 716, :none),
+            (:call, :stream_wait, :x, (:., :x, (:quote, #QuoteNode
+                  :exitnotify
+                )))
+          ))
+      )),
+    (:line, 717, :none),
+    (:(=), (:call, :wait, (:(::), :x, :ProcessChain)), (:block,
+        (:line, 717, :none),
+        (:for, (:(=), :p, (:., :x, (:quote, #QuoteNode
+                :processes
+              ))), (:block,
+            (:line, 717, :none),
+            (:call, :wait, :p)
+          ))
+      )),
+    (:line, 719, :none),
+    (:(=), (:call, :show, (:(::), :io, :IO), (:(::), :p, :Process)), (:block,
+        (:line, 719, :none),
+        (:call, :print, :io, "Process(", (:., :p, (:quote, #QuoteNode
+              :cmd
+            )), ", ", (:call, :process_status, :p), ")")
+      ))
+  ))

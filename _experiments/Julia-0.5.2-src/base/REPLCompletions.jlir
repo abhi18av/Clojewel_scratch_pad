@@ -1,0 +1,1037 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:module, true, :REPLCompletions, (:block,
+        (:line, 3, :none),
+        (:line, 5, :none),
+        (:export, :completions, :shell_completions, :bslash_completions),
+        (:line, 7, :none),
+        (:using, :Base, :Meta),
+        (:line, 9, :none),
+        (:function, (:call, :completes_global, :x, :name), (:block,
+            (:line, 10, :none),
+            (:return, (:&&, (:call, :startswith, :x, :name), (:call, :!, (:call, :in, '#', :x))))
+          )),
+        (:line, 13, :none),
+        (:function, (:call, :filtered_mod_names, (:(::), :ffunc, :Function), (:(::), :mod, :Module), (:(::), :name, :AbstractString), (:kw, (:(::), :all, :Bool), false), (:kw, (:(::), :imported, :Bool), false)), (:block,
+            (:line, 14, :none),
+            (:(=), :ssyms, (:call, :names, :mod, :all, :imported)),
+            (:line, 15, :none),
+            (:call, :filter!, :ffunc, :ssyms),
+            (:line, 16, :none),
+            (:(=), :syms, (:typed_comprehension, :String, (:generator, (:call, :string, :s), (:(=), :s, :ssyms)))),
+            (:line, 17, :none),
+            (:call, :filter!, (:->, :x, (:block,
+                  (:line, 17, :none),
+                  (:call, :completes_global, :x, :name)
+                )), :syms)
+          )),
+        (:line, 21, :none),
+        (:function, (:call, :complete_symbol, :sym, :ffunc), (:block,
+            (:line, 23, :none),
+            (:(=), :context_module, :Main),
+            (:line, 24, :none),
+            (:(=), :mod, :context_module),
+            (:line, 25, :none),
+            (:(=), :name, :sym),
+            (:line, 27, :none),
+            (:(=), :lookup_module, true),
+            (:line, 28, :none),
+            (:(=), :t, (:curly, :Union)),
+            (:line, 29, :none),
+            (:if, (:call, :<, (:call, :rsearch, :sym, :non_identifier_chars), (:call, :rsearch, :sym, '.')), (:block,
+                (:line, 31, :none),
+                (:(=), (:tuple, :lookup_name, :name), (:call, :rsplit, :sym, ".", (:kw, :limit, 2))),
+                (:line, 33, :none),
+                (:(=), :ex, (:call, (:., :Base, (:quote, #QuoteNode
+                        :syntax_deprecation_warnings
+                      )), (:->, (:tuple,), (:block,
+                        (:line, 34, :none),
+                        (:call, :parse, :lookup_name, (:kw, :raise, false))
+                      )), false)),
+                (:line, 37, :none),
+                (:(=), (:tuple, :b, :found), (:call, :get_value, :ex, :context_module)),
+                (:line, 38, :none),
+                (:if, :found, (:block,
+                    (:line, 39, :none),
+                    (:if, (:call, :isa, :b, :Module), (:block,
+                        (:line, 40, :none),
+                        (:(=), :mod, :b),
+                        (:line, 41, :none),
+                        (:(=), :lookup_module, true)
+                      ), (:block,
+                        (:line, 42, :none),
+                        (:if, (:call, (:., :Base, (:quote, #QuoteNode
+                                :isstructtype
+                              )), (:call, :typeof, :b)), (:block,
+                            (:line, 43, :none),
+                            (:(=), :lookup_module, false),
+                            (:line, 44, :none),
+                            (:(=), :t, (:call, :typeof, :b))
+                          ))
+                      ))
+                  ), (:block,
+                    (:line, 47, :none),
+                    (:(=), :lookup_module, false),
+                    (:line, 48, :none),
+                    (:(=), (:tuple, :t, :found), (:call, :get_type, :ex, :context_module))
+                  )),
+                (:line, 50, :none),
+                (:||, :found, (:return, (:ref, :String))),
+                (:line, 52, :none),
+                (:&&, (:call, :!, :lookup_module), (:&&, (:<:, :t, :Tuple), (:return, (:ref, :String))))
+              )),
+            (:line, 55, :none),
+            (:(=), :suggestions, (:ref, :String)),
+            (:line, 56, :none),
+            (:if, :lookup_module, (:block,
+                (:line, 60, :none),
+                (:(=), :p, (:->, :s, (:block,
+                      (:line, 60, :none),
+                      (:&&, (:call, :!, (:call, (:., :Base, (:quote, #QuoteNode
+                                :isdeprecated
+                              )), :mod, :s)), (:&&, (:call, :(!=), :s, (:call, :module_name, :mod)), (:call, :ffunc, :mod, :s)))
+                    ))),
+                (:line, 62, :none),
+                (:if, (:call, :(==), :mod, :context_module), (:block,
+                    (:line, 64, :none),
+                    (:(=), :mods, (:ccall, (:quote, #QuoteNode
+                          :jl_module_usings
+                        ), :Any, (:tuple, :Any), :Main)),
+                    (:line, 65, :none),
+                    (:for, (:(=), :m, :mods), (:block,
+                        (:line, 66, :none),
+                        (:call, :append!, :suggestions, (:call, :filtered_mod_names, :p, :m, :name))
+                      )),
+                    (:line, 68, :none),
+                    (:call, :append!, :suggestions, (:call, :filtered_mod_names, :p, :mod, :name, true, true))
+                  ), (:block,
+                    (:line, 70, :none),
+                    (:call, :append!, :suggestions, (:call, :filtered_mod_names, :p, :mod, :name, true, false))
+                  ))
+              ), (:block,
+                (:line, 74, :none),
+                (:(=), :fields, (:call, :fieldnames, :t)),
+                (:line, 75, :none),
+                (:for, (:(=), :field, :fields), (:block,
+                    (:line, 76, :none),
+                    (:(=), :s, (:call, :string, :field)),
+                    (:line, 77, :none),
+                    (:if, (:call, :startswith, :s, :name), (:block,
+                        (:line, 78, :none),
+                        (:call, :push!, :suggestions, :s)
+                      ))
+                  ))
+              )),
+            (:line, 82, :none),
+            :suggestions
+          )),
+        (:line, 85, :none),
+        (:function, (:call, :complete_keyword, (:(::), :s, :String)), (:block,
+            (:line, 86, :none),
+            (:const, (:(=), :sorted_keywords, (:vect, "abstract", "baremodule", "begin", "bitstype", "break", "catch", "ccall", "const", "continue", "do", "else", "elseif", "end", "export", "false", "finally", "for", "function", "global", "if", "immutable", "import", "importall", "let", "local", "macro", "module", "quote", "return", "true", "try", "type", "typealias", "using", "while"))),
+            (:line, 92, :none),
+            (:(=), :r, (:call, :searchsorted, :sorted_keywords, :s)),
+            (:line, 93, :none),
+            (:(=), :i, (:call, :first, :r)),
+            (:line, 94, :none),
+            (:(=), :n, (:call, :length, :sorted_keywords)),
+            (:line, 95, :none),
+            (:while, (:&&, (:call, :(<=), :i, :n), (:call, :startswith, (:ref, :sorted_keywords, :i), :s)), (:block,
+                (:line, 96, :none),
+                (:(=), :r, (:(:), (:call, :first, :r), :i)),
+                (:line, 97, :none),
+                (:+=, :i, 1)
+              )),
+            (:line, 99, :none),
+            (:ref, :sorted_keywords, :r)
+          )),
+        (:line, 102, :none),
+        (:function, (:call, :complete_path, (:parameters, (:kw, :use_envpath, false)), (:(::), :path, :AbstractString), :pos), (:block,
+            (:line, 103, :none),
+            (:if, (:&&, (:call, (:., :Base, (:quote, #QuoteNode
+                      :is_unix
+                    ))), (:call, :ismatch, (:macrocall, Symbol("@r_str"), "^~(?:/|\$)"), :path)), (:block,
+                (:line, 105, :none),
+                (:if, (:call, :(==), :path, "~"), (:block,
+                    (:line, 106, :none),
+                    (:(=), (:tuple, :dir, :prefix), (:tuple, (:call, :homedir), ""))
+                  ), (:block,
+                    (:line, 108, :none),
+                    (:(=), (:tuple, :dir, :prefix), (:call, :splitdir, (:call, :*, (:call, :homedir), (:ref, :path, (:(:), 2, :end)))))
+                  ))
+              ), (:block,
+                (:line, 111, :none),
+                (:(=), (:tuple, :dir, :prefix), (:call, :splitdir, :path))
+              )),
+            (:line, 113, :none),
+            (:local, :files),
+            (:line, 114, :none),
+            (:try, (:block,
+                (:line, 115, :none),
+                (:if, (:call, :isempty, :dir), (:block,
+                    (:line, 116, :none),
+                    (:(=), :files, (:call, :readdir))
+                  ), (:block,
+                    (:line, 117, :none),
+                    (:if, (:call, :isdir, :dir), (:block,
+                        (:line, 118, :none),
+                        (:(=), :files, (:call, :readdir, :dir))
+                      ), (:block,
+                        (:line, 120, :none),
+                        (:return, (:tuple, (:ref, :String), (:(:), 0, -1), false))
+                      ))
+                  ))
+              ), false, (:block,
+                (:line, 123, :none),
+                (:return, (:tuple, (:ref, :String), (:(:), 0, -1), false))
+              )),
+            (:line, 126, :none),
+            (:(=), :matches, (:call, (:curly, :Set, :String))),
+            (:line, 127, :none),
+            (:for, (:(=), :file, :files), (:block,
+                (:line, 128, :none),
+                (:if, (:call, :startswith, :file, :prefix), (:block,
+                    (:line, 129, :none),
+                    (:(=), :id, (:try, (:block,
+                          (:line, 129, :none),
+                          (:call, :isdir, (:call, :joinpath, :dir, :file))
+                        ), false, (:block,
+                          (:line, 129, :none),
+                          false
+                        ))),
+                    (:line, 131, :none),
+                    (:call, :push!, :matches, (:if, :id, (:call, :*, :file, (:macrocall, Symbol("@static"), (:if, (:call, :is_windows), "\\\\", "/"))), :file))
+                  ))
+              )),
+            (:line, 135, :none),
+            (:if, (:&&, :use_envpath, (:call, :(==), (:call, :length, :dir), 0)), (:block,
+                (:line, 137, :none),
+                (:local, (:(=), :pathdirs, (:call, :split, (:ref, :ENV, "PATH"), (:macrocall, Symbol("@static"), (:if, (:call, :is_windows), ";", ":"))))),
+                (:line, 139, :none),
+                (:for, (:(=), :pathdir, :pathdirs), (:block,
+                    (:line, 140, :none),
+                    (:local, :actualpath),
+                    (:line, 141, :none),
+                    (:try, (:block,
+                        (:line, 142, :none),
+                        (:(=), :actualpath, (:call, :realpath, :pathdir))
+                      ), false, (:block,
+                        (:line, 145, :none),
+                        (:continue,)
+                      )),
+                    (:line, 148, :none),
+                    (:if, (:&&, (:call, :(!=), :actualpath, :pathdir), (:call, :in, :actualpath, :pathdirs)), (:block,
+                        (:line, 151, :none),
+                        (:continue,)
+                      )),
+                    (:line, 154, :none),
+                    (:local, :filesinpath),
+                    (:line, 155, :none),
+                    (:try, (:block,
+                        (:line, 156, :none),
+                        (:(=), :filesinpath, (:call, :readdir, :pathdir))
+                      ), :e, (:block,
+                        (:line, 159, :none),
+                        (:if, (:call, :isa, :e, :SystemError), (:block,
+                            (:line, 160, :none),
+                            (:continue,)
+                          ), (:block,
+                            (:line, 163, :none),
+                            (:call, :rethrow, :e)
+                          ))
+                      )),
+                    (:line, 167, :none),
+                    (:for, (:(=), :file, :filesinpath), (:block,
+                        (:line, 170, :none),
+                        (:if, (:&&, (:call, :startswith, :file, :prefix), (:call, :isfile, (:call, :joinpath, :pathdir, :file))), (:block,
+                            (:line, 171, :none),
+                            (:call, :push!, :matches, :file)
+                          ))
+                      ))
+                  ))
+              )),
+            (:line, 177, :none),
+            (:(=), :matchList, (:typed_comprehension, :String, (:generator, (:call, :replace, :s, (:macrocall, Symbol("@r_str"), "\\s"), "\\ "), (:(=), :s, :matches)))),
+            (:line, 178, :none),
+            (:(=), :startpos, (:call, :-, (:call, :+, (:call, :-, :pos, (:call, :endof, :prefix)), 1), (:call, :length, (:call, :matchall, (:macrocall, Symbol("@r_str"), " "), :prefix)))),
+            (:line, 182, :none),
+            (:return, (:tuple, :matchList, (:(:), :startpos, :pos), (:call, :!, (:call, :isempty, :matchList))))
+          )),
+        (:line, 187, :none),
+        (:function, (:call, :should_method_complete, (:(::), :s, :AbstractString)), (:block,
+            (:line, 188, :none),
+            (:(=), :method_complete, false),
+            (:line, 189, :none),
+            (:for, (:(=), :c, (:call, :reverse, :s)), (:block,
+                (:line, 190, :none),
+                (:if, (:call, :in, :c, (:vect, ',', '(')), (:block,
+                    (:line, 191, :none),
+                    (:(=), :method_complete, true),
+                    (:line, 192, :none),
+                    (:break,)
+                  ), (:block,
+                    (:line, 193, :none),
+                    (:if, (:call, :!, (:call, :in, :c, :whitespace_chars)), (:block,
+                        (:line, 194, :none),
+                        (:(=), :method_complete, false),
+                        (:line, 195, :none),
+                        (:break,)
+                      ))
+                  ))
+              )),
+            (:line, 198, :none),
+            :method_complete
+          )),
+        (:line, 203, :none),
+        (:function, (:call, :find_start_brace, (:parameters, (:kw, :c_start, '('), (:kw, :c_end, ')')), (:(::), :s, :AbstractString)), (:block,
+            (:line, 204, :none),
+            (:(=), :braces, 0),
+            (:line, 205, :none),
+            (:(=), :r, (:call, :RevString, :s)),
+            (:line, 206, :none),
+            (:(=), :i, (:call, :start, :r)),
+            (:line, 207, :none),
+            (:(=), :in_single_quotes, false),
+            (:line, 208, :none),
+            (:(=), :in_double_quotes, false),
+            (:line, 209, :none),
+            (:(=), :in_back_ticks, false),
+            (:line, 210, :none),
+            (:while, (:call, :!, (:call, :done, :r, :i)), (:block,
+                (:line, 211, :none),
+                (:(=), (:tuple, :c, :i), (:call, :next, :r, :i)),
+                (:line, 212, :none),
+                (:if, (:&&, (:call, :!, :in_single_quotes), (:&&, (:call, :!, :in_double_quotes), (:call, :!, :in_back_ticks))), (:block,
+                    (:line, 213, :none),
+                    (:if, (:call, :(==), :c, :c_start), (:block,
+                        (:line, 214, :none),
+                        (:+=, :braces, 1)
+                      ), (:block,
+                        (:line, 215, :none),
+                        (:if, (:call, :(==), :c, :c_end), (:block,
+                            (:line, 216, :none),
+                            (:-=, :braces, 1)
+                          ), (:block,
+                            (:line, 217, :none),
+                            (:if, (:call, :(==), :c, '\''), (:block,
+                                (:line, 218, :none),
+                                (:(=), :in_single_quotes, true)
+                              ), (:block,
+                                (:line, 219, :none),
+                                (:if, (:call, :(==), :c, '"'), (:block,
+                                    (:line, 220, :none),
+                                    (:(=), :in_double_quotes, true)
+                                  ), (:block,
+                                    (:line, 221, :none),
+                                    (:if, (:call, :(==), :c, '`'), (:block,
+                                        (:line, 222, :none),
+                                        (:(=), :in_back_ticks, true)
+                                      ))
+                                  ))
+                              ))
+                          ))
+                      ))
+                  ), (:block,
+                    (:line, 225, :none),
+                    (:if, (:&&, (:call, :!, :in_back_ticks), (:&&, (:call, :!, :in_double_quotes), (:&&, (:call, :(==), :c, '\''), (:&&, (:call, :!, (:call, :done, :r, :i)), (:call, :(!=), (:ref, (:call, :next, :r, :i), 1), '\\'))))), (:block,
+                        (:line, 226, :none),
+                        (:(=), :in_single_quotes, (:call, :!, :in_single_quotes))
+                      ), (:block,
+                        (:line, 227, :none),
+                        (:if, (:&&, (:call, :!, :in_back_ticks), (:&&, (:call, :!, :in_single_quotes), (:&&, (:call, :(==), :c, '"'), (:&&, (:call, :!, (:call, :done, :r, :i)), (:call, :(!=), (:ref, (:call, :next, :r, :i), 1), '\\'))))), (:block,
+                            (:line, 228, :none),
+                            (:(=), :in_double_quotes, (:call, :!, :in_double_quotes))
+                          ), (:block,
+                            (:line, 229, :none),
+                            (:if, (:&&, (:call, :!, :in_single_quotes), (:&&, (:call, :!, :in_double_quotes), (:&&, (:call, :(==), :c, '`'), (:&&, (:call, :!, (:call, :done, :r, :i)), (:call, :(!=), (:ref, (:call, :next, :r, :i), 1), '\\'))))), (:block,
+                                (:line, 230, :none),
+                                (:(=), :in_back_ticks, (:call, :!, :in_back_ticks))
+                              ))
+                          ))
+                      ))
+                  )),
+                (:line, 233, :none),
+                (:&&, (:call, :(==), :braces, 1), (:break,))
+              )),
+            (:line, 235, :none),
+            (:&&, (:call, :(!=), :braces, 1), (:return, (:tuple, (:(:), 0, -1), -1))),
+            (:line, 236, :none),
+            (:(=), :method_name_end, (:call, :reverseind, :r, :i)),
+            (:line, 237, :none),
+            (:(=), :startind, (:call, :nextind, :s, (:call, :rsearch, :s, :non_identifier_chars, :method_name_end))),
+            (:line, 238, :none),
+            (:return, (:tuple, (:(:), :startind, (:call, :endof, :s)), :method_name_end))
+          )),
+        (:line, 246, :none),
+        (:function, (:call, :get_value, (:(::), :sym, :Expr), :fn), (:block,
+            (:line, 247, :none),
+            (:&&, (:call, :(!=), (:., :sym, (:quote, #QuoteNode
+                    :head
+                  )), (:quote, #QuoteNode
+                  :.
+                )), (:return, (:tuple, :nothing, false))),
+            (:line, 248, :none),
+            (:for, (:(=), :ex, (:., :sym, (:quote, #QuoteNode
+                    :args
+                  ))), (:block,
+                (:line, 249, :none),
+                (:(=), (:tuple, :fn, :found), (:call, :get_value, :ex, :fn)),
+                (:line, 250, :none),
+                (:&&, (:call, :!, :found), (:return, (:tuple, :nothing, false)))
+              )),
+            (:line, 252, :none),
+            (:tuple, :fn, true)
+          )),
+        (:line, 254, :none),
+        (:(=), (:call, :get_value, (:(::), :sym, :Symbol), :fn), (:block,
+            (:line, 254, :none),
+            (:if, (:call, :isdefined, :fn, :sym), (:tuple, (:call, :getfield, :fn, :sym), true), (:tuple, :nothing, false))
+          )),
+        (:line, 255, :none),
+        (:(=), (:call, :get_value, (:(::), :sym, :QuoteNode), :fn), (:block,
+            (:line, 255, :none),
+            (:if, (:call, :isdefined, :fn, (:., :sym, (:quote, #QuoteNode
+                    :value
+                  ))), (:tuple, (:call, :getfield, :fn, (:., :sym, (:quote, #QuoteNode
+                      :value
+                    ))), true), (:tuple, :nothing, false))
+          )),
+        (:line, 256, :none),
+        (:(=), (:call, :get_value, :sym, :fn), (:block,
+            (:line, 256, :none),
+            (:tuple, :sym, true)
+          )),
+        (:line, 259, :none),
+        (:function, (:call, :get_value_getfield, (:(::), :ex, :Expr), :fn), (:block,
+            (:line, 261, :none),
+            (:(=), (:tuple, :val, :found), (:call, :get_value_getfield, (:ref, (:., :ex, (:quote, #QuoteNode
+                      :args
+                    )), 2), :fn)),
+            (:line, 262, :none),
+            (:||, :found, (:return, (:tuple, :nothing, false))),
+            (:line, 263, :none),
+            (:call, :get_value_getfield, (:ref, (:., :ex, (:quote, #QuoteNode
+                    :args
+                  )), 3), :val)
+          )),
+        (:line, 265, :none),
+        (:(=), (:call, :get_value_getfield, :sym, :fn), (:block,
+            (:line, 265, :none),
+            (:call, :get_value, :sym, :fn)
+          )),
+        (:line, 268, :none),
+        (:function, (:call, :get_type_call, (:(::), :expr, :Expr)), (:block,
+            (:line, 269, :none),
+            (:(=), :f_name, (:ref, (:., :expr, (:quote, #QuoteNode
+                    :args
+                  )), 1)),
+            (:line, 271, :none),
+            (:if, (:&&, (:call, :isa, :f_name, :GlobalRef), (:&&, (:call, :isconst, (:., :f_name, (:quote, #QuoteNode
+                        :mod
+                      )), (:., :f_name, (:quote, #QuoteNode
+                        :name
+                      ))), (:call, :isdefined, (:., :f_name, (:quote, #QuoteNode
+                        :mod
+                      )), (:., :f_name, (:quote, #QuoteNode
+                        :name
+                      ))))), (:block,
+                (:line, 272, :none),
+                (:(=), :ft, (:call, :typeof, (:call, :eval, :f_name))),
+                (:line, 273, :none),
+                (:(=), :found, true)
+              ), (:block,
+                (:line, 275, :none),
+                (:(=), (:tuple, :ft, :found), (:call, :get_type, :f_name, :Main))
+              )),
+            (:line, 277, :none),
+            (:||, :found, (:return, (:tuple, :Any, false))),
+            (:line, 278, :none),
+            (:(=), :args, (:ref, :Any)),
+            (:line, 279, :none),
+            (:for, (:(=), :ex, (:ref, (:., :expr, (:quote, #QuoteNode
+                      :args
+                    )), (:(:), 2, :end))), (:block,
+                (:line, 280, :none),
+                (:(=), (:tuple, :typ, :found), (:call, :get_type, :ex, :Main)),
+                (:line, 281, :none),
+                (:if, :found, (:call, :push!, :args, :typ), (:call, :push!, :args, :Any))
+              )),
+            (:line, 284, :none),
+            (:(=), :mt, (:call, (:., :Base, (:quote, #QuoteNode
+                    :_methods_by_ftype
+                  )), (:curly, :Tuple, :ft, (:..., :args)), -1)),
+            (:line, 285, :none),
+            (:||, (:call, :(==), (:call, :length, :mt), 1), (:return, (:tuple, :Any, false))),
+            (:line, 286, :none),
+            (:(=), :m, (:call, :first, :mt)),
+            (:line, 288, :none),
+            (:(=), :linfo, (:call, (:., :Base, (:quote, #QuoteNode
+                    :func_for_method_checked
+                  )), (:ref, :m, 3), (:curly, :Tuple, (:..., :args)))),
+            (:line, 289, :none),
+            (:(=), (:tuple, :tree, :return_type), (:call, (:., (:., :Core, (:quote, #QuoteNode
+                      :Inference
+                    )), (:quote, #QuoteNode
+                    :typeinf
+                  )), :linfo, (:ref, :m, 1), (:ref, :m, 2))),
+            (:line, 290, :none),
+            (:return, (:tuple, :return_type, true))
+          )),
+        (:line, 293, :none),
+        (:function, (:call, :get_type, (:(::), :sym, :Expr), :fn), (:block,
+            (:line, 294, :none),
+            (:(=), :sym, (:call, :expand, :sym)),
+            (:line, 295, :none),
+            (:(=), (:tuple, :val, :found), (:call, :get_value, :sym, :fn)),
+            (:line, 296, :none),
+            (:&&, :found, (:return, (:tuple, (:ref, (:., (:call, (:., :Base, (:quote, #QuoteNode
+                            :typesof
+                          )), :val), (:quote, #QuoteNode
+                        :parameters
+                      )), 1), :found))),
+            (:line, 297, :none),
+            (:if, (:call, :(===), (:., :sym, (:quote, #QuoteNode
+                    :head
+                  )), (:quote, #QuoteNode
+                  :call
+                )), (:block,
+                (:line, 300, :none),
+                (:(=), :a1, (:ref, (:., :sym, (:quote, #QuoteNode
+                        :args
+                      )), 1)),
+                (:line, 301, :none),
+                (:if, (:&&, (:call, :isa, :a1, :GlobalRef), (:&&, (:call, :isconst, (:., :a1, (:quote, #QuoteNode
+                            :mod
+                          )), (:., :a1, (:quote, #QuoteNode
+                            :name
+                          ))), (:&&, (:call, :isdefined, (:., :a1, (:quote, #QuoteNode
+                              :mod
+                            )), (:., :a1, (:quote, #QuoteNode
+                              :name
+                            ))), (:call, :(===), (:call, :eval, :a1), (:., :Core, (:quote, #QuoteNode
+                              :getfield
+                            )))))), (:block,
+                    (:line, 303, :none),
+                    (:(=), (:tuple, :val, :found), (:call, :get_value_getfield, :sym, :Main)),
+                    (:line, 304, :none),
+                    (:return, (:tuple, (:if, :found, (:ref, (:., (:call, (:., :Base, (:quote, #QuoteNode
+                                    :typesof
+                                  )), :val), (:quote, #QuoteNode
+                                :parameters
+                              )), 1), :Any), :found))
+                  )),
+                (:line, 306, :none),
+                (:return, (:call, :get_type_call, :sym))
+              )),
+            (:line, 308, :none),
+            (:tuple, :Any, false)
+          )),
+        (:line, 310, :none),
+        (:function, (:call, :get_type, :sym, :fn), (:block,
+            (:line, 311, :none),
+            (:(=), (:tuple, :val, :found), (:call, :get_value, :sym, :fn)),
+            (:line, 312, :none),
+            (:return, (:tuple, (:if, :found, (:ref, (:., (:call, (:., :Base, (:quote, #QuoteNode
+                            :typesof
+                          )), :val), (:quote, #QuoteNode
+                        :parameters
+                      )), 1), :Any), :found))
+          )),
+        (:line, 315, :none),
+        (:function, (:call, :complete_methods, (:(::), :ex_org, :Expr)), (:block,
+            (:line, 316, :none),
+            (:(=), :args_ex, (:ref, :DataType)),
+            (:line, 317, :none),
+            (:(=), (:tuple, :func, :found), (:call, :get_value, (:ref, (:., :ex_org, (:quote, #QuoteNode
+                      :args
+                    )), 1), :Main)),
+            (:line, 318, :none),
+            (:&&, (:call, :!, :found), (:return, (:ref, :String))),
+            (:line, 319, :none),
+            (:for, (:(=), :ex, (:ref, (:., :ex_org, (:quote, #QuoteNode
+                      :args
+                    )), (:(:), 2, :end))), (:block,
+                (:line, 320, :none),
+                (:(=), (:tuple, :val, :found), (:call, :get_type, :ex, :Main)),
+                (:line, 321, :none),
+                (:call, :push!, :args_ex, :val)
+              )),
+            (:line, 323, :none),
+            (:(=), :out, (:ref, :String)),
+            (:line, 324, :none),
+            (:(=), :t_in, (:curly, :Tuple, (:call, (:., :Core, (:quote, #QuoteNode
+                      :Typeof
+                    )), :func), (:..., :args_ex))),
+            (:line, 325, :none),
+            (:(=), :na, (:call, :+, (:call, :length, :args_ex), 1)),
+            (:line, 326, :none),
+            (:(=), :ml, (:call, :methods, :func)),
+            (:line, 327, :none),
+            (:(=), :kwtype, (:if, (:call, :isdefined, (:., :ml, (:quote, #QuoteNode
+                      :mt
+                    )), (:quote, #QuoteNode
+                    :kwsorter
+                  )), (:call, (:curly, :Nullable, :DataType), (:call, :typeof, (:., (:., :ml, (:quote, #QuoteNode
+                          :mt
+                        )), (:quote, #QuoteNode
+                        :kwsorter
+                      )))), (:call, (:curly, :Nullable, :DataType)))),
+            (:line, 328, :none),
+            (:(=), :io, (:call, :IOBuffer)),
+            (:line, 329, :none),
+            (:for, (:(=), :method, :ml), (:block,
+                (:line, 331, :none),
+                (:if, (:call, :(!=), (:call, :typeintersect, (:curly, :Tuple, (:..., (:ref, (:., (:., :method, (:quote, #QuoteNode
+                                  :sig
+                                )), (:quote, #QuoteNode
+                                :parameters
+                              )), (:(:), 1, (:call, :min, :na, :end))))), :t_in), (:curly, :Union)), (:block,
+                    (:line, 332, :none),
+                    (:call, :show, :io, :method, (:kw, :kwtype, :kwtype)),
+                    (:line, 333, :none),
+                    (:call, :push!, :out, (:call, :takebuf_string, :io))
+                  ))
+              )),
+            (:line, 336, :none),
+            (:return, :out)
+          )),
+        (:line, 339, :none),
+        (:call, :include, "latex_symbols.jl"),
+        (:line, 340, :none),
+        (:call, :include, "emoji_symbols.jl"),
+        (:line, 342, :none),
+        (:const, (:(=), :non_identifier_chars, (:vect, (:..., " \t\n\r\"\\'`\$><=:;|&{}()[],+-*/?%^~")))),
+        (:line, 343, :none),
+        (:const, (:(=), :whitespace_chars, (:vect, (:..., " \t\n\r")))),
+        (:line, 347, :none),
+        (:const, (:(=), :bslash_separators, (:vect, (:..., :whitespace_chars), (:..., "\"'`")))),
+        (:line, 351, :none),
+        (:function, (:call, :afterusing, (:(::), :string, :String), (:(::), :startpos, :Int)), (:block,
+            (:line, 352, :none),
+            (:&&, (:||, (:call, :isempty, :string), (:call, :(==), :startpos, 0)), (:return, false)),
+            (:line, 353, :none),
+            (:(=), :str, (:ref, :string, (:(:), 1, (:call, :prevind, :string, :startpos)))),
+            (:line, 354, :none),
+            (:&&, (:call, :isempty, :str), (:return, false)),
+            (:line, 355, :none),
+            (:(=), :rstr, (:call, :reverse, :str)),
+            (:line, 356, :none),
+            (:(=), :r, (:call, :search, :rstr, (:macrocall, Symbol("@r_str"), "\\s(gnisu|tropmi)\\b"))),
+            (:line, 357, :none),
+            (:&&, (:call, :isempty, :r), (:return, false)),
+            (:line, 358, :none),
+            (:(=), :fr, (:call, :reverseind, :str, (:call, :last, :r))),
+            (:line, 359, :none),
+            (:return, (:call, :ismatch, (:macrocall, Symbol("@r_str"), "^\\b(using|import)\\s*(\\w+\\s*,\\s*)*\\w*\$"), (:ref, :str, (:(:), :fr, :end))))
+          )),
+        (:line, 362, :none),
+        (:function, (:call, :bslash_completions, :string, :pos), (:block,
+            (:line, 363, :none),
+            (:(=), :slashpos, (:call, :rsearch, :string, '\\', :pos)),
+            (:line, 364, :none),
+            (:if, (:&&, (:call, :<, (:call, :rsearch, :string, :bslash_separators, :pos), :slashpos), (:call, :!, (:&&, (:call, :<, 1, :slashpos), (:call, :(==), (:ref, :string, (:call, :prevind, :string, :slashpos)), '\\')))), (:block,
+                (:line, 367, :none),
+                (:(=), :s, (:ref, :string, (:(:), :slashpos, :pos))),
+                (:line, 368, :none),
+                (:(=), :latex, (:call, :get, :latex_symbols, :s, "")),
+                (:line, 369, :none),
+                (:if, (:call, :!, (:call, :isempty, :latex)), (:block,
+                    (:line, 370, :none),
+                    (:return, (:tuple, true, (:tuple, (:vect, :latex), (:(:), :slashpos, :pos), true)))
+                  )),
+                (:line, 372, :none),
+                (:(=), :emoji, (:call, :get, :emoji_symbols, :s, "")),
+                (:line, 373, :none),
+                (:if, (:call, :!, (:call, :isempty, :emoji)), (:block,
+                    (:line, 374, :none),
+                    (:return, (:tuple, true, (:tuple, (:vect, :emoji), (:(:), :slashpos, :pos), true)))
+                  )),
+                (:line, 378, :none),
+                (:if, (:call, :startswith, :s, "\\:"), (:block,
+                    (:line, 379, :none),
+                    (:(=), :emoji_names, (:call, :filter, (:->, :k, (:block,
+                            (:line, 379, :none),
+                            (:call, :startswith, :k, :s)
+                          )), (:call, :keys, :emoji_symbols))),
+                    (:line, 380, :none),
+                    (:return, (:tuple, true, (:tuple, (:call, :sort!, (:call, :collect, :emoji_names)), (:(:), :slashpos, :pos), true)))
+                  ), (:block,
+                    (:line, 382, :none),
+                    (:(=), :latex_names, (:call, :filter, (:->, :k, (:block,
+                            (:line, 382, :none),
+                            (:call, :startswith, :k, :s)
+                          )), (:call, :keys, :latex_symbols))),
+                    (:line, 383, :none),
+                    (:return, (:tuple, true, (:tuple, (:call, :sort!, (:call, :collect, :latex_names)), (:(:), :slashpos, :pos), true)))
+                  ))
+              )),
+            (:line, 386, :none),
+            (:return, (:tuple, false, (:tuple, (:ref, :String), (:(:), 0, -1), false)))
+          )),
+        (:line, 389, :none),
+        (:function, (:call, :dict_identifier_key, :str, :tag), (:block,
+            (:line, 390, :none),
+            (:if, (:call, :(===), :tag, (:quote, #QuoteNode
+                  :string
+                )), (:block,
+                (:line, 391, :none),
+                (:(=), :str_close, (:call, :*, :str, "\""))
+              ), (:block,
+                (:line, 392, :none),
+                (:if, (:call, :(===), :tag, (:quote, #QuoteNode
+                      :cmd
+                    )), (:block,
+                    (:line, 393, :none),
+                    (:(=), :str_close, (:call, :*, :str, "`"))
+                  ), (:block,
+                    (:line, 395, :none),
+                    (:(=), :str_close, :str)
+                  ))
+              )),
+            (:line, 398, :none),
+            (:(=), (:tuple, :frange, :end_of_indentifier), (:call, :find_start_brace, :str_close, (:kw, :c_start, '['), (:kw, :c_end, ']'))),
+            (:line, 399, :none),
+            (:&&, (:call, :isempty, :frange), (:return, (:tuple, :nothing, :nothing, :nothing))),
+            (:line, 400, :none),
+            (:(=), :obj, :Main),
+            (:line, 401, :none),
+            (:for, (:(=), :name, (:call, :split, (:ref, :str, (:(:), (:ref, :frange, 1), :end_of_indentifier)), '.')), (:block,
+                (:line, 402, :none),
+                (:||, (:call, (:., :Base, (:quote, #QuoteNode
+                        :isidentifier
+                      )), :name), (:return, (:tuple, :nothing, :nothing, :nothing))),
+                (:line, 403, :none),
+                (:(=), :sym, (:call, :Symbol, :name)),
+                (:line, 404, :none),
+                (:||, (:call, :isdefined, :obj, :sym), (:return, (:tuple, :nothing, :nothing, :nothing))),
+                (:line, 405, :none),
+                (:(=), :obj, (:call, :getfield, :obj, :sym)),
+                (:line, 407, :none),
+                (:&&, (:call, :isa, :obj, :Array), (:return, (:tuple, :nothing, :nothing, :nothing)))
+              )),
+            (:line, 409, :none),
+            (:(=), :begin_of_key, (:call, :findnext, (:->, :x, (:block,
+                    (:line, 409, :none),
+                    (:call, :!, (:call, :in, :x, :whitespace_chars))
+                  )), :str, (:call, :+, :end_of_indentifier, 2))),
+            (:line, 410, :none),
+            (:&&, (:call, :(==), :begin_of_key, 0), (:return, (:tuple, true, :nothing, :nothing))),
+            (:line, 411, :none),
+            (:(=), :partial_key, (:ref, :str, (:(:), :begin_of_key, :end))),
+            (:line, 412, :none),
+            (:||, (:&&, (:call, :isa, :obj, :Associative), (:call, :<, (:call, :length, :obj), 1.0e6)), (:return, (:tuple, true, :nothing, :nothing))),
+            (:line, 413, :none),
+            (:return, (:tuple, :obj, :partial_key, :begin_of_key))
+          )),
+        (:line, 417, :none),
+        (:macrocall, Symbol("@noinline"), (:function, (:call, :find_dict_matches, :identifier, :partial_key), (:block,
+              (:line, 418, :none),
+              (:(=), :matches, (:vect,)),
+              (:line, 419, :none),
+              (:for, (:(=), :key, (:call, :keys, :identifier)), (:block,
+                  (:line, 420, :none),
+                  (:(=), :rkey, (:call, :repr, :key)),
+                  (:line, 421, :none),
+                  (:&&, (:call, :startswith, :rkey, :partial_key), (:call, :push!, :matches, :rkey))
+                )),
+              (:line, 423, :none),
+              (:return, :matches)
+            ))),
+        (:line, 426, :none),
+        (:function, (:call, :completions, :string, :pos), (:block,
+            (:line, 428, :none),
+            (:(=), :partial, (:ref, :string, (:(:), 1, :pos))),
+            (:line, 429, :none),
+            (:(=), :inc_tag, (:call, (:., :Base, (:quote, #QuoteNode
+                    :syntax_deprecation_warnings
+                  )), (:->, (:tuple,), (:block,
+                    (:line, 430, :none),
+                    (:call, (:., :Base, (:quote, #QuoteNode
+                          :incomplete_tag
+                        )), (:call, :parse, :partial, (:kw, :raise, false)))
+                  )), false)),
+            (:line, 434, :none),
+            (:(=), (:tuple, :identifier, :partial_key, :loc), (:call, :dict_identifier_key, :partial, :inc_tag)),
+            (:line, 435, :none),
+            (:if, (:call, :(!==), :identifier, :nothing), (:block,
+                (:line, 436, :none),
+                (:if, (:call, :(!==), :partial_key, :nothing), (:block,
+                    (:line, 437, :none),
+                    (:(=), :matches, (:call, :find_dict_matches, :identifier, :partial_key)),
+                    (:line, 438, :none),
+                    (:&&, (:call, :(==), (:call, :length, :matches), 1), (:&&, (:||, (:call, :(<=), (:call, :length, :string), :pos), (:call, :(!=), (:ref, :string, (:call, :+, :pos, 1)), ']')), (:*=, (:ref, :matches, 1), "]"))),
+                    (:line, 439, :none),
+                    (:&&, (:call, :>, (:call, :length, :matches), 0), (:return, (:tuple, (:call, :sort, :matches), (:(:), :loc, :pos), true)))
+                  ), (:block,
+                    (:line, 441, :none),
+                    (:return, (:tuple, (:ref, :String), (:(:), 0, -1), false))
+                  ))
+              )),
+            (:line, 446, :none),
+            (:if, (:call, :in, :inc_tag, (:vect, (:quote, #QuoteNode
+                    :cmd
+                  ), (:quote, #QuoteNode
+                    :string
+                  ))), (:block,
+                (:line, 447, :none),
+                (:(=), :m, (:call, :match, (:macrocall, Symbol("@r_str"), "[\\t\\n\\r\"'`@\\\$><=;|&\\{]| (?!\\\\)"), (:call, :reverse, :partial))),
+                (:line, 448, :none),
+                (:(=), :startpos, (:call, :nextind, :partial, (:call, :reverseind, :partial, (:., :m, (:quote, #QuoteNode
+                          :offset
+                        ))))),
+                (:line, 449, :none),
+                (:(=), :r, (:(:), :startpos, :pos)),
+                (:line, 450, :none),
+                (:(=), (:tuple, :paths, :r, :success), (:call, :complete_path, (:call, :replace, (:ref, :string, :r), (:macrocall, Symbol("@r_str"), "\\\\ "), " "), :pos)),
+                (:line, 451, :none),
+                (:if, (:&&, (:call, :(==), :inc_tag, (:quote, #QuoteNode
+                        :string
+                      )), (:&&, (:call, :(==), (:call, :length, :paths), 1), (:&&, (:call, :!, (:call, :isdir, (:call, :expanduser, (:call, :replace, (:call, :*, (:ref, :string, (:(:), :startpos, (:call, :-, (:call, :start, :r), 1))), (:ref, :paths, 1)), (:macrocall, Symbol("@r_str"), "\\\\ "), " ")))), (:||, (:call, :(<=), (:call, :length, :string), :pos), (:call, :(!=), (:ref, :string, (:call, :+, :pos, 1)), '"'))))), (:block,
+                    (:line, 455, :none),
+                    (:*=, (:ref, :paths, 1), "\"")
+                  )),
+                (:line, 458, :none),
+                (:&&, (:||, :success, (:call, :(==), :inc_tag, (:quote, #QuoteNode
+                        :cmd
+                      ))), (:return, (:tuple, (:call, :sort, :paths), :r, :success)))
+              )),
+            (:line, 461, :none),
+            (:(=), (:tuple, :ok, :ret), (:call, :bslash_completions, :string, :pos)),
+            (:line, 462, :none),
+            (:&&, :ok, (:return, :ret)),
+            (:line, 465, :none),
+            (:&&, (:call, :(==), :inc_tag, (:quote, #QuoteNode
+                  :string
+                )), (:return, (:tuple, (:ref, :String), (:(:), 0, -1), false))),
+            (:line, 467, :none),
+            (:if, (:&&, (:call, :(==), :inc_tag, (:quote, #QuoteNode
+                    :other
+                  )), (:call, :should_method_complete, :partial)), (:block,
+                (:line, 468, :none),
+                (:(=), (:tuple, :frange, :method_name_end), (:call, :find_start_brace, :partial)),
+                (:line, 469, :none),
+                (:(=), :ex, (:call, (:., :Base, (:quote, #QuoteNode
+                        :syntax_deprecation_warnings
+                      )), (:->, (:tuple,), (:block,
+                        (:line, 470, :none),
+                        (:call, :parse, (:call, :*, (:ref, :partial, :frange), ")"), (:kw, :raise, false))
+                      )), false)),
+                (:line, 472, :none),
+                (:if, (:&&, (:call, :isa, :ex, :Expr), (:call, :(==), (:., :ex, (:quote, #QuoteNode
+                          :head
+                        )), (:quote, #QuoteNode
+                        :call
+                      ))), (:block,
+                    (:line, 473, :none),
+                    (:return, (:tuple, (:call, :complete_methods, :ex), (:(:), (:call, :start, :frange), :method_name_end), false))
+                  ))
+              ), (:block,
+                (:line, 475, :none),
+                (:if, (:call, :(==), :inc_tag, (:quote, #QuoteNode
+                      :comment
+                    )), (:block,
+                    (:line, 476, :none),
+                    (:return, (:tuple, (:ref, :String), (:(:), 0, -1), false))
+                  ))
+              )),
+            (:line, 479, :none),
+            (:(=), :dotpos, (:call, :rsearch, :string, '.', :pos)),
+            (:line, 480, :none),
+            (:(=), :startpos, (:call, :nextind, :string, (:call, :rsearch, :string, :non_identifier_chars, :pos))),
+            (:line, 482, :none),
+            (:(=), :ffunc, (:->, (:tuple, :mod, :x), (:block,
+                  (:line, 482, :none),
+                  true
+                ))),
+            (:line, 483, :none),
+            (:(=), :suggestions, (:ref, :String)),
+            (:line, 484, :none),
+            (:(=), :comp_keywords, true),
+            (:line, 485, :none),
+            (:if, (:call, :afterusing, :string, :startpos), (:block,
+                (:line, 491, :none),
+                (:(=), :s, (:ref, :string, (:(:), :startpos, :pos))),
+                (:line, 492, :none),
+                (:if, (:call, :(<=), :dotpos, :startpos), (:block,
+                    (:line, 493, :none),
+                    (:for, (:(=), :dir, (:vcat, (:call, (:., :Pkg, (:quote, #QuoteNode
+                                :dir
+                              ))), :LOAD_PATH, (:call, :pwd))), (:block,
+                        (:line, 494, :none),
+                        (:||, (:call, :isdir, :dir), (:continue,)),
+                        (:line, 495, :none),
+                        (:for, (:(=), :pname, (:call, :readdir, :dir)), (:block,
+                            (:line, 496, :none),
+                            (:if, (:&&, (:call, :(!=), (:ref, :pname, 1), '.'), (:&&, (:call, :(!=), :pname, "METADATA"), (:&&, (:call, :(!=), :pname, "REQUIRE"), (:call, :startswith, :pname, :s)))), (:block,
+                                (:line, 502, :none),
+                                (:if, (:call, :isfile, (:call, :joinpath, :dir, :pname)), (:block,
+                                    (:line, 503, :none),
+                                    (:&&, (:call, :endswith, :pname, ".jl"), (:call, :push!, :suggestions, (:ref, :pname, (:(:), 1, (:call, :-, :end, 3)))))
+                                  ), (:block,
+                                    (:line, 505, :none),
+                                    (:(=), :mod_name, (:if, (:call, :endswith, :pname, ".jl"), (:block,
+                                          (:line, 506, :none),
+                                          (:ref, :pname, (:(:), 1, (:call, :-, :end, 3)))
+                                        ), (:block,
+                                          (:line, 508, :none),
+                                          :pname
+                                        ))),
+                                    (:line, 510, :none),
+                                    (:if, (:call, :isfile, (:call, :joinpath, :dir, :pname, "src", (:string, :mod_name, ".jl"))), (:block,
+                                        (:line, 512, :none),
+                                        (:call, :push!, :suggestions, :mod_name)
+                                      ))
+                                  ))
+                              ))
+                          ))
+                      ))
+                  )),
+                (:line, 519, :none),
+                (:(=), :ffunc, (:->, (:tuple, :mod, :x), (:block,
+                      (:line, 519, :none),
+                      (:&&, (:call, :isdefined, :mod, :x), (:call, :isa, (:call, :getfield, :mod, :x), :Module))
+                    ))),
+                (:line, 520, :none),
+                (:(=), :comp_keywords, false)
+              )),
+            (:line, 522, :none),
+            (:&&, (:call, :(==), :startpos, 0), (:(=), :pos, -1)),
+            (:line, 523, :none),
+            (:&&, (:call, :<, :dotpos, :startpos), (:(=), :dotpos, (:call, :-, :startpos, 1))),
+            (:line, 524, :none),
+            (:(=), :s, (:ref, :string, (:(:), :startpos, :pos))),
+            (:line, 525, :none),
+            (:&&, :comp_keywords, (:call, :append!, :suggestions, (:call, :complete_keyword, :s))),
+            (:line, 528, :none),
+            (:if, (:call, :(==), :dotpos, :startpos), (:block,
+                (:line, 529, :none),
+                (:(=), :i, (:call, :prevind, :string, :startpos)),
+                (:line, 530, :none),
+                (:while, (:call, :<, 0, :i), (:block,
+                    (:line, 531, :none),
+                    (:(=), :c, (:ref, :string, :i)),
+                    (:line, 532, :none),
+                    (:if, (:call, :in, :c, (:vect, ')', ']')), (:block,
+                        (:line, 533, :none),
+                        (:if, (:call, :(==), :c, ')'), (:block,
+                            (:line, 534, :none),
+                            (:(=), :c_start, '('),
+                            (:line, 534, :none),
+                            (:(=), :c_end, ')')
+                          ), (:block,
+                            (:line, 535, :none),
+                            (:if, (:call, :(==), :c, ']'), (:block,
+                                (:line, 536, :none),
+                                (:(=), :c_start, '['),
+                                (:line, 536, :none),
+                                (:(=), :c_end, ']')
+                              ))
+                          )),
+                        (:line, 538, :none),
+                        (:(=), (:tuple, :frange, :end_of_indentifier), (:call, :find_start_brace, (:ref, :string, (:(:), 1, (:call, :prevind, :string, :i))), (:kw, :c_start, :c_start), (:kw, :c_end, :c_end))),
+                        (:line, 539, :none),
+                        (:(=), :startpos, (:call, :start, :frange)),
+                        (:line, 540, :none),
+                        (:(=), :i, (:call, :prevind, :string, :startpos))
+                      ), (:block,
+                        (:line, 541, :none),
+                        (:if, (:call, :in, :c, (:vect, (:..., "'\"`"))), (:block,
+                            (:line, 542, :none),
+                            (:(=), :s, (:call, :*, (:string, :c, :c), (:ref, :string, (:(:), :startpos, :pos)))),
+                            (:line, 543, :none),
+                            (:break,)
+                          ), (:block,
+                            (:line, 545, :none),
+                            (:break,)
+                          ))
+                      )),
+                    (:line, 547, :none),
+                    (:(=), :s, (:ref, :string, (:(:), :startpos, :pos)))
+                  ))
+              )),
+            (:line, 550, :none),
+            (:call, :append!, :suggestions, (:call, :complete_symbol, :s, :ffunc)),
+            (:line, 551, :none),
+            (:return, (:tuple, (:call, :sort, (:call, :unique, :suggestions)), (:(:), (:call, :+, :dotpos, 1), :pos), true))
+          )),
+        (:line, 554, :none),
+        (:function, (:call, :shell_completions, :string, :pos), (:block,
+            (:line, 556, :none),
+            (:(=), :scs, (:ref, :string, (:(:), 1, :pos))),
+            (:line, 557, :none),
+            (:local, :args, :last_parse),
+            (:line, 558, :none),
+            (:try, (:block,
+                (:line, 559, :none),
+                (:(=), (:tuple, :args, :last_parse), (:call, (:., :Base, (:quote, #QuoteNode
+                        :shell_parse
+                      )), :scs, true))
+              ), false, (:block,
+                (:line, 561, :none),
+                (:return, (:tuple, (:ref, :String), (:(:), 0, -1), false))
+              )),
+            (:line, 564, :none),
+            (:&&, (:call, :isempty, (:., (:ref, (:., :args, (:quote, #QuoteNode
+                        :args
+                      )), :end), (:quote, #QuoteNode
+                    :args
+                  ))), (:return, (:tuple, (:ref, :String), (:(:), 0, -1), false))),
+            (:line, 565, :none),
+            (:(=), :arg, (:ref, (:., (:ref, (:., :args, (:quote, #QuoteNode
+                        :args
+                      )), :end), (:quote, #QuoteNode
+                    :args
+                  )), :end)),
+            (:line, 566, :none),
+            (:if, (:call, :all, (:->, :s, (:block,
+                    (:line, 566, :none),
+                    (:call, :isa, :s, :AbstractString)
+                  )), (:., (:ref, (:., :args, (:quote, #QuoteNode
+                        :args
+                      )), :end), (:quote, #QuoteNode
+                    :args
+                  ))), (:block,
+                (:line, 572, :none),
+                (:(=), :ignore_last_word, (:&&, (:call, :(!=), :arg, " "), (:call, :(==), (:ref, :scs, :end), ' '))),
+                (:line, 573, :none),
+                (:(=), :prefix, (:if, :ignore_last_word, "", (:call, :join, (:., (:ref, (:., :args, (:quote, #QuoteNode
+                              :args
+                            )), :end), (:quote, #QuoteNode
+                          :args
+                        ))))),
+                (:line, 576, :none),
+                (:(=), :use_envpath, (:&&, (:call, :!, :ignore_last_word), (:call, :<, (:call, :length, (:., :args, (:quote, #QuoteNode
+                            :args
+                          ))), 2))),
+                (:line, 578, :none),
+                (:return, (:call, :complete_path, :prefix, :pos, (:kw, :use_envpath, :use_envpath)))
+              ), (:block,
+                (:line, 579, :none),
+                (:if, (:&&, (:call, :isexpr, :arg, (:quote, #QuoteNode
+                        :escape
+                      )), (:||, (:call, :isexpr, (:ref, (:., :arg, (:quote, #QuoteNode
+                              :args
+                            )), 1), (:quote, #QuoteNode
+                          :incomplete
+                        )), (:call, :isexpr, (:ref, (:., :arg, (:quote, #QuoteNode
+                              :args
+                            )), 1), (:quote, #QuoteNode
+                          :error
+                        )))), (:block,
+                    (:line, 580, :none),
+                    (:(=), :r, (:(:), (:call, :first, :last_parse), (:call, :prevind, :last_parse, (:call, :last, :last_parse)))),
+                    (:line, 581, :none),
+                    (:(=), :partial, (:ref, :scs, :r)),
+                    (:line, 582, :none),
+                    (:(=), (:tuple, :ret, :range), (:call, :completions, :partial, (:call, :endof, :partial))),
+                    (:line, 583, :none),
+                    (:+=, :range, (:call, :-, (:call, :first, :r), 1)),
+                    (:line, 584, :none),
+                    (:return, (:tuple, :ret, :range, true))
+                  ))
+              )),
+            (:line, 586, :none),
+            (:return, (:tuple, (:ref, :String), (:(:), 0, -1), false))
+          ))
+      ))
+  ))

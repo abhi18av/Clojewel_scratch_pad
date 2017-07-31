@@ -1,0 +1,115 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:macrocall, Symbol("@doc"), (:->, "\n`tests, net_on = choosetests(choices)` selects a set of tests to be\nrun. `choices` should be a vector of test names; if empty or set to\n`[\"all\"]`, all tests are selected.\n\nThis function also supports \"test collections\": specifically, \"linalg\"\n refers to collections of tests in the correspondingly-named\ndirectories.\n\nUpon return, `tests` is a vector of fully-expanded test names, and\n`net_on` is true if networking is available (required for some tests).\n", (:block,
+          (:line, 15, :none),
+          (:function, (:call, :choosetests, (:kw, :choices, (:vect,))), (:block,
+              (:line, 17, :none),
+              (:(=), :testnames, (:vect, "linalg", "subarray", "core", "inference", "keywordargs", "numbers", "printf", "char", "string", "triplequote", "unicode", "dates", "dict", "hashing", "iobuffer", "staged", "offsetarray", "arrayops", "tuple", "reduce", "reducedim", "random", "abstractarray", "intfuncs", "simdloop", "vecelement", "blas", "sparse", "bitarray", "copy", "math", "fastmath", "functional", "operators", "path", "ccall", "parse", "loading", "bigint", "bigfloat", "sorting", "statistics", "spawn", "backtrace", "priorityqueue", "file", "read", "mmap", "version", "resolve", "pollfd", "mpfr", "broadcast", "complex", "socket", "floatapprox", "datafmt", "reflection", "regex", "float16", "combinatorics", "sysinfo", "env", "rounding", "ranges", "mod2pi", "euler", "show", "lineedit", "replcompletions", "repl", "replutil", "sets", "test", "goto", "llvmcall", "grisu", "nullable", "meta", "stacktraces", "profile", "libgit2", "docs", "markdown", "base64", "serialize", "misc", "threads", "enums", "cmdlineargs", "i18n", "workspace", "libdl", "int", "checked", "intset", "floatfuncs", "compile", "parallel", "inline", "boundscheck", "error", "ambiguous", "cartesian")),
+              (:line, 39, :none),
+              (:if, (:., :Base, (:quote, #QuoteNode
+                    :USE_GPL_LIBS
+                  )), (:block,
+                  (:line, 40, :none),
+                  (:(=), :testnames, (:vcat, :testnames, "fft", "dsp"))
+                )),
+              (:line, 43, :none),
+              (:if, (:call, :isdir, (:call, :joinpath, :JULIA_HOME, (:., :Base, (:quote, #QuoteNode
+                        :DOCDIR
+                      )), "examples")), (:block,
+                  (:line, 44, :none),
+                  (:call, :push!, :testnames, "examples")
+                )),
+              (:line, 47, :none),
+              (:(=), :tests, (:vect,)),
+              (:line, 48, :none),
+              (:(=), :skip_tests, (:vect,)),
+              (:line, 50, :none),
+              (:for, (:(=), (:tuple, :i, :t), (:call, :enumerate, :choices)), (:block,
+                  (:line, 51, :none),
+                  (:if, (:call, :(==), :t, "--skip"), (:block,
+                      (:line, 52, :none),
+                      (:(=), :skip_tests, (:ref, :choices, (:(:), (:call, :+, :i, 1), :end))),
+                      (:line, 53, :none),
+                      (:break,)
+                    ), (:block,
+                      (:line, 55, :none),
+                      (:call, :push!, :tests, :t)
+                    ))
+                )),
+              (:line, 59, :none),
+              (:if, (:||, (:call, :(==), :tests, (:vect, "all")), (:call, :isempty, :tests)), (:block,
+                  (:line, 60, :none),
+                  (:(=), :tests, :testnames)
+                )),
+              (:line, 63, :none),
+              (:(=), :linalgtests, (:vect, "linalg/triangular", "linalg/qr", "linalg/dense", "linalg/matmul", "linalg/schur", "linalg/special", "linalg/eigen", "linalg/bunchkaufman", "linalg/svd", "linalg/lapack", "linalg/tridiag", "linalg/bidiag", "linalg/diagonal", "linalg/pinv", "linalg/givens", "linalg/cholesky", "linalg/lu", "linalg/symmetric", "linalg/generic", "linalg/uniformscaling", "linalg/lq", "linalg/hessenberg")),
+              (:line, 71, :none),
+              (:if, (:., :Base, (:quote, #QuoteNode
+                    :USE_GPL_LIBS
+                  )), (:block,
+                  (:line, 72, :none),
+                  (:call, :push!, :linalgtests, "linalg/arnoldi")
+                )),
+              (:line, 75, :none),
+              (:if, (:call, :in, "linalg", :skip_tests), (:block,
+                  (:line, 76, :none),
+                  (:call, :filter!, (:->, :x, (:block,
+                        (:line, 76, :none),
+                        (:&&, (:call, :(!=), :x, "linalg"), (:call, :!, (:call, :in, :x, :linalgtests)))
+                      )), :tests)
+                ), (:block,
+                  (:line, 77, :none),
+                  (:if, (:call, :in, "linalg", :tests), (:block,
+                      (:line, 79, :none),
+                      (:call, :filter!, (:->, :x, (:block,
+                            (:line, 79, :none),
+                            (:call, :(!=), :x, "linalg")
+                          )), :tests),
+                      (:line, 80, :none),
+                      (:call, :prepend!, :tests, :linalgtests)
+                    ))
+                )),
+              (:line, 83, :none),
+              (:(=), :net_required_for, (:vect, "socket", "parallel", "libgit2")),
+              (:line, 84, :none),
+              (:(=), :net_on, true),
+              (:line, 85, :none),
+              (:try, (:block,
+                  (:line, 86, :none),
+                  (:call, :getipaddr)
+                ), false, (:block,
+                  (:line, 88, :none),
+                  (:call, :warn, (:call, :*, "Networking unavailable: Skipping tests [", (:call, :join, :net_required_for, ", "), "]")),
+                  (:line, 89, :none),
+                  (:(=), :net_on, false)
+                )),
+              (:line, 92, :none),
+              (:if, (:&&, (:call, :(!=), (:ccall, (:quote, #QuoteNode
+                        :jl_running_on_valgrind
+                      ), :Cint, (:tuple,)), 0), (:call, :in, "rounding", :tests)), (:block,
+                  (:line, 93, :none),
+                  (:call, :warn, "Running under valgrind: Skipping rounding tests"),
+                  (:line, 94, :none),
+                  (:call, :filter!, (:->, :x, (:block,
+                        (:line, 94, :none),
+                        (:call, :(!=), :x, "rounding")
+                      )), :tests)
+                )),
+              (:line, 97, :none),
+              (:if, (:call, :!, :net_on), (:block,
+                  (:line, 98, :none),
+                  (:call, :filter!, (:->, :x, (:block,
+                        (:line, 98, :none),
+                        (:call, :!, (:call, :in, :x, :net_required_for))
+                      )), :tests)
+                )),
+              (:line, 101, :none),
+              (:call, :filter!, (:->, :x, (:block,
+                    (:line, 101, :none),
+                    (:call, :!, (:call, :in, :x, :skip_tests))
+                  )), :tests),
+              (:line, 103, :none),
+              (:tuple, :tests, :net_on)
+            ))
+        )))
+  ))

@@ -1,0 +1,198 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:type, false, (:<:, :NullException, :Exception), (:block,
+        (:line, 4, :none)
+      )),
+    (:line, 6, :none),
+    (:(=), (:call, (:curly, :Nullable, :T), (:(::), :value, :T), (:kw, (:(::), :isnull, :Bool), false)), (:block,
+        (:line, 6, :none),
+        (:call, (:curly, :Nullable, :T), :value, :isnull)
+      )),
+    (:line, 7, :none),
+    (:(=), (:call, :Nullable), (:block,
+        (:line, 7, :none),
+        (:call, (:curly, :Nullable, (:curly, :Union)))
+      )),
+    (:line, 9, :none),
+    (:(=), (:call, (:curly, :eltype, :T), (:(::), (:curly, :Type, (:curly, :Nullable, :T)))), (:block,
+        (:line, 9, :none),
+        :T
+      )),
+    (:line, 11, :none),
+    (:(=), (:call, (:curly, :convert, :T), (:(::), (:curly, :Type, (:curly, :Nullable, :T))), (:(::), :x, (:curly, :Nullable, :T))), (:block,
+        (:line, 11, :none),
+        :x
+      )),
+    (:line, 12, :none),
+    (:(=), (:call, :convert, (:(::), (:curly, :Type, :Nullable)), (:(::), :x, :Nullable)), (:block,
+        (:line, 12, :none),
+        :x
+      )),
+    (:line, 14, :none),
+    (:(=), (:call, (:curly, :convert, :T), (:(::), :t, (:curly, :Type, (:curly, :Nullable, :T))), (:(::), :x, :Any)), (:block,
+        (:line, 14, :none),
+        (:call, :convert, :t, (:call, :convert, :T, :x))
+      )),
+    (:line, 16, :none),
+    (:function, (:call, (:curly, :convert, :T), (:(::), (:curly, :Type, (:curly, :Nullable, :T))), (:(::), :x, :Nullable)), (:block,
+        (:line, 17, :none),
+        (:return, (:if, (:call, :isnull, :x), (:call, (:curly, :Nullable, :T)), (:call, (:curly, :Nullable, :T), (:call, :convert, :T, (:call, :get, :x)))))
+      )),
+    (:line, 20, :none),
+    (:(=), (:call, (:curly, :convert, :T), (:(::), (:curly, :Type, (:curly, :Nullable, :T))), (:(::), :x, :T)), (:block,
+        (:line, 20, :none),
+        (:call, (:curly, :Nullable, :T), :x)
+      )),
+    (:line, 21, :none),
+    (:(=), (:call, (:curly, :convert, :T), (:(::), (:curly, :Type, :Nullable)), (:(::), :x, :T)), (:block,
+        (:line, 21, :none),
+        (:call, (:curly, :Nullable, :T), :x)
+      )),
+    (:line, 23, :none),
+    (:(=), (:call, (:curly, :convert, :T), (:(::), (:curly, :Type, (:curly, :Nullable, :T))), (:(::), :Void)), (:block,
+        (:line, 23, :none),
+        (:call, (:curly, :Nullable, :T))
+      )),
+    (:line, 24, :none),
+    (:(=), (:call, :convert, (:(::), (:curly, :Type, :Nullable)), (:(::), :Void)), (:block,
+        (:line, 24, :none),
+        (:call, (:curly, :Nullable, (:curly, :Union)))
+      )),
+    (:line, 26, :none),
+    (:(=), (:call, (:curly, :promote_rule, :S, :T), (:(::), (:curly, :Type, (:curly, :Nullable, :S))), (:(::), (:curly, :Type, :T))), (:block,
+        (:line, 26, :none),
+        (:curly, :Nullable, (:call, :promote_type, :S, :T))
+      )),
+    (:line, 27, :none),
+    (:(=), (:call, (:curly, :promote_rule, :S, :T), (:(::), (:curly, :Type, (:curly, :Nullable, :S))), (:(::), (:curly, :Type, (:curly, :Nullable, :T)))), (:block,
+        (:line, 27, :none),
+        (:curly, :Nullable, (:call, :promote_type, :S, :T))
+      )),
+    (:line, 28, :none),
+    (:(=), (:call, (:curly, :promote_op, :S, :T), (:(::), :op, :Any), (:(::), (:curly, :Type, (:curly, :Nullable, :S))), (:(::), (:curly, :Type, (:curly, :Nullable, :T)))), (:block,
+        (:line, 28, :none),
+        (:curly, :Nullable, (:call, :promote_op, :op, :S, :T))
+      )),
+    (:line, 30, :none),
+    (:function, (:call, (:curly, :show, :T), (:(::), :io, :IO), (:(::), :x, (:curly, :Nullable, :T))), (:block,
+        (:line, 31, :none),
+        (:if, (:call, :get, :io, (:quote, #QuoteNode
+              :compact
+            ), false), (:block,
+            (:line, 32, :none),
+            (:if, (:call, :isnull, :x), (:block,
+                (:line, 33, :none),
+                (:call, :print, :io, "#NULL")
+              ), (:block,
+                (:line, 35, :none),
+                (:call, :show, :io, (:., :x, (:quote, #QuoteNode
+                      :value
+                    )))
+              ))
+          ), (:block,
+            (:line, 38, :none),
+            (:call, :print, :io, "Nullable{"),
+            (:line, 39, :none),
+            (:call, :showcompact, :io, (:call, :eltype, :x)),
+            (:line, 40, :none),
+            (:call, :print, :io, "}("),
+            (:line, 41, :none),
+            (:if, (:call, :!, (:call, :isnull, :x)), (:block,
+                (:line, 42, :none),
+                (:call, :showcompact, :io, (:., :x, (:quote, #QuoteNode
+                      :value
+                    )))
+              )),
+            (:line, 44, :none),
+            (:call, :print, :io, ')')
+          ))
+      )),
+    (:line, 48, :none),
+    "    get(x::Nullable[, y])\n\nAttempt to access the value of `x`. Returns the value if it is present;\notherwise, returns `y` if provided, or throws a `NullException` if not.\n",
+    (:line, 54, :none),
+    (:macrocall, Symbol("@inline"), (:function, (:call, (:curly, :get, :S, :T), (:(::), :x, (:curly, :Nullable, :S)), (:(::), :y, :T)), (:block,
+          (:line, 55, :none),
+          (:if, (:call, :isbits, :S), (:block,
+              (:line, 56, :none),
+              (:call, :ifelse, (:., :x, (:quote, #QuoteNode
+                    :isnull
+                  )), :y, (:., :x, (:quote, #QuoteNode
+                    :value
+                  )))
+            ), (:block,
+              (:line, 58, :none),
+              (:if, (:., :x, (:quote, #QuoteNode
+                    :isnull
+                  )), :y, (:., :x, (:quote, #QuoteNode
+                    :value
+                  )))
+            ))
+        ))),
+    (:line, 62, :none),
+    (:(=), (:call, :get, (:(::), :x, :Nullable)), (:block,
+        (:line, 62, :none),
+        (:if, (:., :x, (:quote, #QuoteNode
+              :isnull
+            )), (:call, :throw, (:call, :NullException)), (:., :x, (:quote, #QuoteNode
+              :value
+            )))
+      )),
+    (:line, 64, :none),
+    (:(=), (:call, :isnull, (:(::), :x, :Nullable)), (:block,
+        (:line, 64, :none),
+        (:., :x, (:quote, #QuoteNode
+            :isnull
+          ))
+      )),
+    (:line, 66, :none),
+    (:function, (:call, :isequal, (:(::), :x, :Nullable), (:(::), :y, :Nullable)), (:block,
+        (:line, 67, :none),
+        (:if, (:&&, (:., :x, (:quote, #QuoteNode
+                :isnull
+              )), (:., :y, (:quote, #QuoteNode
+                :isnull
+              ))), (:block,
+            (:line, 68, :none),
+            (:return, true)
+          ), (:block,
+            (:line, 69, :none),
+            (:if, (:||, (:., :x, (:quote, #QuoteNode
+                    :isnull
+                  )), (:., :y, (:quote, #QuoteNode
+                    :isnull
+                  ))), (:block,
+                (:line, 70, :none),
+                (:return, false)
+              ), (:block,
+                (:line, 72, :none),
+                (:return, (:call, :isequal, (:., :x, (:quote, #QuoteNode
+                        :value
+                      )), (:., :y, (:quote, #QuoteNode
+                        :value
+                      ))))
+              ))
+          ))
+      )),
+    (:line, 76, :none),
+    (:(=), (:call, :(==), (:(::), :x, :Nullable), (:(::), :y, :Nullable)), (:block,
+        (:line, 76, :none),
+        (:call, :throw, (:call, :NullException))
+      )),
+    (:line, 78, :none),
+    (:const, (:(=), :nullablehash_seed, (:if, (:call, :(===), :UInt, :UInt64), 0x932e0143e51d0171, 0xe51d0171))),
+    (:line, 80, :none),
+    (:function, (:call, :hash, (:(::), :x, :Nullable), (:(::), :h, :UInt)), (:block,
+        (:line, 81, :none),
+        (:if, (:., :x, (:quote, #QuoteNode
+              :isnull
+            )), (:block,
+            (:line, 82, :none),
+            (:return, (:call, :+, :h, :nullablehash_seed))
+          ), (:block,
+            (:line, 84, :none),
+            (:return, (:call, :hash, (:., :x, (:quote, #QuoteNode
+                    :value
+                  )), (:call, :+, :h, :nullablehash_seed)))
+          ))
+      ))
+  ))

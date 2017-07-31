@@ -1,0 +1,235 @@
+(:quote, (:block,
+    (:line, 5, :none),
+    (:(=), (:call, :isinteger, (:(::), :x, :Integer)), (:block,
+        (:line, 5, :none),
+        true
+      )),
+    (:line, 7, :none),
+    (:(=), (:call, :size, (:(::), :x, :Number)), (:block,
+        (:line, 7, :none),
+        (:tuple,)
+      )),
+    (:line, 8, :none),
+    (:(=), (:call, :size, (:(::), :x, :Number), :d), (:block,
+        (:line, 8, :none),
+        (:if, (:call, :<, (:call, :convert, :Int, :d), 1), (:call, :throw, (:call, :BoundsError)), 1)
+      )),
+    (:line, 9, :none),
+    (:(=), (:call, :indices, (:(::), :x, :Number)), (:block,
+        (:line, 9, :none),
+        (:tuple,)
+      )),
+    (:line, 10, :none),
+    (:(=), (:call, :indices, (:(::), :x, :Number), :d), (:block,
+        (:line, 10, :none),
+        (:if, (:call, :<, (:call, :convert, :Int, :d), 1), (:call, :throw, (:call, :BoundsError)), (:call, :OneTo, 1))
+      )),
+    (:line, 11, :none),
+    (:(=), (:call, (:curly, :eltype, (:<:, :T, :Number)), (:(::), (:curly, :Type, :T))), (:block,
+        (:line, 11, :none),
+        :T
+      )),
+    (:line, 12, :none),
+    (:(=), (:call, :ndims, (:(::), :x, :Number)), (:block,
+        (:line, 12, :none),
+        0
+      )),
+    (:line, 13, :none),
+    (:(=), (:call, (:curly, :ndims, (:<:, :T, :Number)), (:(::), (:curly, :Type, :T))), (:block,
+        (:line, 13, :none),
+        0
+      )),
+    (:line, 14, :none),
+    (:(=), (:call, :length, (:(::), :x, :Number)), (:block,
+        (:line, 14, :none),
+        1
+      )),
+    (:line, 15, :none),
+    (:(=), (:call, :endof, (:(::), :x, :Number)), (:block,
+        (:line, 15, :none),
+        1
+      )),
+    (:line, 16, :none),
+    (:(=), (:call, (:curly, :iteratorsize, (:<:, :T, :Number)), (:(::), (:curly, :Type, :T))), (:block,
+        (:line, 16, :none),
+        (:call, :HasShape)
+      )),
+    (:line, 18, :none),
+    (:(=), (:call, :getindex, (:(::), :x, :Number)), (:block,
+        (:line, 18, :none),
+        :x
+      )),
+    (:line, 19, :none),
+    (:function, (:call, :getindex, (:(::), :x, :Number), (:(::), :i, :Integer)), (:block,
+        (:line, 20, :none),
+        (:macrocall, Symbol("@_inline_meta")),
+        (:line, 21, :none),
+        (:macrocall, Symbol("@boundscheck"), (:||, (:call, :(==), :i, 1), (:call, :throw, (:call, :BoundsError)))),
+        (:line, 22, :none),
+        :x
+      )),
+    (:line, 24, :none),
+    (:function, (:call, :getindex, (:(::), :x, :Number), (:..., (:(::), :I, :Integer))), (:block,
+        (:line, 25, :none),
+        (:macrocall, Symbol("@_inline_meta")),
+        (:line, 26, :none),
+        (:macrocall, Symbol("@boundscheck"), (:||, (:call, :all, (:comprehension, (:generator, (:call, :(==), :i, 1), (:(=), :i, :I)))), (:call, :throw, (:call, :BoundsError)))),
+        (:line, 27, :none),
+        :x
+      )),
+    (:line, 29, :none),
+    (:(=), (:call, :getindex, (:(::), :x, :Number), (:..., (:(::), :I, :Real))), (:block,
+        (:line, 29, :none),
+        (:call, :getindex, :x, (:..., (:call, :to_indexes, (:..., :I))))
+      )),
+    (:line, 30, :none),
+    (:(=), (:call, :first, (:(::), :x, :Number)), (:block,
+        (:line, 30, :none),
+        :x
+      )),
+    (:line, 31, :none),
+    (:(=), (:call, :last, (:(::), :x, :Number)), (:block,
+        (:line, 31, :none),
+        :x
+      )),
+    (:line, 32, :none),
+    (:(=), (:call, :copy, (:(::), :x, :Number)), (:block,
+        (:line, 32, :none),
+        :x
+      )),
+    (:line, 34, :none),
+    (:(=), (:call, :divrem, :x, :y), (:block,
+        (:line, 34, :none),
+        (:tuple, (:call, :div, :x, :y), (:call, :rem, :x, :y))
+      )),
+    (:line, 35, :none),
+    (:(=), (:call, :fldmod, :x, :y), (:block,
+        (:line, 35, :none),
+        (:tuple, (:call, :fld, :x, :y), (:call, :mod, :x, :y))
+      )),
+    (:line, 36, :none),
+    (:(=), (:call, :signbit, (:(::), :x, :Real)), (:block,
+        (:line, 36, :none),
+        (:call, :<, :x, 0)
+      )),
+    (:line, 37, :none),
+    (:(=), (:call, :sign, (:(::), :x, :Number)), (:block,
+        (:line, 37, :none),
+        (:if, (:call, :(==), :x, 0), (:call, :/, :x, (:call, :abs, (:call, :one, :x))), (:call, :/, :x, (:call, :abs, :x)))
+      )),
+    (:line, 38, :none),
+    (:(=), (:call, :sign, (:(::), :x, :Real)), (:block,
+        (:line, 38, :none),
+        (:call, :ifelse, (:call, :<, :x, 0), (:call, :oftype, :x, -1), (:call, :ifelse, (:call, :>, :x, 0), (:call, :one, :x), :x))
+      )),
+    (:line, 39, :none),
+    (:(=), (:call, :sign, (:(::), :x, :Unsigned)), (:block,
+        (:line, 39, :none),
+        (:call, :ifelse, (:call, :>, :x, 0), (:call, :one, :x), :x)
+      )),
+    (:line, 40, :none),
+    (:(=), (:call, :abs, (:(::), :x, :Real)), (:block,
+        (:line, 40, :none),
+        (:call, :ifelse, (:call, :signbit, :x), (:call, :-, :x), :x)
+      )),
+    (:line, 41, :none),
+    (:(=), (:call, :abs2, (:(::), :x, :Real)), (:block,
+        (:line, 41, :none),
+        (:call, :*, :x, :x)
+      )),
+    (:line, 42, :none),
+    (:(=), (:call, :flipsign, (:(::), :x, :Real), (:(::), :y, :Real)), (:block,
+        (:line, 42, :none),
+        (:call, :ifelse, (:call, :signbit, :y), (:call, :-, :x), :x)
+      )),
+    (:line, 43, :none),
+    (:(=), (:call, :copysign, (:(::), :x, :Real), (:(::), :y, :Real)), (:block,
+        (:line, 43, :none),
+        (:call, :ifelse, (:call, :(!=), (:call, :signbit, :x), (:call, :signbit, :y)), (:call, :-, :x), :x)
+      )),
+    (:line, 45, :none),
+    (:(=), (:call, :conj, (:(::), :x, :Real)), (:block,
+        (:line, 45, :none),
+        :x
+      )),
+    (:line, 46, :none),
+    (:(=), (:call, :transpose, (:(::), :x, :Number)), (:block,
+        (:line, 46, :none),
+        :x
+      )),
+    (:line, 47, :none),
+    (:(=), (:call, :ctranspose, (:(::), :x, :Number)), (:block,
+        (:line, 47, :none),
+        (:call, :conj, :x)
+      )),
+    (:line, 48, :none),
+    (:(=), (:call, :inv, (:(::), :x, :Number)), (:block,
+        (:line, 48, :none),
+        (:call, :/, (:call, :one, :x), :x)
+      )),
+    (:line, 49, :none),
+    (:(=), (:call, :angle, (:(::), :z, :Real)), (:block,
+        (:line, 49, :none),
+        (:call, :atan2, (:call, :zero, :z), :z)
+      )),
+    (:line, 51, :none),
+    (:(=), (:call, :widemul, (:(::), :x, :Number), (:(::), :y, :Number)), (:block,
+        (:line, 51, :none),
+        (:call, :*, (:call, :widen, :x), (:call, :widen, :y))
+      )),
+    (:line, 53, :none),
+    (:(=), (:call, :start, (:(::), :x, :Number)), (:block,
+        (:line, 53, :none),
+        false
+      )),
+    (:line, 54, :none),
+    (:(=), (:call, :next, (:(::), :x, :Number), :state), (:block,
+        (:line, 54, :none),
+        (:tuple, :x, true)
+      )),
+    (:line, 55, :none),
+    (:(=), (:call, :done, (:(::), :x, :Number), :state), (:block,
+        (:line, 55, :none),
+        :state
+      )),
+    (:line, 56, :none),
+    (:(=), (:call, :isempty, (:(::), :x, :Number)), (:block,
+        (:line, 56, :none),
+        false
+      )),
+    (:line, 57, :none),
+    (:(=), (:call, :in, (:(::), :x, :Number), (:(::), :y, :Number)), (:block,
+        (:line, 57, :none),
+        (:call, :(==), :x, :y)
+      )),
+    (:line, 59, :none),
+    (:(=), (:call, :map, :f, (:(::), :x, :Number), (:..., (:(::), :ys, :Number))), (:block,
+        (:line, 59, :none),
+        (:call, :f, :x, (:..., :ys))
+      )),
+    (:line, 61, :none),
+    (:(=), (:call, :zero, (:(::), :x, :Number)), (:block,
+        (:line, 61, :none),
+        (:call, :oftype, :x, 0)
+      )),
+    (:line, 62, :none),
+    (:(=), (:call, (:curly, :zero, (:<:, :T, :Number)), (:(::), (:curly, :Type, :T))), (:block,
+        (:line, 62, :none),
+        (:call, :convert, :T, 0)
+      )),
+    (:line, 63, :none),
+    (:(=), (:call, :one, (:(::), :x, :Number)), (:block,
+        (:line, 63, :none),
+        (:call, :oftype, :x, 1)
+      )),
+    (:line, 64, :none),
+    (:(=), (:call, (:curly, :one, (:<:, :T, :Number)), (:(::), (:curly, :Type, :T))), (:block,
+        (:line, 64, :none),
+        (:call, :convert, :T, 1)
+      )),
+    (:line, 66, :none),
+    (:(=), (:call, :factorial, (:(::), :x, :Number)), (:block,
+        (:line, 66, :none),
+        (:call, :gamma, (:call, :+, :x, 1))
+      ))
+  ))

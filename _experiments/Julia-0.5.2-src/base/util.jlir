@@ -1,0 +1,851 @@
+(:quote, (:block,
+    (:line, 8, :none),
+    (:(=), (:call, :time_ns), (:block,
+        (:line, 8, :none),
+        (:ccall, (:quote, #QuoteNode
+            :jl_hrtime
+          ), :UInt64, (:tuple,))
+      )),
+    (:line, 11, :none),
+    (:type, false, :GC_Num, (:block,
+        (:line, 12, :none),
+        (:(::), :allocd, :Int64),
+        (:line, 13, :none),
+        (:(::), :deferred_alloc, :Int64),
+        (:line, 14, :none),
+        (:(::), :freed, :Int64),
+        (:line, 15, :none),
+        (:(::), :malloc, :UInt64),
+        (:line, 16, :none),
+        (:(::), :realloc, :UInt64),
+        (:line, 17, :none),
+        (:(::), :poolalloc, :UInt64),
+        (:line, 18, :none),
+        (:(::), :bigalloc, :UInt64),
+        (:line, 19, :none),
+        (:(::), :freecall, :UInt64),
+        (:line, 20, :none),
+        (:(::), :total_time, :UInt64),
+        (:line, 21, :none),
+        (:(::), :total_allocd, :UInt64),
+        (:line, 22, :none),
+        (:(::), :since_sweep, :UInt64),
+        (:line, 23, :none),
+        (:(::), :collect, :Csize_t),
+        (:line, 24, :none),
+        (:(::), :pause, :Cint),
+        (:line, 25, :none),
+        (:(::), :full_sweep, :Cint)
+      )),
+    (:line, 28, :none),
+    (:(=), (:call, :gc_num), (:block,
+        (:line, 28, :none),
+        (:ccall, (:quote, #QuoteNode
+            :jl_gc_num
+          ), :GC_Num, (:tuple,))
+      )),
+    (:line, 31, :none),
+    (:type, false, :GC_Diff, (:block,
+        (:line, 32, :none),
+        (:(::), :allocd, :Int64),
+        (:line, 33, :none),
+        (:(::), :malloc, :Int64),
+        (:line, 34, :none),
+        (:(::), :realloc, :Int64),
+        (:line, 35, :none),
+        (:(::), :poolalloc, :Int64),
+        (:line, 36, :none),
+        (:(::), :bigalloc, :Int64),
+        (:line, 37, :none),
+        (:(::), :freecall, :Int64),
+        (:line, 38, :none),
+        (:(::), :total_time, :Int64),
+        (:line, 39, :none),
+        (:(::), :pause, :Int64),
+        (:line, 40, :none),
+        (:(::), :full_sweep, :Int64)
+      )),
+    (:line, 43, :none),
+    (:(=), (:call, :gc_total_bytes, (:(::), :gc_num, :GC_Num)), (:block,
+        (:line, 43, :none),
+        (:call, :+, (:., :gc_num, (:quote, #QuoteNode
+              :allocd
+            )), (:., :gc_num, (:quote, #QuoteNode
+              :deferred_alloc
+            )), (:call, :Int64, (:., :gc_num, (:quote, #QuoteNode
+                :collect
+              ))), (:call, :Int64, (:., :gc_num, (:quote, #QuoteNode
+                :total_allocd
+              ))))
+      )),
+    (:line, 47, :none),
+    (:function, (:call, :GC_Diff, (:(::), :new, :GC_Num), (:(::), :old, :GC_Num)), (:block,
+        (:line, 49, :none),
+        (:(=), :old_allocd, (:call, :gc_total_bytes, :old)),
+        (:line, 50, :none),
+        (:(=), :new_allocd, (:call, :gc_total_bytes, :new)),
+        (:line, 51, :none),
+        (:return, (:call, :GC_Diff, (:call, :-, :new_allocd, :old_allocd), (:call, :Int64, (:call, :-, (:., :new, (:quote, #QuoteNode
+                    :malloc
+                  )), (:., :old, (:quote, #QuoteNode
+                    :malloc
+                  )))), (:call, :Int64, (:call, :-, (:., :new, (:quote, #QuoteNode
+                    :realloc
+                  )), (:., :old, (:quote, #QuoteNode
+                    :realloc
+                  )))), (:call, :Int64, (:call, :-, (:., :new, (:quote, #QuoteNode
+                    :poolalloc
+                  )), (:., :old, (:quote, #QuoteNode
+                    :poolalloc
+                  )))), (:call, :Int64, (:call, :-, (:., :new, (:quote, #QuoteNode
+                    :bigalloc
+                  )), (:., :old, (:quote, #QuoteNode
+                    :bigalloc
+                  )))), (:call, :Int64, (:call, :-, (:., :new, (:quote, #QuoteNode
+                    :freecall
+                  )), (:., :old, (:quote, #QuoteNode
+                    :freecall
+                  )))), (:call, :Int64, (:call, :-, (:., :new, (:quote, #QuoteNode
+                    :total_time
+                  )), (:., :old, (:quote, #QuoteNode
+                    :total_time
+                  )))), (:call, :-, (:., :new, (:quote, #QuoteNode
+                  :pause
+                )), (:., :old, (:quote, #QuoteNode
+                  :pause
+                ))), (:call, :-, (:., :new, (:quote, #QuoteNode
+                  :full_sweep
+                )), (:., :old, (:quote, #QuoteNode
+                  :full_sweep
+                )))))
+      )),
+    (:line, 62, :none),
+    (:function, (:call, :gc_alloc_count, (:(::), :diff, :GC_Diff)), (:block,
+        (:line, 63, :none),
+        (:call, :+, (:., :diff, (:quote, #QuoteNode
+              :malloc
+            )), (:., :diff, (:quote, #QuoteNode
+              :realloc
+            )), (:., :diff, (:quote, #QuoteNode
+              :poolalloc
+            )), (:., :diff, (:quote, #QuoteNode
+              :bigalloc
+            )))
+      )),
+    (:line, 68, :none),
+    (:(=), (:call, :gc_time_ns), (:block,
+        (:line, 68, :none),
+        (:ccall, (:quote, #QuoteNode
+            :jl_gc_total_hrtime
+          ), :UInt64, (:tuple,))
+      )),
+    (:line, 71, :none),
+    (:(=), (:call, :gc_bytes), (:block,
+        (:line, 71, :none),
+        (:ccall, (:quote, #QuoteNode
+            :jl_gc_total_bytes
+          ), :Int64, (:tuple,))
+      )),
+    (:line, 73, :none),
+    "    tic()\n\nSet a timer to be read by the next call to [`toc`](:func:`toc`) or [`toq`](:func:`toq`). The\nmacro call `@time expr` can also be used to time evaluation.\n",
+    (:line, 79, :none),
+    (:function, (:call, :tic), (:block,
+        (:line, 80, :none),
+        (:(=), :t0, (:call, :time_ns)),
+        (:line, 81, :none),
+        (:call, :task_local_storage, (:quote, #QuoteNode
+            :TIMERS
+          ), (:tuple, :t0, (:call, :get, (:call, :task_local_storage), (:quote, #QuoteNode
+                :TIMERS
+              ), (:tuple,)))),
+        (:line, 82, :none),
+        (:return, :t0)
+      )),
+    (:line, 85, :none),
+    "    toq()\n\nReturn, but do not print, the time elapsed since the last [`tic`](:func:`tic`). The\nmacro calls `@timed expr` and `@elapsed expr` also return evaluation time.\n",
+    (:line, 91, :none),
+    (:function, (:call, :toq), (:block,
+        (:line, 92, :none),
+        (:(=), :t1, (:call, :time_ns)),
+        (:line, 93, :none),
+        (:(=), :timers, (:call, :get, (:call, :task_local_storage), (:quote, #QuoteNode
+              :TIMERS
+            ), (:tuple,))),
+        (:line, 94, :none),
+        (:if, (:call, :is, :timers, (:tuple,)), (:block,
+            (:line, 95, :none),
+            (:call, :error, "toc() without tic()")
+          )),
+        (:line, 97, :none),
+        (:(=), :t0, (:(::), (:ref, :timers, 1), :UInt64)),
+        (:line, 98, :none),
+        (:call, :task_local_storage, (:quote, #QuoteNode
+            :TIMERS
+          ), (:ref, :timers, 2)),
+        (:line, 99, :none),
+        (:call, :/, (:call, :-, :t1, :t0), 1.0e9)
+      )),
+    (:line, 102, :none),
+    "    toc()\n\nPrint and return the time elapsed since the last [`tic`](:func:`tic`). The macro call\n`@time expr` can also be used to time evaluation.\n",
+    (:line, 108, :none),
+    (:function, (:call, :toc), (:block,
+        (:line, 109, :none),
+        (:(=), :t, (:call, :toq)),
+        (:line, 110, :none),
+        (:call, :println, "elapsed time: ", :t, " seconds"),
+        (:line, 111, :none),
+        (:return, :t)
+      )),
+    (:line, 115, :none),
+    (:const, (:(=), :_mem_units, (:vect, "byte", "KB", "MB", "GB", "TB", "PB"))),
+    (:line, 116, :none),
+    (:const, (:(=), :_cnt_units, (:vect, "", " k", " M", " G", " T", " P"))),
+    (:line, 117, :none),
+    (:function, (:call, :prettyprint_getunits, :value, :numunits, :factor), (:block,
+        (:line, 118, :none),
+        (:if, (:||, (:call, :(==), :value, 0), (:call, :(==), :value, 1)), (:block,
+            (:line, 119, :none),
+            (:return, (:tuple, :value, 1))
+          )),
+        (:line, 121, :none),
+        (:(=), :unit, (:call, :ceil, :Int, (:call, :/, (:call, :log, :value), (:call, :log, :factor)))),
+        (:line, 122, :none),
+        (:(=), :unit, (:call, :min, :numunits, :unit)),
+        (:line, 123, :none),
+        (:(=), :number, (:call, :/, :value, (:call, :^, :factor, (:call, :-, :unit, 1)))),
+        (:line, 124, :none),
+        (:return, (:tuple, :number, :unit))
+      )),
+    (:line, 127, :none),
+    (:function, (:call, :padded_nonzero_print, :value, :str), (:block,
+        (:line, 128, :none),
+        (:if, (:call, :(!=), :value, 0), (:block,
+            (:line, 129, :none),
+            (:(=), :blanks, (:ref, "                ", (:(:), 1, (:call, :-, 18, (:call, :length, :str))))),
+            (:line, 130, :none),
+            (:call, :println, (:string, :str, ":", :blanks, :value))
+          ))
+      )),
+    (:line, 134, :none),
+    (:function, (:call, :time_print, :elapsedtime, :bytes, :gctime, :allocs), (:block,
+        (:line, 135, :none),
+        (:macrocall, Symbol("@printf"), "%10.6f seconds", (:call, :/, :elapsedtime, 1.0e9)),
+        (:line, 136, :none),
+        (:if, (:||, (:call, :(!=), :bytes, 0), (:call, :(!=), :allocs, 0)), (:block,
+            (:line, 137, :none),
+            (:(=), (:tuple, :bytes, :mb), (:call, :prettyprint_getunits, :bytes, (:call, :length, :_mem_units), (:call, :Int64, 1024))),
+            (:line, 138, :none),
+            (:(=), (:tuple, :allocs, :ma), (:call, :prettyprint_getunits, :allocs, (:call, :length, :_cnt_units), (:call, :Int64, 1000))),
+            (:line, 139, :none),
+            (:if, (:call, :(==), :ma, 1), (:block,
+                (:line, 140, :none),
+                (:macrocall, Symbol("@printf"), " (%d%s allocation%s: ", :allocs, (:ref, :_cnt_units, :ma), (:if, (:call, :(==), :allocs, 1), "", "s"))
+              ), (:block,
+                (:line, 142, :none),
+                (:macrocall, Symbol("@printf"), " (%.2f%s allocations: ", :allocs, (:ref, :_cnt_units, :ma))
+              )),
+            (:line, 144, :none),
+            (:if, (:call, :(==), :mb, 1), (:block,
+                (:line, 145, :none),
+                (:macrocall, Symbol("@printf"), "%d %s%s", :bytes, (:ref, :_mem_units, :mb), (:if, (:call, :(==), :bytes, 1), "", "s"))
+              ), (:block,
+                (:line, 147, :none),
+                (:macrocall, Symbol("@printf"), "%.3f %s", :bytes, (:ref, :_mem_units, :mb))
+              )),
+            (:line, 149, :none),
+            (:if, (:call, :>, :gctime, 0), (:block,
+                (:line, 150, :none),
+                (:macrocall, Symbol("@printf"), ", %.2f%% gc time", (:call, :/, (:call, :*, 100, :gctime), :elapsedtime))
+              )),
+            (:line, 152, :none),
+            (:call, :print, ")")
+          ), (:block,
+            (:line, 153, :none),
+            (:if, (:call, :>, :gctime, 0), (:block,
+                (:line, 154, :none),
+                (:macrocall, Symbol("@printf"), ", %.2f%% gc time", (:call, :/, (:call, :*, 100, :gctime), :elapsedtime))
+              ))
+          )),
+        (:line, 156, :none),
+        (:call, :println)
+      )),
+    (:line, 159, :none),
+    (:function, (:call, :timev_print, :elapsedtime, (:(::), :diff, :GC_Diff)), (:block,
+        (:line, 160, :none),
+        (:(=), :allocs, (:call, :gc_alloc_count, :diff)),
+        (:line, 161, :none),
+        (:call, :time_print, :elapsedtime, (:., :diff, (:quote, #QuoteNode
+              :allocd
+            )), (:., :diff, (:quote, #QuoteNode
+              :total_time
+            )), :allocs),
+        (:line, 162, :none),
+        (:call, :print, (:string, "elapsed time (ns): ", :elapsedtime, "\n")),
+        (:line, 163, :none),
+        (:call, :padded_nonzero_print, (:., :diff, (:quote, #QuoteNode
+              :total_time
+            )), "gc time (ns)"),
+        (:line, 164, :none),
+        (:call, :padded_nonzero_print, (:., :diff, (:quote, #QuoteNode
+              :allocd
+            )), "bytes allocated"),
+        (:line, 165, :none),
+        (:call, :padded_nonzero_print, (:., :diff, (:quote, #QuoteNode
+              :poolalloc
+            )), "pool allocs"),
+        (:line, 166, :none),
+        (:call, :padded_nonzero_print, (:., :diff, (:quote, #QuoteNode
+              :bigalloc
+            )), "non-pool GC allocs"),
+        (:line, 167, :none),
+        (:call, :padded_nonzero_print, (:., :diff, (:quote, #QuoteNode
+              :malloc
+            )), "malloc() calls"),
+        (:line, 168, :none),
+        (:call, :padded_nonzero_print, (:., :diff, (:quote, #QuoteNode
+              :realloc
+            )), "realloc() calls"),
+        (:line, 169, :none),
+        (:call, :padded_nonzero_print, (:., :diff, (:quote, #QuoteNode
+              :freecall
+            )), "free() calls"),
+        (:line, 170, :none),
+        (:call, :padded_nonzero_print, (:., :diff, (:quote, #QuoteNode
+              :pause
+            )), "GC pauses"),
+        (:line, 171, :none),
+        (:call, :padded_nonzero_print, (:., :diff, (:quote, #QuoteNode
+              :full_sweep
+            )), "full collections")
+      )),
+    (:line, 174, :none),
+    "    @time\n\nA macro to execute an expression, printing the time it took to execute, the number of\nallocations, and the total number of bytes its execution caused to be allocated, before\nreturning the value of the expression.\n\nSee also [`@timev`](:func:`@timev`), [`@timed`](:func:`@timed`), [`@elapsed`](:func:`@elapsed`), and\n[`@allocated`](:func:`@allocated`).\n",
+    (:line, 184, :none),
+    (:macro, (:call, :time, :ex), (:block,
+        (:line, 185, :none),
+        (:quote, (:block,
+            (:line, 186, :none),
+            (:local, (:(=), :stats, (:call, :gc_num))),
+            (:line, 187, :none),
+            (:local, (:(=), :elapsedtime, (:call, :time_ns))),
+            (:line, 188, :none),
+            (:local, (:(=), :val, (:$, (:call, :esc, :ex)))),
+            (:line, 189, :none),
+            (:(=), :elapsedtime, (:call, :-, (:call, :time_ns), :elapsedtime)),
+            (:line, 190, :none),
+            (:local, (:(=), :diff, (:call, :GC_Diff, (:call, :gc_num), :stats))),
+            (:line, 191, :none),
+            (:call, :time_print, :elapsedtime, (:., :diff, (:quote, #QuoteNode
+                  :allocd
+                )), (:., :diff, (:quote, #QuoteNode
+                  :total_time
+                )), (:call, :gc_alloc_count, :diff)),
+            (:line, 193, :none),
+            :val
+          ))
+      )),
+    (:line, 197, :none),
+    "    @timev\n\nThis is a verbose version of the `@time` macro. It first prints the same information as\n`@time`, then any non-zero memory allocation counters, and then returns the value of the\nexpression.\n\nSee also [`@time`](:func:`@time`), [`@timed`](:func:`@timed`), [`@elapsed`](:func:`@elapsed`), and\n[`@allocated`](:func:`@allocated`).\n",
+    (:line, 207, :none),
+    (:macro, (:call, :timev, :ex), (:block,
+        (:line, 208, :none),
+        (:quote, (:block,
+            (:line, 209, :none),
+            (:local, (:(=), :stats, (:call, :gc_num))),
+            (:line, 210, :none),
+            (:local, (:(=), :elapsedtime, (:call, :time_ns))),
+            (:line, 211, :none),
+            (:local, (:(=), :val, (:$, (:call, :esc, :ex)))),
+            (:line, 212, :none),
+            (:(=), :elapsedtime, (:call, :-, (:call, :time_ns), :elapsedtime)),
+            (:line, 213, :none),
+            (:call, :timev_print, :elapsedtime, (:call, :GC_Diff, (:call, :gc_num), :stats)),
+            (:line, 214, :none),
+            :val
+          ))
+      )),
+    (:line, 218, :none),
+    "    @elapsed\n\nA macro to evaluate an expression, discarding the resulting value, instead returning the\nnumber of seconds it took to execute as a floating-point number.\n\nSee also [`@time`](:func:`@time`), [`@timev`](:func:`@timev`), [`@timed`](:func:`@timed`),\nand [`@allocated`](:func:`@allocated`).\n",
+    (:line, 227, :none),
+    (:macro, (:call, :elapsed, :ex), (:block,
+        (:line, 228, :none),
+        (:quote, (:block,
+            (:line, 229, :none),
+            (:local, (:(=), :t0, (:call, :time_ns))),
+            (:line, 230, :none),
+            (:local, (:(=), :val, (:$, (:call, :esc, :ex)))),
+            (:line, 231, :none),
+            (:call, :/, (:call, :-, (:call, :time_ns), :t0), 1.0e9)
+          ))
+      )),
+    (:line, 241, :none),
+    "    @allocated\n\nA macro to evaluate an expression, discarding the resulting value, instead returning the\ntotal number of bytes allocated during evaluation of the expression. Note: the expression is\nevaluated inside a local function, instead of the current context, in order to eliminate the\neffects of compilation, however, there still may be some allocations due to JIT compilation.\nThis also makes the results inconsistent with the `@time` macros, which do not try to adjust\nfor the effects of compilation.\n\nSee also [`@time`](:func:`@time`), [`@timev`](:func:`@timev`), [`@timed`](:func:`@timed`),\nand [`@elapsed`](:func:`@elapsed`).\n",
+    (:line, 254, :none),
+    (:macro, (:call, :allocated, :ex), (:block,
+        (:line, 255, :none),
+        (:quote, (:block,
+            (:line, 256, :none),
+            (:let, (:block,
+                (:line, 257, :none),
+                (:local, :f),
+                (:line, 258, :none),
+                (:function, (:call, :f), (:block,
+                    (:line, 259, :none),
+                    (:(=), :b0, (:call, :gc_bytes)),
+                    (:line, 260, :none),
+                    (:$, (:call, :esc, :ex)),
+                    (:line, 261, :none),
+                    (:call, :-, (:call, :gc_bytes), :b0)
+                  )),
+                (:line, 263, :none),
+                (:call, :f)
+              ))
+          ))
+      )),
+    (:line, 268, :none),
+    "    @timed\n\nA macro to execute an expression, and return the value of the expression, elapsed time,\ntotal bytes allocated, garbage collection time, and an object with various memory allocation\ncounters.\n\nSee also [`@time`](:func:`@time`), [`@timev`](:func:`@timev`), [`@elapsed`](:func:`@elapsed`), and\n[`@allocated`](:func:`@allocated`).\n",
+    (:line, 278, :none),
+    (:macro, (:call, :timed, :ex), (:block,
+        (:line, 279, :none),
+        (:quote, (:block,
+            (:line, 280, :none),
+            (:local, (:(=), :stats, (:call, :gc_num))),
+            (:line, 281, :none),
+            (:local, (:(=), :elapsedtime, (:call, :time_ns))),
+            (:line, 282, :none),
+            (:local, (:(=), :val, (:$, (:call, :esc, :ex)))),
+            (:line, 283, :none),
+            (:(=), :elapsedtime, (:call, :-, (:call, :time_ns), :elapsedtime)),
+            (:line, 284, :none),
+            (:local, (:(=), :diff, (:call, :GC_Diff, (:call, :gc_num), :stats))),
+            (:line, 285, :none),
+            (:tuple, :val, (:call, :/, :elapsedtime, 1.0e9), (:., :diff, (:quote, #QuoteNode
+                  :allocd
+                )), (:call, :/, (:., :diff, (:quote, #QuoteNode
+                    :total_time
+                  )), 1.0e9), :diff)
+          ))
+      )),
+    (:line, 289, :none),
+    (:function, (:call, :fftw_vendor), (:block,
+        (:line, 290, :none),
+        (:if, (:call, :in, (:., :Base, (:quote, #QuoteNode
+                :libfftw_name
+              )), (:tuple, "libmkl_rt", "mkl_rt")), (:block,
+            (:line, 291, :none),
+            (:return, (:quote, #QuoteNode
+                :mkl
+              ))
+          ), (:block,
+            (:line, 293, :none),
+            (:return, (:quote, #QuoteNode
+                :fftw
+              ))
+          ))
+      )),
+    (:line, 300, :none),
+    (:function, (:call, :with_output_color, (:(::), :f, :Function), (:(::), :color, :Symbol), (:(::), :io, :IO), (:..., :args)), (:block,
+        (:line, 301, :none),
+        (:(=), :buf, (:call, :IOBuffer)),
+        (:line, 302, :none),
+        (:&&, :have_color, (:call, :print, :buf, (:call, :get, :text_colors, :color, :color_normal))),
+        (:line, 303, :none),
+        (:try, (:block,
+            (:line, 303, :none),
+            (:call, :f, :buf, (:..., :args))
+          ), false, false, (:block,
+            (:line, 305, :none),
+            (:&&, :have_color, (:call, :print, :buf, :color_normal)),
+            (:line, 306, :none),
+            (:call, :print, :io, (:call, :takebuf_string, :buf))
+          ))
+      )),
+    (:line, 310, :none),
+    (:(=), (:call, :print_with_color, (:(::), :color, :Symbol), (:(::), :io, :IO), (:..., (:(::), :msg, :AbstractString))), (:block,
+        (:line, 310, :none),
+        (:call, :with_output_color, :print, :color, :io, (:..., :msg))
+      )),
+    (:line, 312, :none),
+    (:(=), (:call, :print_with_color, (:(::), :color, :Symbol), (:..., (:(::), :msg, :AbstractString))), (:block,
+        (:line, 312, :none),
+        (:call, :print_with_color, :color, :STDOUT, (:..., :msg))
+      )),
+    (:line, 314, :none),
+    (:(=), (:call, :println_with_color, (:(::), :color, :Symbol), (:(::), :io, :IO), (:..., (:(::), :msg, :AbstractString))), (:block,
+        (:line, 314, :none),
+        (:call, :with_output_color, :println, :color, :io, (:..., :msg))
+      )),
+    (:line, 316, :none),
+    (:(=), (:call, :println_with_color, (:(::), :color, :Symbol), (:..., (:(::), :msg, :AbstractString))), (:block,
+        (:line, 316, :none),
+        (:call, :println_with_color, :color, :STDOUT, (:..., :msg))
+      )),
+    (:line, 321, :none),
+    (:function, (:call, :info, (:parameters, (:kw, :prefix, "INFO: ")), (:(::), :io, :IO), (:..., :msg)), (:block,
+        (:line, 322, :none),
+        (:call, :println_with_color, (:call, :info_color), :io, :prefix, (:call, :chomp, (:call, :string, (:..., :msg))))
+      )),
+    (:line, 324, :none),
+    (:(=), (:call, :info, (:parameters, (:kw, :prefix, "INFO: ")), (:..., :msg)), (:block,
+        (:line, 324, :none),
+        (:call, :info, :STDERR, (:..., :msg), (:kw, :prefix, :prefix))
+      )),
+    (:line, 328, :none),
+    (:const, (:(=), :have_warned, (:call, :Set))),
+    (:line, 330, :none),
+    (:(=), (:call, :warn_once, (:(::), :io, :IO), (:..., :msg)), (:block,
+        (:line, 330, :none),
+        (:call, :warn, :io, (:..., :msg), (:kw, :once, true))
+      )),
+    (:line, 331, :none),
+    (:(=), (:call, :warn_once, (:..., :msg)), (:block,
+        (:line, 331, :none),
+        (:call, :warn, :STDERR, (:..., :msg), (:kw, :once, true))
+      )),
+    (:line, 333, :none),
+    (:function, (:call, :warn, (:parameters, (:kw, :prefix, "WARNING: "), (:kw, :once, false), (:kw, :key, :nothing), (:kw, :bt, :nothing), (:kw, :filename, :nothing), (:kw, (:(::), :lineno, :Int), 0)), (:(::), :io, :IO), (:..., :msg)), (:block,
+        (:line, 336, :none),
+        (:(=), :str, (:call, :chomp, (:call, :string, (:..., :msg)))),
+        (:line, 337, :none),
+        (:if, :once, (:block,
+            (:line, 338, :none),
+            (:if, (:call, :(===), :key, :nothing), (:block,
+                (:line, 339, :none),
+                (:(=), :key, :str)
+              )),
+            (:line, 341, :none),
+            (:&&, (:call, :in, :key, :have_warned), (:return, nothing)),
+            (:line, 342, :none),
+            (:call, :push!, :have_warned, :key)
+          )),
+        (:line, 344, :none),
+        (:call, :print_with_color, (:call, :warn_color), :io, :prefix, :str),
+        (:line, 345, :none),
+        (:if, (:call, :(!==), :bt, :nothing), (:block,
+            (:line, 346, :none),
+            (:call, :show_backtrace, :io, :bt)
+          )),
+        (:line, 348, :none),
+        (:if, (:call, :(!==), :filename, :nothing), (:block,
+            (:line, 349, :none),
+            (:call, :print, :io, (:string, "\nwhile loading ", :filename, ", in expression starting on line ", :lineno))
+          )),
+        (:line, 351, :none),
+        (:call, :println, :io),
+        (:line, 352, :none),
+        (:return, nothing)
+      )),
+    (:line, 354, :none),
+    (:(=), (:call, :warn, (:parameters, (:..., :kw)), (:..., :msg)), (:block,
+        (:line, 354, :none),
+        (:call, :warn, (:parameters, (:..., :kw)), :STDERR, (:..., :msg))
+      )),
+    (:line, 356, :none),
+    (:(=), (:call, :warn, (:parameters, (:kw, :prefix, "ERROR: "), (:..., :kw)), (:(::), :io, :IO), (:(::), :err, :Exception)), (:block,
+        (:line, 356, :none),
+        (:call, :warn, (:parameters, (:..., :kw)), :io, (:call, :sprint, (:->, :buf, (:block,
+                (:line, 357, :none),
+                (:call, :showerror, :buf, :err)
+              ))), (:kw, :prefix, :prefix))
+      )),
+    (:line, 359, :none),
+    (:(=), (:call, :warn, (:parameters, (:kw, :prefix, "ERROR: "), (:..., :kw)), (:(::), :err, :Exception)), (:block,
+        (:line, 359, :none),
+        (:call, :warn, (:parameters, (:..., :kw)), :STDERR, :err, (:kw, :prefix, :prefix))
+      )),
+    (:line, 362, :none),
+    (:(=), (:call, :info, (:parameters, (:kw, :prefix, "ERROR: "), (:..., :kw)), (:(::), :io, :IO), (:(::), :err, :Exception)), (:block,
+        (:line, 362, :none),
+        (:call, :info, (:parameters, (:..., :kw)), :io, (:call, :sprint, (:->, :buf, (:block,
+                (:line, 363, :none),
+                (:call, :showerror, :buf, :err)
+              ))), (:kw, :prefix, :prefix))
+      )),
+    (:line, 365, :none),
+    (:(=), (:call, :info, (:parameters, (:kw, :prefix, "ERROR: "), (:..., :kw)), (:(::), :err, :Exception)), (:block,
+        (:line, 365, :none),
+        (:call, :info, (:parameters, (:..., :kw)), :STDERR, :err, (:kw, :prefix, :prefix))
+      )),
+    (:line, 368, :none),
+    (:function, (:call, :julia_cmd, (:kw, :julia, (:call, :joinpath, :JULIA_HOME, (:call, :julia_exename)))), (:block,
+        (:line, 369, :none),
+        (:(=), :opts, (:call, :JLOptions)),
+        (:line, 370, :none),
+        (:(=), :cpu_target, (:call, :unsafe_string, (:., :opts, (:quote, #QuoteNode
+                :cpu_target
+              )))),
+        (:line, 371, :none),
+        (:(=), :image_file, (:call, :unsafe_string, (:., :opts, (:quote, #QuoteNode
+                :image_file
+              )))),
+        (:line, 372, :none),
+        (:(=), :compile, (:if, (:call, :(==), (:., :opts, (:quote, #QuoteNode
+                  :compile_enabled
+                )), 0), (:block,
+              (:line, 373, :none),
+              "no"
+            ), (:block,
+              (:line, 374, :none),
+              (:if, (:call, :(==), (:., :opts, (:quote, #QuoteNode
+                      :compile_enabled
+                    )), 2), (:block,
+                  (:line, 375, :none),
+                  "all"
+                ), (:block,
+                  (:line, 376, :none),
+                  (:if, (:call, :(==), (:., :opts, (:quote, #QuoteNode
+                          :compile_enabled
+                        )), 3), (:block,
+                      (:line, 377, :none),
+                      "min"
+                    ), (:block,
+                      (:line, 379, :none),
+                      "yes"
+                    ))
+                ))
+            ))),
+        (:line, 381, :none),
+        (:(=), :depwarn, (:if, (:call, :(==), (:., :opts, (:quote, #QuoteNode
+                  :depwarn
+                )), 0), (:block,
+              (:line, 382, :none),
+              "no"
+            ), (:block,
+              (:line, 383, :none),
+              (:if, (:call, :(==), (:., :opts, (:quote, #QuoteNode
+                      :depwarn
+                    )), 2), (:block,
+                  (:line, 384, :none),
+                  "error"
+                ), (:block,
+                  (:line, 386, :none),
+                  "yes"
+                ))
+            ))),
+        (:line, 388, :none),
+        (:macrocall, Symbol("@cmd"), "\$julia -C\$cpu_target -J\$image_file --compile=\$compile --depwarn=\$depwarn")
+      )),
+    (:line, 391, :none),
+    (:(=), (:call, :julia_exename), (:block,
+        (:line, 391, :none),
+        (:if, (:call, :(==), (:ccall, (:quote, #QuoteNode
+                :jl_is_debugbuild
+              ), :Cint, (:tuple,)), 0), "julia", "julia-debug")
+      )),
+    (:line, 393, :none),
+    "    securezero!(o)\n\n`securezero!` fills the memory associated with an object `o` with zeros.\nUnlike `fill!(o,0)` and similar code, which might be optimized away by\nthe compiler for objects about to be discarded, the `securezero!` function\nwill always be called.\n",
+    (:line, 401, :none),
+    (:function, :securezero!),
+    (:line, 402, :none),
+    (:macrocall, Symbol("@noinline"), (:(=), (:call, (:curly, :securezero!, (:<:, :T, :Number)), (:(::), :a, (:curly, :AbstractArray, :T))), (:block,
+          (:line, 402, :none),
+          (:call, :fill!, :a, 0)
+        ))),
+    (:line, 403, :none),
+    (:(=), (:call, :securezero!, (:(::), :s, :String)), (:block,
+        (:line, 403, :none),
+        (:call, :securezero!, (:., :s, (:quote, #QuoteNode
+              :data
+            )))
+      )),
+    (:line, 404, :none),
+    (:macrocall, Symbol("@noinline"), (:(=), (:call, (:curly, :unsafe_securezero!, :T), (:(::), :p, (:curly, :Ptr, :T)), (:kw, (:(::), :len, :Integer), 1)), (:block,
+          (:line, 404, :none),
+          (:ccall, (:quote, #QuoteNode
+              :memset
+            ), (:curly, :Ptr, :T), (:tuple, (:curly, :Ptr, :T), :Cint, :Csize_t), :p, 0, (:call, :*, :len, (:call, :sizeof, :T)))
+        ))),
+    (:line, 406, :none),
+    (:(=), (:call, :unsafe_securezero!, (:(::), :p, (:curly, :Ptr, :Void)), (:kw, (:(::), :len, :Integer), 1)), (:block,
+        (:line, 406, :none),
+        (:call, (:curly, :Ptr, :Void), (:call, :unsafe_securezero!, (:call, (:curly, :Ptr, :UInt8), :p), :len))
+      )),
+    (:line, 408, :none),
+    (:if, (:call, :is_windows), (:block,
+        (:line, 409, :none),
+        (:function, (:call, :getpass, (:(::), :prompt, :AbstractString)), (:block,
+            (:line, 410, :none),
+            (:call, :print, :prompt),
+            (:line, 411, :none),
+            (:call, :flush, :STDOUT),
+            (:line, 412, :none),
+            (:(=), :p, (:call, (:curly, :Array, :UInt8), 128)),
+            (:line, 414, :none),
+            (:try, (:block,
+                (:line, 415, :none),
+                (:(=), :plen, 0),
+                (:line, 416, :none),
+                (:while, true, (:block,
+                    (:line, 417, :none),
+                    (:(=), :c, (:ccall, (:quote, #QuoteNode
+                          :_getch
+                        ), :UInt8, (:tuple,))),
+                    (:line, 418, :none),
+                    (:if, (:||, (:call, :(==), :c, 0xff), (:||, (:call, :(==), :c, (:call, :UInt8, '\n')), (:call, :(==), :c, (:call, :UInt8, '\r')))), (:block,
+                        (:line, 419, :none),
+                        (:break,)
+                      ), (:block,
+                        (:line, 420, :none),
+                        (:if, (:||, (:call, :(==), :c, 0x00), (:call, :(==), :c, 0xe0)), (:block,
+                            (:line, 421, :none),
+                            (:ccall, (:quote, #QuoteNode
+                                :_getch
+                              ), :UInt8, (:tuple,))
+                          ), (:block,
+                            (:line, 422, :none),
+                            (:if, (:&&, (:call, :(==), :c, (:call, :UInt8, '\b')), (:call, :>, :plen, 0)), (:block,
+                                (:line, 423, :none),
+                                (:-=, :plen, 1)
+                              ), (:block,
+                                (:line, 424, :none),
+                                (:if, (:&&, (:call, :!, (:call, :iscntrl, (:call, :Char, :c))), (:call, :<, :plen, 128)), (:block,
+                                    (:line, 425, :none),
+                                    (:(=), (:ref, :p, (:+=, :plen, 1)), :c)
+                                  ))
+                              ))
+                          ))
+                      ))
+                  )),
+                (:line, 428, :none),
+                (:return, (:call, :unsafe_string, (:call, :pointer, :p), :plen))
+              ), false, false, (:block,
+                (:line, 431, :none),
+                (:call, :securezero!, :p)
+              )),
+            (:line, 434, :none),
+            (:return, "")
+          ))
+      ), (:block,
+        (:line, 437, :none),
+        (:(=), (:call, :getpass, (:(::), :prompt, :AbstractString)), (:block,
+            (:line, 437, :none),
+            (:call, :unsafe_string, (:ccall, (:quote, #QuoteNode
+                  :getpass
+                ), :Cstring, (:tuple, :Cstring), :prompt))
+          ))
+      )),
+    (:line, 441, :none),
+    (:if, (:call, :is_windows), (:block,
+        (:line, 442, :none),
+        (:type, false, :CREDUI_INFO, (:block,
+            (:line, 443, :none),
+            (:(::), :cbSize, :UInt32),
+            (:line, 444, :none),
+            (:(::), :parent, (:curly, :Ptr, :Void)),
+            (:line, 445, :none),
+            (:(::), :pszMessageText, (:curly, :Ptr, :UInt16)),
+            (:line, 446, :none),
+            (:(::), :pszCaptionText, (:curly, :Ptr, :UInt16)),
+            (:line, 447, :none),
+            (:(::), :banner, (:curly, :Ptr, :Void))
+          )),
+        (:line, 450, :none),
+        (:const, (:(=), :CREDUIWIN_GENERIC, 0x0001)),
+        (:line, 451, :none),
+        (:const, (:(=), :CREDUIWIN_IN_CRED_ONLY, 0x0020)),
+        (:line, 452, :none),
+        (:const, (:(=), :CREDUIWIN_ENUMERATE_CURRENT_USER, 0x0200)),
+        (:line, 454, :none),
+        (:const, (:(=), :CRED_PACK_GENERIC_CREDENTIALS, 0x0004)),
+        (:line, 456, :none),
+        (:const, (:(=), :ERROR_SUCCESS, 0x0000)),
+        (:line, 457, :none),
+        (:const, (:(=), :ERROR_CANCELLED, 0x04c7)),
+        (:line, 459, :none),
+        (:function, (:call, :winprompt, (:parameters, (:kw, :prompt_username, true)), :message, :caption, :default_username), (:block,
+            (:line, 462, :none),
+            (:(=), :credbuf, (:call, (:curly, :Array, :UInt8, 1), 1024)),
+            (:line, 463, :none),
+            (:(=), :credbufsize, (:call, (:curly, :Ref, :UInt32), (:call, :sizeof, :credbuf))),
+            (:line, 464, :none),
+            (:(=), :succeeded, (:ccall, (:tuple, (:quote, #QuoteNode
+                    :CredPackAuthenticationBufferW
+                  ), "credui.dll"), :Bool, (:tuple, :UInt32, :Cwstring, :Cwstring, (:curly, :Ptr, :UInt8), (:curly, :Ptr, :UInt32)), :CRED_PACK_GENERIC_CREDENTIALS, :default_username, "", :credbuf, :credbufsize, (:stdcall,))),
+            (:line, 467, :none),
+            (:macrocall, Symbol("@assert"), :succeeded),
+            (:line, 471, :none),
+            (:(=), :messageArr, (:call, (:., :Base, (:quote, #QuoteNode
+                    :cwstring
+                  )), :message)),
+            (:line, 472, :none),
+            (:(=), :captionArr, (:call, (:., :Base, (:quote, #QuoteNode
+                    :cwstring
+                  )), :caption)),
+            (:line, 473, :none),
+            (:(=), :pfSave, (:call, (:curly, :Ref, :Bool), false)),
+            (:line, 474, :none),
+            (:(=), :cred, (:call, (:curly, :Ref, :CREDUI_INFO), (:call, :CREDUI_INFO, (:call, :sizeof, :CREDUI_INFO), :C_NULL, (:call, :pointer, :messageArr), (:call, :pointer, :captionArr), :C_NULL))),
+            (:line, 475, :none),
+            (:(=), :dwflags, (:call, :|, :CREDUIWIN_GENERIC, :CREDUIWIN_ENUMERATE_CURRENT_USER)),
+            (:line, 476, :none),
+            (:if, (:call, :!, :prompt_username), (:block,
+                (:line, 478, :none),
+                (:|=, :dwflags, :CREDUIWIN_IN_CRED_ONLY)
+              )),
+            (:line, 480, :none),
+            (:(=), :authPackage, (:call, (:curly, :Ref, :Culong), 0)),
+            (:line, 481, :none),
+            (:(=), :outbuf_data, (:call, (:curly, :Ref, (:curly, :Ptr, :Void)), :C_NULL)),
+            (:line, 482, :none),
+            (:(=), :outbuf_size, (:call, (:curly, :Ref, :Culong), 0)),
+            (:line, 485, :none),
+            (:(=), :code, (:ccall, (:tuple, (:quote, #QuoteNode
+                    :CredUIPromptForWindowsCredentialsW
+                  ), "credui.dll"), :UInt32, (:tuple, (:curly, :Ptr, :CREDUI_INFO), :UInt32, (:curly, :Ptr, :Culong), (:curly, :Ptr, :Void), :Culong, (:curly, :Ptr, (:curly, :Ptr, :Void)), (:curly, :Ptr, :Culong), (:curly, :Ptr, :Bool), :UInt32), :cred, 0, :authPackage, :credbuf, (:ref, :credbufsize), :outbuf_data, :outbuf_size, :pfSave, :dwflags, (:stdcall,))),
+            (:line, 491, :none),
+            (:if, (:call, :(==), :code, :ERROR_CANCELLED), (:block,
+                (:line, 492, :none),
+                (:return, (:call, (:curly, :Nullable, (:curly, :Tuple, :String, :String))))
+              ), (:block,
+                (:line, 493, :none),
+                (:if, (:call, :(!=), :code, :ERROR_SUCCESS), (:block,
+                    (:line, 494, :none),
+                    (:call, :error, (:call, (:., (:., :Base, (:quote, #QuoteNode
+                              :Libc
+                            )), (:quote, #QuoteNode
+                            :FormatMessage
+                          )), :code))
+                  ))
+              )),
+            (:line, 498, :none),
+            (:(=), :passbuf, (:call, (:curly, :Array, :UInt16, 1), 1024)),
+            (:line, 499, :none),
+            (:(=), :passlen, (:call, (:curly, :Ref, :UInt32), (:call, :length, :passbuf))),
+            (:line, 500, :none),
+            (:(=), :usernamebuf, (:call, (:curly, :Array, :UInt16, 1), 1024)),
+            (:line, 501, :none),
+            (:(=), :usernamelen, (:call, (:curly, :Ref, :UInt32), (:call, :length, :usernamebuf))),
+            (:line, 503, :none),
+            (:(=), :dummybuf, (:call, (:curly, :Array, :UInt16, 1), 1024)),
+            (:line, 504, :none),
+            (:(=), :succeeded, (:ccall, (:tuple, (:quote, #QuoteNode
+                    :CredUnPackAuthenticationBufferW
+                  ), "credui.dll"), :Bool, (:tuple, :UInt32, (:curly, :Ptr, :Void), :UInt32, (:curly, :Ptr, :UInt16), (:curly, :Ptr, :UInt32), (:curly, :Ptr, :UInt16), (:curly, :Ptr, :UInt32), (:curly, :Ptr, :UInt16), (:curly, :Ptr, :UInt32)), 0, (:ref, :outbuf_data), (:ref, :outbuf_size), :usernamebuf, :usernamelen, :dummybuf, (:call, (:curly, :Ref, :UInt32), 1024), :passbuf, :passlen)),
+            (:line, 507, :none),
+            (:if, (:call, :!, :succeeded), (:block,
+                (:line, 508, :none),
+                (:call, :error, (:call, (:., (:., :Base, (:quote, #QuoteNode
+                          :Libc
+                        )), (:quote, #QuoteNode
+                        :FormatMessage
+                      ))))
+              )),
+            (:line, 513, :none),
+            (:call, :unsafe_securezero!, (:ref, :outbuf_data), (:ref, :outbuf_size)),
+            (:line, 514, :none),
+            (:ccall, (:tuple, (:quote, #QuoteNode
+                  :CoTaskMemFree
+                ), "ole32.dll"), :Void, (:tuple, (:curly, :Ptr, :Void)), (:ref, :outbuf_data)),
+            (:line, 517, :none),
+            (:(=), :passbuf_, (:ref, :passbuf, (:(:), 1, (:call, :-, (:ref, :passlen), 1)))),
+            (:line, 518, :none),
+            (:(=), :result, (:call, :Nullable, (:tuple, (:call, :String, (:call, :transcode, :UInt8, (:ref, :usernamebuf, (:(:), 1, (:call, :-, (:ref, :usernamelen), 1))))), (:call, :String, (:call, :transcode, :UInt8, :passbuf_))))),
+            (:line, 520, :none),
+            (:call, :securezero!, :passbuf_),
+            (:line, 521, :none),
+            (:call, :securezero!, :passbuf),
+            (:line, 523, :none),
+            (:return, :result)
+          ))
+      ))
+  ))

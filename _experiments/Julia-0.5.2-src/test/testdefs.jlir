@@ -1,0 +1,26 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:using, :Base, :Test),
+    (:line, 5, :none),
+    (:function, (:call, :runtests, :name), (:block,
+        (:line, 6, :none),
+        (:macrocall, Symbol("@printf"), "     \e[1m*\e[0m \e[31m%-21s\e[0m", :name),
+        (:line, 7, :none),
+        (:(=), :tt, (:macrocall, Symbol("@elapsed"), (:call, :include, (:string, :name, ".jl")))),
+        (:line, 8, :none),
+        (:(=), :rss, (:call, (:., :Sys, (:quote, #QuoteNode
+                :maxrss
+              )))),
+        (:line, 9, :none),
+        (:macrocall, Symbol("@printf"), " in %6.2f seconds, maxrss %7.2f MB\n", :tt, (:call, :/, :rss, (:call, :^, 2, 20))),
+        (:line, 10, :none),
+        :rss
+      )),
+    (:line, 14, :none),
+    (:call, :filter!, (:->, :x, (:block,
+          (:line, 14, :none),
+          (:call, :(!=), :x, ".")
+        )), :LOAD_PATH),
+    (:line, 15, :none),
+    :nothing
+  ))

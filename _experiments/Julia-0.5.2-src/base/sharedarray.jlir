@@ -1,0 +1,996 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:toplevel, (:import, :., :Serializer, :serialize_cycle), (:import, :., :Serializer, :serialize_type), (:import, :., :Serializer, :writetag), (:import, :., :Serializer, :UNDEFREF_TAG)),
+    (:line, 5, :none),
+    (:type, true, (:<:, (:curly, :SharedArray, :T, :N), (:curly, :DenseArray, :T, :N)), (:block,
+        (:line, 6, :none),
+        (:(::), :dims, (:curly, :NTuple, :N, :Int)),
+        (:line, 7, :none),
+        (:(::), :pids, (:curly, :Vector, :Int)),
+        (:line, 8, :none),
+        (:(::), :refs, :Vector),
+        (:line, 12, :none),
+        (:(::), :segname, :String),
+        (:line, 16, :none),
+        (:(::), :s, (:curly, :Array, :T, :N)),
+        (:line, 19, :none),
+        (:(::), :pidx, :Int),
+        (:line, 24, :none),
+        (:(::), :loc_subarr_1d, (:curly, :SubArray, :T, 1, (:curly, :Array, :T, 1), (:curly, :Tuple, (:curly, :UnitRange, :Int)), true)),
+        (:line, 26, :none),
+        (:function, (:call, :SharedArray, :d, :p, :r, :sn, :s), (:block,
+            (:line, 27, :none),
+            (:call, :new, :d, :p, :r, :sn, :s, 0, (:call, :view, (:call, (:curly, :Array, :T), (:call, :ntuple, (:->, :d, (:block,
+                        (:line, 27, :none),
+                        0
+                      )), :N)), (:(:), 1, 0)))
+          ))
+      )),
+    (:line, 31, :none),
+    (:(=), (:call, (:curly, (:(::), (:curly, :Type, (:curly, :SharedArray, :T))), :T, :N), (:parameters, (:..., :kwargs)), (:(::), :d, (:curly, :NTuple, :N, :Int))), (:block,
+        (:line, 31, :none),
+        (:call, :SharedArray, (:parameters, (:..., :kwargs)), :T, :d)
+      )),
+    (:line, 33, :none),
+    (:(=), (:call, (:curly, (:(::), (:curly, :Type, (:curly, :SharedArray, :T))), :T), (:parameters, (:..., :kwargs)), (:..., (:(::), :d, :Integer))), (:block,
+        (:line, 33, :none),
+        (:call, :SharedArray, (:parameters, (:..., :kwargs)), :T, :d)
+      )),
+    (:line, 35, :none),
+    (:(=), (:call, (:curly, (:(::), (:curly, :Type, (:curly, :SharedArray, :T))), :T), (:parameters, (:..., :kwargs)), (:(::), :m, :Integer)), (:block,
+        (:line, 35, :none),
+        (:call, :SharedArray, (:parameters, (:..., :kwargs)), :T, :m)
+      )),
+    (:line, 37, :none),
+    (:(=), (:call, (:curly, (:(::), (:curly, :Type, (:curly, :SharedArray, :T))), :T), (:parameters, (:..., :kwargs)), (:(::), :m, :Integer), (:(::), :n, :Integer)), (:block,
+        (:line, 37, :none),
+        (:call, :SharedArray, (:parameters, (:..., :kwargs)), :T, :m, :n)
+      )),
+    (:line, 39, :none),
+    (:(=), (:call, (:curly, (:(::), (:curly, :Type, (:curly, :SharedArray, :T))), :T), (:parameters, (:..., :kwargs)), (:(::), :m, :Integer), (:(::), :n, :Integer), (:(::), :o, :Integer)), (:block,
+        (:line, 39, :none),
+        (:call, :SharedArray, (:parameters, (:..., :kwargs)), :T, :m, :n, :o)
+      )),
+    (:line, 42, :none),
+    "    SharedArray(T::Type, dims::NTuple; init=false, pids=Int[])\n\nConstruct a `SharedArray` of a bitstype `T` and size `dims` across the processes specified\nby `pids` - all of which have to be on the same host.\n\nIf `pids` is left unspecified, the shared array will be mapped across all processes on the\ncurrent host, including the master. But, `localindexes` and `indexpids` will only refer to\nworker processes. This facilitates work distribution code to use workers for actual\ncomputation with the master process acting as a driver.\n\nIf an `init` function of the type `initfn(S::SharedArray)` is specified, it is called on all\nthe participating workers.\n",
+    (:line, 56, :none),
+    (:function, (:call, (:curly, :SharedArray, :T, :N), (:parameters, (:kw, :init, false), (:kw, :pids, (:ref, :Int))), (:(::), (:curly, :Type, :T)), (:(::), :dims, (:curly, :Dims, :N))), (:block,
+        (:line, 57, :none),
+        (:||, (:call, :isbits, :T), (:call, :throw, (:call, :ArgumentError, (:string, "type of SharedArray elements must be bits types, got ", :T)))),
+        (:line, 59, :none),
+        (:(=), (:tuple, :pids, :onlocalhost), (:call, :shared_pids, :pids)),
+        (:line, 61, :none),
+        (:local, (:(=), :shm_seg_name, "")),
+        (:line, 62, :none),
+        (:local, (:(=), :s, (:call, (:curly, :Array, :T), (:call, :ntuple, (:->, :d, (:block,
+                    (:line, 62, :none),
+                    0
+                  )), :N)))),
+        (:line, 63, :none),
+        (:local, :S),
+        (:line, 64, :none),
+        (:local, :shmmem_create_pid),
+        (:line, 65, :none),
+        (:try, (:block,
+            (:line, 67, :none),
+            (:(=), :shm_seg_name, (:macrocall, Symbol("@sprintf"), "/jl%06u%s", (:call, :%, (:call, :getpid), (:call, :^, 10, 6)), (:call, :randstring, 20))),
+            (:line, 68, :none),
+            (:if, :onlocalhost, (:block,
+                (:line, 69, :none),
+                (:(=), :shmmem_create_pid, (:call, :myid)),
+                (:line, 70, :none),
+                (:(=), :s, (:call, :shm_mmap_array, :T, :dims, :shm_seg_name, (:call, :|, :JL_O_CREAT, :JL_O_RDWR)))
+              ), (:block,
+                (:line, 73, :none),
+                (:(=), :shmmem_create_pid, (:ref, :pids, 1)),
+                (:line, 74, :none),
+                (:call, :remotecall_fetch, (:->, (:tuple,), (:block,
+                      (:line, 75, :none),
+                      (:call, :shm_mmap_array, :T, :dims, :shm_seg_name, (:call, :|, :JL_O_CREAT, :JL_O_RDWR)),
+                      (:line, 76, :none),
+                      :nothing
+                    )), (:ref, :pids, 1))
+              )),
+            (:line, 80, :none),
+            (:(=), :func_mapshmem, (:->, (:tuple,), (:block,
+                  (:line, 80, :none),
+                  (:call, :shm_mmap_array, :T, :dims, :shm_seg_name, :JL_O_RDWR)
+                ))),
+            (:line, 82, :none),
+            (:(=), :refs, (:call, (:curly, :Array, :Future), (:call, :length, :pids))),
+            (:line, 83, :none),
+            (:for, (:(=), (:tuple, :i, :p), (:call, :enumerate, :pids)), (:block,
+                (:line, 84, :none),
+                (:(=), (:ref, :refs, :i), (:call, :remotecall, :func_mapshmem, :p))
+              )),
+            (:line, 88, :none),
+            (:for, (:(=), :ref, :refs), (:block,
+                (:line, 89, :none),
+                (:call, :wait, :ref)
+              )),
+            (:line, 93, :none),
+            (:if, (:&&, (:call, :>, (:call, :prod, :dims), 0), (:call, :>, (:call, :sizeof, :T), 0)), (:block,
+                (:line, 94, :none),
+                (:if, :onlocalhost, (:block,
+                    (:line, 95, :none),
+                    (:(=), :rc, (:call, :shm_unlink, :shm_seg_name))
+                  ), (:block,
+                    (:line, 97, :none),
+                    (:(=), :rc, (:call, :remotecall_fetch, :shm_unlink, :shmmem_create_pid, :shm_seg_name))
+                  )),
+                (:line, 99, :none),
+                (:call, :systemerror, (:call, :*, "Error unlinking shmem segment ", :shm_seg_name), (:call, :(!=), :rc, 0))
+              )),
+            (:line, 101, :none),
+            (:(=), :S, (:call, (:curly, :SharedArray, :T, :N), :dims, :pids, :refs, :shm_seg_name, :s)),
+            (:line, 102, :none),
+            (:call, :initialize_shared_array, :S, :onlocalhost, :init, :pids),
+            (:line, 103, :none),
+            (:(=), :shm_seg_name, "")
+          ), false, false, (:block,
+            (:line, 106, :none),
+            (:if, (:call, :(!=), :shm_seg_name, ""), (:block,
+                (:line, 107, :none),
+                (:call, :remotecall_fetch, :shm_unlink, :shmmem_create_pid, :shm_seg_name)
+              ))
+          )),
+        (:line, 110, :none),
+        :S
+      )),
+    (:line, 113, :none),
+    (:(=), (:call, :SharedArray, (:parameters, (:..., :kwargs)), :T, (:..., (:(::), :I, :Int))), (:block,
+        (:line, 113, :none),
+        (:call, :SharedArray, (:parameters, (:..., :kwargs)), :T, :I)
+      )),
+    (:line, 115, :none),
+    "    SharedArray(filename::AbstractString, T::Type, dims::NTuple, [offset=0]; mode=nothing, init=false, pids=Int[])\n\nConstruct a `SharedArray` backed by the file `filename`, with element\ntype `T` (must be a `bitstype`) and size `dims`, across the processes\nspecified by `pids` - all of which have to be on the same host. This\nfile is mmapped into the host memory, with the following consequences:\n\n- The array data must be represented in binary format (e.g., an ASCII\n  format like CSV cannot be supported)\n\n- Any changes you make to the array values (e.g., `A[3] = 0`) will\n  also change the values on disk\n\nIf `pids` is left unspecified, the shared array will be mapped across\nall processes on the current host, including the master. But,\n`localindexes` and `indexpids` will only refer to worker\nprocesses. This facilitates work distribution code to use workers for\nactual computation with the master process acting as a driver.\n\n`mode` must be one of `\"r\"`, `\"r+\"`, `\"w+\"`, or `\"a+\"`, and defaults\nto `\"r+\"` if the file specified by `filename` already exists, or\n`\"w+\"` if not. If an `init` function of the type\n`initfn(S::SharedArray)` is specified, it is called on all the\nparticipating workers. You cannot specify an `init` function if the\nfile is not writable.\n\n`offset` allows you to skip the specified number of bytes at the\nbeginning of the file.\n",
+    (:line, 145, :none),
+    (:function, (:call, (:curly, :SharedArray, :T, :N), (:parameters, (:kw, :mode, :nothing), (:kw, :init, false), (:kw, (:(::), :pids, (:curly, :Vector, :Int)), (:ref, :Int))), (:(::), :filename, :AbstractString), (:(::), (:curly, :Type, :T)), (:(::), :dims, (:curly, :NTuple, :N, :Int)), (:kw, (:(::), :offset, :Integer), 0)), (:block,
+        (:line, 146, :none),
+        (:||, (:call, :isabspath, :filename), (:call, :throw, (:call, :ArgumentError, (:string, :filename, " is not an absolute path; try abspath(filename)?")))),
+        (:line, 147, :none),
+        (:||, (:call, :isbits, :T), (:call, :throw, (:call, :ArgumentError, (:string, "type of SharedArray elements must be bits types, got ", :T)))),
+        (:line, 149, :none),
+        (:(=), (:tuple, :pids, :onlocalhost), (:call, :shared_pids, :pids)),
+        (:line, 152, :none),
+        (:(=), :have_file, (:if, :onlocalhost, (:call, :isfile, :filename), (:call, :remotecall_fetch, :isfile, (:ref, :pids, 1), :filename))),
+        (:line, 153, :none),
+        (:if, (:call, :(===), :mode, :nothing), (:block,
+            (:line, 154, :none),
+            (:(=), :mode, (:if, :have_file, "r+", "w+"))
+          )),
+        (:line, 156, :none),
+        (:(=), :workermode, (:if, (:call, :(==), :mode, "w+"), "r+", :mode)),
+        (:line, 159, :none),
+        (:||, (:call, :in, :mode, (:tuple, "r", "r+", "w+", "a+")), (:call, :throw, (:call, :ArgumentError, (:string, "mode must be readable, but ", :mode, " is not")))),
+        (:line, 160, :none),
+        (:if, (:call, :(!==), :init, false), (:block,
+            (:line, 161, :none),
+            (:call, :typeassert, :init, :Function),
+            (:line, 162, :none),
+            (:||, (:call, :in, :mode, (:tuple, "r+", "w+", "a+")), (:call, :throw, (:call, :ArgumentError, (:string, "cannot initialize unwritable array (mode = ", :mode, ")"))))
+          )),
+        (:line, 164, :none),
+        (:&&, (:call, :(==), :mode, "r"), (:&&, (:call, :!, (:call, :isfile, :filename)), (:call, :throw, (:call, :ArgumentError, (:string, "file ", :filename, " does not exist, but mode ", :mode, " cannot create it"))))),
+        (:line, 167, :none),
+        (:(=), :refs, (:call, (:curly, :Array, :Future), (:call, :length, :pids))),
+        (:line, 168, :none),
+        (:(=), :func_mmap, (:->, :mode, (:block,
+              (:line, 168, :none),
+              (:call, :open, (:->, (:tuple, :io), (:block,
+                    (:line, 169, :none),
+                    (:call, (:., :Mmap, (:quote, #QuoteNode
+                          :mmap
+                        )), (:parameters, (:kw, :shared, true)), :io, (:curly, :Array, :T, :N), :dims, :offset)
+                  )), :filename, :mode)
+            ))),
+        (:line, 171, :none),
+        (:(=), :s, (:call, (:curly, :Array, :T), (:call, :ntuple, (:->, :d, (:block,
+                  (:line, 171, :none),
+                  0
+                )), :N))),
+        (:line, 172, :none),
+        (:if, :onlocalhost, (:block,
+            (:line, 173, :none),
+            (:(=), :s, (:call, :func_mmap, :mode)),
+            (:line, 174, :none),
+            (:(=), (:ref, :refs, 1), (:call, :remotecall, (:->, (:tuple,), (:block,
+                    (:line, 175, :none),
+                    (:call, :func_mmap, :workermode)
+                  )), (:ref, :pids, 1)))
+          ), (:block,
+            (:line, 178, :none),
+            (:(=), (:ref, :refs, 1), (:call, :remotecall_wait, (:->, (:tuple,), (:block,
+                    (:line, 179, :none),
+                    (:call, :func_mmap, :mode)
+                  )), (:ref, :pids, 1)))
+          )),
+        (:line, 184, :none),
+        (:for, (:(=), :i, (:(:), 2, (:call, :length, :pids))), (:block,
+            (:line, 185, :none),
+            (:(=), (:ref, :refs, :i), (:call, :remotecall, (:->, (:tuple,), (:block,
+                    (:line, 186, :none),
+                    (:call, :func_mmap, :workermode)
+                  )), (:ref, :pids, :i)))
+          )),
+        (:line, 191, :none),
+        (:for, (:(=), :ref, :refs), (:block,
+            (:line, 192, :none),
+            (:call, :wait, :ref)
+          )),
+        (:line, 195, :none),
+        (:(=), :S, (:call, (:curly, :SharedArray, :T, :N), :dims, :pids, :refs, :filename, :s)),
+        (:line, 196, :none),
+        (:call, :initialize_shared_array, :S, :onlocalhost, :init, :pids),
+        (:line, 197, :none),
+        :S
+      )),
+    (:line, 200, :none),
+    (:function, (:call, :initialize_shared_array, :S, :onlocalhost, :init, :pids), (:block,
+        (:line, 201, :none),
+        (:if, :onlocalhost, (:block,
+            (:line, 202, :none),
+            (:call, :init_loc_flds, :S)
+          ), (:block,
+            (:line, 204, :none),
+            (:(=), (:., :S, (:quote, #QuoteNode
+                  :pidx
+                )), 0)
+          )),
+        (:line, 208, :none),
+        (:if, (:call, :isa, :init, :Function), (:block,
+            (:line, 209, :none),
+            (:macrocall, Symbol("@sync"), (:block,
+                (:line, 210, :none),
+                (:for, (:(=), :p, :pids), (:block,
+                    (:line, 211, :none),
+                    (:macrocall, Symbol("@async"), (:call, :remotecall_wait, :init, :p, :S))
+                  ))
+              ))
+          )),
+        (:line, 216, :none),
+        (:call, :finalizer, :S, :finalize_refs),
+        (:line, 217, :none),
+        :S
+      )),
+    (:line, 220, :none),
+    (:function, (:call, (:curly, :finalize_refs, :T, :N), (:(::), :S, (:curly, :SharedArray, :T, :N))), (:block,
+        (:line, 221, :none),
+        (:if, (:call, :>, (:call, :length, (:., :S, (:quote, #QuoteNode
+                  :pids
+                ))), 0), (:block,
+            (:line, 222, :none),
+            (:for, (:(=), :r, (:., :S, (:quote, #QuoteNode
+                    :refs
+                  ))), (:block,
+                (:line, 223, :none),
+                (:call, :finalize, :r)
+              )),
+            (:line, 225, :none),
+            (:call, :empty!, (:., :S, (:quote, #QuoteNode
+                  :pids
+                ))),
+            (:line, 226, :none),
+            (:call, :empty!, (:., :S, (:quote, #QuoteNode
+                  :refs
+                ))),
+            (:line, 227, :none),
+            (:call, :init_loc_flds, :S),
+            (:line, 228, :none),
+            (:(=), (:., :S, (:quote, #QuoteNode
+                  :s
+                )), (:call, (:curly, :Array, :T), (:call, :ntuple, (:->, :d, (:block,
+                      (:line, 228, :none),
+                      0
+                    )), :N)))
+          )),
+        (:line, 230, :none),
+        :S
+      )),
+    (:line, 233, :none),
+    (:typealias, (:curly, :SharedVector, :T), (:curly, :SharedArray, :T, 1)),
+    (:line, 234, :none),
+    (:typealias, (:curly, :SharedMatrix, :T), (:curly, :SharedArray, :T, 2)),
+    (:line, 236, :none),
+    (:(=), (:call, :length, (:(::), :S, :SharedArray)), (:block,
+        (:line, 236, :none),
+        (:call, :prod, (:., :S, (:quote, #QuoteNode
+              :dims
+            )))
+      )),
+    (:line, 237, :none),
+    (:(=), (:call, :size, (:(::), :S, :SharedArray)), (:block,
+        (:line, 237, :none),
+        (:., :S, (:quote, #QuoteNode
+            :dims
+          ))
+      )),
+    (:line, 238, :none),
+    (:(=), (:call, (:curly, :linearindexing, (:<:, :S, :SharedArray)), (:(::), (:curly, :Type, :S))), (:block,
+        (:line, 238, :none),
+        (:call, :LinearFast)
+      )),
+    (:line, 240, :none),
+    (:function, (:call, (:curly, :reshape, :T, :N), (:(::), :a, (:curly, :SharedArray, :T)), (:(::), :dims, (:curly, :NTuple, :N, :Int))), (:block,
+        (:line, 241, :none),
+        (:&&, (:call, :(!=), (:call, :length, :a), (:call, :prod, :dims)), (:call, :throw, (:call, :DimensionMismatch, "dimensions must be consistent with array size"))),
+        (:line, 242, :none),
+        (:(=), :refs, (:call, (:curly, :Array, :Future), (:call, :length, (:., :a, (:quote, #QuoteNode
+                  :pids
+                ))))),
+        (:line, 243, :none),
+        (:for, (:(=), (:tuple, :i, :p), (:call, :enumerate, (:., :a, (:quote, #QuoteNode
+                  :pids
+                )))), (:block,
+            (:line, 244, :none),
+            (:(=), (:ref, :refs, :i), (:call, :remotecall, (:->, (:tuple, :r, :d), (:block,
+                    (:line, 245, :none),
+                    (:call, :reshape, (:call, :fetch, :r), :d)
+                  )), :p, (:ref, (:., :a, (:quote, #QuoteNode
+                      :refs
+                    )), :i), :dims))
+          )),
+        (:line, 249, :none),
+        (:(=), :A, (:call, (:curly, :SharedArray, :T, :N), :dims, (:., :a, (:quote, #QuoteNode
+                :pids
+              )), :refs, (:., :a, (:quote, #QuoteNode
+                :segname
+              )), (:call, :reshape, (:., :a, (:quote, #QuoteNode
+                  :s
+                )), :dims))),
+        (:line, 250, :none),
+        (:call, :init_loc_flds, :A),
+        (:line, 251, :none),
+        :A
+      )),
+    (:line, 254, :none),
+    (:(=), (:call, :procs, (:(::), :S, :SharedArray)), (:block,
+        (:line, 254, :none),
+        (:., :S, (:quote, #QuoteNode
+            :pids
+          ))
+      )),
+    (:line, 255, :none),
+    (:(=), (:call, :indexpids, (:(::), :S, :SharedArray)), (:block,
+        (:line, 255, :none),
+        (:., :S, (:quote, #QuoteNode
+            :pidx
+          ))
+      )),
+    (:line, 257, :none),
+    (:(=), (:call, :sdata, (:(::), :S, :SharedArray)), (:block,
+        (:line, 257, :none),
+        (:., :S, (:quote, #QuoteNode
+            :s
+          ))
+      )),
+    (:line, 258, :none),
+    (:(=), (:call, :sdata, (:(::), :A, :AbstractArray)), (:block,
+        (:line, 258, :none),
+        :A
+      )),
+    (:line, 260, :none),
+    "    localindexes(S::SharedArray)\n\nReturns a range describing the \"default\" indexes to be handled by the\ncurrent process.  This range should be interpreted in the sense of\nlinear indexing, i.e., as a sub-range of `1:length(S)`.  In\nmulti-process contexts, returns an empty range in the parent process\n(or any process for which `indexpids` returns 0).\n\nIt's worth emphasizing that `localindexes` exists purely as a\nconvenience, and you can partition work on the array among workers any\nway you wish.  For a SharedArray, all indexes should be equally fast\nfor each worker process.\n",
+    (:line, 274, :none),
+    (:(=), (:call, :localindexes, (:(::), :S, :SharedArray)), (:block,
+        (:line, 274, :none),
+        (:if, (:call, :>, (:., :S, (:quote, #QuoteNode
+                :pidx
+              )), 0), (:call, :range_1dim, :S, (:., :S, (:quote, #QuoteNode
+                :pidx
+              ))), (:(:), 1, 0))
+      )),
+    (:line, 276, :none),
+    (:(=), (:call, (:curly, :unsafe_convert, :T), (:(::), (:curly, :Type, (:curly, :Ptr, :T))), (:(::), :S, :SharedArray)), (:block,
+        (:line, 276, :none),
+        (:call, :unsafe_convert, (:curly, :Ptr, :T), (:call, :sdata, :S))
+      )),
+    (:line, 278, :none),
+    (:(=), (:call, :convert, (:(::), (:curly, :Type, :SharedArray)), (:(::), :A, :Array)), (:block,
+        (:line, 278, :none),
+        (:block,
+          (:(=), :S, (:call, :SharedArray, (:call, :eltype, :A), (:call, :size, :A))),
+          (:call, :copy!, :S, :A)
+        )
+      )),
+    (:line, 279, :none),
+    (:(=), (:call, (:curly, :convert, :T), (:(::), (:curly, :Type, (:curly, :SharedArray, :T))), (:(::), :A, :Array)), (:block,
+        (:line, 279, :none),
+        (:block,
+          (:(=), :S, (:call, :SharedArray, :T, (:call, :size, :A))),
+          (:call, :copy!, :S, :A)
+        )
+      )),
+    (:line, 280, :none),
+    (:(=), (:call, (:curly, :convert, :TS, :TA, :N), (:(::), (:curly, :Type, (:curly, :SharedArray, :TS, :N))), (:(::), :A, (:curly, :Array, :TA, :N))), (:block,
+        (:line, 280, :none),
+        (:block,
+          (:(=), :S, (:call, :SharedArray, :TS, (:call, :size, :A))),
+          (:call, :copy!, :S, :A)
+        )
+      )),
+    (:line, 282, :none),
+    (:function, (:call, :deepcopy_internal, (:(::), :S, :SharedArray), (:(::), :stackdict, :ObjectIdDict)), (:block,
+        (:line, 283, :none),
+        (:&&, (:call, :haskey, :stackdict, :S), (:return, (:ref, :stackdict, :S))),
+        (:line, 284, :none),
+        (:(=), :R, (:call, :SharedArray, (:parameters, (:kw, :pids, (:., :S, (:quote, #QuoteNode
+                    :pids
+                  )))), (:call, :eltype, :S), (:call, :size, :S))),
+        (:line, 285, :none),
+        (:call, :copy!, (:call, :sdata, :R), (:call, :sdata, :S)),
+        (:line, 286, :none),
+        (:(=), (:ref, :stackdict, :S), :R),
+        (:line, 287, :none),
+        (:return, :R)
+      )),
+    (:line, 290, :none),
+    (:function, (:call, :shared_pids, :pids), (:block,
+        (:line, 291, :none),
+        (:if, (:call, :isempty, :pids), (:block,
+            (:line, 293, :none),
+            (:(=), :pids, (:call, :procs, (:call, :myid))),
+            (:line, 294, :none),
+            (:if, (:call, :>, (:call, :length, :pids), 1), (:block,
+                (:line, 295, :none),
+                (:(=), :pids, (:call, :filter, (:->, :x, (:block,
+                        (:line, 295, :none),
+                        (:call, :(!=), :x, 1)
+                      )), :pids))
+              )),
+            (:line, 298, :none),
+            (:(=), :onlocalhost, true)
+          ), (:block,
+            (:line, 300, :none),
+            (:if, (:call, :!, (:call, :check_same_host, :pids)), (:block,
+                (:line, 301, :none),
+                (:call, :throw, (:call, :ArgumentError, "SharedArray requires all requested processes to be on the same machine."))
+              )),
+            (:line, 304, :none),
+            (:(=), :onlocalhost, (:call, :in, (:call, :myid), (:call, :procs, (:ref, :pids, 1))))
+          )),
+        (:line, 306, :none),
+        (:tuple, :pids, :onlocalhost)
+      )),
+    (:line, 309, :none),
+    (:function, (:call, :range_1dim, (:(::), :S, :SharedArray), :pidx), (:block,
+        (:line, 310, :none),
+        (:(=), :l, (:call, :length, :S)),
+        (:line, 311, :none),
+        (:(=), :nw, (:call, :length, (:., :S, (:quote, #QuoteNode
+                :pids
+              )))),
+        (:line, 312, :none),
+        (:(=), :partlen, (:call, :div, :l, :nw)),
+        (:line, 314, :none),
+        (:if, (:call, :<, :l, :nw), (:block,
+            (:line, 315, :none),
+            (:if, (:call, :(<=), :pidx, :l), (:block,
+                (:line, 316, :none),
+                (:return, (:(:), :pidx, :pidx))
+              ), (:block,
+                (:line, 318, :none),
+                (:return, (:(:), 1, 0))
+              ))
+          ), (:block,
+            (:line, 320, :none),
+            (:if, (:call, :(==), :pidx, :nw), (:block,
+                (:line, 321, :none),
+                (:return, (:(:), (:call, :+, (:call, :*, (:call, :-, :pidx, 1), :partlen), 1), :l))
+              ), (:block,
+                (:line, 323, :none),
+                (:return, (:(:), (:call, :+, (:call, :*, (:call, :-, :pidx, 1), :partlen), 1), (:call, :*, :pidx, :partlen)))
+              ))
+          ))
+      )),
+    (:line, 327, :none),
+    (:(=), (:call, :sub_1dim, (:(::), :S, :SharedArray), :pidx), (:block,
+        (:line, 327, :none),
+        (:call, :view, (:., :S, (:quote, #QuoteNode
+              :s
+            )), (:call, :range_1dim, :S, :pidx))
+      )),
+    (:line, 329, :none),
+    (:function, (:call, (:curly, :init_loc_flds, :T, :N), (:(::), :S, (:curly, :SharedArray, :T, :N))), (:block,
+        (:line, 330, :none),
+        (:if, (:call, :in, (:call, :myid), (:., :S, (:quote, #QuoteNode
+                :pids
+              ))), (:block,
+            (:line, 331, :none),
+            (:(=), (:., :S, (:quote, #QuoteNode
+                  :pidx
+                )), (:call, :findfirst, (:., :S, (:quote, #QuoteNode
+                    :pids
+                  )), (:call, :myid))),
+            (:line, 332, :none),
+            (:if, (:call, :isa, (:ref, (:., :S, (:quote, #QuoteNode
+                      :refs
+                    )), 1), :Future), (:block,
+                (:line, 333, :none),
+                (:(=), :refid, (:call, :remoteref_id, (:ref, (:., :S, (:quote, #QuoteNode
+                          :refs
+                        )), (:., :S, (:quote, #QuoteNode
+                          :pidx
+                        )))))
+              ), (:block,
+                (:line, 335, :none),
+                (:(=), :refid, (:ref, (:., :S, (:quote, #QuoteNode
+                        :refs
+                      )), (:., :S, (:quote, #QuoteNode
+                        :pidx
+                      ))))
+              )),
+            (:line, 337, :none),
+            (:(=), :c, (:call, :channel_from_id, :refid)),
+            (:line, 338, :none),
+            (:(=), (:., :S, (:quote, #QuoteNode
+                  :s
+                )), (:call, :fetch, :c)),
+            (:line, 339, :none),
+            (:(=), (:., :S, (:quote, #QuoteNode
+                  :loc_subarr_1d
+                )), (:call, :sub_1dim, :S, (:., :S, (:quote, #QuoteNode
+                    :pidx
+                  ))))
+          ), (:block,
+            (:line, 341, :none),
+            (:(=), (:., :S, (:quote, #QuoteNode
+                  :pidx
+                )), 0),
+            (:line, 342, :none),
+            (:(=), (:., :S, (:quote, #QuoteNode
+                  :loc_subarr_1d
+                )), (:call, :view, (:call, (:curly, :Array, :T), (:call, :ntuple, (:->, :d, (:block,
+                        (:line, 342, :none),
+                        0
+                      )), :N)), (:(:), 1, 0)))
+          ))
+      )),
+    (:line, 349, :none),
+    (:function, (:call, :serialize, (:(::), :s, :AbstractSerializer), (:(::), :S, :SharedArray)), (:block,
+        (:line, 350, :none),
+        (:&&, (:call, :serialize_cycle, :s, :S), (:return, nothing)),
+        (:line, 351, :none),
+        (:call, :serialize_type, :s, (:call, :typeof, :S)),
+        (:line, 352, :none),
+        (:for, (:(=), :n, (:., (:., :SharedArray, (:quote, #QuoteNode
+                  :name
+                )), (:quote, #QuoteNode
+                :names
+              ))), (:block,
+            (:line, 353, :none),
+            (:if, (:call, :in, :n, (:vect, (:quote, #QuoteNode
+                    :s
+                  ), (:quote, #QuoteNode
+                    :pidx
+                  ), (:quote, #QuoteNode
+                    :loc_subarr_1d
+                  ))), (:block,
+                (:line, 354, :none),
+                (:call, :writetag, (:., :s, (:quote, #QuoteNode
+                      :io
+                    )), :UNDEFREF_TAG)
+              ), (:block,
+                (:line, 355, :none),
+                (:if, (:call, :(==), :n, (:quote, #QuoteNode
+                      :refs
+                    )), (:block,
+                    (:line, 356, :none),
+                    (:(=), :v, (:call, :getfield, :S, :n)),
+                    (:line, 357, :none),
+                    (:if, (:call, :isa, (:ref, :v, 1), :Future), (:block,
+                        (:line, 359, :none),
+                        (:(=), :ids, (:comprehension, (:generator, (:call, :remoteref_id, :x), (:(=), :x, :v)))),
+                        (:line, 360, :none),
+                        (:call, :serialize, :s, :ids)
+                      ), (:block,
+                        (:line, 362, :none),
+                        (:call, :serialize, :s, :v)
+                      ))
+                  ), (:block,
+                    (:line, 365, :none),
+                    (:call, :serialize, :s, (:call, :getfield, :S, :n))
+                  ))
+              ))
+          ))
+      )),
+    (:line, 370, :none),
+    (:function, (:call, (:curly, :deserialize, :T, :N), (:(::), :s, :AbstractSerializer), (:(::), :t, (:curly, :Type, (:curly, :SharedArray, :T, :N)))), (:block,
+        (:line, 371, :none),
+        (:(=), :S, (:call, :invoke, :deserialize, (:curly, :Tuple, :AbstractSerializer, :DataType), :s, :t)),
+        (:line, 372, :none),
+        (:call, :init_loc_flds, :S),
+        (:line, 373, :none),
+        :S
+      )),
+    (:line, 376, :none),
+    (:(=), (:call, :convert, (:(::), (:curly, :Type, :Array)), (:(::), :S, :SharedArray)), (:block,
+        (:line, 376, :none),
+        (:., :S, (:quote, #QuoteNode
+            :s
+          ))
+      )),
+    (:line, 379, :none),
+    (:(=), (:call, :getindex, (:(::), :S, :SharedArray), (:(::), :i, :Real)), (:block,
+        (:line, 379, :none),
+        (:call, :getindex, (:., :S, (:quote, #QuoteNode
+              :s
+            )), :i)
+      )),
+    (:line, 381, :none),
+    (:(=), (:call, :setindex!, (:(::), :S, :SharedArray), :x, (:(::), :i, :Real)), (:block,
+        (:line, 381, :none),
+        (:call, :setindex!, (:., :S, (:quote, #QuoteNode
+              :s
+            )), :x, :i)
+      )),
+    (:line, 383, :none),
+    (:function, (:call, :fill!, (:(::), :S, :SharedArray), :v), (:block,
+        (:line, 384, :none),
+        (:(=), :vT, (:call, :convert, (:call, :eltype, :S), :v)),
+        (:line, 385, :none),
+        (:(=), :f, (:->, :S, (:block,
+              (:line, 385, :none),
+              (:call, :fill!, (:., :S, (:quote, #QuoteNode
+                    :loc_subarr_1d
+                  )), :vT)
+            ))),
+        (:line, 386, :none),
+        (:macrocall, Symbol("@sync"), (:for, (:(=), :p, (:call, :procs, :S)), (:block,
+              (:line, 387, :none),
+              (:macrocall, Symbol("@async"), (:call, :remotecall_wait, :f, :p, :S))
+            ))),
+        (:line, 389, :none),
+        (:return, :S)
+      )),
+    (:line, 392, :none),
+    (:function, (:call, (:curly, :rand!, :T), (:(::), :S, (:curly, :SharedArray, :T))), (:block,
+        (:line, 393, :none),
+        (:(=), :f, (:->, :S, (:block,
+              (:line, 393, :none),
+              (:call, :map!, (:->, :x, (:block,
+                    (:line, 393, :none),
+                    (:call, :rand, :T)
+                  )), (:., :S, (:quote, #QuoteNode
+                    :loc_subarr_1d
+                  )))
+            ))),
+        (:line, 394, :none),
+        (:macrocall, Symbol("@sync"), (:for, (:(=), :p, (:call, :procs, :S)), (:block,
+              (:line, 395, :none),
+              (:macrocall, Symbol("@async"), (:call, :remotecall_wait, :f, :p, :S))
+            ))),
+        (:line, 397, :none),
+        (:return, :S)
+      )),
+    (:line, 400, :none),
+    (:function, (:call, :randn!, (:(::), :S, :SharedArray)), (:block,
+        (:line, 401, :none),
+        (:(=), :f, (:->, :S, (:block,
+              (:line, 401, :none),
+              (:call, :map!, (:->, :x, (:block,
+                    (:line, 401, :none),
+                    (:call, :randn)
+                  )), (:., :S, (:quote, #QuoteNode
+                    :loc_subarr_1d
+                  )))
+            ))),
+        (:line, 402, :none),
+        (:macrocall, Symbol("@sync"), (:for, (:(=), :p, (:call, :procs, :S)), (:block,
+              (:line, 403, :none),
+              (:macrocall, Symbol("@async"), (:call, :remotecall_wait, :f, :p, :S))
+            ))),
+        (:line, 405, :none),
+        (:return, :S)
+      )),
+    (:line, 409, :none),
+    (:function, (:call, :shmem_fill, (:parameters, (:..., :kwargs)), :v, :dims), (:block,
+        (:line, 410, :none),
+        (:call, :SharedArray, (:parameters, (:kw, :init, (:->, :S, (:block,
+                  (:line, 410, :none),
+                  (:call, :fill!, (:., :S, (:quote, #QuoteNode
+                        :loc_subarr_1d
+                      )), :v)
+                ))), (:..., :kwargs)), (:call, :typeof, :v), :dims)
+      )),
+    (:line, 412, :none),
+    (:(=), (:call, :shmem_fill, (:parameters, (:..., :kwargs)), :v, (:..., (:(::), :I, :Int))), (:block,
+        (:line, 412, :none),
+        (:call, :shmem_fill, (:parameters, (:..., :kwargs)), :v, :I)
+      )),
+    (:line, 415, :none),
+    (:function, (:call, :shmem_rand, (:parameters, (:..., :kwargs)), (:(::), :TR, (:curly, :Union, :DataType, :UnitRange)), :dims), (:block,
+        (:line, 416, :none),
+        (:if, (:call, :isa, :TR, :UnitRange), (:block,
+            (:line, 417, :none),
+            (:call, :SharedArray, (:parameters, (:kw, :init, (:->, :S, (:block,
+                      (:line, 417, :none),
+                      (:call, :map!, (:->, :x, (:block,
+                            (:line, 417, :none),
+                            (:call, :rand, :TR)
+                          )), (:., :S, (:quote, #QuoteNode
+                            :loc_subarr_1d
+                          )))
+                    ))), (:..., :kwargs)), :Int, :dims)
+          ), (:block,
+            (:line, 419, :none),
+            (:call, :SharedArray, (:parameters, (:kw, :init, (:->, :S, (:block,
+                      (:line, 419, :none),
+                      (:call, :map!, (:->, :x, (:block,
+                            (:line, 419, :none),
+                            (:call, :rand, :TR)
+                          )), (:., :S, (:quote, #QuoteNode
+                            :loc_subarr_1d
+                          )))
+                    ))), (:..., :kwargs)), :TR, :dims)
+          ))
+      )),
+    (:line, 422, :none),
+    (:(=), (:call, :shmem_rand, (:parameters, (:..., :kwargs)), (:(::), :TR, (:curly, :Union, :DataType, :UnitRange)), (:(::), :i, :Int)), (:block,
+        (:line, 422, :none),
+        (:call, :shmem_rand, (:parameters, (:..., :kwargs)), :TR, (:tuple, :i))
+      )),
+    (:line, 423, :none),
+    (:(=), (:call, :shmem_rand, (:parameters, (:..., :kwargs)), (:(::), :TR, (:curly, :Union, :DataType, :UnitRange)), (:..., (:(::), :I, :Int))), (:block,
+        (:line, 423, :none),
+        (:call, :shmem_rand, (:parameters, (:..., :kwargs)), :TR, :I)
+      )),
+    (:line, 425, :none),
+    (:(=), (:call, :shmem_rand, (:parameters, (:..., :kwargs)), :dims), (:block,
+        (:line, 425, :none),
+        (:call, :shmem_rand, (:parameters, (:..., :kwargs)), :Float64, :dims)
+      )),
+    (:line, 426, :none),
+    (:(=), (:call, :shmem_rand, (:parameters, (:..., :kwargs)), (:..., (:(::), :I, :Int))), (:block,
+        (:line, 426, :none),
+        (:call, :shmem_rand, (:parameters, (:..., :kwargs)), :I)
+      )),
+    (:line, 428, :none),
+    (:function, (:call, :shmem_randn, (:parameters, (:..., :kwargs)), :dims), (:block,
+        (:line, 429, :none),
+        (:call, :SharedArray, (:parameters, (:kw, :init, (:->, :S, (:block,
+                  (:line, 429, :none),
+                  (:call, :map!, (:->, :x, (:block,
+                        (:line, 429, :none),
+                        (:call, :randn)
+                      )), (:., :S, (:quote, #QuoteNode
+                        :loc_subarr_1d
+                      )))
+                ))), (:..., :kwargs)), :Float64, :dims)
+      )),
+    (:line, 431, :none),
+    (:(=), (:call, :shmem_randn, (:parameters, (:..., :kwargs)), (:..., (:(::), :I, :Int))), (:block,
+        (:line, 431, :none),
+        (:call, :shmem_randn, (:parameters, (:..., :kwargs)), :I)
+      )),
+    (:line, 433, :none),
+    (:(=), (:call, :similar, (:(::), :S, :SharedArray), (:(::), :T, :Type), (:(::), :dims, :Dims)), (:block,
+        (:line, 433, :none),
+        (:call, :similar, (:., :S, (:quote, #QuoteNode
+              :s
+            )), :T, :dims)
+      )),
+    (:line, 434, :none),
+    (:(=), (:call, :similar, (:(::), :S, :SharedArray), (:(::), :T, :Type)), (:block,
+        (:line, 434, :none),
+        (:call, :similar, (:., :S, (:quote, #QuoteNode
+              :s
+            )), :T, (:call, :size, :S))
+      )),
+    (:line, 435, :none),
+    (:(=), (:call, :similar, (:(::), :S, :SharedArray), (:(::), :dims, :Dims)), (:block,
+        (:line, 435, :none),
+        (:call, :similar, (:., :S, (:quote, #QuoteNode
+              :s
+            )), (:call, :eltype, :S), :dims)
+      )),
+    (:line, 436, :none),
+    (:(=), (:call, :similar, (:(::), :S, :SharedArray)), (:block,
+        (:line, 436, :none),
+        (:call, :similar, (:., :S, (:quote, #QuoteNode
+              :s
+            )), (:call, :eltype, :S), (:call, :size, :S))
+      )),
+    (:line, 438, :none),
+    (:(=), (:call, :reduce, :f, (:(::), :S, :SharedArray)), (:block,
+        (:line, 438, :none),
+        (:call, :mapreduce, :fetch, :f, (:typed_comprehension, :Any, (:generator, (:macrocall, Symbol("@spawnat"), :p, (:call, :reduce, :f, (:., :S, (:quote, #QuoteNode
+                      :loc_subarr_1d
+                    )))), (:(=), :p, (:call, :procs, :S)))))
+      )),
+    (:line, 443, :none),
+    (:function, (:call, :map!, :f, (:(::), :S, :SharedArray)), (:block,
+        (:line, 444, :none),
+        (:macrocall, Symbol("@sync"), (:for, (:(=), :p, (:call, :procs, :S)), (:block,
+              (:line, 445, :none),
+              (:macrocall, Symbol("@spawnat"), :p, (:block,
+                  (:line, 446, :none),
+                  (:for, (:(=), :idx, (:call, :localindexes, :S)), (:block,
+                      (:line, 447, :none),
+                      (:(=), (:ref, (:., :S, (:quote, #QuoteNode
+                              :s
+                            )), :idx), (:call, :f, (:ref, (:., :S, (:quote, #QuoteNode
+                                :s
+                              )), :idx)))
+                    ))
+                ))
+            ))),
+        (:line, 451, :none),
+        (:return, :S)
+      )),
+    (:line, 454, :none),
+    (:(=), (:call, :copy!, (:(::), :S, :SharedArray), (:(::), :A, :Array)), (:block,
+        (:line, 454, :none),
+        (:block,
+          (:call, :copy!, (:., :S, (:quote, #QuoteNode
+                :s
+              )), :A),
+          :S
+        )
+      )),
+    (:line, 456, :none),
+    (:function, (:call, :copy!, (:(::), :S, :SharedArray), (:(::), :R, :SharedArray)), (:block,
+        (:line, 457, :none),
+        (:||, (:call, :(==), (:call, :length, :S), (:call, :length, :R)), (:call, :throw, (:call, :BoundsError))),
+        (:line, 458, :none),
+        (:(=), :ps, (:call, :intersect, (:call, :procs, :S), (:call, :procs, :R))),
+        (:line, 459, :none),
+        (:&&, (:call, :isempty, :ps), (:call, :throw, (:call, :ArgumentError, "source and destination arrays don't share any process"))),
+        (:line, 460, :none),
+        (:(=), :l, (:call, :length, :S)),
+        (:line, 461, :none),
+        (:&&, (:call, :>, (:call, :length, :ps), :l), (:(=), :ps, (:ref, :ps, (:(:), 1, :l)))),
+        (:line, 462, :none),
+        (:(=), :nw, (:call, :length, :ps)),
+        (:line, 463, :none),
+        (:(=), :partlen, (:call, :div, :l, :nw)),
+        (:line, 465, :none),
+        (:macrocall, Symbol("@sync"), (:for, (:(=), :i, (:(:), 1, :nw)), (:block,
+              (:line, 466, :none),
+              (:(=), :p, (:ref, :ps, :i)),
+              (:line, 467, :none),
+              (:(=), :idx, (:if, (:call, :<, :i, :nw), (:(:), (:call, :+, (:call, :*, (:call, :-, :i, 1), :partlen), 1), (:call, :*, :i, :partlen)), (:(:), (:call, :+, (:call, :*, (:call, :-, :i, 1), :partlen), 1), :l))),
+              (:line, 468, :none),
+              (:macrocall, Symbol("@spawnat"), :p, (:block,
+                  (:line, 469, :none),
+                  (:(=), (:ref, (:., :S, (:quote, #QuoteNode
+                          :s
+                        )), :idx), (:ref, (:., :R, (:quote, #QuoteNode
+                          :s
+                        )), :idx))
+                ))
+            ))),
+        (:line, 473, :none),
+        (:return, :S)
+      )),
+    (:line, 476, :none),
+    (:(=), (:call, :complex, (:(::), :S1, :SharedArray), (:(::), :S2, :SharedArray)), (:block,
+        (:line, 476, :none),
+        (:call, :convert, :SharedArray, (:call, :complex, (:., :S1, (:quote, #QuoteNode
+                :s
+              )), (:., :S2, (:quote, #QuoteNode
+                :s
+              ))))
+      )),
+    (:line, 478, :none),
+    (:function, (:call, :print_shmem_limits, :slen), (:block,
+        (:line, 479, :none),
+        (:try, (:block,
+            (:line, 480, :none),
+            (:if, (:call, :is_linux), (:block,
+                (:line, 481, :none),
+                (:(=), :pfx, "kernel")
+              ), (:block,
+                (:line, 482, :none),
+                (:if, (:call, :is_apple), (:block,
+                    (:line, 483, :none),
+                    (:(=), :pfx, "kern.sysv")
+                  ), (:block,
+                    (:line, 485, :none),
+                    (:return, nothing)
+                  ))
+              )),
+            (:line, 488, :none),
+            (:(=), :shmmax_MB, (:call, :div, (:call, :parse, :Int, (:ref, (:call, :split, (:call, :readstring, (:macrocall, Symbol("@cmd"), "sysctl \$(pfx).shmmax"))), :end)), (:call, :*, 1024, 1024))),
+            (:line, 489, :none),
+            (:(=), :page_size, (:call, :parse, :Int, (:ref, (:call, :split, (:call, :readstring, (:macrocall, Symbol("@cmd"), "getconf PAGE_SIZE"))), :end))),
+            (:line, 490, :none),
+            (:(=), :shmall_MB, (:call, :div, (:call, :*, (:call, :parse, :Int, (:ref, (:call, :split, (:call, :readstring, (:macrocall, Symbol("@cmd"), "sysctl \$(pfx).shmall"))), :end)), :page_size), (:call, :*, 1024, 1024))),
+            (:line, 492, :none),
+            (:call, :println, "System max size of single shmem segment(MB) : ", :shmmax_MB, "\nSystem max size of all shmem segments(MB) : ", :shmall_MB, "\nRequested size(MB) : ", (:call, :div, :slen, (:call, :*, 1024, 1024)), "\nPlease ensure requested size is within system limits.", "\nIf not, increase system limits and try again.")
+          ), :e, (:block,
+            (:line, 499, :none),
+            :nothing
+          ))
+      )),
+    (:line, 504, :none),
+    (:function, (:call, :shm_mmap_array, :T, :dims, :shm_seg_name, :mode), (:block,
+        (:line, 505, :none),
+        (:local, (:(=), :s, :nothing)),
+        (:line, 506, :none),
+        (:local, (:(=), :A, :nothing)),
+        (:line, 508, :none),
+        (:if, (:||, (:call, :(==), (:call, :prod, :dims), 0), (:call, :(==), (:call, :sizeof, :T), 0)), (:block,
+            (:line, 509, :none),
+            (:return, (:call, (:curly, :Array, :T), :dims))
+          )),
+        (:line, 512, :none),
+        (:try, (:block,
+            (:line, 513, :none),
+            (:(=), :A, (:call, :_shm_mmap_array, :T, :dims, :shm_seg_name, :mode))
+          ), :e, (:block,
+            (:line, 515, :none),
+            (:call, :print_shmem_limits, (:call, :*, (:call, :prod, :dims), (:call, :sizeof, :T))),
+            (:line, 516, :none),
+            (:call, :rethrow, :e)
+          ), (:block,
+            (:line, 519, :none),
+            (:if, (:call, :(!==), :s, :nothing), (:block,
+                (:line, 520, :none),
+                (:call, :close, :s)
+              ))
+          )),
+        (:line, 523, :none),
+        :A
+      )),
+    (:line, 529, :none),
+    (:if, (:call, :is_windows), (:block,
+        (:line, 530, :none),
+        (:function, (:call, :_shm_mmap_array, :T, :dims, :shm_seg_name, :mode), (:block,
+            (:line, 531, :none),
+            (:(=), :readonly, (:call, :!, (:call, :(==), (:call, :&, :mode, :JL_O_RDWR), :JL_O_RDWR))),
+            (:line, 532, :none),
+            (:(=), :create, (:call, :(==), (:call, :&, :mode, :JL_O_CREAT), :JL_O_CREAT)),
+            (:line, 533, :none),
+            (:(=), :s, (:call, (:., :Mmap, (:quote, #QuoteNode
+                    :Anonymous
+                  )), :shm_seg_name, :readonly, :create)),
+            (:line, 534, :none),
+            (:call, (:., :Mmap, (:quote, #QuoteNode
+                  :mmap
+                )), :s, (:curly, :Array, :T, (:call, :length, :dims)), :dims, (:call, :zero, :Int64))
+          )),
+        (:line, 538, :none),
+        (:(=), (:call, :shm_unlink, :shm_seg_name), (:block,
+            (:line, 538, :none),
+            0
+          ))
+      ), (:block,
+        (:line, 541, :none),
+        (:function, (:call, :_shm_mmap_array, :T, :dims, :shm_seg_name, :mode), (:block,
+            (:line, 542, :none),
+            (:(=), :fd_mem, (:call, :shm_open, :shm_seg_name, :mode, (:call, :|, :S_IRUSR, :S_IWUSR))),
+            (:line, 543, :none),
+            (:call, :systemerror, (:call, :*, "shm_open() failed for ", :shm_seg_name), (:call, :<, :fd_mem, 0)),
+            (:line, 545, :none),
+            (:(=), :s, (:call, :fdio, :fd_mem, true)),
+            (:line, 549, :none),
+            (:if, (:call, :(==), (:call, :&, :mode, :JL_O_CREAT), :JL_O_CREAT), (:block,
+                (:line, 550, :none),
+                (:(=), :rc, (:ccall, (:quote, #QuoteNode
+                      :jl_ftruncate
+                    ), :Cint, (:tuple, :Cint, :Int64), :fd_mem, (:call, :*, (:call, :prod, :dims), (:call, :sizeof, :T)))),
+                (:line, 551, :none),
+                (:call, :systemerror, (:call, :*, "ftruncate() failed for shm segment ", :shm_seg_name), (:call, :(!=), :rc, 0))
+              )),
+            (:line, 554, :none),
+            (:call, (:., :Mmap, (:quote, #QuoteNode
+                  :mmap
+                )), (:parameters, (:kw, :grow, false)), :s, (:curly, :Array, :T, (:call, :length, :dims)), :dims, (:call, :zero, :Int64))
+          )),
+        (:line, 557, :none),
+        (:(=), (:call, :shm_unlink, :shm_seg_name), (:block,
+            (:line, 557, :none),
+            (:ccall, (:quote, #QuoteNode
+                :shm_unlink
+              ), :Cint, (:tuple, :Cstring), :shm_seg_name)
+          )),
+        (:line, 558, :none),
+        (:(=), (:call, :shm_open, :shm_seg_name, :oflags, :permissions), (:block,
+            (:line, 558, :none),
+            (:ccall, (:quote, #QuoteNode
+                :shm_open
+              ), :Cint, (:tuple, :Cstring, :Cint, :Cmode_t), :shm_seg_name, :oflags, :permissions)
+          ))
+      ))
+  ))

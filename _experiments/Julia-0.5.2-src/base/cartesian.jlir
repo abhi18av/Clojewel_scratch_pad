@@ -1,0 +1,671 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:module, true, :Cartesian, (:block,
+        (:line, 3, :none),
+        (:line, 5, :none),
+        (:export, Symbol("@nloops"), Symbol("@nref"), Symbol("@ncall"), Symbol("@nexprs"), Symbol("@nextract"), Symbol("@nall"), Symbol("@nany"), Symbol("@ntuple"), Symbol("@nif")),
+        (:line, 9, :none),
+        (:macrocall, :(Core.@doc), "    @nloops N itersym rangeexpr bodyexpr\n    @nloops N itersym rangeexpr preexpr bodyexpr\n    @nloops N itersym rangeexpr preexpr postexpr bodyexpr\n\nGenerate `N` nested loops, using `itersym` as the prefix for the iteration variables.\n`rangeexpr` may be an anonymous-function expression, or a simple symbol `var` in which case\nthe range is `1:size(var,d)` for dimension `d`.\n\nOptionally, you can provide \"pre\" and \"post\" expressions. These get executed first and last,\nrespectively, in the body of each loop. For example:\n\n    @nloops 2 i A d->j_d=min(i_d,5) begin\n        s += @nref 2 A j\n    end\n\nwould generate:\n\n    for i_2 = 1:size(A, 2)\n        j_2 = min(i_2, 5)\n        for i_1 = 1:size(A, 1)\n            j_1 = min(i_1, 5)\n            s += A[j_1,j_2]\n        end\n    end\n\nIf you want just a post-expression, supply `nothing` for the pre-expression. Using\nparentheses and semicolons, you can supply multi-statement expressions.\n", (:macro, (:call, :nloops, :N, :itersym, :rangeexpr, (:..., :args)), (:block,
+              (:line, 39, :none),
+              (:call, :_nloops, :N, :itersym, :rangeexpr, (:..., :args))
+            ))),
+        (:line, 42, :none),
+        (:function, (:call, :_nloops, (:(::), :N, :Int), (:(::), :itersym, :Symbol), (:(::), :arraysym, :Symbol), (:..., (:(::), :args, :Expr))), (:block,
+            (:line, 43, :none),
+            (:macrocall, Symbol("@gensym"), :d),
+            (:line, 44, :none),
+            (:call, :_nloops, :N, :itersym, (:quote, (:->, (:$, :d), (:block,
+                    (:line, 44, :none),
+                    (:call, :indices, (:$, :arraysym), (:$, :d))
+                  ))), (:..., :args))
+          )),
+        (:line, 47, :none),
+        (:function, (:call, :_nloops, (:(::), :N, :Int), (:(::), :itersym, :Symbol), (:(::), :rangeexpr, :Expr), (:..., (:(::), :args, :Expr))), (:block,
+            (:line, 48, :none),
+            (:if, (:call, :(!=), (:., :rangeexpr, (:quote, #QuoteNode
+                    :head
+                  )), (:quote, #QuoteNode
+                  :->
+                )), (:block,
+                (:line, 49, :none),
+                (:call, :throw, (:call, :ArgumentError, "second argument must be an anonymous function expression to compute the range"))
+              )),
+            (:line, 51, :none),
+            (:if, (:call, :!, (:comparison, 1, :(<=), (:call, :length, :args), :(<=), 3)), (:block,
+                (:line, 52, :none),
+                (:call, :throw, (:call, :ArgumentError, (:string, "number of arguments must be 1 ≤ length(args) ≤ 3, got ", :nargs)))
+              )),
+            (:line, 54, :none),
+            (:(=), :body, (:ref, :args, :end)),
+            (:line, 55, :none),
+            (:(=), :ex, (:call, :Expr, (:quote, #QuoteNode
+                  :escape
+                ), :body)),
+            (:line, 56, :none),
+            (:for, (:(=), :dim, (:(:), 1, :N)), (:block,
+                (:line, 57, :none),
+                (:(=), :itervar, (:call, :inlineanonymous, :itersym, :dim)),
+                (:line, 58, :none),
+                (:(=), :rng, (:call, :inlineanonymous, :rangeexpr, :dim)),
+                (:line, 59, :none),
+                (:(=), :preexpr, (:if, (:call, :>, (:call, :length, :args), 1), (:call, :inlineanonymous, (:ref, :args, 1), :dim), (:quote, #QuoteNode
+                      :nothing
+                    ))),
+                (:line, 60, :none),
+                (:(=), :postexpr, (:if, (:call, :>, (:call, :length, :args), 2), (:call, :inlineanonymous, (:ref, :args, 2), :dim), (:quote, #QuoteNode
+                      :nothing
+                    ))),
+                (:line, 61, :none),
+                (:(=), :ex, (:quote, (:block,
+                      (:line, 62, :none),
+                      (:for, (:(=), (:$, (:call, :esc, :itervar)), (:$, (:call, :esc, :rng))), (:block,
+                          (:line, 63, :none),
+                          (:$, (:call, :esc, :preexpr)),
+                          (:line, 64, :none),
+                          (:$, :ex),
+                          (:line, 65, :none),
+                          (:$, (:call, :esc, :postexpr))
+                        ))
+                    )))
+              )),
+            (:line, 69, :none),
+            :ex
+          )),
+        (:line, 72, :none),
+        (:macrocall, :(Core.@doc), "    @nref N A indexexpr\n\nGenerate expressions like `A[i_1,i_2,...]`. `indexexpr` can either be an iteration-symbol\nprefix, or an anonymous-function expression.\n", (:macro, (:call, :nref, :N, :A, :sym), (:block,
+              (:line, 79, :none),
+              (:call, :_nref, :N, :A, :sym)
+            ))),
+        (:line, 82, :none),
+        (:function, (:call, :_nref, (:(::), :N, :Int), (:(::), :A, :Symbol), :ex), (:block,
+            (:line, 83, :none),
+            (:(=), :vars, (:comprehension, (:generator, (:call, :inlineanonymous, :ex, :i), (:(=), :i, (:(:), 1, :N))))),
+            (:line, 84, :none),
+            (:call, :Expr, (:quote, #QuoteNode
+                :escape
+              ), (:call, :Expr, (:quote, #QuoteNode
+                  :ref
+                ), :A, (:..., :vars)))
+          )),
+        (:line, 87, :none),
+        (:macrocall, :(Core.@doc), "    @ncall N f sym...\n\nGenerate a function call expression. `sym` represents any number of function arguments, the\nlast of which may be an anonymous-function expression and is expanded into `N` arguments.\n\nFor example `@ncall 3 func a` generates\n\n    func(a_1, a_2, a_3)\n\nwhile `@ncall 2 func a b i->c[i]` yields\n\n    func(a, b, c[1], c[2])\n\n", (:macro, (:call, :ncall, :N, :f, (:..., :sym)), (:block,
+              (:line, 103, :none),
+              (:call, :_ncall, :N, :f, (:..., :sym))
+            ))),
+        (:line, 106, :none),
+        (:function, (:call, :_ncall, (:(::), :N, :Int), :f, (:..., :args)), (:block,
+            (:line, 107, :none),
+            (:(=), :pre, (:ref, :args, (:(:), 1, (:call, :-, :end, 1)))),
+            (:line, 108, :none),
+            (:(=), :ex, (:ref, :args, :end)),
+            (:line, 109, :none),
+            (:(=), :vars, (:comprehension, (:generator, (:call, :inlineanonymous, :ex, :i), (:(=), :i, (:(:), 1, :N))))),
+            (:line, 110, :none),
+            (:call, :Expr, (:quote, #QuoteNode
+                :escape
+              ), (:call, :Expr, (:quote, #QuoteNode
+                  :call
+                ), :f, (:..., :pre), (:..., :vars)))
+          )),
+        (:line, 113, :none),
+        (:macrocall, :(Core.@doc), "    @nexprs N expr\n\nGenerate `N` expressions. `expr` should be an anonymous-function expression.\n", (:macro, (:call, :nexprs, :N, :ex), (:block,
+              (:line, 119, :none),
+              (:call, :_nexprs, :N, :ex)
+            ))),
+        (:line, 122, :none),
+        (:function, (:call, :_nexprs, (:(::), :N, :Int), (:(::), :ex, :Expr)), (:block,
+            (:line, 123, :none),
+            (:(=), :exs, (:comprehension, (:generator, (:call, :inlineanonymous, :ex, :i), (:(=), :i, (:(:), 1, :N))))),
+            (:line, 124, :none),
+            (:call, :Expr, (:quote, #QuoteNode
+                :escape
+              ), (:call, :Expr, (:quote, #QuoteNode
+                  :block
+                ), (:..., :exs)))
+          )),
+        (:line, 127, :none),
+        (:macrocall, :(Core.@doc), "    @nextract N esym isym\n\nGenerate `N` variables `esym_1`, `esym_2`, ..., `esym_N` to extract values from `isym`.\n`isym` can be either a `Symbol` or anonymous-function expression.\n\n`@nextract 2 x y` would generate\n\n    x_1 = y[1]\n    x_2 = y[2]\n\nwhile `@nextract 3 x d->y[2d-1]` yields\n\n    x_1 = y[1]\n    x_2 = y[3]\n    x_3 = y[5]\n\n", (:macro, (:call, :nextract, :N, :esym, :isym), (:block,
+              (:line, 146, :none),
+              (:call, :_nextract, :N, :esym, :isym)
+            ))),
+        (:line, 149, :none),
+        (:function, (:call, :_nextract, (:(::), :N, :Int), (:(::), :esym, :Symbol), (:(::), :isym, :Symbol)), (:block,
+            (:line, 150, :none),
+            (:(=), :aexprs, (:comprehension, (:generator, (:call, :Expr, (:quote, #QuoteNode
+                      :escape
+                    ), (:call, :Expr, (:quote, #QuoteNode
+                        :(=)
+                      ), (:call, :inlineanonymous, :esym, :i), (:quote, (:ref, (:$, :isym), (:$, :i))))), (:(=), :i, (:(:), 1, :N))))),
+            (:line, 151, :none),
+            (:call, :Expr, (:quote, #QuoteNode
+                :block
+              ), (:..., :aexprs))
+          )),
+        (:line, 154, :none),
+        (:function, (:call, :_nextract, (:(::), :N, :Int), (:(::), :esym, :Symbol), (:(::), :ex, :Expr)), (:block,
+            (:line, 155, :none),
+            (:(=), :aexprs, (:comprehension, (:generator, (:call, :Expr, (:quote, #QuoteNode
+                      :escape
+                    ), (:call, :Expr, (:quote, #QuoteNode
+                        :(=)
+                      ), (:call, :inlineanonymous, :esym, :i), (:call, :inlineanonymous, :ex, :i))), (:(=), :i, (:(:), 1, :N))))),
+            (:line, 156, :none),
+            (:call, :Expr, (:quote, #QuoteNode
+                :block
+              ), (:..., :aexprs))
+          )),
+        (:line, 159, :none),
+        (:macrocall, :(Core.@doc), "    @nall N expr\n\nCheck whether all of the expressions generated by the anonymous-function expression `expr`\nevaluate to `true`.\n\n`@nall 3 d->(i_d > 1)` would generate the expression `(i_1 > 1 && i_2 > 1 && i_3 > 1)`. This\ncan be convenient for bounds-checking.\n", (:macro, (:call, :nall, :N, :criterion), (:block,
+              (:line, 169, :none),
+              (:call, :_nall, :N, :criterion)
+            ))),
+        (:line, 172, :none),
+        (:function, (:call, :_nall, (:(::), :N, :Int), (:(::), :criterion, :Expr)), (:block,
+            (:line, 173, :none),
+            (:if, (:call, :(!=), (:., :criterion, (:quote, #QuoteNode
+                    :head
+                  )), (:quote, #QuoteNode
+                  :->
+                )), (:block,
+                (:line, 174, :none),
+                (:call, :throw, (:call, :ArgumentError, "second argument must be an anonymous function expression yielding the criterion"))
+              )),
+            (:line, 176, :none),
+            (:(=), :conds, (:comprehension, (:generator, (:call, :Expr, (:quote, #QuoteNode
+                      :escape
+                    ), (:call, :inlineanonymous, :criterion, :i)), (:(=), :i, (:(:), 1, :N))))),
+            (:line, 177, :none),
+            (:call, :Expr, (:quote, #QuoteNode
+                :&&
+              ), (:..., :conds))
+          )),
+        (:line, 180, :none),
+        (:macrocall, :(Core.@doc), "    @nany N expr\n\nCheck whether any of the expressions generated by the anonymous-function expression `expr`\nevaluate to `true`.\n\n`@nany 3 d->(i_d > 1)` would generate the expression `(i_1 > 1 || i_2 > 1 || i_3 > 1)`.\n", (:macro, (:call, :nany, :N, :criterion), (:block,
+              (:line, 189, :none),
+              (:call, :_nany, :N, :criterion)
+            ))),
+        (:line, 192, :none),
+        (:function, (:call, :_nany, (:(::), :N, :Int), (:(::), :criterion, :Expr)), (:block,
+            (:line, 193, :none),
+            (:if, (:call, :(!=), (:., :criterion, (:quote, #QuoteNode
+                    :head
+                  )), (:quote, #QuoteNode
+                  :->
+                )), (:block,
+                (:line, 194, :none),
+                (:call, :error, "Second argument must be an anonymous function expression yielding the criterion")
+              )),
+            (:line, 196, :none),
+            (:(=), :conds, (:comprehension, (:generator, (:call, :Expr, (:quote, #QuoteNode
+                      :escape
+                    ), (:call, :inlineanonymous, :criterion, :i)), (:(=), :i, (:(:), 1, :N))))),
+            (:line, 197, :none),
+            (:call, :Expr, (:quote, #QuoteNode
+                :||
+              ), (:..., :conds))
+          )),
+        (:line, 200, :none),
+        (:macrocall, :(Core.@doc), "    @ntuple N expr\n\nGenerates an `N`-tuple. `@ntuple 2 i` would generate `(i_1, i_2)`, and `@ntuple 2 k->k+1`\nwould generate `(2,3)`.\n", (:macro, (:call, :ntuple, :N, :ex), (:block,
+              (:line, 207, :none),
+              (:call, :_ntuple, :N, :ex)
+            ))),
+        (:line, 210, :none),
+        (:function, (:call, :_ntuple, (:(::), :N, :Int), :ex), (:block,
+            (:line, 211, :none),
+            (:(=), :vars, (:comprehension, (:generator, (:call, :inlineanonymous, :ex, :i), (:(=), :i, (:(:), 1, :N))))),
+            (:line, 212, :none),
+            (:call, :Expr, (:quote, #QuoteNode
+                :escape
+              ), (:call, :Expr, (:quote, #QuoteNode
+                  :tuple
+                ), (:..., :vars)))
+          )),
+        (:line, 215, :none),
+        (:macrocall, :(Core.@doc), "    @nif N conditionexpr expr\n    @nif N conditionexpr expr elseexpr\n\nGenerates a sequence of `if ... elseif ... else ... end` statements. For example:\n\n    @nif 3 d->(i_d >= size(A,d)) d->(error(\"Dimension \", d, \" too big\")) d->println(\"All OK\")\n\nwould generate:\n\n    if i_1 > size(A, 1)\n        error(\"Dimension \", 1, \" too big\")\n    elseif i_2 > size(A, 2)\n        error(\"Dimension \", 2, \" too big\")\n    else\n        println(\"All OK\")\n    end\n", (:macro, (:call, :nif, :N, :condition, (:..., :operation)), (:block,
+              (:line, 235, :none),
+              (:(=), :ex, (:call, :esc, (:call, :inlineanonymous, (:if, (:call, :>, (:call, :length, :operation), 1), (:ref, :operation, 2), (:ref, :operation, 1)), :N))),
+              (:line, 237, :none),
+              (:for, (:(=), :i, (:(:), (:call, :-, :N, 1), -1, 1)), (:block,
+                  (:line, 238, :none),
+                  (:(=), :ex, (:call, :Expr, (:quote, #QuoteNode
+                        :if
+                      ), (:call, :esc, (:call, :inlineanonymous, :condition, :i)), (:call, :esc, (:call, :inlineanonymous, (:ref, :operation, 1), :i)), :ex))
+                )),
+              (:line, 240, :none),
+              :ex
+            ))),
+        (:line, 246, :none),
+        (:function, (:call, :inlineanonymous, (:(::), :ex, :Expr), :val), (:block,
+            (:line, 247, :none),
+            (:if, (:call, :(!=), (:., :ex, (:quote, #QuoteNode
+                    :head
+                  )), (:quote, #QuoteNode
+                  :->
+                )), (:block,
+                (:line, 248, :none),
+                (:call, :throw, (:call, :ArgumentError, "not an anonymous function"))
+              )),
+            (:line, 250, :none),
+            (:if, (:call, :!, (:call, :isa, (:ref, (:., :ex, (:quote, #QuoteNode
+                        :args
+                      )), 1), :Symbol)), (:block,
+                (:line, 251, :none),
+                (:call, :throw, (:call, :ArgumentError, "not a single-argument anonymous function"))
+              )),
+            (:line, 253, :none),
+            (:(=), :sym, (:ref, (:., :ex, (:quote, #QuoteNode
+                    :args
+                  )), 1)),
+            (:line, 254, :none),
+            (:(=), :ex, (:ref, (:., :ex, (:quote, #QuoteNode
+                    :args
+                  )), 2)),
+            (:line, 255, :none),
+            (:(=), :exout, (:call, :lreplace, :ex, :sym, :val)),
+            (:line, 256, :none),
+            (:(=), :exout, (:call, :poplinenum, :exout)),
+            (:line, 257, :none),
+            (:call, :exprresolve, :exout)
+          )),
+        (:line, 261, :none),
+        (:(=), (:call, :inlineanonymous, (:(::), :base, :Symbol), :ext), (:block,
+            (:line, 261, :none),
+            (:call, :Symbol, :base, "_", (:call, :string, :ext))
+          )),
+        (:line, 269, :none),
+        (:type, false, (:curly, :LReplace, (:<:, :S, :AbstractString)), (:block,
+            (:line, 270, :none),
+            (:(::), :pat_sym, :Symbol),
+            (:line, 271, :none),
+            (:(::), :pat_str, :S),
+            (:line, 272, :none),
+            (:(::), :val, :Int)
+          )),
+        (:line, 274, :none),
+        (:(=), (:call, :LReplace, (:(::), :sym, :Symbol), (:(::), :val, :Integer)), (:block,
+            (:line, 274, :none),
+            (:call, :LReplace, :sym, (:call, :string, :sym), :val)
+          )),
+        (:line, 276, :none),
+        (:(=), (:call, :lreplace, :ex, (:(::), :sym, :Symbol), :val), (:block,
+            (:line, 276, :none),
+            (:call, :lreplace!, (:call, :copy, :ex), (:call, :LReplace, :sym, :val))
+          )),
+        (:line, 278, :none),
+        (:function, (:call, :lreplace!, (:(::), :sym, :Symbol), (:(::), :r, :LReplace)), (:block,
+            (:line, 279, :none),
+            (:&&, (:call, :(==), :sym, (:., :r, (:quote, #QuoteNode
+                    :pat_sym
+                  ))), (:return, (:., :r, (:quote, #QuoteNode
+                    :val
+                  )))),
+            (:line, 280, :none),
+            (:call, :Symbol, (:call, :lreplace!, (:call, :string, :sym), :r))
+          )),
+        (:line, 283, :none),
+        (:function, (:call, :lreplace!, (:(::), :str, :AbstractString), (:(::), :r, :LReplace)), (:block,
+            (:line, 284, :none),
+            (:(=), :i, (:call, :start, :str)),
+            (:line, 285, :none),
+            (:(=), :pat, (:., :r, (:quote, #QuoteNode
+                  :pat_str
+                ))),
+            (:line, 286, :none),
+            (:(=), :j, (:call, :start, :pat)),
+            (:line, 287, :none),
+            (:(=), :matching, false),
+            (:line, 288, :none),
+            (:while, (:call, :!, (:call, :done, :str, :i)), (:block,
+                (:line, 289, :none),
+                (:(=), (:tuple, :cstr, :i), (:call, :next, :str, :i)),
+                (:line, 290, :none),
+                (:if, (:call, :!, :matching), (:block,
+                    (:line, 291, :none),
+                    (:if, (:||, (:call, :(!=), :cstr, '_'), (:call, :done, :str, :i)), (:block,
+                        (:line, 292, :none),
+                        (:continue,)
+                      )),
+                    (:line, 294, :none),
+                    (:(=), :istart, :i),
+                    (:line, 295, :none),
+                    (:(=), (:tuple, :cstr, :i), (:call, :next, :str, :i))
+                  )),
+                (:line, 297, :none),
+                (:if, (:call, :!, (:call, :done, :pat, :j)), (:block,
+                    (:line, 298, :none),
+                    (:(=), (:tuple, :cr, :j), (:call, :next, :pat, :j)),
+                    (:line, 299, :none),
+                    (:if, (:call, :(==), :cstr, :cr), (:block,
+                        (:line, 300, :none),
+                        (:(=), :matching, true)
+                      ), (:block,
+                        (:line, 302, :none),
+                        (:(=), :matching, false),
+                        (:line, 303, :none),
+                        (:(=), :j, (:call, :start, :pat)),
+                        (:line, 304, :none),
+                        (:(=), :i, :istart),
+                        (:line, 305, :none),
+                        (:continue,)
+                      ))
+                  )),
+                (:line, 308, :none),
+                (:if, (:&&, :matching, (:call, :done, :pat, :j)), (:block,
+                    (:line, 309, :none),
+                    (:if, (:||, (:call, :done, :str, :i), (:call, :(==), (:ref, (:call, :next, :str, :i), 1), '_')), (:block,
+                        (:line, 311, :none),
+                        (:return, (:call, :string, (:ref, :str, (:(:), 1, (:call, :prevind, :str, :istart))), (:., :r, (:quote, #QuoteNode
+                                :val
+                              )), (:call, :lreplace!, (:ref, :str, (:(:), :i, :end)), :r)))
+                      )),
+                    (:line, 313, :none),
+                    (:(=), :matching, false),
+                    (:line, 314, :none),
+                    (:(=), :j, (:call, :start, :pat)),
+                    (:line, 315, :none),
+                    (:(=), :i, :istart)
+                  ))
+              )),
+            (:line, 318, :none),
+            :str
+          )),
+        (:line, 321, :none),
+        (:function, (:call, :lreplace!, (:(::), :ex, :Expr), (:(::), :r, :LReplace)), (:block,
+            (:line, 323, :none),
+            (:if, (:&&, (:call, :(==), (:., :ex, (:quote, #QuoteNode
+                      :head
+                    )), (:quote, #QuoteNode
+                    :curly
+                  )), (:&&, (:call, :(==), (:call, :length, (:., :ex, (:quote, #QuoteNode
+                          :args
+                        ))), 2), (:&&, (:call, :isa, (:ref, (:., :ex, (:quote, #QuoteNode
+                            :args
+                          )), 1), :Symbol), (:call, :endswith, (:call, :string, (:ref, (:., :ex, (:quote, #QuoteNode
+                              :args
+                            )), 1)), "_")))), (:block,
+                (:line, 324, :none),
+                (:(=), :excurly, (:call, :exprresolve, (:call, :lreplace!, (:ref, (:., :ex, (:quote, #QuoteNode
+                            :args
+                          )), 2), :r))),
+                (:line, 325, :none),
+                (:if, (:call, :isa, :excurly, :Number), (:block,
+                    (:line, 326, :none),
+                    (:return, (:call, :Symbol, (:ref, (:., :ex, (:quote, #QuoteNode
+                              :args
+                            )), 1), :excurly))
+                  ), (:block,
+                    (:line, 328, :none),
+                    (:(=), (:ref, (:., :ex, (:quote, #QuoteNode
+                            :args
+                          )), 2), :excurly),
+                    (:line, 329, :none),
+                    (:return, :ex)
+                  ))
+              )),
+            (:line, 332, :none),
+            (:for, (:(=), :i, (:(:), 1, (:call, :length, (:., :ex, (:quote, #QuoteNode
+                        :args
+                      ))))), (:block,
+                (:line, 333, :none),
+                (:(=), (:ref, (:., :ex, (:quote, #QuoteNode
+                        :args
+                      )), :i), (:call, :lreplace!, (:ref, (:., :ex, (:quote, #QuoteNode
+                          :args
+                        )), :i), :r))
+              )),
+            (:line, 335, :none),
+            :ex
+          )),
+        (:line, 338, :none),
+        (:(=), (:call, :lreplace!, :arg, (:(::), :r, :LReplace)), (:block,
+            (:line, 338, :none),
+            :arg
+          )),
+        (:line, 341, :none),
+        (:(=), (:call, :poplinenum, :arg), (:block,
+            (:line, 341, :none),
+            :arg
+          )),
+        (:line, 342, :none),
+        (:function, (:call, :poplinenum, (:(::), :ex, :Expr)), (:block,
+            (:line, 343, :none),
+            (:if, (:call, :(==), (:., :ex, (:quote, #QuoteNode
+                    :head
+                  )), (:quote, #QuoteNode
+                  :block
+                )), (:block,
+                (:line, 344, :none),
+                (:if, (:call, :(==), (:call, :length, (:., :ex, (:quote, #QuoteNode
+                          :args
+                        ))), 1), (:block,
+                    (:line, 345, :none),
+                    (:return, (:ref, (:., :ex, (:quote, #QuoteNode
+                            :args
+                          )), 1))
+                  ), (:block,
+                    (:line, 346, :none),
+                    (:if, (:&&, (:call, :(==), (:call, :length, (:., :ex, (:quote, #QuoteNode
+                                :args
+                              ))), 2), (:call, :isa, (:ref, (:., :ex, (:quote, #QuoteNode
+                                :args
+                              )), 1), :LineNumberNode)), (:block,
+                        (:line, 347, :none),
+                        (:return, (:ref, (:., :ex, (:quote, #QuoteNode
+                                :args
+                              )), 2))
+                      ), (:block,
+                        (:line, 348, :none),
+                        (:if, (:&&, (:call, :(==), (:call, :length, (:., :ex, (:quote, #QuoteNode
+                                    :args
+                                  ))), 2), (:&&, (:call, :isa, (:ref, (:., :ex, (:quote, #QuoteNode
+                                      :args
+                                    )), 1), :Expr), (:call, :(==), (:., (:ref, (:., :ex, (:quote, #QuoteNode
+                                        :args
+                                      )), 1), (:quote, #QuoteNode
+                                    :head
+                                  )), (:quote, #QuoteNode
+                                  :line
+                                )))), (:block,
+                            (:line, 349, :none),
+                            (:return, (:ref, (:., :ex, (:quote, #QuoteNode
+                                    :args
+                                  )), 2))
+                          ))
+                      ))
+                  ))
+              )),
+            (:line, 352, :none),
+            :ex
+          )),
+        (:line, 357, :none),
+        (:const, (:(=), :exprresolve_arith_dict, (:call, (:curly, :Dict, :Symbol, :Function), (:(=>), (:quote, #QuoteNode
+                  :+
+                ), :+), (:(=>), (:quote, #QuoteNode
+                  :-
+                ), :-), (:(=>), (:quote, #QuoteNode
+                  :*
+                ), :*), (:(=>), (:quote, #QuoteNode
+                  :/
+                ), :/), (:(=>), (:quote, #QuoteNode
+                  :^
+                ), :^), (:(=>), (:quote, #QuoteNode
+                  :div
+                ), :div)))),
+        (:line, 359, :none),
+        (:const, (:(=), :exprresolve_cond_dict, (:call, (:curly, :Dict, :Symbol, :Function), (:(=>), (:quote, #QuoteNode
+                  :(==)
+                ), :(==)), (:(=>), (:quote, #QuoteNode
+                  :<
+                ), :<), (:(=>), (:quote, #QuoteNode
+                  :>
+                ), :>), (:(=>), (:quote, #QuoteNode
+                  :(<=)
+                ), :(<=)), (:(=>), (:quote, #QuoteNode
+                  :(>=)
+                ), :(>=))))),
+        (:line, 362, :none),
+        (:function, (:call, :exprresolve_arith, (:(::), :ex, :Expr)), (:block,
+            (:line, 363, :none),
+            (:if, (:&&, (:call, :(==), (:., :ex, (:quote, #QuoteNode
+                      :head
+                    )), (:quote, #QuoteNode
+                    :call
+                  )), (:&&, (:call, :haskey, :exprresolve_arith_dict, (:ref, (:., :ex, (:quote, #QuoteNode
+                          :args
+                        )), 1)), (:call, :all, (:comprehension, (:generator, (:call, :isa, (:ref, (:., :ex, (:quote, #QuoteNode
+                                :args
+                              )), :i), :Number), (:(=), :i, (:(:), 2, (:call, :length, (:., :ex, (:quote, #QuoteNode
+                                  :args
+                                )))))))))), (:block,
+                (:line, 364, :none),
+                (:return, (:tuple, true, (:call, (:ref, :exprresolve_arith_dict, (:ref, (:., :ex, (:quote, #QuoteNode
+                              :args
+                            )), 1)), (:..., (:ref, (:., :ex, (:quote, #QuoteNode
+                              :args
+                            )), (:(:), 2, :end))))))
+              )),
+            (:line, 366, :none),
+            (:tuple, false, 0)
+          )),
+        (:line, 368, :none),
+        (:(=), (:call, :exprresolve_arith, :arg), (:block,
+            (:line, 368, :none),
+            (:tuple, false, 0)
+          )),
+        (:line, 370, :none),
+        (:(=), (:call, :exprresolve_conditional, (:(::), :b, :Bool)), (:block,
+            (:line, 370, :none),
+            (:tuple, true, :b)
+          )),
+        (:line, 371, :none),
+        (:function, (:call, :exprresolve_conditional, (:(::), :ex, :Expr)), (:block,
+            (:line, 372, :none),
+            (:if, (:&&, (:call, :(==), (:., :ex, (:quote, #QuoteNode
+                      :head
+                    )), (:quote, #QuoteNode
+                    :call
+                  )), (:&&, (:call, :∈, (:ref, (:., :ex, (:quote, #QuoteNode
+                          :args
+                        )), 1), (:call, :keys, :exprresolve_cond_dict)), (:&&, (:call, :isa, (:ref, (:., :ex, (:quote, #QuoteNode
+                            :args
+                          )), 2), :Number), (:call, :isa, (:ref, (:., :ex, (:quote, #QuoteNode
+                            :args
+                          )), 3), :Number)))), (:block,
+                (:line, 373, :none),
+                (:return, (:tuple, true, (:call, (:ref, :exprresolve_cond_dict, (:ref, (:., :ex, (:quote, #QuoteNode
+                              :args
+                            )), 1)), (:ref, (:., :ex, (:quote, #QuoteNode
+                            :args
+                          )), 2), (:ref, (:., :ex, (:quote, #QuoteNode
+                            :args
+                          )), 3))))
+              )),
+            (:line, 375, :none),
+            (:tuple, false, false)
+          )),
+        (:line, 377, :none),
+        (:(=), (:call, :exprresolve_conditional, :arg), (:block,
+            (:line, 377, :none),
+            (:tuple, false, false)
+          )),
+        (:line, 379, :none),
+        (:(=), (:call, :exprresolve, :arg), (:block,
+            (:line, 379, :none),
+            :arg
+          )),
+        (:line, 380, :none),
+        (:function, (:call, :exprresolve, (:(::), :ex, :Expr)), (:block,
+            (:line, 381, :none),
+            (:for, (:(=), :i, (:(:), 1, (:call, :length, (:., :ex, (:quote, #QuoteNode
+                        :args
+                      ))))), (:block,
+                (:line, 382, :none),
+                (:(=), (:ref, (:., :ex, (:quote, #QuoteNode
+                        :args
+                      )), :i), (:call, :exprresolve, (:ref, (:., :ex, (:quote, #QuoteNode
+                          :args
+                        )), :i)))
+              )),
+            (:line, 385, :none),
+            (:(=), (:tuple, :can_eval, :result), (:call, :exprresolve_arith, :ex)),
+            (:line, 386, :none),
+            (:if, :can_eval, (:block,
+                (:line, 387, :none),
+                (:return, :result)
+              ), (:block,
+                (:line, 388, :none),
+                (:if, (:&&, (:call, :(==), (:., :ex, (:quote, #QuoteNode
+                          :head
+                        )), (:quote, #QuoteNode
+                        :call
+                      )), (:&&, (:||, (:call, :(==), (:ref, (:., :ex, (:quote, #QuoteNode
+                                :args
+                              )), 1), (:quote, #QuoteNode
+                            :+
+                          )), (:call, :(==), (:ref, (:., :ex, (:quote, #QuoteNode
+                                :args
+                              )), 1), (:quote, #QuoteNode
+                            :-
+                          ))), (:&&, (:call, :(==), (:call, :length, (:., :ex, (:quote, #QuoteNode
+                                :args
+                              ))), 3), (:call, :(==), (:ref, (:., :ex, (:quote, #QuoteNode
+                                :args
+                              )), 3), 0)))), (:block,
+                    (:line, 390, :none),
+                    (:return, (:ref, (:., :ex, (:quote, #QuoteNode
+                            :args
+                          )), 2))
+                  ))
+              )),
+            (:line, 393, :none),
+            (:if, (:&&, (:call, :(==), (:., :ex, (:quote, #QuoteNode
+                      :head
+                    )), (:quote, #QuoteNode
+                    :ref
+                  )), (:call, :isa, (:ref, (:., :ex, (:quote, #QuoteNode
+                        :args
+                      )), 1), :Array)), (:block,
+                (:line, 394, :none),
+                (:for, (:(=), :i, (:(:), 2, (:call, :length, (:., :ex, (:quote, #QuoteNode
+                            :args
+                          ))))), (:block,
+                    (:line, 395, :none),
+                    (:if, (:call, :!, (:call, :isa, (:ref, (:., :ex, (:quote, #QuoteNode
+                                :args
+                              )), :i), :Real)), (:block,
+                        (:line, 396, :none),
+                        (:return, :ex)
+                      ))
+                  )),
+                (:line, 399, :none),
+                (:return, (:ref, (:ref, (:., :ex, (:quote, #QuoteNode
+                          :args
+                        )), 1), (:..., (:ref, (:., :ex, (:quote, #QuoteNode
+                            :args
+                          )), (:(:), 2, :end)))))
+              )),
+            (:line, 402, :none),
+            (:if, (:call, :(==), (:., :ex, (:quote, #QuoteNode
+                    :head
+                  )), (:quote, #QuoteNode
+                  :if
+                )), (:block,
+                (:line, 403, :none),
+                (:(=), (:tuple, :can_eval, :tf), (:call, :exprresolve_conditional, (:ref, (:., :ex, (:quote, #QuoteNode
+                          :args
+                        )), 1))),
+                (:line, 404, :none),
+                (:if, :can_eval, (:block,
+                    (:line, 405, :none),
+                    (:(=), :ex, (:if, :tf, (:ref, (:., :ex, (:quote, #QuoteNode
+                              :args
+                            )), 2), (:ref, (:., :ex, (:quote, #QuoteNode
+                              :args
+                            )), 3)))
+                  ))
+              )),
+            (:line, 408, :none),
+            :ex
+          ))
+      ))
+  ))

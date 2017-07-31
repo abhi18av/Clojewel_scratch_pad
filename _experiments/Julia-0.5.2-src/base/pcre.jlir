@@ -1,0 +1,222 @@
+(:quote, (:block,
+    (:line, 5, :none),
+    (:module, true, :PCRE, (:block,
+        (:line, 5, :none),
+        (:line, 7, :none),
+        (:call, :include, (:call, :string, (:if, (:call, :(>=), (:call, :length, (:., :Core, (:quote, #QuoteNode
+                      :ARGS
+                    ))), 2), (:ref, (:., :Core, (:quote, #QuoteNode
+                    :ARGS
+                  )), 2), ""), "pcre_h.jl")),
+        (:line, 9, :none),
+        (:const, (:(=), :PCRE_LIB, "libpcre2-8")),
+        (:line, 11, :none),
+        (:global, (:(=), :JIT_STACK, :C_NULL)),
+        (:line, 12, :none),
+        (:global, (:(=), :MATCH_CONTEXT, :C_NULL)),
+        (:line, 14, :none),
+        (:function, (:call, :__init__), (:block,
+            (:line, 15, :none),
+            (:try, (:block,
+                (:line, 16, :none),
+                (:(=), :JIT_STACK_START_SIZE, 32768),
+                (:line, 17, :none),
+                (:(=), :JIT_STACK_MAX_SIZE, 1048576),
+                (:line, 18, :none),
+                (:global, (:(=), :JIT_STACK, (:ccall, (:tuple, (:quote, #QuoteNode
+                          :pcre2_jit_stack_create_8
+                        ), :PCRE_LIB), (:curly, :Ptr, :Void), (:tuple, :Cint, :Cint, (:curly, :Ptr, :Void)), :JIT_STACK_START_SIZE, :JIT_STACK_MAX_SIZE, :C_NULL))),
+                (:line, 21, :none),
+                (:global, (:(=), :MATCH_CONTEXT, (:ccall, (:tuple, (:quote, #QuoteNode
+                          :pcre2_match_context_create_8
+                        ), :PCRE_LIB), (:curly, :Ptr, :Void), (:tuple, (:curly, :Ptr, :Void)), :C_NULL))),
+                (:line, 23, :none),
+                (:ccall, (:tuple, (:quote, #QuoteNode
+                      :pcre2_jit_stack_assign_8
+                    ), :PCRE_LIB), :Void, (:tuple, (:curly, :Ptr, :Void), (:curly, :Ptr, :Void), (:curly, :Ptr, :Void)), :MATCH_CONTEXT, :C_NULL, :JIT_STACK)
+              ), :ex, (:block,
+                (:line, 26, :none),
+                (:call, (:., :Base, (:quote, #QuoteNode
+                      :showerror_nostdio
+                    )), :ex, "WARNING: Error during initialization of module PCRE")
+              ))
+          )),
+        (:line, 33, :none),
+        (:const, (:(=), :COMPILE_MASK, (:call, :|, (:call, :|, (:call, :|, (:call, :|, (:call, :|, (:call, :|, (:call, :|, (:call, :|, (:call, :|, (:call, :|, (:call, :|, (:call, :|, (:call, :|, (:call, :|, (:call, :|, (:call, :|, :ANCHORED, :CASELESS), :DOLLAR_ENDONLY), :DOTALL), :EXTENDED), :FIRSTLINE), :MULTILINE), :NEWLINE_ANY), :NEWLINE_ANYCRLF), :NEWLINE_CR), :NEWLINE_CRLF), :NEWLINE_LF), :NO_AUTO_CAPTURE), :NO_START_OPTIMIZE), :NO_UTF_CHECK), :UNGREEDY), :UTF))),
+        (:line, 52, :none),
+        (:const, (:(=), :EXECUTE_MASK, (:call, :|, (:call, :|, (:call, :|, (:call, :|, (:call, :|, (:call, :|, (:call, :|, (:call, :|, (:call, :|, (:call, :|, (:call, :|, (:call, :|, :NEWLINE_ANY, :NEWLINE_ANYCRLF), :NEWLINE_CR), :NEWLINE_CRLF), :NEWLINE_LF), :NOTBOL), :NOTEMPTY), :NOTEMPTY_ATSTART), :NOTEOL), :NO_START_OPTIMIZE), :NO_UTF_CHECK), :PARTIAL_HARD), :PARTIAL_SOFT))),
+        (:line, 68, :none),
+        (:const, (:(=), :OPTIONS_MASK, (:call, :|, :COMPILE_MASK, :EXECUTE_MASK))),
+        (:line, 70, :none),
+        (:const, (:(=), :UNSET, (:call, :~, (:call, :Csize_t, 0)))),
+        (:line, 72, :none),
+        (:function, (:call, :info, (:(::), :regex, (:curly, :Ptr, :Void)), (:(::), :what, :Integer), :T), (:block,
+            (:line, 73, :none),
+            (:(=), :buf, (:call, :zeros, :UInt8, (:call, :sizeof, :T))),
+            (:line, 74, :none),
+            (:(=), :ret, (:ccall, (:tuple, (:quote, #QuoteNode
+                    :pcre2_pattern_info_8
+                  ), :PCRE_LIB), :Int32, (:tuple, (:curly, :Ptr, :Void), :Int32, (:curly, :Ptr, :UInt8)), :regex, :what, :buf)),
+            (:line, 77, :none),
+            (:if, (:call, :(!=), :ret, 0), (:block,
+                (:line, 78, :none),
+                (:call, :error, (:if, (:call, :(==), :ret, :ERROR_NULL), "NULL regex object", (:if, (:call, :(==), :ret, :ERROR_BADMAGIC), "invalid regex object", (:if, (:call, :(==), :ret, :ERROR_BADOPTION), "invalid option flags", (:string, "unknown error ", :ret)))))
+              )),
+            (:line, 83, :none),
+            (:ref, (:call, :reinterpret, :T, :buf), 1)
+          )),
+        (:line, 86, :none),
+        (:function, (:call, :get_ovec, :match_data), (:block,
+            (:line, 87, :none),
+            (:(=), :ptr, (:ccall, (:tuple, (:quote, #QuoteNode
+                    :pcre2_get_ovector_pointer_8
+                  ), :PCRE_LIB), (:curly, :Ptr, :Csize_t), (:tuple, (:curly, :Ptr, :Void)), :match_data)),
+            (:line, 89, :none),
+            (:(=), :n, (:ccall, (:tuple, (:quote, #QuoteNode
+                    :pcre2_get_ovector_count_8
+                  ), :PCRE_LIB), :UInt32, (:tuple, (:curly, :Ptr, :Void)), :match_data)),
+            (:line, 91, :none),
+            (:call, :unsafe_wrap, :Array, :ptr, (:call, :*, 2, :n), false)
+          )),
+        (:line, 94, :none),
+        (:function, (:call, :compile, (:(::), :pattern, :AbstractString), (:(::), :options, :Integer)), (:block,
+            (:line, 95, :none),
+            (:(=), :errno, (:call, (:curly, :Ref, :Cint), 0)),
+            (:line, 96, :none),
+            (:(=), :erroff, (:call, (:curly, :Ref, :Csize_t), 0)),
+            (:line, 97, :none),
+            (:(=), :re_ptr, (:ccall, (:tuple, (:quote, #QuoteNode
+                    :pcre2_compile_8
+                  ), :PCRE_LIB), (:curly, :Ptr, :Void), (:tuple, (:curly, :Ptr, :UInt8), :Csize_t, :UInt32, (:curly, :Ref, :Cint), (:curly, :Ref, :Csize_t), (:curly, :Ptr, :Void)), :pattern, (:call, :sizeof, :pattern), :options, :errno, :erroff, :C_NULL)),
+            (:line, 100, :none),
+            (:&&, (:call, :(==), :re_ptr, :C_NULL), (:call, :error, (:string, "PCRE compilation error: ", (:call, :err_message, (:ref, :errno)), " at offset ", (:ref, :erroff)))),
+            (:line, 101, :none),
+            :re_ptr
+          )),
+        (:line, 104, :none),
+        (:function, (:call, :jit_compile, (:(::), :regex, (:curly, :Ptr, :Void))), (:block,
+            (:line, 105, :none),
+            (:(=), :errno, (:ccall, (:tuple, (:quote, #QuoteNode
+                    :pcre2_jit_compile_8
+                  ), :PCRE_LIB), :Cint, (:tuple, (:curly, :Ptr, :Void), :UInt32), :regex, :JIT_COMPLETE)),
+            (:line, 107, :none),
+            (:||, (:call, :(==), :errno, 0), (:call, :error, (:string, "PCRE JIT error: ", (:call, :err_message, :errno))))
+          )),
+        (:line, 110, :none),
+        (:(=), (:call, :free_match_data, :match_data), (:block,
+            (:line, 110, :none),
+            (:ccall, (:tuple, (:quote, #QuoteNode
+                  :pcre2_match_data_free_8
+                ), :PCRE_LIB), :Void, (:tuple, (:curly, :Ptr, :Void)), :match_data)
+          )),
+        (:line, 113, :none),
+        (:(=), (:call, :free_re, :re), (:block,
+            (:line, 113, :none),
+            (:ccall, (:tuple, (:quote, #QuoteNode
+                  :pcre2_code_free_8
+                ), :PCRE_LIB), :Void, (:tuple, (:curly, :Ptr, :Void)), :re)
+          )),
+        (:line, 116, :none),
+        (:(=), (:call, :free_jit_stack, :stack), (:block,
+            (:line, 116, :none),
+            (:ccall, (:tuple, (:quote, #QuoteNode
+                  :pcre2_jit_stack_free_8
+                ), :PCRE_LIB), :Void, (:tuple, (:curly, :Ptr, :Void)), :stack)
+          )),
+        (:line, 119, :none),
+        (:(=), (:call, :free_match_context, :context), (:block,
+            (:line, 119, :none),
+            (:ccall, (:tuple, (:quote, #QuoteNode
+                  :pcre2_match_context_free_8
+                ), :PCRE_LIB), :Void, (:tuple, (:curly, :Ptr, :Void)), :context)
+          )),
+        (:line, 122, :none),
+        (:function, (:call, :err_message, :errno), (:block,
+            (:line, 123, :none),
+            (:(=), :buffer, (:call, (:curly, :Array, :UInt8), 256)),
+            (:line, 124, :none),
+            (:ccall, (:tuple, (:quote, #QuoteNode
+                  :pcre2_get_error_message_8
+                ), :PCRE_LIB), :Void, (:tuple, :Int32, (:curly, :Ptr, :UInt8), :Csize_t), :errno, :buffer, (:call, :sizeof, :buffer)),
+            (:line, 126, :none),
+            (:call, :unsafe_string, (:call, :pointer, :buffer))
+          )),
+        (:line, 129, :none),
+        (:function, (:call, :exec, :re, :subject, :offset, :options, :match_data), (:block,
+            (:line, 130, :none),
+            (:(=), :rc, (:ccall, (:tuple, (:quote, #QuoteNode
+                    :pcre2_match_8
+                  ), :PCRE_LIB), :Cint, (:tuple, (:curly, :Ptr, :Void), (:curly, :Ptr, :UInt8), :Csize_t, :Csize_t, :Cuint, (:curly, :Ptr, :Void), (:curly, :Ptr, :Void)), :re, :subject, (:call, :sizeof, :subject), :offset, :options, :match_data, :MATCH_CONTEXT)),
+            (:line, 134, :none),
+            (:&&, (:call, :<, :rc, -2), (:call, :error, (:string, "PCRE.exec error: ", (:call, :err_message, :rc)))),
+            (:line, 135, :none),
+            (:call, :(>=), :rc, 0)
+          )),
+        (:line, 138, :none),
+        (:function, (:call, :create_match_data, :re), (:block,
+            (:line, 139, :none),
+            (:ccall, (:tuple, (:quote, #QuoteNode
+                  :pcre2_match_data_create_from_pattern_8
+                ), :PCRE_LIB), (:curly, :Ptr, :Void), (:tuple, (:curly, :Ptr, :Void), (:curly, :Ptr, :Void)), :re, :C_NULL)
+          )),
+        (:line, 143, :none),
+        (:function, (:call, :substring_number_from_name, :re, :name), (:block,
+            (:line, 144, :none),
+            (:ccall, (:tuple, (:quote, #QuoteNode
+                  :pcre2_substring_number_from_name_8
+                ), :PCRE_LIB), :Cint, (:tuple, (:curly, :Ptr, :Void), :Cstring), :re, :name)
+          )),
+        (:line, 148, :none),
+        (:function, (:call, :substring_length_bynumber, :match_data, :number), (:block,
+            (:line, 149, :none),
+            (:(=), :s, (:call, (:curly, :Ref, :Csize_t))),
+            (:line, 150, :none),
+            (:(=), :rc, (:ccall, (:tuple, (:quote, #QuoteNode
+                    :pcre2_substring_length_bynumber_8
+                  ), :PCRE_LIB), :Cint, (:tuple, (:curly, :Ptr, :Void), :UInt32, (:curly, :Ref, :Csize_t)), :match_data, :number, :s)),
+            (:line, 152, :none),
+            (:&&, (:call, :<, :rc, 0), (:call, :error, (:string, "PCRE error: ", (:call, :err_message, :rc)))),
+            (:line, 153, :none),
+            (:call, :convert, :Int, (:ref, :s))
+          )),
+        (:line, 156, :none),
+        (:function, (:call, :substring_copy_bynumber, :match_data, :number, :buf, :buf_size), (:block,
+            (:line, 157, :none),
+            (:(=), :s, (:call, (:curly, :Ref, :Csize_t), :buf_size)),
+            (:line, 158, :none),
+            (:(=), :rc, (:ccall, (:tuple, (:quote, #QuoteNode
+                    :pcre2_substring_copy_bynumber_8
+                  ), :PCRE_LIB), :Cint, (:tuple, (:curly, :Ptr, :Void), :UInt32, (:curly, :Ptr, :UInt8), (:curly, :Ref, :Csize_t)), :match_data, :number, :buf, :s)),
+            (:line, 161, :none),
+            (:&&, (:call, :<, :rc, 0), (:call, :error, (:string, "PCRE error: ", (:call, :err_message, :rc)))),
+            (:line, 162, :none),
+            (:call, :convert, :Int, (:ref, :s))
+          )),
+        (:line, 165, :none),
+        (:function, (:call, :capture_names, :re), (:block,
+            (:line, 166, :none),
+            (:(=), :name_count, (:call, :info, :re, :INFO_NAMECOUNT, :UInt32)),
+            (:line, 167, :none),
+            (:(=), :name_entry_size, (:call, :info, :re, :INFO_NAMEENTRYSIZE, :UInt32)),
+            (:line, 168, :none),
+            (:(=), :nametable_ptr, (:call, :info, :re, :INFO_NAMETABLE, (:curly, :Ptr, :UInt8))),
+            (:line, 169, :none),
+            (:(=), :names, (:call, (:curly, :Dict, :Int, :String))),
+            (:line, 170, :none),
+            (:for, (:(=), :i, (:(:), 1, :name_count)), (:block,
+                (:line, 171, :none),
+                (:(=), :offset, (:call, :+, (:call, :*, (:call, :-, :i, 1), :name_entry_size), 1)),
+                (:line, 174, :none),
+                (:(=), :high_byte, (:call, :UInt16, (:call, :unsafe_load, :nametable_ptr, :offset))),
+                (:line, 175, :none),
+                (:(=), :low_byte, (:call, :UInt16, (:call, :unsafe_load, :nametable_ptr, (:call, :+, :offset, 1)))),
+                (:line, 176, :none),
+                (:(=), :idx, (:call, :|, (:call, :<<, :high_byte, 8), :low_byte)),
+                (:line, 179, :none),
+                (:(=), (:ref, :names, :idx), (:call, :unsafe_string, (:call, :+, :nametable_ptr, :offset, 1)))
+              )),
+            (:line, 181, :none),
+            :names
+          ))
+      ))
+  ))

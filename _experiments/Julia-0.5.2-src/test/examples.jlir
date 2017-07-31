@@ -1,0 +1,147 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:(=), :dir, (:call, :joinpath, :JULIA_HOME, (:., :Base, (:quote, #QuoteNode
+            :DOCDIR
+          )), "examples")),
+    (:line, 5, :none),
+    (:call, :include, (:call, :joinpath, :dir, "bubblesort.jl")),
+    (:line, 6, :none),
+    (:(=), :a, (:call, :rand, (:(:), 1, 100), 100)),
+    (:line, 7, :none),
+    (:macrocall, Symbol("@test"), (:call, :issorted, (:call, :sort!, (:parameters, (:kw, :alg, :BubbleSort)), :a))),
+    (:line, 9, :none),
+    (:call, :include, (:call, :joinpath, :dir, "lru.jl")),
+    (:line, 10, :none),
+    (:call, :include, (:call, :joinpath, :dir, "lru_test.jl")),
+    (:line, 12, :none),
+    (:call, :include, (:call, :joinpath, :dir, "modint.jl")),
+    (:line, 13, :none),
+    (:(=), :b, (:call, (:curly, (:., :ModInts, (:quote, #QuoteNode
+              :ModInt
+            )), 10), 2)),
+    (:line, 14, :none),
+    (:(=), :c, (:call, (:curly, (:., :ModInts, (:quote, #QuoteNode
+              :ModInt
+            )), 10), 4)),
+    (:line, 15, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :+, :b, :c), (:call, (:curly, (:., :ModInts, (:quote, #QuoteNode
+                :ModInt
+              )), 10), 6))),
+    (:line, 16, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :-, :c, :b), (:call, (:curly, (:., :ModInts, (:quote, #QuoteNode
+                :ModInt
+              )), 10), 2))),
+    (:line, 17, :none),
+    (:(=), :x, (:call, (:curly, (:., :ModInts, (:quote, #QuoteNode
+              :ModInt
+            )), 256), 13)),
+    (:line, 18, :none),
+    (:(=), :y, (:call, :inv, :x)),
+    (:line, 19, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), :y, (:call, (:curly, (:., :ModInts, (:quote, #QuoteNode
+                :ModInt
+              )), 256), 197))),
+    (:line, 20, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :*, :x, :y), (:call, (:curly, (:., :ModInts, (:quote, #QuoteNode
+                :ModInt
+              )), 256), 1))),
+    (:line, 21, :none),
+    (:macrocall, Symbol("@test_throws"), :DomainError, (:call, :inv, (:call, (:curly, (:., :ModInts, (:quote, #QuoteNode
+                :ModInt
+              )), 8), 4))),
+    (:line, 23, :none),
+    (:call, :include, (:call, :joinpath, :dir, "ndgrid.jl")),
+    (:line, 24, :none),
+    (:(=), :r, (:call, :repmat, (:(:), 1, 10), 1, 10)),
+    (:line, 25, :none),
+    (:(=), (:tuple, :r1, :r2), (:call, :ndgrid, (:(:), 1, 10), (:(:), 1, 10))),
+    (:line, 26, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), :r1, :r)),
+    (:line, 27, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), :r2, (:', :r))),
+    (:line, 28, :none),
+    (:(=), (:tuple, :r3, :r4), (:call, :meshgrid, (:(:), 1, 10), (:(:), 1, 10))),
+    (:line, 29, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), :r3, (:', :r))),
+    (:line, 30, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), :r4, :r)),
+    (:line, 32, :none),
+    (:call, :include, (:call, :joinpath, :dir, "queens.jl")),
+    (:line, 33, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :solve, 8, 8, 1), (:ref, (:curly, :Array, :Int, 1), (:vect, 1, 1)))),
+    (:line, 34, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :solve, 8, 8, 7), (:ref, (:curly, :Array, :Int, 1), (:vect, 1, 1), (:vect, 2, 3), (:vect, 3, 5), (:vect, 4, 2), (:vect, 5, 8), (:vect, 7, 4), (:vect, 8, 7)))),
+    (:line, 39, :none),
+    (:if, (:call, :is_unix), (:block,
+        (:line, 40, :none),
+        (:(=), :script, (:call, :joinpath, :dir, "clustermanager/simple/test_simple.jl")),
+        (:line, 41, :none),
+        (:(=), :cmd, (:macrocall, Symbol("@cmd"), "\$(Base.julia_cmd()) --startup-file=no \$script")),
+        (:line, 42, :none),
+        (:if, (:&&, (:call, :!, (:call, :success, (:call, :pipeline, (:parameters, (:kw, :stdout, :STDOUT), (:kw, :stderr, :STDERR)), :cmd))), (:call, :(==), (:ccall, (:quote, #QuoteNode
+                  :jl_running_on_valgrind
+                ), :Cint, (:tuple,)), 0)), (:block,
+            (:line, 43, :none),
+            (:call, :error, (:string, "UnixDomainCM failed test, cmd : ", :cmd))
+          ))
+      )),
+    (:line, 47, :none),
+    (:(=), :dc_path, (:call, :joinpath, :dir, "dictchannel.jl")),
+    (:line, 48, :none),
+    (:||, (:call, :(==), (:call, :myid), 1), (:call, :include, :dc_path)),
+    (:line, 52, :none),
+    (:call, :remotecall_fetch, (:->, (:tuple, :f), (:block,
+          (:line, 53, :none),
+          (:call, :include, :f),
+          (:line, 54, :none),
+          :nothing
+        )), 1, :dc_path),
+    (:line, 56, :none),
+    (:(=), :dc, (:call, :RemoteChannel, (:->, (:tuple,), (:block,
+            (:line, 56, :none),
+            (:call, :DictChannel)
+          )), 1)),
+    (:line, 57, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :typeof, :dc), (:curly, :RemoteChannel, :DictChannel))),
+    (:line, 59, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :isready, :dc), false)),
+    (:line, 60, :none),
+    (:call, :put!, :dc, 1, 2),
+    (:line, 61, :none),
+    (:call, :put!, :dc, "Hello", "World"),
+    (:line, 62, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :isready, :dc), true)),
+    (:line, 63, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :isready, :dc, 1), true)),
+    (:line, 64, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :isready, :dc, "Hello"), true)),
+    (:line, 65, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :isready, :dc, 2), false)),
+    (:line, 66, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :fetch, :dc, 1), 2)),
+    (:line, 67, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :fetch, :dc, "Hello"), "World")),
+    (:line, 68, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :take!, :dc, 1), 2)),
+    (:line, 69, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :isready, :dc, 1), false)),
+    (:line, 73, :none),
+    (:call, :include, (:call, :joinpath, :dir, "wordcount.jl")),
+    (:line, 77, :none),
+    (:(=), :zmq_found, true),
+    (:line, 78, :none),
+    (:try, (:block,
+        (:line, 79, :none),
+        (:using, :ZMQ)
+      ), false, (:block,
+        (:line, 81, :none),
+        (:(=), :zmq_found, false)
+      )),
+    (:line, 84, :none),
+    (:if, (:call, :!, :zmq_found), (:block,
+        (:line, 85, :none),
+        (:call, :eval, (:call, :parse, "module ZMQ end"))
+      )),
+    (:line, 88, :none),
+    (:call, :include, (:call, :joinpath, :dir, "clustermanager/0mq/ZMQCM.jl"))
+  ))

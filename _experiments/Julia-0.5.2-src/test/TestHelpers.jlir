@@ -1,0 +1,393 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:module, true, :TestHelpers, (:block,
+        (:line, 3, :none),
+        (:line, 5, :none),
+        (:type, true, (:<:, :FakeTerminal, (:., (:., :Base, (:quote, #QuoteNode
+                  :Terminals
+                )), (:quote, #QuoteNode
+                :UnixTerminal
+              ))), (:block,
+            (:line, 6, :none),
+            (:(::), :in_stream, (:., :Base, (:quote, #QuoteNode
+                  :IO
+                ))),
+            (:line, 7, :none),
+            (:(::), :out_stream, (:., :Base, (:quote, #QuoteNode
+                  :IO
+                ))),
+            (:line, 8, :none),
+            (:(::), :err_stream, (:., :Base, (:quote, #QuoteNode
+                  :IO
+                ))),
+            (:line, 9, :none),
+            (:(::), :hascolor, :Bool),
+            (:line, 10, :none),
+            (:(::), :raw, :Bool),
+            (:line, 11, :none),
+            (:(=), (:call, :FakeTerminal, :stdin, :stdout, :stderr, (:kw, :hascolor, true)), (:block,
+                (:line, 11, :none),
+                (:call, :new, :stdin, :stdout, :stderr, :hascolor, false)
+              ))
+          )),
+        (:line, 15, :none),
+        (:(=), (:call, (:., (:., :Base, (:quote, #QuoteNode
+                  :Terminals
+                )), (:quote, #QuoteNode
+                :hascolor
+              )), (:(::), :t, :FakeTerminal)), (:block,
+            (:line, 15, :none),
+            (:., :t, (:quote, #QuoteNode
+                :hascolor
+              ))
+          )),
+        (:line, 16, :none),
+        (:(=), (:call, (:., (:., :Base, (:quote, #QuoteNode
+                  :Terminals
+                )), (:quote, #QuoteNode
+                :raw!
+              )), (:(::), :t, :FakeTerminal), (:(::), :raw, :Bool)), (:block,
+            (:line, 16, :none),
+            (:(=), (:., :t, (:quote, #QuoteNode
+                  :raw
+                )), :raw)
+          )),
+        (:line, 17, :none),
+        (:(=), (:call, (:., (:., :Base, (:quote, #QuoteNode
+                  :Terminals
+                )), (:quote, #QuoteNode
+                :size
+              )), (:(::), :t, :FakeTerminal)), (:block,
+            (:line, 17, :none),
+            (:tuple, 24, 80)
+          )),
+        (:line, 19, :none),
+        (:function, (:call, :open_fake_pty), (:block,
+            (:line, 20, :none),
+            (:const, (:(=), :O_RDWR, (:., (:., :Base, (:quote, #QuoteNode
+                      :Filesystem
+                    )), (:quote, #QuoteNode
+                    :JL_O_RDWR
+                  )))),
+            (:line, 21, :none),
+            (:const, (:(=), :O_NOCTTY, (:., (:., :Base, (:quote, #QuoteNode
+                      :Filesystem
+                    )), (:quote, #QuoteNode
+                    :JL_O_NOCTTY
+                  )))),
+            (:line, 23, :none),
+            (:(=), :fdm, (:ccall, (:quote, #QuoteNode
+                  :posix_openpt
+                ), :Cint, (:tuple, :Cint), (:call, :|, :O_RDWR, :O_NOCTTY))),
+            (:line, 24, :none),
+            (:&&, (:call, :(==), :fdm, -1), (:call, :error, "Failed to open PTY master")),
+            (:line, 25, :none),
+            (:(=), :rc, (:ccall, (:quote, #QuoteNode
+                  :grantpt
+                ), :Cint, (:tuple, :Cint), :fdm)),
+            (:line, 26, :none),
+            (:&&, (:call, :(!=), :rc, 0), (:call, :error, "grantpt failed")),
+            (:line, 27, :none),
+            (:(=), :rc, (:ccall, (:quote, #QuoteNode
+                  :unlockpt
+                ), :Cint, (:tuple, :Cint), :fdm)),
+            (:line, 28, :none),
+            (:&&, (:call, :(!=), :rc, 0), (:call, :error, "unlockpt")),
+            (:line, 30, :none),
+            (:(=), :fds, (:ccall, (:quote, #QuoteNode
+                  :open
+                ), :Cint, (:tuple, (:curly, :Ptr, :UInt8), :Cint), (:ccall, (:quote, #QuoteNode
+                    :ptsname
+                  ), (:curly, :Ptr, :UInt8), (:tuple, :Cint), :fdm), (:call, :|, :O_RDWR, :O_NOCTTY))),
+            (:line, 34, :none),
+            (:(=), :slave, (:call, :RawFD, :fds)),
+            (:line, 35, :none),
+            (:(=), :master, (:call, (:., :Base, (:quote, #QuoteNode
+                    :TTY
+                  )), (:parameters, (:kw, :readable, true)), (:call, :RawFD, :fdm))),
+            (:line, 36, :none),
+            (:tuple, :slave, :master)
+          )),
+        (:line, 39, :none),
+        (:function, (:call, :with_fake_pty, :f), (:block,
+            (:line, 40, :none),
+            (:(=), (:tuple, :slave, :master), (:call, :open_fake_pty)),
+            (:line, 41, :none),
+            (:call, :f, :slave, :master),
+            (:line, 42, :none),
+            (:ccall, (:quote, #QuoteNode
+                :close
+              ), :Cint, (:tuple, :Cint), :slave),
+            (:line, 43, :none),
+            (:call, :close, :master)
+          )),
+        (:line, 51, :none),
+        (:module, true, :OAs, (:block,
+            (:line, 51, :none),
+            (:line, 53, :none),
+            (:toplevel, (:using, :Base, :Indices), (:using, :Base, :LinearSlow), (:using, :Base, :LinearFast), (:using, :Base, :tail)),
+            (:line, 55, :none),
+            (:export, :OffsetArray),
+            (:line, 57, :none),
+            (:type, false, (:<:, (:curly, :OffsetArray, :T, :N, (:<:, :AA, :AbstractArray)), (:curly, :AbstractArray, :T, :N)), (:block,
+                (:line, 58, :none),
+                (:(::), :parent, :AA),
+                (:line, 59, :none),
+                (:(::), :offsets, (:curly, :NTuple, :N, :Int))
+              )),
+            (:line, 61, :none),
+            (:typealias, (:curly, :OffsetVector, :T, (:<:, :AA, :AbstractArray)), (:curly, :OffsetArray, :T, 1, :AA)),
+            (:line, 63, :none),
+            (:(=), (:call, (:curly, :OffsetArray, :T, :N), (:(::), :A, (:curly, :AbstractArray, :T, :N)), (:(::), :offsets, (:curly, :NTuple, :N, :Int))), (:block,
+                (:line, 63, :none),
+                (:call, (:curly, :OffsetArray, :T, :N, (:call, :typeof, :A)), :A, :offsets)
+              )),
+            (:line, 64, :none),
+            (:(=), (:call, (:curly, :OffsetArray, :T, :N), (:(::), :A, (:curly, :AbstractArray, :T, :N)), (:(::), :offsets, (:curly, :Vararg, :Int, :N))), (:block,
+                (:line, 64, :none),
+                (:call, :OffsetArray, :A, :offsets)
+              )),
+            (:line, 66, :none),
+            (:(=), (:call, (:curly, (:(::), (:curly, :Type, (:curly, :OffsetArray, :T, :N))), :T, :N), (:(::), :inds, (:curly, :Indices, :N))), (:block,
+                (:line, 66, :none),
+                (:call, (:curly, :OffsetArray, :T, :N, (:curly, :Array, :T, :N)), (:call, (:curly, :Array, :T, :N), (:call, :map, :length, :inds)), (:call, :map, :indsoffset, :inds))
+              )),
+            (:line, 67, :none),
+            (:(=), (:call, (:curly, (:(::), (:curly, :Type, (:curly, :OffsetArray, :T))), :T, :N), (:(::), :inds, (:curly, :Indices, :N))), (:block,
+                (:line, 67, :none),
+                (:call, (:curly, :OffsetArray, :T, :N), :inds)
+              )),
+            (:line, 69, :none),
+            (:(=), (:call, (:curly, (:., :Base, (:quote, #QuoteNode
+                      :linearindexing
+                    )), (:<:, :T, :OffsetArray)), (:(::), (:curly, :Type, :T))), (:block,
+                (:line, 69, :none),
+                (:call, (:., :Base, (:quote, #QuoteNode
+                      :linearindexing
+                    )), (:call, :parenttype, :T))
+              )),
+            (:line, 70, :none),
+            (:(=), (:call, (:curly, :parenttype, :T, :N, :AA), (:(::), (:curly, :Type, (:curly, :OffsetArray, :T, :N, :AA)))), (:block,
+                (:line, 70, :none),
+                :AA
+              )),
+            (:line, 71, :none),
+            (:(=), (:call, :parenttype, (:(::), :A, :OffsetArray)), (:block,
+                (:line, 71, :none),
+                (:call, :parenttype, (:call, :typeof, :A))
+              )),
+            (:line, 73, :none),
+            (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+                    :parent
+                  )), (:(::), :A, :OffsetArray)), (:block,
+                (:line, 73, :none),
+                (:., :A, (:quote, #QuoteNode
+                    :parent
+                  ))
+              )),
+            (:line, 75, :none),
+            (:(=), (:call, :errmsg, :A), (:block,
+                (:line, 75, :none),
+                (:call, :error, (:string, "size not supported for arrays with indices ", (:call, :indices, :A), "; see https://docs.julialang.org/en/release-0.5/devdocs/offset-arrays/"))
+              )),
+            (:line, 76, :none),
+            (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+                    :size
+                  )), (:(::), :A, :OffsetArray)), (:block,
+                (:line, 76, :none),
+                (:call, :errmsg, :A)
+              )),
+            (:line, 77, :none),
+            (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+                    :size
+                  )), (:(::), :A, :OffsetArray), :d), (:block,
+                (:line, 77, :none),
+                (:call, :errmsg, :A)
+              )),
+            (:line, 78, :none),
+            (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+                    :eachindex
+                  )), (:(::), :LinearSlow), (:(::), :A, :OffsetArray)), (:block,
+                (:line, 78, :none),
+                (:call, :CartesianRange, (:call, :indices, :A))
+              )),
+            (:line, 79, :none),
+            (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+                    :eachindex
+                  )), (:(::), :LinearFast), (:(::), :A, :OffsetVector)), (:block,
+                (:line, 79, :none),
+                (:call, :indices, :A, 1)
+              )),
+            (:line, 84, :none),
+            (:macrocall, Symbol("@inline"), (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+                      :indices
+                    )), (:(::), :A, :OffsetArray), :d), (:block,
+                  (:line, 84, :none),
+                  (:if, (:comparison, 1, :(<=), :d, :(<=), (:call, :length, (:., :A, (:quote, #QuoteNode
+                            :offsets
+                          )))), (:call, :+, (:ref, (:call, :indices, (:call, :parent, :A)), :d), (:ref, (:., :A, (:quote, #QuoteNode
+                            :offsets
+                          )), :d)), (:(:), 1, 1))
+                ))),
+            (:line, 85, :none),
+            (:macrocall, Symbol("@inline"), (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+                      :indices
+                    )), (:(::), :A, :OffsetArray)), (:block,
+                  (:line, 85, :none),
+                  (:call, :_indices, (:call, :indices, (:call, :parent, :A)), (:., :A, (:quote, #QuoteNode
+                        :offsets
+                      )))
+                ))),
+            (:line, 86, :none),
+            (:macrocall, Symbol("@inline"), (:(=), (:call, :_indices, :inds, :offsets), (:block,
+                  (:line, 86, :none),
+                  (:tuple, (:call, :+, (:ref, :inds, 1), (:ref, :offsets, 1)), (:..., (:call, :_indices, (:call, :tail, :inds), (:call, :tail, :offsets))))
+                ))),
+            (:line, 87, :none),
+            (:(=), (:call, :_indices, (:(::), (:curly, :Tuple)), (:(::), (:curly, :Tuple))), (:block,
+                (:line, 87, :none),
+                (:tuple,)
+              )),
+            (:line, 88, :none),
+            (:(=), (:call, (:curly, (:., :Base, (:quote, #QuoteNode
+                      :indices1
+                    )), :T), (:(::), :A, (:curly, :OffsetArray, :T, 0))), (:block,
+                (:line, 88, :none),
+                (:(:), 1, 1)
+              )),
+            (:line, 90, :none),
+            (:function, (:call, (:., :Base, (:quote, #QuoteNode
+                    :similar
+                  )), (:(::), :A, :OffsetArray), (:(::), :T, :Type), (:(::), :dims, :Dims)), (:block,
+                (:line, 91, :none),
+                (:(=), :B, (:call, :similar, (:call, :parent, :A), :T, :dims))
+              )),
+            (:line, 93, :none),
+            (:function, (:call, (:., :Base, (:quote, #QuoteNode
+                    :similar
+                  )), (:(::), :A, :AbstractArray), (:(::), :T, :Type), (:(::), :inds, (:curly, :Tuple, :UnitRange, (:curly, :Vararg, :UnitRange)))), (:block,
+                (:line, 94, :none),
+                (:(=), :B, (:call, :similar, :A, :T, (:call, :map, :length, :inds))),
+                (:line, 95, :none),
+                (:call, :OffsetArray, :B, (:call, :map, :indsoffset, :inds))
+              )),
+            (:line, 98, :none),
+            (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+                    :similar
+                  )), (:(::), :f, (:curly, :Union, :Function, :DataType)), (:(::), :shape, (:curly, :Tuple, :UnitRange, (:curly, :Vararg, :UnitRange)))), (:block,
+                (:line, 98, :none),
+                (:call, :OffsetArray, (:call, :f, (:call, :map, :length, :shape)), (:call, :map, :indsoffset, :shape))
+              )),
+            (:line, 100, :none),
+            (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+                    :reshape
+                  )), (:(::), :A, :AbstractArray), (:(::), :inds, (:curly, :Tuple, :UnitRange, (:curly, :Vararg, :UnitRange)))), (:block,
+                (:line, 100, :none),
+                (:call, :OffsetArray, (:call, :reshape, :A, (:call, :map, :length, :inds)), (:call, :map, :indsoffset, :inds))
+              )),
+            (:line, 102, :none),
+            (:macrocall, Symbol("@inline"), (:function, (:call, (:curly, (:., :Base, (:quote, #QuoteNode
+                        :getindex
+                      )), :T, :N), (:(::), :A, (:curly, :OffsetArray, :T, :N)), (:(::), :I, (:curly, :Vararg, :Int, :N))), (:block,
+                  (:line, 103, :none),
+                  (:call, :checkbounds, :A, (:..., :I)),
+                  (:line, 104, :none),
+                  (:macrocall, Symbol("@inbounds"), (:(=), :ret, (:ref, (:call, :parent, :A), (:..., (:call, :offset, (:., :A, (:quote, #QuoteNode
+                                :offsets
+                              )), :I))))),
+                  (:line, 105, :none),
+                  :ret
+                ))),
+            (:line, 107, :none),
+            (:macrocall, Symbol("@inline"), (:function, (:call, (:., :Base, (:quote, #QuoteNode
+                      :_getindex
+                    )), (:(::), :LinearFast), (:(::), :A, :OffsetVector), (:(::), :i, :Int)), (:block,
+                  (:line, 108, :none),
+                  (:call, :checkbounds, :A, :i),
+                  (:line, 109, :none),
+                  (:macrocall, Symbol("@inbounds"), (:(=), :ret, (:ref, (:call, :parent, :A), (:ref, (:call, :offset, (:., :A, (:quote, #QuoteNode
+                                :offsets
+                              )), (:tuple, :i)), 1)))),
+                  (:line, 110, :none),
+                  :ret
+                ))),
+            (:line, 112, :none),
+            (:macrocall, Symbol("@inline"), (:function, (:call, (:., :Base, (:quote, #QuoteNode
+                      :_getindex
+                    )), (:(::), :LinearFast), (:(::), :A, :OffsetArray), (:(::), :i, :Int)), (:block,
+                  (:line, 113, :none),
+                  (:call, :checkbounds, :A, :i),
+                  (:line, 114, :none),
+                  (:macrocall, Symbol("@inbounds"), (:(=), :ret, (:ref, (:call, :parent, :A), :i))),
+                  (:line, 115, :none),
+                  :ret
+                ))),
+            (:line, 117, :none),
+            (:macrocall, Symbol("@inline"), (:function, (:call, (:curly, (:., :Base, (:quote, #QuoteNode
+                        :setindex!
+                      )), :T, :N), (:(::), :A, (:curly, :OffsetArray, :T, :N)), :val, (:(::), :I, (:curly, :Vararg, :Int, :N))), (:block,
+                  (:line, 118, :none),
+                  (:call, :checkbounds, :A, (:..., :I)),
+                  (:line, 119, :none),
+                  (:macrocall, Symbol("@inbounds"), (:(=), (:ref, (:call, :parent, :A), (:..., (:call, :offset, (:., :A, (:quote, #QuoteNode
+                                :offsets
+                              )), :I))), :val)),
+                  (:line, 120, :none),
+                  :val
+                ))),
+            (:line, 122, :none),
+            (:macrocall, Symbol("@inline"), (:function, (:call, (:., :Base, (:quote, #QuoteNode
+                      :_setindex!
+                    )), (:(::), :LinearFast), (:(::), :A, :OffsetVector), :val, (:(::), :i, :Int)), (:block,
+                  (:line, 123, :none),
+                  (:call, :checkbounds, :A, :i),
+                  (:line, 124, :none),
+                  (:macrocall, Symbol("@inbounds"), (:(=), (:ref, (:call, :parent, :A), (:ref, (:call, :offset, (:., :A, (:quote, #QuoteNode
+                                :offsets
+                              )), (:tuple, :i)), 1)), :val)),
+                  (:line, 125, :none),
+                  :val
+                ))),
+            (:line, 127, :none),
+            (:macrocall, Symbol("@inline"), (:function, (:call, (:., :Base, (:quote, #QuoteNode
+                      :_setindex!
+                    )), (:(::), :LinearFast), (:(::), :A, :OffsetArray), :val, (:(::), :i, :Int)), (:block,
+                  (:line, 128, :none),
+                  (:call, :checkbounds, :A, :i),
+                  (:line, 129, :none),
+                  (:macrocall, Symbol("@inbounds"), (:(=), (:ref, (:call, :parent, :A), :i), :val)),
+                  (:line, 130, :none),
+                  :val
+                ))),
+            (:line, 134, :none),
+            (:(=), (:call, (:curly, :offset, :N), (:(::), :offsets, (:curly, :NTuple, :N, :Int)), (:(::), :inds, (:curly, :NTuple, :N, :Int))), (:block,
+                (:line, 134, :none),
+                (:call, :_offset, (:tuple,), :offsets, :inds)
+              )),
+            (:line, 135, :none),
+            (:(=), (:call, :_offset, :out, (:(::), (:curly, :Tuple)), (:(::), (:curly, :Tuple))), (:block,
+                (:line, 135, :none),
+                :out
+              )),
+            (:line, 136, :none),
+            (:macrocall, Symbol("@inline"), (:(=), (:call, :_offset, :out, :offsets, :inds), (:block,
+                  (:line, 136, :none),
+                  (:call, :_offset, (:tuple, (:..., :out), (:call, :-, (:ref, :inds, 1), (:ref, :offsets, 1))), (:call, (:., :Base, (:quote, #QuoteNode
+                          :tail
+                        )), :offsets), (:call, (:., :Base, (:quote, #QuoteNode
+                          :tail
+                        )), :inds))
+                ))),
+            (:line, 138, :none),
+            (:(=), (:call, :indsoffset, (:(::), :r, :Range)), (:block,
+                (:line, 138, :none),
+                (:call, :-, (:call, :first, :r), 1)
+              )),
+            (:line, 139, :none),
+            (:(=), (:call, :indsoffset, (:(::), :i, :Integer)), (:block,
+                (:line, 139, :none),
+                0
+              ))
+          ))
+      ))
+  ))

@@ -1,0 +1,236 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:module, true, :Libdl, (:block,
+        (:line, 3, :none),
+        (:line, 5, :none),
+        (:export, :DL_LOAD_PATH, :RTLD_DEEPBIND, :RTLD_FIRST, :RTLD_GLOBAL, :RTLD_LAZY, :RTLD_LOCAL, :RTLD_NODELETE, :RTLD_NOLOAD, :RTLD_NOW, :dlclose, :dlopen, :dlopen_e, :dlsym, :dlsym_e, :dlpath, :find_library, :dlext, :dllist),
+        (:line, 9, :none),
+        (:macrocall, :(Core.@doc), "    DL_LOAD_PATH\n\nWhen calling [`dlopen`](:func:`dlopen`), the paths in this list will be searched first, in\norder, before searching the system locations for a valid library handle.\n", (:const, (:(=), :DL_LOAD_PATH, (:ref, :String)))),
+        (:line, 16, :none),
+        (:if, (:call, :is_apple), (:block,
+            (:line, 17, :none),
+            (:call, :push!, :DL_LOAD_PATH, "@loader_path/julia"),
+            (:line, 18, :none),
+            (:call, :push!, :DL_LOAD_PATH, "@loader_path")
+          )),
+        (:line, 22, :none),
+        (:const, (:(=), :RTLD_LOCAL, 0x00000001)),
+        (:line, 23, :none),
+        (:const, (:(=), :RTLD_GLOBAL, 0x00000002)),
+        (:line, 24, :none),
+        (:const, (:(=), :RTLD_LAZY, 0x00000004)),
+        (:line, 25, :none),
+        (:const, (:(=), :RTLD_NOW, 0x00000008)),
+        (:line, 26, :none),
+        (:const, (:(=), :RTLD_NODELETE, 0x00000010)),
+        (:line, 27, :none),
+        (:const, (:(=), :RTLD_NOLOAD, 0x00000020)),
+        (:line, 28, :none),
+        (:const, (:(=), :RTLD_DEEPBIND, 0x00000040)),
+        (:line, 29, :none),
+        (:const, (:(=), :RTLD_FIRST, 0x00000080)),
+        (:line, 31, :none),
+        (:macrocall, Symbol("@doc"), (:->, "    RTLD_DEEPBIND\n    RTLD_FIRST\n    RTLD_GLOBAL\n    RTLD_LAZY\n    RTLD_LOCAL\n    RTLD_NODELETE\n    RTLD_NOLOAD\n    RTLD_NOW\n\nEnum constant for [`dlopen`](:func:`dlopen`). See your platform man page for details, if\napplicable.\n", (:block,
+              (:line, 43, :none),
+              (:tuple, :RTLD_DEEPBIND, :RTLD_FIRST, :RTLD_GLOBAL, :RTLD_LAZY, :RTLD_LOCAL, :RTLD_NODELETE, :RTLD_NOLOAD, :RTLD_NOW)
+            ))),
+        (:line, 47, :none),
+        (:macrocall, :(Core.@doc), "    dlsym(handle, sym)\n\nLook up a symbol from a shared library handle, return callable function pointer on success.\n", (:function, (:call, :dlsym, (:(::), :hnd, :Ptr), (:(::), :s, (:curly, :Union, :Symbol, :AbstractString))), (:block,
+              (:line, 53, :none),
+              (:&&, (:call, :(==), :hnd, :C_NULL), (:call, :throw, (:call, :ArgumentError, "NULL library handle"))),
+              (:line, 54, :none),
+              (:ccall, (:quote, #QuoteNode
+                  :jl_dlsym
+                ), (:curly, :Ptr, :Void), (:tuple, (:curly, :Ptr, :Void), :Cstring), :hnd, :s)
+            ))),
+        (:line, 57, :none),
+        (:macrocall, :(Core.@doc), "    dlsym_e(handle, sym)\n\nLook up a symbol from a shared library handle, silently return `NULL` pointer on lookup failure.\n", (:function, (:call, :dlsym_e, (:(::), :hnd, :Ptr), (:(::), :s, (:curly, :Union, :Symbol, :AbstractString))), (:block,
+              (:line, 63, :none),
+              (:&&, (:call, :(==), :hnd, :C_NULL), (:call, :throw, (:call, :ArgumentError, "NULL library handle"))),
+              (:line, 64, :none),
+              (:ccall, (:quote, #QuoteNode
+                  :jl_dlsym_e
+                ), (:curly, :Ptr, :Void), (:tuple, (:curly, :Ptr, :Void), :Cstring), :hnd, :s)
+            ))),
+        (:line, 67, :none),
+        (:macrocall, :(Core.@doc), "    dlopen(libfile::AbstractString [, flags::Integer])\n\nLoad a shared library, returning an opaque handle.\n\nThe optional flags argument is a bitwise-or of zero or more of `RTLD_LOCAL`, `RTLD_GLOBAL`,\n`RTLD_LAZY`, `RTLD_NOW`, `RTLD_NODELETE`, `RTLD_NOLOAD`, `RTLD_DEEPBIND`, and `RTLD_FIRST`.\nThese are converted to the corresponding flags of the POSIX (and/or GNU libc and/or MacOS)\ndlopen command, if possible, or are ignored if the specified functionality is not available\non the current platform. The default flags are platform specific. On MacOS the default\n`dlopen` flags are `RTLD_LAZY|RTLD_DEEPBIND|RTLD_GLOBAL` while on other platforms the\ndefaults are `RTLD_LAZY|RTLD_DEEPBIND|RTLD_LOCAL`. An important usage of these flags is to\nspecify non default behavior for when the dynamic library loader binds library references to\nexported symbols and if the bound references are put into process local or global scope. For\ninstance `RTLD_LAZY|RTLD_DEEPBIND|RTLD_GLOBAL` allows the library's symbols to be available\nfor usage in other shared libraries, addressing situations where there are dependencies\nbetween shared libraries.\n", (:function, :dlopen)),
+        (:line, 87, :none),
+        (:(=), (:call, :dlopen, (:(::), :s, :Symbol), (:kw, (:(::), :flags, :Integer), (:call, :|, :RTLD_LAZY, :RTLD_DEEPBIND))), (:block,
+            (:line, 87, :none),
+            (:call, :dlopen, (:call, :string, :s), :flags)
+          )),
+        (:line, 90, :none),
+        (:(=), (:call, :dlopen, (:(::), :s, :AbstractString), (:kw, (:(::), :flags, :Integer), (:call, :|, :RTLD_LAZY, :RTLD_DEEPBIND))), (:block,
+            (:line, 90, :none),
+            (:ccall, (:quote, #QuoteNode
+                :jl_load_dynamic_library
+              ), (:curly, :Ptr, :Void), (:tuple, :Cstring, :UInt32), :s, :flags)
+          )),
+        (:line, 93, :none),
+        (:macrocall, :(Core.@doc), "    dlopen_e(libfile::AbstractString [, flags::Integer])\n\nSimilar to [`dlopen`](:func:`dlopen`), except returns a `NULL` pointer instead of raising errors.\n", (:function, :dlopen_e)),
+        (:line, 100, :none),
+        (:(=), (:call, :dlopen_e, (:(::), :s, :Symbol), (:kw, (:(::), :flags, :Integer), (:call, :|, :RTLD_LAZY, :RTLD_DEEPBIND))), (:block,
+            (:line, 100, :none),
+            (:call, :dlopen_e, (:call, :string, :s), :flags)
+          )),
+        (:line, 103, :none),
+        (:(=), (:call, :dlopen_e, (:(::), :s, :AbstractString), (:kw, (:(::), :flags, :Integer), (:call, :|, :RTLD_LAZY, :RTLD_DEEPBIND))), (:block,
+            (:line, 103, :none),
+            (:ccall, (:quote, #QuoteNode
+                :jl_load_dynamic_library_e
+              ), (:curly, :Ptr, :Void), (:tuple, :Cstring, :UInt32), :s, :flags)
+          )),
+        (:line, 106, :none),
+        (:macrocall, :(Core.@doc), "    dlclose(handle)\n\nClose shared library referenced by handle.\n", (:function, (:call, :dlclose, (:(::), :p, :Ptr)), (:block,
+              (:line, 112, :none),
+              (:call, :(==), 0, (:ccall, (:quote, #QuoteNode
+                    :jl_dlclose
+                  ), :Cint, (:tuple, (:curly, :Ptr, :Void)), :p))
+            ))),
+        (:line, 115, :none),
+        (:macrocall, :(Core.@doc), "    find_library(names, locations)\n\nSearches for the first library in `names` in the paths in the `locations` list,\n`DL_LOAD_PATH`, or system library paths (in that order) which can successfully be dlopen'd.\nOn success, the return value will be one of the names (potentially prefixed by one of the\npaths in locations). This string can be assigned to a `global const` and used as the library\nname in future `ccall`'s. On failure, it returns the empty string.\n", (:function, (:call, :find_library, :libnames, (:kw, :extrapaths, (:ref, :String))), (:block,
+              (:line, 125, :none),
+              (:for, (:(=), :lib, :libnames), (:block,
+                  (:line, 126, :none),
+                  (:for, (:(=), :path, :extrapaths), (:block,
+                      (:line, 127, :none),
+                      (:(=), :l, (:call, :joinpath, :path, :lib)),
+                      (:line, 128, :none),
+                      (:(=), :p, (:call, :dlopen_e, :l, :RTLD_LAZY)),
+                      (:line, 129, :none),
+                      (:if, (:call, :(!=), :p, :C_NULL), (:block,
+                          (:line, 130, :none),
+                          (:call, :dlclose, :p),
+                          (:line, 131, :none),
+                          (:return, :l)
+                        ))
+                    )),
+                  (:line, 134, :none),
+                  (:(=), :p, (:call, :dlopen_e, :lib, :RTLD_LAZY)),
+                  (:line, 135, :none),
+                  (:if, (:call, :(!=), :p, :C_NULL), (:block,
+                      (:line, 136, :none),
+                      (:call, :dlclose, :p),
+                      (:line, 137, :none),
+                      (:return, :lib)
+                    ))
+                )),
+              (:line, 140, :none),
+              (:return, "")
+            ))),
+        (:line, 142, :none),
+        (:(=), (:call, :find_library, (:(::), :libname, (:curly, :Union, :Symbol, :AbstractString)), (:kw, :extrapaths, (:ref, :String))), (:block,
+            (:line, 142, :none),
+            (:call, :find_library, (:vect, (:call, :string, :libname)), :extrapaths)
+          )),
+        (:line, 145, :none),
+        (:function, (:call, :dlpath, (:(::), :handle, (:curly, :Ptr, :Void))), (:block,
+            (:line, 146, :none),
+            (:(=), :p, (:ccall, (:quote, #QuoteNode
+                  :jl_pathname_for_handle
+                ), :Cstring, (:tuple, (:curly, :Ptr, :Void)), :handle)),
+            (:line, 147, :none),
+            (:(=), :s, (:call, :unsafe_string, :p)),
+            (:line, 148, :none),
+            (:&&, (:call, :is_windows), (:call, (:., :Libc, (:quote, #QuoteNode
+                    :free
+                  )), :p)),
+            (:line, 149, :none),
+            (:return, :s)
+          )),
+        (:line, 152, :none),
+        (:function, (:call, :dlpath, (:(::), :libname, (:curly, :Union, :AbstractString, :Symbol))), (:block,
+            (:line, 153, :none),
+            (:(=), :handle, (:call, :dlopen, :libname)),
+            (:line, 154, :none),
+            (:(=), :path, (:call, :dlpath, :handle)),
+            (:line, 155, :none),
+            (:call, :dlclose, :handle),
+            (:line, 156, :none),
+            (:return, :path)
+          )),
+        (:line, 159, :none),
+        (:if, (:call, :is_apple), (:block,
+            (:line, 160, :none),
+            (:const, (:(=), :dlext, "dylib"))
+          ), (:block,
+            (:line, 161, :none),
+            (:if, (:call, :is_windows), (:block,
+                (:line, 162, :none),
+                (:const, (:(=), :dlext, "dll"))
+              ), (:block,
+                (:line, 165, :none),
+                (:const, (:(=), :dlext, "so"))
+              ))
+          )),
+        (:line, 168, :none),
+        (:macrocall, :(Core.@doc), "    dlext\n\nFile extension for dynamic libraries (e.g. dll, dylib, so) on the current platform.\n", :dlext),
+        (:line, 175, :none),
+        (:if, (:call, :is_linux), (:block,
+            (:line, 176, :none),
+            (:type, false, :dl_phdr_info, (:block,
+                (:line, 178, :none),
+                (:(::), :addr, :Cuint),
+                (:line, 181, :none),
+                (:(::), :name, (:curly, :Ptr, :UInt8)),
+                (:line, 184, :none),
+                (:(::), :phdr, (:curly, :Ptr, :Void)),
+                (:line, 187, :none),
+                (:(::), :phnum, :Cshort)
+              )),
+            (:line, 191, :none),
+            (:function, (:call, :dl_phdr_info_callback, (:(::), :di, :dl_phdr_info), (:(::), :size, :Csize_t), (:(::), :dynamic_libraries, (:curly, :Array, :AbstractString, 1))), (:block,
+                (:line, 193, :none),
+                (:(=), :name, (:call, :unsafe_string, (:., :di, (:quote, #QuoteNode
+                        :name
+                      )))),
+                (:line, 194, :none),
+                (:if, (:call, :!, (:call, :isempty, :name)), (:block,
+                    (:line, 195, :none),
+                    (:call, :push!, :dynamic_libraries, :name)
+                  )),
+                (:line, 197, :none),
+                (:return, (:(::), (:call, :convert, :Cint, 0), :Cint))
+              ))
+          )),
+        (:line, 201, :none),
+        (:function, (:call, :dllist), (:block,
+            (:line, 202, :none),
+            (:(=), :dynamic_libraries, (:call, (:curly, :Array, :AbstractString), 0)),
+            (:line, 204, :none),
+            (:macrocall, Symbol("@static"), (:if, (:call, :is_linux), (:block,
+                  (:line, 205, :none),
+                  (:const, (:(=), :callback, (:call, :cfunction, :dl_phdr_info_callback, :Cint, (:tuple, (:curly, :Ref, :dl_phdr_info), :Csize_t, (:curly, :Ref, (:curly, :Array, :AbstractString, 1)))))),
+                  (:line, 207, :none),
+                  (:ccall, (:quote, #QuoteNode
+                      :dl_iterate_phdr
+                    ), :Cint, (:tuple, (:curly, :Ptr, :Void), (:curly, :Ref, (:curly, :Array, :AbstractString, 1))), :callback, :dynamic_libraries)
+                ))),
+            (:line, 210, :none),
+            (:macrocall, Symbol("@static"), (:if, (:call, :is_apple), (:block,
+                  (:line, 211, :none),
+                  (:(=), :numImages, (:ccall, (:quote, #QuoteNode
+                        :_dyld_image_count
+                      ), :Cint, (:tuple,))),
+                  (:line, 214, :none),
+                  (:for, (:(=), :i, (:(:), 1, (:call, :-, :numImages, 1))), (:block,
+                      (:line, 215, :none),
+                      (:(=), :name, (:call, :unsafe_string, (:ccall, (:quote, #QuoteNode
+                              :_dyld_get_image_name
+                            ), :Cstring, (:tuple, :UInt32), :i))),
+                      (:line, 216, :none),
+                      (:call, :push!, :dynamic_libraries, :name)
+                    ))
+                ))),
+            (:line, 220, :none),
+            (:macrocall, Symbol("@static"), (:if, (:call, :is_windows), (:block,
+                  (:line, 221, :none),
+                  (:ccall, (:quote, #QuoteNode
+                      :jl_dllist
+                    ), :Cint, (:tuple, :Any), :dynamic_libraries)
+                ))),
+            (:line, 224, :none),
+            (:return, :dynamic_libraries)
+          ))
+      ))
+  ))

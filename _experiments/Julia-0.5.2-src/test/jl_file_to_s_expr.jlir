@@ -1,0 +1,23 @@
+(:quote, (:block,
+    (:line, 1, :none),
+    (:function, (:call, :convertFile, (:(::), :input_file_name, :String)), (:block,
+        (:line, 4, :none),
+        (:(=), :f, (:call, :open, :input_file_name, "r")),
+        (:line, 5, :none),
+        (:(=), :content, (:call, :readstring, :f)),
+        (:line, 6, :none),
+        (:call, :close, :f),
+        (:line, 8, :none),
+        (:(=), :quoted_content, (:call, :*, "quote ", :content, " end")),
+        (:line, 9, :none),
+        (:(=), :expr, (:call, :parse, :quoted_content)),
+        (:line, 11, :none),
+        (:return, (:call, (:., :Meta, (:quote, #QuoteNode
+                :show_sexpr
+              )), :expr))
+      )),
+    (:line, 14, :none),
+    (:(=), :input_file_name, (:ref, :ARGS, 1)),
+    (:line, 15, :none),
+    (:call, :convertFile, :input_file_name)
+  ))

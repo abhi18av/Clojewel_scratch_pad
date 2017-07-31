@@ -1,0 +1,22 @@
+(:quote, (:block,
+    (:line, 6, :none),
+    (:(=), (:call, :hx, (:(::), :a, :UInt64), (:(::), :b, :UInt64), (:(::), :h, :UInt)), (:block,
+        (:line, 6, :none),
+        (:call, :hash_uint64, (:call, :-, (:call, :+, (:call, :*, 3, :a), :b), :h))
+      )),
+    (:line, 8, :none),
+    (:(=), (:call, :hash, (:(::), :x, :UInt64), (:(::), :h, :UInt)), (:block,
+        (:line, 8, :none),
+        (:call, :hx, :x, :x, :h)
+      )),
+    (:line, 9, :none),
+    (:(=), (:call, :hash, (:(::), :x, :Int64), (:(::), :h, :UInt)), (:block,
+        (:line, 9, :none),
+        (:call, :hx, (:call, :reinterpret, :UInt64, (:call, :abs, :x)), (:call, :reinterpret, :UInt64, :x), :h)
+      )),
+    (:line, 10, :none),
+    (:(=), (:call, :hash, (:(::), :x, (:curly, :Union, :Bool, :Char, :Int8, :UInt8, :Int16, :UInt16, :Int32, :UInt32)), (:(::), :h, :UInt)), (:block,
+        (:line, 10, :none),
+        (:call, :hash, (:call, :Int64, :x), :h)
+      ))
+  ))

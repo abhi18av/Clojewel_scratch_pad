@@ -1,0 +1,1014 @@
+(:quote, (:block,
+    (:line, 5, :none),
+    (:export, :watch_file, :poll_fd, :poll_file, :FileMonitor, :PollingFileWatcher, :FDWatcher),
+    (:line, 13, :none),
+    (:toplevel, (:import, :Base, Symbol("@handle_as")), (:import, :Base, :wait), (:import, :Base, :close), (:import, :Base, :uvfinalize), (:import, :Base, :eventloop), (:import, :Base, :notify_error), (:import, :Base, :stream_wait), (:import, :Base, :_sizeof_uv_poll), (:import, :Base, :_sizeof_uv_fs_poll), (:import, :Base, :_sizeof_uv_fs_event), (:import, :Base, :_uv_hook_close), (:import, :Base, :associate_julia_struct), (:import, :Base, :disassociate_julia_struct), (:import, :Base, :|)),
+    (:line, 16, :none),
+    (:if, (:call, :is_windows), (:block,
+        (:line, 17, :none),
+        (:import, :Base, :WindowsRawSocket)
+      )),
+    (:line, 21, :none),
+    (:const, (:(=), :UV_RENAME, 1)),
+    (:line, 22, :none),
+    (:const, (:(=), :UV_CHANGE, 2)),
+    (:line, 23, :none),
+    (:type, false, :FileEvent, (:block,
+        (:line, 24, :none),
+        (:(::), :renamed, :Bool),
+        (:line, 25, :none),
+        (:(::), :changed, :Bool),
+        (:line, 26, :none),
+        (:(::), :timedout, :Bool)
+      )),
+    (:line, 28, :none),
+    (:(=), (:call, :FileEvent), (:block,
+        (:line, 28, :none),
+        (:call, :FileEvent, false, false, false)
+      )),
+    (:line, 29, :none),
+    (:(=), (:call, :FileEvent, (:(::), :flags, :Integer)), (:block,
+        (:line, 29, :none),
+        (:call, :FileEvent, (:call, :(!=), (:call, :&, :flags, :UV_RENAME), 0), (:call, :(!=), (:call, :&, :flags, :UV_CHANGE), 0), (:call, :(!=), (:call, :&, :flags, :FD_TIMEDOUT), 0))
+      )),
+    (:line, 32, :none),
+    (:(=), (:call, :fetimeout), (:block,
+        (:line, 32, :none),
+        (:call, :FileEvent, false, false, true)
+      )),
+    (:line, 34, :none),
+    (:type, false, :FDEvent, (:block,
+        (:line, 35, :none),
+        (:(::), :readable, :Bool),
+        (:line, 36, :none),
+        (:(::), :writable, :Bool),
+        (:line, 37, :none),
+        (:(::), :disconnect, :Bool),
+        (:line, 38, :none),
+        (:(::), :timedout, :Bool)
+      )),
+    (:line, 41, :none),
+    (:const, (:(=), :UV_READABLE, 1)),
+    (:line, 42, :none),
+    (:const, (:(=), :UV_WRITABLE, 2)),
+    (:line, 43, :none),
+    (:const, (:(=), :UV_DISCONNECT, 4)),
+    (:line, 44, :none),
+    (:const, (:(=), :FD_TIMEDOUT, 8)),
+    (:line, 46, :none),
+    (:(=), (:call, :isreadable, (:(::), :f, :FDEvent)), (:block,
+        (:line, 46, :none),
+        (:., :f, (:quote, #QuoteNode
+            :readable
+          ))
+      )),
+    (:line, 47, :none),
+    (:(=), (:call, :iswritable, (:(::), :f, :FDEvent)), (:block,
+        (:line, 47, :none),
+        (:., :f, (:quote, #QuoteNode
+            :writable
+          ))
+      )),
+    (:line, 48, :none),
+    (:(=), (:call, :FDEvent), (:block,
+        (:line, 48, :none),
+        (:call, :FDEvent, false, false, false, false)
+      )),
+    (:line, 49, :none),
+    (:(=), (:call, :FDEvent, (:(::), :flags, :Integer)), (:block,
+        (:line, 49, :none),
+        (:call, :FDEvent, (:call, :(!=), (:call, :&, :flags, :UV_READABLE), 0), (:call, :(!=), (:call, :&, :flags, :UV_WRITABLE), 0), (:call, :(!=), (:call, :&, :flags, :UV_DISCONNECT), 0), (:call, :(!=), (:call, :&, :flags, :FD_TIMEDOUT), 0))
+      )),
+    (:line, 53, :none),
+    (:(=), (:call, :fdtimeout), (:block,
+        (:line, 53, :none),
+        (:call, :FDEvent, false, false, false, true)
+      )),
+    (:line, 54, :none),
+    (:(=), (:call, :|, (:(::), :a, :FDEvent), (:(::), :b, :FDEvent)), (:block,
+        (:line, 54, :none),
+        (:call, :FDEvent, (:call, :|, (:., :a, (:quote, #QuoteNode
+                :readable
+              )), (:., :b, (:quote, #QuoteNode
+                :readable
+              ))), (:call, :|, (:., :a, (:quote, #QuoteNode
+                :writable
+              )), (:., :b, (:quote, #QuoteNode
+                :writable
+              ))), (:call, :|, (:., :a, (:quote, #QuoteNode
+                :disconnect
+              )), (:., :b, (:quote, #QuoteNode
+                :disconnect
+              ))), (:call, :|, (:., :a, (:quote, #QuoteNode
+                :timedout
+              )), (:., :b, (:quote, #QuoteNode
+                :timedout
+              ))))
+      )),
+    (:line, 60, :none),
+    (:type, true, :FileMonitor, (:block,
+        (:line, 61, :none),
+        (:(::), :handle, (:curly, :Ptr, :Void)),
+        (:line, 62, :none),
+        (:(::), :file, :String),
+        (:line, 63, :none),
+        (:(::), :notify, :Condition),
+        (:line, 64, :none),
+        (:(::), :active, :Bool),
+        (:line, 65, :none),
+        (:function, (:call, :FileMonitor, (:(::), :file, :AbstractString)), (:block,
+            (:line, 66, :none),
+            (:(=), :handle, (:call, (:., :Libc, (:quote, #QuoteNode
+                    :malloc
+                  )), :_sizeof_uv_fs_event)),
+            (:line, 67, :none),
+            (:(=), :this, (:call, :new, :handle, :file, (:call, :Condition), false)),
+            (:line, 68, :none),
+            (:call, :associate_julia_struct, :handle, :this),
+            (:line, 69, :none),
+            (:(=), :err, (:ccall, (:quote, #QuoteNode
+                  :uv_fs_event_init
+                ), :Cint, (:tuple, (:curly, :Ptr, :Void), (:curly, :Ptr, :Void)), (:call, :eventloop), :handle)),
+            (:line, 70, :none),
+            (:if, (:call, :(!=), :err, 0), (:block,
+                (:line, 71, :none),
+                (:call, (:., :Libc, (:quote, #QuoteNode
+                      :free
+                    )), :handle),
+                (:line, 72, :none),
+                (:call, :throw, (:call, :UVError, "FileMonitor", :err))
+              )),
+            (:line, 74, :none),
+            (:call, :finalizer, :this, :uvfinalize),
+            (:line, 75, :none),
+            (:return, :this)
+          ))
+      )),
+    (:line, 79, :none),
+    (:type, true, :PollingFileWatcher, (:block,
+        (:line, 80, :none),
+        (:(::), :handle, (:curly, :Ptr, :Void)),
+        (:line, 81, :none),
+        (:(::), :file, :String),
+        (:line, 82, :none),
+        (:(::), :interval, :UInt32),
+        (:line, 83, :none),
+        (:(::), :notify, :Condition),
+        (:line, 84, :none),
+        (:(::), :active, :Bool),
+        (:line, 85, :none),
+        (:function, (:call, :PollingFileWatcher, (:(::), :file, :AbstractString), (:kw, (:(::), :interval, :Float64), 5.007)), (:block,
+            (:line, 86, :none),
+            (:(=), :handle, (:call, (:., :Libc, (:quote, #QuoteNode
+                    :malloc
+                  )), :_sizeof_uv_fs_poll)),
+            (:line, 87, :none),
+            (:(=), :this, (:call, :new, :handle, :file, (:call, :round, :UInt32, (:call, :*, :interval, 1000)), (:call, :Condition), false)),
+            (:line, 88, :none),
+            (:call, :associate_julia_struct, :handle, :this),
+            (:line, 89, :none),
+            (:(=), :err, (:ccall, (:quote, #QuoteNode
+                  :uv_fs_poll_init
+                ), :Int32, (:tuple, (:curly, :Ptr, :Void), (:curly, :Ptr, :Void)), (:call, :eventloop), :handle)),
+            (:line, 90, :none),
+            (:if, (:call, :(!=), :err, 0), (:block,
+                (:line, 91, :none),
+                (:call, (:., :Libc, (:quote, #QuoteNode
+                      :free
+                    )), :handle),
+                (:line, 92, :none),
+                (:call, :throw, (:call, :UVError, "PollingFileWatcher", :err))
+              )),
+            (:line, 94, :none),
+            (:call, :finalizer, :this, :uvfinalize),
+            (:line, 95, :none),
+            (:return, :this)
+          ))
+      )),
+    (:line, 99, :none),
+    (:type, true, :_FDWatcher, (:block,
+        (:line, 100, :none),
+        (:(::), :handle, (:curly, :Ptr, :Void)),
+        (:line, 101, :none),
+        (:(::), :fdnum, :Int),
+        (:line, 102, :none),
+        (:(::), :refcount, (:curly, :Tuple, :Int, :Int)),
+        (:line, 103, :none),
+        (:(::), :notify, :Condition),
+        (:line, 104, :none),
+        (:(::), :active, (:curly, :Tuple, :Bool, :Bool)),
+        (:line, 105, :none),
+        (:(::), :events, :Int32),
+        (:line, 107, :none),
+        (:let, (:block,
+            (:line, 108, :none),
+            (:global, :_FDWatcher),
+            (:line, 109, :none),
+            (:macrocall, Symbol("@static"), (:if, (:call, :is_unix), (:block,
+                  (:line, 110, :none),
+                  (:function, (:call, :_FDWatcher, (:(::), :fd, :RawFD), (:(::), :readable, :Bool), (:(::), :writable, :Bool)), (:block,
+                      (:line, 111, :none),
+                      (:if, (:&&, (:call, :!, :readable), (:call, :!, :writable)), (:block,
+                          (:line, 112, :none),
+                          (:call, :throw, (:call, :ArgumentError, "must specify at least one of readable or writable to create a FDWatcher"))
+                        )),
+                      (:line, 114, :none),
+                      (:(=), :fdnum, (:call, :+, (:., :fd, (:quote, #QuoteNode
+                              :fd
+                            )), 1)),
+                      (:line, 115, :none),
+                      (:if, (:call, :>, :fdnum, (:call, :length, :FDWatchers)), (:block,
+                          (:line, 116, :none),
+                          (:(=), :old_len, (:call, :length, :FDWatchers)),
+                          (:line, 117, :none),
+                          (:call, :resize!, :FDWatchers, :fdnum),
+                          (:line, 118, :none),
+                          (:(=), (:ref, :FDWatchers, (:(:), (:call, :+, :old_len, 1), :fdnum)), :nothing)
+                        ), (:block,
+                          (:line, 119, :none),
+                          (:if, (:call, :(!==), (:ref, :FDWatchers, :fdnum), :nothing), (:block,
+                              (:line, 120, :none),
+                              (:(=), :this, (:(::), (:ref, :FDWatchers, :fdnum), :_FDWatcher)),
+                              (:line, 121, :none),
+                              (:(=), (:., :this, (:quote, #QuoteNode
+                                    :refcount
+                                  )), (:tuple, (:call, :+, (:ref, (:., :this, (:quote, #QuoteNode
+                                          :refcount
+                                        )), 1), (:call, :Int, :readable)), (:call, :+, (:ref, (:., :this, (:quote, #QuoteNode
+                                          :refcount
+                                        )), 2), (:call, :Int, :writable)))),
+                              (:line, 122, :none),
+                              (:return, :this)
+                            ))
+                        )),
+                      (:line, 124, :none),
+                      (:if, (:call, :(==), (:ccall, (:quote, #QuoteNode
+                              :jl_uv_unix_fd_is_watched
+                            ), :Int32, (:tuple, :Int32, (:curly, :Ptr, :Void), (:curly, :Ptr, :Void)), (:., :fd, (:quote, #QuoteNode
+                                :fd
+                              )), :C_NULL, (:call, :eventloop)), 1), (:block,
+                          (:line, 125, :none),
+                          (:call, :throw, (:call, :ArgumentError, (:string, "file descriptor ", (:., :fd, (:quote, #QuoteNode
+                                    :fd
+                                  )), " is already being watched by libuv")))
+                        )),
+                      (:line, 128, :none),
+                      (:(=), :handle, (:call, (:., :Libc, (:quote, #QuoteNode
+                              :malloc
+                            )), :_sizeof_uv_poll)),
+                      (:line, 129, :none),
+                      (:(=), :this, (:call, :new, :handle, :fdnum, (:tuple, (:call, :Int, :readable), (:call, :Int, :writable)), (:call, :Condition), (:tuple, false, false), 0)),
+                      (:line, 136, :none),
+                      (:call, :associate_julia_struct, :handle, :this),
+                      (:line, 137, :none),
+                      (:(=), :err, (:ccall, (:quote, #QuoteNode
+                            :uv_poll_init
+                          ), :Int32, (:tuple, (:curly, :Ptr, :Void), (:curly, :Ptr, :Void), :Int32), (:call, :eventloop), :handle, (:., :fd, (:quote, #QuoteNode
+                              :fd
+                            )))),
+                      (:line, 138, :none),
+                      (:if, (:call, :(!=), :err, 0), (:block,
+                          (:line, 139, :none),
+                          (:call, (:., :Libc, (:quote, #QuoteNode
+                                :free
+                              )), :handle),
+                          (:line, 140, :none),
+                          (:call, :throw, (:call, :UVError, "FDWatcher", :err))
+                        )),
+                      (:line, 142, :none),
+                      (:call, :finalizer, :this, :uvfinalize),
+                      (:line, 143, :none),
+                      (:(=), (:ref, :FDWatchers, :fdnum), :this),
+                      (:line, 144, :none),
+                      (:return, :this)
+                    ))
+                ))),
+            (:line, 148, :none),
+            (:global, :uvfinalize),
+            (:line, 149, :none),
+            (:function, (:call, :uvfinalize, (:(::), :t, :_FDWatcher)), (:block,
+                (:line, 150, :none),
+                (:if, (:call, :(!=), (:., :t, (:quote, #QuoteNode
+                        :handle
+                      )), :C_NULL), (:block,
+                    (:line, 151, :none),
+                    (:call, :disassociate_julia_struct, :t),
+                    (:line, 152, :none),
+                    (:ccall, (:quote, #QuoteNode
+                        :jl_close_uv
+                      ), :Void, (:tuple, (:curly, :Ptr, :Void)), (:., :t, (:quote, #QuoteNode
+                          :handle
+                        ))),
+                    (:line, 153, :none),
+                    (:(=), (:., :t, (:quote, #QuoteNode
+                          :handle
+                        )), :C_NULL)
+                  )),
+                (:line, 155, :none),
+                (:(=), (:., :t, (:quote, #QuoteNode
+                      :refcount
+                    )), (:tuple, 0, 0)),
+                (:line, 156, :none),
+                (:(=), (:., :t, (:quote, #QuoteNode
+                      :active
+                    )), (:tuple, false, false)),
+                (:line, 157, :none),
+                (:macrocall, Symbol("@static"), (:if, (:call, :is_unix), (:block,
+                      (:line, 158, :none),
+                      (:if, (:call, :(==), (:ref, :FDWatchers, (:., :t, (:quote, #QuoteNode
+                                :fdnum
+                              ))), :t), (:block,
+                          (:line, 159, :none),
+                          (:(=), (:ref, :FDWatchers, (:., :t, (:quote, #QuoteNode
+                                  :fdnum
+                                ))), :nothing)
+                        ))
+                    ))),
+                (:line, 162, :none),
+                (:call, :notify, (:., :t, (:quote, #QuoteNode
+                      :notify
+                    )), (:call, :fdtimeout)),
+                (:line, 163, :none),
+                :nothing
+              ))
+          ), (:(=), :FDWatchers, (:call, (:curly, :Vector, :Any)))),
+        (:line, 167, :none),
+        (:macrocall, Symbol("@static"), (:if, (:call, :is_windows), (:block,
+              (:line, 168, :none),
+              (:function, (:call, :_FDWatcher, (:(::), :fd, :RawFD), (:(::), :readable, :Bool), (:(::), :writable, :Bool)), (:block,
+                  (:line, 169, :none),
+                  (:(=), :handle, (:call, (:., :Libc, (:quote, #QuoteNode
+                          :_get_osfhandle
+                        )), :fd)),
+                  (:line, 170, :none),
+                  (:return, (:call, :_FDWatcher, :handle, :readable, :writable))
+                )),
+              (:line, 172, :none),
+              (:function, (:call, :_FDWatcher, (:(::), :fd, :WindowsRawSocket), (:(::), :readable, :Bool), (:(::), :writable, :Bool)), (:block,
+                  (:line, 173, :none),
+                  (:if, (:&&, (:call, :!, :readable), (:call, :!, :writable)), (:block,
+                      (:line, 174, :none),
+                      (:call, :throw, (:call, :ArgumentError, "must specify at least one of readable or writable to create a FDWatcher"))
+                    )),
+                  (:line, 177, :none),
+                  (:(=), :handle, (:call, (:., :Libc, (:quote, #QuoteNode
+                          :malloc
+                        )), :_sizeof_uv_poll)),
+                  (:line, 178, :none),
+                  (:(=), :this, (:call, :new, :handle, 0, (:tuple, (:call, :Int, :readable), (:call, :Int, :writable)), (:call, :Condition), (:tuple, false, false), 0)),
+                  (:line, 185, :none),
+                  (:call, :associate_julia_struct, :handle, :this),
+                  (:line, 186, :none),
+                  (:(=), :err, (:ccall, (:quote, #QuoteNode
+                        :uv_poll_init_socket
+                      ), :Int32, (:tuple, (:curly, :Ptr, :Void), (:curly, :Ptr, :Void), (:curly, :Ptr, :Void)), (:call, :eventloop), :handle, (:., :fd, (:quote, #QuoteNode
+                          :handle
+                        )))),
+                  (:line, 188, :none),
+                  (:call, :finalizer, :this, :uvfinalize),
+                  (:line, 189, :none),
+                  (:if, (:call, :(!=), :err, 0), (:block,
+                      (:line, 190, :none),
+                      (:call, (:., :Libc, (:quote, #QuoteNode
+                            :free
+                          )), :handle),
+                      (:line, 191, :none),
+                      (:call, :throw, (:call, :UVError, "FDWatcher", :err))
+                    )),
+                  (:line, 193, :none),
+                  (:return, :this)
+                ))
+            )))
+      )),
+    (:line, 198, :none),
+    (:type, true, :FDWatcher, (:block,
+        (:line, 199, :none),
+        (:(::), :watcher, :_FDWatcher),
+        (:line, 200, :none),
+        (:(::), :readable, :Bool),
+        (:line, 201, :none),
+        (:(::), :writable, :Bool),
+        (:line, 203, :none),
+        (:function, (:call, :FDWatcher, (:(::), :fd, :RawFD), (:(::), :readable, :Bool), (:(::), :writable, :Bool)), (:block,
+            (:line, 204, :none),
+            (:(=), :this, (:call, :new, (:call, :_FDWatcher, :fd, :readable, :writable), :readable, :writable)),
+            (:line, 205, :none),
+            (:call, :finalizer, :this, :close),
+            (:line, 206, :none),
+            (:return, :this)
+          )),
+        (:line, 208, :none),
+        (:macrocall, Symbol("@static"), (:if, (:call, :is_windows), (:block,
+              (:line, 209, :none),
+              (:function, (:call, :FDWatcher, (:(::), :fd, :WindowsRawSocket), (:(::), :readable, :Bool), (:(::), :writable, :Bool)), (:block,
+                  (:line, 210, :none),
+                  (:(=), :this, (:call, :new, (:call, :_FDWatcher, :fd, :readable, :writable), :readable, :writable)),
+                  (:line, 211, :none),
+                  (:call, :finalizer, :this, :close),
+                  (:line, 212, :none),
+                  (:return, :this)
+                ))
+            )))
+      )),
+    (:line, 218, :none),
+    (:function, (:call, :close, (:(::), :t, :_FDWatcher), (:(::), :readable, :Bool), (:(::), :writable, :Bool)), (:block,
+        (:line, 219, :none),
+        (:if, (:call, :(!=), (:., :t, (:quote, #QuoteNode
+                :refcount
+              )), (:tuple, 0, 0)), (:block,
+            (:line, 220, :none),
+            (:(=), (:., :t, (:quote, #QuoteNode
+                  :refcount
+                )), (:tuple, (:call, :-, (:ref, (:., :t, (:quote, #QuoteNode
+                        :refcount
+                      )), 1), (:call, :Int, :readable)), (:call, :-, (:ref, (:., :t, (:quote, #QuoteNode
+                        :refcount
+                      )), 2), (:call, :Int, :writable))))
+          )),
+        (:line, 222, :none),
+        (:if, (:call, :(==), (:., :t, (:quote, #QuoteNode
+                :refcount
+              )), (:tuple, 0, 0)), (:block,
+            (:line, 223, :none),
+            (:call, :uvfinalize, :t)
+          ))
+      )),
+    (:line, 227, :none),
+    (:function, (:call, :close, (:(::), :t, :FDWatcher)), (:block,
+        (:line, 228, :none),
+        (:(=), (:tuple, :r, :w), (:tuple, (:., :t, (:quote, #QuoteNode
+                :readable
+              )), (:., :t, (:quote, #QuoteNode
+                :writable
+              )))),
+        (:line, 229, :none),
+        (:(=), (:., :t, (:quote, #QuoteNode
+              :readable
+            )), (:(=), (:., :t, (:quote, #QuoteNode
+                :writable
+              )), false)),
+        (:line, 230, :none),
+        (:call, :close, (:., :t, (:quote, #QuoteNode
+              :watcher
+            )), :r, :w)
+      )),
+    (:line, 233, :none),
+    (:function, (:call, :uvfinalize, (:(::), :uv, (:curly, :Union, :FileMonitor, :PollingFileWatcher))), (:block,
+        (:line, 234, :none),
+        (:call, :disassociate_julia_struct, :uv),
+        (:line, 235, :none),
+        (:call, :close, :uv)
+      )),
+    (:line, 238, :none),
+    (:function, (:call, :close, (:(::), :t, (:curly, :Union, :FileMonitor, :PollingFileWatcher))), (:block,
+        (:line, 239, :none),
+        (:if, (:call, :(!=), (:., :t, (:quote, #QuoteNode
+                :handle
+              )), :C_NULL), (:block,
+            (:line, 240, :none),
+            (:ccall, (:quote, #QuoteNode
+                :jl_close_uv
+              ), :Void, (:tuple, (:curly, :Ptr, :Void)), (:., :t, (:quote, #QuoteNode
+                  :handle
+                )))
+          ))
+      )),
+    (:line, 244, :none),
+    (:function, (:call, :_uv_hook_close, (:(::), :uv, :_FDWatcher)), (:block,
+        (:line, 246, :none),
+        (:(=), (:., :uv, (:quote, #QuoteNode
+              :handle
+            )), :C_NULL),
+        (:line, 247, :none),
+        (:call, :uvfinalize, :uv),
+        (:line, 248, :none),
+        :nothing
+      )),
+    (:line, 251, :none),
+    (:function, (:call, :_uv_hook_close, (:(::), :uv, :PollingFileWatcher)), (:block,
+        (:line, 252, :none),
+        (:(=), (:., :uv, (:quote, #QuoteNode
+              :handle
+            )), :C_NULL),
+        (:line, 253, :none),
+        (:(=), (:., :uv, (:quote, #QuoteNode
+              :active
+            )), false),
+        (:line, 254, :none),
+        (:call, :notify, (:., :uv, (:quote, #QuoteNode
+              :notify
+            )), (:tuple, (:call, :StatStruct), (:call, :StatStruct))),
+        (:line, 255, :none),
+        :nothing
+      )),
+    (:line, 258, :none),
+    (:function, (:call, :_uv_hook_close, (:(::), :uv, :FileMonitor)), (:block,
+        (:line, 259, :none),
+        (:(=), (:., :uv, (:quote, #QuoteNode
+              :handle
+            )), :C_NULL),
+        (:line, 260, :none),
+        (:(=), (:., :uv, (:quote, #QuoteNode
+              :active
+            )), false),
+        (:line, 261, :none),
+        (:call, :notify, (:., :uv, (:quote, #QuoteNode
+              :notify
+            )), (:tuple, "", (:call, :FileEvent))),
+        (:line, 262, :none),
+        :nothing
+      )),
+    (:line, 265, :none),
+    (:function, (:call, :__init__), (:block,
+        (:line, 266, :none),
+        (:global, (:(=), :uv_jl_pollcb, (:call, :cfunction, :uv_pollcb, :Void, (:tuple, (:curly, :Ptr, :Void), :Cint, :Cint)))),
+        (:line, 267, :none),
+        (:global, (:(=), :uv_jl_fspollcb, (:call, :cfunction, :uv_fspollcb, :Void, (:tuple, (:curly, :Ptr, :Void), :Cint, (:curly, :Ptr, :Void), (:curly, :Ptr, :Void))))),
+        (:line, 268, :none),
+        (:global, (:(=), :uv_jl_fseventscb, (:call, :cfunction, :uv_fseventscb, :Void, (:tuple, (:curly, :Ptr, :Void), (:curly, :Ptr, :Int8), :Int32, :Int32))))
+      )),
+    (:line, 271, :none),
+    (:function, (:call, :uv_fseventscb, (:(::), :handle, (:curly, :Ptr, :Void)), (:(::), :filename, :Ptr), (:(::), :events, :Int32), (:(::), :status, :Int32)), (:block,
+        (:line, 272, :none),
+        (:(=), :t, (:macrocall, Symbol("@handle_as"), :handle, :FileMonitor)),
+        (:line, 273, :none),
+        (:(=), :fname, (:if, (:call, :(==), :filename, :C_NULL), "", (:call, :unsafe_string, (:call, :convert, (:curly, :Ptr, :UInt8), :filename)))),
+        (:line, 274, :none),
+        (:if, (:call, :(!=), :status, 0), (:block,
+            (:line, 275, :none),
+            (:call, :notify_error, (:., :t, (:quote, #QuoteNode
+                  :notify
+                )), (:call, :UVError, "FileMonitor", :status))
+          ), (:block,
+            (:line, 277, :none),
+            (:call, :notify, (:., :t, (:quote, #QuoteNode
+                  :notify
+                )), (:tuple, :fname, (:call, :FileEvent, :events)))
+          )),
+        (:line, 279, :none),
+        :nothing
+      )),
+    (:line, 282, :none),
+    (:function, (:call, :uv_pollcb, (:(::), :handle, (:curly, :Ptr, :Void)), (:(::), :status, :Int32), (:(::), :events, :Int32)), (:block,
+        (:line, 283, :none),
+        (:(=), :t, (:macrocall, Symbol("@handle_as"), :handle, :_FDWatcher)),
+        (:line, 284, :none),
+        (:if, (:call, :(!=), :status, 0), (:block,
+            (:line, 285, :none),
+            (:call, :notify_error, (:., :t, (:quote, #QuoteNode
+                  :notify
+                )), (:call, :UVError, "FDWatcher", :status))
+          ), (:block,
+            (:line, 287, :none),
+            (:|=, (:., :t, (:quote, #QuoteNode
+                  :events
+                )), :events),
+            (:line, 288, :none),
+            (:if, (:||, (:ref, (:., :t, (:quote, #QuoteNode
+                      :active
+                    )), 1), (:ref, (:., :t, (:quote, #QuoteNode
+                      :active
+                    )), 2)), (:block,
+                (:line, 289, :none),
+                (:if, (:call, :isempty, (:., (:., :t, (:quote, #QuoteNode
+                          :notify
+                        )), (:quote, #QuoteNode
+                        :waitq
+                      ))), (:block,
+                    (:line, 292, :none),
+                    (:(=), (:., :t, (:quote, #QuoteNode
+                          :active
+                        )), (:tuple, false, false)),
+                    (:line, 293, :none),
+                    (:ccall, (:quote, #QuoteNode
+                        :uv_poll_stop
+                      ), :Int32, (:tuple, (:curly, :Ptr, :Void)), (:., :t, (:quote, #QuoteNode
+                          :handle
+                        )))
+                  ))
+              )),
+            (:line, 296, :none),
+            (:call, :notify, (:., :t, (:quote, #QuoteNode
+                  :notify
+                )), (:call, :FDEvent, :events))
+          )),
+        (:line, 298, :none),
+        :nothing
+      )),
+    (:line, 301, :none),
+    (:function, (:call, :uv_fspollcb, (:(::), :handle, (:curly, :Ptr, :Void)), (:(::), :status, :Int32), (:(::), :prev, :Ptr), (:(::), :curr, :Ptr)), (:block,
+        (:line, 302, :none),
+        (:(=), :t, (:macrocall, Symbol("@handle_as"), :handle, :PollingFileWatcher)),
+        (:line, 303, :none),
+        (:if, (:call, :(!=), :status, 0), (:block,
+            (:line, 304, :none),
+            (:call, :notify_error, (:., :t, (:quote, #QuoteNode
+                  :notify
+                )), (:call, :UVError, "PollingFileWatcher", :status))
+          ), (:block,
+            (:line, 306, :none),
+            (:(=), :prev_stat, (:call, :StatStruct, (:call, :convert, (:curly, :Ptr, :UInt8), :prev))),
+            (:line, 307, :none),
+            (:(=), :curr_stat, (:call, :StatStruct, (:call, :convert, (:curly, :Ptr, :UInt8), :curr))),
+            (:line, 308, :none),
+            (:call, :notify, (:., :t, (:quote, #QuoteNode
+                  :notify
+                )), (:tuple, :prev_stat, :curr_stat))
+          )),
+        (:line, 310, :none),
+        :nothing
+      )),
+    (:line, 314, :none),
+    (:function, (:call, :start_watching, (:(::), :t, :_FDWatcher)), (:block,
+        (:line, 315, :none),
+        (:(=), :readable, (:call, :>, (:ref, (:., :t, (:quote, #QuoteNode
+                  :refcount
+                )), 1), 0)),
+        (:line, 316, :none),
+        (:(=), :writable, (:call, :>, (:ref, (:., :t, (:quote, #QuoteNode
+                  :refcount
+                )), 2), 0)),
+        (:line, 317, :none),
+        (:if, (:||, (:call, :(!=), (:ref, (:., :t, (:quote, #QuoteNode
+                    :active
+                  )), 1), :readable), (:call, :(!=), (:ref, (:., :t, (:quote, #QuoteNode
+                    :active
+                  )), 2), :writable)), (:block,
+            (:line, 319, :none),
+            (:call, :uv_error, "start_watching (File Handle)", (:ccall, (:quote, #QuoteNode
+                  :uv_poll_start
+                ), :Int32, (:tuple, (:curly, :Ptr, :Void), :Int32, (:curly, :Ptr, :Void)), (:., :t, (:quote, #QuoteNode
+                    :handle
+                  )), (:call, :|, (:if, :readable, :UV_READABLE, 0), (:if, :writable, :UV_WRITABLE, 0)), (:(::), :uv_jl_pollcb, (:curly, :Ptr, :Void)))),
+            (:line, 324, :none),
+            (:(=), (:., :t, (:quote, #QuoteNode
+                  :active
+                )), (:tuple, :readable, :writable))
+          )),
+        (:line, 326, :none),
+        :nothing
+      )),
+    (:line, 329, :none),
+    (:function, (:call, :start_watching, (:(::), :t, :PollingFileWatcher)), (:block,
+        (:line, 330, :none),
+        (:if, (:call, :!, (:., :t, (:quote, #QuoteNode
+                :active
+              ))), (:block,
+            (:line, 331, :none),
+            (:call, :uv_error, "start_watching (File Path)", (:ccall, (:quote, #QuoteNode
+                  :uv_fs_poll_start
+                ), :Int32, (:tuple, (:curly, :Ptr, :Void), (:curly, :Ptr, :Void), :Cstring, :UInt32), (:., :t, (:quote, #QuoteNode
+                    :handle
+                  )), (:(::), :uv_jl_fspollcb, (:curly, :Ptr, :Void)), (:., :t, (:quote, #QuoteNode
+                    :file
+                  )), (:., :t, (:quote, #QuoteNode
+                    :interval
+                  )))),
+            (:line, 334, :none),
+            (:(=), (:., :t, (:quote, #QuoteNode
+                  :active
+                )), true)
+          )),
+        (:line, 336, :none),
+        :nothing
+      )),
+    (:line, 339, :none),
+    (:function, (:call, :stop_watching, (:(::), :t, :PollingFileWatcher)), (:block,
+        (:line, 340, :none),
+        (:if, (:&&, (:., :t, (:quote, #QuoteNode
+                :active
+              )), (:call, :isempty, (:., (:., :t, (:quote, #QuoteNode
+                    :notify
+                  )), (:quote, #QuoteNode
+                  :waitq
+                )))), (:block,
+            (:line, 341, :none),
+            (:(=), (:., :t, (:quote, #QuoteNode
+                  :active
+                )), false),
+            (:line, 342, :none),
+            (:call, :uv_error, "stop_watching (File Path)", (:ccall, (:quote, #QuoteNode
+                  :uv_fs_poll_stop
+                ), :Int32, (:tuple, (:curly, :Ptr, :Void)), (:., :t, (:quote, #QuoteNode
+                    :handle
+                  ))))
+          )),
+        (:line, 345, :none),
+        :nothing
+      )),
+    (:line, 348, :none),
+    (:function, (:call, :start_watching, (:(::), :t, :FileMonitor)), (:block,
+        (:line, 349, :none),
+        (:if, (:call, :!, (:., :t, (:quote, #QuoteNode
+                :active
+              ))), (:block,
+            (:line, 350, :none),
+            (:call, :uv_error, "start_watching (File Monitor)", (:ccall, (:quote, #QuoteNode
+                  :uv_fs_event_start
+                ), :Int32, (:tuple, (:curly, :Ptr, :Void), (:curly, :Ptr, :Void), :Cstring, :Int32), (:., :t, (:quote, #QuoteNode
+                    :handle
+                  )), (:(::), :uv_jl_fseventscb, (:curly, :Ptr, :Void)), (:., :t, (:quote, #QuoteNode
+                    :file
+                  )), 0)),
+            (:line, 353, :none),
+            (:(=), (:., :t, (:quote, #QuoteNode
+                  :active
+                )), true)
+          )),
+        (:line, 355, :none),
+        :nothing
+      )),
+    (:line, 358, :none),
+    (:function, (:call, :stop_watching, (:(::), :t, :FileMonitor)), (:block,
+        (:line, 359, :none),
+        (:if, (:&&, (:., :t, (:quote, #QuoteNode
+                :active
+              )), (:call, :isempty, (:., (:., :t, (:quote, #QuoteNode
+                    :notify
+                  )), (:quote, #QuoteNode
+                  :waitq
+                )))), (:block,
+            (:line, 360, :none),
+            (:(=), (:., :t, (:quote, #QuoteNode
+                  :active
+                )), false),
+            (:line, 361, :none),
+            (:call, :uv_error, "stop_watching (File Monitor)", (:ccall, (:quote, #QuoteNode
+                  :uv_fs_event_stop
+                ), :Int32, (:tuple, (:curly, :Ptr, :Void)), (:., :t, (:quote, #QuoteNode
+                    :handle
+                  ))))
+          )),
+        (:line, 364, :none),
+        :nothing
+      )),
+    (:line, 367, :none),
+    (:function, (:call, :wait, (:(::), :fdw, :FDWatcher)), (:block,
+        (:line, 368, :none),
+        (:return, (:call, :wait, (:., :fdw, (:quote, #QuoteNode
+                :watcher
+              )), (:kw, :readable, (:., :fdw, (:quote, #QuoteNode
+                  :readable
+                ))), (:kw, :writable, (:., :fdw, (:quote, #QuoteNode
+                  :writable
+                )))))
+      )),
+    (:line, 370, :none),
+    (:function, (:call, :wait, (:parameters, (:kw, :readable, true), (:kw, :writable, true)), (:(::), :fdw, :_FDWatcher)), (:block,
+        (:line, 371, :none),
+        (:(=), :events, (:call, :FDEvent)),
+        (:line, 372, :none),
+        (:while, true, (:block,
+            (:line, 373, :none),
+            (:if, (:call, :isa, :events, :FDEvent), (:block,
+                (:line, 374, :none),
+                (:(=), :events, (:(::), :events, :FDEvent)),
+                (:line, 375, :none),
+                (:|=, :events, (:call, :FDEvent, (:., :fdw, (:quote, #QuoteNode
+                        :events
+                      )))),
+                (:line, 376, :none),
+                (:(=), :haveevent, false),
+                (:line, 377, :none),
+                (:if, (:&&, :readable, (:call, :isreadable, :events)), (:block,
+                    (:line, 378, :none),
+                    (:&=, (:., :fdw, (:quote, #QuoteNode
+                          :events
+                        )), (:call, :~, :UV_READABLE)),
+                    (:line, 379, :none),
+                    (:(=), :haveevent, true)
+                  )),
+                (:line, 381, :none),
+                (:if, (:&&, :writable, (:call, :iswritable, :events)), (:block,
+                    (:line, 382, :none),
+                    (:&=, (:., :fdw, (:quote, #QuoteNode
+                          :events
+                        )), (:call, :~, :UV_WRITABLE)),
+                    (:line, 383, :none),
+                    (:(=), :haveevent, true)
+                  )),
+                (:line, 385, :none),
+                (:if, :haveevent, (:block,
+                    (:line, 386, :none),
+                    (:return, :events)
+                  ))
+              ), (:block,
+                (:line, 389, :none),
+                (:call, :throw, :events)
+              )),
+            (:line, 391, :none),
+            (:if, (:call, :(==), (:., :fdw, (:quote, #QuoteNode
+                    :refcount
+                  )), (:tuple, 0, 0)), (:block,
+                (:line, 392, :none),
+                (:(=), :events, (:call, :EOFError))
+              ), (:block,
+                (:line, 394, :none),
+                (:call, :start_watching, :fdw),
+                (:line, 395, :none),
+                (:(=), :events, (:call, :wait, (:., :fdw, (:quote, #QuoteNode
+                        :notify
+                      ))))
+              ))
+          ))
+      )),
+    (:line, 400, :none),
+    (:function, (:call, :wait, (:parameters, (:kw, :readable, false), (:kw, :writable, false)), (:(::), :fd, :RawFD)), (:block,
+        (:line, 401, :none),
+        (:(=), :fdw, (:call, :_FDWatcher, :fd, :readable, :writable)),
+        (:line, 402, :none),
+        (:try, (:block,
+            (:line, 403, :none),
+            (:return, (:call, :wait, :fdw, (:kw, :readable, :readable), (:kw, :writable, :writable)))
+          ), false, false, (:block,
+            (:line, 405, :none),
+            (:call, :close, :fdw, :readable, :writable)
+          ))
+      )),
+    (:line, 409, :none),
+    (:if, (:call, :is_windows), (:block,
+        (:line, 410, :none),
+        (:function, (:call, :wait, (:parameters, (:kw, :readable, false), (:kw, :writable, false)), (:(::), :socket, :WindowsRawSocket)), (:block,
+            (:line, 411, :none),
+            (:(=), :fdw, (:call, :_FDWatcher, :socket, :readable, :writable)),
+            (:line, 412, :none),
+            (:try, (:block,
+                (:line, 413, :none),
+                (:return, (:call, :wait, :fdw, (:kw, :readable, :readable), (:kw, :writable, :writable)))
+              ), false, false, (:block,
+                (:line, 415, :none),
+                (:call, :close, :fdw, :readable, :writable)
+              ))
+          ))
+      )),
+    (:line, 420, :none),
+    (:function, (:call, :wait, (:(::), :pfw, :PollingFileWatcher)), (:block,
+        (:line, 421, :none),
+        (:call, :start_watching, :pfw),
+        (:line, 422, :none),
+        (:(=), (:tuple, :prevstat, :currstat), (:call, :stream_wait, :pfw, (:., :pfw, (:quote, #QuoteNode
+                :notify
+              )))),
+        (:line, 423, :none),
+        (:call, :stop_watching, :pfw),
+        (:line, 424, :none),
+        (:return, (:tuple, :prevstat, :currstat))
+      )),
+    (:line, 427, :none),
+    (:function, (:call, :wait, (:(::), :m, :FileMonitor)), (:block,
+        (:line, 428, :none),
+        (:call, :start_watching, :m),
+        (:line, 429, :none),
+        (:(=), (:tuple, :filename, :events), (:call, :stream_wait, :m, (:., :m, (:quote, #QuoteNode
+                :notify
+              )))),
+        (:line, 430, :none),
+        (:call, :stop_watching, :m),
+        (:line, 431, :none),
+        (:return, (:tuple, :filename, :events))
+      )),
+    (:line, 434, :none),
+    (:function, (:call, :poll_fd, (:parameters, (:kw, :readable, false), (:kw, :writable, false)), (:(::), :s, (:curly, :Union, :RawFD, (:if, (:call, :is_windows), :WindowsRawSocket, (:curly, :Union)))), (:kw, (:(::), :timeout_s, :Real), -1)), (:block,
+        (:line, 435, :none),
+        (:(=), :wt, (:call, :Condition)),
+        (:line, 436, :none),
+        (:(=), :fdw, (:call, :_FDWatcher, :s, :readable, :writable)),
+        (:line, 437, :none),
+        (:try, (:block,
+            (:line, 438, :none),
+            (:if, (:call, :(>=), :timeout_s, 0), (:block,
+                (:line, 439, :none),
+                (:(=), (:(::), :result, :FDEvent), (:call, :fdtimeout)),
+                (:line, 441, :none),
+                (:macrocall, Symbol("@schedule"), (:block,
+                    (:line, 442, :none),
+                    (:try, (:block,
+                        (:line, 443, :none),
+                        (:(=), :result, (:call, :wait, :fdw, (:kw, :readable, :readable), (:kw, :writable, :writable)))
+                      ), :e, (:block,
+                        (:line, 445, :none),
+                        (:call, :notify_error, :wt, :e),
+                        (:line, 446, :none),
+                        (:return, nothing)
+                      )),
+                    (:line, 448, :none),
+                    (:call, :notify, :wt)
+                  )),
+                (:line, 450, :none),
+                (:macrocall, Symbol("@schedule"), (:block,
+                    (:call, :sleep, :timeout_s),
+                    (:call, :notify, :wt)
+                  )),
+                (:line, 452, :none),
+                (:call, :wait, :wt),
+                (:line, 453, :none),
+                (:return, :result)
+              ), (:block,
+                (:line, 455, :none),
+                (:return, (:call, :wait, :fdw, (:kw, :readable, :readable), (:kw, :writable, :writable)))
+              ))
+          ), false, false, (:block,
+            (:line, 458, :none),
+            (:call, :close, :fdw, :readable, :writable)
+          ))
+      )),
+    (:line, 462, :none),
+    (:function, (:call, :watch_file, (:(::), :s, :AbstractString), (:kw, (:(::), :timeout_s, :Real), -1)), (:block,
+        (:line, 463, :none),
+        (:(=), :wt, (:call, :Condition)),
+        (:line, 464, :none),
+        (:(=), :fm, (:call, :FileMonitor, :s)),
+        (:line, 465, :none),
+        (:try, (:block,
+            (:line, 466, :none),
+            (:if, (:call, :(>=), :timeout_s, 0), (:block,
+                (:line, 467, :none),
+                (:(=), :result, (:call, :fetimeout)),
+                (:line, 469, :none),
+                (:macrocall, Symbol("@schedule"), (:block,
+                    (:line, 470, :none),
+                    (:try, (:block,
+                        (:line, 471, :none),
+                        (:(=), (:tuple, :_, :result), (:call, :wait, :fm))
+                      ), :e, (:block,
+                        (:line, 473, :none),
+                        (:call, :notify_error, :wt, :e),
+                        (:line, 474, :none),
+                        (:return, nothing)
+                      )),
+                    (:line, 476, :none),
+                    (:call, :notify, :wt)
+                  )),
+                (:line, 478, :none),
+                (:macrocall, Symbol("@schedule"), (:block,
+                    (:call, :sleep, :timeout_s),
+                    (:call, :notify, :wt)
+                  )),
+                (:line, 480, :none),
+                (:call, :wait, :wt),
+                (:line, 481, :none),
+                (:return, :result)
+              ), (:block,
+                (:line, 483, :none),
+                (:return, (:ref, (:call, :wait, :fm), 2))
+              ))
+          ), false, false, (:block,
+            (:line, 486, :none),
+            (:call, :close, :fm)
+          ))
+      )),
+    (:line, 490, :none),
+    (:function, (:call, :poll_file, (:(::), :s, :AbstractString), (:kw, (:(::), :interval_seconds, :Real), 5.007), (:kw, (:(::), :timeout_s, :Real), -1)), (:block,
+        (:line, 491, :none),
+        (:(=), :wt, (:call, :Condition)),
+        (:line, 492, :none),
+        (:(=), :pfw, (:call, :PollingFileWatcher, :s, (:call, :Float64, :interval_seconds))),
+        (:line, 493, :none),
+        (:try, (:block,
+            (:line, 494, :none),
+            (:if, (:call, :(>=), :timeout_s, 0), (:block,
+                (:line, 495, :none),
+                (:(=), :result, (:quote, #QuoteNode
+                    :timeout
+                  )),
+                (:line, 497, :none),
+                (:macrocall, Symbol("@schedule"), (:block,
+                    (:line, 498, :none),
+                    (:try, (:block,
+                        (:line, 499, :none),
+                        (:(=), :result, (:call, :wait, :pfw))
+                      ), :e, (:block,
+                        (:line, 501, :none),
+                        (:call, :notify_error, :wt, :e),
+                        (:line, 502, :none),
+                        (:return, nothing)
+                      )),
+                    (:line, 504, :none),
+                    (:call, :notify, :wt)
+                  )),
+                (:line, 506, :none),
+                (:macrocall, Symbol("@schedule"), (:block,
+                    (:call, :sleep, :timeout_s),
+                    (:call, :notify, :wt)
+                  )),
+                (:line, 508, :none),
+                (:call, :wait, :wt),
+                (:line, 509, :none),
+                (:if, (:call, :(===), :result, (:quote, #QuoteNode
+                      :timeout
+                    )), (:block,
+                    (:line, 510, :none),
+                    (:return, (:tuple, (:call, :StatStruct), (:call, :StatStruct)))
+                  )),
+                (:line, 512, :none),
+                (:return, :result)
+              ), (:block,
+                (:line, 514, :none),
+                (:return, (:call, :wait, :pfw))
+              ))
+          ), false, false, (:block,
+            (:line, 517, :none),
+            (:call, :close, :pfw)
+          ))
+      ))
+  ))

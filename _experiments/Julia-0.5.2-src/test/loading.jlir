@@ -1,0 +1,57 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:using, :Base, :Test),
+    (:line, 5, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), 5, 5)),
+    (:line, 7, :none),
+    (:call, :include, "test_sourcepath.jl"),
+    (:line, 8, :none),
+    (:(=), :thefname, "the fname!//\\&\x01*"),
+    (:line, 9, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:call, :include_string, "include_string_test() = @__FILE__", :thefname)), (:call, (:., :Base, (:quote, #QuoteNode
+              :source_path
+            ))))),
+    (:line, 10, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :include_string, "Base.source_path()", :thefname), (:call, (:., :Base, (:quote, #QuoteNode
+              :source_path
+            ))))),
+    (:line, 11, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :basename, (:macrocall, Symbol("@__FILE__"))), "loading.jl")),
+    (:line, 12, :none),
+    (:macrocall, Symbol("@test"), (:call, :isabspath, (:macrocall, Symbol("@__FILE__")))),
+    (:line, 15, :none),
+    (:let, (:block,
+        (:line, 16, :none),
+        (:call, :touch, :true_filename),
+        (:line, 17, :none),
+        (:macrocall, Symbol("@test"), (:call, (:., :Base, (:quote, #QuoteNode
+                :isfile_casesensitive
+              )), :true_filename)),
+        (:line, 18, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :Base, (:quote, #QuoteNode
+                  :isfile_casesensitive
+                )), :lowered_filename))),
+        (:line, 19, :none),
+        (:call, :rm, :true_filename)
+      ), (:(=), :true_filename, "cAsEtEsT.jl"), (:(=), :lowered_filename, "casetest.jl")),
+    (:line, 23, :none),
+    (:let, (:block,
+        (:line, 24, :none),
+        (:call, :touch, :nfc_name),
+        (:line, 25, :none),
+        (:macrocall, Symbol("@test"), (:call, (:., :Base, (:quote, #QuoteNode
+                :isfile_casesensitive
+              )), :nfc_name)),
+        (:line, 26, :none),
+        (:call, :rm, :nfc_name)
+      ), (:(=), :nfc_name, "ô.jl")),
+    (:line, 29, :none),
+    (:let, (:block,
+        (:line, 30, :none),
+        (:(=), :filename, (:call, :SubString, :paddedname, 2, (:call, :length, :paddedname))),
+        (:line, 31, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+                  :find_in_path
+                )), :filename), (:call, :abspath, (:ref, :paddedname, (:(:), 2, :end)))))
+      ), (:(=), :paddedname, "Ztest_sourcepath.jl"))
+  ))

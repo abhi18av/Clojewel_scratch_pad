@@ -1,0 +1,918 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:module, true, :Profile, (:block,
+        (:line, 3, :none),
+        (:line, 5, :none),
+        (:toplevel, (:import, :Base, :StackTraces, :lookup), (:import, :Base, :StackTraces, :UNKNOWN), (:import, :Base, :StackTraces, :show_spec_linfo)),
+        (:line, 7, :none),
+        (:export, Symbol("@profile")),
+        (:line, 9, :none),
+        (:macro, (:call, :profile, :ex), (:block,
+            (:line, 10, :none),
+            (:quote, (:block,
+                (:line, 11, :none),
+                (:try, (:block,
+                    (:line, 12, :none),
+                    (:(=), :status, (:call, :start_timer)),
+                    (:line, 13, :none),
+                    (:if, (:call, :<, :status, 0), (:block,
+                        (:line, 14, :none),
+                        (:call, :error, (:ref, :error_codes, :status))
+                      )),
+                    (:line, 16, :none),
+                    (:$, (:call, :esc, :ex))
+                  ), false, false, (:block,
+                    (:line, 18, :none),
+                    (:call, :stop_timer)
+                  ))
+              ))
+          )),
+        (:line, 27, :none),
+        (:macrocall, :(Core.@doc), "    init(; n::Integer, delay::Float64)\n\nConfigure the `delay` between backtraces (measured in seconds), and the number `n` of\ninstruction pointers that may be stored. Each instruction pointer corresponds to a single\nline of code; backtraces generally consist of a long list of instruction pointers. Default\nsettings can be obtained by calling this function with no arguments, and each can be set\nindependently using keywords or in the order `(n, delay)`.\n", (:function, (:call, :init, (:parameters, (:kw, (:(::), :n, (:curly, :Union, :Void, :Integer)), :nothing), (:kw, (:(::), :delay, (:curly, :Union, :Void, :Float64)), :nothing))), (:block,
+              (:line, 37, :none),
+              (:(=), :n_cur, (:ccall, (:quote, #QuoteNode
+                    :jl_profile_maxlen_data
+                  ), :Csize_t, (:tuple,))),
+              (:line, 38, :none),
+              (:(=), :delay_cur, (:call, :/, (:ccall, (:quote, #QuoteNode
+                      :jl_profile_delay_nsec
+                    ), :UInt64, (:tuple,)), (:call, :^, 10, 9))),
+              (:line, 39, :none),
+              (:if, (:&&, (:call, :(===), :n, :nothing), (:call, :(===), :delay, :nothing)), (:block,
+                  (:line, 40, :none),
+                  (:return, (:tuple, (:call, :Int, :n_cur), :delay_cur))
+                )),
+              (:line, 42, :none),
+              (:(=), :nnew, (:if, (:call, :(===), :n, :nothing), :n_cur, :n)),
+              (:line, 43, :none),
+              (:(=), :delaynew, (:if, (:call, :(===), :delay, :nothing), :delay_cur, :delay)),
+              (:line, 44, :none),
+              (:call, :init, :nnew, :delaynew)
+            ))),
+        (:line, 47, :none),
+        (:function, (:call, :init, (:(::), :n, :Integer), (:(::), :delay, :Float64)), (:block,
+            (:line, 48, :none),
+            (:(=), :status, (:ccall, (:quote, #QuoteNode
+                  :jl_profile_init
+                ), :Cint, (:tuple, :Csize_t, :UInt64), :n, (:call, :round, :UInt64, (:call, :*, (:call, :^, 10, 9), :delay)))),
+            (:line, 49, :none),
+            (:if, (:call, :(==), :status, -1), (:block,
+                (:line, 50, :none),
+                (:call, :error, "could not allocate space for ", :n, " instruction pointers")
+              ))
+          )),
+        (:line, 56, :none),
+        (:if, (:call, :is_windows), (:block,
+            (:line, 57, :none),
+            (:(=), (:call, :__init__), (:block,
+                (:line, 57, :none),
+                (:call, :init, 1000000, 0.01)
+              ))
+          ), (:block,
+            (:line, 59, :none),
+            (:(=), (:call, :__init__), (:block,
+                (:line, 59, :none),
+                (:call, :init, 1000000, 0.001)
+              ))
+          )),
+        (:line, 62, :none),
+        (:macrocall, :(Core.@doc), "    clear()\n\nClear any existing backtraces from the internal buffer.\n", (:(=), (:call, :clear), (:block,
+              (:line, 67, :none),
+              (:ccall, (:quote, #QuoteNode
+                  :jl_profile_clear_data
+                ), :Void, (:tuple,))
+            ))),
+        (:line, 69, :none),
+        (:macrocall, :(Core.@doc), "    print([io::IO = STDOUT,] [data::Vector]; format = :tree, C = false, combine = true, maxdepth = typemax(Int), sortedby = :filefuncline)\n\nPrints profiling results to `io` (by default, `STDOUT`). If you do not\nsupply a `data` vector, the internal buffer of accumulated backtraces\nwill be used. `format` can be `:tree` or `:flat`. If `C==true`,\nbacktraces from C and Fortran code are shown. `combine==true` merges\ninstruction pointers that correspond to the same line of\ncode. `maxdepth` can be used to limit the depth of printing in `:tree`\nformat, while `sortedby` can be used to control the order in `:flat`\nformat (`:filefuncline` sorts by the source line, whereas `:count`\nsorts in order of number of collected samples).\n", (:function, (:call, (:curly, :print, (:<:, :T, :Unsigned)), (:parameters, (:kw, :format, (:quote, #QuoteNode
+                    :tree
+                  )), (:kw, :C, false), (:kw, :combine, true), (:kw, (:(::), :maxdepth, :Int), (:call, :typemax, :Int)), (:kw, (:(::), :sortedby, :Symbol), (:quote, #QuoteNode
+                    :filefuncline
+                  ))), (:(::), :io, :IO), (:kw, (:(::), :data, (:curly, :Vector, :T)), (:call, :fetch)), (:kw, (:(::), :lidict, :Dict), (:call, :getdict, :data))), (:block,
+              (:line, 88, :none),
+              (:(=), :cols, (:ref, (:call, (:., :Base, (:quote, #QuoteNode
+                        :displaysize
+                      )), :io), 2)),
+              (:line, 89, :none),
+              (:if, (:call, :(==), :format, (:quote, #QuoteNode
+                    :tree
+                  )), (:block,
+                  (:line, 90, :none),
+                  (:call, :tree, :io, :data, :lidict, :C, :combine, :cols, :maxdepth)
+                ), (:block,
+                  (:line, 91, :none),
+                  (:if, (:call, :(==), :format, (:quote, #QuoteNode
+                        :flat
+                      )), (:block,
+                      (:line, 92, :none),
+                      (:call, :flat, :io, :data, :lidict, :C, :combine, :cols, :sortedby)
+                    ), (:block,
+                      (:line, 94, :none),
+                      (:call, :throw, (:call, :ArgumentError, (:string, "output format ", (:call, :repr, :format), " not recognized")))
+                    ))
+                ))
+            ))),
+        (:line, 98, :none),
+        (:macrocall, :(Core.@doc), "    print([io::IO = STDOUT,] data::Vector, lidict::Dict; kwargs)\n\nPrints profiling results to `io`. This variant is used to examine results exported by a\nprevious call to [`retrieve`](:func:`retrieve`). Supply the vector `data` of backtraces and\na dictionary `lidict` of line information.\n\nSee `Profile.print([io], data)` for an explanation of the valid keyword arguments.\n", (:(=), (:call, (:curly, :print, (:<:, :T, :Unsigned)), (:parameters, (:..., :kwargs)), (:kw, (:(::), :data, (:curly, :Vector, :T)), (:call, :fetch)), (:kw, (:(::), :lidict, :Dict), (:call, :getdict, :data))), (:block,
+              (:line, 107, :none),
+              (:call, :print, (:parameters, (:..., :kwargs)), :STDOUT, :data, :lidict)
+            ))),
+        (:line, 109, :none),
+        (:macrocall, :(Core.@doc), "    retrieve() -> data, lidict\n\n\"Exports\" profiling results in a portable format, returning the set of all backtraces\n(`data`) and a dictionary that maps the (session-specific) instruction pointers in `data` to\n`LineInfo` values that store the file name, function name, and line number. This function\nallows you to save profiling results for future analysis.\n", (:function, (:call, :retrieve), (:block,
+              (:line, 118, :none),
+              (:(=), :data, (:call, :fetch)),
+              (:line, 119, :none),
+              (:tuple, (:call, :copy, :data), (:call, :getdict, :data))
+            ))),
+        (:line, 122, :none),
+        (:function, (:call, :getdict, (:(::), :data, (:curly, :Vector, :UInt))), (:block,
+            (:line, 123, :none),
+            (:(=), :uip, (:call, :unique, :data)),
+            (:line, 124, :none),
+            (:call, (:curly, :Dict, :UInt, (:curly, :Vector, :StackFrame)), (:generator, (:(=>), :ip, (:call, :lookup, :ip)), (:(=), :ip, :uip)))
+          )),
+        (:line, 127, :none),
+        (:macrocall, :(Core.@doc), "    flatten(btdata, lidict) -> (newdata, newdict)\n\nProduces \"flattened\" backtrace data. Individual instruction pointers\nsometimes correspond to a multi-frame backtrace due to inlining; in\nsuch cases, this function inserts fake instruction pointers for the\ninlined calls, and returns a dictionary that is a 1-to-1 mapping\nbetween instruction pointers and a single StackFrame.\n", (:function, (:call, :flatten, (:(::), :data, (:curly, :Vector, :UInt)), (:(::), :lidict, (:curly, :Dict, :UInt, (:curly, :Vector, :StackFrame)))), (:block,
+              (:line, 138, :none),
+              (:(=), :newip, (:call, :typemax, :UInt)),
+              (:line, 139, :none),
+              (:(=), :taken, (:call, :Set, (:call, :keys, :lidict))),
+              (:line, 140, :none),
+              (:(=), :newdict, (:call, (:curly, :Dict, :UInt, :StackFrame))),
+              (:line, 141, :none),
+              (:(=), :newmap, (:call, (:curly, :Dict, :UInt, (:curly, :Vector, :UInt)))),
+              (:line, 142, :none),
+              (:for, (:(=), (:tuple, :ip, :trace), :lidict), (:block,
+                  (:line, 143, :none),
+                  (:if, (:call, :(==), (:call, :length, :trace), 1), (:block,
+                      (:line, 144, :none),
+                      (:(=), (:ref, :newdict, :ip), (:ref, :trace, 1))
+                    ), (:block,
+                      (:line, 146, :none),
+                      (:(=), :newm, (:ref, :UInt)),
+                      (:line, 147, :none),
+                      (:for, (:(=), :sf, :trace), (:block,
+                          (:line, 148, :none),
+                          (:while, (:&&, (:call, :∈, :newip, :taken), (:call, :>, :newip, 0)), (:block,
+                              (:line, 149, :none),
+                              (:-=, :newip, 1)
+                            )),
+                          (:line, 151, :none),
+                          (:&&, (:call, :(==), :newip, 0), (:call, :error, "all possible instruction pointers used")),
+                          (:line, 152, :none),
+                          (:call, :push!, :newm, :newip),
+                          (:line, 153, :none),
+                          (:(=), (:ref, :newdict, :newip), :sf),
+                          (:line, 154, :none),
+                          (:-=, :newip, 1)
+                        )),
+                      (:line, 156, :none),
+                      (:(=), (:ref, :newmap, :ip), :newm)
+                    ))
+                )),
+              (:line, 159, :none),
+              (:(=), :newdata, (:ref, :UInt)),
+              (:line, 160, :none),
+              (:for, (:(=), :ip, :data), (:block,
+                  (:line, 161, :none),
+                  (:if, (:call, :haskey, :newmap, :ip), (:block,
+                      (:line, 162, :none),
+                      (:call, :append!, :newdata, (:ref, :newmap, :ip))
+                    ), (:block,
+                      (:line, 164, :none),
+                      (:call, :push!, :newdata, :ip)
+                    ))
+                )),
+              (:line, 167, :none),
+              (:tuple, :newdata, :newdict)
+            ))),
+        (:line, 170, :none),
+        (:macrocall, :(Core.@doc), "    callers(funcname, [data, lidict], [filename=<filename>], [linerange=<start:stop>]) -> Vector{Tuple{count, lineinfo}}\n\nGiven a previous profiling run, determine who called a particular function. Supplying the\nfilename (and optionally, range of line numbers over which the function is defined) allows\nyou to disambiguate an overloaded method. The returned value is a vector containing a count\nof the number of calls and line information about the caller. One can optionally supply\nbacktrace `data` obtained from [`retrieve`](:func:`retrieve`); otherwise, the current internal\nprofile buffer is used.\n", (:function, :callers)),
+        (:line, 182, :none),
+        (:function, (:call, :callers, (:parameters, (:kw, :filename, :nothing), (:kw, :linerange, :nothing)), (:(::), :funcname, :String), (:(::), :bt, (:curly, :Vector, :UInt)), :lidict), (:block,
+            (:line, 183, :none),
+            (:if, (:&&, (:call, :(===), :filename, :nothing), (:call, :(===), :linerange, :nothing)), (:block,
+                (:line, 184, :none),
+                (:return, (:call, :callersf, (:->, :li, (:block,
+                        (:line, 184, :none),
+                        (:call, :(==), (:., :li, (:quote, #QuoteNode
+                              :func
+                            )), :funcname)
+                      )), :bt, :lidict))
+              )),
+            (:line, 186, :none),
+            (:&&, (:call, :(===), :filename, :nothing), (:call, :throw, (:call, :ArgumentError, "if supplying linerange, you must also supply the filename"))),
+            (:line, 187, :none),
+            (:if, (:call, :(===), :linerange, :nothing), (:block,
+                (:line, 188, :none),
+                (:return, (:call, :callersf, (:->, :li, (:block,
+                        (:line, 188, :none),
+                        (:&&, (:call, :(==), (:., :li, (:quote, #QuoteNode
+                                :func
+                              )), :funcname), (:call, :(==), (:., :li, (:quote, #QuoteNode
+                                :file
+                              )), :filename))
+                      )), :bt, :lidict))
+              ), (:block,
+                (:line, 190, :none),
+                (:return, (:call, :callersf, (:->, :li, (:block,
+                        (:line, 190, :none),
+                        (:&&, (:call, :(==), (:., :li, (:quote, #QuoteNode
+                                :func
+                              )), :funcname), (:&&, (:call, :(==), (:., :li, (:quote, #QuoteNode
+                                  :file
+                                )), :filename), (:call, :in, (:., :li, (:quote, #QuoteNode
+                                  :line
+                                )), :linerange)))
+                      )), :bt, :lidict))
+              ))
+          )),
+        (:line, 194, :none),
+        (:(=), (:call, :callers, (:parameters, (:..., :kwargs)), (:(::), :funcname, :String)), (:block,
+            (:line, 194, :none),
+            (:call, :callers, (:parameters, (:..., :kwargs)), :funcname, (:..., (:call, :retrieve)))
+          )),
+        (:line, 195, :none),
+        (:(=), (:call, :callers, (:parameters, (:..., :kwargs)), (:(::), :func, :Function), (:(::), :bt, (:curly, :Vector, :UInt)), :lidict), (:block,
+            (:line, 195, :none),
+            (:call, :callers, (:parameters, (:..., :kwargs)), (:call, :string, :func), :bt, :lidict)
+          )),
+        (:line, 196, :none),
+        (:(=), (:call, :callers, (:parameters, (:..., :kwargs)), (:(::), :func, :Function)), (:block,
+            (:line, 196, :none),
+            (:call, :callers, (:parameters, (:..., :kwargs)), (:call, :string, :func), (:..., (:call, :retrieve)))
+          )),
+        (:line, 204, :none),
+        (:macrocall, :(Core.@doc), "    clear_malloc_data()\n\nClears any stored memory allocation data when running julia with `--track-allocation`.\nExecute the command(s) you want to test (to force JIT-compilation), then call\n[`clear_malloc_data`](:func:`clear_malloc_data`). Then execute your command(s) again, quit\nJulia, and examine the resulting `*.mem` files.\n", (:(=), (:call, :clear_malloc_data), (:block,
+              (:line, 212, :none),
+              (:ccall, (:quote, #QuoteNode
+                  :jl_clear_malloc_data
+                ), :Void, (:tuple,))
+            ))),
+        (:line, 215, :none),
+        (:(=), (:call, :start_timer), (:block,
+            (:line, 215, :none),
+            (:ccall, (:quote, #QuoteNode
+                :jl_profile_start_timer
+              ), :Cint, (:tuple,))
+          )),
+        (:line, 217, :none),
+        (:(=), (:call, :stop_timer), (:block,
+            (:line, 217, :none),
+            (:ccall, (:quote, #QuoteNode
+                :jl_profile_stop_timer
+              ), :Void, (:tuple,))
+          )),
+        (:line, 219, :none),
+        (:(=), (:call, :is_running), (:block,
+            (:line, 219, :none),
+            (:call, :(!=), (:ccall, (:quote, #QuoteNode
+                  :jl_profile_is_running
+                ), :Cint, (:tuple,)), 0)
+          )),
+        (:line, 221, :none),
+        (:(=), (:call, :get_data_pointer), (:block,
+            (:line, 221, :none),
+            (:call, :convert, (:curly, :Ptr, :UInt), (:ccall, (:quote, #QuoteNode
+                  :jl_profile_get_data
+                ), (:curly, :Ptr, :UInt8), (:tuple,)))
+          )),
+        (:line, 223, :none),
+        (:(=), (:call, :len_data), (:block,
+            (:line, 223, :none),
+            (:call, :convert, :Int, (:ccall, (:quote, #QuoteNode
+                  :jl_profile_len_data
+                ), :Csize_t, (:tuple,)))
+          )),
+        (:line, 225, :none),
+        (:(=), (:call, :maxlen_data), (:block,
+            (:line, 225, :none),
+            (:call, :convert, :Int, (:ccall, (:quote, #QuoteNode
+                  :jl_profile_maxlen_data
+                ), :Csize_t, (:tuple,)))
+          )),
+        (:line, 227, :none),
+        (:(=), :error_codes, (:call, :Dict, (:(=>), -1, "cannot specify signal action for profiling"), (:(=>), -2, "cannot create the timer for profiling"), (:(=>), -3, "cannot start the timer for profiling"), (:(=>), -4, "cannot unblock SIGUSR1"))),
+        (:line, 234, :none),
+        (:macrocall, :(Core.@doc), "    fetch() -> data\n\nReturns a reference to the internal buffer of backtraces. Note that subsequent operations,\nlike [`clear`](:func:`clear`), can affect `data` unless you first make a copy. Note that the\nvalues in `data` have meaning only on this machine in the current session, because it\ndepends on the exact memory addresses used in JIT-compiling. This function is primarily for\ninternal use; [`retrieve`](:func:`retrieve`) may be a better choice for most users.\n", (:function, (:call, :fetch), (:block,
+              (:line, 244, :none),
+              (:(=), :len, (:call, :len_data)),
+              (:line, 245, :none),
+              (:(=), :maxlen, (:call, :maxlen_data)),
+              (:line, 246, :none),
+              (:if, (:call, :(==), :len, :maxlen), (:block,
+                  (:line, 247, :none),
+                  (:call, :warn, "The profile data buffer is full; profiling probably terminated\nbefore your program finished. To profile for longer runs, call Profile.init\nwith a larger buffer and/or larger delay.")
+                )),
+              (:line, 249, :none),
+              (:call, :unsafe_wrap, :Array, (:call, :get_data_pointer), (:tuple, :len))
+            ))),
+        (:line, 255, :none),
+        (:const, (:(=), :btskip, 0)),
+        (:line, 259, :none),
+        (:function, (:call, (:curly, :count_flat, (:<:, :T, :Unsigned)), (:(::), :data, (:curly, :Vector, :T))), (:block,
+            (:line, 260, :none),
+            (:(=), :linecount, (:call, (:curly, :Dict, :T, :Int))),
+            (:line, 261, :none),
+            (:(=), :toskip, :btskip),
+            (:line, 262, :none),
+            (:for, (:(=), :ip, :data), (:block,
+                (:line, 263, :none),
+                (:if, (:call, :>, :toskip, 0), (:block,
+                    (:line, 264, :none),
+                    (:-=, :toskip, 1),
+                    (:line, 265, :none),
+                    (:continue,)
+                  )),
+                (:line, 267, :none),
+                (:if, (:call, :(==), :ip, 0), (:block,
+                    (:line, 268, :none),
+                    (:(=), :toskip, :btskip),
+                    (:line, 269, :none),
+                    (:continue,)
+                  )),
+                (:line, 271, :none),
+                (:(=), (:ref, :linecount, :ip), (:call, :+, (:call, :get, :linecount, :ip, 0), 1))
+              )),
+            (:line, 273, :none),
+            (:(=), :iplist, (:call, (:curly, :Array, :T), 0)),
+            (:line, 274, :none),
+            (:(=), :n, (:call, (:curly, :Array, :Int), 0)),
+            (:line, 275, :none),
+            (:for, (:(=), (:tuple, :k, :v), :linecount), (:block,
+                (:line, 276, :none),
+                (:call, :push!, :iplist, :k),
+                (:line, 277, :none),
+                (:call, :push!, :n, :v)
+              )),
+            (:line, 279, :none),
+            (:return, (:tuple, :iplist, :n))
+          )),
+        (:line, 282, :none),
+        (:function, (:call, :parse_flat, :iplist, :n, :lidict, (:(::), :C, :Bool)), (:block,
+            (:line, 284, :none),
+            (:(=), :lilist, (:comprehension, (:generator, (:ref, :lidict, :ip), (:(=), :ip, :iplist)))),
+            (:line, 289, :none),
+            (:(=), :keep, (:call, :!, (:typed_comprehension, :Bool, (:generator, (:||, (:call, :(==), :x, :UNKNOWN), (:||, (:call, :(==), (:., :x, (:quote, #QuoteNode
+                              :line
+                            )), 0), (:&&, (:., :x, (:quote, #QuoteNode
+                              :from_c
+                            )), (:call, :!, :C)))), (:(=), :x, :lilist))))),
+            (:line, 290, :none),
+            (:(=), :n, (:ref, :n, :keep)),
+            (:line, 291, :none),
+            (:(=), :lilist, (:ref, :lilist, :keep)),
+            (:line, 292, :none),
+            (:tuple, :lilist, :n)
+          )),
+        (:line, 295, :none),
+        (:function, (:call, (:curly, :flat, (:<:, :T, :Unsigned)), (:(::), :io, :IO), (:(::), :data, (:curly, :Vector, :T)), (:(::), :lidict, (:curly, :Dict, :T, :StackFrame)), (:(::), :C, :Bool), (:(::), :combine, :Bool), (:(::), :cols, :Integer), :sortedby), (:block,
+            (:line, 296, :none),
+            (:if, (:call, :!, :C), (:block,
+                (:line, 297, :none),
+                (:(=), :data, (:call, :purgeC, :data, :lidict))
+              )),
+            (:line, 299, :none),
+            (:(=), (:tuple, :iplist, :n), (:call, :count_flat, :data)),
+            (:line, 300, :none),
+            (:if, (:call, :isempty, :n), (:block,
+                (:line, 301, :none),
+                (:call, :warning_empty),
+                (:line, 302, :none),
+                (:return, nothing)
+              )),
+            (:line, 304, :none),
+            (:(=), (:tuple, :lilist, :n), (:call, :parse_flat, :iplist, :n, :lidict, :C)),
+            (:line, 305, :none),
+            (:call, :print_flat, :io, :lilist, :n, :combine, :cols, :sortedby)
+          )),
+        (:line, 308, :none),
+        (:function, (:call, (:curly, :flat, (:<:, :T, :Unsigned)), (:(::), :io, :IO), (:(::), :data, (:curly, :Vector, :T)), (:(::), :lidict, (:curly, :Dict, :T, (:curly, :Vector, :StackFrame))), (:(::), :C, :Bool), (:(::), :combine, :Bool), (:(::), :cols, :Integer), :sortedby), (:block,
+            (:line, 309, :none),
+            (:(=), (:tuple, :newdata, :newdict), (:call, :flatten, :data, :lidict)),
+            (:line, 310, :none),
+            (:call, :flat, :io, :newdata, :newdict, :C, :combine, :cols, :sortedby)
+          )),
+        (:line, 313, :none),
+        (:function, (:call, :print_flat, (:(::), :io, :IO), (:(::), :lilist, (:curly, :Vector, :StackFrame)), (:(::), :n, (:curly, :Vector, :Int)), (:(::), :combine, :Bool), (:(::), :cols, :Integer), :sortedby), (:block,
+            (:line, 314, :none),
+            (:(=), :p, (:call, :liperm, :lilist)),
+            (:line, 315, :none),
+            (:(=), :lilist, (:ref, :lilist, :p)),
+            (:line, 316, :none),
+            (:(=), :n, (:ref, :n, :p)),
+            (:line, 317, :none),
+            (:if, :combine, (:block,
+                (:line, 318, :none),
+                (:(=), :j, 1),
+                (:line, 319, :none),
+                (:for, (:(=), :i, (:(:), 2, (:call, :length, :lilist))), (:block,
+                    (:line, 320, :none),
+                    (:if, (:call, :(==), (:ref, :lilist, :i), (:ref, :lilist, :j)), (:block,
+                        (:line, 321, :none),
+                        (:+=, (:ref, :n, :j), (:ref, :n, :i)),
+                        (:line, 322, :none),
+                        (:(=), (:ref, :n, :i), 0)
+                      ), (:block,
+                        (:line, 324, :none),
+                        (:(=), :j, :i)
+                      ))
+                  )),
+                (:line, 327, :none),
+                (:(=), :keep, (:call, :.>, :n, 0)),
+                (:line, 328, :none),
+                (:(=), :n, (:ref, :n, :keep)),
+                (:line, 329, :none),
+                (:(=), :lilist, (:ref, :lilist, :keep))
+              )),
+            (:line, 331, :none),
+            (:if, (:call, :(==), :sortedby, (:quote, #QuoteNode
+                  :count
+                )), (:block,
+                (:line, 332, :none),
+                (:(=), :p, (:call, :sortperm, :n)),
+                (:line, 333, :none),
+                (:(=), :n, (:ref, :n, :p)),
+                (:line, 334, :none),
+                (:(=), :lilist, (:ref, :lilist, :p))
+              )),
+            (:line, 336, :none),
+            (:(=), :wcounts, (:call, :max, 6, (:call, :ndigits, (:call, :maximum, :n)))),
+            (:line, 337, :none),
+            (:(=), :maxline, 0),
+            (:line, 338, :none),
+            (:(=), :maxfile, 6),
+            (:line, 339, :none),
+            (:(=), :maxfunc, 10),
+            (:line, 340, :none),
+            (:for, (:(=), :li, :lilist), (:block,
+                (:line, 341, :none),
+                (:(=), :maxline, (:call, :max, :maxline, (:., :li, (:quote, #QuoteNode
+                        :line
+                      )))),
+                (:line, 342, :none),
+                (:(=), :maxfile, (:call, :max, :maxfile, (:call, :length, (:call, :string, (:., :li, (:quote, #QuoteNode
+                            :file
+                          )))))),
+                (:line, 343, :none),
+                (:(=), :maxfunc, (:call, :max, :maxfunc, (:call, :length, (:call, :string, (:., :li, (:quote, #QuoteNode
+                            :func
+                          ))))))
+              )),
+            (:line, 345, :none),
+            (:(=), :wline, (:call, :max, 5, (:call, :ndigits, :maxline))),
+            (:line, 346, :none),
+            (:(=), :ntext, (:call, :-, (:call, :-, (:call, :-, :cols, :wcounts), :wline), 3)),
+            (:line, 347, :none),
+            (:+=, :maxfunc, 25),
+            (:line, 348, :none),
+            (:if, (:call, :(<=), (:call, :+, :maxfile, :maxfunc), :ntext), (:block,
+                (:line, 349, :none),
+                (:(=), :wfile, :maxfile),
+                (:line, 350, :none),
+                (:(=), :wfunc, :maxfunc)
+              ), (:block,
+                (:line, 352, :none),
+                (:(=), :wfile, (:call, :floor, :Integer, (:call, :/, (:call, :*, 2, :ntext), 5))),
+                (:line, 353, :none),
+                (:(=), :wfunc, (:call, :floor, :Integer, (:call, :/, (:call, :*, 3, :ntext), 5)))
+              )),
+            (:line, 355, :none),
+            (:call, :println, :io, (:call, :lpad, "Count", :wcounts, " "), " ", (:call, :rpad, "File", :wfile, " "), " ", (:call, :lpad, "Line", :wline, " "), " ", (:call, :rpad, "Function", :wfunc, " ")),
+            (:line, 356, :none),
+            (:for, (:(=), :i, (:(:), 1, (:call, :length, :n))), (:block,
+                (:line, 357, :none),
+                (:(=), :li, (:ref, :lilist, :i)),
+                (:line, 358, :none),
+                (:call, (:., :Base, (:quote, #QuoteNode
+                      :print
+                    )), :io, (:call, :lpad, (:call, :string, (:ref, :n, :i)), :wcounts, " "), " "),
+                (:line, 359, :none),
+                (:call, (:., :Base, (:quote, #QuoteNode
+                      :print
+                    )), :io, (:call, :rpad, (:call, :rtruncto, (:call, :string, (:., :li, (:quote, #QuoteNode
+                            :file
+                          ))), :wfile), :wfile, " "), " "),
+                (:line, 360, :none),
+                (:call, (:., :Base, (:quote, #QuoteNode
+                      :print
+                    )), :io, (:call, :lpad, (:call, :string, (:., :li, (:quote, #QuoteNode
+                          :line
+                        ))), :wline, " "), " "),
+                (:line, 361, :none),
+                (:(=), :fname, (:call, :string, (:., :li, (:quote, #QuoteNode
+                        :func
+                      )))),
+                (:line, 362, :none),
+                (:if, (:&&, (:call, :!, (:., :li, (:quote, #QuoteNode
+                          :from_c
+                        ))), (:call, :!, (:call, :isnull, (:., :li, (:quote, #QuoteNode
+                            :linfo
+                          ))))), (:block,
+                    (:line, 363, :none),
+                    (:(=), :fname, (:call, :sprint, :show_spec_linfo, :li))
+                  )),
+                (:line, 365, :none),
+                (:call, (:., :Base, (:quote, #QuoteNode
+                      :print
+                    )), :io, (:call, :rpad, (:call, :ltruncto, :fname, :wfunc), :wfunc, " ")),
+                (:line, 366, :none),
+                (:call, :println, :io)
+              ))
+          )),
+        (:line, 372, :none),
+        (:function, (:call, (:curly, :tree_aggregate, (:<:, :T, :Unsigned)), (:(::), :data, (:curly, :Vector, :T))), (:block,
+            (:line, 373, :none),
+            (:(=), :iz, (:call, :find, (:call, :.==, :data, 0))),
+            (:line, 374, :none),
+            (:(=), :treecount, (:call, (:curly, :Dict, (:curly, :Vector, :T), :Int))),
+            (:line, 375, :none),
+            (:(=), :istart, (:call, :+, 1, :btskip)),
+            (:line, 376, :none),
+            (:for, (:(=), :iend, :iz), (:block,
+                (:line, 377, :none),
+                (:(=), :tmp, (:ref, :data, (:(:), (:call, :-, :iend, 1), -1, :istart))),
+                (:line, 378, :none),
+                (:(=), (:ref, :treecount, :tmp), (:call, :+, (:call, :get, :treecount, :tmp, 0), 1)),
+                (:line, 379, :none),
+                (:(=), :istart, (:call, :+, :iend, 1, :btskip))
+              )),
+            (:line, 381, :none),
+            (:(=), :bt, (:call, (:curly, :Array, (:curly, :Vector, :T)), 0)),
+            (:line, 382, :none),
+            (:(=), :counts, (:call, (:curly, :Array, :Int), 0)),
+            (:line, 383, :none),
+            (:for, (:(=), (:tuple, :k, :v), :treecount), (:block,
+                (:line, 384, :none),
+                (:if, (:call, :!, (:call, :isempty, :k)), (:block,
+                    (:line, 385, :none),
+                    (:call, :push!, :bt, :k),
+                    (:line, 386, :none),
+                    (:call, :push!, :counts, :v)
+                  ))
+              )),
+            (:line, 389, :none),
+            (:tuple, :bt, :counts)
+          )),
+        (:line, 392, :none),
+        (:(=), (:call, :tree_format_linewidth, (:(::), :x, :StackFrame)), (:block,
+            (:line, 392, :none),
+            (:call, :+, (:call, :ndigits, (:., :x, (:quote, #QuoteNode
+                    :line
+                  ))), 6)
+          )),
+        (:line, 394, :none),
+        (:function, (:call, :tree_format, (:(::), :lilist, (:curly, :Vector, :StackFrame)), (:(::), :counts, (:curly, :Vector, :Int)), (:(::), :level, :Int), (:(::), :cols, :Integer)), (:block,
+            (:line, 395, :none),
+            (:(=), :nindent, (:call, :min, (:call, :>>, :cols, 1), :level)),
+            (:line, 396, :none),
+            (:(=), :ndigcounts, (:call, :ndigits, (:call, :maximum, :counts))),
+            (:line, 397, :none),
+            (:(=), :ndigline, (:call, :maximum, (:comprehension, (:generator, (:call, :tree_format_linewidth, :x), (:(=), :x, :lilist))))),
+            (:line, 398, :none),
+            (:(=), :ntext, (:call, :-, (:call, :-, (:call, :-, (:call, :-, :cols, :nindent), :ndigcounts), :ndigline), 5)),
+            (:line, 399, :none),
+            (:(=), :widthfile, (:call, :floor, :Integer, (:call, :*, 0.4, :ntext))),
+            (:line, 400, :none),
+            (:(=), :widthfunc, (:call, :floor, :Integer, (:call, :*, 0.6, :ntext))),
+            (:line, 401, :none),
+            (:(=), :strs, (:call, (:curly, :Array, :String), (:call, :length, :lilist))),
+            (:line, 402, :none),
+            (:(=), :showextra, false),
+            (:line, 403, :none),
+            (:if, (:call, :>, :level, :nindent), (:block,
+                (:line, 404, :none),
+                (:(=), :nextra, (:call, :-, :level, :nindent)),
+                (:line, 405, :none),
+                (:-=, :nindent, (:call, :+, (:call, :ndigits, :nextra), 2)),
+                (:line, 406, :none),
+                (:(=), :showextra, true)
+              )),
+            (:line, 408, :none),
+            (:for, (:(=), :i, (:(:), 1, (:call, :length, :lilist))), (:block,
+                (:line, 409, :none),
+                (:(=), :li, (:ref, :lilist, :i)),
+                (:line, 410, :none),
+                (:if, (:call, :(!=), :li, :UNKNOWN), (:block,
+                    (:line, 411, :none),
+                    (:(=), :base, (:call, :^, " ", :nindent)),
+                    (:line, 412, :none),
+                    (:if, :showextra, (:block,
+                        (:line, 413, :none),
+                        (:(=), :base, (:call, :string, :base, "+", :nextra, " "))
+                      )),
+                    (:line, 415, :none),
+                    (:if, (:call, :(==), (:., :li, (:quote, #QuoteNode
+                            :line
+                          )), (:., :li, (:quote, #QuoteNode
+                            :pointer
+                          ))), (:block,
+                        (:line, 416, :none),
+                        (:(=), (:ref, :strs, :i), (:call, :string, :base, (:call, :rpad, (:call, :string, (:ref, :counts, :i)), :ndigcounts, " "), " ", "unknown function (pointer: 0x", (:call, :hex, (:., :li, (:quote, #QuoteNode
+                                  :pointer
+                                )), (:call, :*, 2, (:call, :sizeof, (:curly, :Ptr, :Void)))), ")"))
+                      ), (:block,
+                        (:line, 423, :none),
+                        (:(=), :fname, (:call, :string, (:., :li, (:quote, #QuoteNode
+                                :func
+                              )))),
+                        (:line, 424, :none),
+                        (:if, (:&&, (:call, :!, (:., :li, (:quote, #QuoteNode
+                                  :from_c
+                                ))), (:call, :!, (:call, :isnull, (:., :li, (:quote, #QuoteNode
+                                    :linfo
+                                  ))))), (:block,
+                            (:line, 425, :none),
+                            (:(=), :fname, (:call, :sprint, :show_spec_linfo, :li))
+                          )),
+                        (:line, 427, :none),
+                        (:(=), (:ref, :strs, :i), (:call, :string, :base, (:call, :rpad, (:call, :string, (:ref, :counts, :i)), :ndigcounts, " "), " ", (:call, :rtruncto, (:call, :string, (:., :li, (:quote, #QuoteNode
+                                    :file
+                                  ))), :widthfile), ":", (:if, (:call, :(==), (:., :li, (:quote, #QuoteNode
+                                    :line
+                                  )), -1), "?", (:call, :string, (:., :li, (:quote, #QuoteNode
+                                    :line
+                                  )))), "; ", (:call, :ltruncto, :fname, :widthfunc)))
+                      ))
+                  ), (:block,
+                    (:line, 437, :none),
+                    (:(=), (:ref, :strs, :i), "")
+                  ))
+              )),
+            (:line, 440, :none),
+            :strs
+          )),
+        (:line, 444, :none),
+        (:function, (:call, (:curly, :tree, (:<:, :T, :Unsigned)), (:(::), :io, :IO), (:(::), :bt, (:curly, :Vector, (:curly, :Vector, :T))), (:(::), :counts, (:curly, :Vector, :Int)), (:(::), :lidict, :Dict), (:(::), :level, :Int), (:(::), :combine, :Bool), (:(::), :cols, :Integer), :maxdepth), (:block,
+            (:line, 445, :none),
+            (:if, (:call, :>, :level, :maxdepth), (:block,
+                (:line, 446, :none),
+                (:return, nothing)
+              )),
+            (:line, 449, :none),
+            (:if, :combine, (:block,
+                (:line, 451, :none),
+                (:(=), :d, (:call, (:curly, :Dict, :StackFrame, (:curly, :Vector, :Int)))),
+                (:line, 452, :none),
+                (:for, (:(=), :i, (:(:), 1, (:call, :length, :bt))), (:block,
+                    (:line, 453, :none),
+                    (:(=), :ip, (:ref, (:ref, :bt, :i), (:call, :+, :level, 1))),
+                    (:line, 454, :none),
+                    (:(=), :key, (:ref, :lidict, :ip)),
+                    (:line, 455, :none),
+                    (:(=), :indx, (:call, (:., :Base, (:quote, #QuoteNode
+                            :ht_keyindex
+                          )), :d, :key)),
+                    (:line, 456, :none),
+                    (:if, (:call, :(==), :indx, -1), (:block,
+                        (:line, 457, :none),
+                        (:(=), (:ref, :d, :key), (:vect, :i))
+                      ), (:block,
+                        (:line, 459, :none),
+                        (:call, :push!, (:ref, (:., :d, (:quote, #QuoteNode
+                                :vals
+                              )), :indx), :i)
+                      ))
+                  )),
+                (:line, 463, :none),
+                (:(=), :dlen, (:call, :length, :d)),
+                (:line, 464, :none),
+                (:(=), :lilist, (:call, (:curly, :Array, :StackFrame), :dlen)),
+                (:line, 465, :none),
+                (:(=), :group, (:call, (:curly, :Array, (:curly, :Vector, :Int)), :dlen)),
+                (:line, 466, :none),
+                (:(=), :n, (:call, (:curly, :Array, :Int), :dlen)),
+                (:line, 467, :none),
+                (:(=), :i, 1),
+                (:line, 468, :none),
+                (:for, (:(=), (:tuple, :key, :v), :d), (:block,
+                    (:line, 469, :none),
+                    (:(=), (:ref, :lilist, :i), :key),
+                    (:line, 470, :none),
+                    (:(=), (:ref, :group, :i), :v),
+                    (:line, 471, :none),
+                    (:(=), (:ref, :n, :i), (:call, :sum, (:ref, :counts, :v))),
+                    (:line, 472, :none),
+                    (:+=, :i, 1)
+                  ))
+              ), (:block,
+                (:line, 476, :none),
+                (:(=), :d, (:call, (:curly, :Dict, :T, (:curly, :Vector, :Int)))),
+                (:line, 477, :none),
+                (:for, (:(=), :i, (:(:), 1, (:call, :length, :bt))), (:block,
+                    (:line, 478, :none),
+                    (:(=), :key, (:ref, (:ref, :bt, :i), (:call, :+, :level, 1))),
+                    (:line, 479, :none),
+                    (:(=), :indx, (:call, (:., :Base, (:quote, #QuoteNode
+                            :ht_keyindex
+                          )), :d, :key)),
+                    (:line, 480, :none),
+                    (:if, (:call, :(==), :indx, -1), (:block,
+                        (:line, 481, :none),
+                        (:(=), (:ref, :d, :key), (:vect, :i))
+                      ), (:block,
+                        (:line, 483, :none),
+                        (:call, :push!, (:ref, (:., :d, (:quote, #QuoteNode
+                                :vals
+                              )), :indx), :i)
+                      ))
+                  )),
+                (:line, 487, :none),
+                (:(=), :dlen, (:call, :length, :d)),
+                (:line, 488, :none),
+                (:(=), :lilist, (:call, (:curly, :Array, :StackFrame), :dlen)),
+                (:line, 489, :none),
+                (:(=), :group, (:call, (:curly, :Array, (:curly, :Vector, :Int)), :dlen)),
+                (:line, 490, :none),
+                (:(=), :n, (:call, (:curly, :Array, :Int), :dlen)),
+                (:line, 491, :none),
+                (:(=), :i, 1),
+                (:line, 492, :none),
+                (:for, (:(=), (:tuple, :key, :v), :d), (:block,
+                    (:line, 493, :none),
+                    (:(=), (:ref, :lilist, :i), (:ref, :lidict, :key)),
+                    (:line, 494, :none),
+                    (:(=), (:ref, :group, :i), :v),
+                    (:line, 495, :none),
+                    (:(=), (:ref, :n, :i), (:call, :sum, (:ref, :counts, :v))),
+                    (:line, 496, :none),
+                    (:+=, :i, 1)
+                  ))
+              )),
+            (:line, 500, :none),
+            (:if, (:call, :>, (:call, :length, :lilist), 1), (:block,
+                (:line, 501, :none),
+                (:(=), :p, (:call, :liperm, :lilist)),
+                (:line, 502, :none),
+                (:(=), :lilist, (:ref, :lilist, :p)),
+                (:line, 503, :none),
+                (:(=), :group, (:ref, :group, :p)),
+                (:line, 504, :none),
+                (:(=), :n, (:ref, :n, :p))
+              )),
+            (:line, 507, :none),
+            (:(=), :strs, (:call, :tree_format, :lilist, :n, :level, :cols)),
+            (:line, 509, :none),
+            (:(=), :len, (:typed_comprehension, :Int, (:generator, (:call, :length, :x), (:(=), :x, :bt)))),
+            (:line, 510, :none),
+            (:for, (:(=), :i, (:(:), 1, (:call, :length, :lilist))), (:block,
+                (:line, 511, :none),
+                (:if, (:call, :!, (:call, :isempty, (:ref, :strs, :i))), (:block,
+                    (:line, 512, :none),
+                    (:call, :println, :io, (:ref, :strs, :i))
+                  )),
+                (:line, 514, :none),
+                (:(=), :idx, (:ref, :group, :i)),
+                (:line, 515, :none),
+                (:(=), :keep, (:call, :.>, (:ref, :len, :idx), (:call, :+, :level, 1))),
+                (:line, 516, :none),
+                (:if, (:call, :any, :keep), (:block,
+                    (:line, 517, :none),
+                    (:(=), :idx, (:ref, :idx, :keep)),
+                    (:line, 518, :none),
+                    (:call, :tree, :io, (:ref, :bt, :idx), (:ref, :counts, :idx), :lidict, (:call, :+, :level, 1), :combine, :cols, :maxdepth)
+                  ))
+              ))
+          )),
+        (:line, 523, :none),
+        (:function, (:call, (:curly, :tree, (:<:, :T, :Unsigned)), (:(::), :io, :IO), (:(::), :data, (:curly, :Vector, :T)), (:(::), :lidict, (:curly, :Dict, :T, :StackFrame)), (:(::), :C, :Bool), (:(::), :combine, :Bool), (:(::), :cols, :Integer), :maxdepth), (:block,
+            (:line, 524, :none),
+            (:if, (:call, :!, :C), (:block,
+                (:line, 525, :none),
+                (:(=), :data, (:call, :purgeC, :data, :lidict))
+              )),
+            (:line, 527, :none),
+            (:(=), (:tuple, :bt, :counts), (:call, :tree_aggregate, :data)),
+            (:line, 528, :none),
+            (:if, (:call, :isempty, :counts), (:block,
+                (:line, 529, :none),
+                (:call, :warning_empty),
+                (:line, 530, :none),
+                (:return, nothing)
+              )),
+            (:line, 532, :none),
+            (:(=), :level, 0),
+            (:line, 533, :none),
+            (:(=), :len, (:typed_comprehension, :Int, (:generator, (:call, :length, :x), (:(=), :x, :bt)))),
+            (:line, 534, :none),
+            (:(=), :keep, (:call, :.>, :len, 0)),
+            (:line, 535, :none),
+            (:call, :tree, :io, (:ref, :bt, :keep), (:ref, :counts, :keep), :lidict, :level, :combine, :cols, :maxdepth)
+          )),
+        (:line, 538, :none),
+        (:function, (:call, (:curly, :tree, (:<:, :T, :Unsigned)), (:(::), :io, :IO), (:(::), :data, (:curly, :Vector, :T)), (:(::), :lidict, (:curly, :Dict, :T, (:curly, :Vector, :StackFrame))), (:(::), :C, :Bool), (:(::), :combine, :Bool), (:(::), :cols, :Integer), :maxdepth), (:block,
+            (:line, 539, :none),
+            (:(=), (:tuple, :newdata, :newdict), (:call, :flatten, :data, :lidict)),
+            (:line, 540, :none),
+            (:call, :tree, :io, :newdata, :newdict, :C, :combine, :cols, :maxdepth)
+          )),
+        (:line, 543, :none),
+        (:function, (:call, :callersf, (:(::), :matchfunc, :Function), (:(::), :bt, (:curly, :Vector, :UInt)), :lidict), (:block,
+            (:line, 544, :none),
+            (:(=), :counts, (:call, (:curly, :Dict, :StackFrame, :Int))),
+            (:line, 545, :none),
+            (:(=), :lastmatched, false),
+            (:line, 546, :none),
+            (:for, (:(=), :id, :bt), (:block,
+                (:line, 547, :none),
+                (:if, (:call, :(==), :id, 0), (:block,
+                    (:line, 548, :none),
+                    (:(=), :lastmatched, false),
+                    (:line, 549, :none),
+                    (:continue,)
+                  )),
+                (:line, 551, :none),
+                (:(=), :li, (:ref, :lidict, :id)),
+                (:line, 552, :none),
+                (:if, :lastmatched, (:block,
+                    (:line, 553, :none),
+                    (:if, (:call, :haskey, :counts, :li), (:block,
+                        (:line, 554, :none),
+                        (:+=, (:ref, :counts, :li), 1)
+                      ), (:block,
+                        (:line, 556, :none),
+                        (:(=), (:ref, :counts, :li), 1)
+                      ))
+                  )),
+                (:line, 559, :none),
+                (:(=), :lastmatched, (:call, :matchfunc, :li))
+              )),
+            (:line, 561, :none),
+            (:(=), :k, (:call, :collect, (:call, :keys, :counts))),
+            (:line, 562, :none),
+            (:(=), :v, (:call, :collect, (:call, :values, :counts))),
+            (:line, 563, :none),
+            (:(=), :p, (:call, :sortperm, :v, (:kw, :rev, true))),
+            (:line, 564, :none),
+            (:comprehension, (:generator, (:tuple, (:ref, :v, :i), (:ref, :k, :i)), (:(=), :i, :p)))
+          )),
+        (:line, 568, :none),
+        (:function, (:call, :rtruncto, (:(::), :str, :String), (:(::), :w, :Int)), (:block,
+            (:line, 569, :none),
+            (:(=), :ret, :str),
+            (:line, 570, :none),
+            (:if, (:call, :>, (:call, :length, :str), :w), (:block,
+                (:line, 571, :none),
+                (:(=), :ret, (:call, :string, "...", (:ref, :str, (:(:), (:call, :+, (:call, :-, :end, :w), 4), :end))))
+              )),
+            (:line, 573, :none),
+            :ret
+          )),
+        (:line, 575, :none),
+        (:function, (:call, :ltruncto, (:(::), :str, :String), (:(::), :w, :Int)), (:block,
+            (:line, 576, :none),
+            (:(=), :ret, :str),
+            (:line, 577, :none),
+            (:if, (:call, :>, (:call, :length, :str), :w), (:block,
+                (:line, 578, :none),
+                (:(=), :ret, (:call, :string, (:ref, :str, (:(:), 1, (:call, :-, :w, 4))), "..."))
+              )),
+            (:line, 580, :none),
+            :ret
+          )),
+        (:line, 584, :none),
+        (:(=), (:call, :truncto, (:(::), :str, :Symbol), (:(::), :w, :Int)), (:block,
+            (:line, 584, :none),
+            (:call, :truncto, (:call, :string, :str), :w)
+          )),
+        (:line, 587, :none),
+        (:function, (:call, :liperm, (:(::), :lilist, (:curly, :Vector, :StackFrame))), (:block,
+            (:line, 588, :none),
+            (:(=), :comb, (:call, (:curly, :Array, :String), (:call, :length, :lilist))),
+            (:line, 589, :none),
+            (:for, (:(=), :i, (:(:), 1, (:call, :length, :lilist))), (:block,
+                (:line, 590, :none),
+                (:(=), :li, (:ref, :lilist, :i)),
+                (:line, 591, :none),
+                (:if, (:call, :(!=), :li, :UNKNOWN), (:block,
+                    (:line, 592, :none),
+                    (:(=), (:ref, :comb, :i), (:macrocall, Symbol("@sprintf"), "%s:%s:%06d", (:., :li, (:quote, #QuoteNode
+                            :file
+                          )), (:., :li, (:quote, #QuoteNode
+                            :func
+                          )), (:., :li, (:quote, #QuoteNode
+                            :line
+                          ))))
+                  ), (:block,
+                    (:line, 594, :none),
+                    (:(=), (:ref, :comb, :i), "zzz")
+                  ))
+              )),
+            (:line, 597, :none),
+            (:call, :sortperm, :comb)
+          )),
+        (:line, 600, :none),
+        (:(=), (:call, :warning_empty), (:block,
+            (:line, 600, :none),
+            (:call, :warn, "There were no samples collected. Run your program longer (perhaps by\nrunning it multiple times), or adjust the delay between samples with\nProfile.init().")
+          )),
+        (:line, 605, :none),
+        (:function, (:call, :purgeC, :data, :lidict), (:block,
+            (:line, 606, :none),
+            (:(=), :keep, (:typed_comprehension, :Bool, (:generator, (:||, (:call, :(==), :d, 0), (:call, :(==), (:., (:ref, :lidict, :d), (:quote, #QuoteNode
+                          :from_c
+                        )), false)), (:(=), :d, :data)))),
+            (:line, 607, :none),
+            (:ref, :data, :keep)
+          ))
+      ))
+  ))

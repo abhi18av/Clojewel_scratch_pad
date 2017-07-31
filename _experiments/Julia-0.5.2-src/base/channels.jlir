@@ -1,0 +1,228 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:abstract, :AbstractChannel),
+    (:line, 5, :none),
+    (:const, (:(=), :DEF_CHANNEL_SZ, 32)),
+    (:line, 7, :none),
+    (:type, true, (:<:, (:curly, :Channel, :T), :AbstractChannel), (:block,
+        (:line, 8, :none),
+        (:(::), :cond_take, :Condition),
+        (:line, 9, :none),
+        (:(::), :cond_put, :Condition),
+        (:line, 10, :none),
+        (:(::), :state, :Symbol),
+        (:line, 12, :none),
+        (:(::), :data, (:curly, :Array, :T, 1)),
+        (:line, 13, :none),
+        (:(::), :sz_max, :Int),
+        (:line, 15, :none),
+        (:function, (:call, :Channel, :sz), (:block,
+            (:line, 16, :none),
+            (:(=), :sz_max, (:if, (:call, :(==), :sz, (:call, :typemax, :Int)), (:call, :-, (:call, :typemax, :Int), 1), :sz)),
+            (:line, 17, :none),
+            (:call, :new, (:call, :Condition), (:call, :Condition), (:quote, #QuoteNode
+                :open
+              ), (:call, (:curly, :Array, :T), 0), :sz_max)
+          ))
+      )),
+    (:line, 21, :none),
+    (:(=), (:call, :Channel, (:kw, (:(::), :sz, :Int), :DEF_CHANNEL_SZ)), (:block,
+        (:line, 21, :none),
+        (:call, (:curly, :Channel, :Any), :sz)
+      )),
+    (:line, 23, :none),
+    (:(=), (:call, :closed_exception), (:block,
+        (:line, 23, :none),
+        (:call, :InvalidStateException, "Channel is closed.", (:quote, #QuoteNode
+            :closed
+          ))
+      )),
+    (:line, 25, :none),
+    "    close(c::Channel)\n\nCloses a channel. An exception is thrown by:\n\n* `put!` on a closed channel.\n* `take!` and `fetch` on an empty, closed channel.\n",
+    (:line, 33, :none),
+    (:function, (:call, :close, (:(::), :c, :Channel)), (:block,
+        (:line, 34, :none),
+        (:(=), (:., :c, (:quote, #QuoteNode
+              :state
+            )), (:quote, #QuoteNode
+            :closed
+          )),
+        (:line, 35, :none),
+        (:call, :notify_error, (:(::), :c, :Channel), (:call, :closed_exception)),
+        (:line, 36, :none),
+        :nothing
+      )),
+    (:line, 38, :none),
+    (:(=), (:call, :isopen, (:(::), :c, :Channel)), (:block,
+        (:line, 38, :none),
+        (:call, :(==), (:., :c, (:quote, #QuoteNode
+              :state
+            )), (:quote, #QuoteNode
+            :open
+          ))
+      )),
+    (:line, 40, :none),
+    (:type, true, (:<:, :InvalidStateException, :Exception), (:block,
+        (:line, 41, :none),
+        (:(::), :msg, :AbstractString),
+        (:line, 42, :none),
+        (:(::), :state, :Symbol)
+      )),
+    (:line, 45, :none),
+    "    put!(c::Channel, v)\n\nAppends an item `v` to the channel `c`. Blocks if the channel is full.\n",
+    (:line, 50, :none),
+    (:function, (:call, :put!, (:(::), :c, :Channel), :v), (:block,
+        (:line, 51, :none),
+        (:&&, (:call, :!, (:call, :isopen, :c)), (:call, :throw, (:call, :closed_exception))),
+        (:line, 52, :none),
+        (:while, (:call, :(==), (:call, :length, (:., :c, (:quote, #QuoteNode
+                  :data
+                ))), (:., :c, (:quote, #QuoteNode
+                :sz_max
+              ))), (:block,
+            (:line, 53, :none),
+            (:call, :wait, (:., :c, (:quote, #QuoteNode
+                  :cond_put
+                )))
+          )),
+        (:line, 55, :none),
+        (:call, :push!, (:., :c, (:quote, #QuoteNode
+              :data
+            )), :v),
+        (:line, 56, :none),
+        (:call, :notify, (:., :c, (:quote, #QuoteNode
+              :cond_take
+            )), :nothing, true, false),
+        (:line, 57, :none),
+        :v
+      )),
+    (:line, 60, :none),
+    (:(=), (:call, :push!, (:(::), :c, :Channel), :v), (:block,
+        (:line, 60, :none),
+        (:call, :put!, :c, :v)
+      )),
+    (:line, 62, :none),
+    (:function, (:call, :fetch, (:(::), :c, :Channel)), (:block,
+        (:line, 63, :none),
+        (:call, :wait, :c),
+        (:line, 64, :none),
+        (:ref, (:., :c, (:quote, #QuoteNode
+              :data
+            )), 1)
+      )),
+    (:line, 67, :none),
+    "    take!(c::Channel)\n\nRemoves and returns a value from a `Channel`. Blocks till data is available.\n",
+    (:line, 72, :none),
+    (:function, (:call, :take!, (:(::), :c, :Channel)), (:block,
+        (:line, 73, :none),
+        (:call, :wait, :c),
+        (:line, 74, :none),
+        (:(=), :v, (:call, :shift!, (:., :c, (:quote, #QuoteNode
+                :data
+              )))),
+        (:line, 75, :none),
+        (:call, :notify, (:., :c, (:quote, #QuoteNode
+              :cond_put
+            )), :nothing, false, false),
+        (:line, 76, :none),
+        :v
+      )),
+    (:line, 79, :none),
+    (:(=), (:call, :shift!, (:(::), :c, :Channel)), (:block,
+        (:line, 79, :none),
+        (:call, :take!, :c)
+      )),
+    (:line, 81, :none),
+    "    isready(c::Channel)\n\nDetermine whether a `Channel` has a value stored to it.\n`isready` on `Channel`s is non-blocking.\n",
+    (:line, 87, :none),
+    (:(=), (:call, :isready, (:(::), :c, :Channel)), (:block,
+        (:line, 87, :none),
+        (:call, :>, (:call, :n_avail, :c), 0)
+      )),
+    (:line, 89, :none),
+    (:function, (:call, :wait, (:(::), :c, :Channel)), (:block,
+        (:line, 90, :none),
+        (:while, (:call, :!, (:call, :isready, :c)), (:block,
+            (:line, 91, :none),
+            (:&&, (:call, :!, (:call, :isopen, :c)), (:call, :throw, (:call, :closed_exception))),
+            (:line, 92, :none),
+            (:call, :wait, (:., :c, (:quote, #QuoteNode
+                  :cond_take
+                )))
+          )),
+        (:line, 94, :none),
+        :nothing
+      )),
+    (:line, 97, :none),
+    (:function, (:call, :notify_error, (:(::), :c, :Channel), :err), (:block,
+        (:line, 98, :none),
+        (:call, :notify_error, (:., :c, (:quote, #QuoteNode
+              :cond_take
+            )), :err),
+        (:line, 99, :none),
+        (:call, :notify_error, (:., :c, (:quote, #QuoteNode
+              :cond_put
+            )), :err)
+      )),
+    (:line, 102, :none),
+    (:(=), (:call, (:curly, :eltype, :T), (:(::), (:curly, :Type, (:curly, :Channel, :T)))), (:block,
+        (:line, 102, :none),
+        :T
+      )),
+    (:line, 104, :none),
+    (:(=), (:call, :n_avail, (:(::), :c, :Channel)), (:block,
+        (:line, 104, :none),
+        (:call, :length, (:., :c, (:quote, #QuoteNode
+              :data
+            )))
+      )),
+    (:line, 106, :none),
+    (:(=), (:call, :show, (:(::), :io, :IO), (:(::), :c, :Channel)), (:block,
+        (:line, 106, :none),
+        (:call, :print, :io, (:string, (:call, :typeof, :c), "(sz_max:", (:., :c, (:quote, #QuoteNode
+                :sz_max
+              )), ",sz_curr:", (:call, :n_avail, :c), ")"))
+      )),
+    (:line, 108, :none),
+    (:(=), (:call, (:curly, :start, :T), (:(::), :c, (:curly, :Channel, :T))), (:block,
+        (:line, 108, :none),
+        (:call, (:curly, :Ref, (:curly, :Nullable, :T)))
+      )),
+    (:line, 109, :none),
+    (:function, (:call, :done, (:(::), :c, :Channel), (:(::), :state, :Ref)), (:block,
+        (:line, 110, :none),
+        (:try, (:block,
+            (:line, 112, :none),
+            (:(=), (:ref, :state), (:call, :take!, :c)),
+            (:line, 113, :none),
+            (:return, false)
+          ), :e, (:block,
+            (:line, 115, :none),
+            (:if, (:&&, (:call, :isa, :e, :InvalidStateException), (:call, :(==), (:., :e, (:quote, #QuoteNode
+                      :state
+                    )), (:quote, #QuoteNode
+                    :closed
+                  ))), (:block,
+                (:line, 116, :none),
+                (:return, true)
+              ), (:block,
+                (:line, 118, :none),
+                (:call, :rethrow, :e)
+              ))
+          ))
+      )),
+    (:line, 122, :none),
+    (:(=), (:call, (:curly, :next, :T), (:(::), :c, (:curly, :Channel, :T)), :state), (:block,
+        (:line, 122, :none),
+        (:block,
+          (:(=), :v, (:call, :get, (:ref, :state))),
+          (:(=), (:ref, :state), :nothing),
+          (:tuple, :v, :state)
+        )
+      )),
+    (:line, 124, :none),
+    (:(=), (:call, (:curly, :iteratorsize, (:<:, :C, :Channel)), (:(::), (:curly, :Type, :C))), (:block,
+        (:line, 124, :none),
+        (:call, :SizeUnknown)
+      ))
+  ))

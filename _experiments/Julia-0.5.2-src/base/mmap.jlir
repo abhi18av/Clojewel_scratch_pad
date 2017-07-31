@@ -1,0 +1,430 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:module, true, :Mmap, (:block,
+        (:line, 3, :none),
+        (:line, 5, :none),
+        (:const, (:(=), :PAGESIZE, (:call, :Int, (:if, (:call, :is_unix), (:ccall, (:quote, #QuoteNode
+                    :jl_getpagesize
+                  ), :Clong, (:tuple,)), (:ccall, (:quote, #QuoteNode
+                    :jl_getallocationgranularity
+                  ), :Clong, (:tuple,)))))),
+        (:line, 8, :none),
+        (:type, true, (:<:, :Anonymous, :IO), (:block,
+            (:line, 9, :none),
+            (:(::), :name, :AbstractString),
+            (:line, 10, :none),
+            (:(::), :readonly, :Bool),
+            (:line, 11, :none),
+            (:(::), :create, :Bool)
+          )),
+        (:line, 14, :none),
+        (:(=), (:call, :Anonymous), (:block,
+            (:line, 14, :none),
+            (:call, :Anonymous, "", false, true)
+          )),
+        (:line, 15, :none),
+        (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+                :isopen
+              )), (:(::), :Anonymous)), (:block,
+            (:line, 15, :none),
+            true
+          )),
+        (:line, 16, :none),
+        (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+                :isreadable
+              )), (:(::), :Anonymous)), (:block,
+            (:line, 16, :none),
+            true
+          )),
+        (:line, 17, :none),
+        (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+                :iswritable
+              )), (:(::), :a, :Anonymous)), (:block,
+            (:line, 17, :none),
+            (:call, :!, (:., :a, (:quote, #QuoteNode
+                  :readonly
+                )))
+          )),
+        (:line, 19, :none),
+        (:const, (:(=), :INVALID_HANDLE_VALUE, -1)),
+        (:line, 21, :none),
+        (:(=), (:call, :gethandle, (:(::), :io, :Anonymous)), (:block,
+            (:line, 21, :none),
+            :INVALID_HANDLE_VALUE
+          )),
+        (:line, 24, :none),
+        (:if, (:call, :is_unix), (:block,
+            (:line, 26, :none),
+            (:const, (:(=), :PROT_READ, (:call, :Cint, 1))),
+            (:line, 27, :none),
+            (:const, (:(=), :PROT_WRITE, (:call, :Cint, 2))),
+            (:line, 28, :none),
+            (:const, (:(=), :MAP_SHARED, (:call, :Cint, 1))),
+            (:line, 29, :none),
+            (:const, (:(=), :MAP_PRIVATE, (:call, :Cint, 2))),
+            (:line, 30, :none),
+            (:const, (:(=), :MAP_ANONYMOUS, (:call, :Cint, (:if, (:call, :is_apple), 0x1000, 0x20)))),
+            (:line, 31, :none),
+            (:const, (:(=), :F_GETFL, (:call, :Cint, 3))),
+            (:line, 33, :none),
+            (:(=), (:call, :gethandle, (:(::), :io, :IO)), (:block,
+                (:line, 33, :none),
+                (:call, :fd, :io)
+              )),
+            (:line, 36, :none),
+            (:function, (:call, :settings, (:(::), :s, :Int), (:(::), :shared, :Bool)), (:block,
+                (:line, 37, :none),
+                (:(=), :flags, (:if, :shared, :MAP_SHARED, :MAP_PRIVATE)),
+                (:line, 38, :none),
+                (:if, (:call, :(==), :s, :INVALID_HANDLE_VALUE), (:block,
+                    (:line, 39, :none),
+                    (:|=, :flags, :MAP_ANONYMOUS),
+                    (:line, 40, :none),
+                    (:(=), :prot, (:call, :|, :PROT_READ, :PROT_WRITE))
+                  ), (:block,
+                    (:line, 42, :none),
+                    (:(=), :mode, (:ccall, (:quote, #QuoteNode
+                          :fcntl
+                        ), :Cint, (:tuple, :Cint, :Cint), :s, :F_GETFL)),
+                    (:line, 43, :none),
+                    (:call, :systemerror, "fcntl F_GETFL", (:call, :(==), :mode, -1)),
+                    (:line, 44, :none),
+                    (:(=), :mode, (:call, :&, :mode, 3)),
+                    (:line, 45, :none),
+                    (:(=), :prot, (:if, (:call, :(==), :mode, 0), :PROT_READ, (:if, (:call, :(==), :mode, 1), :PROT_WRITE, (:call, :|, :PROT_READ, :PROT_WRITE)))),
+                    (:line, 46, :none),
+                    (:if, (:call, :(==), (:call, :&, :prot, :PROT_READ), 0), (:block,
+                        (:line, 47, :none),
+                        (:call, :throw, (:call, :ArgumentError, "mmap requires read permissions on the file (choose r+)"))
+                      ))
+                  )),
+                (:line, 50, :none),
+                (:return, (:tuple, :prot, :flags, (:call, :>, (:call, :&, :prot, :PROT_WRITE), 0)))
+              )),
+            (:line, 56, :none),
+            (:(=), (:call, :grow!, (:(::), :Anonymous), (:(::), :o, :Integer), (:(::), :l, :Integer)), (:block,
+                (:line, 56, :none),
+                (:return, nothing)
+              )),
+            (:line, 57, :none),
+            (:function, (:call, :grow!, (:(::), :io, :IO), (:(::), :offset, :Integer), (:(::), :len, :Integer)), (:block,
+                (:line, 58, :none),
+                (:(=), :pos, (:call, :position, :io)),
+                (:line, 59, :none),
+                (:(=), :filelen, (:call, :filesize, :io)),
+                (:line, 60, :none),
+                (:if, (:call, :<, :filelen, (:call, :+, :offset, :len)), (:block,
+                    (:line, 61, :none),
+                    (:(=), :failure, (:ccall, (:quote, #QuoteNode
+                          :jl_ftruncate
+                        ), :Cint, (:tuple, :Cint, :Int64), (:call, :fd, :io), (:call, :+, :offset, :len))),
+                    (:line, 62, :none),
+                    (:call, (:., :Base, (:quote, #QuoteNode
+                          :systemerror
+                        )), (:quote, #QuoteNode
+                        :ftruncate
+                      ), (:call, :(!=), :failure, 0))
+                  )),
+                (:line, 64, :none),
+                (:call, :seek, :io, :pos),
+                (:line, 65, :none),
+                (:return, nothing)
+              ))
+          ), (:block,
+            (:line, 68, :none),
+            (:if, (:call, :is_windows), (:block,
+                (:line, 70, :none),
+                (:typealias, :DWORD, :Culong),
+                (:line, 72, :none),
+                (:const, (:(=), :PAGE_READONLY, (:call, :DWORD, 0x02))),
+                (:line, 73, :none),
+                (:const, (:(=), :PAGE_READWRITE, (:call, :DWORD, 0x04))),
+                (:line, 74, :none),
+                (:const, (:(=), :PAGE_WRITECOPY, (:call, :DWORD, 0x08))),
+                (:line, 75, :none),
+                (:const, (:(=), :PAGE_EXECUTE_READ, (:call, :DWORD, 0x20))),
+                (:line, 76, :none),
+                (:const, (:(=), :PAGE_EXECUTE_READWRITE, (:call, :DWORD, 0x40))),
+                (:line, 77, :none),
+                (:const, (:(=), :PAGE_EXECUTE_WRITECOPY, (:call, :DWORD, 0x80))),
+                (:line, 78, :none),
+                (:const, (:(=), :FILE_MAP_COPY, (:call, :DWORD, 0x01))),
+                (:line, 79, :none),
+                (:const, (:(=), :FILE_MAP_WRITE, (:call, :DWORD, 0x02))),
+                (:line, 80, :none),
+                (:const, (:(=), :FILE_MAP_READ, (:call, :DWORD, 0x04))),
+                (:line, 81, :none),
+                (:const, (:(=), :FILE_MAP_EXECUTE, (:call, :DWORD, 0x20))),
+                (:line, 83, :none),
+                (:function, (:call, :gethandle, (:(::), :io, :IO)), (:block,
+                    (:line, 84, :none),
+                    (:(=), :handle, (:., (:call, (:., :Libc, (:quote, #QuoteNode
+                              :_get_osfhandle
+                            )), (:call, :RawFD, (:call, :fd, :io))), (:quote, #QuoteNode
+                          :handle
+                        ))),
+                    (:line, 85, :none),
+                    (:call, :systemerror, (:string, "could not get handle for file to map: ", (:call, (:., :Libc, (:quote, #QuoteNode
+                              :FormatMessage
+                            )))), (:call, :(==), :handle, -1)),
+                    (:line, 86, :none),
+                    (:return, (:call, :Int, :handle))
+                  )),
+                (:line, 89, :none),
+                (:(=), (:call, :settings, (:(::), :sh, :Anonymous)), (:block,
+                    (:line, 89, :none),
+                    (:tuple, (:., :sh, (:quote, #QuoteNode
+                          :name
+                        )), (:., :sh, (:quote, #QuoteNode
+                          :readonly
+                        )), (:., :sh, (:quote, #QuoteNode
+                          :create
+                        )))
+                  )),
+                (:line, 90, :none),
+                (:(=), (:call, :settings, (:(::), :io, :IO)), (:block,
+                    (:line, 90, :none),
+                    (:tuple, (:call, (:curly, :Ptr, :Cwchar_t), 0), (:call, :isreadonly, :io), true)
+                  ))
+              ), (:block,
+                (:line, 93, :none),
+                (:call, :error, "mmap not defined for this OS")
+              ))
+          )),
+        (:line, 97, :none),
+        (:function, (:call, (:curly, :mmap, :T, :N), (:parameters, (:kw, (:(::), :grow, :Bool), true), (:kw, (:(::), :shared, :Bool), true)), (:(::), :io, :IO), (:kw, (:(::), (:curly, :Type, (:curly, :Array, :T, :N))), (:curly, :Vector, :UInt8)), (:kw, (:(::), :dims, (:curly, :NTuple, :N, :Integer)), (:tuple, (:call, :div, (:call, :-, (:call, :filesize, :io), (:call, :position, :io)), (:call, :sizeof, :T)))), (:kw, (:(::), :offset, :Integer), (:call, :position, :io))), (:block,
+            (:line, 102, :none),
+            (:||, (:call, :isopen, :io), (:call, :throw, (:call, :ArgumentError, (:string, :io, " must be open to mmap")))),
+            (:line, 103, :none),
+            (:||, (:call, :isbits, :T), (:call, :throw, (:call, :ArgumentError, (:string, "unable to mmap ", :T, "; must satisfy isbits(T) == true")))),
+            (:line, 105, :none),
+            (:(=), :len, (:call, :*, (:call, :prod, :dims), (:call, :sizeof, :T))),
+            (:line, 106, :none),
+            (:||, (:call, :(>=), :len, 0), (:call, :throw, (:call, :ArgumentError, (:string, "requested size must be ≥ 0, got ", :len)))),
+            (:line, 107, :none),
+            (:&&, (:call, :(==), :len, 0), (:return, (:call, (:curly, :Array, :T), (:call, :ntuple, (:->, :x, (:block,
+                        (:line, 107, :none),
+                        0
+                      )), (:curly, :Val, :N))))),
+            (:line, 108, :none),
+            (:||, (:call, :<, :len, (:call, :-, (:call, :typemax, :Int), :PAGESIZE)), (:call, :throw, (:call, :ArgumentError, (:string, "requested size must be < ", (:call, :-, (:call, :typemax, :Int), :PAGESIZE), ", got ", :len)))),
+            (:line, 110, :none),
+            (:||, (:call, :(>=), :offset, 0), (:call, :throw, (:call, :ArgumentError, (:string, "requested offset must be ≥ 0, got ", :offset)))),
+            (:line, 113, :none),
+            (:(=), (:(::), :offset_page, :Int64), (:call, :*, (:call, :div, :offset, :PAGESIZE), :PAGESIZE)),
+            (:line, 115, :none),
+            (:(=), :mmaplen, (:call, :+, (:call, :-, :offset, :offset_page), :len)),
+            (:line, 117, :none),
+            (:(=), :file_desc, (:call, :gethandle, :io)),
+            (:line, 119, :none),
+            (:macrocall, Symbol("@static"), (:if, (:call, :is_unix), (:block,
+                  (:line, 120, :none),
+                  (:(=), (:tuple, :prot, :flags, :iswrite), (:call, :settings, :file_desc, :shared)),
+                  (:line, 121, :none),
+                  (:&&, :iswrite, (:&&, :grow, (:call, :grow!, :io, :offset, :len))),
+                  (:line, 123, :none),
+                  (:(=), :ptr, (:ccall, (:quote, #QuoteNode
+                        :jl_mmap
+                      ), (:curly, :Ptr, :Void), (:tuple, (:curly, :Ptr, :Void), :Csize_t, :Cint, :Cint, :Cint, :Int64), :C_NULL, :mmaplen, :prot, :flags, :file_desc, :offset_page)),
+                  (:line, 124, :none),
+                  (:call, :systemerror, "memory mapping failed", (:call, :(==), (:call, :reinterpret, :Int, :ptr), -1))
+                ), (:block,
+                  (:line, 126, :none),
+                  (:(=), (:tuple, :name, :readonly, :create), (:call, :settings, :io)),
+                  (:line, 127, :none),
+                  (:(=), :szfile, (:call, :convert, :Csize_t, (:call, :+, :len, :offset))),
+                  (:line, 128, :none),
+                  (:&&, :readonly, (:&&, (:call, :>, :szfile, (:call, :filesize, :io)), (:call, :throw, (:call, :ArgumentError, (:string, "unable to increase file size to ", :szfile, " due to read-only permissions"))))),
+                  (:line, 129, :none),
+                  (:(=), :handle, (:if, :create, (:ccall, (:quote, #QuoteNode
+                          :CreateFileMappingW
+                        ), (:curly, :Ptr, :Void), (:tuple, :Cptrdiff_t, (:curly, :Ptr, :Void), :DWORD, :DWORD, :DWORD, :Cwstring), :file_desc, :C_NULL, (:if, :readonly, :PAGE_READONLY, :PAGE_READWRITE), (:call, :>>, :szfile, 32), (:call, :&, :szfile, (:call, :typemax, :UInt32)), :name, (:stdcall,)), (:ccall, (:quote, #QuoteNode
+                          :OpenFileMappingW
+                        ), (:curly, :Ptr, :Void), (:tuple, :DWORD, :Cint, :Cwstring), (:if, :readonly, :FILE_MAP_READ, :FILE_MAP_WRITE), true, :name, (:stdcall,)))),
+                  (:line, 133, :none),
+                  (:&&, (:call, :(==), :handle, :C_NULL), (:call, :error, (:string, "could not create file mapping: ", (:call, (:., :Libc, (:quote, #QuoteNode
+                              :FormatMessage
+                            )))))),
+                  (:line, 134, :none),
+                  (:(=), :ptr, (:ccall, (:quote, #QuoteNode
+                        :MapViewOfFile
+                      ), (:curly, :Ptr, :Void), (:tuple, (:curly, :Ptr, :Void), :DWORD, :DWORD, :DWORD, :Csize_t), :handle, (:if, :readonly, :FILE_MAP_READ, :FILE_MAP_WRITE), (:call, :>>, :offset_page, 32), (:call, :&, :offset_page, (:call, :typemax, :UInt32)), (:call, :+, (:call, :-, :offset, :offset_page), :len), (:stdcall,))),
+                  (:line, 136, :none),
+                  (:&&, (:call, :(==), :ptr, :C_NULL), (:call, :error, (:string, "could not create mapping view: ", (:call, (:., :Libc, (:quote, #QuoteNode
+                              :FormatMessage
+                            ))))))
+                ))),
+            (:line, 139, :none),
+            (:(=), :A, (:call, :unsafe_wrap, :Array, (:call, :convert, (:curly, :Ptr, :T), (:call, :+, (:call, :UInt, :ptr), (:call, :UInt, (:call, :-, :offset, :offset_page)))), :dims)),
+            (:line, 140, :none),
+            (:call, :finalizer, :A, (:function, (:tuple, :x), (:block,
+                  (:line, 141, :none),
+                  (:macrocall, Symbol("@static"), (:if, (:call, :is_unix), (:block,
+                        (:line, 142, :none),
+                        (:call, :systemerror, "munmap", (:call, :(!=), (:ccall, (:quote, #QuoteNode
+                                :munmap
+                              ), :Cint, (:tuple, (:curly, :Ptr, :Void), :Int), :ptr, :mmaplen), 0))
+                      ), (:block,
+                        (:line, 144, :none),
+                        (:(=), :status, (:call, :(!=), (:ccall, (:quote, #QuoteNode
+                                :UnmapViewOfFile
+                              ), :Cint, (:tuple, (:curly, :Ptr, :Void)), :ptr, (:stdcall,)), 0)),
+                        (:line, 145, :none),
+                        (:|=, :status, (:call, :(!=), (:ccall, (:quote, #QuoteNode
+                                :CloseHandle
+                              ), :Cint, (:tuple, (:curly, :Ptr, :Void)), :handle, (:stdcall,)), 0)),
+                        (:line, 146, :none),
+                        (:||, :status, (:call, :error, (:string, "could not unmap view: ", (:call, (:., :Libc, (:quote, #QuoteNode
+                                    :FormatMessage
+                                  ))))))
+                      )))
+                ))),
+            (:line, 149, :none),
+            (:return, :A)
+          )),
+        (:line, 152, :none),
+        (:(=), (:call, (:curly, :mmap, (:<:, :T, :Array), :N), (:parameters, (:kw, (:(::), :grow, :Bool), true), (:kw, (:(::), :shared, :Bool), true)), (:(::), :file, :AbstractString), (:kw, (:(::), (:curly, :Type, :T)), (:curly, :Vector, :UInt8)), (:kw, (:(::), :dims, (:curly, :NTuple, :N, :Integer)), (:tuple, (:call, :div, (:call, :filesize, :file), (:call, :sizeof, (:call, :eltype, :T))))), (:kw, (:(::), :offset, :Integer), (:call, :Int64, 0))), (:block,
+            (:line, 152, :none),
+            (:(::), (:call, :open, (:->, :io, (:block,
+                    (:line, 156, :none),
+                    (:call, :mmap, (:parameters, (:kw, :grow, :grow), (:kw, :shared, :shared)), :io, :T, :dims, :offset)
+                  )), :file, (:if, (:call, :isfile, :file), "r+", "w+")), (:curly, :Array, (:call, :eltype, :T), :N))
+          )),
+        (:line, 159, :none),
+        (:(=), (:call, (:curly, :mmap, (:<:, :T, :Array)), (:parameters, (:kw, (:(::), :grow, :Bool), true), (:kw, (:(::), :shared, :Bool), true)), (:(::), :io, :IO), (:(::), (:curly, :Type, :T)), (:(::), :len, :Integer), (:kw, (:(::), :offset, :Integer), (:call, :position, :io))), (:block,
+            (:line, 159, :none),
+            (:call, :mmap, (:parameters, (:kw, :grow, :grow), (:kw, :shared, :shared)), :io, :T, (:tuple, :len), :offset)
+          )),
+        (:line, 161, :none),
+        (:(=), (:call, (:curly, :mmap, (:<:, :T, :Array)), (:parameters, (:kw, (:(::), :grow, :Bool), true), (:kw, (:(::), :shared, :Bool), true)), (:(::), :file, :AbstractString), (:(::), (:curly, :Type, :T)), (:(::), :len, :Integer), (:kw, (:(::), :offset, :Integer), (:call, :Int64, 0))), (:block,
+            (:line, 161, :none),
+            (:(::), (:call, :open, (:->, :io, (:block,
+                    (:line, 162, :none),
+                    (:call, :mmap, (:parameters, (:kw, :grow, :grow), (:kw, :shared, :shared)), :io, :T, (:tuple, :len), :offset)
+                  )), :file, (:if, (:call, :isfile, :file), "r+", "w+")), (:curly, :Vector, (:call, :eltype, :T)))
+          )),
+        (:line, 165, :none),
+        (:(=), (:call, (:curly, :mmap, (:<:, :T, :Array), :N), (:parameters, (:kw, (:(::), :shared, :Bool), true)), (:(::), (:curly, :Type, :T)), (:(::), :dims, (:curly, :NTuple, :N, :Integer))), (:block,
+            (:line, 165, :none),
+            (:call, :mmap, (:parameters, (:kw, :shared, :shared)), (:call, :Anonymous), :T, :dims, (:call, :Int64, 0))
+          )),
+        (:line, 166, :none),
+        (:(=), (:call, (:curly, :mmap, (:<:, :T, :Array)), (:parameters, (:kw, (:(::), :shared, :Bool), true)), (:(::), (:curly, :Type, :T)), (:..., (:(::), :i, :Integer))), (:block,
+            (:line, 166, :none),
+            (:call, :mmap, (:parameters, (:kw, :shared, :shared)), (:call, :Anonymous), :T, (:call, :convert, (:curly, :Tuple, (:curly, :Vararg, :Int)), :i), (:call, :Int64, 0))
+          )),
+        (:line, 168, :none),
+        (:function, (:call, (:curly, :mmap, (:<:, :T, :BitArray), :N), (:parameters, (:kw, (:(::), :grow, :Bool), true), (:kw, (:(::), :shared, :Bool), true)), (:(::), :io, :IOStream), (:(::), (:curly, :Type, :T)), (:(::), :dims, (:curly, :NTuple, :N, :Integer)), (:kw, (:(::), :offset, :Int64), (:call, :position, :io))), (:block,
+            (:line, 172, :none),
+            (:(=), :n, (:call, :prod, :dims)),
+            (:line, 173, :none),
+            (:(=), :nc, (:call, (:., :Base, (:quote, #QuoteNode
+                    :num_bit_chunks
+                  )), :n)),
+            (:line, 174, :none),
+            (:(=), :chunks, (:call, :mmap, (:parameters, (:kw, :grow, :grow), (:kw, :shared, :shared)), :io, (:curly, :Vector, :UInt64), (:tuple, :nc), :offset)),
+            (:line, 175, :none),
+            (:if, (:call, :!, (:call, :isreadonly, :io)), (:block,
+                (:line, 176, :none),
+                (:&=, (:ref, :chunks, :end), (:call, (:., :Base, (:quote, #QuoteNode
+                        :_msk_end
+                      )), :n))
+              ), (:block,
+                (:line, 178, :none),
+                (:if, (:call, :(!=), (:ref, :chunks, :end), (:call, :&, (:ref, :chunks, :end), (:call, (:., :Base, (:quote, #QuoteNode
+                            :_msk_end
+                          )), :n))), (:block,
+                    (:line, 179, :none),
+                    (:call, :throw, (:call, :ArgumentError, (:string, "the given file does not contain a valid BitArray of size ", (:call, :join, :dims, 'x'), " (open with \"r+\" mode to override)")))
+                  ))
+              )),
+            (:line, 182, :none),
+            (:(=), :B, (:call, (:curly, :BitArray, :N), (:..., (:call, :ntuple, (:->, :i, (:block,
+                        (:line, 182, :none),
+                        0
+                      )), (:curly, :Val, :N))))),
+            (:line, 183, :none),
+            (:(=), (:., :B, (:quote, #QuoteNode
+                  :chunks
+                )), :chunks),
+            (:line, 184, :none),
+            (:(=), (:., :B, (:quote, #QuoteNode
+                  :len
+                )), :n),
+            (:line, 185, :none),
+            (:if, (:call, :(!=), :N, 1), (:block,
+                (:line, 186, :none),
+                (:(=), (:., :B, (:quote, #QuoteNode
+                      :dims
+                    )), :dims)
+              )),
+            (:line, 188, :none),
+            (:return, :B)
+          )),
+        (:line, 191, :none),
+        (:(=), (:call, (:curly, :mmap, (:<:, :T, :BitArray), :N), (:parameters, (:kw, (:(::), :grow, :Bool), true), (:kw, (:(::), :shared, :Bool), true)), (:(::), :file, :AbstractString), (:(::), (:curly, :Type, :T)), (:(::), :dims, (:curly, :NTuple, :N, :Integer)), (:kw, (:(::), :offset, :Integer), (:call, :Int64, 0))), (:block,
+            (:line, 191, :none),
+            (:(::), (:call, :open, (:->, :io, (:block,
+                    (:line, 192, :none),
+                    (:call, :mmap, (:parameters, (:kw, :grow, :grow), (:kw, :shared, :shared)), :io, :T, :dims, :offset)
+                  )), :file, (:if, (:call, :isfile, :file), "r+", "w+")), (:curly, :BitArray, :N))
+          )),
+        (:line, 195, :none),
+        (:(=), (:call, (:curly, :mmap, (:<:, :T, :BitArray)), (:parameters, (:kw, (:(::), :grow, :Bool), true), (:kw, (:(::), :shared, :Bool), true)), (:(::), :io, :IO), (:(::), (:curly, :Type, :T)), (:(::), :len, :Integer), (:kw, (:(::), :offset, :Integer), (:call, :position, :io))), (:block,
+            (:line, 195, :none),
+            (:call, :mmap, (:parameters, (:kw, :grow, :grow), (:kw, :shared, :shared)), :io, :T, (:tuple, :len), :offset)
+          )),
+        (:line, 197, :none),
+        (:(=), (:call, (:curly, :mmap, (:<:, :T, :BitArray)), (:parameters, (:kw, (:(::), :grow, :Bool), true), (:kw, (:(::), :shared, :Bool), true)), (:(::), :file, :AbstractString), (:(::), (:curly, :Type, :T)), (:(::), :len, :Integer), (:kw, (:(::), :offset, :Integer), (:call, :Int64, 0))), (:block,
+            (:line, 197, :none),
+            (:(::), (:call, :open, (:->, :io, (:block,
+                    (:line, 198, :none),
+                    (:call, :mmap, (:parameters, (:kw, :grow, :grow), (:kw, :shared, :shared)), :io, :T, (:tuple, :len), :offset)
+                  )), :file, (:if, (:call, :isfile, :file), "r+", "w+")), :BitVector)
+          )),
+        (:line, 201, :none),
+        (:(=), (:call, (:curly, :mmap, (:<:, :T, :BitArray), :N), (:parameters, (:kw, (:(::), :shared, :Bool), true)), (:(::), (:curly, :Type, :T)), (:(::), :dims, (:curly, :NTuple, :N, :Integer))), (:block,
+            (:line, 201, :none),
+            (:call, :mmap, (:parameters, (:kw, :shared, :shared)), (:call, :Anonymous), :T, :dims, (:call, :Int64, 0))
+          )),
+        (:line, 202, :none),
+        (:(=), (:call, (:curly, :mmap, (:<:, :T, :BitArray)), (:parameters, (:kw, (:(::), :shared, :Bool), true)), (:(::), (:curly, :Type, :T)), (:..., (:(::), :i, :Integer))), (:block,
+            (:line, 202, :none),
+            (:call, :mmap, (:parameters, (:kw, :shared, :shared)), (:call, :Anonymous), :T, (:call, :convert, (:curly, :Tuple, (:curly, :Vararg, :Int)), :i), (:call, :Int64, 0))
+          )),
+        (:line, 205, :none),
+        (:const, (:(=), :MS_ASYNC, 1)),
+        (:line, 206, :none),
+        (:const, (:(=), :MS_INVALIDATE, 2)),
+        (:line, 207, :none),
+        (:const, (:(=), :MS_SYNC, 4)),
+        (:line, 209, :none),
+        (:function, (:call, (:curly, :sync!, :T), (:(::), :m, (:curly, :Array, :T)), (:kw, (:(::), :flags, :Integer), :MS_SYNC)), (:block,
+            (:line, 210, :none),
+            (:(=), :offset, (:call, :rem, (:call, :UInt, (:call, :pointer, :m)), :PAGESIZE)),
+            (:line, 211, :none),
+            (:(=), :ptr, (:call, :-, (:call, :pointer, :m), :offset)),
+            (:line, 212, :none),
+            (:macrocall, Symbol("@static"), (:if, (:call, :is_unix), (:block,
+                  (:line, 213, :none),
+                  (:call, :systemerror, "msync", (:call, :(!=), (:ccall, (:quote, #QuoteNode
+                          :msync
+                        ), :Cint, (:tuple, (:curly, :Ptr, :Void), :Csize_t, :Cint), :ptr, (:call, :*, (:call, :length, :m), (:call, :sizeof, :T)), :flags), 0))
+                ), (:block,
+                  (:line, 216, :none),
+                  (:call, :systemerror, (:string, "could not FlushViewOfFile: ", (:call, (:., :Libc, (:quote, #QuoteNode
+                            :FormatMessage
+                          )))), (:call, :(==), (:ccall, (:quote, #QuoteNode
+                          :FlushViewOfFile
+                        ), :Cint, (:tuple, (:curly, :Ptr, :Void), :Csize_t), :ptr, (:call, :length, :m), (:stdcall,)), 0))
+                )))
+          )),
+        (:line, 220, :none),
+        (:(=), (:call, :sync!, (:(::), :B, :BitArray), (:kw, (:(::), :flags, :Integer), :MS_SYNC)), (:block,
+            (:line, 220, :none),
+            (:call, :sync!, (:., :B, (:quote, #QuoteNode
+                  :chunks
+                )), :flags)
+          ))
+      ))
+  ))

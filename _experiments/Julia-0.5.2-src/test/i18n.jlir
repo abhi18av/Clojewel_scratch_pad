@@ -1,0 +1,10 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:using, :Base, :I18n),
+    (:line, 5, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :locale), "")),
+    (:line, 6, :none),
+    (:call, :locale, "en_US"),
+    (:line, 7, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :locale), "en_US"))
+  ))

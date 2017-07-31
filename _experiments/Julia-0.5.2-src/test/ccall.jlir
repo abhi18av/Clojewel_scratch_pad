@@ -1,0 +1,1878 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:toplevel, (:import, :Base, :copy), (:import, :Base, :(==))),
+    (:line, 5, :none),
+    (:const, (:(=), :libccalltest, "libccalltest")),
+    (:line, 7, :none),
+    (:const, (:(=), :verbose, false)),
+    (:line, 8, :none),
+    (:ccall, (:tuple, (:quote, #QuoteNode
+          :set_verbose
+        ), :libccalltest), :Void, (:tuple, :Int32), :verbose),
+    (:line, 12, :none),
+    (:(=), (:call, :ccall_test_func, :x), (:block,
+        (:line, 12, :none),
+        (:ccall, (:tuple, (:quote, #QuoteNode
+              :testUcharX
+            ), :libccalltest), :Int32, (:tuple, :UInt8), (:call, :%, :x, :UInt8))
+      )),
+    (:line, 13, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :ccall_test_func, 3), 1)),
+    (:line, 14, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :ccall_test_func, 259), 1)),
+    (:line, 18, :none),
+    (:(=), (:call, (:curly, :ccall_echo_func, :T, :U), :x, (:(::), (:curly, :Type, :T)), (:(::), (:curly, :Type, :U))), (:block,
+        (:line, 18, :none),
+        (:ccall, (:tuple, (:quote, #QuoteNode
+              :test_echo_p
+            ), :libccalltest), :T, (:tuple, :U), :x)
+      )),
+    (:line, 22, :none),
+    (:macrocall, Symbol("@noinline"), (:(=), (:call, (:curly, :ccall_echo_load, :T, :U), :x, (:(::), (:curly, :Type, :T)), (:(::), (:curly, :Type, :U))), (:block,
+          (:line, 22, :none),
+          (:call, :unsafe_load, (:call, :ccall_echo_func, :x, :T, :U))
+        ))),
+    (:line, 24, :none),
+    (:macrocall, Symbol("@noinline"), (:(=), (:call, (:curly, :ccall_echo_objref, :T, :U), :x, (:(::), (:curly, :Type, :T)), (:(::), (:curly, :Type, :U))), (:block,
+          (:line, 24, :none),
+          (:call, :unsafe_pointer_to_objref, (:call, :ccall_echo_func, :x, (:curly, :Ptr, :T), :U))
+        ))),
+    (:line, 26, :none),
+    (:type, true, :IntLike, (:block,
+        (:line, 27, :none),
+        (:(::), :x, :Int)
+      )),
+    (:line, 29, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :ccall_echo_load, 132, (:curly, :Ptr, :Int), (:curly, :Ref, :Int)), 132)),
+    (:line, 30, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :ccall_echo_load, (:call, :Ref, 921), (:curly, :Ptr, :Int), (:curly, :Ref, :Int)), 921)),
+    (:line, 31, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :ccall_echo_load, (:call, :IntLike, 993), (:curly, :Ptr, :Int), (:curly, :Ref, :IntLike)), 993)),
+    (:line, 32, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:., (:call, :ccall_echo_load, (:call, :IntLike, 881), (:curly, :Ptr, :IntLike), (:curly, :Ref, :IntLike)), (:quote, #QuoteNode
+            :x
+          )), 881)),
+    (:line, 33, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :ccall_echo_func, 532, :Int, :Int), 532)),
+    (:line, 34, :none),
+    (:if, (:call, :(==), (:., :Sys, (:quote, #QuoteNode
+            :WORD_SIZE
+          )), 64), (:block,
+        (:line, 36, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), (:., (:call, :ccall_echo_func, 164, :IntLike, :Int), (:quote, #QuoteNode
+                :x
+              )), 164))
+      )),
+    (:line, 38, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :ccall_echo_func, (:call, :IntLike, 828), :Int, :IntLike), 828)),
+    (:line, 39, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :ccall_echo_func, 913, :Any, :Any), 913)),
+    (:line, 40, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :ccall_echo_objref, 553, (:curly, :Ptr, :Any), :Any), 553)),
+    (:line, 41, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :ccall_echo_func, 124, (:curly, :Ref, :Int), :Any), 124)),
+    (:line, 42, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :ccall_echo_load, 422, (:curly, :Ptr, :Any), (:curly, :Ref, :Any)), 422)),
+    (:line, 43, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :ccall_echo_load, (:vect, 383), (:curly, :Ptr, :Int), (:curly, :Ref, :Int)), 383)),
+    (:line, 44, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :ccall_echo_load, (:call, :Ref, (:vect, 144, 172), 2), (:curly, :Ptr, :Int), (:curly, :Ref, :Int)), 172)),
+    (:line, 50, :none),
+    (:let, (:block,
+        (:line, 51, :none),
+        (:(=), :a, (:call, :+, 20, (:call, :*, 51, :im))),
+        (:line, 53, :none),
+        (:(=), :x, (:ccall, (:tuple, (:quote, #QuoteNode
+                :ctest
+              ), :libccalltest), (:curly, :Complex, :Int), (:tuple, (:curly, :Complex, :Int)), :a)),
+        (:line, 55, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :x, (:call, :-, (:call, :+, :a, 1), (:call, :*, 2, :im)))),
+        (:line, 57, :none),
+        (:(=), :ci_ary, (:vect, :a)),
+        (:line, 58, :none),
+        (:(=), :x, (:call, :unsafe_load, (:ccall, (:tuple, (:quote, #QuoteNode
+                  :cptest
+                ), :libccalltest), (:curly, :Ptr, (:curly, :Complex, :Int)), (:tuple, (:curly, :Ptr, (:curly, :Complex, :Int))), :ci_ary))),
+        (:line, 61, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :x, (:call, :-, (:call, :+, :a, 1), (:call, :*, 2, :im)))),
+        (:line, 62, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :a, (:call, :+, 20, (:call, :*, 51, :im)))),
+        (:line, 64, :none),
+        (:(=), :x, (:ccall, (:tuple, (:quote, #QuoteNode
+                :cptest_static
+              ), :libccalltest), (:curly, :Ptr, (:curly, :Complex, :Int)), (:tuple, (:curly, :Ptr, (:curly, :Complex, :Int))), (:&, :a))),
+        (:line, 65, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :unsafe_load, :x), :a)),
+        (:line, 66, :none),
+        (:call, (:., :Libc, (:quote, #QuoteNode
+              :free
+            )), (:call, :convert, (:curly, :Ptr, :Void), :x))
+      ), :a, :ci_ary, :x),
+    (:line, 69, :none),
+    (:let, (:block,
+        (:line, 70, :none),
+        (:(=), :a, (:call, :+, 2.84, (:call, :*, 5.2, :im))),
+        (:line, 72, :none),
+        (:(=), :x, (:ccall, (:tuple, (:quote, #QuoteNode
+                :cgtest
+              ), :libccalltest), :Complex128, (:tuple, :Complex128), :a)),
+        (:line, 74, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :x, (:call, :-, (:call, :+, :a, 1), (:call, :*, 2, :im)))),
+        (:line, 76, :none),
+        (:(=), :b, (:vect, :a)),
+        (:line, 77, :none),
+        (:(=), :x, (:call, :unsafe_load, (:ccall, (:tuple, (:quote, #QuoteNode
+                  :cgptest
+                ), :libccalltest), (:curly, :Ptr, :Complex128), (:tuple, (:curly, :Ptr, :Complex128)), :b))),
+        (:line, 79, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :x, (:call, :-, (:call, :+, :a, 1), (:call, :*, 2, :im)))),
+        (:line, 80, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :a, (:call, :+, 2.84, (:call, :*, 5.2, :im))))
+      ), :a, :b, :x),
+    (:line, 83, :none),
+    (:let, (:block,
+        (:line, 84, :none),
+        (:(=), :a, (:call, :+, 3.34f0, (:call, :*, 53.2f0, :im))),
+        (:line, 86, :none),
+        (:(=), :x, (:ccall, (:tuple, (:quote, #QuoteNode
+                :cftest
+              ), :libccalltest), :Complex64, (:tuple, :Complex64), :a)),
+        (:line, 88, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :x, (:call, :-, (:call, :+, :a, 1), (:call, :*, 2, :im)))),
+        (:line, 90, :none),
+        (:(=), :b, (:vect, :a)),
+        (:line, 91, :none),
+        (:(=), :x, (:call, :unsafe_load, (:ccall, (:tuple, (:quote, #QuoteNode
+                  :cfptest
+                ), :libccalltest), (:curly, :Ptr, :Complex64), (:tuple, (:curly, :Ptr, :Complex64)), :b))),
+        (:line, 93, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :x, (:call, :-, (:call, :+, :a, 1), (:call, :*, 2, :im)))),
+        (:line, 94, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :a, (:call, :+, 3.34f0, (:call, :*, 53.2f0, :im))))
+      ), :a, :b, :x),
+    (:line, 100, :none),
+    (:let, (:block,
+        (:line, 101, :none),
+        (:(=), :a, (:call, :+, 2.84, (:call, :*, 5.2, :im))),
+        (:line, 103, :none),
+        (:macrocall, Symbol("@test_throws"), :MethodError, (:ccall, (:tuple, (:quote, #QuoteNode
+                :cptest
+              ), :libccalltest), (:curly, :Ptr, (:curly, :Complex, :Int)), (:tuple, (:curly, :Ptr, (:curly, :Complex, :Int))), :a)),
+        (:line, 104, :none),
+        (:macrocall, Symbol("@test_throws"), :MethodError, (:ccall, (:tuple, (:quote, #QuoteNode
+                :cptest
+              ), :libccalltest), (:curly, :Ptr, (:curly, :Complex, :Int)), (:tuple, (:curly, :Complex, :Int)), (:&, :a)))
+      ), :a),
+    (:line, 110, :none),
+    (:type, true, :Struct1, (:block,
+        (:line, 111, :none),
+        (:(::), :x, :Float32),
+        (:line, 112, :none),
+        (:(::), :y, :Float64)
+      )),
+    (:line, 114, :none),
+    (:type, false, :Struct1I, (:block,
+        (:line, 115, :none),
+        (:(::), :x, :Float32),
+        (:line, 116, :none),
+        (:(::), :y, :Float64)
+      )),
+    (:line, 118, :none),
+    (:(=), (:call, :copy, (:(::), :a, :Struct1)), (:block,
+        (:line, 118, :none),
+        (:call, :Struct1, (:., :a, (:quote, #QuoteNode
+              :x
+            )), (:., :a, (:quote, #QuoteNode
+              :y
+            )))
+      )),
+    (:line, 119, :none),
+    (:(=), (:call, :copy, (:(::), :a, :Struct1I)), (:block,
+        (:line, 119, :none),
+        :a
+      )),
+    (:line, 121, :none),
+    (:function, (:call, (:curly, :test_struct1, :Struct), (:(::), (:curly, :Type, :Struct))), (:block,
+        (:line, 122, :none),
+        (:(=), :a, (:call, :Struct, 3.5239422f25, 19.287577)),
+        (:line, 123, :none),
+        (:(=), :b, (:call, :Float32, 123.456)),
+        (:line, 125, :none),
+        (:(=), :a2, (:call, :copy, :a)),
+        (:line, 126, :none),
+        (:(=), :x, (:ccall, (:tuple, (:quote, #QuoteNode
+                :test_1
+              ), :libccalltest), :Struct, (:tuple, :Struct, :Float32), :a2, :b)),
+        (:line, 128, :none),
+        (:macrocall, Symbol("@test"), (:&&, (:call, :(==), (:., :a2, (:quote, #QuoteNode
+                  :x
+                )), (:., :a, (:quote, #QuoteNode
+                  :x
+                ))), (:call, :(==), (:., :a2, (:quote, #QuoteNode
+                  :y
+                )), (:., :a, (:quote, #QuoteNode
+                  :y
+                ))))),
+        (:line, 129, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:call, :(===), :a2, :x))),
+        (:line, 131, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:., :x, (:quote, #QuoteNode
+                :x
+              )), (:call, :+, (:., :a, (:quote, #QuoteNode
+                  :x
+                )), (:call, :*, 1, :b)))),
+        (:line, 132, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:., :x, (:quote, #QuoteNode
+                :y
+              )), (:call, :-, (:., :a, (:quote, #QuoteNode
+                  :y
+                )), (:call, :*, 2, :b))))
+      )),
+    (:line, 134, :none),
+    (:call, :test_struct1, :Struct1),
+    (:line, 135, :none),
+    (:call, :test_struct1, :Struct1I),
+    (:line, 137, :none),
+    (:let, (:block,
+        (:line, 138, :none),
+        (:(=), :a, (:call, (:curly, :Complex, :Int32), (:call, :Int32, 10), (:call, :Int32, 31))),
+        (:line, 139, :none),
+        (:(=), :b, (:call, :Int32, 42)),
+        (:line, 141, :none),
+        (:(=), :x, (:ccall, (:tuple, (:quote, #QuoteNode
+                :test_2a
+              ), :libccalltest), (:curly, :Complex, :Int32), (:tuple, (:curly, :Complex, :Int32), :Int32), :a, :b)),
+        (:line, 142, :none),
+        (:(=), :y, (:ccall, (:tuple, (:quote, #QuoteNode
+                :test_2b
+              ), :libccalltest), (:curly, :Complex, :Int32), (:tuple, (:curly, :Complex, :Int32), :Int32), :a, :b)),
+        (:line, 144, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :a, (:call, (:curly, :Complex, :Int32), (:call, :Int32, 10), (:call, :Int32, 31)))),
+        (:line, 146, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :x, :y)),
+        (:line, 147, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :x, (:call, :-, (:call, :+, :a, (:call, :*, :b, 1)), (:call, :*, :b, (:call, :*, 2, :im)))))
+      ), :a, :b, :x, :y),
+    (:line, 150, :none),
+    (:let, (:block,
+        (:line, 151, :none),
+        (:(=), :a, (:call, (:curly, :Complex, :Int64), (:call, :Int64, 20), (:call, :Int64, 51))),
+        (:line, 152, :none),
+        (:(=), :b, (:call, :Int64, 42)),
+        (:line, 154, :none),
+        (:(=), :x, (:ccall, (:tuple, (:quote, #QuoteNode
+                :test_3a
+              ), :libccalltest), (:curly, :Complex, :Int64), (:tuple, (:curly, :Complex, :Int64), :Int64), :a, :b)),
+        (:line, 155, :none),
+        (:(=), :y, (:ccall, (:tuple, (:quote, #QuoteNode
+                :test_3b
+              ), :libccalltest), (:curly, :Complex, :Int64), (:tuple, (:curly, :Complex, :Int64), :Int64), :a, :b)),
+        (:line, 156, :none),
+        (:(=), :z, (:ccall, (:tuple, (:quote, #QuoteNode
+                :test_128
+              ), :libccalltest), (:curly, :Complex, :Int64), (:tuple, (:curly, :Complex, :Int64), :Int64), :a, :b)),
+        (:line, 158, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :a, (:call, (:curly, :Complex, :Int64), (:call, :Int64, 20), (:call, :Int64, 51)))),
+        (:line, 160, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :x, :y)),
+        (:line, 161, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :x, (:call, :-, (:call, :+, :a, (:call, :*, :b, 1)), (:call, :*, :b, (:call, :*, 2, :im))))),
+        (:line, 163, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :z, (:call, :+, :a, (:call, :*, 1, :b))))
+      ), :a, :b, :x, :y, :z),
+    (:line, 166, :none),
+    (:type, true, :Struct4, (:block,
+        (:line, 167, :none),
+        (:(::), :x, :Int32),
+        (:line, 168, :none),
+        (:(::), :y, :Int32),
+        (:line, 169, :none),
+        (:(::), :z, :Int32)
+      )),
+    (:line, 171, :none),
+    (:type, false, :Struct4I, (:block,
+        (:line, 172, :none),
+        (:(::), :x, :Int32),
+        (:line, 173, :none),
+        (:(::), :y, :Int32),
+        (:line, 174, :none),
+        (:(::), :z, :Int32)
+      )),
+    (:line, 177, :none),
+    (:function, (:call, (:curly, :test_struct4, :Struct), (:(::), (:curly, :Type, :Struct))), (:block,
+        (:line, 178, :none),
+        (:(=), :a, (:call, :Struct, -512275808, 882558299, -2133022131)),
+        (:line, 179, :none),
+        (:(=), :b, (:call, :Int32, 42)),
+        (:line, 181, :none),
+        (:(=), :x, (:ccall, (:tuple, (:quote, #QuoteNode
+                :test_4
+              ), :libccalltest), :Struct, (:tuple, :Struct, :Int32), :a, :b)),
+        (:line, 183, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :x, (:quote, #QuoteNode
+                :x
+              )), (:call, :+, (:., :a, (:quote, #QuoteNode
+                  :x
+                )), (:call, :*, :b, 1)))),
+        (:line, 184, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :x, (:quote, #QuoteNode
+                :y
+              )), (:call, :-, (:., :a, (:quote, #QuoteNode
+                  :y
+                )), (:call, :*, :b, 2)))),
+        (:line, 185, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :x, (:quote, #QuoteNode
+                :z
+              )), (:call, :+, (:., :a, (:quote, #QuoteNode
+                  :z
+                )), (:call, :*, :b, 3))))
+      )),
+    (:line, 187, :none),
+    (:call, :test_struct4, :Struct4),
+    (:line, 188, :none),
+    (:call, :test_struct4, :Struct4I),
+    (:line, 190, :none),
+    (:type, true, :Struct5, (:block,
+        (:line, 191, :none),
+        (:(::), :x, :Int32),
+        (:line, 192, :none),
+        (:(::), :y, :Int32),
+        (:line, 193, :none),
+        (:(::), :z, :Int32),
+        (:line, 194, :none),
+        (:(::), :a, :Int32)
+      )),
+    (:line, 196, :none),
+    (:type, false, :Struct5I, (:block,
+        (:line, 197, :none),
+        (:(::), :x, :Int32),
+        (:line, 198, :none),
+        (:(::), :y, :Int32),
+        (:line, 199, :none),
+        (:(::), :z, :Int32),
+        (:line, 200, :none),
+        (:(::), :a, :Int32)
+      )),
+    (:line, 203, :none),
+    (:function, (:call, (:curly, :test_struct5, :Struct), (:(::), (:curly, :Type, :Struct))), (:block,
+        (:line, 204, :none),
+        (:(=), :a, (:call, :Struct, 1771319039, 406394736, -1269509787, -745020976)),
+        (:line, 205, :none),
+        (:(=), :b, (:call, :Int32, 42)),
+        (:line, 207, :none),
+        (:(=), :x, (:ccall, (:tuple, (:quote, #QuoteNode
+                :test_5
+              ), :libccalltest), :Struct, (:tuple, :Struct, :Int32), :a, :b)),
+        (:line, 209, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :x, (:quote, #QuoteNode
+                :x
+              )), (:call, :+, (:., :a, (:quote, #QuoteNode
+                  :x
+                )), (:call, :*, :b, 1)))),
+        (:line, 210, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :x, (:quote, #QuoteNode
+                :y
+              )), (:call, :-, (:., :a, (:quote, #QuoteNode
+                  :y
+                )), (:call, :*, :b, 2)))),
+        (:line, 211, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :x, (:quote, #QuoteNode
+                :z
+              )), (:call, :+, (:., :a, (:quote, #QuoteNode
+                  :z
+                )), (:call, :*, :b, 3)))),
+        (:line, 212, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :x, (:quote, #QuoteNode
+                :a
+              )), (:call, :-, (:., :a, (:quote, #QuoteNode
+                  :a
+                )), (:call, :*, :b, 4))))
+      )),
+    (:line, 214, :none),
+    (:call, :test_struct5, :Struct5),
+    (:line, 215, :none),
+    (:call, :test_struct5, :Struct5I),
+    (:line, 217, :none),
+    (:type, true, :Struct6, (:block,
+        (:line, 218, :none),
+        (:(::), :x, :Int64),
+        (:line, 219, :none),
+        (:(::), :y, :Int64),
+        (:line, 220, :none),
+        (:(::), :z, :Int64)
+      )),
+    (:line, 222, :none),
+    (:type, false, :Struct6I, (:block,
+        (:line, 223, :none),
+        (:(::), :x, :Int64),
+        (:line, 224, :none),
+        (:(::), :y, :Int64),
+        (:line, 225, :none),
+        (:(::), :z, :Int64)
+      )),
+    (:line, 228, :none),
+    (:function, (:call, (:curly, :test_struct6, :Struct), (:(::), (:curly, :Type, :Struct))), (:block,
+        (:line, 229, :none),
+        (:(=), :a, (:call, :Struct, -654017936452753226, -5573248801240918230, -983717165097205098)),
+        (:line, 230, :none),
+        (:(=), :b, (:call, :Int64, 42)),
+        (:line, 232, :none),
+        (:(=), :x, (:ccall, (:tuple, (:quote, #QuoteNode
+                :test_6
+              ), :libccalltest), :Struct, (:tuple, :Struct, :Int64), :a, :b)),
+        (:line, 234, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :x, (:quote, #QuoteNode
+                :x
+              )), (:call, :+, (:., :a, (:quote, #QuoteNode
+                  :x
+                )), (:call, :*, :b, 1)))),
+        (:line, 235, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :x, (:quote, #QuoteNode
+                :y
+              )), (:call, :-, (:., :a, (:quote, #QuoteNode
+                  :y
+                )), (:call, :*, :b, 2)))),
+        (:line, 236, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :x, (:quote, #QuoteNode
+                :z
+              )), (:call, :+, (:., :a, (:quote, #QuoteNode
+                  :z
+                )), (:call, :*, :b, 3))))
+      )),
+    (:line, 238, :none),
+    (:call, :test_struct6, :Struct6),
+    (:line, 239, :none),
+    (:call, :test_struct6, :Struct6I),
+    (:line, 241, :none),
+    (:type, true, :Struct7, (:block,
+        (:line, 242, :none),
+        (:(::), :x, :Int64),
+        (:line, 243, :none),
+        (:(::), :y, :Cchar)
+      )),
+    (:line, 245, :none),
+    (:type, false, :Struct7I, (:block,
+        (:line, 246, :none),
+        (:(::), :x, :Int64),
+        (:line, 247, :none),
+        (:(::), :y, :Cchar)
+      )),
+    (:line, 250, :none),
+    (:function, (:call, (:curly, :test_struct7, :Struct), (:(::), (:curly, :Type, :Struct))), (:block,
+        (:line, 251, :none),
+        (:(=), :a, (:call, :Struct, -384082741977533896, 'h')),
+        (:line, 252, :none),
+        (:(=), :b, (:call, :Int8, 42)),
+        (:line, 254, :none),
+        (:(=), :x, (:ccall, (:tuple, (:quote, #QuoteNode
+                :test_7
+              ), :libccalltest), :Struct, (:tuple, :Struct, :Int8), :a, :b)),
+        (:line, 256, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :x, (:quote, #QuoteNode
+                :x
+              )), (:call, :+, (:., :a, (:quote, #QuoteNode
+                  :x
+                )), (:call, :*, (:call, :Int, :b), 1)))),
+        (:line, 257, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :x, (:quote, #QuoteNode
+                :y
+              )), (:call, :-, (:., :a, (:quote, #QuoteNode
+                  :y
+                )), (:call, :*, (:call, :Int, :b), 2))))
+      )),
+    (:line, 259, :none),
+    (:call, :test_struct7, :Struct7),
+    (:line, 260, :none),
+    (:call, :test_struct7, :Struct7I),
+    (:line, 262, :none),
+    (:type, true, :Struct8, (:block,
+        (:line, 263, :none),
+        (:(::), :x, :Int32),
+        (:line, 264, :none),
+        (:(::), :y, :Cchar)
+      )),
+    (:line, 266, :none),
+    (:type, false, :Struct8I, (:block,
+        (:line, 267, :none),
+        (:(::), :x, :Int32),
+        (:line, 268, :none),
+        (:(::), :y, :Cchar)
+      )),
+    (:line, 271, :none),
+    (:function, (:call, (:curly, :test_struct8, :Struct), (:(::), (:curly, :Type, :Struct))), (:block,
+        (:line, 272, :none),
+        (:(=), :a, (:call, :Struct, -384082896, 'h')),
+        (:line, 273, :none),
+        (:(=), :b, (:call, :Int8, 42)),
+        (:line, 275, :none),
+        (:(=), :r8, (:ccall, (:tuple, (:quote, #QuoteNode
+                :test_8
+              ), :libccalltest), :Struct, (:tuple, :Struct, :Int8), :a, :b)),
+        (:line, 277, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :r8, (:quote, #QuoteNode
+                :x
+              )), (:call, :+, (:., :a, (:quote, #QuoteNode
+                  :x
+                )), (:call, :*, :b, 1)))),
+        (:line, 278, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :r8, (:quote, #QuoteNode
+                :y
+              )), (:call, :-, (:., :a, (:quote, #QuoteNode
+                  :y
+                )), (:call, :*, :b, 2))))
+      )),
+    (:line, 280, :none),
+    (:call, :test_struct8, :Struct8),
+    (:line, 281, :none),
+    (:call, :test_struct8, :Struct8I),
+    (:line, 283, :none),
+    (:type, true, :Struct9, (:block,
+        (:line, 284, :none),
+        (:(::), :x, :Int32),
+        (:line, 285, :none),
+        (:(::), :y, :Int16)
+      )),
+    (:line, 287, :none),
+    (:type, false, :Struct9I, (:block,
+        (:line, 288, :none),
+        (:(::), :x, :Int32),
+        (:line, 289, :none),
+        (:(::), :y, :Int16)
+      )),
+    (:line, 292, :none),
+    (:function, (:call, (:curly, :test_struct9, :Struct), (:(::), (:curly, :Type, :Struct))), (:block,
+        (:line, 293, :none),
+        (:(=), :a, (:call, :Struct, -394092996, -3840)),
+        (:line, 294, :none),
+        (:(=), :b, (:call, :Int16, 42)),
+        (:line, 296, :none),
+        (:(=), :x, (:ccall, (:tuple, (:quote, #QuoteNode
+                :test_9
+              ), :libccalltest), :Struct, (:tuple, :Struct, :Int16), :a, :b)),
+        (:line, 298, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :x, (:quote, #QuoteNode
+                :x
+              )), (:call, :+, (:., :a, (:quote, #QuoteNode
+                  :x
+                )), (:call, :*, :b, 1)))),
+        (:line, 299, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :x, (:quote, #QuoteNode
+                :y
+              )), (:call, :-, (:., :a, (:quote, #QuoteNode
+                  :y
+                )), (:call, :*, :b, 2))))
+      )),
+    (:line, 301, :none),
+    (:call, :test_struct9, :Struct9),
+    (:line, 302, :none),
+    (:call, :test_struct9, :Struct9I),
+    (:line, 304, :none),
+    (:type, true, :Struct10, (:block,
+        (:line, 305, :none),
+        (:(::), :x, :Cchar),
+        (:line, 306, :none),
+        (:(::), :y, :Cchar),
+        (:line, 307, :none),
+        (:(::), :z, :Cchar),
+        (:line, 308, :none),
+        (:(::), :a, :Cchar)
+      )),
+    (:line, 310, :none),
+    (:type, false, :Struct10I, (:block,
+        (:line, 311, :none),
+        (:(::), :x, :Cchar),
+        (:line, 312, :none),
+        (:(::), :y, :Cchar),
+        (:line, 313, :none),
+        (:(::), :z, :Cchar),
+        (:line, 314, :none),
+        (:(::), :a, :Cchar)
+      )),
+    (:line, 317, :none),
+    (:function, (:call, (:curly, :test_struct10, :Struct), (:(::), (:curly, :Type, :Struct))), (:block,
+        (:line, 318, :none),
+        (:(=), :a, (:call, :Struct, '0', '1', '2', '3')),
+        (:line, 319, :none),
+        (:(=), :b, (:call, :Int8, 2)),
+        (:line, 321, :none),
+        (:(=), :x, (:ccall, (:tuple, (:quote, #QuoteNode
+                :test_10
+              ), :libccalltest), :Struct, (:tuple, :Struct, :Int8), :a, :b)),
+        (:line, 323, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :x, (:quote, #QuoteNode
+                :x
+              )), (:call, :+, (:., :a, (:quote, #QuoteNode
+                  :x
+                )), (:call, :*, :b, 1)))),
+        (:line, 324, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :x, (:quote, #QuoteNode
+                :y
+              )), (:call, :-, (:., :a, (:quote, #QuoteNode
+                  :y
+                )), (:call, :*, :b, 2)))),
+        (:line, 325, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :x, (:quote, #QuoteNode
+                :z
+              )), (:call, :+, (:., :a, (:quote, #QuoteNode
+                  :z
+                )), (:call, :*, :b, 3)))),
+        (:line, 326, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :x, (:quote, #QuoteNode
+                :a
+              )), (:call, :-, (:., :a, (:quote, #QuoteNode
+                  :a
+                )), (:call, :*, :b, 4))))
+      )),
+    (:line, 328, :none),
+    (:call, :test_struct10, :Struct10),
+    (:line, 329, :none),
+    (:call, :test_struct10, :Struct10I),
+    (:line, 331, :none),
+    (:type, true, :Struct11, (:block,
+        (:line, 332, :none),
+        (:(::), :x, :Complex64)
+      )),
+    (:line, 334, :none),
+    (:type, false, :Struct11I, (:block,
+        (:line, 335, :none),
+        (:(::), :x, :Complex64)
+      )),
+    (:line, 338, :none),
+    (:function, (:call, (:curly, :test_struct11, :Struct), (:(::), (:curly, :Type, :Struct))), (:block,
+        (:line, 339, :none),
+        (:(=), :a, (:call, :Struct, (:call, :+, 0.8877077f0, (:call, :*, 0.4591081f0, :im)))),
+        (:line, 340, :none),
+        (:(=), :b, (:call, :Float32, 42)),
+        (:line, 342, :none),
+        (:(=), :x, (:ccall, (:tuple, (:quote, #QuoteNode
+                :test_11
+              ), :libccalltest), :Struct, (:tuple, :Struct, :Float32), :a, :b)),
+        (:line, 344, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:., :x, (:quote, #QuoteNode
+                :x
+              )), (:call, :-, (:call, :+, (:., :a, (:quote, #QuoteNode
+                    :x
+                  )), (:call, :*, :b, 1)), (:call, :*, :b, (:call, :*, 2, :im)))))
+      )),
+    (:line, 346, :none),
+    (:call, :test_struct11, :Struct11),
+    (:line, 347, :none),
+    (:call, :test_struct11, :Struct11I),
+    (:line, 349, :none),
+    (:type, true, :Struct12, (:block,
+        (:line, 350, :none),
+        (:(::), :x, :Complex64),
+        (:line, 351, :none),
+        (:(::), :y, :Complex64)
+      )),
+    (:line, 353, :none),
+    (:type, false, :Struct12I, (:block,
+        (:line, 354, :none),
+        (:(::), :x, :Complex64),
+        (:line, 355, :none),
+        (:(::), :y, :Complex64)
+      )),
+    (:line, 358, :none),
+    (:function, (:call, (:curly, :test_struct12, :Struct), (:(::), (:curly, :Type, :Struct))), (:block,
+        (:line, 359, :none),
+        (:(=), :a, (:call, :Struct, (:call, :+, 88770.77f0, (:call, :*, 45.91081f0, :im)), (:call, :-, 0.0004842868f0, (:call, :*, 6.9823265f6, :im)))),
+        (:line, 360, :none),
+        (:(=), :b, (:call, :Float32, 42)),
+        (:line, 362, :none),
+        (:(=), :x, (:ccall, (:tuple, (:quote, #QuoteNode
+                :test_12
+              ), :libccalltest), :Struct, (:tuple, :Struct, :Float32), :a, :b)),
+        (:line, 364, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:., :x, (:quote, #QuoteNode
+                :x
+              )), (:call, :-, (:call, :+, (:., :a, (:quote, #QuoteNode
+                    :x
+                  )), (:call, :*, :b, 1)), (:call, :*, :b, (:call, :*, 2, :im))))),
+        (:line, 365, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:., :x, (:quote, #QuoteNode
+                :y
+              )), (:call, :-, (:call, :+, (:., :a, (:quote, #QuoteNode
+                    :y
+                  )), (:call, :*, :b, 3)), (:call, :*, :b, (:call, :*, 4, :im)))))
+      )),
+    (:line, 367, :none),
+    (:call, :test_struct12, :Struct12),
+    (:line, 368, :none),
+    (:call, :test_struct12, :Struct12I),
+    (:line, 370, :none),
+    (:type, true, :Struct13, (:block,
+        (:line, 371, :none),
+        (:(::), :x, :Complex128)
+      )),
+    (:line, 373, :none),
+    (:type, false, :Struct13I, (:block,
+        (:line, 374, :none),
+        (:(::), :x, :Complex128)
+      )),
+    (:line, 377, :none),
+    (:function, (:call, (:curly, :test_struct13, :Struct), (:(::), (:curly, :Type, :Struct))), (:block,
+        (:line, 378, :none),
+        (:(=), :a, (:call, :Struct, (:call, :-, 42968.97560380495, (:call, :*, 803.0576845153616, :im)))),
+        (:line, 379, :none),
+        (:(=), :b, (:call, :Float64, 42)),
+        (:line, 381, :none),
+        (:(=), :x, (:ccall, (:tuple, (:quote, #QuoteNode
+                :test_13
+              ), :libccalltest), :Struct, (:tuple, :Struct, :Float64), :a, :b)),
+        (:line, 383, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:., :x, (:quote, #QuoteNode
+                :x
+              )), (:call, :-, (:call, :+, (:., :a, (:quote, #QuoteNode
+                    :x
+                  )), (:call, :*, :b, 1)), (:call, :*, :b, (:call, :*, 2, :im)))))
+      )),
+    (:line, 385, :none),
+    (:call, :test_struct13, :Struct13),
+    (:line, 386, :none),
+    (:call, :test_struct13, :Struct13I),
+    (:line, 388, :none),
+    (:type, true, :Struct14, (:block,
+        (:line, 389, :none),
+        (:(::), :x, :Float32),
+        (:line, 390, :none),
+        (:(::), :y, :Float32)
+      )),
+    (:line, 392, :none),
+    (:type, false, :Struct14I, (:block,
+        (:line, 393, :none),
+        (:(::), :x, :Float32),
+        (:line, 394, :none),
+        (:(::), :y, :Float32)
+      )),
+    (:line, 397, :none),
+    (:function, (:call, (:curly, :test_struct14, :Struct), (:(::), (:curly, :Type, :Struct))), (:block,
+        (:line, 398, :none),
+        (:(=), :a, (:call, :Struct, 0.024138331f0, 8.975907f31)),
+        (:line, 399, :none),
+        (:(=), :b, (:call, :Float32, 42)),
+        (:line, 401, :none),
+        (:(=), :x, (:ccall, (:tuple, (:quote, #QuoteNode
+                :test_14
+              ), :libccalltest), :Struct, (:tuple, :Struct, :Float32), :a, :b)),
+        (:line, 403, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:., :x, (:quote, #QuoteNode
+                :x
+              )), (:call, :+, (:., :a, (:quote, #QuoteNode
+                  :x
+                )), (:call, :*, :b, 1)))),
+        (:line, 404, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:., :x, (:quote, #QuoteNode
+                :y
+              )), (:call, :-, (:., :a, (:quote, #QuoteNode
+                  :y
+                )), (:call, :*, :b, 2))))
+      )),
+    (:line, 406, :none),
+    (:call, :test_struct14, :Struct14),
+    (:line, 407, :none),
+    (:call, :test_struct14, :Struct14I),
+    (:line, 409, :none),
+    (:type, true, :Struct15, (:block,
+        (:line, 410, :none),
+        (:(::), :x, :Float64),
+        (:line, 411, :none),
+        (:(::), :y, :Float64)
+      )),
+    (:line, 413, :none),
+    (:type, false, :Struct15I, (:block,
+        (:line, 414, :none),
+        (:(::), :x, :Float64),
+        (:line, 415, :none),
+        (:(::), :y, :Float64)
+      )),
+    (:line, 418, :none),
+    (:function, (:call, (:curly, :test_struct15, :Struct), (:(::), (:curly, :Type, :Struct))), (:block,
+        (:line, 419, :none),
+        (:(=), :a, (:call, :Struct, 4.180997967273657, -0.404218594294923)),
+        (:line, 420, :none),
+        (:(=), :b, (:call, :Float64, 42)),
+        (:line, 422, :none),
+        (:(=), :x, (:ccall, (:tuple, (:quote, #QuoteNode
+                :test_15
+              ), :libccalltest), :Struct, (:tuple, :Struct, :Float64), :a, :b)),
+        (:line, 424, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:., :x, (:quote, #QuoteNode
+                :x
+              )), (:call, :+, (:., :a, (:quote, #QuoteNode
+                  :x
+                )), (:call, :*, :b, 1)))),
+        (:line, 425, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:., :x, (:quote, #QuoteNode
+                :y
+              )), (:call, :-, (:., :a, (:quote, #QuoteNode
+                  :y
+                )), (:call, :*, :b, 2))))
+      )),
+    (:line, 427, :none),
+    (:call, :test_struct15, :Struct15),
+    (:line, 428, :none),
+    (:call, :test_struct15, :Struct15I),
+    (:line, 430, :none),
+    (:type, true, :Struct16, (:block,
+        (:line, 431, :none),
+        (:(::), :x, :Float32),
+        (:line, 432, :none),
+        (:(::), :y, :Float32),
+        (:line, 433, :none),
+        (:(::), :z, :Float32),
+        (:line, 434, :none),
+        (:(::), :a, :Float64),
+        (:line, 435, :none),
+        (:(::), :b, :Float64),
+        (:line, 436, :none),
+        (:(::), :c, :Float64)
+      )),
+    (:line, 438, :none),
+    (:type, false, :Struct16I, (:block,
+        (:line, 439, :none),
+        (:(::), :x, :Float32),
+        (:line, 440, :none),
+        (:(::), :y, :Float32),
+        (:line, 441, :none),
+        (:(::), :z, :Float32),
+        (:line, 442, :none),
+        (:(::), :a, :Float64),
+        (:line, 443, :none),
+        (:(::), :b, :Float64),
+        (:line, 444, :none),
+        (:(::), :c, :Float64)
+      )),
+    (:line, 447, :none),
+    (:function, (:call, (:curly, :test_struct16, :Struct), (:(::), (:curly, :Type, :Struct))), (:block,
+        (:line, 448, :none),
+        (:(=), :a, (:call, :Struct, 0.1604656f0, 0.6297606f0, 0.83588994f0, 0.6460273620993535, 0.9472692581106656, 0.47328535437352093)),
+        (:line, 450, :none),
+        (:(=), :b, (:call, :Float32, 42)),
+        (:line, 452, :none),
+        (:(=), :x, (:ccall, (:tuple, (:quote, #QuoteNode
+                :test_16
+              ), :libccalltest), :Struct, (:tuple, :Struct, :Float32), :a, :b)),
+        (:line, 454, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:., :x, (:quote, #QuoteNode
+                :x
+              )), (:call, :+, (:., :a, (:quote, #QuoteNode
+                  :x
+                )), (:call, :*, :b, 1)))),
+        (:line, 455, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:., :x, (:quote, #QuoteNode
+                :y
+              )), (:call, :-, (:., :a, (:quote, #QuoteNode
+                  :y
+                )), (:call, :*, :b, 2)))),
+        (:line, 456, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:., :x, (:quote, #QuoteNode
+                :z
+              )), (:call, :+, (:., :a, (:quote, #QuoteNode
+                  :z
+                )), (:call, :*, :b, 3)))),
+        (:line, 457, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:., :x, (:quote, #QuoteNode
+                :a
+              )), (:call, :-, (:., :a, (:quote, #QuoteNode
+                  :a
+                )), (:call, :*, :b, 4)))),
+        (:line, 458, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:., :x, (:quote, #QuoteNode
+                :b
+              )), (:call, :+, (:., :a, (:quote, #QuoteNode
+                  :b
+                )), (:call, :*, :b, 5)))),
+        (:line, 459, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:., :x, (:quote, #QuoteNode
+                :c
+              )), (:call, :-, (:., :a, (:quote, #QuoteNode
+                  :c
+                )), (:call, :*, :b, 6))))
+      )),
+    (:line, 461, :none),
+    (:call, :test_struct16, :Struct16),
+    (:line, 462, :none),
+    (:call, :test_struct16, :Struct16I),
+    (:line, 464, :none),
+    (:type, true, :Struct17, (:block,
+        (:line, 465, :none),
+        (:(::), :a, :Int8),
+        (:line, 466, :none),
+        (:(::), :b, :Int16)
+      )),
+    (:line, 468, :none),
+    (:type, false, :Struct17I, (:block,
+        (:line, 469, :none),
+        (:(::), :a, :Int8),
+        (:line, 470, :none),
+        (:(::), :b, :Int16)
+      )),
+    (:line, 473, :none),
+    (:function, (:call, (:curly, :test_struct17, :Struct), (:(::), (:curly, :Type, :Struct))), (:block,
+        (:line, 474, :none),
+        (:(=), :a, (:call, :Struct, 2, 10)),
+        (:line, 475, :none),
+        (:(=), :b, (:call, :Int8, 2)),
+        (:line, 477, :none),
+        (:(=), :x, (:ccall, (:tuple, (:quote, #QuoteNode
+                :test_17
+              ), :libccalltest), :Struct, (:tuple, :Struct, :Int8), :a, :b)),
+        (:line, 479, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :x, (:quote, #QuoteNode
+                :a
+              )), (:call, :+, (:., :a, (:quote, #QuoteNode
+                  :a
+                )), (:call, :*, :b, 1)))),
+        (:line, 480, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :x, (:quote, #QuoteNode
+                :b
+              )), (:call, :-, (:., :a, (:quote, #QuoteNode
+                  :b
+                )), (:call, :*, :b, 2))))
+      )),
+    (:line, 482, :none),
+    (:call, :test_struct17, :Struct17),
+    (:line, 483, :none),
+    (:call, :test_struct17, :Struct17I),
+    (:line, 485, :none),
+    (:type, true, :Struct18, (:block,
+        (:line, 486, :none),
+        (:(::), :a, :Int8),
+        (:line, 487, :none),
+        (:(::), :b, :Int8),
+        (:line, 488, :none),
+        (:(::), :c, :Int8)
+      )),
+    (:line, 490, :none),
+    (:type, false, :Struct18I, (:block,
+        (:line, 491, :none),
+        (:(::), :a, :Int8),
+        (:line, 492, :none),
+        (:(::), :b, :Int8),
+        (:line, 493, :none),
+        (:(::), :c, :Int8)
+      )),
+    (:line, 496, :none),
+    (:function, (:call, (:curly, :test_struct18, :Struct), (:(::), (:curly, :Type, :Struct))), (:block,
+        (:line, 497, :none),
+        (:(=), :a, (:call, :Struct, 2, 10, -3)),
+        (:line, 498, :none),
+        (:(=), :b, (:call, :Int8, 2)),
+        (:line, 500, :none),
+        (:(=), :x, (:ccall, (:tuple, (:quote, #QuoteNode
+                :test_18
+              ), :libccalltest), :Struct, (:tuple, :Struct, :Int8), :a, :b)),
+        (:line, 502, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :x, (:quote, #QuoteNode
+                :a
+              )), (:call, :+, (:., :a, (:quote, #QuoteNode
+                  :a
+                )), (:call, :*, :b, 1)))),
+        (:line, 503, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :x, (:quote, #QuoteNode
+                :b
+              )), (:call, :-, (:., :a, (:quote, #QuoteNode
+                  :b
+                )), (:call, :*, :b, 2)))),
+        (:line, 504, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :x, (:quote, #QuoteNode
+                :c
+              )), (:call, :+, (:., :a, (:quote, #QuoteNode
+                  :c
+                )), (:call, :*, :b, 3))))
+      )),
+    (:line, 506, :none),
+    (:call, :test_struct18, :Struct18),
+    (:line, 507, :none),
+    (:call, :test_struct18, :Struct18I),
+    (:line, 509, :none),
+    (:let, (:block,
+        (:line, 510, :none),
+        (:(=), :a, (:call, :+, (:call, :<<, (:call, :Int128, 0x7f00123456789abc), 64), (:call, :typemax, :UInt64))),
+        (:line, 511, :none),
+        (:(=), :b, (:call, :Int64, 1)),
+        (:line, 513, :none),
+        (:(=), :x, (:ccall, (:tuple, (:quote, #QuoteNode
+                :test_128
+              ), :libccalltest), :Int128, (:tuple, :Int128, :Int64), :a, :b)),
+        (:line, 515, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :x, (:call, :+, :a, (:call, :*, :b, 1)))),
+        (:line, 516, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :a, (:call, :+, (:call, :<<, (:call, :Int128, 0x7f00123456789abc), 64), (:call, :typemax, :UInt64))))
+      ), :a, :b, :x),
+    (:line, 519, :none),
+    (:type, true, :Struct_Big, (:block,
+        (:line, 520, :none),
+        (:(::), :x, :Int),
+        (:line, 521, :none),
+        (:(::), :y, :Int),
+        (:line, 522, :none),
+        (:(::), :z, :Int8)
+      )),
+    (:line, 524, :none),
+    (:type, false, :Struct_BigI, (:block,
+        (:line, 525, :none),
+        (:(::), :x, :Int),
+        (:line, 526, :none),
+        (:(::), :y, :Int),
+        (:line, 527, :none),
+        (:(::), :z, :Int8)
+      )),
+    (:line, 529, :none),
+    (:(=), (:call, :copy, (:(::), :a, :Struct_Big)), (:block,
+        (:line, 529, :none),
+        (:call, :Struct_Big, (:., :a, (:quote, #QuoteNode
+              :x
+            )), (:., :a, (:quote, #QuoteNode
+              :y
+            )), (:., :a, (:quote, #QuoteNode
+              :z
+            )))
+      )),
+    (:line, 530, :none),
+    (:(=), (:call, :copy, (:(::), :a, :Struct_BigI)), (:block,
+        (:line, 530, :none),
+        :a
+      )),
+    (:line, 532, :none),
+    (:function, (:call, (:curly, :test_struct_big, :Struct), (:(::), (:curly, :Type, :Struct))), (:block,
+        (:line, 533, :none),
+        (:(=), :a, (:call, :Struct, 424, -5, (:call, :Int8, 'Z'))),
+        (:line, 534, :none),
+        (:(=), :a2, (:call, :copy, :a)),
+        (:line, 536, :none),
+        (:(=), :x, (:ccall, (:tuple, (:quote, #QuoteNode
+                :test_big
+              ), :libccalltest), :Struct, (:tuple, :Struct), :a2)),
+        (:line, 538, :none),
+        (:macrocall, Symbol("@test"), (:&&, (:call, :(==), (:., :a2, (:quote, #QuoteNode
+                  :x
+                )), (:., :a, (:quote, #QuoteNode
+                  :x
+                ))), (:&&, (:call, :(==), (:., :a2, (:quote, #QuoteNode
+                    :y
+                  )), (:., :a, (:quote, #QuoteNode
+                    :y
+                  ))), (:call, :(==), (:., :a2, (:quote, #QuoteNode
+                    :z
+                  )), (:., :a, (:quote, #QuoteNode
+                    :z
+                  )))))),
+        (:line, 539, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :x, (:quote, #QuoteNode
+                :x
+              )), (:call, :+, (:., :a, (:quote, #QuoteNode
+                  :x
+                )), 1))),
+        (:line, 540, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :x, (:quote, #QuoteNode
+                :y
+              )), (:call, :-, (:., :a, (:quote, #QuoteNode
+                  :y
+                )), 2))),
+        (:line, 541, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :x, (:quote, #QuoteNode
+                :z
+              )), (:call, :-, (:., :a, (:quote, #QuoteNode
+                  :z
+                )), (:call, :Int, 'A'))))
+      )),
+    (:line, 543, :none),
+    (:call, :test_struct_big, :Struct_Big),
+    (:line, 544, :none),
+    (:call, :test_struct_big, :Struct_BigI),
+    (:line, 546, :none),
+    (:const, (:(=), :Struct_huge1a, (:curly, :NTuple, 8, :Int64))),
+    (:line, 547, :none),
+    (:const, (:(=), :Struct_huge1b, (:curly, :NTuple, 9, :Int64))),
+    (:line, 548, :none),
+    (:const, (:(=), :Struct_huge2a, (:curly, :NTuple, 8, :Cdouble))),
+    (:line, 549, :none),
+    (:const, (:(=), :Struct_huge2b, (:curly, :NTuple, 9, :Cdouble))),
+    (:line, 550, :none),
+    (:type, true, :Struct_huge3a, (:block,
+        (:line, 551, :none),
+        (:(::), :cf, (:curly, :NTuple, 3, (:curly, :Complex, :Cfloat))),
+        (:line, 552, :none),
+        (:(::), :f7, :Cfloat),
+        (:line, 553, :none),
+        (:(::), :f8, :Cfloat)
+      )),
+    (:line, 555, :none),
+    (:type, true, :Struct_huge3b, (:block,
+        (:line, 556, :none),
+        (:(::), :cf, (:curly, :NTuple, 7, (:curly, :Complex, :Cfloat))),
+        (:line, 557, :none),
+        (:(::), :r8a, :Cfloat),
+        (:line, 558, :none),
+        (:(::), :r8b, :Cfloat)
+      )),
+    (:line, 560, :none),
+    (:type, true, :Struct_huge3c, (:block,
+        (:line, 561, :none),
+        (:(::), :cf, (:curly, :NTuple, 7, (:curly, :Complex, :Cfloat))),
+        (:line, 562, :none),
+        (:(::), :r8a, :Cfloat),
+        (:line, 563, :none),
+        (:(::), :r8b, :Cfloat),
+        (:line, 564, :none),
+        (:(::), :r9, :Cfloat)
+      )),
+    (:line, 566, :none),
+    (:type, true, :Struct_huge4a, (:block,
+        (:line, 567, :none),
+        (:(::), :r12, (:curly, :Complex, :Cdouble)),
+        (:line, 568, :none),
+        (:(::), :r34, (:curly, :Complex, :Cdouble)),
+        (:line, 569, :none),
+        (:(::), :r5, (:curly, :Complex, :Cfloat)),
+        (:line, 570, :none),
+        (:(::), :r67, (:curly, :Complex, :Cdouble)),
+        (:line, 571, :none),
+        (:(::), :r8, :Cdouble)
+      )),
+    (:line, 573, :none),
+    (:type, true, :Struct_huge4b, (:block,
+        (:line, 574, :none),
+        (:(::), :r12, (:curly, :Complex, :Cdouble)),
+        (:line, 575, :none),
+        (:(::), :r34, (:curly, :Complex, :Cdouble)),
+        (:line, 576, :none),
+        (:(::), :r5, (:curly, :Complex, :Cfloat)),
+        (:line, 577, :none),
+        (:(::), :r67, (:curly, :Complex, :Cdouble)),
+        (:line, 578, :none),
+        (:(::), :r89, (:curly, :Complex, :Cdouble))
+      )),
+    (:line, 580, :none),
+    (:const, (:(=), :Struct_huge5a, (:curly, :NTuple, 8, (:curly, :Complex, :Cint)))),
+    (:line, 581, :none),
+    (:const, (:(=), :Struct_huge5b, (:curly, :NTuple, 9, (:curly, :Complex, :Cint)))),
+    (:line, 583, :none),
+    (:function, (:call, :verify_huge, :init, :a, :b), (:block,
+        (:line, 584, :none),
+        (:macrocall, Symbol("@test"), (:comparison, (:call, :typeof, :init), :(===), (:call, :typeof, :a), :(===), (:call, :typeof, :b))),
+        (:line, 585, :none),
+        (:&&, :verbose, (:macrocall, Symbol("@show"), (:tuple, :a, :b))),
+        (:line, 587, :none),
+        (:for, (:(=), :i, (:(:), 1, (:call, :nfields, :a))), (:block,
+            (:line, 588, :none),
+            (:macrocall, Symbol("@test"), (:call, :(===), (:call, :getfield, :init, :i), (:call, :getfield, :a, :i)))
+          )),
+        (:line, 591, :none),
+        (:(=), (:tuple, :a1, :b1), (:tuple, (:call, :getfield, :a, 1), (:call, :getfield, :b, 1))),
+        (:line, 592, :none),
+        (:while, (:call, :isa, :a1, :Tuple), (:block,
+            (:line, 593, :none),
+            (:macrocall, Symbol("@test"), (:call, :(===), (:ref, :a1, (:(:), 2, :end)), (:ref, :b1, (:(:), 2, :end)))),
+            (:line, 594, :none),
+            (:(=), :a1, (:ref, :a1, 1)),
+            (:line, 595, :none),
+            (:(=), :b1, (:ref, :b1, 1))
+          )),
+        (:line, 597, :none),
+        (:if, (:call, :isa, :a1, :VecElement), (:block,
+            (:line, 598, :none),
+            (:(=), :a1, (:., :a1, (:quote, #QuoteNode
+                  :value
+                ))),
+            (:line, 599, :none),
+            (:(=), :b1, (:., :b1, (:quote, #QuoteNode
+                  :value
+                )))
+          )),
+        (:line, 601, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), (:call, :oftype, :a1, (:call, :*, :a1, 39)), :b1)),
+        (:line, 602, :none),
+        (:for, (:(=), :i, (:(:), 2, (:call, :nfields, :a))), (:block,
+            (:line, 603, :none),
+            (:macrocall, Symbol("@test"), (:call, :(===), (:call, :getfield, :a, :i), (:call, :getfield, :b, :i)))
+          ))
+      )),
+    (:line, 606, :none),
+    (:macro, (:call, :test_huge, :i, :b, :init), (:block,
+        (:line, 607, :none),
+        (:(=), :f, (:call, :QuoteNode, (:call, :Symbol, "test_huge", :i, :b))),
+        (:line, 608, :none),
+        (:(=), :ty, (:call, :Symbol, "Struct_huge", :i, :b)),
+        (:line, 609, :none),
+        (:return, (:quote, (:block,
+              (:line, 610, :none),
+              (:let, (:block,
+                  (:line, 611, :none),
+                  (:(=), (:call, :f, :b), (:block,
+                      (:line, 611, :none),
+                      (:ccall, (:tuple, (:$, :f), :libccalltest), (:$, :ty), (:tuple, :Cchar, (:$, :ty), :Cchar), (:call, :+, '0', (:$, :i)), :a, (:ref, (:$, :b), 1))
+                    )),
+                  (:line, 613, :none),
+                  (:call, :verify_huge, (:call, (:$, :ty), (:..., (:$, (:call, :esc, :init)))), :a, (:call, :f, :a))
+                ), (:(=), :a, (:call, (:$, :ty), (:..., (:$, (:call, :esc, :init))))), :f)
+            )))
+      )),
+    (:line, 617, :none),
+    (:macrocall, Symbol("@test_huge"), 1, 'a', (:tuple, (:tuple, 1, 2, 3, 4, 5, 6, 7, 8))),
+    (:line, 618, :none),
+    (:macrocall, Symbol("@test_huge"), 1, 'b', (:tuple, (:tuple, 1, 2, 3, 4, 5, 6, 7, 8, 9))),
+    (:line, 619, :none),
+    (:macrocall, Symbol("@test_huge"), 2, 'a', (:tuple, (:tuple, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0))),
+    (:line, 620, :none),
+    (:macrocall, Symbol("@test_huge"), 2, 'b', (:tuple, (:tuple, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0))),
+    (:line, 621, :none),
+    (:macrocall, Symbol("@test_huge"), 3, 'a', (:tuple, (:tuple, (:call, :+, 1.0, (:call, :*, 2.0, :im)), (:call, :+, 3.0, (:call, :*, 4.0, :im)), (:call, :+, 5.0, (:call, :*, 6.0, :im))), 7.0, 8.0)),
+    (:line, 622, :none),
+    (:macrocall, Symbol("@test_huge"), 3, 'b', (:tuple, (:tuple, (:call, :+, 1.0, (:call, :*, 2.0, :im)), (:call, :+, 3.0, (:call, :*, 4.0, :im)), (:call, :+, 5.0, (:call, :*, 6.0, :im)), (:call, :+, 7.0, (:call, :*, 8.0, :im)), (:call, :+, 9.0, (:call, :*, 10.0, :im)), (:call, :+, 11.0, (:call, :*, 12.0, :im)), (:call, :+, 13.0, (:call, :*, 14.0, :im))), 7.0, 8.0)),
+    (:line, 623, :none),
+    (:macrocall, Symbol("@test_huge"), 3, 'c', (:tuple, (:tuple, (:call, :+, 1.0, (:call, :*, 2.0, :im)), (:call, :+, 3.0, (:call, :*, 4.0, :im)), (:call, :+, 5.0, (:call, :*, 6.0, :im)), (:call, :+, 7.0, (:call, :*, 8.0, :im)), (:call, :+, 9.0, (:call, :*, 10.0, :im)), (:call, :+, 11.0, (:call, :*, 12.0, :im)), (:call, :+, 13.0, (:call, :*, 14.0, :im))), 7.0, 8.0, 9.0)),
+    (:line, 624, :none),
+    (:macrocall, Symbol("@test_huge"), 4, 'a', (:tuple, (:call, :+, 1.0, (:call, :*, 2.0, :im)), (:call, :+, 3.0, (:call, :*, 4.0, :im)), (:call, :+, 5.0f0, (:call, :*, 6.0f0, :im)), (:call, :+, 7.0, (:call, :*, 8.0, :im)), 9.0)),
+    (:line, 625, :none),
+    (:macrocall, Symbol("@test_huge"), 4, 'b', (:tuple, (:call, :+, 1.0, (:call, :*, 2.0, :im)), (:call, :+, 3.0, (:call, :*, 4.0, :im)), (:call, :+, 5.0f0, (:call, :*, 6.0f0, :im)), (:call, :+, 7.0, (:call, :*, 8.0, :im)), (:call, :+, 9.0, (:call, :*, 10.0, :im)))),
+    (:line, 626, :none),
+    (:macrocall, Symbol("@test_huge"), 5, 'a', (:tuple, (:tuple, (:call, :+, 1, (:call, :*, 2, :im)), (:call, :+, 3, (:call, :*, 4, :im)), (:call, :+, 5, (:call, :*, 6, :im)), (:call, :+, 7, (:call, :*, 8, :im)), (:call, :+, 9, (:call, :*, 10, :im)), (:call, :+, 11, (:call, :*, 12, :im)), (:call, :+, 13, (:call, :*, 14, :im)), (:call, :+, 15, (:call, :*, 16, :im))))),
+    (:line, 627, :none),
+    (:macrocall, Symbol("@test_huge"), 5, 'b', (:tuple, (:tuple, (:call, :+, 1, (:call, :*, 2, :im)), (:call, :+, 3, (:call, :*, 4, :im)), (:call, :+, 5, (:call, :*, 6, :im)), (:call, :+, 7, (:call, :*, 8, :im)), (:call, :+, 9, (:call, :*, 10, :im)), (:call, :+, 11, (:call, :*, 12, :im)), (:call, :+, 13, (:call, :*, 14, :im)), (:call, :+, 15, (:call, :*, 16, :im)), (:call, :+, 17, (:call, :*, 17, :im))))),
+    (:line, 631, :none),
+    (:&&, :verbose, (:call, (:., :Libc, (:quote, #QuoteNode
+            :flush_cstdio
+          )))),
+    (:line, 632, :none),
+    (:&&, :verbose, (:call, :println, "Testing cfunction roundtrip: ")),
+    (:line, 634, :none),
+    (:(=), :cf64, (:call, :+, 2.84, (:call, :*, 5.2, :im))),
+    (:line, 635, :none),
+    (:(=), :cf32, (:call, :+, 3.34f0, (:call, :*, 53.2f0, :im))),
+    (:line, 636, :none),
+    (:(=), :ci32, (:call, (:curly, :Complex, :Int32), (:call, :Int32, 10), (:call, :Int32, 31))),
+    (:line, 637, :none),
+    (:(=), :ci64, (:call, (:curly, :Complex, :Int64), (:call, :Int64, 20), (:call, :Int64, 51))),
+    (:line, 638, :none),
+    (:(=), :s1, (:call, :Struct1, 3.5239422f25, 19.287577)),
+    (:line, 639, :none),
+    (:(=), (:call, :(==), (:(::), :a, :Struct1), (:(::), :b, :Struct1)), (:block,
+        (:line, 639, :none),
+        (:&&, (:call, :(==), (:., :a, (:quote, #QuoteNode
+                :x
+              )), (:., :b, (:quote, #QuoteNode
+                :x
+              ))), (:call, :(==), (:., :a, (:quote, #QuoteNode
+                :y
+              )), (:., :b, (:quote, #QuoteNode
+                :y
+              ))))
+      )),
+    (:line, 641, :none),
+    (:for, (:(=), (:tuple, :t, :v), (:tuple, (:tuple, (:curly, :Complex, :Int32), (:quote, #QuoteNode
+              :ci32
+            )), (:tuple, (:curly, :Complex, :Int64), (:quote, #QuoteNode
+              :ci64
+            )), (:tuple, :Complex64, (:quote, #QuoteNode
+              :cf32
+            )), (:tuple, :Complex128, (:quote, #QuoteNode
+              :cf64
+            )), (:tuple, :Struct1, (:quote, #QuoteNode
+              :s1
+            )))), (:block,
+        (:line, 643, :none),
+        (:(=), :fname, (:call, :Symbol, "foo", :v)),
+        (:line, 644, :none),
+        (:(=), :fname1, (:call, :Symbol, "foo1", :v)),
+        (:line, 645, :none),
+        (:macrocall, Symbol("@eval"), (:block,
+            (:line, 646, :none),
+            (:&&, :verbose, (:call, :println, (:$, :t))),
+            (:line, 647, :none),
+            (:(=), :a, (:call, :copy, (:$, :v))),
+            (:line, 648, :none),
+            (:&&, :verbose, (:call, :println, "A: ", :a)),
+            (:line, 649, :none),
+            (:function, (:call, (:$, :fname1), (:(::), :s, (:$, :t))), (:block,
+                (:line, 650, :none),
+                (:&&, :verbose, (:call, :println, "B: ", :s)),
+                (:line, 651, :none),
+                (:macrocall, Symbol("@test"), (:call, :(==), :s, (:$, :v))),
+                (:line, 652, :none),
+                (:macrocall, Symbol("@test"), (:call, :(===), :s, :a)),
+                (:line, 653, :none),
+                (:global, (:(=), :c, :s)),
+                (:line, 654, :none),
+                :s
+              )),
+            (:line, 656, :none),
+            (:function, (:call, (:$, :fname1), :s), (:block,
+                (:line, 657, :none),
+                (:macrocall, Symbol("@assert"), false)
+              )),
+            (:line, 659, :none),
+            (:function, (:call, (:$, :fname), (:(::), :s, (:$, :t))), (:block,
+                (:line, 660, :none),
+                (:&&, :verbose, (:call, :println, "B: ", :s)),
+                (:line, 661, :none),
+                (:macrocall, Symbol("@test"), (:call, :(==), :s, (:$, :v))),
+                (:line, 662, :none),
+                (:if, (:., (:$, :t), (:quote, #QuoteNode
+                      :mutable
+                    )), (:block,
+                    (:line, 663, :none),
+                    (:macrocall, Symbol("@test"), (:call, :!, (:call, :(===), :s, :a)))
+                  )),
+                (:line, 665, :none),
+                (:global, (:(=), :c, :s)),
+                (:line, 666, :none),
+                :s
+              )),
+            (:line, 668, :none),
+            (:function, (:call, (:$, :fname), :s), (:block,
+                (:line, 669, :none),
+                (:macrocall, Symbol("@assert"), false)
+              )),
+            (:line, 671, :none),
+            (:(=), :b, (:ccall, (:call, :cfunction, (:$, :fname1), (:curly, :Ref, (:$, :t)), (:tuple, (:curly, :Ref, (:$, :t)))), (:curly, :Ref, (:$, :t)), (:tuple, (:curly, :Ref, (:$, :t))), :a)),
+            (:line, 672, :none),
+            (:&&, :verbose, (:call, :println, "C: ", :b)),
+            (:line, 673, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), :b, (:$, :v))),
+            (:line, 674, :none),
+            (:macrocall, Symbol("@test"), (:call, :(===), :b, :a)),
+            (:line, 675, :none),
+            (:macrocall, Symbol("@test"), (:call, :(===), :b, :c)),
+            (:line, 676, :none),
+            (:(=), :b, (:ccall, (:call, :cfunction, (:$, :fname), (:$, :t), (:tuple, (:$, :t))), (:$, :t), (:tuple, (:$, :t)), :a)),
+            (:line, 677, :none),
+            (:&&, :verbose, (:call, :println, "C: ", :b)),
+            (:line, 678, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), :b, (:$, :v))),
+            (:line, 679, :none),
+            (:if, (:., (:$, :t), (:quote, #QuoteNode
+                  :mutable
+                )), (:block,
+                (:line, 680, :none),
+                (:macrocall, Symbol("@test"), (:call, :!, (:call, :(===), :b, :c))),
+                (:line, 681, :none),
+                (:macrocall, Symbol("@test"), (:call, :!, (:call, :(===), :b, :a)))
+              )),
+            (:line, 683, :none),
+            (:(=), :b, (:ccall, (:call, :cfunction, (:$, :fname1), (:$, :t), (:tuple, (:curly, :Ref, (:$, :t)))), (:$, :t), (:tuple, (:curly, :Ref, (:$, :t))), :a)),
+            (:line, 684, :none),
+            (:&&, :verbose, (:call, :println, "C: ", :b)),
+            (:line, 685, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), :b, (:$, :v))),
+            (:line, 686, :none),
+            (:if, (:., (:$, :t), (:quote, #QuoteNode
+                  :mutable
+                )), (:block,
+                (:line, 687, :none),
+                (:macrocall, Symbol("@test"), (:call, :!, (:call, :(===), :b, :c))),
+                (:line, 688, :none),
+                (:macrocall, Symbol("@test"), (:call, :!, (:call, :(===), :b, :a)))
+              )),
+            (:line, 690, :none),
+            (:(=), :b, (:ccall, (:call, :cfunction, (:$, :fname), (:curly, :Ref, (:$, :t)), (:tuple, (:$, :t))), (:curly, :Ref, (:$, :t)), (:tuple, (:$, :t)), :a)),
+            (:line, 691, :none),
+            (:&&, :verbose, (:call, :println, "C: ", :b)),
+            (:line, 692, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), :b, (:$, :v))),
+            (:line, 693, :none),
+            (:macrocall, Symbol("@test"), (:call, :(===), :b, :c)),
+            (:line, 694, :none),
+            (:if, (:., (:$, :t), (:quote, #QuoteNode
+                  :mutable
+                )), (:block,
+                (:line, 695, :none),
+                (:macrocall, Symbol("@test"), (:call, :!, (:call, :(===), :b, :a)))
+              )),
+            (:line, 697, :none),
+            (:(=), :b, (:ccall, (:call, :cfunction, (:$, :fname), :Any, (:tuple, (:curly, :Ref, (:$, :t)))), :Any, (:tuple, (:curly, :Ref, (:$, :t))), (:$, :v))),
+            (:line, 698, :none),
+            (:&&, :verbose, (:call, :println, "C: ", :b)),
+            (:line, 699, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), :b, (:$, :v))),
+            (:line, 700, :none),
+            (:macrocall, Symbol("@test"), (:call, :(===), :b, :c)),
+            (:line, 701, :none),
+            (:if, (:., (:$, :t), (:quote, #QuoteNode
+                  :mutable
+                )), (:block,
+                (:line, 702, :none),
+                (:macrocall, Symbol("@test"), (:call, :!, (:call, :(===), :b, :a)))
+              )),
+            (:line, 704, :none),
+            (:(=), :b, (:ccall, (:call, :cfunction, (:$, :fname), :Any, (:tuple, (:curly, :Ref, :Any))), :Any, (:tuple, (:curly, :Ref, :Any)), (:$, :v))),
+            (:line, 705, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), :b, (:$, :v))),
+            (:line, 706, :none),
+            (:macrocall, Symbol("@test"), (:call, :(===), :b, :c)),
+            (:line, 707, :none),
+            (:if, (:., (:$, :t), (:quote, #QuoteNode
+                  :mutable
+                )), (:block,
+                (:line, 708, :none),
+                (:macrocall, Symbol("@test"), (:call, :!, (:call, :(===), :b, :a)))
+              )),
+            (:line, 710, :none),
+            (:macrocall, Symbol("@test_throws"), :TypeError, (:ccall, (:call, :cfunction, (:$, :fname), (:curly, :Ref, :AbstractString), (:tuple, (:curly, :Ref, :Any))), :Any, (:tuple, (:curly, :Ref, :Any)), (:$, :v))),
+            (:line, 711, :none),
+            (:macrocall, Symbol("@test_throws"), :TypeError, (:ccall, (:call, :cfunction, (:$, :fname), :AbstractString, (:tuple, (:curly, :Ref, :Any))), :Any, (:tuple, (:curly, :Ref, :Any)), (:$, :v)))
+          ))
+      )),
+    (:line, 716, :none),
+    (:(=), (:call, :foo13031, :x), (:block,
+        (:line, 716, :none),
+        (:call, :Cint, 1)
+      )),
+    (:line, 717, :none),
+    (:(=), :foo13031p, (:call, :cfunction, :foo13031, :Cint, (:tuple, (:curly, :Ref, (:curly, :Tuple))))),
+    (:line, 718, :none),
+    (:ccall, :foo13031p, :Cint, (:tuple, (:curly, :Ref, (:curly, :Tuple))), (:tuple,)),
+    (:line, 720, :none),
+    (:(=), (:call, :foo13031, :x, :y, :z), (:block,
+        (:line, 720, :none),
+        :z
+      )),
+    (:line, 721, :none),
+    (:(=), :foo13031p, (:call, :cfunction, :foo13031, :Cint, (:tuple, (:curly, :Ref, (:curly, :Tuple)), (:curly, :Ref, (:curly, :Tuple)), :Cint))),
+    (:line, 722, :none),
+    (:ccall, :foo13031p, :Cint, (:tuple, (:curly, :Ref, (:curly, :Tuple)), (:curly, :Ref, (:curly, :Tuple)), :Cint), (:tuple,), (:tuple,), 8),
+    (:line, 725, :none),
+    (:function, (:call, :ccall_reassigned_ptr, (:(::), :ptr, (:curly, :Ptr, :Void))), (:block,
+        (:line, 726, :none),
+        (:(=), :ptr, (:call, (:., :Libdl, (:quote, #QuoteNode
+                :dlsym
+              )), (:call, (:., :Libdl, (:quote, #QuoteNode
+                  :dlopen
+                )), :libccalltest), "test_echo_p")),
+        (:line, 727, :none),
+        (:ccall, :ptr, :Any, (:tuple, :Any), "foo")
+      )),
+    (:line, 729, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :ccall_reassigned_ptr, :C_NULL), "foo")),
+    (:line, 732, :none),
+    (:(=), (:call, :threadcall_test_func, :x), (:block,
+        (:line, 732, :none),
+        (:macrocall, Symbol("@threadcall"), (:tuple, (:quote, #QuoteNode
+              :testUcharX
+            ), :libccalltest), :Int32, (:tuple, :UInt8), (:call, :%, :x, :UInt8))
+      )),
+    (:line, 735, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :threadcall_test_func, 3), 1)),
+    (:line, 736, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :threadcall_test_func, 259), 1)),
+    (:line, 740, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@threadcall"), (:tuple, (:quote, #QuoteNode
+              :threadcall_args
+            ), :libccalltest), :Cint, (:tuple, :Cint, :Cint), 1, 2), 3)),
+    (:line, 742, :none),
+    (:let, (:block,
+        (:line, 743, :none),
+        (:(=), :tids, (:ref, :Culong)),
+        (:line, 744, :none),
+        (:macrocall, Symbol("@sync"), (:for, (:(=), :i, (:(:), 1, (:call, :^, 10, :n))), (:block,
+              (:line, 745, :none),
+              (:macrocall, Symbol("@async"), (:call, :push!, :tids, (:macrocall, Symbol("@threadcall"), (:quote, #QuoteNode
+                      :uv_thread_self
+                    ), :Culong, (:tuple,))))
+            ))),
+        (:line, 749, :none),
+        (:(=), :t0, (:ccall, (:quote, #QuoteNode
+              :uv_thread_self
+            ), :Culong, (:tuple,))),
+        (:line, 750, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :tids), (:call, :^, 10, :n))),
+        (:line, 751, :none),
+        (:for, (:(=), :t, :tids), (:block,
+            (:line, 752, :none),
+            (:macrocall, Symbol("@test"), (:call, :(!=), :t, :t0))
+          ))
+      ), (:(=), :n, 3)),
+    (:line, 756, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:ccall, (:quote, #QuoteNode
+            :jl_getpagesize
+          ), :Clong, (:tuple,)), (:macrocall, Symbol("@threadcall"), (:quote, #QuoteNode
+            :jl_getpagesize
+          ), :Clong, (:tuple,)))),
+    (:line, 759, :none),
+    (:let, (:block,
+        (:line, 760, :none),
+        (:ccall, (:tuple, (:quote, #QuoteNode
+              :set_c_int
+            ), :libccalltest), :Void, (:tuple, :Cint), 1),
+        (:line, 761, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:ccall, (:tuple, (:quote, #QuoteNode
+                  :get_c_int
+                ), :libccalltest), :Cint, (:tuple,)), 1)),
+        (:line, 762, :none),
+        (:call, :finalizer, :A, (:call, :cglobal, (:tuple, (:quote, #QuoteNode
+                :finalizer_cptr
+              ), :libccalltest), :Void)),
+        (:line, 763, :none),
+        (:call, :finalize, :A),
+        (:line, 764, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:ccall, (:tuple, (:quote, #QuoteNode
+                  :get_c_int
+                ), :libccalltest), :Cint, (:tuple,)), -1))
+      ), (:(=), :A, (:vect, 1))),
+    (:line, 769, :none),
+    (:typealias, (:curly, :VecReg, :N, :T), (:curly, :NTuple, :N, (:curly, :VecElement, :T))),
+    (:line, 770, :none),
+    (:typealias, :V2xF32, (:curly, :VecReg, 2, :Float32)),
+    (:line, 771, :none),
+    (:typealias, :V4xF32, (:curly, :VecReg, 4, :Float32)),
+    (:line, 772, :none),
+    (:typealias, :V2xF64, (:curly, :VecReg, 2, :Float64)),
+    (:line, 773, :none),
+    (:typealias, :V2xI32, (:curly, :VecReg, 2, :Int32)),
+    (:line, 774, :none),
+    (:typealias, :V4xI32, (:curly, :VecReg, 4, :Int32)),
+    (:line, 776, :none),
+    (:type, false, :Struct_AA64_1, (:block,
+        (:line, 777, :none),
+        (:(::), :v1, :Int32),
+        (:line, 778, :none),
+        (:(::), :v2, :Int128)
+      )),
+    (:line, 780, :none),
+    (:type, false, :Struct_AA64_2, (:block,
+        (:line, 781, :none),
+        (:(::), :v1, :Float16),
+        (:line, 782, :none),
+        (:(::), :v2, :Float64)
+      )),
+    (:line, 786, :none),
+    (:type, false, :Struct_AA64_3, (:block,
+        (:line, 787, :none),
+        (:(::), :v1, (:curly, :VecReg, 8, :Int8)),
+        (:line, 788, :none),
+        (:(::), :v2, (:curly, :VecReg, 2, :Float32))
+      )),
+    (:line, 791, :none),
+    (:type, false, :Struct_AA64_4, (:block,
+        (:line, 792, :none),
+        (:(::), :v2, (:curly, :VecReg, 2, :Float32)),
+        (:line, 793, :none),
+        (:(::), :v1, (:curly, :VecReg, 8, :Int16))
+      )),
+    (:line, 796, :none),
+    (:type, true, :Struct_huge1_ppc64, (:block,
+        (:line, 797, :none),
+        (:(::), :m, :Int64),
+        (:line, 798, :none),
+        (:(::), :v, :V4xF32)
+      )),
+    (:line, 801, :none),
+    (:type, true, :Struct_huge2_ppc64, (:block,
+        (:line, 802, :none),
+        (:(::), :v1, :V4xF32),
+        (:line, 803, :none),
+        (:(::), :v2, :V2xI32)
+      )),
+    (:line, 806, :none),
+    (:type, true, :Struct_huge3_ppc64, (:block,
+        (:line, 807, :none),
+        (:(::), :v1, :V4xF32),
+        (:line, 808, :none),
+        (:(::), :f, (:curly, :NTuple, 4, :Float32))
+      )),
+    (:line, 811, :none),
+    (:type, true, :Struct_huge4_ppc64, (:block,
+        (:line, 812, :none),
+        (:(::), :v1, :V2xF32),
+        (:line, 813, :none),
+        (:(::), :v2, :V2xF64)
+      )),
+    (:line, 816, :none),
+    (:type, true, :Struct_huge5_ppc64, (:block,
+        (:line, 817, :none),
+        (:(::), :v1, (:curly, :NTuple, 9, :V4xF32))
+      )),
+    (:line, 820, :none),
+    (:type, true, :Struct_huge6_ppc64, (:block,
+        (:line, 821, :none),
+        (:(::), :v1, (:curly, :NTuple, 8, :V4xF32)),
+        (:line, 822, :none),
+        (:(::), :v2, :V4xF32)
+      )),
+    (:line, 825, :none),
+    (:type, true, :Struct_huge7_ppc64, (:block,
+        (:line, 826, :none),
+        (:(::), :v1, (:curly, :VecReg, 3, :Int32)),
+        (:line, 827, :none),
+        (:(::), :v2, (:curly, :VecReg, 3, :Int32))
+      )),
+    (:line, 830, :none),
+    (:type, true, :Struct_huge1_ppc64_hva, (:block,
+        (:line, 831, :none),
+        (:(::), :v1, (:curly, :NTuple, 8, :V4xF32))
+      )),
+    (:line, 834, :none),
+    (:type, true, :Struct_huge2_ppc64_hva, (:block,
+        (:line, 835, :none),
+        (:(::), :v1, (:curly, :NTuple, 2, (:curly, :NTuple, 2, :V4xF32)))
+      )),
+    (:line, 838, :none),
+    (:type, true, :Struct_huge3_ppc64_hva, (:block,
+        (:line, 839, :none),
+        (:(::), :vf1, :V4xF32),
+        (:line, 840, :none),
+        (:(::), :vf2, (:curly, :Tuple, (:curly, :NTuple, 2, :V4xF32)))
+      )),
+    (:line, 843, :none),
+    (:type, true, :Struct_huge4_ppc64_hva, (:block,
+        (:line, 844, :none),
+        (:(::), :v1, :V4xI32),
+        (:line, 845, :none),
+        (:(::), :v2, :V4xF32)
+      )),
+    (:line, 848, :none),
+    (:type, true, :Struct_huge5_ppc64_hva, (:block,
+        (:line, 849, :none),
+        (:(::), :v1, :V4xI32),
+        (:line, 850, :none),
+        (:(::), :v2, :V2xF64)
+      )),
+    (:line, 853, :none),
+    (:if, (:call, :(===), (:., :Sys, (:quote, #QuoteNode
+            :ARCH
+          )), (:quote, #QuoteNode
+          :x86_64
+        )), (:block,
+        (:line, 854, :none),
+        (:function, (:call, :test_sse, (:(::), :a1, :V4xF32), (:(::), :a2, :V4xF32), (:(::), :a3, :V4xF32), (:(::), :a4, :V4xF32)), (:block,
+            (:line, 855, :none),
+            (:ccall, (:tuple, (:quote, #QuoteNode
+                  :test_m128
+                ), :libccalltest), :V4xF32, (:tuple, :V4xF32, :V4xF32, :V4xF32, :V4xF32), :a1, :a2, :a3, :a4)
+          )),
+        (:line, 858, :none),
+        (:function, (:call, :test_sse, (:(::), :a1, :V4xI32), (:(::), :a2, :V4xI32), (:(::), :a3, :V4xI32), (:(::), :a4, :V4xI32)), (:block,
+            (:line, 859, :none),
+            (:ccall, (:tuple, (:quote, #QuoteNode
+                  :test_m128i
+                ), :libccalltest), :V4xI32, (:tuple, :V4xI32, :V4xI32, :V4xI32, :V4xI32), :a1, :a2, :a3, :a4)
+          )),
+        (:line, 862, :none),
+        (:(=), (:call, :foo_ams, :a1, :a2, :a3, :a4), (:block,
+            (:line, 862, :none),
+            (:call, :VecReg, (:call, :ntuple, (:->, :i, (:block,
+                    (:line, 862, :none),
+                    (:call, :VecElement, (:call, :+, (:., (:ref, :a1, :i), (:quote, #QuoteNode
+                            :value
+                          )), (:call, :*, (:., (:ref, :a2, :i), (:quote, #QuoteNode
+                              :value
+                            )), (:call, :-, (:., (:ref, :a3, :i), (:quote, #QuoteNode
+                                :value
+                              )), (:., (:ref, :a4, :i), (:quote, #QuoteNode
+                                :value
+                              ))))))
+                  )), 4))
+          )),
+        (:line, 864, :none),
+        (:(=), (:call, (:curly, :rt_sse, :T), (:(::), :a1, :T), (:(::), :a2, :T), (:(::), :a3, :T), (:(::), :a4, :T)), (:block,
+            (:line, 864, :none),
+            (:ccall, (:call, :cfunction, :foo_ams, :T, (:tuple, :T, :T, :T, :T)), :T, (:tuple, :T, :T, :T, :T), :a1, :a2, :a3, :a4)
+          )),
+        (:line, 866, :none),
+        (:for, (:(=), :s, (:vect, :Float32, :Int32)), (:block,
+            (:line, 867, :none),
+            (:(=), :a1, (:call, :VecReg, (:call, :ntuple, (:->, :i, (:block,
+                      (:line, 867, :none),
+                      (:call, :VecElement, (:call, :s, (:call, :*, 1, :i)))
+                    )), 4))),
+            (:line, 868, :none),
+            (:(=), :a2, (:call, :VecReg, (:call, :ntuple, (:->, :i, (:block,
+                      (:line, 868, :none),
+                      (:call, :VecElement, (:call, :s, (:call, :*, 2, :i)))
+                    )), 4))),
+            (:line, 869, :none),
+            (:(=), :a3, (:call, :VecReg, (:call, :ntuple, (:->, :i, (:block,
+                      (:line, 869, :none),
+                      (:call, :VecElement, (:call, :s, (:call, :*, 3, :i)))
+                    )), 4))),
+            (:line, 870, :none),
+            (:(=), :a4, (:call, :VecReg, (:call, :ntuple, (:->, :i, (:block,
+                      (:line, 870, :none),
+                      (:call, :VecElement, (:call, :s, (:call, :*, 4, :i)))
+                    )), 4))),
+            (:line, 871, :none),
+            (:(=), :r, (:call, :VecReg, (:call, :ntuple, (:->, :i, (:block,
+                      (:line, 871, :none),
+                      (:call, :VecElement, (:call, :s, (:call, :+, (:call, :*, 1, :i), (:call, :*, (:call, :*, 2, :i), (:call, :-, (:call, :*, 3, :i), (:call, :*, 4, :i))))))
+                    )), 4))),
+            (:line, 872, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:call, :test_sse, :a1, :a2, :a3, :a4), :r)),
+            (:line, 875, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:call, :rt_sse, :a1, :a2, :a3, :a4), :r))
+          ))
+      ), (:block,
+        (:line, 878, :none),
+        (:if, (:call, :(===), (:., :Sys, (:quote, #QuoteNode
+                :ARCH
+              )), (:quote, #QuoteNode
+              :aarch64
+            )), (:block,
+            (:line, 879, :none),
+            (:for, (:block,
+                (:(=), :v1, (:(:), 1, 99, 1000)),
+                (:(=), :v2, (:(:), -100, -1999, -20000))
+              ), (:block,
+                (:line, 880, :none),
+                (:macrocall, Symbol("@test"), (:call, :(==), (:ccall, (:tuple, (:quote, #QuoteNode
+                          :test_aa64_i128_1
+                        ), :libccalltest), :Int128, (:tuple, :Int64, :Int128), :v1, :v2), (:call, :-, (:call, :*, :v1, 2), :v2)))
+              )),
+            (:line, 883, :none),
+            (:for, (:block,
+                (:(=), :v1, (:(:), 1, 4)),
+                (:(=), :v2, (:(:), -4, -1)),
+                (:(=), :v3_1, (:(:), 3, 5)),
+                (:(=), :v3_2, (:(:), 7, 9))
+              ), (:block,
+                (:line, 884, :none),
+                (:(=), :res, (:ccall, (:tuple, (:quote, #QuoteNode
+                        :test_aa64_i128_2
+                      ), :libccalltest), :Struct_AA64_1, (:tuple, :Int64, :Int128, :Struct_AA64_1), :v1, :v2, (:call, :Struct_AA64_1, :v3_1, :v3_2))),
+                (:line, 887, :none),
+                (:(=), :expected, (:call, :Struct_AA64_1, (:call, :-, (:call, :+, (:call, :÷, :v1, 2), 1), :v3_1), (:call, :-, (:call, :-, (:call, :*, :v2, 2), 1), :v3_2))),
+                (:line, 888, :none),
+                (:macrocall, Symbol("@test"), (:call, :(===), :res, :expected))
+              )),
+            (:line, 890, :none),
+            (:for, (:block,
+                (:(=), :v1, (:(:), 1, 4)),
+                (:(=), :v2, (:(:), -4, -1)),
+                (:(=), :v3, (:(:), 3, 5)),
+                (:(=), :v4, (:call, :-, (:(:), 1, 3)))
+              ), (:block,
+                (:line, 891, :none),
+                (:(=), :res, (:ccall, (:tuple, (:quote, #QuoteNode
+                        :test_aa64_fp16_1
+                      ), :libccalltest), :Float16, (:tuple, :Cint, :Float32, :Float64, :Float16), :v1, :v2, :v3, :v4)),
+                (:line, 894, :none),
+                (:(=), :expected, (:call, :Float16, (:call, :+, :v1, (:call, :*, :v2, 2), (:call, :*, :v3, 3), (:call, :*, :v4, 4)))),
+                (:line, 895, :none),
+                (:macrocall, Symbol("@test"), (:call, :(===), :res, :expected)),
+                (:line, 897, :none),
+                (:(=), :res, (:ccall, (:tuple, (:quote, #QuoteNode
+                        :test_aa64_fp16_2
+                      ), :libccalltest), :Struct_AA64_2, (:tuple, :Cint, :Float32, :Float64, :Float16), :v1, :v2, :v3, :v4)),
+                (:line, 900, :none),
+                (:(=), :expected, (:call, :Struct_AA64_2, (:call, :+, (:call, :/, :v4, 2), 1), (:call, :-, (:call, :+, (:call, :*, :v1, 2), (:call, :*, :v2, 4)), :v3))),
+                (:line, 901, :none),
+                (:macrocall, Symbol("@test"), (:call, :(===), :res, :expected))
+              )),
+            (:line, 903, :none),
+            (:for, (:block,
+                (:(=), :v1_1, (:(:), 1, 4)),
+                (:(=), :v1_2, (:(:), -2, 2)),
+                (:(=), :v2, (:(:), -4, -1)),
+                (:(=), :v3_1, (:(:), 3, 5)),
+                (:(=), :v3_2, (:(:), 6, 8))
+              ), (:block,
+                (:line, 904, :none),
+                (:(=), :res, (:ccall, (:tuple, (:quote, #QuoteNode
+                        :test_aa64_vec_1
+                      ), :libccalltest), (:curly, :VecReg, 2, :Int64), (:tuple, (:curly, :VecReg, 2, :Int32), :Float32, (:curly, :VecReg, 2, :Int32)), (:tuple, (:call, :VecElement, (:call, :Int32, :v1_1)), (:call, :VecElement, (:call, :Int32, :v1_2))), :v2, (:tuple, (:call, :VecElement, (:call, :Int32, :v3_1)), (:call, :VecElement, (:call, :Int32, :v3_2))))),
+                (:line, 909, :none),
+                (:(=), :expected, (:tuple, (:call, :VecElement, (:call, :+, (:call, :*, :v1_1, :v2), :v3_1)), (:call, :VecElement, (:call, :+, (:call, :*, :v1_2, :v2), :v3_2)))),
+                (:line, 910, :none),
+                (:macrocall, Symbol("@test"), (:call, :(===), :res, :expected))
+              )),
+            (:line, 912, :none),
+            (:for, (:block,
+                (:(=), :v1_11, (:(:), 1, 4)),
+                (:(=), :v1_12, (:(:), -2, 2)),
+                (:(=), :v1_21, (:(:), 1, 4)),
+                (:(=), :v1_22, (:(:), -2, 2)),
+                (:(=), :v2_11, (:(:), 1, 4)),
+                (:(=), :v2_12, (:(:), -2, 2)),
+                (:(=), :v2_21, (:(:), 1, 4)),
+                (:(=), :v2_22, (:(:), -2, 2))
+              ), (:block,
+                (:line, 914, :none),
+                (:(=), :v1, (:call, :Struct_AA64_3, (:tuple, (:call, :VecElement, (:call, :Int8, :v1_11)), (:call, :VecElement, (:call, :Int8, :v1_12)), (:call, :VecElement, (:call, :Int8, 0)), (:call, :VecElement, (:call, :Int8, 0)), (:call, :VecElement, (:call, :Int8, 0)), (:call, :VecElement, (:call, :Int8, 0)), (:call, :VecElement, (:call, :Int8, 0)), (:call, :VecElement, (:call, :Int8, 0))), (:tuple, (:call, :VecElement, (:call, :Float32, :v1_21)), (:call, :VecElement, (:call, :Float32, :v1_22))))),
+                (:line, 920, :none),
+                (:(=), :v2, (:call, :Struct_AA64_4, (:tuple, (:call, :VecElement, (:call, :Float32, :v2_21)), (:call, :VecElement, (:call, :Float32, :v2_22))), (:tuple, (:call, :VecElement, (:call, :Int16, :v2_11)), (:call, :VecElement, (:call, :Int16, :v2_12)), (:call, :VecElement, (:call, :Int16, 0)), (:call, :VecElement, (:call, :Int16, 0)), (:call, :VecElement, (:call, :Int16, 0)), (:call, :VecElement, (:call, :Int16, 0)), (:call, :VecElement, (:call, :Int16, 0)), (:call, :VecElement, (:call, :Int16, 0))))),
+                (:line, 926, :none),
+                (:(=), :res, (:ccall, (:tuple, (:quote, #QuoteNode
+                        :test_aa64_vec_2
+                      ), :libccalltest), :Struct_AA64_3, (:tuple, :Struct_AA64_3, :Struct_AA64_4), :v1, :v2)),
+                (:line, 928, :none),
+                (:(=), :expected, (:call, :Struct_AA64_3, (:tuple, (:call, :VecElement, (:call, :Int8, (:call, :+, :v1_11, :v2_11))), (:call, :VecElement, (:call, :Int8, (:call, :+, :v1_12, :v2_12))), (:call, :VecElement, (:call, :Int8, 0)), (:call, :VecElement, (:call, :Int8, 0)), (:call, :VecElement, (:call, :Int8, 0)), (:call, :VecElement, (:call, :Int8, 0)), (:call, :VecElement, (:call, :Int8, 0)), (:call, :VecElement, (:call, :Int8, 0))), (:tuple, (:call, :VecElement, (:call, :Float32, (:call, :-, :v1_21, :v2_21))), (:call, :VecElement, (:call, :Float32, (:call, :-, :v1_22, :v2_22)))))),
+                (:line, 935, :none),
+                (:macrocall, Symbol("@test"), (:call, :(===), :res, :expected))
+              ))
+          ), (:block,
+            (:line, 938, :none),
+            (:if, (:||, (:call, :(===), (:., :Sys, (:quote, #QuoteNode
+                      :ARCH
+                    )), (:quote, #QuoteNode
+                    :powerpc64le
+                  )), (:call, :(===), (:., :Sys, (:quote, #QuoteNode
+                      :ARCH
+                    )), (:quote, #QuoteNode
+                    :ppc64le
+                  ))), (:block,
+                (:line, 939, :none),
+                (:macrocall, Symbol("@test_huge"), 1, "_ppc64", (:tuple, 1, (:tuple, 2.0, 3.0, 4.0, 5.0))),
+                (:line, 940, :none),
+                (:macrocall, Symbol("@test_huge"), 2, "_ppc64", (:tuple, (:tuple, 1.0, 2.0, 3.0, 4.0), (:tuple, 11, 12))),
+                (:line, 941, :none),
+                (:macrocall, Symbol("@test_huge"), 3, "_ppc64", (:tuple, (:tuple, 1, 2, 3, 4), (:tuple, 11.0, 12.0, 13.0, 14.0))),
+                (:line, 942, :none),
+                (:macrocall, Symbol("@test_huge"), 4, "_ppc64", (:tuple, (:tuple, 1, 2), (:tuple, 11.0, 12.0))),
+                (:line, 943, :none),
+                (:macrocall, Symbol("@test_huge"), 5, "_ppc64", (:tuple, (:tuple, (:tuple, 1.0, 2.0, 3.0, 4.0), (:tuple, 5.0, 6.0, 7.0, 8.0), (:tuple, 11.0, 12.0, 13.0, 14.0), (:tuple, 15.0, 16.0, 17.0, 18.0), (:tuple, 21.0, 22.0, 23.0, 24.0), (:tuple, 25.0, 26.0, 27.0, 28.0), (:tuple, 31.0, 32.0, 33.0, 34.0), (:tuple, 35.0, 36.0, 37.0, 38.0), (:tuple, 41.0, 42.0, 43.0, 44.0)))),
+                (:line, 952, :none),
+                (:macrocall, Symbol("@test_huge"), 6, "_ppc64", (:tuple, (:tuple, (:tuple, 1.0, 2.0, 3.0, 4.0), (:tuple, 5.0, 6.0, 7.0, 8.0), (:tuple, 11.0, 12.0, 13.0, 14.0), (:tuple, 15.0, 16.0, 17.0, 18.0), (:tuple, 21.0, 22.0, 23.0, 24.0), (:tuple, 25.0, 26.0, 27.0, 28.0), (:tuple, 31.0, 32.0, 33.0, 34.0), (:tuple, 35.0, 36.0, 37.0, 38.0)), (:tuple, 41.0, 42.0, 43.0, 44.0))),
+                (:line, 961, :none),
+                (:macrocall, Symbol("@test_huge"), 1, "_ppc64_hva", (:tuple, (:tuple, (:tuple, 1.0, 2.0, 3.0, 4.0), (:tuple, 5.0, 6.0, 7.0, 8.0), (:tuple, 11.0, 12.0, 13.0, 14.0), (:tuple, 15.0, 16.0, 17.0, 18.0), (:tuple, 21.0, 22.0, 23.0, 24.0), (:tuple, 25.0, 26.0, 27.0, 28.0), (:tuple, 31.0, 32.0, 33.0, 34.0), (:tuple, 35.0, 36.0, 37.0, 38.0)))),
+                (:line, 969, :none),
+                (:macrocall, Symbol("@test_huge"), 2, "_ppc64_hva", (:tuple, (:tuple, (:tuple, (:tuple, 1.0, 2.0, 3.0, 4.0), (:tuple, 5.0, 6.0, 7.0, 8.0)), (:tuple, (:tuple, 11.0, 12.0, 13.0, 14.0), (:tuple, 15.0, 16.0, 17.0, 18.0))))),
+                (:line, 973, :none),
+                (:macrocall, Symbol("@test_huge"), 3, "_ppc64_hva", (:tuple, (:tuple, 1.0, 2.0, 3.0, 4.0), (:tuple, (:tuple, (:tuple, 11.0, 12.0, 13.0, 14.0), (:tuple, 15.0, 16.0, 17.0, 18.0))))),
+                (:line, 976, :none),
+                (:macrocall, Symbol("@test_huge"), 4, "_ppc64_hva", (:tuple, (:tuple, 1, 2, 3, 4), (:tuple, 11.0, 12.0, 13.0, 14.0))),
+                (:line, 978, :none),
+                (:macrocall, Symbol("@test_huge"), 5, "_ppc64_hva", (:tuple, (:tuple, 1, 2, 3, 4), (:tuple, 11.0, 12.0))),
+                (:line, 981, :none),
+                (:macrocall, Symbol("@test"), (:call, :(==), 18451, (:ccall, (:tuple, (:quote, #QuoteNode
+                          :test_ppc64_vec1long
+                        ), :libccalltest), :Int64, (:tuple, :Int64, :Int64, :Int64, :Int64, :Int64, :Int64, :Int64, :Int64, :Int64, :Struct_huge1_ppc64), 1, 2, 3, 4, 5, 6, 7, 8, 9, (:call, :Struct_huge1_ppc64, 18000, (:tuple, 100, 101, 102, 103))))),
+                (:line, 985, :none),
+                (:macrocall, Symbol("@test"), (:call, :(==), 941, (:ccall, (:tuple, (:quote, #QuoteNode
+                          :test_ppc64_vec1long_vec
+                        ), :libccalltest), :Int64, (:tuple, :Int64, :Int64, :Int64, :Int64, :Int64, :Int64, :Int64, :Int64, :Int64, :V4xF32), 11, 12, 13, 14, 15, 16, 17, 18, 19, (:tuple, 200, 201, 202, 203)))),
+                (:line, 989, :none),
+                (:macrocall, Symbol("@test"), (:call, :(==), (:call, :V4xF32, (:tuple, 614232, 614218, 614204, 614190)), (:ccall, (:tuple, (:quote, #QuoteNode
+                          :test_ppc64_vec2
+                        ), :libccalltest), :V4xF32, (:tuple, :Int64, :V4xF32, :V4xF32, :V4xF32, :V4xF32, :V4xF32, :V4xF32, :V4xF32, :V4xF32, :V4xF32, :V4xF32, :V4xF32, :V4xF32, :V4xF32, :V4xF32), 600000, (:tuple, 4, 3, 2, 1), (:tuple, 5, 4, 3, 2), (:tuple, 6, 5, 4, 3), (:tuple, 7, 6, 5, 4), (:tuple, 14, 13, 12, 11), (:tuple, 15, 14, 13, 12), (:tuple, 16, 15, 14, 13), (:tuple, 17, 16, 15, 14), (:tuple, 18, 17, 16, 15), (:tuple, 1024, 1023, 1022, 1021), (:tuple, 1025, 1024, 1023, 1022), (:tuple, 1026, 1025, 1024, 1023), (:tuple, 1027, 1026, 1025, 1024), (:tuple, 10028, 10027, 10026, 10025))))
+              ), (:block,
+                (:line, 998, :none),
+                (:if, (:&&, (:call, :(!==), (:., :Sys, (:quote, #QuoteNode
+                          :ARCH
+                        )), (:quote, #QuoteNode
+                        :i686
+                      )), (:call, :(!==), (:., :Sys, (:quote, #QuoteNode
+                          :ARCH
+                        )), (:quote, #QuoteNode
+                        :arm
+                      ))), (:block,
+                    (:line, 999, :none),
+                    (:call, :warn, "ccall: no VecReg tests run for this platform")
+                  ))
+              ))
+          ))
+      )),
+    (:line, 1004, :none),
+    (:function, (:call, :f17204, :a), (:block,
+        (:line, 1005, :none),
+        (:(=), :b, (:call, :similar, :a)),
+        (:line, 1006, :none),
+        (:for, (:(=), :i, (:call, :eachindex, :a)), (:block,
+            (:line, 1007, :none),
+            (:(=), (:ref, :b, :i), (:call, :+, (:ref, :a, :i), 10))
+          )),
+        (:line, 1009, :none),
+        (:return, :b)
+      )),
+    (:line, 1011, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:ccall, (:call, :cfunction, :f17204, (:curly, :Vector, :Any), (:curly, :Tuple, (:curly, :Vector, :Any))), (:curly, :Vector, :Any), (:tuple, (:curly, :Vector, :Any)), (:typed_vcat, :Any, (:(:), 1, 10))), (:typed_vcat, :Any, (:(:), 11, 20))))
+  ))

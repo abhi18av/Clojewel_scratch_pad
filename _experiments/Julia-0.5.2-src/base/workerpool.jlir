@@ -1,0 +1,312 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:abstract, :AbstractWorkerPool),
+    (:line, 18, :none),
+    (:type, true, (:<:, :WorkerPool, :AbstractWorkerPool), (:block,
+        (:line, 19, :none),
+        (:(::), :channel, (:curly, :RemoteChannel, (:curly, :Channel, :Int))),
+        (:line, 20, :none),
+        (:(::), :workers, (:curly, :Set, :Int)),
+        (:line, 23, :none),
+        (:(=), (:call, :WorkerPool), (:block,
+            (:line, 23, :none),
+            (:call, :new, (:call, :RemoteChannel, (:->, (:tuple,), (:block,
+                    (:line, 23, :none),
+                    (:call, (:curly, :Channel, :Int), (:call, :typemax, :Int))
+                  ))), (:call, (:curly, :Set, :Int)))
+          ))
+      )),
+    (:line, 27, :none),
+    "    WorkerPool(workers)\n\nCreate a WorkerPool from a vector of worker ids.\n",
+    (:line, 32, :none),
+    (:function, (:call, :WorkerPool, (:(::), :workers, (:curly, :Vector, :Int))), (:block,
+        (:line, 33, :none),
+        (:(=), :pool, (:call, :WorkerPool)),
+        (:line, 36, :none),
+        (:for, (:(=), :w, :workers), (:block,
+            (:line, 37, :none),
+            (:call, :push!, :pool, :w)
+          )),
+        (:line, 40, :none),
+        (:return, :pool)
+      )),
+    (:line, 43, :none),
+    (:(=), (:call, :push!, (:(::), :pool, :AbstractWorkerPool), (:(::), :w, :Int)), (:block,
+        (:line, 43, :none),
+        (:block,
+          (:call, :push!, (:., :pool, (:quote, #QuoteNode
+                :workers
+              )), :w),
+          (:call, :put!, (:., :pool, (:quote, #QuoteNode
+                :channel
+              )), :w),
+          :pool
+        )
+      )),
+    (:line, 44, :none),
+    (:(=), (:call, :push!, (:(::), :pool, :AbstractWorkerPool), (:(::), :w, :Worker)), (:block,
+        (:line, 44, :none),
+        (:call, :push!, :pool, (:., :w, (:quote, #QuoteNode
+              :id
+            )))
+      )),
+    (:line, 45, :none),
+    (:(=), (:call, :length, (:(::), :pool, :AbstractWorkerPool)), (:block,
+        (:line, 45, :none),
+        (:call, :length, (:., :pool, (:quote, #QuoteNode
+              :workers
+            )))
+      )),
+    (:line, 46, :none),
+    (:(=), (:call, :isready, (:(::), :pool, :AbstractWorkerPool)), (:block,
+        (:line, 46, :none),
+        (:call, :isready, (:., :pool, (:quote, #QuoteNode
+              :channel
+            )))
+      )),
+    (:line, 48, :none),
+    (:(=), (:call, :put!, (:(::), :pool, :AbstractWorkerPool), (:(::), :w, :Int)), (:block,
+        (:line, 48, :none),
+        (:block,
+          (:call, :put!, (:., :pool, (:quote, #QuoteNode
+                :channel
+              )), :w),
+          :pool
+        )
+      )),
+    (:line, 50, :none),
+    (:function, (:call, :workers, (:(::), :pool, :AbstractWorkerPool)), (:block,
+        (:line, 51, :none),
+        (:if, (:&&, (:call, :(==), (:call, :length, :pool), 0), (:call, :(===), :pool, (:call, :default_worker_pool))), (:block,
+            (:line, 52, :none),
+            (:return, (:vect, 1))
+          ), (:block,
+            (:line, 54, :none),
+            (:return, (:call, :collect, (:., :pool, (:quote, #QuoteNode
+                    :workers
+                  ))))
+          ))
+      )),
+    (:line, 58, :none),
+    (:function, (:call, :nworkers, (:(::), :pool, :AbstractWorkerPool)), (:block,
+        (:line, 59, :none),
+        (:if, (:&&, (:call, :(==), (:call, :length, :pool), 0), (:call, :(===), :pool, (:call, :default_worker_pool))), (:block,
+            (:line, 60, :none),
+            (:return, 1)
+          ), (:block,
+            (:line, 62, :none),
+            (:return, (:call, :length, (:., :pool, (:quote, #QuoteNode
+                    :workers
+                  ))))
+          ))
+      )),
+    (:line, 66, :none),
+    (:function, (:call, :take!, (:(::), :pool, :AbstractWorkerPool)), (:block,
+        (:line, 68, :none),
+        (:(=), :worker, 0),
+        (:line, 69, :none),
+        (:while, true, (:block,
+            (:line, 70, :none),
+            (:if, (:call, :(==), (:call, :length, :pool), 0), (:block,
+                (:line, 71, :none),
+                (:if, (:call, :(===), :pool, (:call, :default_worker_pool)), (:block,
+                    (:line, 73, :none),
+                    (:(=), :worker, 1),
+                    (:line, 74, :none),
+                    (:break,)
+                  ), (:block,
+                    (:line, 76, :none),
+                    (:call, :throw, (:call, :ErrorException, "No active worker available in pool"))
+                  ))
+              )),
+            (:line, 80, :none),
+            (:(=), :worker, (:call, :take!, (:., :pool, (:quote, #QuoteNode
+                    :channel
+                  )))),
+            (:line, 81, :none),
+            (:if, (:call, :in, :worker, (:call, :procs)), (:block,
+                (:line, 82, :none),
+                (:break,)
+              ), (:block,
+                (:line, 84, :none),
+                (:call, :delete!, (:., :pool, (:quote, #QuoteNode
+                      :workers
+                    )), :worker)
+              ))
+          )),
+        (:line, 87, :none),
+        (:return, :worker)
+      )),
+    (:line, 90, :none),
+    (:function, (:call, :remotecall_pool, (:parameters, (:..., :kwargs)), :rc_f, :f, (:(::), :pool, :AbstractWorkerPool), (:..., :args)), (:block,
+        (:line, 91, :none),
+        (:(=), :worker, (:call, :take!, :pool)),
+        (:line, 92, :none),
+        (:try, (:block,
+            (:line, 93, :none),
+            (:call, :rc_f, (:parameters, (:..., :kwargs)), :f, :worker, (:..., :args))
+          ), false, false, (:block,
+            (:line, 99, :none),
+            (:&&, (:call, :in, :worker, (:., :pool, (:quote, #QuoteNode
+                    :workers
+                  ))), (:call, :put!, :pool, :worker))
+          ))
+      )),
+    (:line, 103, :none),
+    "    remotecall(f, pool::AbstractWorkerPool, args...; kwargs...)\n\nCall `f(args...; kwargs...)` on one of the workers in `pool`. Returns a `Future`.\n",
+    (:line, 108, :none),
+    (:(=), (:call, :remotecall, (:parameters, (:..., :kwargs)), :f, (:(::), :pool, :AbstractWorkerPool), (:..., :args)), (:block,
+        (:line, 108, :none),
+        (:call, :remotecall_pool, (:parameters, (:..., :kwargs)), :remotecall, :f, :pool, (:..., :args))
+      )),
+    (:line, 111, :none),
+    "    remotecall_wait(f, pool::AbstractWorkerPool, args...; kwargs...)\n\nCall `f(args...; kwargs...)` on one of the workers in `pool`. Waits for completion, returns a `Future`.\n",
+    (:line, 116, :none),
+    (:(=), (:call, :remotecall_wait, (:parameters, (:..., :kwargs)), :f, (:(::), :pool, :AbstractWorkerPool), (:..., :args)), (:block,
+        (:line, 116, :none),
+        (:call, :remotecall_pool, (:parameters, (:..., :kwargs)), :remotecall_wait, :f, :pool, (:..., :args))
+      )),
+    (:line, 119, :none),
+    "    remotecall_fetch(f, pool::AbstractWorkerPool, args...; kwargs...)\n\nCall `f(args...; kwargs...)` on one of the workers in `pool`. Waits for completion and returns the result.\n",
+    (:line, 124, :none),
+    (:(=), (:call, :remotecall_fetch, (:parameters, (:..., :kwargs)), :f, (:(::), :pool, :AbstractWorkerPool), (:..., :args)), (:block,
+        (:line, 124, :none),
+        (:call, :remotecall_pool, (:parameters, (:..., :kwargs)), :remotecall_fetch, :f, :pool, (:..., :args))
+      )),
+    (:line, 126, :none),
+    "    default_worker_pool()\n\nWorkerPool containing idle `workers()` (used by `remote(f)`).\n",
+    (:line, 131, :none),
+    (:(=), :_default_worker_pool, (:call, (:curly, :Nullable, :WorkerPool))),
+    (:line, 132, :none),
+    (:function, (:call, :default_worker_pool), (:block,
+        (:line, 133, :none),
+        (:if, (:&&, (:call, :isnull, :_default_worker_pool), (:call, :(==), (:call, :myid), 1)), (:block,
+            (:line, 134, :none),
+            (:call, :set_default_worker_pool, (:call, :WorkerPool))
+          )),
+        (:line, 136, :none),
+        (:return, (:call, :get, :_default_worker_pool))
+      )),
+    (:line, 139, :none),
+    (:function, (:call, :set_default_worker_pool, (:(::), :p, :WorkerPool)), (:block,
+        (:line, 140, :none),
+        (:global, (:(=), :_default_worker_pool, (:call, :Nullable, :p)))
+      )),
+    (:line, 144, :none),
+    "    remote([::AbstractWorkerPool], f) -> Function\n\nReturns a lambda that executes function `f` on an available worker\nusing `remotecall_fetch`.\n",
+    (:line, 150, :none),
+    (:(=), (:call, :remote, :f), (:block,
+        (:line, 150, :none),
+        (:->, (:block,
+            (:..., :args),
+            (:..., :kwargs)
+          ), (:block,
+            (:line, 150, :none),
+            (:call, :remotecall_fetch, (:parameters, (:..., :kwargs)), :f, (:call, :default_worker_pool), (:..., :args))
+          ))
+      )),
+    (:line, 151, :none),
+    (:(=), (:call, :remote, (:(::), :p, :AbstractWorkerPool), :f), (:block,
+        (:line, 151, :none),
+        (:->, (:block,
+            (:..., :args),
+            (:..., :kwargs)
+          ), (:block,
+            (:line, 151, :none),
+            (:call, :remotecall_fetch, (:parameters, (:..., :kwargs)), :f, :p, (:..., :args))
+          ))
+      )),
+    (:line, 153, :none),
+    (:type, true, (:<:, :CachingPool, :AbstractWorkerPool), (:block,
+        (:line, 154, :none),
+        (:(::), :channel, (:curly, :RemoteChannel, (:curly, :Channel, :Int))),
+        (:line, 155, :none),
+        (:(::), :workers, (:curly, :Set, :Int)),
+        (:line, 158, :none),
+        (:(::), :map_obj2ref, (:curly, :Dict, (:curly, :Tuple, :Int, :Function), :RemoteChannel)),
+        (:line, 160, :none),
+        (:function, (:call, :CachingPool), (:block,
+            (:line, 161, :none),
+            (:(=), :wp, (:call, :new, (:call, :RemoteChannel, (:->, (:tuple,), (:block,
+                      (:line, 161, :none),
+                      (:call, (:curly, :Channel, :Int), (:call, :typemax, :Int))
+                    ))), (:call, (:curly, :Set, :Int)), (:call, (:curly, :Dict, :Int, :Function)))),
+            (:line, 162, :none),
+            (:call, :finalizer, :wp, :clear!),
+            (:line, 163, :none),
+            :wp
+          ))
+      )),
+    (:line, 167, :none),
+    "    CachingPool(workers::Vector{Int})\n\nAn implementation of an `AbstractWorkerPool`. `remote`, `remotecall_fetch`, `pmap` and other\nremote calls which execute functions remotely, benefit from caching the serialized/deserialized\nfunctions on the worker nodes, especially for closures which capture large amounts of data.\n\nThe remote cache is maintained for the lifetime of the returned `CachingPool` object. To clear the\ncache earlier, use `clear!(pool)`.\n\nFor global variables, only the bindings are captured in a closure, not the data.\n`let` blocks can be used to capture global data.\n\nFor example:\n```\nconst foo=rand(10^8);\nwp=CachingPool(workers())\nlet foo=foo\n    pmap(wp, i->sum(foo)+i, 1:100);\nend\n```\n\nThe above would transfer `foo` only once to each worker.\n\n",
+    (:line, 192, :none),
+    (:function, (:call, :CachingPool, (:(::), :workers, (:curly, :Vector, :Int))), (:block,
+        (:line, 193, :none),
+        (:(=), :pool, (:call, :CachingPool)),
+        (:line, 194, :none),
+        (:for, (:(=), :w, :workers), (:block,
+            (:line, 195, :none),
+            (:call, :push!, :pool, :w)
+          )),
+        (:line, 197, :none),
+        (:return, :pool)
+      )),
+    (:line, 200, :none),
+    (:(=), (:call, :CachingPool, (:(::), :wp, :WorkerPool)), (:block,
+        (:line, 200, :none),
+        (:call, :CachingPool, (:call, :workers, :wp))
+      )),
+    (:line, 202, :none),
+    "    clear!(pool::CachingPool) -> pool\n\nRemoves all cached functions from all participating workers.\n",
+    (:line, 207, :none),
+    (:function, (:call, :clear!, (:(::), :pool, :CachingPool)), (:block,
+        (:line, 208, :none),
+        (:for, (:(=), (:tuple, :_, :rr), (:., :pool, (:quote, #QuoteNode
+                :map_obj2ref
+              ))), (:block,
+            (:line, 209, :none),
+            (:call, :finalize, :rr)
+          )),
+        (:line, 211, :none),
+        (:call, :empty!, (:., :pool, (:quote, #QuoteNode
+              :map_obj2ref
+            ))),
+        (:line, 212, :none),
+        :pool
+      )),
+    (:line, 215, :none),
+    (:(=), (:call, :exec_from_cache, (:parameters, (:..., :kwargs)), (:(::), :rr, :RemoteChannel), (:..., :args)), (:block,
+        (:line, 215, :none),
+        (:call, (:call, :fetch, :rr), (:parameters, (:..., :kwargs)), (:..., :args))
+      )),
+    (:line, 216, :none),
+    (:function, (:call, :exec_from_cache, (:parameters, (:..., :kwargs)), (:(::), :f_ref, (:curly, :Tuple, :Function, :RemoteChannel)), (:..., :args)), (:block,
+        (:line, 217, :none),
+        (:call, :put!, (:ref, :f_ref, 2), (:ref, :f_ref, 1)),
+        (:line, 218, :none),
+        (:call, (:ref, :f_ref, 1), (:parameters, (:..., :kwargs)), (:..., :args))
+      )),
+    (:line, 221, :none),
+    (:function, (:call, :remotecall_pool, (:parameters, (:..., :kwargs)), :rc_f, :f, (:(::), :pool, :CachingPool), (:..., :args)), (:block,
+        (:line, 222, :none),
+        (:(=), :worker, (:call, :take!, :pool)),
+        (:line, 223, :none),
+        (:(=), :f_ref, (:call, :get, (:., :pool, (:quote, #QuoteNode
+                :map_obj2ref
+              )), (:tuple, :worker, :f), (:tuple, :f, (:call, :RemoteChannel, :worker)))),
+        (:line, 224, :none),
+        (:&&, (:call, :isa, :f_ref, :Tuple), (:(=), (:ref, (:., :pool, (:quote, #QuoteNode
+                  :map_obj2ref
+                )), (:tuple, :worker, :f)), (:ref, :f_ref, 2))),
+        (:line, 226, :none),
+        (:try, (:block,
+            (:line, 227, :none),
+            (:call, :rc_f, (:parameters, (:..., :kwargs)), :exec_from_cache, :worker, :f_ref, (:..., :args))
+          ), false, false, (:block,
+            (:line, 230, :none),
+            (:&&, (:call, :in, :worker, (:., :pool, (:quote, #QuoteNode
+                    :workers
+                  ))), (:call, :put!, :pool, :worker))
+          ))
+      ))
+  ))

@@ -1,0 +1,272 @@
+(:quote, (:block,
+    (:line, 5, :none),
+    (:type, true, (:<:, (:curly, :WeakKeyDict, :K, :V), (:curly, :Associative, :K, :V)), (:block,
+        (:line, 6, :none),
+        (:(::), :ht, (:curly, :Dict, :Any, :V)),
+        (:line, 7, :none),
+        (:(::), :lock, (:., :Threads, (:quote, #QuoteNode
+              :RecursiveSpinLock
+            ))),
+        (:line, 8, :none),
+        (:(::), :finalizer, :Function),
+        (:line, 10, :none),
+        (:function, (:call, :WeakKeyDict), (:block,
+            (:line, 11, :none),
+            (:(=), :t, (:call, :new, (:call, (:curly, :Dict, :Any, :V)), (:call, (:., :Threads, (:quote, #QuoteNode
+                      :RecursiveSpinLock
+                    ))), :identity)),
+            (:line, 12, :none),
+            (:(=), (:., :t, (:quote, #QuoteNode
+                  :finalizer
+                )), (:function, (:tuple, :k), (:block,
+                  (:line, 14, :none),
+                  (:&&, (:call, :islocked, :t), (:return, (:call, :finalizer, :k, (:., :t, (:quote, #QuoteNode
+                            :finalizer
+                          ))))),
+                  (:line, 15, :none),
+                  (:call, :delete!, :t, :k)
+                ))),
+            (:line, 17, :none),
+            (:return, :t)
+          ))
+      )),
+    (:line, 20, :none),
+    (:(=), (:call, :WeakKeyDict), (:block,
+        (:line, 20, :none),
+        (:call, (:curly, :WeakKeyDict, :Any, :Any))
+      )),
+    (:line, 22, :none),
+    (:(=), (:call, :islocked, (:(::), :wkh, :WeakKeyDict)), (:block,
+        (:line, 22, :none),
+        (:call, :islocked, (:., :wkh, (:quote, #QuoteNode
+              :lock
+            )))
+      )),
+    (:line, 23, :none),
+    (:(=), (:call, :lock, :f, (:(::), :wkh, :WeakKeyDict)), (:block,
+        (:line, 23, :none),
+        (:call, :lock, :f, (:., :wkh, (:quote, #QuoteNode
+              :lock
+            )))
+      )),
+    (:line, 24, :none),
+    (:(=), (:call, :trylock, :f, (:(::), :wkh, :WeakKeyDict)), (:block,
+        (:line, 24, :none),
+        (:call, :trylock, :f, (:., :wkh, (:quote, #QuoteNode
+              :lock
+            )))
+      )),
+    (:line, 26, :none),
+    (:function, (:call, (:curly, :setindex!, :K), (:(::), :wkh, (:curly, :WeakKeyDict, :K)), :v, :key), (:block,
+        (:line, 27, :none),
+        (:(=), :k, (:call, :convert, :K, :key)),
+        (:line, 28, :none),
+        (:call, :finalizer, :k, (:., :wkh, (:quote, #QuoteNode
+              :finalizer
+            ))),
+        (:line, 29, :none),
+        (:call, :lock, (:->, (:tuple,), (:block,
+              (:line, 30, :none),
+              (:(=), (:ref, (:., :wkh, (:quote, #QuoteNode
+                      :ht
+                    )), (:call, :WeakRef, :k)), :v)
+            )), :wkh),
+        (:line, 32, :none),
+        (:return, :wkh)
+      )),
+    (:line, 35, :none),
+    (:function, (:call, (:curly, :getkey, :K), (:(::), :wkh, (:curly, :WeakKeyDict, :K)), :kk, :default), (:block,
+        (:line, 36, :none),
+        (:return, (:call, :lock, (:->, (:tuple,), (:block,
+                (:line, 37, :none),
+                (:(=), :k, (:call, :getkey, (:., :wkh, (:quote, #QuoteNode
+                        :ht
+                      )), :kk, :secret_table_token)),
+                (:line, 38, :none),
+                (:&&, (:call, :is, :k, :secret_table_token), (:return, :default)),
+                (:line, 39, :none),
+                (:return, (:(::), (:., :k, (:quote, #QuoteNode
+                        :value
+                      )), :K))
+              )), :wkh))
+      )),
+    (:line, 43, :none),
+    (:(=), (:call, (:curly, :get, :K), (:(::), :wkh, (:curly, :WeakKeyDict, :K)), :key, :default), (:block,
+        (:line, 43, :none),
+        (:call, :lock, (:->, (:tuple,), (:block,
+              (:line, 43, :none),
+              (:call, :get, (:., :wkh, (:quote, #QuoteNode
+                    :ht
+                  )), :key, :default)
+            )), :wkh)
+      )),
+    (:line, 44, :none),
+    (:(=), (:call, (:curly, :get, :K), (:(::), :default, :Callable), (:(::), :wkh, (:curly, :WeakKeyDict, :K)), :key), (:block,
+        (:line, 44, :none),
+        (:call, :lock, (:->, (:tuple,), (:block,
+              (:line, 44, :none),
+              (:call, :get, :default, (:., :wkh, (:quote, #QuoteNode
+                    :ht
+                  )), :key)
+            )), :wkh)
+      )),
+    (:line, 45, :none),
+    (:(=), (:call, (:curly, :get!, :K), (:(::), :wkh, (:curly, :WeakKeyDict, :K)), :key, :default), (:block,
+        (:line, 45, :none),
+        (:call, :lock, (:->, (:tuple,), (:block,
+              (:line, 45, :none),
+              (:call, :get!, (:., :wkh, (:quote, #QuoteNode
+                    :ht
+                  )), :key, :default)
+            )), :wkh)
+      )),
+    (:line, 46, :none),
+    (:(=), (:call, (:curly, :get!, :K), (:(::), :default, :Callable), (:(::), :wkh, (:curly, :WeakKeyDict, :K)), :key), (:block,
+        (:line, 46, :none),
+        (:call, :lock, (:->, (:tuple,), (:block,
+              (:line, 46, :none),
+              (:call, :get!, :default, (:., :wkh, (:quote, #QuoteNode
+                    :ht
+                  )), :key)
+            )), :wkh)
+      )),
+    (:line, 47, :none),
+    (:(=), (:call, (:curly, :pop!, :K), (:(::), :wkh, (:curly, :WeakKeyDict, :K)), :key), (:block,
+        (:line, 47, :none),
+        (:call, :lock, (:->, (:tuple,), (:block,
+              (:line, 47, :none),
+              (:call, :pop!, (:., :wkh, (:quote, #QuoteNode
+                    :ht
+                  )), :key)
+            )), :wkh)
+      )),
+    (:line, 48, :none),
+    (:(=), (:call, (:curly, :pop!, :K), (:(::), :wkh, (:curly, :WeakKeyDict, :K)), :key, :default), (:block,
+        (:line, 48, :none),
+        (:call, :lock, (:->, (:tuple,), (:block,
+              (:line, 48, :none),
+              (:call, :pop!, (:., :wkh, (:quote, #QuoteNode
+                    :ht
+                  )), :key, :default)
+            )), :wkh)
+      )),
+    (:line, 49, :none),
+    (:(=), (:call, (:curly, :delete!, :K), (:(::), :wkh, (:curly, :WeakKeyDict, :K)), :key), (:block,
+        (:line, 49, :none),
+        (:call, :lock, (:->, (:tuple,), (:block,
+              (:line, 49, :none),
+              (:call, :delete!, (:., :wkh, (:quote, #QuoteNode
+                    :ht
+                  )), :key)
+            )), :wkh)
+      )),
+    (:line, 50, :none),
+    (:(=), (:call, :empty!, (:(::), :wkh, :WeakKeyDict)), (:block,
+        (:line, 50, :none),
+        (:block,
+          (:call, :lock, (:->, (:tuple,), (:block,
+                (:line, 50, :none),
+                (:call, :empty!, (:., :wkh, (:quote, #QuoteNode
+                      :ht
+                    )))
+              )), :wkh),
+          :wkh
+        )
+      )),
+    (:line, 51, :none),
+    (:(=), (:call, (:curly, :haskey, :K), (:(::), :wkh, (:curly, :WeakKeyDict, :K)), :key), (:block,
+        (:line, 51, :none),
+        (:call, :lock, (:->, (:tuple,), (:block,
+              (:line, 51, :none),
+              (:call, :haskey, (:., :wkh, (:quote, #QuoteNode
+                    :ht
+                  )), :key)
+            )), :wkh)
+      )),
+    (:line, 52, :none),
+    (:(=), (:call, (:curly, :getindex, :K), (:(::), :wkh, (:curly, :WeakKeyDict, :K)), :key), (:block,
+        (:line, 52, :none),
+        (:call, :lock, (:->, (:tuple,), (:block,
+              (:line, 52, :none),
+              (:call, :getindex, (:., :wkh, (:quote, #QuoteNode
+                    :ht
+                  )), :key)
+            )), :wkh)
+      )),
+    (:line, 53, :none),
+    (:(=), (:call, :isempty, (:(::), :wkh, :WeakKeyDict)), (:block,
+        (:line, 53, :none),
+        (:call, :isempty, (:., :wkh, (:quote, #QuoteNode
+              :ht
+            )))
+      )),
+    (:line, 54, :none),
+    (:(=), (:call, :length, (:(::), :t, :WeakKeyDict)), (:block,
+        (:line, 54, :none),
+        (:call, :length, (:., :t, (:quote, #QuoteNode
+              :ht
+            )))
+      )),
+    (:line, 56, :none),
+    (:function, (:call, (:curly, :start, :K, :V), (:(::), :t, (:curly, :WeakKeyDict, :K, :V))), (:block,
+        (:line, 57, :none),
+        (:(=), :gc_token, (:call, (:curly, :Ref, :Bool), false)),
+        (:line, 58, :none),
+        (:call, :finalizer, :gc_token, (:function, (:tuple, :r), (:block,
+              (:line, 59, :none),
+              (:if, (:ref, :r), (:block,
+                  (:line, 60, :none),
+                  (:(=), (:ref, :r), false),
+                  (:line, 61, :none),
+                  (:call, :unlock, (:., :t, (:quote, #QuoteNode
+                        :lock
+                      )))
+                ))
+            ))),
+        (:line, 64, :none),
+        (:(=), :s, (:call, :lock, (:., :t, (:quote, #QuoteNode
+                :lock
+              )))),
+        (:line, 65, :none),
+        (:(=), (:ref, :gc_token), true),
+        (:line, 66, :none),
+        (:return, (:tuple, (:call, :start, (:., :t, (:quote, #QuoteNode
+                  :ht
+                ))), :gc_token))
+      )),
+    (:line, 68, :none),
+    (:(=), (:call, :done, (:(::), :t, :WeakKeyDict), :i), (:block,
+        (:line, 68, :none),
+        (:call, :done, (:., :t, (:quote, #QuoteNode
+              :ht
+            )), (:ref, :i, 1))
+      )),
+    (:line, 69, :none),
+    (:function, (:call, (:curly, :next, :K, :V), (:(::), :t, (:curly, :WeakKeyDict, :K, :V)), :i), (:block,
+        (:line, 70, :none),
+        (:(=), :gc_token, (:ref, :i, 2)),
+        (:line, 71, :none),
+        (:(=), (:tuple, :wkv, :i), (:call, :next, (:., :t, (:quote, #QuoteNode
+                :ht
+              )), (:ref, :i, 1))),
+        (:line, 72, :none),
+        (:(=), :kv, (:call, (:curly, :Pair, :K, :V), (:(::), (:., (:ref, :wkv, 1), (:quote, #QuoteNode
+                  :value
+                )), :K), (:ref, :wkv, 2))),
+        (:line, 73, :none),
+        (:return, (:tuple, :kv, (:tuple, :i, :gc_token)))
+      )),
+    (:line, 76, :none),
+    (:function, (:call, :filter!, :f, (:(::), :d, :WeakKeyDict)), (:block,
+        (:line, 77, :none),
+        (:for, (:(=), (:tuple, :k, :v), :d), (:block,
+            (:line, 78, :none),
+            (:if, (:call, :!, (:call, :f, :k, :v)), (:block,
+                (:line, 79, :none),
+                (:call, :delete!, :d, :k)
+              ))
+          )),
+        (:line, 82, :none),
+        (:return, :d)
+      ))
+  ))

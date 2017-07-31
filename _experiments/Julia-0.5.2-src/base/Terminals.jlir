@@ -1,0 +1,388 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:module, true, :Terminals, (:block,
+        (:line, 3, :none),
+        (:line, 5, :none),
+        (:export, :TextTerminal, :UnixTerminal, :TerminalBuffer, :TTYTerminal, :cmove, :cmove_col, :cmove_down, :cmove_left, :cmove_line_down, :cmove_line_up, :cmove_right, :cmove_up, :disable_bracketed_paste, :enable_bracketed_paste, :end_keypad_transmit_mode, :getX, :getY, :hascolor, :pos, :raw!),
+        (:line, 27, :none),
+        (:toplevel, (:import, :Base, :check_open), (:import, :Base, :displaysize), (:import, :Base, :flush), (:import, :Base, :pipe_reader), (:import, :Base, :pipe_writer), (:import, :Base, :read), (:import, :Base, :readuntil)),
+        (:line, 38, :none),
+        (:abstract, (:<:, :TextTerminal, (:., :Base, (:quote, #QuoteNode
+                :AbstractPipe
+              )))),
+        (:line, 41, :none),
+        (:(=), (:call, :pipe_reader, (:(::), :TextTerminal)), (:block,
+            (:line, 41, :none),
+            (:call, :error, "Unimplemented")
+          )),
+        (:line, 42, :none),
+        (:(=), (:call, :pipe_writer, (:(::), :TextTerminal)), (:block,
+            (:line, 42, :none),
+            (:call, :error, "Unimplemented")
+          )),
+        (:line, 43, :none),
+        (:(=), (:call, :displaysize, (:(::), :TextTerminal)), (:block,
+            (:line, 43, :none),
+            (:call, :error, "Unimplemented")
+          )),
+        (:line, 44, :none),
+        (:(=), (:call, :cmove, (:(::), :t, :TextTerminal), :x, :y), (:block,
+            (:line, 44, :none),
+            (:call, :error, "Unimplemented")
+          )),
+        (:line, 45, :none),
+        (:(=), (:call, :getX, (:(::), :t, :TextTerminal)), (:block,
+            (:line, 45, :none),
+            (:call, :error, "Unimplemented")
+          )),
+        (:line, 46, :none),
+        (:(=), (:call, :getY, (:(::), :t, :TextTerminal)), (:block,
+            (:line, 46, :none),
+            (:call, :error, "Unimplemented")
+          )),
+        (:line, 47, :none),
+        (:(=), (:call, :pos, (:(::), :t, :TextTerminal)), (:block,
+            (:line, 47, :none),
+            (:tuple, (:call, :getX, :t), (:call, :getY, :t))
+          )),
+        (:line, 50, :none),
+        (:(=), (:call, :cmove_up, (:(::), :t, :TextTerminal), :n), (:block,
+            (:line, 50, :none),
+            (:call, :cmove, (:call, :getX, :t), (:call, :max, 1, (:call, :-, (:call, :getY, :t), :n)))
+          )),
+        (:line, 51, :none),
+        (:(=), (:call, :cmove_up, :t), (:block,
+            (:line, 51, :none),
+            (:call, :cmove_up, :t, 1)
+          )),
+        (:line, 53, :none),
+        (:(=), (:call, :cmove_down, (:(::), :t, :TextTerminal), :n), (:block,
+            (:line, 53, :none),
+            (:call, :cmove, (:call, :getX, :t), (:call, :max, (:call, :height, :t), (:call, :+, (:call, :getY, :t), :n)))
+          )),
+        (:line, 54, :none),
+        (:(=), (:call, :cmove_down, :t), (:block,
+            (:line, 54, :none),
+            (:call, :cmove_down, :t, 1)
+          )),
+        (:line, 56, :none),
+        (:(=), (:call, :cmove_left, (:(::), :t, :TextTerminal), :n), (:block,
+            (:line, 56, :none),
+            (:call, :cmove, (:call, :max, 1, (:call, :-, (:call, :getX, :t), :n)), (:call, :getY, :t))
+          )),
+        (:line, 57, :none),
+        (:(=), (:call, :cmove_left, :t), (:block,
+            (:line, 57, :none),
+            (:call, :cmove_left, :t, 1)
+          )),
+        (:line, 59, :none),
+        (:(=), (:call, :cmove_right, (:(::), :t, :TextTerminal), :n), (:block,
+            (:line, 59, :none),
+            (:call, :cmove, (:call, :max, (:call, :width, :t), (:call, :+, (:call, :getX, :t), :n)), (:call, :getY, :t))
+          )),
+        (:line, 60, :none),
+        (:(=), (:call, :cmove_right, :t), (:block,
+            (:line, 60, :none),
+            (:call, :cmove_right, :t, 1)
+          )),
+        (:line, 62, :none),
+        (:(=), (:call, :cmove_line_up, (:(::), :t, :TextTerminal), :n), (:block,
+            (:line, 62, :none),
+            (:call, :cmove, 1, (:call, :max, 1, (:call, :-, (:call, :getY, :t), :n)))
+          )),
+        (:line, 63, :none),
+        (:(=), (:call, :cmove_line_up, :t), (:block,
+            (:line, 63, :none),
+            (:call, :cmove_line_up, :t, 1)
+          )),
+        (:line, 65, :none),
+        (:(=), (:call, :cmove_line_down, (:(::), :t, :TextTerminal), :n), (:block,
+            (:line, 65, :none),
+            (:call, :cmove, 1, (:call, :max, (:call, :height, :t), (:call, :+, (:call, :getY, :t), :n)))
+          )),
+        (:line, 66, :none),
+        (:(=), (:call, :cmove_line_down, :t), (:block,
+            (:line, 66, :none),
+            (:call, :cmove_line_down, :t, 1)
+          )),
+        (:line, 68, :none),
+        (:(=), (:call, :cmove_col, (:(::), :t, :TextTerminal), :c), (:block,
+            (:line, 68, :none),
+            (:call, :cmove, :c, (:call, :getY, :t))
+          )),
+        (:line, 71, :none),
+        (:(=), (:call, :hascolor, (:(::), :TextTerminal)), (:block,
+            (:line, 71, :none),
+            false
+          )),
+        (:line, 74, :none),
+        (:(=), (:call, :width, (:(::), :t, :TextTerminal)), (:block,
+            (:line, 74, :none),
+            (:ref, (:call, :displaysize, :t), 2)
+          )),
+        (:line, 75, :none),
+        (:(=), (:call, :height, (:(::), :t, :TextTerminal)), (:block,
+            (:line, 75, :none),
+            (:ref, (:call, :displaysize, :t), 1)
+          )),
+        (:line, 78, :none),
+        (:(=), (:call, :flush, (:(::), :t, :TextTerminal)), (:block,
+            (:line, 78, :none),
+            :nothing
+          )),
+        (:line, 80, :none),
+        (:(=), (:call, :clear, (:(::), :t, :TextTerminal)), (:block,
+            (:line, 80, :none),
+            (:call, :error, "Unimplemented")
+          )),
+        (:line, 81, :none),
+        (:(=), (:call, :clear_line, (:(::), :t, :TextTerminal), :row), (:block,
+            (:line, 81, :none),
+            (:call, :error, "Unimplemented")
+          )),
+        (:line, 82, :none),
+        (:(=), (:call, :clear_line, (:(::), :t, :TextTerminal)), (:block,
+            (:line, 82, :none),
+            (:call, :error, "Unimplemented")
+          )),
+        (:line, 84, :none),
+        (:(=), (:call, :raw!, (:(::), :t, :TextTerminal), (:(::), :raw, :Bool)), (:block,
+            (:line, 84, :none),
+            (:call, :error, "Unimplemented")
+          )),
+        (:line, 86, :none),
+        (:(=), (:call, :beep, (:(::), :t, :TextTerminal)), (:block,
+            (:line, 86, :none),
+            :nothing
+          )),
+        (:line, 87, :none),
+        (:(=), (:call, :enable_bracketed_paste, (:(::), :t, :TextTerminal)), (:block,
+            (:line, 87, :none),
+            :nothing
+          )),
+        (:line, 88, :none),
+        (:(=), (:call, :disable_bracketed_paste, (:(::), :t, :TextTerminal)), (:block,
+            (:line, 88, :none),
+            :nothing
+          )),
+        (:line, 92, :none),
+        (:abstract, (:<:, :UnixTerminal, :TextTerminal)),
+        (:line, 94, :none),
+        (:(=), (:call, :pipe_reader, (:(::), :t, :UnixTerminal)), (:block,
+            (:line, 94, :none),
+            (:., :t, (:quote, #QuoteNode
+                :in_stream
+              ))
+          )),
+        (:line, 95, :none),
+        (:(=), (:call, :pipe_writer, (:(::), :t, :UnixTerminal)), (:block,
+            (:line, 95, :none),
+            (:., :t, (:quote, #QuoteNode
+                :out_stream
+              ))
+          )),
+        (:line, 97, :none),
+        (:type, true, (:<:, :TerminalBuffer, :UnixTerminal), (:block,
+            (:line, 98, :none),
+            (:(::), :out_stream, (:., :Base, (:quote, #QuoteNode
+                  :IO
+                )))
+          )),
+        (:line, 101, :none),
+        (:type, true, (:<:, :TTYTerminal, :UnixTerminal), (:block,
+            (:line, 102, :none),
+            (:(::), :term_type, :String),
+            (:line, 103, :none),
+            (:(::), :in_stream, (:., :Base, (:quote, #QuoteNode
+                  :TTY
+                ))),
+            (:line, 104, :none),
+            (:(::), :out_stream, (:., :Base, (:quote, #QuoteNode
+                  :TTY
+                ))),
+            (:line, 105, :none),
+            (:(::), :err_stream, (:., :Base, (:quote, #QuoteNode
+                  :TTY
+                )))
+          )),
+        (:line, 108, :none),
+        (:const, (:(=), :CSI, "\e[")),
+        (:line, 110, :none),
+        (:(=), (:call, :cmove_up, (:(::), :t, :UnixTerminal), :n), (:block,
+            (:line, 110, :none),
+            (:call, :write, (:., :t, (:quote, #QuoteNode
+                  :out_stream
+                )), (:string, :CSI, :n, "A"))
+          )),
+        (:line, 111, :none),
+        (:(=), (:call, :cmove_down, (:(::), :t, :UnixTerminal), :n), (:block,
+            (:line, 111, :none),
+            (:call, :write, (:., :t, (:quote, #QuoteNode
+                  :out_stream
+                )), (:string, :CSI, :n, "B"))
+          )),
+        (:line, 112, :none),
+        (:(=), (:call, :cmove_right, (:(::), :t, :UnixTerminal), :n), (:block,
+            (:line, 112, :none),
+            (:call, :write, (:., :t, (:quote, #QuoteNode
+                  :out_stream
+                )), (:string, :CSI, :n, "C"))
+          )),
+        (:line, 113, :none),
+        (:(=), (:call, :cmove_left, (:(::), :t, :UnixTerminal), :n), (:block,
+            (:line, 113, :none),
+            (:call, :write, (:., :t, (:quote, #QuoteNode
+                  :out_stream
+                )), (:string, :CSI, :n, "D"))
+          )),
+        (:line, 114, :none),
+        (:(=), (:call, :cmove_line_up, (:(::), :t, :UnixTerminal), :n), (:block,
+            (:line, 114, :none),
+            (:block,
+              (:call, :cmove_up, :t, :n),
+              (:call, :cmove_col, :t, 0)
+            )
+          )),
+        (:line, 115, :none),
+        (:(=), (:call, :cmove_line_down, (:(::), :t, :UnixTerminal), :n), (:block,
+            (:line, 115, :none),
+            (:block,
+              (:call, :cmove_down, :t, :n),
+              (:call, :cmove_col, :t, 0)
+            )
+          )),
+        (:line, 116, :none),
+        (:(=), (:call, :cmove_col, (:(::), :t, :UnixTerminal), :n), (:block,
+            (:line, 116, :none),
+            (:call, :write, (:., :t, (:quote, #QuoteNode
+                  :out_stream
+                )), (:string, :CSI, :n, "G"))
+          )),
+        (:line, 118, :none),
+        (:if, (:call, :is_windows), (:block,
+            (:line, 119, :none),
+            (:function, (:call, :raw!, (:(::), :t, :TTYTerminal), (:(::), :raw, :Bool)), (:block,
+                (:line, 120, :none),
+                (:call, :check_open, (:., :t, (:quote, #QuoteNode
+                      :in_stream
+                    ))),
+                (:line, 121, :none),
+                (:if, (:call, (:., :Base, (:quote, #QuoteNode
+                        :ispty
+                      )), (:., :t, (:quote, #QuoteNode
+                        :in_stream
+                      ))), (:block,
+                    (:line, 122, :none),
+                    (:call, :run, (:if, :raw, (:block,
+                          (:line, 123, :none),
+                          (:macrocall, Symbol("@cmd"), "stty raw -echo onlcr -ocrnl opost")
+                        ), (:block,
+                          (:line, 125, :none),
+                          (:macrocall, Symbol("@cmd"), "stty sane")
+                        )), (:., :t, (:quote, #QuoteNode
+                          :in_stream
+                        )), (:., :t, (:quote, #QuoteNode
+                          :out_stream
+                        )), (:., :t, (:quote, #QuoteNode
+                          :err_stream
+                        ))),
+                    (:line, 127, :none),
+                    true
+                  ), (:block,
+                    (:line, 129, :none),
+                    (:call, :(!=), (:ccall, (:quote, #QuoteNode
+                          :jl_tty_set_mode
+                        ), :Int32, (:tuple, (:curly, :Ptr, :Void), :Int32), (:., (:., :t, (:quote, #QuoteNode
+                              :in_stream
+                            )), (:quote, #QuoteNode
+                            :handle
+                          )), :raw), -1)
+                  ))
+              ))
+          ), (:block,
+            (:line, 135, :none),
+            (:function, (:call, :raw!, (:(::), :t, :TTYTerminal), (:(::), :raw, :Bool)), (:block,
+                (:line, 136, :none),
+                (:call, :check_open, (:., :t, (:quote, #QuoteNode
+                      :in_stream
+                    ))),
+                (:line, 137, :none),
+                (:call, :(!=), (:ccall, (:quote, #QuoteNode
+                      :jl_tty_set_mode
+                    ), :Int32, (:tuple, (:curly, :Ptr, :Void), :Int32), (:., (:., :t, (:quote, #QuoteNode
+                          :in_stream
+                        )), (:quote, #QuoteNode
+                        :handle
+                      )), :raw), -1)
+              ))
+          )),
+        (:line, 140, :none),
+        (:(=), (:call, :enable_bracketed_paste, (:(::), :t, :UnixTerminal)), (:block,
+            (:line, 140, :none),
+            (:call, :write, (:., :t, (:quote, #QuoteNode
+                  :out_stream
+                )), (:string, :CSI, "?2004h"))
+          )),
+        (:line, 141, :none),
+        (:(=), (:call, :disable_bracketed_paste, (:(::), :t, :UnixTerminal)), (:block,
+            (:line, 141, :none),
+            (:call, :write, (:., :t, (:quote, #QuoteNode
+                  :out_stream
+                )), (:string, :CSI, "?2004l"))
+          )),
+        (:line, 142, :none),
+        (:(=), (:call, :end_keypad_transmit_mode, (:(::), :t, :UnixTerminal)), (:block,
+            (:line, 142, :none),
+            (:call, :write, (:., :t, (:quote, #QuoteNode
+                  :out_stream
+                )), (:string, :CSI, "?1l\e>"))
+          )),
+        (:line, 145, :none),
+        (:function, (:call, (:., :Base, (:quote, #QuoteNode
+                :displaysize
+              )), (:(::), :t, :UnixTerminal)), (:block,
+            (:line, 146, :none),
+            (:return, (:call, :displaysize, (:., :t, (:quote, #QuoteNode
+                    :out_stream
+                  ))))
+          )),
+        (:line, 149, :none),
+        (:(=), (:call, :clear, (:(::), :t, :UnixTerminal)), (:block,
+            (:line, 149, :none),
+            (:call, :write, (:., :t, (:quote, #QuoteNode
+                  :out_stream
+                )), "\e[H\e[2J")
+          )),
+        (:line, 150, :none),
+        (:(=), (:call, :clear_line, (:(::), :t, :UnixTerminal)), (:block,
+            (:line, 150, :none),
+            (:call, :write, (:., :t, (:quote, #QuoteNode
+                  :out_stream
+                )), "\e[0G\e[0K")
+          )),
+        (:line, 153, :none),
+        (:if, (:call, :is_windows), (:block,
+            (:line, 154, :none),
+            (:(=), (:call, :hascolor, (:(::), :t, :TTYTerminal)), (:block,
+                (:line, 154, :none),
+                true
+              ))
+          ), (:block,
+            (:line, 156, :none),
+            (:function, (:call, :hascolor, (:(::), :t, :TTYTerminal)), (:block,
+                (:line, 157, :none),
+                (:&&, (:call, :startswith, (:., :t, (:quote, #QuoteNode
+                        :term_type
+                      )), "xterm"), (:return, true)),
+                (:line, 158, :none),
+                (:try, (:block,
+                    (:line, 159, :none),
+                    (:return, (:call, :success, (:macrocall, Symbol("@cmd"), "tput setaf 0")))
+                  ), false, (:block,
+                    (:line, 161, :none),
+                    (:return, false)
+                  ))
+              ))
+          ))
+      ))
+  ))

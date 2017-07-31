@@ -1,0 +1,382 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:module, true, :Base64, (:block,
+        (:line, 3, :none),
+        (:line, 4, :none),
+        (:toplevel, (:import, :Base, :read), (:import, :Base, :write), (:import, :Base, :close), (:import, :Base, :eof), (:import, :Base, :empty!)),
+        (:line, 5, :none),
+        (:export, :Base64EncodePipe, :Base64DecodePipe, :base64encode, :base64decode),
+        (:line, 17, :none),
+        (:type, true, (:<:, :Base64EncodePipe, :IO), (:block,
+            (:line, 18, :none),
+            (:(::), :io, :IO),
+            (:line, 20, :none),
+            (:(::), :b0, :UInt8),
+            (:line, 21, :none),
+            (:(::), :b1, :UInt8),
+            (:line, 22, :none),
+            (:(::), :nb, :UInt8),
+            (:line, 24, :none),
+            (:function, (:call, :Base64EncodePipe, (:(::), :io, :IO)), (:block,
+                (:line, 25, :none),
+                (:(=), :b, (:call, :new, :io, 0, 0, 0)),
+                (:line, 26, :none),
+                (:call, :finalizer, :b, :close),
+                (:line, 27, :none),
+                (:return, :b)
+              ))
+          )),
+        (:line, 35, :none),
+        (:const, (:(=), :b64chars, (:vcat, (:(:), 'A', 'Z'), (:(:), 'a', 'z'), (:(:), '0', '9'), '+', '/'))),
+        (:line, 37, :none),
+        (:const, (:(=), :base64_pad, (:call, :UInt8, '='))),
+        (:line, 39, :none),
+        (:function, (:call, :b64, (:(::), :x, :UInt8), (:(::), :y, :UInt8), (:(::), :z, :UInt8)), (:block,
+            (:line, 40, :none),
+            (:(=), :n, (:call, :|, (:call, :|, (:call, :<<, (:call, :Int, :x), 16), (:call, :<<, (:call, :Int, :y), 8)), (:call, :Int, :z))),
+            (:line, 41, :none),
+            (:tuple, (:ref, :b64chars, (:call, :+, (:call, :>>, :n, 18), 1)), (:ref, :b64chars, (:call, :+, (:call, :&, (:call, :>>, :n, 12), 0x3f), 1)), (:ref, :b64chars, (:call, :+, (:call, :&, (:call, :>>, :n, 6), 0x3f), 1)), (:ref, :b64chars, (:call, :+, (:call, :&, :n, 0x3f), 1)))
+          )),
+        (:line, 47, :none),
+        (:function, (:call, :b64, (:(::), :x, :UInt8), (:(::), :y, :UInt8)), (:block,
+            (:line, 48, :none),
+            (:(=), (:tuple, :a, :b, :c), (:call, :b64, :x, :y, 0x00)),
+            (:line, 49, :none),
+            (:tuple, :a, :b, :c, :base64_pad)
+          )),
+        (:line, 52, :none),
+        (:function, (:call, :b64, (:(::), :x, :UInt8)), (:block,
+            (:line, 53, :none),
+            (:(=), (:tuple, :a, :b), (:call, :b64, :x, 0x00, 0x00)),
+            (:line, 54, :none),
+            (:tuple, :a, :b, :base64_pad, :base64_pad)
+          )),
+        (:line, 57, :none),
+        (:const, (:(=), :sentinel, (:call, :typemax, :UInt8))),
+        (:line, 58, :none),
+        (:const, (:(=), :revb64chars, (:call, :fill, :sentinel, 256))),
+        (:line, 60, :none),
+        (:for, (:(=), (:tuple, :val, :ch), (:call, :enumerate, :b64chars)), (:block,
+            (:line, 61, :none),
+            (:(=), (:ref, :revb64chars, (:call, :UInt8, :ch)), (:call, :UInt8, (:call, :-, :val, 1)))
+          )),
+        (:line, 66, :none),
+        (:function, (:call, :b64decode!, (:(::), :encvec, (:curly, :Vector, :UInt8)), (:(::), :cache, (:curly, :Vector, :UInt8))), (:block,
+            (:line, 67, :none),
+            (:if, (:call, :<, (:call, :length, :encvec), 2), (:block,
+                (:line, 68, :none),
+                (:call, :throw, (:call, :ArgumentError, "incorrect base64 format, block must be at least 2 and at most 4 bytes"))
+              )),
+            (:line, 70, :none),
+            (:macrocall, Symbol("@inbounds"), (:(=), :u, (:ref, :revb64chars, (:ref, :encvec, 1)))),
+            (:line, 71, :none),
+            (:macrocall, Symbol("@inbounds"), (:(=), :v, (:ref, :revb64chars, (:ref, :encvec, 2)))),
+            (:line, 72, :none),
+            (:call, :empty!, :cache),
+            (:line, 73, :none),
+            (:(=), :res, (:call, :|, (:call, :<<, :u, 2), (:call, :>>, :v, 4))),
+            (:line, 74, :none),
+            (:if, (:call, :>, (:call, :length, :encvec), 2), (:block,
+                (:line, 75, :none),
+                (:macrocall, Symbol("@inbounds"), (:(=), :w, (:ref, :revb64chars, (:ref, :encvec, 3)))),
+                (:line, 76, :none),
+                (:call, :push!, :cache, (:call, :|, (:call, :<<, :v, 4), (:call, :>>, :w, 2)))
+              )),
+            (:line, 78, :none),
+            (:if, (:call, :>, (:call, :length, :encvec), 3), (:block,
+                (:line, 79, :none),
+                (:macrocall, Symbol("@inbounds"), (:(=), :z, (:ref, :revb64chars, (:ref, :encvec, 4)))),
+                (:line, 80, :none),
+                (:call, :push!, :cache, (:call, :|, (:call, :<<, :w, 6), :z))
+              )),
+            (:line, 82, :none),
+            :res
+          )),
+        (:line, 88, :none),
+        (:function, (:call, :unsafe_write, (:(::), :b, :Base64EncodePipe), (:(::), :x, (:curly, :Ptr, :UInt8)), (:(::), :n, :UInt)), (:block,
+            (:line, 89, :none),
+            (:(=), :s, 1),
+            (:line, 91, :none),
+            (:if, (:call, :(==), (:., :b, (:quote, #QuoteNode
+                    :nb
+                  )), 1), (:block,
+                (:line, 92, :none),
+                (:if, (:call, :(>=), :n, 2), (:block,
+                    (:line, 93, :none),
+                    (:call, :write, (:., :b, (:quote, #QuoteNode
+                          :io
+                        )), (:..., (:call, :b64, (:., :b, (:quote, #QuoteNode
+                              :b0
+                            )), (:call, :unsafe_load, :x, 1), (:call, :unsafe_load, :x, 2)))),
+                    (:line, 94, :none),
+                    (:(=), :s, 3)
+                  ), (:block,
+                    (:line, 95, :none),
+                    (:if, (:call, :(==), :n, 1), (:block,
+                        (:line, 96, :none),
+                        (:(=), (:., :b, (:quote, #QuoteNode
+                              :b1
+                            )), (:call, :unsafe_load, :x, 1)),
+                        (:line, 97, :none),
+                        (:(=), (:., :b, (:quote, #QuoteNode
+                              :nb
+                            )), 2),
+                        (:line, 98, :none),
+                        (:return, nothing)
+                      ), (:block,
+                        (:line, 100, :none),
+                        (:return, nothing)
+                      ))
+                  ))
+              ), (:block,
+                (:line, 102, :none),
+                (:if, (:call, :(==), (:., :b, (:quote, #QuoteNode
+                        :nb
+                      )), 2), (:block,
+                    (:line, 103, :none),
+                    (:if, (:call, :(>=), :n, 1), (:block,
+                        (:line, 104, :none),
+                        (:call, :write, (:., :b, (:quote, #QuoteNode
+                              :io
+                            )), (:..., (:call, :b64, (:., :b, (:quote, #QuoteNode
+                                  :b0
+                                )), (:., :b, (:quote, #QuoteNode
+                                  :b1
+                                )), (:call, :unsafe_load, :x, 1)))),
+                        (:line, 105, :none),
+                        (:(=), :s, 2)
+                      ), (:block,
+                        (:line, 107, :none),
+                        (:return, nothing)
+                      ))
+                  ))
+              )),
+            (:line, 111, :none),
+            (:while, (:call, :(<=), (:call, :+, :s, 2), :n), (:block,
+                (:line, 112, :none),
+                (:call, :write, (:., :b, (:quote, #QuoteNode
+                      :io
+                    )), (:..., (:call, :b64, (:call, :unsafe_load, :x, :s), (:call, :unsafe_load, :x, (:call, :+, :s, 1)), (:call, :unsafe_load, :x, (:call, :+, :s, 2))))),
+                (:line, 113, :none),
+                (:+=, :s, 3)
+              )),
+            (:line, 116, :none),
+            (:if, (:call, :(==), (:call, :+, :s, 1), :n), (:block,
+                (:line, 117, :none),
+                (:(=), (:., :b, (:quote, #QuoteNode
+                      :b0
+                    )), (:call, :unsafe_load, :x, :s)),
+                (:line, 118, :none),
+                (:(=), (:., :b, (:quote, #QuoteNode
+                      :b1
+                    )), (:call, :unsafe_load, :x, (:call, :+, :s, 1))),
+                (:line, 119, :none),
+                (:(=), (:., :b, (:quote, #QuoteNode
+                      :nb
+                    )), 2)
+              ), (:block,
+                (:line, 120, :none),
+                (:if, (:call, :(==), :s, :n), (:block,
+                    (:line, 121, :none),
+                    (:(=), (:., :b, (:quote, #QuoteNode
+                          :b0
+                        )), (:call, :unsafe_load, :x, :s)),
+                    (:line, 122, :none),
+                    (:(=), (:., :b, (:quote, #QuoteNode
+                          :nb
+                        )), 1)
+                  ), (:block,
+                    (:line, 124, :none),
+                    (:(=), (:., :b, (:quote, #QuoteNode
+                          :nb
+                        )), 0)
+                  ))
+              )),
+            (:line, 126, :none),
+            :n
+          )),
+        (:line, 129, :none),
+        (:function, (:call, :write, (:(::), :b, :Base64EncodePipe), (:(::), :x, :UInt8)), (:block,
+            (:line, 130, :none),
+            (:if, (:call, :(==), (:., :b, (:quote, #QuoteNode
+                    :nb
+                  )), 0), (:block,
+                (:line, 131, :none),
+                (:(=), (:., :b, (:quote, #QuoteNode
+                      :b0
+                    )), :x),
+                (:line, 132, :none),
+                (:(=), (:., :b, (:quote, #QuoteNode
+                      :nb
+                    )), 1)
+              ), (:block,
+                (:line, 133, :none),
+                (:if, (:call, :(==), (:., :b, (:quote, #QuoteNode
+                        :nb
+                      )), 1), (:block,
+                    (:line, 134, :none),
+                    (:(=), (:., :b, (:quote, #QuoteNode
+                          :b1
+                        )), :x),
+                    (:line, 135, :none),
+                    (:(=), (:., :b, (:quote, #QuoteNode
+                          :nb
+                        )), 2)
+                  ), (:block,
+                    (:line, 137, :none),
+                    (:call, :write, (:., :b, (:quote, #QuoteNode
+                          :io
+                        )), (:..., (:call, :b64, (:., :b, (:quote, #QuoteNode
+                              :b0
+                            )), (:., :b, (:quote, #QuoteNode
+                              :b1
+                            )), :x))),
+                    (:line, 138, :none),
+                    (:(=), (:., :b, (:quote, #QuoteNode
+                          :nb
+                        )), 0)
+                  ))
+              )),
+            (:line, 140, :none),
+            1
+          )),
+        (:line, 143, :none),
+        (:function, (:call, :close, (:(::), :b, :Base64EncodePipe)), (:block,
+            (:line, 144, :none),
+            (:if, (:call, :>, (:., :b, (:quote, #QuoteNode
+                    :nb
+                  )), 0), (:block,
+                (:line, 146, :none),
+                (:if, (:call, :(==), (:., :b, (:quote, #QuoteNode
+                        :nb
+                      )), 1), (:block,
+                    (:line, 147, :none),
+                    (:call, :write, (:., :b, (:quote, #QuoteNode
+                          :io
+                        )), (:..., (:call, :b64, (:., :b, (:quote, #QuoteNode
+                              :b0
+                            )))))
+                  ), (:block,
+                    (:line, 149, :none),
+                    (:call, :write, (:., :b, (:quote, #QuoteNode
+                          :io
+                        )), (:..., (:call, :b64, (:., :b, (:quote, #QuoteNode
+                              :b0
+                            )), (:., :b, (:quote, #QuoteNode
+                              :b1
+                            )))))
+                  )),
+                (:line, 151, :none),
+                (:(=), (:., :b, (:quote, #QuoteNode
+                      :nb
+                    )), 0)
+              )),
+            (:line, 153, :none),
+            :nothing
+          )),
+        (:line, 157, :none),
+        (:function, (:call, :base64encode, (:(::), :f, :Function), (:..., :args)), (:block,
+            (:line, 158, :none),
+            (:(=), :s, (:call, :IOBuffer)),
+            (:line, 159, :none),
+            (:(=), :b, (:call, :Base64EncodePipe, :s)),
+            (:line, 160, :none),
+            (:call, :f, :b, (:..., :args)),
+            (:line, 161, :none),
+            (:call, :close, :b),
+            (:line, 162, :none),
+            (:call, :takebuf_string, :s)
+          )),
+        (:line, 164, :none),
+        (:(=), (:call, :base64encode, (:..., :x)), (:block,
+            (:line, 164, :none),
+            (:call, :base64encode, :write, (:..., :x))
+          )),
+        (:line, 168, :none),
+        (:type, true, (:<:, :Base64DecodePipe, :IO), (:block,
+            (:line, 169, :none),
+            (:(::), :io, :IO),
+            (:line, 171, :none),
+            (:(::), :cache, (:curly, :Vector, :UInt8)),
+            (:line, 172, :none),
+            (:(::), :encvec, (:curly, :Vector, :UInt8)),
+            (:line, 174, :none),
+            (:function, (:call, :Base64DecodePipe, (:(::), :io, :IO)), (:block,
+                (:line, 175, :none),
+                (:(=), :b, (:call, :new, :io, (:vect,), (:vect,))),
+                (:line, 176, :none),
+                (:call, :finalizer, :b, :close),
+                (:line, 177, :none),
+                (:return, :b)
+              ))
+          )),
+        (:line, 181, :none),
+        (:function, (:call, :read, (:(::), :b, :Base64DecodePipe), (:(::), :t, (:curly, :Type, :UInt8))), (:block,
+            (:line, 182, :none),
+            (:if, (:call, :!, (:call, :isempty, (:., :b, (:quote, #QuoteNode
+                      :cache
+                    )))), (:block,
+                (:line, 183, :none),
+                (:return, (:call, :shift!, (:., :b, (:quote, #QuoteNode
+                        :cache
+                      ))))
+              ), (:block,
+                (:line, 185, :none),
+                (:call, :empty!, (:., :b, (:quote, #QuoteNode
+                      :encvec
+                    ))),
+                (:line, 186, :none),
+                (:while, (:&&, (:call, :!, (:call, :eof, (:., :b, (:quote, #QuoteNode
+                            :io
+                          )))), (:call, :<, (:call, :length, (:., :b, (:quote, #QuoteNode
+                            :encvec
+                          ))), 4)), (:block,
+                    (:line, 187, :none),
+                    (:(=), (:(::), :c, :UInt8), (:call, :read, (:., :b, (:quote, #QuoteNode
+                            :io
+                          )), :t)),
+                    (:line, 188, :none),
+                    (:macrocall, Symbol("@inbounds"), (:if, (:call, :(!=), (:ref, :revb64chars, :c), :sentinel), (:block,
+                          (:line, 189, :none),
+                          (:call, :push!, (:., :b, (:quote, #QuoteNode
+                                :encvec
+                              )), :c)
+                        )))
+                  )),
+                (:line, 192, :none),
+                (:return, (:call, :b64decode!, (:., :b, (:quote, #QuoteNode
+                        :encvec
+                      )), (:., :b, (:quote, #QuoteNode
+                        :cache
+                      ))))
+              ))
+          )),
+        (:line, 196, :none),
+        (:(=), (:call, :eof, (:(::), :b, :Base64DecodePipe)), (:block,
+            (:line, 196, :none),
+            (:&&, (:call, :isempty, (:., :b, (:quote, #QuoteNode
+                    :cache
+                  ))), (:call, :eof, (:., :b, (:quote, #QuoteNode
+                    :io
+                  ))))
+          )),
+        (:line, 197, :none),
+        (:(=), (:call, :close, (:(::), :b, :Base64DecodePipe)), (:block,
+            (:line, 197, :none),
+            :nothing
+          )),
+        (:line, 200, :none),
+        (:function, (:call, :base64decode, :s), (:block,
+            (:line, 201, :none),
+            (:(=), :b, (:call, :IOBuffer, :s)),
+            (:line, 202, :none),
+            (:try, (:block,
+                (:line, 203, :none),
+                (:return, (:call, :read, (:call, :Base64DecodePipe, :b)))
+              ), false, false, (:block,
+                (:line, 205, :none),
+                (:call, :close, :b)
+              ))
+          ))
+      ))
+  ))

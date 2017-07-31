@@ -1,0 +1,140 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:using, :Base, :llvmcall),
+    (:line, 23, :none),
+    (:function, (:call, :add1234, (:(::), :x, (:curly, :Tuple, :Int32, :Int32, :Int32, :Int32))), (:block,
+        (:line, 24, :none),
+        (:call, :llvmcall, "%3 = extractvalue [4 x i32] %0, 0\n%4 = extractvalue [4 x i32] %0, 1\n%5 = extractvalue [4 x i32] %0, 2\n%6 = extractvalue [4 x i32] %0, 3\n%7 = extractvalue [4 x i32] %1, 0\n%8 = extractvalue [4 x i32] %1, 1\n%9 = extractvalue [4 x i32] %1, 2\n%10 = extractvalue [4 x i32] %1, 3\n%11 = add i32 %3, %7\n%12 = add i32 %4, %8\n%13 = add i32 %5, %9\n%14 = add i32 %6, %10\n%15 = insertvalue [4 x i32] undef, i32 %11, 0\n%16 = insertvalue [4 x i32] %15, i32 %12, 1\n%17 = insertvalue [4 x i32] %16, i32 %13, 2\n%18 = insertvalue [4 x i32] %17, i32 %14, 3\nret [4 x i32] %18", (:curly, :Tuple, :Int32, :Int32, :Int32, :Int32), (:curly, :Tuple, (:curly, :Tuple, :Int32, :Int32, :Int32, :Int32), (:curly, :Tuple, :Int32, :Int32, :Int32, :Int32)), (:tuple, (:call, :Int32, 1), (:call, :Int32, 2), (:call, :Int32, 3), (:call, :Int32, 4)), :x)
+      )),
+    (:line, 46, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :add1234, (:call, :map, :Int32, (:tuple, 2, 3, 4, 5))), (:call, :map, :Int32, (:tuple, 3, 5, 7, 9)))),
+    (:line, 50, :none),
+    (:module, false, :PlusTest, (:block,
+        (:line, 50, :none),
+        (:line, 51, :none),
+        (:using, :Base, :llvmcall),
+        (:line, 52, :none),
+        (:using, :Base, :Test),
+        (:line, 53, :none),
+        (:using, :Base),
+        (:line, 55, :none),
+        (:function, (:call, :+, (:(::), :x, :Int32), (:(::), :y, :Int32)), (:block,
+            (:line, 56, :none),
+            (:call, :llvmcall, "%3 = add i32 %1, %0\nret i32 %3", :Int32, (:curly, :Tuple, :Int32, :Int32), :x, :y)
+          )),
+        (:line, 63, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :+, (:call, :Int32, 1), (:call, :Int32, 2)), (:call, :Int32, 3)))
+      )),
+    (:line, 67, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :eval, (:call, :Expr, (:quote, #QuoteNode
+              :call
+            ), (:., (:., :Core, (:quote, #QuoteNode
+                  :Intrinsics
+                )), (:quote, #QuoteNode
+                :llvmcall
+              )), "%3 = add i32 %1, %0\nret i32 %3", :Int32, (:curly, :Tuple, :Int32, :Int32), (:call, :Int32, 1), (:call, :Int32, 2))), 3)),
+    (:line, 73, :none),
+    (:function, (:call, :undeclared_ceil, (:(::), :x, :Float64)), (:block,
+        (:line, 74, :none),
+        (:call, :llvmcall, "%2 = call double @llvm.ceil.f64(double %0)\nret double %2", :Float64, (:curly, :Tuple, :Float64), :x)
+      )),
+    (:line, 77, :none),
+    (:macrocall, Symbol("@test_throws"), :ErrorException, (:call, :undeclared_ceil, 4.2)),
+    (:line, 78, :none),
+    (:macrocall, Symbol("@test_throws"), :ErrorException, (:call, :undeclared_ceil, 4.2)),
+    (:line, 80, :none),
+    (:function, (:call, :declared_floor, (:(::), :x, :Float64)), (:block,
+        (:line, 81, :none),
+        (:call, :llvmcall, (:tuple, "declare double @llvm.floor.f64(double)", "%2 = call double @llvm.floor.f64(double %0)\nret double %2"), :Float64, (:curly, :Tuple, :Float64), :x)
+      )),
+    (:line, 87, :none),
+    (:macrocall, Symbol("@test"), (:call, :≈, (:call, :declared_floor, 4.2), 4.0)),
+    (:line, 89, :none),
+    (:function, (:call, :doubly_declared_floor, (:(::), :x, :Float64)), (:block,
+        (:line, 90, :none),
+        (:call, :-, (:call, :llvmcall, (:tuple, "declare double @llvm.floor.f64(double)", "%2 = call double @llvm.floor.f64(double %0)\nret double %2"), :Float64, (:curly, :Tuple, :Float64), (:call, :+, :x, 1)), 1)
+      )),
+    (:line, 96, :none),
+    (:macrocall, Symbol("@test"), (:call, :≈, (:call, :doubly_declared_floor, 4.2), 4.0)),
+    (:line, 98, :none),
+    (:function, (:call, :doubly_declared2_trunc, (:(::), :x, :Float64)), (:block,
+        (:line, 99, :none),
+        (:(=), :a, (:call, :llvmcall, (:tuple, "declare double @llvm.trunc.f64(double)", "%2 = call double @llvm.trunc.f64(double %0)\nret double %2"), :Float64, (:curly, :Tuple, :Float64), :x)),
+        (:line, 104, :none),
+        (:(=), :b, (:call, :-, (:call, :llvmcall, (:tuple, "declare double @llvm.trunc.f64(double)", "%2 = call double @llvm.trunc.f64(double %0)\nret double %2"), :Float64, (:curly, :Tuple, :Float64), (:call, :+, :x, 1)), 1)),
+        (:line, 109, :none),
+        (:call, :+, :a, :b)
+      )),
+    (:line, 111, :none),
+    (:macrocall, Symbol("@test"), (:call, :≈, (:call, :doubly_declared2_trunc, 4.2), 8.0)),
+    (:line, 114, :none),
+    (:function, (:call, :declared_ceil, (:(::), :x, :Float64)), (:block,
+        (:line, 115, :none),
+        (:call, :llvmcall, (:tuple, "declare double @llvm.ceil.f64(double)", "%2 = call double @llvm.ceil.f64(double %0)\nret double %2"), :Float64, (:curly, :Tuple, :Float64), :x)
+      )),
+    (:line, 121, :none),
+    (:macrocall, Symbol("@test"), (:call, :≈, (:call, :declared_ceil, 4.2), 5.0)),
+    (:line, 124, :none),
+    (:function, (:call, :ceilfloor, (:(::), :x, :Float64)), (:block,
+        (:line, 125, :none),
+        (:call, :llvmcall, (:tuple, "declare double @llvm.ceil.f64(double)\ndeclare double @llvm.floor.f64(double)", "%2 = call double @llvm.ceil.f64(double %0)\n%3 = call double @llvm.floor.f64(double %2)\nret double %3"), :Float64, (:curly, :Tuple, :Float64), :x)
+      )),
+    (:line, 133, :none),
+    (:macrocall, Symbol("@test"), (:call, :≈, (:call, :ceilfloor, 7.4), 8.0)),
+    (:line, 136, :none),
+    (:function, (:call, :confuse_declname_parsing), (:block,
+        (:line, 137, :none),
+        (:call, :llvmcall, (:tuple, "declare i64 addrspace(0)* @foobar()", "ret void"), :Void, (:curly, :Tuple))
+      )),
+    (:line, 142, :none),
+    (:call, :confuse_declname_parsing),
+    (:line, 145, :none),
+    (:module, true, :ObjLoadTest, (:block,
+        (:line, 145, :none),
+        (:line, 146, :none),
+        (:toplevel, (:using, :Base, :Test), (:using, :Base, :llvmcall), (:using, :Base, Symbol("@ccallable"))),
+        (:line, 147, :none),
+        (:(=), :didcall, false),
+        (:line, 148, :none),
+        (:macrocall, Symbol("@ccallable"), :Void, (:function, (:call, :jl_the_callback), (:block,
+              (:line, 149, :none),
+              (:global, :didcall),
+              (:line, 150, :none),
+              (:(=), :didcall, true),
+              (:line, 151, :none),
+              :nothing
+            ))),
+        (:line, 154, :none),
+        (:call, :jl_the_callback),
+        (:line, 154, :none),
+        (:(=), :didcall, false),
+        (:line, 155, :none),
+        (:function, (:call, :do_the_call), (:block,
+            (:line, 156, :none),
+            (:call, :llvmcall, (:tuple, " declare void @jl_the_callback()", "call void @jl_the_callback()\nret void\n"), :Void, (:curly, :Tuple))
+          )),
+        (:line, 163, :none),
+        (:call, :do_the_call),
+        (:line, 164, :none),
+        (:macrocall, Symbol("@test"), :didcall)
+      )),
+    (:line, 168, :none),
+    (:if, (:call, :(>=), (:call, :VersionNumber, (:., :Base, (:quote, #QuoteNode
+              :libllvm_version
+            ))), (:macrocall, Symbol("@v_str"), "3.6")), (:block,
+        (:line, 169, :none),
+        (:local, :foo),
+        (:line, 170, :none),
+        (:function, (:call, :foo), (:block,
+            (:line, 173, :none),
+            (:call, (:., :Base, (:quote, #QuoteNode
+                  :llvmcall
+                )), "%1 = getelementptr i64, i64* null, i64 1\nret void", :Void, (:curly, :Tuple))
+          )),
+        (:line, 178, :none),
+        (:call, :code_llvm, :DevNull, :foo, (:tuple,))
+      ), (:block,
+        (:line, 180, :none),
+        (:call, :println, "INFO: skipping gep parentage test on llvm < 3.6")
+      ))
+  ))

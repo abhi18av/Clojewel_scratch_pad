@@ -1,0 +1,480 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:module, true, :QuadGK, (:block,
+        (:line, 3, :none),
+        (:line, 4, :none),
+        (:export, :gauss, :kronrod, :quadgk),
+        (:line, 5, :none),
+        (:using, :Base, :Collections),
+        (:line, 6, :none),
+        (:toplevel, (:import, :Base, :isless), (:import, :Base, :Order, :Reverse), (:import, :Base, :AnyDict)),
+        (:line, 16, :none),
+        (:const, (:(=), :rulecache, (:call, :AnyDict, (:(=>), (:tuple, :Float64, 7), (:tuple, (:vect, -0.9914553711208126, -0.9491079123427585, -0.8648644233597691, -0.7415311855993945, -0.5860872354676911, -0.4058451513773972, -0.20778495500789848, 0.0), (:vect, 0.022935322010529224, 0.06309209262997856, 0.10479001032225019, 0.14065325971552592, 0.1690047266392679, 0.19035057806478542, 0.20443294007529889, 0.20948214108472782), (:vect, 0.1294849661688697, 0.27970539148927664, 0.3818300505051189, 0.4179591836734694)))))),
+        (:line, 39, :none),
+        (:type, false, :Segment, (:block,
+            (:line, 40, :none),
+            (:(::), :a, :Number),
+            (:line, 41, :none),
+            (:(::), :b, :Number),
+            (:line, 42, :none),
+            :I,
+            (:line, 43, :none),
+            (:(::), :E, :Real)
+          )),
+        (:line, 45, :none),
+        (:(=), (:call, :isless, (:(::), :i, :Segment), (:(::), :j, :Segment)), (:block,
+            (:line, 45, :none),
+            (:call, :isless, (:., :i, (:quote, #QuoteNode
+                  :E
+                )), (:., :j, (:quote, #QuoteNode
+                  :E
+                )))
+          )),
+        (:line, 50, :none),
+        (:function, (:call, :evalrule, :f, :a, :b, :x, :w, :gw, :nrm), (:block,
+            (:line, 52, :none),
+            (:(=), :s, (:call, :*, (:call, :convert, (:call, :eltype, :x), 0.5), (:call, :-, :b, :a))),
+            (:line, 53, :none),
+            (:(=), :n1, (:call, :-, 1, (:call, :&, (:call, :length, :x), 1))),
+            (:line, 55, :none),
+            (:(=), :fg, (:call, :+, (:call, :f, (:call, :+, :a, (:call, :*, (:call, :+, 1, (:ref, :x, 2)), :s))), (:call, :f, (:call, :+, :a, (:call, :*, (:call, :-, 1, (:ref, :x, 2)), :s))))),
+            (:line, 56, :none),
+            (:(=), :fk, (:call, :+, (:call, :f, (:call, :+, :a, (:call, :*, (:call, :+, 1, (:ref, :x, 1)), :s))), (:call, :f, (:call, :+, :a, (:call, :*, (:call, :-, 1, (:ref, :x, 1)), :s))))),
+            (:line, 57, :none),
+            (:(=), :Ig, (:call, :*, :fg, (:ref, :gw, 1))),
+            (:line, 58, :none),
+            (:(=), :Ik, (:call, :+, (:call, :*, :fg, (:ref, :w, 2)), (:call, :*, :fk, (:ref, :w, 1)))),
+            (:line, 59, :none),
+            (:for, (:(=), :i, (:(:), 2, (:call, :-, (:call, :length, :gw), :n1))), (:block,
+                (:line, 60, :none),
+                (:(=), :fg, (:call, :+, (:call, :f, (:call, :+, :a, (:call, :*, (:call, :+, 1, (:ref, :x, (:call, :*, 2, :i))), :s))), (:call, :f, (:call, :+, :a, (:call, :*, (:call, :-, 1, (:ref, :x, (:call, :*, 2, :i))), :s))))),
+                (:line, 61, :none),
+                (:(=), :fk, (:call, :+, (:call, :f, (:call, :+, :a, (:call, :*, (:call, :+, 1, (:ref, :x, (:call, :-, (:call, :*, 2, :i), 1))), :s))), (:call, :f, (:call, :+, :a, (:call, :*, (:call, :-, 1, (:ref, :x, (:call, :-, (:call, :*, 2, :i), 1))), :s))))),
+                (:line, 62, :none),
+                (:+=, :Ig, (:call, :*, :fg, (:ref, :gw, :i))),
+                (:line, 63, :none),
+                (:+=, :Ik, (:call, :+, (:call, :*, :fg, (:ref, :w, (:call, :*, 2, :i))), (:call, :*, :fk, (:ref, :w, (:call, :-, (:call, :*, 2, :i), 1)))))
+              )),
+            (:line, 65, :none),
+            (:if, (:call, :(==), :n1, 0), (:block,
+                (:line, 66, :none),
+                (:+=, :Ik, (:call, :*, (:call, :f, (:call, :+, :a, :s)), (:ref, :w, :end)))
+              ), (:block,
+                (:line, 68, :none),
+                (:(=), :f0, (:call, :f, (:call, :+, :a, :s))),
+                (:line, 69, :none),
+                (:+=, :Ig, (:call, :*, :f0, (:ref, :gw, :end))),
+                (:line, 70, :none),
+                (:+=, :Ik, (:call, :+, (:call, :*, :f0, (:ref, :w, :end)), (:call, :*, (:call, :+, (:call, :f, (:call, :+, :a, (:call, :*, (:call, :+, 1, (:ref, :x, (:call, :-, :end, 1))), :s))), (:call, :f, (:call, :+, :a, (:call, :*, (:call, :-, 1, (:ref, :x, (:call, :-, :end, 1))), :s)))), (:ref, :w, (:call, :-, :end, 1)))))
+              )),
+            (:line, 73, :none),
+            (:*=, :Ik, :s),
+            (:line, 74, :none),
+            (:*=, :Ig, :s),
+            (:line, 75, :none),
+            (:(=), :E, (:call, :nrm, (:call, :-, :Ik, :Ig))),
+            (:line, 76, :none),
+            (:if, (:||, (:call, :isnan, :E), (:call, :isinf, :E)), (:block,
+                (:line, 77, :none),
+                (:call, :throw, (:call, :DomainError))
+              )),
+            (:line, 79, :none),
+            (:return, (:call, :Segment, :a, :b, :Ik, :E))
+          )),
+        (:line, 82, :none),
+        (:(=), (:call, :rulekey, (:(::), (:curly, :Type, :BigFloat)), :n), (:block,
+            (:line, 82, :none),
+            (:tuple, :BigFloat, (:call, :precision, :BigFloat), :n)
+          )),
+        (:line, 83, :none),
+        (:(=), (:call, :rulekey, :T, :n), (:block,
+            (:line, 83, :none),
+            (:tuple, :T, :n)
+          )),
+        (:line, 90, :none),
+        (:function, (:call, (:curly, :do_quadgk, :Tw), :f, :s, :n, (:(::), (:curly, :Type, :Tw)), :abstol, :reltol, :maxevals, :nrm), (:block,
+            (:line, 91, :none),
+            (:if, (:<:, (:call, :eltype, :s), :Real), (:block,
+                (:line, 92, :none),
+                (:(=), :s1, (:ref, :s, 1)),
+                (:line, 92, :none),
+                (:(=), :s2, (:ref, :s, :end)),
+                (:line, 92, :none),
+                (:(=), :inf1, (:call, :isinf, :s1)),
+                (:line, 92, :none),
+                (:(=), :inf2, (:call, :isinf, :s2)),
+                (:line, 93, :none),
+                (:if, (:||, :inf1, :inf2), (:block,
+                    (:line, 94, :none),
+                    (:if, (:&&, :inf1, :inf2), (:block,
+                        (:line, 95, :none),
+                        (:return, (:call, :do_quadgk, (:->, :t, (:block,
+                                (:line, 95, :none),
+                                (:block,
+                                  (:line, 95, :none),
+                                  (:(=), :t2, (:call, :*, :t, :t)),
+                                  (:line, 95, :none),
+                                  (:(=), :den, (:call, :/, 1, (:call, :-, 1, :t2))),
+                                  (:line, 96, :none),
+                                  (:call, :*, (:call, :f, (:call, :*, :t, :den)), (:call, :+, 1, :t2), :den, :den)
+                                )
+                              )), (:call, :map, (:->, :x, (:block,
+                                  (:line, 97, :none),
+                                  (:if, (:call, :isinf, :x), (:call, :copysign, (:call, :one, :x), :x), (:call, :/, (:call, :*, 2, :x), (:call, :+, 1, (:call, :hypot, 1, (:call, :*, 2, :x)))))
+                                )), :s), :n, :Tw, :abstol, :reltol, :maxevals, :nrm))
+                      )),
+                    (:line, 100, :none),
+                    (:(=), (:tuple, :s0, :si), (:if, :inf1, (:tuple, :s2, :s1), (:tuple, :s1, :s2))),
+                    (:line, 101, :none),
+                    (:if, (:call, :<, :si, 0), (:block,
+                        (:line, 102, :none),
+                        (:return, (:call, :do_quadgk, (:->, :t, (:block,
+                                (:line, 102, :none),
+                                (:block,
+                                  (:line, 102, :none),
+                                  (:(=), :den, (:call, :/, 1, (:call, :-, 1, :t))),
+                                  (:line, 103, :none),
+                                  (:call, :*, (:call, :f, (:call, :-, :s0, (:call, :*, :t, :den))), :den, :den)
+                                )
+                              )), (:call, :reverse!, (:call, :map, (:->, :x, (:block,
+                                    (:line, 104, :none),
+                                    (:call, :/, 1, (:call, :+, 1, (:call, :/, 1, (:call, :-, :s0, :x))))
+                                  )), :s)), :n, :Tw, :abstol, :reltol, :maxevals, :nrm))
+                      ), (:block,
+                        (:line, 107, :none),
+                        (:return, (:call, :do_quadgk, (:->, :t, (:block,
+                                (:line, 107, :none),
+                                (:block,
+                                  (:line, 107, :none),
+                                  (:(=), :den, (:call, :/, 1, (:call, :-, 1, :t))),
+                                  (:line, 108, :none),
+                                  (:call, :*, (:call, :f, (:call, :+, :s0, (:call, :*, :t, :den))), :den, :den)
+                                )
+                              )), (:call, :map, (:->, :x, (:block,
+                                  (:line, 109, :none),
+                                  (:call, :/, 1, (:call, :+, 1, (:call, :/, 1, (:call, :-, :x, :s0))))
+                                )), :s), :n, :Tw, :abstol, :reltol, :maxevals, :nrm))
+                      ))
+                  ))
+              )),
+            (:line, 115, :none),
+            (:(=), :key, (:call, :rulekey, :Tw, :n)),
+            (:line, 116, :none),
+            (:(=), (:tuple, :x, :w, :gw), (:if, (:call, :haskey, :rulecache, :key), (:ref, :rulecache, :key), (:(=), (:ref, :rulecache, :key), (:call, :kronrod, :Tw, :n)))),
+            (:line, 118, :none),
+            (:(=), :segs, (:ref, :Segment)),
+            (:line, 119, :none),
+            (:for, (:(=), :i, (:(:), 1, (:call, :-, (:call, :length, :s), 1))), (:block,
+                (:line, 120, :none),
+                (:call, :heappush!, :segs, (:call, :evalrule, :f, (:ref, :s, :i), (:ref, :s, (:call, :+, :i, 1)), :x, :w, :gw, :nrm), :Reverse)
+              )),
+            (:line, 122, :none),
+            (:(=), :numevals, (:call, :*, (:call, :+, (:call, :*, 2, :n), 1), (:call, :length, :segs))),
+            (:line, 123, :none),
+            (:(=), :I, (:., (:ref, :segs, 1), (:quote, #QuoteNode
+                  :I
+                ))),
+            (:line, 124, :none),
+            (:(=), :E, (:., (:ref, :segs, 1), (:quote, #QuoteNode
+                  :E
+                ))),
+            (:line, 125, :none),
+            (:for, (:(=), :i, (:(:), 2, (:call, :length, :segs))), (:block,
+                (:line, 126, :none),
+                (:+=, :I, (:., (:ref, :segs, :i), (:quote, #QuoteNode
+                      :I
+                    ))),
+                (:line, 127, :none),
+                (:+=, :E, (:., (:ref, :segs, :i), (:quote, #QuoteNode
+                      :E
+                    )))
+              )),
+            (:line, 131, :none),
+            (:while, (:&&, (:call, :>, :E, :abstol), (:&&, (:call, :>, :E, (:call, :*, :reltol, (:call, :nrm, :I))), (:call, :<, :numevals, :maxevals))), (:block,
+                (:line, 132, :none),
+                (:(=), :s, (:call, :heappop!, :segs, :Reverse)),
+                (:line, 133, :none),
+                (:(=), :mid, (:call, :*, (:call, :+, (:., :s, (:quote, #QuoteNode
+                          :a
+                        )), (:., :s, (:quote, #QuoteNode
+                          :b
+                        ))), 0.5)),
+                (:line, 134, :none),
+                (:(=), :s1, (:call, :evalrule, :f, (:., :s, (:quote, #QuoteNode
+                        :a
+                      )), :mid, :x, :w, :gw, :nrm)),
+                (:line, 135, :none),
+                (:(=), :s2, (:call, :evalrule, :f, :mid, (:., :s, (:quote, #QuoteNode
+                        :b
+                      )), :x, :w, :gw, :nrm)),
+                (:line, 136, :none),
+                (:call, :heappush!, :segs, :s1, :Reverse),
+                (:line, 137, :none),
+                (:call, :heappush!, :segs, :s2, :Reverse),
+                (:line, 138, :none),
+                (:(=), :I, (:call, :+, (:call, :-, :I, (:., :s, (:quote, #QuoteNode
+                          :I
+                        ))), (:., :s1, (:quote, #QuoteNode
+                        :I
+                      )), (:., :s2, (:quote, #QuoteNode
+                        :I
+                      )))),
+                (:line, 139, :none),
+                (:(=), :E, (:call, :+, (:call, :-, :E, (:., :s, (:quote, #QuoteNode
+                          :E
+                        ))), (:., :s1, (:quote, #QuoteNode
+                        :E
+                      )), (:., :s2, (:quote, #QuoteNode
+                        :E
+                      )))),
+                (:line, 140, :none),
+                (:+=, :numevals, (:call, :+, (:call, :*, 4, :n), 2))
+              )),
+            (:line, 143, :none),
+            (:(=), :I, (:., (:ref, :segs, 1), (:quote, #QuoteNode
+                  :I
+                ))),
+            (:line, 144, :none),
+            (:(=), :E, (:., (:ref, :segs, 1), (:quote, #QuoteNode
+                  :E
+                ))),
+            (:line, 145, :none),
+            (:for, (:(=), :i, (:(:), 2, (:call, :length, :segs))), (:block,
+                (:line, 146, :none),
+                (:+=, :I, (:., (:ref, :segs, :i), (:quote, #QuoteNode
+                      :I
+                    ))),
+                (:line, 147, :none),
+                (:+=, :E, (:., (:ref, :segs, :i), (:quote, #QuoteNode
+                      :E
+                    )))
+              )),
+            (:line, 149, :none),
+            (:return, (:tuple, :I, :E))
+          )),
+        (:line, 154, :none),
+        (:function, (:call, (:curly, :quadgk, (:<:, :T, :AbstractFloat)), (:parameters, (:kw, :abstol, (:call, :zero, :T)), (:kw, :reltol, (:call, :sqrt, (:call, :eps, :T))), (:kw, :maxevals, (:call, :^, 10, 7)), (:kw, :order, 7), (:kw, :norm, :vecnorm)), :f, (:(::), :a, :T), (:(::), :b, :T), (:..., (:(::), :c, :T))), (:block,
+            (:line, 157, :none),
+            (:call, :do_quadgk, :f, (:vect, :a, :b, (:..., :c)), :order, :T, :abstol, :reltol, :maxevals, :norm)
+          )),
+        (:line, 160, :none),
+        (:function, (:call, (:curly, :quadgk, (:<:, :T, :AbstractFloat)), (:parameters, (:kw, :abstol, (:call, :zero, :T)), (:kw, :reltol, (:call, :sqrt, (:call, :eps, :T))), (:kw, :maxevals, (:call, :^, 10, 7)), (:kw, :order, 7), (:kw, :norm, :vecnorm)), :f, (:(::), :a, (:curly, :Complex, :T)), (:(::), :b, (:curly, :Complex, :T)), (:..., (:(::), :c, (:curly, :Complex, :T)))), (:block,
+            (:line, 164, :none),
+            (:call, :do_quadgk, :f, (:vect, :a, :b, (:..., :c)), :order, :T, :abstol, :reltol, :maxevals, :norm)
+          )),
+        (:line, 167, :none),
+        (:macrocall, :(Core.@doc), "    quadgk(f, a,b,c...; reltol=sqrt(eps), abstol=0, maxevals=10^7, order=7, norm=vecnorm)\n\nNumerically integrate the function `f(x)` from `a` to `b`, and optionally over additional\nintervals `b` to `c` and so on. Keyword options include a relative error tolerance `reltol`\n(defaults to `sqrt(eps)` in the precision of the endpoints), an absolute error tolerance\n`abstol` (defaults to 0), a maximum number of function evaluations `maxevals` (defaults to\n`10^7`), and the `order` of the integration rule (defaults to 7).\n\nReturns a pair `(I,E)` of the estimated integral `I` and an estimated upper bound on the\nabsolute error `E`. If `maxevals` is not exceeded then `E <= max(abstol, reltol*norm(I))`\nwill hold. (Note that it is useful to specify a positive `abstol` in cases where `norm(I)`\nmay be zero.)\n\nThe endpoints `a` et cetera can also be complex (in which case the integral is performed over\nstraight-line segments in the complex plane). If the endpoints are `BigFloat`, then the\nintegration will be performed in `BigFloat` precision as well.\n\n!!! note\n    It is advisable to increase the integration `order` in rough proportion to the\n    precision, for smooth integrands.\n\nMore generally, the precision is set by the precision of the integration\nendpoints (promoted to floating-point types).\n\nThe integrand `f(x)` can return any numeric scalar, vector, or matrix type, or in fact any\ntype supporting `+`, `-`, multiplication by real values, and a `norm` (i.e., any normed\nvector space). Alternatively, a different norm can be specified by passing a `norm`-like\nfunction as the `norm` keyword argument (which defaults to `vecnorm`).\n\n!!! note\n    Only one-dimensional integrals are provided by this function. For multi-dimensional\n    integration (cubature), there are many different algorithms (often much better than simple\n    nested 1d integrals) and the optimal choice tends to be very problem-dependent. See the\n    Julia external-package listing for available algorithms for multidimensional integration or\n    other specialized tasks (such as integrals of highly oscillatory or singular functions).\n\nThe algorithm is an adaptive Gauss-Kronrod integration technique: the integral in each\ninterval is estimated using a Kronrod rule (`2*order+1` points) and the error is estimated\nusing an embedded Gauss rule (`order` points). The interval with the largest error is then\nsubdivided into two intervals and the process is repeated until the desired error tolerance\nis achieved.\n\nThese quadrature rules work best for smooth functions within each interval, so if your\nfunction has a known discontinuity or other singularity, it is best to subdivide your\ninterval to put the singularity at an endpoint. For example, if `f` has a discontinuity at\n`x=0.7` and you want to integrate from 0 to 1, you should use `quadgk(f, 0,0.7,1)` to\nsubdivide the interval at the point of discontinuity. The integrand is never evaluated\nexactly at the endpoints of the intervals, so it is possible to integrate functions that\ndiverge at the endpoints as long as the singularity is integrable (for example, a `log(x)`\nor `1/sqrt(x)` singularity).\n\nFor real-valued endpoints, the starting and/or ending points may be infinite. (A coordinate\ntransformation is performed internally to map the infinite interval to a finite one.)\n", (:function, (:call, :quadgk, (:parameters, (:..., :kws)), :f, :a, :b, (:..., :c)), (:block,
+              (:line, 225, :none),
+              (:(=), :T, (:call, :promote_type, (:call, :typeof, (:call, :float, :a)), (:call, :typeof, :b))),
+              (:line, 226, :none),
+              (:for, (:(=), :x, :c), (:block,
+                  (:line, 227, :none),
+                  (:(=), :T, (:call, :promote_type, :T, (:call, :typeof, :x)))
+                )),
+              (:line, 229, :none),
+              (:(=), :cT, (:call, :map, :T, :c)),
+              (:line, 230, :none),
+              (:call, :quadgk, (:parameters, (:..., :kws)), :f, (:call, :convert, :T, :a), (:call, :convert, :T, :b), (:..., :cT))
+            ))),
+        (:line, 254, :none),
+        (:function, (:call, :eigpoly, :b, :z, (:kw, :m, (:call, :+, (:call, :length, :b), 1))), (:block,
+            (:line, 255, :none),
+            (:(=), :d1, :z),
+            (:line, 256, :none),
+            (:(=), :d1deriv, (:(=), :d2, (:call, :one, :z))),
+            (:line, 257, :none),
+            (:(=), :d2deriv, (:call, :zero, :z)),
+            (:line, 258, :none),
+            (:for, (:(=), :i, (:(:), 2, :m)), (:block,
+                (:line, 259, :none),
+                (:(=), :b2, (:call, :^, (:ref, :b, (:call, :-, :i, 1)), 2)),
+                (:line, 260, :none),
+                (:(=), :d, (:call, :-, (:call, :*, :z, :d1), (:call, :*, :b2, :d2))),
+                (:line, 261, :none),
+                (:(=), :dderiv, (:call, :-, (:call, :+, :d1, (:call, :*, :z, :d1deriv)), (:call, :*, :b2, :d2deriv))),
+                (:line, 262, :none),
+                (:(=), :d2, :d1),
+                (:line, 263, :none),
+                (:(=), :d1, :d),
+                (:line, 264, :none),
+                (:(=), :d2deriv, :d1deriv),
+                (:line, 265, :none),
+                (:(=), :d1deriv, :dderiv)
+              )),
+            (:line, 267, :none),
+            (:return, (:tuple, :d1, :d1deriv))
+          )),
+        (:line, 273, :none),
+        (:function, (:call, :eignewt, :b, :m, :n), (:block,
+            (:line, 275, :none),
+            (:(=), :H, (:call, :SymTridiagonal, (:call, :zeros, :m), (:typed_comprehension, :Float64, (:generator, (:ref, :b, :i), (:(=), :i, (:(:), 1, (:call, :-, :m, 1))))))),
+            (:line, 276, :none),
+            (:(=), :lambda0, (:call, :sort, (:call, :eigvals, :H))),
+            (:line, 278, :none),
+            (:(=), :lambda, (:call, (:curly, :Array, (:call, :eltype, :b)), :n)),
+            (:line, 279, :none),
+            (:for, (:(=), :i, (:(:), 1, :n)), (:block,
+                (:line, 280, :none),
+                (:(=), (:ref, :lambda, :i), (:ref, :lambda0, :i)),
+                (:line, 281, :none),
+                (:for, (:(=), :k, (:(:), 1, 1000)), (:block,
+                    (:line, 282, :none),
+                    (:(=), (:tuple, :p, :pderiv), (:call, :eigpoly, :b, (:ref, :lambda, :i), :m)),
+                    (:line, 283, :none),
+                    (:(=), (:ref, :lambda, :i), (:call, :-, (:(=), :lamold, (:ref, :lambda, :i)), (:call, :/, :p, :pderiv))),
+                    (:line, 284, :none),
+                    (:if, (:call, :<, (:call, :abs, (:call, :-, (:ref, :lambda, :i), :lamold)), (:call, :*, 10, (:call, :eps, (:ref, :lambda, :i)), (:call, :abs, (:ref, :lambda, :i)))), (:block,
+                        (:line, 285, :none),
+                        (:break,)
+                      ))
+                  )),
+                (:line, 289, :none),
+                (:(=), (:tuple, :p, :pderiv), (:call, :eigpoly, :b, (:ref, :lambda, :i), :m)),
+                (:line, 290, :none),
+                (:(=), (:ref, :lambda, :i), (:call, :-, (:ref, :lambda, :i), (:call, :/, :p, :pderiv)))
+              )),
+            (:line, 292, :none),
+            (:return, :lambda)
+          )),
+        (:line, 297, :none),
+        (:function, (:call, :eigvec1, :b, (:(::), :z, :Number), (:kw, :m, (:call, :+, (:call, :length, :b), 1))), (:block,
+            (:line, 301, :none),
+            (:(=), :v, (:call, (:curly, :Array, (:call, :eltype, :b)), :m)),
+            (:line, 302, :none),
+            (:(=), (:ref, :v, 1), 1),
+            (:line, 303, :none),
+            (:if, (:call, :>, :m, 1), (:block,
+                (:line, 304, :none),
+                (:(=), :s, (:ref, :v, 1)),
+                (:line, 305, :none),
+                (:(=), (:ref, :v, 2), (:call, :/, (:call, :*, :z, (:ref, :v, 1)), (:ref, :b, 1))),
+                (:line, 306, :none),
+                (:+=, :s, (:call, :^, (:ref, :v, 2), 2)),
+                (:line, 307, :none),
+                (:for, (:(=), :i, (:(:), 3, :m)), (:block,
+                    (:line, 308, :none),
+                    (:(=), (:ref, :v, :i), (:call, :/, (:call, :-, (:call, :-, (:call, :*, (:ref, :b, (:call, :-, :i, 2)), (:ref, :v, (:call, :-, :i, 2))), (:call, :*, :z, (:ref, :v, (:call, :-, :i, 1))))), (:ref, :b, (:call, :-, :i, 1)))),
+                    (:line, 309, :none),
+                    (:+=, :s, (:call, :^, (:ref, :v, :i), 2))
+                  )),
+                (:line, 311, :none),
+                (:call, :scale!, :v, (:call, :/, 1, (:call, :sqrt, :s)))
+              )),
+            (:line, 313, :none),
+            (:return, :v)
+          )),
+        (:line, 320, :none),
+        (:function, (:call, (:curly, :gauss, (:<:, :T, :AbstractFloat)), (:(::), (:curly, :Type, :T)), (:(::), :N, :Integer)), (:block,
+            (:line, 321, :none),
+            (:if, (:call, :<, :N, 1), (:block,
+                (:line, 322, :none),
+                (:call, :throw, (:call, :ArgumentError, "Gauss rules require positive order"))
+              )),
+            (:line, 324, :none),
+            (:(=), :o, (:call, :one, :T)),
+            (:line, 325, :none),
+            (:(=), :b, (:typed_comprehension, :T, (:generator, (:call, :/, :n, (:call, :sqrt, (:call, :-, (:call, :*, 4, (:call, :^, :n, 2)), :o))), (:(=), :n, (:(:), 1, (:call, :-, :N, 1)))))),
+            (:line, 326, :none),
+            (:(=), :x, (:call, :eignewt, :b, :N, :N)),
+            (:line, 327, :none),
+            (:(=), :w, (:typed_comprehension, :T, (:generator, (:call, :*, 2, (:call, :^, (:ref, (:call, :eigvec1, :b, (:ref, :x, :i)), 1), 2)), (:(=), :i, (:(:), 1, :N))))),
+            (:line, 328, :none),
+            (:return, (:tuple, :x, :w))
+          )),
+        (:line, 336, :none),
+        (:function, (:call, (:curly, :kronrod, (:<:, :T, :AbstractFloat)), (:(::), (:curly, :Type, :T)), (:(::), :n, :Integer)), (:block,
+            (:line, 337, :none),
+            (:if, (:call, :<, :n, 1), (:block,
+                (:line, 338, :none),
+                (:call, :throw, (:call, :ArgumentError, "Kronrod rules require positive order"))
+              )),
+            (:line, 340, :none),
+            (:(=), :o, (:call, :one, :T)),
+            (:line, 341, :none),
+            (:(=), :b, (:call, :zeros, :T, (:call, :+, (:call, :*, 2, :n), 1))),
+            (:line, 342, :none),
+            (:(=), (:ref, :b, 1), (:call, :*, 2, :o)),
+            (:line, 343, :none),
+            (:for, (:(=), :j, (:(:), 1, (:call, :div, (:call, :+, (:call, :*, 3, :n), 1), 2))), (:block,
+                (:line, 344, :none),
+                (:(=), (:ref, :b, (:call, :+, :j, 1)), (:call, :/, (:call, :^, :j, 2), (:call, :-, (:call, :*, 4, (:call, :^, :j, 2)), :o)))
+              )),
+            (:line, 346, :none),
+            (:(=), :s, (:call, :zeros, :T, (:call, :+, (:call, :div, :n, 2), 2))),
+            (:line, 347, :none),
+            (:(=), :t, (:call, :zeros, :T, (:call, :+, (:call, :div, :n, 2), 2))),
+            (:line, 348, :none),
+            (:(=), (:ref, :t, 2), (:ref, :b, (:call, :+, :n, 2))),
+            (:line, 349, :none),
+            (:for, (:(=), :m, (:(:), 0, (:call, :-, :n, 2))), (:block,
+                (:line, 350, :none),
+                (:(=), :u, (:call, :zero, :T)),
+                (:line, 351, :none),
+                (:for, (:(=), :k, (:(:), (:call, :div, (:call, :+, :m, 1), 2), -1, 0)), (:block,
+                    (:line, 352, :none),
+                    (:(=), :l, (:call, :+, (:call, :-, :m, :k), 1)),
+                    (:line, 353, :none),
+                    (:(=), :k1, (:call, :+, :k, :n, 2)),
+                    (:line, 354, :none),
+                    (:+=, :u, (:call, :-, (:call, :*, (:ref, :b, :k1), (:ref, :s, (:call, :+, :k, 1))), (:call, :*, (:ref, :b, :l), (:ref, :s, (:call, :+, :k, 2))))),
+                    (:line, 355, :none),
+                    (:(=), (:ref, :s, (:call, :+, :k, 2)), :u)
+                  )),
+                (:line, 357, :none),
+                (:(=), (:tuple, :s, :t), (:tuple, :t, :s))
+              )),
+            (:line, 359, :none),
+            (:for, (:(=), :j, (:(:), (:call, :div, :n, 2), -1, 0)), (:block,
+                (:line, 360, :none),
+                (:(=), (:ref, :s, (:call, :+, :j, 2)), (:ref, :s, (:call, :+, :j, 1)))
+              )),
+            (:line, 362, :none),
+            (:for, (:(=), :m, (:(:), (:call, :-, :n, 1), (:call, :-, (:call, :*, 2, :n), 3))), (:block,
+                (:line, 363, :none),
+                (:(=), :u, (:call, :zero, :T)),
+                (:line, 364, :none),
+                (:for, (:(=), :k, (:(:), (:call, :-, (:call, :+, :m, 1), :n), (:call, :div, (:call, :-, :m, 1), 2))), (:block,
+                    (:line, 365, :none),
+                    (:(=), :l, (:call, :+, (:call, :-, :m, :k), 1)),
+                    (:line, 366, :none),
+                    (:(=), :j, (:call, :-, :n, :l)),
+                    (:line, 367, :none),
+                    (:(=), :k1, (:call, :+, :k, :n, 2)),
+                    (:line, 368, :none),
+                    (:-=, :u, (:call, :-, (:call, :*, (:ref, :b, :k1), (:ref, :s, (:call, :+, :j, 2))), (:call, :*, (:ref, :b, :l), (:ref, :s, (:call, :+, :j, 3))))),
+                    (:line, 369, :none),
+                    (:(=), (:ref, :s, (:call, :+, :j, 2)), :u)
+                  )),
+                (:line, 371, :none),
+                (:(=), :k, (:call, :div, (:call, :+, :m, 1), 2)),
+                (:line, 372, :none),
+                (:if, (:call, :(!=), (:call, :*, 2, :k), :m), (:block,
+                    (:line, 373, :none),
+                    (:(=), :j, (:call, :-, :n, (:call, :+, (:call, :-, :m, :k), 2))),
+                    (:line, 374, :none),
+                    (:(=), (:ref, :b, (:call, :+, :k, :n, 2)), (:call, :/, (:ref, :s, (:call, :+, :j, 2)), (:ref, :s, (:call, :+, :j, 3))))
+                  )),
+                (:line, 376, :none),
+                (:(=), (:tuple, :s, :t), (:tuple, :t, :s))
+              )),
+            (:line, 378, :none),
+            (:for, (:(=), :j, (:(:), 1, (:call, :*, 2, :n))), (:block,
+                (:line, 379, :none),
+                (:(=), (:ref, :b, :j), (:call, :sqrt, (:ref, :b, (:call, :+, :j, 1))))
+              )),
+            (:line, 383, :none),
+            (:(=), :x, (:call, :eignewt, :b, (:call, :+, (:call, :*, 2, :n), 1), (:call, :+, :n, 1))),
+            (:line, 386, :none),
+            (:(=), :w, (:typed_comprehension, :T, (:generator, (:call, :*, 2, (:call, :^, (:ref, (:call, :eigvec1, :b, (:ref, :x, :i), (:call, :+, (:call, :*, 2, :n), 1)), 1), 2)), (:(=), :i, (:(:), 1, (:call, :+, :n, 1)))))),
+            (:line, 390, :none),
+            (:for, (:(=), :j, (:(:), 1, (:call, :-, :n, 1))), (:block,
+                (:line, 391, :none),
+                (:(=), (:ref, :b, :j), (:call, :/, :j, (:call, :sqrt, (:call, :-, (:call, :*, 4, (:call, :^, :j, 2)), :o))))
+              )),
+            (:line, 393, :none),
+            (:(=), :gw, (:typed_comprehension, :T, (:generator, (:call, :*, 2, (:call, :^, (:ref, (:call, :eigvec1, :b, (:ref, :x, :i), :n), 1), 2)), (:(=), :i, (:(:), 2, 2, (:call, :+, :n, 1)))))),
+            (:line, 395, :none),
+            (:return, (:tuple, :x, :w, :gw))
+          ))
+      ))
+  ))

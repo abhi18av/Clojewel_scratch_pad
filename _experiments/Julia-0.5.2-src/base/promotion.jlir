@@ -1,0 +1,759 @@
+(:quote, (:block,
+    (:line, 5, :none),
+    (:(=), (:call, :typejoin), (:block,
+        (:line, 5, :none),
+        (:block,
+          (:macrocall, Symbol("@_pure_meta")),
+          :Bottom
+        )
+      )),
+    (:line, 6, :none),
+    (:(=), (:call, :typejoin, (:(::), :t, :ANY)), (:block,
+        (:line, 6, :none),
+        (:block,
+          (:macrocall, Symbol("@_pure_meta")),
+          :t
+        )
+      )),
+    (:line, 7, :none),
+    (:(=), (:call, :typejoin, (:(::), :t, :ANY), (:..., :ts)), (:block,
+        (:line, 7, :none),
+        (:block,
+          (:macrocall, Symbol("@_pure_meta")),
+          (:call, :typejoin, :t, (:call, :typejoin, (:..., :ts)))
+        )
+      )),
+    (:line, 8, :none),
+    (:function, (:call, :typejoin, (:(::), :a, :ANY), (:(::), :b, :ANY)), (:block,
+        (:line, 9, :none),
+        (:macrocall, Symbol("@_pure_meta")),
+        (:line, 10, :none),
+        (:if, (:call, :isa, :a, :TypeConstructor), (:block,
+            (:line, 10, :none),
+            (:(=), :a, (:., :a, (:quote, #QuoteNode
+                  :body
+                )))
+          )),
+        (:line, 11, :none),
+        (:if, (:call, :isa, :b, :TypeConstructor), (:block,
+            (:line, 11, :none),
+            (:(=), :b, (:., :b, (:quote, #QuoteNode
+                  :body
+                )))
+          )),
+        (:line, 12, :none),
+        (:if, (:<:, :a, :b), (:block,
+            (:line, 13, :none),
+            (:return, :b)
+          ), (:block,
+            (:line, 14, :none),
+            (:if, (:<:, :b, :a), (:block,
+                (:line, 15, :none),
+                (:return, :a)
+              ))
+          )),
+        (:line, 17, :none),
+        (:if, (:call, :isa, :a, :TypeVar), (:block,
+            (:line, 18, :none),
+            (:return, (:call, :typejoin, (:., :a, (:quote, #QuoteNode
+                    :ub
+                  )), :b))
+          )),
+        (:line, 20, :none),
+        (:if, (:call, :isa, :b, :TypeVar), (:block,
+            (:line, 21, :none),
+            (:return, (:call, :typejoin, :a, (:., :b, (:quote, #QuoteNode
+                    :ub
+                  ))))
+          )),
+        (:line, 23, :none),
+        (:if, (:||, (:call, :isa, :a, :Union), (:call, :isa, :b, :Union)), (:block,
+            (:line, 24, :none),
+            (:(=), :u, (:curly, :Union, :a, :b)),
+            (:line, 25, :none),
+            (:if, (:call, :!, (:call, :isa, :u, :Union)), (:block,
+                (:line, 26, :none),
+                (:return, :u)
+              )),
+            (:line, 28, :none),
+            (:return, (:call, :reduce, :typejoin, :Bottom, (:., :u, (:quote, #QuoteNode
+                    :types
+                  ))))
+          )),
+        (:line, 30, :none),
+        (:if, (:<:, :a, :Tuple), (:block,
+            (:line, 31, :none),
+            (:if, (:call, :!, (:<:, :b, :Tuple)), (:block,
+                (:line, 32, :none),
+                (:return, :Any)
+              )),
+            (:line, 34, :none),
+            (:(=), (:tuple, :ap, :bp), (:tuple, (:., :a, (:quote, #QuoteNode
+                    :parameters
+                  )), (:., :b, (:quote, #QuoteNode
+                    :parameters
+                  )))),
+            (:line, 35, :none),
+            (:(=), :lar, (:(::), (:call, :length, :ap), :Int)),
+            (:line, 35, :none),
+            (:(=), :lbr, (:(::), (:call, :length, :bp), :Int)),
+            (:line, 36, :none),
+            (:(=), (:tuple, :laf, :afixed), (:call, :full_va_len, :ap)),
+            (:line, 37, :none),
+            (:(=), (:tuple, :lbf, :bfixed), (:call, :full_va_len, :bp)),
+            (:line, 38, :none),
+            (:if, (:||, (:call, :(==), :lar, 0), (:call, :(==), :lbr, 0)), (:block,
+                (:line, 39, :none),
+                (:return, :Tuple)
+              )),
+            (:line, 41, :none),
+            (:if, (:call, :<, :laf, :lbf), (:block,
+                (:line, 42, :none),
+                (:if, (:&&, (:call, :isvarargtype, (:ref, :ap, :lar)), (:call, :!, :afixed)), (:block,
+                    (:line, 43, :none),
+                    (:(=), :c, (:call, (:curly, :Vector, :Any), :laf)),
+                    (:line, 44, :none),
+                    (:(=), (:ref, :c, :laf), (:curly, :Vararg, (:call, :typejoin, (:ref, (:., (:ref, :ap, :lar), (:quote, #QuoteNode
+                                :parameters
+                              )), 1), (:call, :tailjoin, :bp, :laf)))),
+                    (:line, 45, :none),
+                    (:(=), :n, (:call, :-, :laf, 1))
+                  ), (:block,
+                    (:line, 47, :none),
+                    (:(=), :c, (:call, (:curly, :Vector, :Any), (:call, :+, :laf, 1))),
+                    (:line, 48, :none),
+                    (:(=), (:ref, :c, (:call, :+, :laf, 1)), (:curly, :Vararg, (:call, :tailjoin, :bp, (:call, :+, :laf, 1)))),
+                    (:line, 49, :none),
+                    (:(=), :n, :laf)
+                  ))
+              ), (:block,
+                (:line, 51, :none),
+                (:if, (:call, :<, :lbf, :laf), (:block,
+                    (:line, 52, :none),
+                    (:if, (:&&, (:call, :isvarargtype, (:ref, :bp, :lbr)), (:call, :!, :bfixed)), (:block,
+                        (:line, 53, :none),
+                        (:(=), :c, (:call, (:curly, :Vector, :Any), :lbf)),
+                        (:line, 54, :none),
+                        (:(=), (:ref, :c, :lbf), (:curly, :Vararg, (:call, :typejoin, (:ref, (:., (:ref, :bp, :lbr), (:quote, #QuoteNode
+                                    :parameters
+                                  )), 1), (:call, :tailjoin, :ap, :lbf)))),
+                        (:line, 55, :none),
+                        (:(=), :n, (:call, :-, :lbf, 1))
+                      ), (:block,
+                        (:line, 57, :none),
+                        (:(=), :c, (:call, (:curly, :Vector, :Any), (:call, :+, :lbf, 1))),
+                        (:line, 58, :none),
+                        (:(=), (:ref, :c, (:call, :+, :lbf, 1)), (:curly, :Vararg, (:call, :tailjoin, :ap, (:call, :+, :lbf, 1)))),
+                        (:line, 59, :none),
+                        (:(=), :n, :lbf)
+                      ))
+                  ), (:block,
+                    (:line, 62, :none),
+                    (:(=), :c, (:call, (:curly, :Vector, :Any), :laf)),
+                    (:line, 63, :none),
+                    (:(=), :n, :laf)
+                  ))
+              )),
+            (:line, 65, :none),
+            (:for, (:(=), :i, (:(:), 1, :n)), (:block,
+                (:line, 66, :none),
+                (:(=), :ai, (:ref, :ap, (:call, :min, :i, :lar))),
+                (:line, 66, :none),
+                (:(=), :bi, (:ref, :bp, (:call, :min, :i, :lbr))),
+                (:line, 67, :none),
+                (:(=), :ci, (:call, :typejoin, (:call, :unwrapva, :ai), (:call, :unwrapva, :bi))),
+                (:line, 68, :none),
+                (:(=), (:ref, :c, :i), (:if, (:&&, (:call, :(==), :i, (:call, :length, :c)), (:||, (:call, :isvarargtype, :ai), (:call, :isvarargtype, :bi))), (:curly, :Vararg, :ci), :ci))
+              )),
+            (:line, 70, :none),
+            (:return, (:curly, :Tuple, (:..., :c)))
+          ), (:block,
+            (:line, 71, :none),
+            (:if, (:<:, :b, :Tuple), (:block,
+                (:line, 72, :none),
+                (:return, :Any)
+              ))
+          )),
+        (:line, 74, :none),
+        (:while, (:call, :!, (:call, :is, :b, :Any)), (:block,
+            (:line, 75, :none),
+            (:if, (:<:, :a, (:., (:., :b, (:quote, #QuoteNode
+                      :name
+                    )), (:quote, #QuoteNode
+                    :primary
+                  ))), (:block,
+                (:line, 76, :none),
+                (:while, (:call, :(!==), (:., :a, (:quote, #QuoteNode
+                        :name
+                      )), (:., :b, (:quote, #QuoteNode
+                        :name
+                      ))), (:block,
+                    (:line, 77, :none),
+                    (:(=), :a, (:call, :supertype, :a))
+                  )),
+                (:line, 80, :none),
+                (:(=), :n, (:call, :length, (:., :a, (:quote, #QuoteNode
+                        :parameters
+                      )))),
+                (:line, 81, :none),
+                (:(=), :p, (:call, (:curly, :Vector, :Any), :n)),
+                (:line, 82, :none),
+                (:for, (:(=), :i, (:(:), 1, :n)), (:block,
+                    (:line, 83, :none),
+                    (:(=), (:tuple, :ai, :bi), (:tuple, (:ref, (:., :a, (:quote, #QuoteNode
+                              :parameters
+                            )), :i), (:ref, (:., :b, (:quote, #QuoteNode
+                              :parameters
+                            )), :i))),
+                    (:line, 84, :none),
+                    (:if, (:||, (:call, :(===), :ai, :bi), (:&&, (:call, :isa, :ai, :Type), (:&&, (:call, :isa, :bi, :Type), (:call, :typeseq, :ai, :bi)))), (:block,
+                        (:line, 85, :none),
+                        (:(=), (:ref, :p, :i), :ai)
+                      ), (:block,
+                        (:line, 87, :none),
+                        (:(=), (:ref, :p, :i), (:ref, (:., (:., (:., :a, (:quote, #QuoteNode
+                                    :name
+                                  )), (:quote, #QuoteNode
+                                  :primary
+                                )), (:quote, #QuoteNode
+                                :parameters
+                              )), :i))
+                      ))
+                  )),
+                (:line, 90, :none),
+                (:return, (:curly, (:., (:., :a, (:quote, #QuoteNode
+                          :name
+                        )), (:quote, #QuoteNode
+                        :primary
+                      )), (:..., :p)))
+              )),
+            (:line, 92, :none),
+            (:(=), :b, (:call, :supertype, :b))
+          )),
+        (:line, 94, :none),
+        (:return, :Any)
+      )),
+    (:line, 98, :none),
+    (:function, (:call, :full_va_len, :p), (:block,
+        (:line, 99, :none),
+        (:&&, (:call, :isempty, :p), (:return, (:tuple, 0, true))),
+        (:line, 100, :none),
+        (:if, (:call, :isvarargtype, (:ref, :p, :end)), (:block,
+            (:line, 101, :none),
+            (:(=), :N, (:ref, (:., (:ref, :p, :end), (:quote, #QuoteNode
+                    :parameters
+                  )), 2)),
+            (:line, 102, :none),
+            (:if, (:call, :isa, :N, :Integer), (:block,
+                (:line, 103, :none),
+                (:return, (:tuple, (:(::), (:call, :-, (:call, :+, (:call, :length, :p), :N), 1), :Int), true))
+              )),
+            (:line, 105, :none),
+            (:return, (:tuple, (:(::), (:call, :length, :p), :Int), false))
+          )),
+        (:line, 107, :none),
+        (:return, (:tuple, (:(::), (:call, :length, :p), :Int), true))
+      )),
+    (:line, 111, :none),
+    (:function, (:call, :tailjoin, :A, :i), (:block,
+        (:line, 112, :none),
+        (:if, (:call, :>, :i, (:call, :length, :A)), (:block,
+            (:line, 113, :none),
+            (:return, (:call, :unwrapva, (:ref, :A, :end)))
+          )),
+        (:line, 115, :none),
+        (:(=), :t, :Bottom),
+        (:line, 116, :none),
+        (:for, (:(=), :j, (:(:), :i, (:call, :length, :A))), (:block,
+            (:line, 117, :none),
+            (:(=), :t, (:call, :typejoin, :t, (:call, :unwrapva, (:ref, :A, :j))))
+          )),
+        (:line, 119, :none),
+        (:return, :t)
+      )),
+    (:line, 124, :none),
+    (:(=), (:call, :promote_type), (:block,
+        (:line, 124, :none),
+        (:block,
+          (:macrocall, Symbol("@_pure_meta")),
+          :Bottom
+        )
+      )),
+    (:line, 125, :none),
+    (:(=), (:call, :promote_type, :T), (:block,
+        (:line, 125, :none),
+        (:block,
+          (:macrocall, Symbol("@_pure_meta")),
+          :T
+        )
+      )),
+    (:line, 126, :none),
+    (:(=), (:call, :promote_type, :T, :S, :U, (:..., :V)), (:block,
+        (:line, 126, :none),
+        (:block,
+          (:macrocall, Symbol("@_pure_meta")),
+          (:call, :promote_type, :T, (:call, :promote_type, :S, :U, (:..., :V)))
+        )
+      )),
+    (:line, 128, :none),
+    (:(=), (:call, :promote_type, (:(::), (:curly, :Type, :Bottom)), (:(::), (:curly, :Type, :Bottom))), (:block,
+        (:line, 128, :none),
+        (:block,
+          (:macrocall, Symbol("@_pure_meta")),
+          :Bottom
+        )
+      )),
+    (:line, 129, :none),
+    (:(=), (:call, (:curly, :promote_type, :T), (:(::), (:curly, :Type, :T)), (:(::), (:curly, :Type, :T))), (:block,
+        (:line, 129, :none),
+        (:block,
+          (:macrocall, Symbol("@_pure_meta")),
+          :T
+        )
+      )),
+    (:line, 130, :none),
+    (:(=), (:call, (:curly, :promote_type, :T), (:(::), (:curly, :Type, :T)), (:(::), (:curly, :Type, :Bottom))), (:block,
+        (:line, 130, :none),
+        (:block,
+          (:macrocall, Symbol("@_pure_meta")),
+          :T
+        )
+      )),
+    (:line, 131, :none),
+    (:(=), (:call, (:curly, :promote_type, :T), (:(::), (:curly, :Type, :Bottom)), (:(::), (:curly, :Type, :T))), (:block,
+        (:line, 131, :none),
+        (:block,
+          (:macrocall, Symbol("@_pure_meta")),
+          :T
+        )
+      )),
+    (:line, 138, :none),
+    (:function, (:call, (:curly, :promote_type, :T, :S), (:(::), (:curly, :Type, :T)), (:(::), (:curly, :Type, :S))), (:block,
+        (:line, 139, :none),
+        (:macrocall, Symbol("@_pure_meta")),
+        (:line, 140, :none),
+        (:call, :promote_result, :T, :S, (:call, :promote_rule, :T, :S), (:call, :promote_rule, :S, :T))
+      )),
+    (:line, 143, :none),
+    (:(=), (:call, :promote_rule, :T, :S), (:block,
+        (:line, 143, :none),
+        (:block,
+          (:macrocall, Symbol("@_pure_meta")),
+          :Bottom
+        )
+      )),
+    (:line, 145, :none),
+    (:(=), (:call, :promote_result, :t, :s, :T, :S), (:block,
+        (:line, 145, :none),
+        (:block,
+          (:macrocall, Symbol("@_pure_meta")),
+          (:call, :promote_type, :T, :S)
+        )
+      )),
+    (:line, 148, :none),
+    (:(=), (:call, (:curly, :promote_result, :T, :S), (:(::), (:curly, :Type, :T)), (:(::), (:curly, :Type, :S)), (:(::), (:curly, :Type, :Bottom)), (:(::), (:curly, :Type, :Bottom))), (:block,
+        (:line, 148, :none),
+        (:block,
+          (:macrocall, Symbol("@_pure_meta")),
+          (:call, :typejoin, :T, :S)
+        )
+      )),
+    (:line, 150, :none),
+    (:(=), (:call, :promote), (:block,
+        (:line, 150, :none),
+        (:tuple,)
+      )),
+    (:line, 151, :none),
+    (:(=), (:call, :promote, :x), (:block,
+        (:line, 151, :none),
+        (:tuple, :x)
+      )),
+    (:line, 152, :none),
+    (:function, (:call, (:curly, :promote, :T, :S), (:(::), :x, :T), (:(::), :y, :S)), (:block,
+        (:line, 153, :none),
+        (:tuple, (:call, :convert, (:call, :promote_type, :T, :S), :x), (:call, :convert, (:call, :promote_type, :T, :S), :y))
+      )),
+    (:line, 155, :none),
+    (:(=), (:call, :promote_typeof, :x), (:block,
+        (:line, 155, :none),
+        (:block,
+          (:macrocall, Symbol("@_pure_meta")),
+          (:call, :typeof, :x)
+        )
+      )),
+    (:line, 156, :none),
+    (:(=), (:call, :promote_typeof, :x, (:..., :xs)), (:block,
+        (:line, 156, :none),
+        (:block,
+          (:macrocall, Symbol("@_pure_meta")),
+          (:call, :promote_type, (:call, :typeof, :x), (:call, :promote_typeof, (:..., :xs)))
+        )
+      )),
+    (:line, 157, :none),
+    (:function, (:call, :promote, :x, :y, :z), (:block,
+        (:line, 158, :none),
+        (:tuple, (:call, :convert, (:call, :promote_typeof, :x, :y, :z), :x), (:call, :convert, (:call, :promote_typeof, :x, :y, :z), :y), (:call, :convert, (:call, :promote_typeof, :x, :y, :z), :z))
+      )),
+    (:line, 162, :none),
+    (:function, (:call, :promote, :x, :y, (:..., :zs)), (:block,
+        (:line, 163, :none),
+        (:tuple, (:call, :convert, (:call, :promote_typeof, :x, :y, (:..., :zs)), :x), (:call, :convert, (:call, :promote_typeof, :x, :y, (:..., :zs)), :y), (:..., (:call, :convert, (:curly, :Tuple, (:curly, :Vararg, (:call, :promote_typeof, :x, :y, (:..., :zs)))), :zs)))
+      )),
+    (:line, 176, :none),
+    (:function, (:call, (:curly, :promote_result, (:<:, :T, :Number), (:<:, :S, :Number)), (:(::), (:curly, :Type, :T)), (:(::), (:curly, :Type, :S)), (:(::), (:curly, :Type, :Bottom)), (:(::), (:curly, :Type, :Bottom))), (:block,
+        (:line, 177, :none),
+        (:macrocall, Symbol("@_pure_meta")),
+        (:line, 178, :none),
+        (:call, :promote_to_supertype, :T, :S, (:call, :typejoin, :T, :S))
+      )),
+    (:line, 184, :none),
+    (:(=), (:call, (:curly, :promote_to_supertype, (:<:, :T, :Number)), (:(::), (:curly, :Type, :T)), (:(::), (:curly, :Type, :T)), (:(::), (:curly, :Type, :T))), (:block,
+        (:line, 184, :none),
+        (:block,
+          (:macrocall, Symbol("@_pure_meta")),
+          :T
+        )
+      )),
+    (:line, 185, :none),
+    (:(=), (:call, (:curly, :promote_to_supertype, (:<:, :T, :Number), (:<:, :S, :Number)), (:(::), (:curly, :Type, :T)), (:(::), (:curly, :Type, :S)), (:(::), (:curly, :Type, :T))), (:block,
+        (:line, 185, :none),
+        (:block,
+          (:macrocall, Symbol("@_pure_meta")),
+          :T
+        )
+      )),
+    (:line, 186, :none),
+    (:(=), (:call, (:curly, :promote_to_supertype, (:<:, :T, :Number), (:<:, :S, :Number)), (:(::), (:curly, :Type, :T)), (:(::), (:curly, :Type, :S)), (:(::), (:curly, :Type, :S))), (:block,
+        (:line, 186, :none),
+        (:block,
+          (:macrocall, Symbol("@_pure_meta")),
+          :S
+        )
+      )),
+    (:line, 187, :none),
+    (:(=), (:call, (:curly, :promote_to_supertype, (:<:, :T, :Number), (:<:, :S, :Number)), (:(::), (:curly, :Type, :T)), (:(::), (:curly, :Type, :S)), (:(::), :Type)), (:block,
+        (:line, 187, :none),
+        (:call, :error, "no promotion exists for ", :T, " and ", :S)
+      )),
+    (:line, 190, :none),
+    (:(=), (:call, :+, (:(::), :x, :Number), (:(::), :y, :Number)), (:block,
+        (:line, 190, :none),
+        (:call, :+, (:..., (:call, :promote, :x, :y)))
+      )),
+    (:line, 191, :none),
+    (:(=), (:call, :*, (:(::), :x, :Number), (:(::), :y, :Number)), (:block,
+        (:line, 191, :none),
+        (:call, :*, (:..., (:call, :promote, :x, :y)))
+      )),
+    (:line, 192, :none),
+    (:(=), (:call, :-, (:(::), :x, :Number), (:(::), :y, :Number)), (:block,
+        (:line, 192, :none),
+        (:call, :-, (:..., (:call, :promote, :x, :y)))
+      )),
+    (:line, 193, :none),
+    (:(=), (:call, :/, (:(::), :x, :Number), (:(::), :y, :Number)), (:block,
+        (:line, 193, :none),
+        (:call, :/, (:..., (:call, :promote, :x, :y)))
+      )),
+    (:line, 194, :none),
+    (:(=), (:call, :^, (:(::), :x, :Number), (:(::), :y, :Number)), (:block,
+        (:line, 194, :none),
+        (:call, :^, (:..., (:call, :promote, :x, :y)))
+      )),
+    (:line, 196, :none),
+    (:(=), (:call, :fma, (:(::), :x, :Number), (:(::), :y, :Number), (:(::), :z, :Number)), (:block,
+        (:line, 196, :none),
+        (:call, :fma, (:..., (:call, :promote, :x, :y, :z)))
+      )),
+    (:line, 197, :none),
+    (:(=), (:call, :muladd, (:(::), :x, :Number), (:(::), :y, :Number), (:(::), :z, :Number)), (:block,
+        (:line, 197, :none),
+        (:call, :muladd, (:..., (:call, :promote, :x, :y, :z)))
+      )),
+    (:line, 199, :none),
+    (:(=), (:call, :&, (:(::), :x, :Integer), (:(::), :y, :Integer)), (:block,
+        (:line, 199, :none),
+        (:call, :&, (:..., (:call, :promote, :x, :y)))
+      )),
+    (:line, 200, :none),
+    (:(=), (:call, :|, (:(::), :x, :Integer), (:(::), :y, :Integer)), (:block,
+        (:line, 200, :none),
+        (:call, :|, (:..., (:call, :promote, :x, :y)))
+      )),
+    (:line, 201, :none),
+    (:(=), (:call, :$, (:(::), :x, :Integer), (:(::), :y, :Integer)), (:block,
+        (:line, 201, :none),
+        (:call, :$, (:..., (:call, :promote, :x, :y)))
+      )),
+    (:line, 203, :none),
+    (:(=), (:call, :(==), (:(::), :x, :Number), (:(::), :y, :Number)), (:block,
+        (:line, 203, :none),
+        (:call, :(==), (:..., (:call, :promote, :x, :y)))
+      )),
+    (:line, 204, :none),
+    (:(=), (:call, :<, (:(::), :x, :Real), (:(::), :y, :Real)), (:block,
+        (:line, 204, :none),
+        (:call, :<, (:..., (:call, :promote, :x, :y)))
+      )),
+    (:line, 205, :none),
+    (:(=), (:call, :(<=), (:(::), :x, :Real), (:(::), :y, :Real)), (:block,
+        (:line, 205, :none),
+        (:call, :(<=), (:..., (:call, :promote, :x, :y)))
+      )),
+    (:line, 207, :none),
+    (:(=), (:call, :div, (:(::), :x, :Real), (:(::), :y, :Real)), (:block,
+        (:line, 207, :none),
+        (:call, :div, (:..., (:call, :promote, :x, :y)))
+      )),
+    (:line, 208, :none),
+    (:(=), (:call, :fld, (:(::), :x, :Real), (:(::), :y, :Real)), (:block,
+        (:line, 208, :none),
+        (:call, :fld, (:..., (:call, :promote, :x, :y)))
+      )),
+    (:line, 209, :none),
+    (:(=), (:call, :cld, (:(::), :x, :Real), (:(::), :y, :Real)), (:block,
+        (:line, 209, :none),
+        (:call, :cld, (:..., (:call, :promote, :x, :y)))
+      )),
+    (:line, 210, :none),
+    (:(=), (:call, :rem, (:(::), :x, :Real), (:(::), :y, :Real)), (:block,
+        (:line, 210, :none),
+        (:call, :rem, (:..., (:call, :promote, :x, :y)))
+      )),
+    (:line, 211, :none),
+    (:(=), (:call, :mod, (:(::), :x, :Real), (:(::), :y, :Real)), (:block,
+        (:line, 211, :none),
+        (:call, :mod, (:..., (:call, :promote, :x, :y)))
+      )),
+    (:line, 213, :none),
+    (:(=), (:call, :mod1, (:(::), :x, :Real), (:(::), :y, :Real)), (:block,
+        (:line, 213, :none),
+        (:call, :mod1, (:..., (:call, :promote, :x, :y)))
+      )),
+    (:line, 214, :none),
+    (:(=), (:call, :fld1, (:(::), :x, :Real), (:(::), :y, :Real)), (:block,
+        (:line, 214, :none),
+        (:call, :fld1, (:..., (:call, :promote, :x, :y)))
+      )),
+    (:line, 216, :none),
+    (:(=), (:call, :max, (:(::), :x, :Real), (:(::), :y, :Real)), (:block,
+        (:line, 216, :none),
+        (:call, :max, (:..., (:call, :promote, :x, :y)))
+      )),
+    (:line, 217, :none),
+    (:(=), (:call, :min, (:(::), :x, :Real), (:(::), :y, :Real)), (:block,
+        (:line, 217, :none),
+        (:call, :min, (:..., (:call, :promote, :x, :y)))
+      )),
+    (:line, 218, :none),
+    (:(=), (:call, :minmax, (:(::), :x, :Real), (:(::), :y, :Real)), (:block,
+        (:line, 218, :none),
+        (:call, :minmax, (:..., (:call, :promote, :x, :y)))
+      )),
+    (:line, 222, :none),
+    (:if, (:call, :isdefined, :Core, (:quote, #QuoteNode
+          :Inference
+        )), (:block,
+        (:line, 223, :none),
+        (:function, (:call, :_promote_op, :op, (:(::), :T, :ANY)), (:block,
+            (:line, 224, :none),
+            (:(=), :G, (:curly, :Tuple, (:curly, :Generator, (:curly, :Tuple, :T), (:call, :typeof, :op)))),
+            (:line, 225, :none),
+            (:return, (:call, (:., (:., :Core, (:quote, #QuoteNode
+                      :Inference
+                    )), (:quote, #QuoteNode
+                    :return_type
+                  )), :first, :G))
+          )),
+        (:line, 227, :none),
+        (:function, (:call, :_promote_op, :op, (:(::), :R, :ANY), (:(::), :S, :ANY)), (:block,
+            (:line, 228, :none),
+            (:(=), :F, (:call, :typeof, (:->, :a, (:block,
+                    (:line, 228, :none),
+                    (:call, :op, (:..., :a))
+                  )))),
+            (:line, 229, :none),
+            (:(=), :G, (:curly, :Tuple, (:curly, :Generator, (:curly, :Zip2, (:curly, :Tuple, :R), (:curly, :Tuple, :S)), :F))),
+            (:line, 230, :none),
+            (:return, (:call, (:., (:., :Core, (:quote, #QuoteNode
+                      :Inference
+                    )), (:quote, #QuoteNode
+                    :return_type
+                  )), :first, :G))
+          ))
+      ), (:block,
+        (:line, 233, :none),
+        (:(=), (:call, :_promote_op, (:..., (:(::), :ANY))), (:block,
+            (:line, 233, :none),
+            (:block,
+              (:macrocall, Symbol("@_pure_meta")),
+              :Any
+            )
+          ))
+      )),
+    (:line, 235, :none),
+    (:(=), (:call, :_default_type, (:(::), :T, :Type)), (:block,
+        (:line, 235, :none),
+        (:block,
+          (:macrocall, Symbol("@_pure_meta")),
+          :T
+        )
+      )),
+    (:line, 237, :none),
+    (:(=), (:call, :promote_op, (:..., (:(::), :Any))), (:block,
+        (:line, 237, :none),
+        (:block,
+          (:macrocall, Symbol("@_pure_meta")),
+          :Any
+        )
+      )),
+    (:line, 238, :none),
+    (:(=), (:call, :promote_op, (:(::), :T, :Type), (:(::), :Any)), (:block,
+        (:line, 238, :none),
+        (:block,
+          (:macrocall, Symbol("@_pure_meta")),
+          :T
+        )
+      )),
+    (:line, 239, :none),
+    (:(=), (:call, :promote_op, (:(::), :T, :Type), (:(::), :Type)), (:block,
+        (:line, 239, :none),
+        (:block,
+          (:macrocall, Symbol("@_pure_meta")),
+          :T
+        )
+      )),
+    (:line, 241, :none),
+    (:function, (:call, (:curly, :promote_op, :S), :f, (:(::), (:curly, :Type, :S))), (:block,
+        (:line, 242, :none),
+        (:(=), :T, (:call, :_promote_op, :f, (:call, :_default_type, :S))),
+        (:line, 243, :none),
+        (:&&, (:call, :isleaftype, :S), (:return, (:if, (:call, :isleaftype, :T), :T, :Any))),
+        (:line, 244, :none),
+        (:return, (:call, :typejoin, :S, :T))
+      )),
+    (:line, 246, :none),
+    (:function, (:call, (:curly, :promote_op, :R, :S), :f, (:(::), (:curly, :Type, :R)), (:(::), (:curly, :Type, :S))), (:block,
+        (:line, 247, :none),
+        (:(=), :T, (:call, :_promote_op, :f, (:call, :_default_type, :R), (:call, :_default_type, :S))),
+        (:line, 248, :none),
+        (:&&, (:call, :isleaftype, :R), (:&&, (:call, :isleaftype, :S), (:return, (:if, (:call, :isleaftype, :T), :T, :Any)))),
+        (:line, 249, :none),
+        (:return, (:call, :typejoin, :R, :S, :T))
+      )),
+    (:line, 254, :none),
+    (:(=), (:call, :no_op_err, :name, :T), (:block,
+        (:line, 254, :none),
+        (:call, :error, :name, " not defined for ", :T)
+      )),
+    (:line, 255, :none),
+    (:(=), (:call, (:curly, :+, (:<:, :T, :Number)), (:(::), :x, :T), (:(::), :y, :T)), (:block,
+        (:line, 255, :none),
+        (:call, :no_op_err, "+", :T)
+      )),
+    (:line, 256, :none),
+    (:(=), (:call, (:curly, :*, (:<:, :T, :Number)), (:(::), :x, :T), (:(::), :y, :T)), (:block,
+        (:line, 256, :none),
+        (:call, :no_op_err, "*", :T)
+      )),
+    (:line, 257, :none),
+    (:(=), (:call, (:curly, :-, (:<:, :T, :Number)), (:(::), :x, :T), (:(::), :y, :T)), (:block,
+        (:line, 257, :none),
+        (:call, :no_op_err, "-", :T)
+      )),
+    (:line, 258, :none),
+    (:(=), (:call, (:curly, :/, (:<:, :T, :Number)), (:(::), :x, :T), (:(::), :y, :T)), (:block,
+        (:line, 258, :none),
+        (:call, :no_op_err, "/", :T)
+      )),
+    (:line, 259, :none),
+    (:(=), (:call, (:curly, :^, (:<:, :T, :Number)), (:(::), :x, :T), (:(::), :y, :T)), (:block,
+        (:line, 259, :none),
+        (:call, :no_op_err, "^", :T)
+      )),
+    (:line, 261, :none),
+    (:(=), (:call, (:curly, :fma, (:<:, :T, :Number)), (:(::), :x, :T), (:(::), :y, :T), (:(::), :z, :T)), (:block,
+        (:line, 261, :none),
+        (:call, :no_op_err, "fma", :T)
+      )),
+    (:line, 262, :none),
+    (:(=), (:call, :fma, (:(::), :x, :Integer), (:(::), :y, :Integer), (:(::), :z, :Integer)), (:block,
+        (:line, 262, :none),
+        (:call, :+, (:call, :*, :x, :y), :z)
+      )),
+    (:line, 263, :none),
+    (:(=), (:call, (:curly, :muladd, (:<:, :T, :Number)), (:(::), :x, :T), (:(::), :y, :T), (:(::), :z, :T)), (:block,
+        (:line, 263, :none),
+        (:call, :+, (:call, :*, :x, :y), :z)
+      )),
+    (:line, 265, :none),
+    (:(=), (:call, (:curly, :&, (:<:, :T, :Integer)), (:(::), :x, :T), (:(::), :y, :T)), (:block,
+        (:line, 265, :none),
+        (:call, :no_op_err, "&", :T)
+      )),
+    (:line, 266, :none),
+    (:(=), (:call, (:curly, :|, (:<:, :T, :Integer)), (:(::), :x, :T), (:(::), :y, :T)), (:block,
+        (:line, 266, :none),
+        (:call, :no_op_err, "|", :T)
+      )),
+    (:line, 267, :none),
+    (:(=), (:call, (:curly, :$, (:<:, :T, :Integer)), (:(::), :x, :T), (:(::), :y, :T)), (:block,
+        (:line, 267, :none),
+        (:call, :no_op_err, "\$", :T)
+      )),
+    (:line, 269, :none),
+    (:(=), (:call, (:curly, :(==), (:<:, :T, :Number)), (:(::), :x, :T), (:(::), :y, :T)), (:block,
+        (:line, 269, :none),
+        (:call, :(===), :x, :y)
+      )),
+    (:line, 270, :none),
+    (:(=), (:call, (:curly, :<, (:<:, :T, :Real)), (:(::), :x, :T), (:(::), :y, :T)), (:block,
+        (:line, 270, :none),
+        (:call, :no_op_err, "<", :T)
+      )),
+    (:line, 271, :none),
+    (:(=), (:call, (:curly, :(<=), (:<:, :T, :Real)), (:(::), :x, :T), (:(::), :y, :T)), (:block,
+        (:line, 271, :none),
+        (:call, :no_op_err, "<=", :T)
+      )),
+    (:line, 273, :none),
+    (:(=), (:call, (:curly, :rem, (:<:, :T, :Real)), (:(::), :x, :T), (:(::), :y, :T)), (:block,
+        (:line, 273, :none),
+        (:call, :no_op_err, "rem", :T)
+      )),
+    (:line, 274, :none),
+    (:(=), (:call, (:curly, :mod, (:<:, :T, :Real)), (:(::), :x, :T), (:(::), :y, :T)), (:block,
+        (:line, 274, :none),
+        (:call, :no_op_err, "mod", :T)
+      )),
+    (:line, 276, :none),
+    (:(=), (:call, :min, (:(::), :x, :Real)), (:block,
+        (:line, 276, :none),
+        :x
+      )),
+    (:line, 277, :none),
+    (:(=), (:call, :max, (:(::), :x, :Real)), (:block,
+        (:line, 277, :none),
+        :x
+      )),
+    (:line, 278, :none),
+    (:(=), (:call, :minmax, (:(::), :x, :Real)), (:block,
+        (:line, 278, :none),
+        (:tuple, :x, :x)
+      )),
+    (:line, 280, :none),
+    (:(=), (:call, (:curly, :max, (:<:, :T, :Real)), (:(::), :x, :T), (:(::), :y, :T)), (:block,
+        (:line, 280, :none),
+        (:call, :ifelse, (:call, :<, :y, :x), :x, :y)
+      )),
+    (:line, 281, :none),
+    (:(=), (:call, (:curly, :min, (:<:, :T, :Real)), (:(::), :x, :T), (:(::), :y, :T)), (:block,
+        (:line, 281, :none),
+        (:call, :ifelse, (:call, :<, :y, :x), :y, :x)
+      )),
+    (:line, 282, :none),
+    (:(=), (:call, (:curly, :minmax, (:<:, :T, :Real)), (:(::), :x, :T), (:(::), :y, :T)), (:block,
+        (:line, 282, :none),
+        (:if, (:call, :<, :y, :x), (:tuple, :y, :x), (:tuple, :x, :y))
+      ))
+  ))
