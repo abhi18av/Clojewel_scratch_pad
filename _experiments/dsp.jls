@@ -1,0 +1,162 @@
+$(Expr(:quote, quote  # none, line 3:
+    module DSP # none, line 3: # none, line 5:
+    import Base.trailingsize # none, line 7:
+    export filt, filt!, deconv, conv, conv2, xcorr # none, line 9:
+    _zerosi(b,a,T) = begin  # none, line 9:
+            zeros(promote_type(eltype(b),eltype(a),T),max(length(a),length(b)) - 1)
+        end # none, line 11:
+    function filt{T,S}(b::Union{AbstractVector,Number},a::Union{AbstractVector,Number},x::AbstractArray{T},si::AbstractArray{S}=_zerosi(b,a,T)) # none, line 13:
+        filt!(Array{promote_type(eltype(b),eltype(a),T,S)}(size(x)),b,a,x,si)
+    end # none, line 18:
+    function filt!{T,S,N}(out::AbstractArray,b::Union{AbstractVector,Number},a::Union{AbstractVector,Number},x::AbstractArray{T},si::AbstractArray{S,N}=_zerosi(b,a,T)) # none, line 20:
+        isempty(b) && throw(ArgumentError("filter vector b must be non-empty")) # none, line 21:
+        isempty(a) && throw(ArgumentError("filter vector a must be non-empty")) # none, line 22:
+        a[1] == 0 && throw(ArgumentError("filter vector a[1] must be nonzero")) # none, line 23:
+        if size(x) != size(out) # none, line 24:
+            throw(ArgumentError("output size $(size(out)) must match input size $(size(x))"))
+        end # none, line 27:
+        as = length(a) # none, line 28:
+        bs = length(b) # none, line 29:
+        sz = max(as,bs) # none, line 30:
+        silen = sz - 1 # none, line 31:
+        ncols = trailingsize(x,2) # none, line 33:
+        if size(si,1) != silen # none, line 34:
+            throw(ArgumentError("initial state vector si must have max(length(a),length(b))-1 rows"))
+        end # none, line 36:
+        if N > 1 && trailingsize(si,2) != ncols # none, line 37:
+            throw(ArgumentError("initial state vector si must be a vector or have the same number of columns as x"))
+        end # none, line 40:
+        size(x,1) == 0 && return out # none, line 41:
+        sz == 1 && return scale!(out,x,b[1] / a[1]) # none, line 44:
+        if a[1] != 1 # none, line 45:
+            norml = a[1] # none, line 46:
+            a ./= norml # none, line 47:
+            b ./= norml
+        end # none, line 50:
+        bs < sz && (b = copy!(zeros(eltype(b),sz),b)) # none, line 51:
+        1 < as < sz && (a = copy!(zeros(eltype(a),sz),a)) # none, line 53:
+        initial_si = si # none, line 54:
+        for col = 1:ncols # none, line 56:
+            si = initial_si[:,if N > 1
+                        col
+                    else 
+                        1
+                    end] # none, line 57:
+            if as > 1 # none, line 58:
+                _filt_iir!(out,b,a,x,si,col)
+            else  # none, line 60:
+                _filt_fir!(out,b,x,si,col)
+            end
+        end # none, line 63:
+        return out
+    end # none, line 66:
+    function _filt_iir!(out,b,a,x,si,col) # none, line 67:
+        silen = length(si) # none, line 68:
+        @inbounds for i = 1:size(x,1) # none, line 69:
+                xi = x[i,col] # none, line 70:
+                val = si[1] + b[1] * xi # none, line 71:
+                for j = 1:silen - 1 # none, line 72:
+                    si[j] = (si[j + 1] + b[j + 1] * xi) - a[j + 1] * val
+                end # none, line 74:
+                si[silen] = b[silen + 1] * xi - a[silen + 1] * val # none, line 75:
+                out[i,col] = val
+            end
+    end # none, line 79:
+    function _filt_fir!(out,b,x,si,col) # none, line 80:
+        silen = length(si) # none, line 81:
+        @inbounds for i = 1:size(x,1) # none, line 82:
+                xi = x[i,col] # none, line 83:
+                val = si[1] + b[1] * xi # none, line 84:
+                for j = 1:silen - 1 # none, line 85:
+                    si[j] = si[j + 1] + b[j + 1] * xi
+                end # none, line 87:
+                si[silen] = b[silen + 1] * xi # none, line 88:
+                out[i,col] = val
+            end
+    end # none, line 92:
+    function deconv{T}(b::StridedVector{T},a::StridedVector{T}) # none, line 93:
+        lb = size(b,1) # none, line 94:
+        la = size(a,1) # none, line 95:
+        if lb < la # none, line 96:
+            return [zero(T)]
+        end # none, line 98:
+        lx = (lb - la) + 1 # none, line 99:
+        x = zeros(T,lx) # none, line 100:
+        x[1] = 1 # none, line 101:
+        filt(b,a,x)
+    end # none, line 104:
+    function conv{T <: Base.LinAlg.BlasFloat}(u::StridedVector{T},v::StridedVector{T}) # none, line 105:
+        nu = length(u) # none, line 106:
+        nv = length(v) # none, line 107:
+        n = (nu + nv) - 1 # none, line 108:
+        np2 = if n > 1024
+                nextprod([2,3,5],n)
+            else 
+                nextpow2(n)
+            end # none, line 109:
+        upad = [u;zeros(T,np2 - nu)] # none, line 110:
+        vpad = [v;zeros(T,np2 - nv)] # none, line 111:
+        if T <: Real # none, line 112:
+            p = plan_rfft(upad) # none, line 113:
+            y = irfft((p * upad) .* (p * vpad),np2)
+        else  # none, line 115:
+            p = plan_fft!(upad) # none, line 116:
+            y = ifft!((p * upad) .* (p * vpad))
+        end # none, line 118:
+        return y[1:n]
+    end # none, line 120:
+    conv{T <: Integer}(u::StridedVector{T},v::StridedVector{T}) = begin  # none, line 120:
+            round(Int,conv(float(u),float(v)))
+        end # none, line 121:
+    conv{T <: Integer,S <: Base.LinAlg.BlasFloat}(u::StridedVector{T},v::StridedVector{S}) = begin  # none, line 121:
+            conv(float(u),v)
+        end # none, line 122:
+    conv{T <: Integer,S <: Base.LinAlg.BlasFloat}(u::StridedVector{S},v::StridedVector{T}) = begin  # none, line 122:
+            conv(u,float(v))
+        end # none, line 124:
+    function conv2{T}(u::StridedVector{T},v::StridedVector{T},A::StridedMatrix{T}) # none, line 125:
+        m = (length(u) + size(A,1)) - 1 # none, line 126:
+        n = (length(v) + size(A,2)) - 1 # none, line 127:
+        B = zeros(T,m,n) # none, line 128:
+        B[1:size(A,1),1:size(A,2)] = A # none, line 129:
+        u = fft([u;zeros(T,m - length(u))]) # none, line 130:
+        v = fft([v;zeros(T,n - length(v))]) # none, line 131:
+        C = ifft(fft(B) .* (u * v.')) # none, line 132:
+        if T <: Real # none, line 133:
+            return real(C)
+        end # none, line 135:
+        return C
+    end # none, line 138:
+    function conv2{T}(A::StridedMatrix{T},B::StridedMatrix{T}) # none, line 139:
+        (sa,sb) = (size(A),size(B)) # none, line 140:
+        At = zeros(T,(sa[1] + sb[1]) - 1,(sa[2] + sb[2]) - 1) # none, line 141:
+        Bt = zeros(T,(sa[1] + sb[1]) - 1,(sa[2] + sb[2]) - 1) # none, line 142:
+        At[1:sa[1],1:sa[2]] = A # none, line 143:
+        Bt[1:sb[1],1:sb[2]] = B # none, line 144:
+        p = plan_fft(At) # none, line 145:
+        C = ifft((p * At) .* (p * Bt)) # none, line 146:
+        if T <: Real # none, line 147:
+            return real(C)
+        end # none, line 149:
+        return C
+    end # none, line 151:
+    conv2{T <: Integer}(A::StridedMatrix{T},B::StridedMatrix{T}) = begin  # none, line 151:
+            round(Int,conv2(float(A),float(B)))
+        end # none, line 152:
+    conv2{T <: Integer}(u::StridedVector{T},v::StridedVector{T},A::StridedMatrix{T}) = begin  # none, line 152:
+            round(Int,conv2(float(u),float(v),float(A)))
+        end # none, line 154:
+    function xcorr(u,v) # none, line 155:
+        su = size(u,1) # none, line 155:
+        sv = size(v,1) # none, line 156:
+        if su < sv # none, line 157:
+            u = [u;zeros(eltype(u),sv - su)]
+        else  # none, line 158:
+            if sv < su # none, line 159:
+                v = [v;zeros(eltype(v),su - sv)]
+            end
+        end # none, line 161:
+        flipdim(conv(flipdim(u,1),v),1)
+    end
+    end
+end))
