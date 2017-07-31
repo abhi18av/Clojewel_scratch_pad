@@ -1,6 +1,23 @@
 # project-1
 
-FIXME: description
+The purpose of this sample project is to create simple JLIR expressions from clojure.
+
+
+
+The following clojure code get transformed into Julia code.
+
+```clojure
+
+(println "Clojure!")
+
+```
+
+
+
+```julia
+println("Clojure")
+
+```
 
 ## Installation
 
