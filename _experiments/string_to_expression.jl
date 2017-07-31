@@ -1,4 +1,27 @@
 # Understand how to read a function in string form and then eval it.
+Meta.show_sexpr(parse("Expr(:call, :+, 1, 1)"))
+
+parse("Expr(:call, :+, 1, 1)").args
+
+parse("(:call, :+, 1, 1)").args
+
+julia> typeof(eval(x1[2]))
+Symbol
+
+
+x_plus = eval(x1[2])
+
+julia> x_num1 , x_num2 = eval(x1[3]), eval(x1[4])
+(1,1)
+
+
+
+julia> @eval(Expr(:call , x_plus, x_num1, x_num2))
+:(1 + 1)
+
+julia> eval(Expr(:call , x_plus, x_num1, x_num2))
+2
+
 
 
 add9_1 = function (x::Int)
