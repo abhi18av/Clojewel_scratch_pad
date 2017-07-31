@@ -12,10 +12,12 @@ Clojewel / ClojureJL
 - Unify the Machine Learning libraries
 - Get closer to HPC and Scientific Computing.
 - A step up towards the best development environment for any imaginable task!
+- Easily reach any ecosystem ( Julia's FFI is really helpful here )
 - Provide a story for all stakeholders in the age of computing
 	- Enterprise ( JVM )
 	- Web ( JS )
 	- Academia ( Julia )
+
 
 
 ```
