@@ -11,75 +11,75 @@
 # Everything in Julia is an expression.
 
 # There are several basic types of numbers.
-#3 # => 3 (Int64)
-#3.2 # => 3.2 (Float64)
-#2 + 1im # => 2 + 1im (Complex{Int64})
-#2//3 # => 2//3 (Rational{Int64})
+3 # => 3 (Int64)
+3.2 # => 3.2 (Float64)
+2 + 1im # => 2 + 1im (Complex{Int64})
+2//3 # => 2//3 (Rational{Int64})
 
 # All of the normal infix operators are available.
-#1 + 1 # => 2
-#8 - 1 # => 7
-#10 * 2 # => 20
-#35 / 5 # => 7.0
-#5 / 2 # => 2.5 # dividing an Int by an Int always results in a Float
-#div(5, 2) # => 2 # for a truncated result, use div
-#5 \ 35 # => 7.0
-#2 ^ 2 # => 4 # power, not bitwise xor
-#12 % 10 # => 2
+1 + 1 # => 2
+8 - 1 # => 7
+10 * 2 # => 20
+35 / 5 # => 7.0
+5 / 2 # => 2.5 # dividing an Int by an Int always results in a Float
+div(5, 2) # => 2 # for a truncated result, use div
+5 \ 35 # => 7.0
+2 ^ 2 # => 4 # power, not bitwise xor
+12 % 10 # => 2
 
 # Enforce precedence with parentheses
-#(1 + 3) * 2 # => 8
+(1 + 3) * 2 # => 8
 
 # Bitwise Operators
-#~2 # => -3   # bitwise not
-#3 & 5 # => 1 # bitwise and
-#2 | 4 # => 6 # bitwise or
-#2 $ 4 # => 6 # bitwise xor
-#2 >>> 1 # => 1 # logical shift right
-#2 >> 1  # => 1 # arithmetic shift right
-#2 << 1  # => 4 # logical/arithmetic shift left
+~2 # => -3   # bitwise not
+3 & 5 # => 1 # bitwise and
+2 | 4 # => 6 # bitwise or
+2 $ 4 # => 6 # bitwise xor
+2 >>> 1 # => 1 # logical shift right
+2 >> 1  # => 1 # arithmetic shift right
+2 << 1  # => 4 # logical/arithmetic shift left
 
 # You can use the bits function to see the binary representation of a number.
-#bits(12345)
+bits(12345)
 # => "0000000000000000000000000000000000000000000000000011000000111001"
-#bits(12345.0)
+bits(12345.0)
 # => "0100000011001000000111001000000000000000000000000000000000000000"
 
 # Boolean values are primitives
-#true
-#false
+true
+false
 
 # Boolean operators
-#!true # => false
-#!false # => true
-#1 == 1 # => true
-#2 == 1 # => false
-#1 != 1 # => false
-#2 != 1 # => true
-#1 < 10 # => true
-#1 > 10 # => false
-#2 <= 2 # => true
-#2 >= 2 # => true
+!true # => false
+!false # => true
+1 == 1 # => true
+2 == 1 # => false
+1 != 1 # => false
+2 != 1 # => true
+1 < 10 # => true
+1 > 10 # => false
+2 <= 2 # => true
+2 >= 2 # => true
 # Comparisons can be chained
-#1 < 2 < 3 # => true
-#2 < 3 < 2 # => false
+1 < 2 < 3 # => true
+2 < 3 < 2 # => false
 
 # Strings are created with "
-#"This is a string."
+"This is a string."
 
 # Julia has several types of strings, including ASCIIString and UTF8String.
 # More on this in the Types section.
 
 # Character literals are written with '
-#'a'
+'a'
 
 # Some strings can be indexed like an array of characters
-#"This is a string"[1] # => 'T' # Julia indexes from 1
+"This is a string"[1] # => 'T' # Julia indexes from 1
 # However, this is will not work well for UTF8 strings,
 # so iterating over strings is recommended (map, for loops, etc).
 
 # $ can be used for string interpolation:
-#"2 + 2 = $(2 + 2)" # => "2 + 2 = 4"
+"2 + 2 = $(2 + 2)" # => "2 + 2 = 4"
 # You can put any Julia expression inside the parentheses.
 
 # Another way to format strings is the printf macro.
