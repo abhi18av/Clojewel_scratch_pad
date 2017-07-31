@@ -5,22 +5,18 @@ parse("Expr(:call, :+, 1, 1)").args
 
 parse("(:call, :+, 1, 1)").args
 
-julia> typeof(eval(x1[2]))
-Symbol
+typeof(eval(x1[2]))
 
 
 x_plus = eval(x1[2])
 
-julia> x_num1 , x_num2 = eval(x1[3]), eval(x1[4])
-(1,1)
+x_num1 , x_num2 = eval(x1[3]), eval(x1[4])
 
 
 
-julia> @eval(Expr(:call , x_plus, x_num1, x_num2))
-:(1 + 1)
+@eval(Expr(:call , x_plus, x_num1, x_num2))
 
-julia> eval(Expr(:call , x_plus, x_num1, x_num2))
-2
+eval(Expr(:call , x_plus, x_num1, x_num2))
 
 
 
@@ -47,11 +43,9 @@ add9_2_parsed_evald = eval(add9_2_parsed)
 
 parse(add9_2)
 
-julia> add9_1 == add9_2_parsed_evald
-false
+add9_1 == add9_2_parsed_evald
 
-julia> add9_1(9) == add9_2_parsed_evald(9)
-true
+add9_1(9) == add9_2_parsed_evald(9)
 
 
 eval(Expr(:call, parse(add9_2), :9))
@@ -59,30 +53,42 @@ eval(Expr(:call, parse(add9_2), :9))
 eval(Expr(:call, parse(add9_2), 9))
 
 
-julia> code_lowered(add9_1)[1]
+code_lowered(add9_1)[1]
+"""
 LambdaInfo template for (::##1#2)(x::Int64) at REPL[1]:3
 :(begin
         nothing
         return x + 9
     end)
 
-julia> code_lowered(add9_2_parsed_evald)[1]
+
+"""
+
+
+code_lowered(add9_2_parsed_evald)[1]
+
+"""
 LambdaInfo template for (::##5#6)(x::Int64) at none:4
 :(begin
         nothing
         return x + 9
     end)
 
+"""
+
 
 
 code_lowered(add9_1)[1] == code_lowered(add9_2_parsed_evald)
 
-julia> code_lowered(add9_1)
+code_lowered(add9_1)
+
+"""
 1-element Array{LambdaInfo,1}:
  LambdaInfo template for (::##1#2)(x::Int64) at REPL[1]:3
+"""
 
-julia> code_lowered(parse(add9_2))
-0-element Array{LambdaInfo,1}
+
+code_lowered(parse(add9_2))
 
 
 
@@ -94,21 +100,25 @@ eval(Expr(ex))
 end
 
 
-julia> code_typed(add9_1)[1]
+code_typed(add9_1)[1]
+
+"""
 LambdaInfo for (::##1#2)(::Int64)
 :(begin
         return (Base.box)(Int64,(Base.add_int)(x,9))
     end::Int64)
+"""
 
+code_lowered(add9)[1]
 
-julia> code_lowered(add9)[1]
+"""
 LambdaInfo template for add9(x::Int64) at REPL[118]:3
 :(begin
         nothing
         return x + 9
     end)
-
+"""
 
 macroexpand( :(@edit println("")) )
 
-    expand()
+expand()
