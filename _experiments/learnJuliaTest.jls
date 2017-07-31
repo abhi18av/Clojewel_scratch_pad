@@ -89,8 +89,6 @@
     (:call, :length, :a),
     (:line, 212, :none),
     (:(=), :tup, (:tuple, 1, 2, 3)),
-    (:line, 213, :none),
-    (:ref, :tup, 1),
     (:line, 214, :none),
     (:try, (:block,
         (:line, 214, :none),

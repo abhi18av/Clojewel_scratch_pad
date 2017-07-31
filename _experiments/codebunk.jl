@@ -15,28 +15,32 @@
 
 #https://github.com/chrisvoncsefalvay/learn-julia-the-hard-way
 
-#ex1 = quote 1 + 1 end
+ex1 = quote 1 + 1 end
 
-#ex2 = (:call , :+ , 1 , 1)
-
-
-#ex3 = Expr(:call, :*, 1, 1)
+ex2 = (:call , :+ , 1 , 1)
 
 
-#ex4 = quote
-#    convert(::Type{Bool}, x::Bool) = x
-#convert(::Type{Bool}, x::Real) = x==0 ? false : x==1 ? true : throw(InexactError())
+ex3 = Expr(:call, :*, 1, 1)
+
+
+ex4 = quote
+    convert(::Type{Bool}, x::Bool) = x
+convert(::Type{Bool}, x::Real) = x==0 ? false : x==1 ? true : throw(InexactError())
 
 # promote Bool to any other numeric type
-#promote_rule{T<:Number}(::Type{Bool}, ::Type{T}) = T
+promote_rule{T<:Number}(::Type{Bool}, ::Type{T}) = T
 
-#typemin(::Type{Bool}) = false
-#typemax(::Type{Bool}) = true
+typemin(::Type{Bool}) = false
+typemax(::Type{Bool}) = true
 
-#end
+end
 
 
-
+ex5 = quote 
+function f{T}(x::T; k = 1)
+    return x+1
+end
+end
 
 
 jl_bool_source_file = quote 

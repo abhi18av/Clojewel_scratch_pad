@@ -1,162 +1,284 @@
-$(Expr(:quote, quote  # none, line 3:
-    module DSP # none, line 3: # none, line 5:
-    import Base.trailingsize # none, line 7:
-    export filt, filt!, deconv, conv, conv2, xcorr # none, line 9:
-    _zerosi(b,a,T) = begin  # none, line 9:
-            zeros(promote_type(eltype(b),eltype(a),T),max(length(a),length(b)) - 1)
-        end # none, line 11:
-    function filt{T,S}(b::Union{AbstractVector,Number},a::Union{AbstractVector,Number},x::AbstractArray{T},si::AbstractArray{S}=_zerosi(b,a,T)) # none, line 13:
-        filt!(Array{promote_type(eltype(b),eltype(a),T,S)}(size(x)),b,a,x,si)
-    end # none, line 18:
-    function filt!{T,S,N}(out::AbstractArray,b::Union{AbstractVector,Number},a::Union{AbstractVector,Number},x::AbstractArray{T},si::AbstractArray{S,N}=_zerosi(b,a,T)) # none, line 20:
-        isempty(b) && throw(ArgumentError("filter vector b must be non-empty")) # none, line 21:
-        isempty(a) && throw(ArgumentError("filter vector a must be non-empty")) # none, line 22:
-        a[1] == 0 && throw(ArgumentError("filter vector a[1] must be nonzero")) # none, line 23:
-        if size(x) != size(out) # none, line 24:
-            throw(ArgumentError("output size $(size(out)) must match input size $(size(x))"))
-        end # none, line 27:
-        as = length(a) # none, line 28:
-        bs = length(b) # none, line 29:
-        sz = max(as,bs) # none, line 30:
-        silen = sz - 1 # none, line 31:
-        ncols = trailingsize(x,2) # none, line 33:
-        if size(si,1) != silen # none, line 34:
-            throw(ArgumentError("initial state vector si must have max(length(a),length(b))-1 rows"))
-        end # none, line 36:
-        if N > 1 && trailingsize(si,2) != ncols # none, line 37:
-            throw(ArgumentError("initial state vector si must be a vector or have the same number of columns as x"))
-        end # none, line 40:
-        size(x,1) == 0 && return out # none, line 41:
-        sz == 1 && return scale!(out,x,b[1] / a[1]) # none, line 44:
-        if a[1] != 1 # none, line 45:
-            norml = a[1] # none, line 46:
-            a ./= norml # none, line 47:
-            b ./= norml
-        end # none, line 50:
-        bs < sz && (b = copy!(zeros(eltype(b),sz),b)) # none, line 51:
-        1 < as < sz && (a = copy!(zeros(eltype(a),sz),a)) # none, line 53:
-        initial_si = si # none, line 54:
-        for col = 1:ncols # none, line 56:
-            si = initial_si[:,if N > 1
-                        col
-                    else 
-                        1
-                    end] # none, line 57:
-            if as > 1 # none, line 58:
-                _filt_iir!(out,b,a,x,si,col)
-            else  # none, line 60:
-                _filt_fir!(out,b,x,si,col)
-            end
-        end # none, line 63:
-        return out
-    end # none, line 66:
-    function _filt_iir!(out,b,a,x,si,col) # none, line 67:
-        silen = length(si) # none, line 68:
-        @inbounds for i = 1:size(x,1) # none, line 69:
-                xi = x[i,col] # none, line 70:
-                val = si[1] + b[1] * xi # none, line 71:
-                for j = 1:silen - 1 # none, line 72:
-                    si[j] = (si[j + 1] + b[j + 1] * xi) - a[j + 1] * val
-                end # none, line 74:
-                si[silen] = b[silen + 1] * xi - a[silen + 1] * val # none, line 75:
-                out[i,col] = val
-            end
-    end # none, line 79:
-    function _filt_fir!(out,b,x,si,col) # none, line 80:
-        silen = length(si) # none, line 81:
-        @inbounds for i = 1:size(x,1) # none, line 82:
-                xi = x[i,col] # none, line 83:
-                val = si[1] + b[1] * xi # none, line 84:
-                for j = 1:silen - 1 # none, line 85:
-                    si[j] = si[j + 1] + b[j + 1] * xi
-                end # none, line 87:
-                si[silen] = b[silen + 1] * xi # none, line 88:
-                out[i,col] = val
-            end
-    end # none, line 92:
-    function deconv{T}(b::StridedVector{T},a::StridedVector{T}) # none, line 93:
-        lb = size(b,1) # none, line 94:
-        la = size(a,1) # none, line 95:
-        if lb < la # none, line 96:
-            return [zero(T)]
-        end # none, line 98:
-        lx = (lb - la) + 1 # none, line 99:
-        x = zeros(T,lx) # none, line 100:
-        x[1] = 1 # none, line 101:
-        filt(b,a,x)
-    end # none, line 104:
-    function conv{T <: Base.LinAlg.BlasFloat}(u::StridedVector{T},v::StridedVector{T}) # none, line 105:
-        nu = length(u) # none, line 106:
-        nv = length(v) # none, line 107:
-        n = (nu + nv) - 1 # none, line 108:
-        np2 = if n > 1024
-                nextprod([2,3,5],n)
-            else 
-                nextpow2(n)
-            end # none, line 109:
-        upad = [u;zeros(T,np2 - nu)] # none, line 110:
-        vpad = [v;zeros(T,np2 - nv)] # none, line 111:
-        if T <: Real # none, line 112:
-            p = plan_rfft(upad) # none, line 113:
-            y = irfft((p * upad) .* (p * vpad),np2)
-        else  # none, line 115:
-            p = plan_fft!(upad) # none, line 116:
-            y = ifft!((p * upad) .* (p * vpad))
-        end # none, line 118:
-        return y[1:n]
-    end # none, line 120:
-    conv{T <: Integer}(u::StridedVector{T},v::StridedVector{T}) = begin  # none, line 120:
-            round(Int,conv(float(u),float(v)))
-        end # none, line 121:
-    conv{T <: Integer,S <: Base.LinAlg.BlasFloat}(u::StridedVector{T},v::StridedVector{S}) = begin  # none, line 121:
-            conv(float(u),v)
-        end # none, line 122:
-    conv{T <: Integer,S <: Base.LinAlg.BlasFloat}(u::StridedVector{S},v::StridedVector{T}) = begin  # none, line 122:
-            conv(u,float(v))
-        end # none, line 124:
-    function conv2{T}(u::StridedVector{T},v::StridedVector{T},A::StridedMatrix{T}) # none, line 125:
-        m = (length(u) + size(A,1)) - 1 # none, line 126:
-        n = (length(v) + size(A,2)) - 1 # none, line 127:
-        B = zeros(T,m,n) # none, line 128:
-        B[1:size(A,1),1:size(A,2)] = A # none, line 129:
-        u = fft([u;zeros(T,m - length(u))]) # none, line 130:
-        v = fft([v;zeros(T,n - length(v))]) # none, line 131:
-        C = ifft(fft(B) .* (u * v.')) # none, line 132:
-        if T <: Real # none, line 133:
-            return real(C)
-        end # none, line 135:
-        return C
-    end # none, line 138:
-    function conv2{T}(A::StridedMatrix{T},B::StridedMatrix{T}) # none, line 139:
-        (sa,sb) = (size(A),size(B)) # none, line 140:
-        At = zeros(T,(sa[1] + sb[1]) - 1,(sa[2] + sb[2]) - 1) # none, line 141:
-        Bt = zeros(T,(sa[1] + sb[1]) - 1,(sa[2] + sb[2]) - 1) # none, line 142:
-        At[1:sa[1],1:sa[2]] = A # none, line 143:
-        Bt[1:sb[1],1:sb[2]] = B # none, line 144:
-        p = plan_fft(At) # none, line 145:
-        C = ifft((p * At) .* (p * Bt)) # none, line 146:
-        if T <: Real # none, line 147:
-            return real(C)
-        end # none, line 149:
-        return C
-    end # none, line 151:
-    conv2{T <: Integer}(A::StridedMatrix{T},B::StridedMatrix{T}) = begin  # none, line 151:
-            round(Int,conv2(float(A),float(B)))
-        end # none, line 152:
-    conv2{T <: Integer}(u::StridedVector{T},v::StridedVector{T},A::StridedMatrix{T}) = begin  # none, line 152:
-            round(Int,conv2(float(u),float(v),float(A)))
-        end # none, line 154:
-    function xcorr(u,v) # none, line 155:
-        su = size(u,1) # none, line 155:
-        sv = size(v,1) # none, line 156:
-        if su < sv # none, line 157:
-            u = [u;zeros(eltype(u),sv - su)]
-        else  # none, line 158:
-            if sv < su # none, line 159:
-                v = [v;zeros(eltype(v),su - sv)]
-            end
-        end # none, line 161:
-        flipdim(conv(flipdim(u,1),v),1)
-    end
-    end
-end))
+(:quote, (:block,
+    (:line, 3, :none),
+    (:module, true, :DSP, (:block,
+        (:line, 3, :none),
+        (:line, 5, :none),
+        (:import, :Base, :trailingsize),
+        (:line, 7, :none),
+        (:export, :filt, :filt!, :deconv, :conv, :conv2, :xcorr),
+        (:line, 9, :none),
+        (:(=), (:call, :_zerosi, :b, :a, :T), (:block,
+            (:line, 9, :none),
+            (:call, :zeros, (:call, :promote_type, (:call, :eltype, :b), (:call, :eltype, :a), :T), (:call, :-, (:call, :max, (:call, :length, :a), (:call, :length, :b)), 1))
+          )),
+        (:line, 11, :none),
+        (:function, (:call, (:curly, :filt, :T, :S), (:(::), :b, (:curly, :Union, :AbstractVector, :Number)), (:(::), :a, (:curly, :Union, :AbstractVector, :Number)), (:(::), :x, (:curly, :AbstractArray, :T)), (:kw, (:(::), :si, (:curly, :AbstractArray, :S)), (:call, :_zerosi, :b, :a, :T))), (:block,
+            (:line, 13, :none),
+            (:call, :filt!, (:call, (:curly, :Array, (:call, :promote_type, (:call, :eltype, :b), (:call, :eltype, :a), :T, :S)), (:call, :size, :x)), :b, :a, :x, :si)
+          )),
+        (:line, 18, :none),
+        (:function, (:call, (:curly, :filt!, :T, :S, :N), (:(::), :out, :AbstractArray), (:(::), :b, (:curly, :Union, :AbstractVector, :Number)), (:(::), :a, (:curly, :Union, :AbstractVector, :Number)), (:(::), :x, (:curly, :AbstractArray, :T)), (:kw, (:(::), :si, (:curly, :AbstractArray, :S, :N)), (:call, :_zerosi, :b, :a, :T))), (:block,
+            (:line, 20, :none),
+            (:&&, (:call, :isempty, :b), (:call, :throw, (:call, :ArgumentError, "filter vector b must be non-empty"))),
+            (:line, 21, :none),
+            (:&&, (:call, :isempty, :a), (:call, :throw, (:call, :ArgumentError, "filter vector a must be non-empty"))),
+            (:line, 22, :none),
+            (:&&, (:call, :(==), (:ref, :a, 1), 0), (:call, :throw, (:call, :ArgumentError, "filter vector a[1] must be nonzero"))),
+            (:line, 23, :none),
+            (:if, (:call, :(!=), (:call, :size, :x), (:call, :size, :out)), (:block,
+                (:line, 24, :none),
+                (:call, :throw, (:call, :ArgumentError, (:string, "output size ", (:call, :size, :out), " must match input size ", (:call, :size, :x))))
+              )),
+            (:line, 27, :none),
+            (:(=), :as, (:call, :length, :a)),
+            (:line, 28, :none),
+            (:(=), :bs, (:call, :length, :b)),
+            (:line, 29, :none),
+            (:(=), :sz, (:call, :max, :as, :bs)),
+            (:line, 30, :none),
+            (:(=), :silen, (:call, :-, :sz, 1)),
+            (:line, 31, :none),
+            (:(=), :ncols, (:call, :trailingsize, :x, 2)),
+            (:line, 33, :none),
+            (:if, (:call, :(!=), (:call, :size, :si, 1), :silen), (:block,
+                (:line, 34, :none),
+                (:call, :throw, (:call, :ArgumentError, "initial state vector si must have max(length(a),length(b))-1 rows"))
+              )),
+            (:line, 36, :none),
+            (:if, (:&&, (:call, :>, :N, 1), (:call, :(!=), (:call, :trailingsize, :si, 2), :ncols)), (:block,
+                (:line, 37, :none),
+                (:call, :throw, (:call, :ArgumentError, "initial state vector si must be a vector or have the same number of columns as x"))
+              )),
+            (:line, 40, :none),
+            (:&&, (:call, :(==), (:call, :size, :x, 1), 0), (:return, :out)),
+            (:line, 41, :none),
+            (:&&, (:call, :(==), :sz, 1), (:return, (:call, :scale!, :out, :x, (:call, :/, (:ref, :b, 1), (:ref, :a, 1))))),
+            (:line, 44, :none),
+            (:if, (:call, :(!=), (:ref, :a, 1), 1), (:block,
+                (:line, 45, :none),
+                (:(=), :norml, (:ref, :a, 1)),
+                (:line, 46, :none),
+                (:./=, :a, :norml),
+                (:line, 47, :none),
+                (:./=, :b, :norml)
+              )),
+            (:line, 50, :none),
+            (:&&, (:call, :<, :bs, :sz), (:(=), :b, (:call, :copy!, (:call, :zeros, (:call, :eltype, :b), :sz), :b))),
+            (:line, 51, :none),
+            (:&&, (:comparison, 1, :<, :as, :<, :sz), (:(=), :a, (:call, :copy!, (:call, :zeros, (:call, :eltype, :a), :sz), :a))),
+            (:line, 53, :none),
+            (:(=), :initial_si, :si),
+            (:line, 54, :none),
+            (:for, (:(=), :col, (:(:), 1, :ncols)), (:block,
+                (:line, 56, :none),
+                (:(=), :si, (:ref, :initial_si, :(:), (:if, (:call, :>, :N, 1), :col, 1))),
+                (:line, 57, :none),
+                (:if, (:call, :>, :as, 1), (:block,
+                    (:line, 58, :none),
+                    (:call, :_filt_iir!, :out, :b, :a, :x, :si, :col)
+                  ), (:block,
+                    (:line, 60, :none),
+                    (:call, :_filt_fir!, :out, :b, :x, :si, :col)
+                  ))
+              )),
+            (:line, 63, :none),
+            (:return, :out)
+          )),
+        (:line, 66, :none),
+        (:function, (:call, :_filt_iir!, :out, :b, :a, :x, :si, :col), (:block,
+            (:line, 67, :none),
+            (:(=), :silen, (:call, :length, :si)),
+            (:line, 68, :none),
+            (:macrocall, Symbol("@inbounds"), (:for, (:(=), :i, (:(:), 1, (:call, :size, :x, 1))), (:block,
+                  (:line, 69, :none),
+                  (:(=), :xi, (:ref, :x, :i, :col)),
+                  (:line, 70, :none),
+                  (:(=), :val, (:call, :+, (:ref, :si, 1), (:call, :*, (:ref, :b, 1), :xi))),
+                  (:line, 71, :none),
+                  (:for, (:(=), :j, (:(:), 1, (:call, :-, :silen, 1))), (:block,
+                      (:line, 72, :none),
+                      (:(=), (:ref, :si, :j), (:call, :-, (:call, :+, (:ref, :si, (:call, :+, :j, 1)), (:call, :*, (:ref, :b, (:call, :+, :j, 1)), :xi)), (:call, :*, (:ref, :a, (:call, :+, :j, 1)), :val)))
+                    )),
+                  (:line, 74, :none),
+                  (:(=), (:ref, :si, :silen), (:call, :-, (:call, :*, (:ref, :b, (:call, :+, :silen, 1)), :xi), (:call, :*, (:ref, :a, (:call, :+, :silen, 1)), :val))),
+                  (:line, 75, :none),
+                  (:(=), (:ref, :out, :i, :col), :val)
+                )))
+          )),
+        (:line, 79, :none),
+        (:function, (:call, :_filt_fir!, :out, :b, :x, :si, :col), (:block,
+            (:line, 80, :none),
+            (:(=), :silen, (:call, :length, :si)),
+            (:line, 81, :none),
+            (:macrocall, Symbol("@inbounds"), (:for, (:(=), :i, (:(:), 1, (:call, :size, :x, 1))), (:block,
+                  (:line, 82, :none),
+                  (:(=), :xi, (:ref, :x, :i, :col)),
+                  (:line, 83, :none),
+                  (:(=), :val, (:call, :+, (:ref, :si, 1), (:call, :*, (:ref, :b, 1), :xi))),
+                  (:line, 84, :none),
+                  (:for, (:(=), :j, (:(:), 1, (:call, :-, :silen, 1))), (:block,
+                      (:line, 85, :none),
+                      (:(=), (:ref, :si, :j), (:call, :+, (:ref, :si, (:call, :+, :j, 1)), (:call, :*, (:ref, :b, (:call, :+, :j, 1)), :xi)))
+                    )),
+                  (:line, 87, :none),
+                  (:(=), (:ref, :si, :silen), (:call, :*, (:ref, :b, (:call, :+, :silen, 1)), :xi)),
+                  (:line, 88, :none),
+                  (:(=), (:ref, :out, :i, :col), :val)
+                )))
+          )),
+        (:line, 92, :none),
+        (:function, (:call, (:curly, :deconv, :T), (:(::), :b, (:curly, :StridedVector, :T)), (:(::), :a, (:curly, :StridedVector, :T))), (:block,
+            (:line, 93, :none),
+            (:(=), :lb, (:call, :size, :b, 1)),
+            (:line, 94, :none),
+            (:(=), :la, (:call, :size, :a, 1)),
+            (:line, 95, :none),
+            (:if, (:call, :<, :lb, :la), (:block,
+                (:line, 96, :none),
+                (:return, (:vect, (:call, :zero, :T)))
+              )),
+            (:line, 98, :none),
+            (:(=), :lx, (:call, :+, (:call, :-, :lb, :la), 1)),
+            (:line, 99, :none),
+            (:(=), :x, (:call, :zeros, :T, :lx)),
+            (:line, 100, :none),
+            (:(=), (:ref, :x, 1), 1),
+            (:line, 101, :none),
+            (:call, :filt, :b, :a, :x)
+          )),
+        (:line, 104, :none),
+        (:function, (:call, (:curly, :conv, (:<:, :T, (:., (:., :Base, (:quote, #QuoteNode
+                      :LinAlg
+                    )), (:quote, #QuoteNode
+                    :BlasFloat
+                  )))), (:(::), :u, (:curly, :StridedVector, :T)), (:(::), :v, (:curly, :StridedVector, :T))), (:block,
+            (:line, 105, :none),
+            (:(=), :nu, (:call, :length, :u)),
+            (:line, 106, :none),
+            (:(=), :nv, (:call, :length, :v)),
+            (:line, 107, :none),
+            (:(=), :n, (:call, :-, (:call, :+, :nu, :nv), 1)),
+            (:line, 108, :none),
+            (:(=), :np2, (:if, (:call, :>, :n, 1024), (:call, :nextprod, (:vect, 2, 3, 5), :n), (:call, :nextpow2, :n))),
+            (:line, 109, :none),
+            (:(=), :upad, (:vcat, :u, (:call, :zeros, :T, (:call, :-, :np2, :nu)))),
+            (:line, 110, :none),
+            (:(=), :vpad, (:vcat, :v, (:call, :zeros, :T, (:call, :-, :np2, :nv)))),
+            (:line, 111, :none),
+            (:if, (:<:, :T, :Real), (:block,
+                (:line, 112, :none),
+                (:(=), :p, (:call, :plan_rfft, :upad)),
+                (:line, 113, :none),
+                (:(=), :y, (:call, :irfft, (:call, :.*, (:call, :*, :p, :upad), (:call, :*, :p, :vpad)), :np2))
+              ), (:block,
+                (:line, 115, :none),
+                (:(=), :p, (:call, :plan_fft!, :upad)),
+                (:line, 116, :none),
+                (:(=), :y, (:call, :ifft!, (:call, :.*, (:call, :*, :p, :upad), (:call, :*, :p, :vpad))))
+              )),
+            (:line, 118, :none),
+            (:return, (:ref, :y, (:(:), 1, :n)))
+          )),
+        (:line, 120, :none),
+        (:(=), (:call, (:curly, :conv, (:<:, :T, :Integer)), (:(::), :u, (:curly, :StridedVector, :T)), (:(::), :v, (:curly, :StridedVector, :T))), (:block,
+            (:line, 120, :none),
+            (:call, :round, :Int, (:call, :conv, (:call, :float, :u), (:call, :float, :v)))
+          )),
+        (:line, 121, :none),
+        (:(=), (:call, (:curly, :conv, (:<:, :T, :Integer), (:<:, :S, (:., (:., :Base, (:quote, #QuoteNode
+                      :LinAlg
+                    )), (:quote, #QuoteNode
+                    :BlasFloat
+                  )))), (:(::), :u, (:curly, :StridedVector, :T)), (:(::), :v, (:curly, :StridedVector, :S))), (:block,
+            (:line, 121, :none),
+            (:call, :conv, (:call, :float, :u), :v)
+          )),
+        (:line, 122, :none),
+        (:(=), (:call, (:curly, :conv, (:<:, :T, :Integer), (:<:, :S, (:., (:., :Base, (:quote, #QuoteNode
+                      :LinAlg
+                    )), (:quote, #QuoteNode
+                    :BlasFloat
+                  )))), (:(::), :u, (:curly, :StridedVector, :S)), (:(::), :v, (:curly, :StridedVector, :T))), (:block,
+            (:line, 122, :none),
+            (:call, :conv, :u, (:call, :float, :v))
+          )),
+        (:line, 124, :none),
+        (:function, (:call, (:curly, :conv2, :T), (:(::), :u, (:curly, :StridedVector, :T)), (:(::), :v, (:curly, :StridedVector, :T)), (:(::), :A, (:curly, :StridedMatrix, :T))), (:block,
+            (:line, 125, :none),
+            (:(=), :m, (:call, :-, (:call, :+, (:call, :length, :u), (:call, :size, :A, 1)), 1)),
+            (:line, 126, :none),
+            (:(=), :n, (:call, :-, (:call, :+, (:call, :length, :v), (:call, :size, :A, 2)), 1)),
+            (:line, 127, :none),
+            (:(=), :B, (:call, :zeros, :T, :m, :n)),
+            (:line, 128, :none),
+            (:(=), (:ref, :B, (:(:), 1, (:call, :size, :A, 1)), (:(:), 1, (:call, :size, :A, 2))), :A),
+            (:line, 129, :none),
+            (:(=), :u, (:call, :fft, (:vcat, :u, (:call, :zeros, :T, (:call, :-, :m, (:call, :length, :u)))))),
+            (:line, 130, :none),
+            (:(=), :v, (:call, :fft, (:vcat, :v, (:call, :zeros, :T, (:call, :-, :n, (:call, :length, :v)))))),
+            (:line, 131, :none),
+            (:(=), :C, (:call, :ifft, (:call, :.*, (:call, :fft, :B), (:call, :*, :u, (:.', :v))))),
+            (:line, 132, :none),
+            (:if, (:<:, :T, :Real), (:block,
+                (:line, 133, :none),
+                (:return, (:call, :real, :C))
+              )),
+            (:line, 135, :none),
+            (:return, :C)
+          )),
+        (:line, 138, :none),
+        (:function, (:call, (:curly, :conv2, :T), (:(::), :A, (:curly, :StridedMatrix, :T)), (:(::), :B, (:curly, :StridedMatrix, :T))), (:block,
+            (:line, 139, :none),
+            (:(=), (:tuple, :sa, :sb), (:tuple, (:call, :size, :A), (:call, :size, :B))),
+            (:line, 140, :none),
+            (:(=), :At, (:call, :zeros, :T, (:call, :-, (:call, :+, (:ref, :sa, 1), (:ref, :sb, 1)), 1), (:call, :-, (:call, :+, (:ref, :sa, 2), (:ref, :sb, 2)), 1))),
+            (:line, 141, :none),
+            (:(=), :Bt, (:call, :zeros, :T, (:call, :-, (:call, :+, (:ref, :sa, 1), (:ref, :sb, 1)), 1), (:call, :-, (:call, :+, (:ref, :sa, 2), (:ref, :sb, 2)), 1))),
+            (:line, 142, :none),
+            (:(=), (:ref, :At, (:(:), 1, (:ref, :sa, 1)), (:(:), 1, (:ref, :sa, 2))), :A),
+            (:line, 143, :none),
+            (:(=), (:ref, :Bt, (:(:), 1, (:ref, :sb, 1)), (:(:), 1, (:ref, :sb, 2))), :B),
+            (:line, 144, :none),
+            (:(=), :p, (:call, :plan_fft, :At)),
+            (:line, 145, :none),
+            (:(=), :C, (:call, :ifft, (:call, :.*, (:call, :*, :p, :At), (:call, :*, :p, :Bt)))),
+            (:line, 146, :none),
+            (:if, (:<:, :T, :Real), (:block,
+                (:line, 147, :none),
+                (:return, (:call, :real, :C))
+              )),
+            (:line, 149, :none),
+            (:return, :C)
+          )),
+        (:line, 151, :none),
+        (:(=), (:call, (:curly, :conv2, (:<:, :T, :Integer)), (:(::), :A, (:curly, :StridedMatrix, :T)), (:(::), :B, (:curly, :StridedMatrix, :T))), (:block,
+            (:line, 151, :none),
+            (:call, :round, :Int, (:call, :conv2, (:call, :float, :A), (:call, :float, :B)))
+          )),
+        (:line, 152, :none),
+        (:(=), (:call, (:curly, :conv2, (:<:, :T, :Integer)), (:(::), :u, (:curly, :StridedVector, :T)), (:(::), :v, (:curly, :StridedVector, :T)), (:(::), :A, (:curly, :StridedMatrix, :T))), (:block,
+            (:line, 152, :none),
+            (:call, :round, :Int, (:call, :conv2, (:call, :float, :u), (:call, :float, :v), (:call, :float, :A)))
+          )),
+        (:line, 154, :none),
+        (:function, (:call, :xcorr, :u, :v), (:block,
+            (:line, 155, :none),
+            (:(=), :su, (:call, :size, :u, 1)),
+            (:line, 155, :none),
+            (:(=), :sv, (:call, :size, :v, 1)),
+            (:line, 156, :none),
+            (:if, (:call, :<, :su, :sv), (:block,
+                (:line, 157, :none),
+                (:(=), :u, (:vcat, :u, (:call, :zeros, (:call, :eltype, :u), (:call, :-, :sv, :su))))
+              ), (:block,
+                (:line, 158, :none),
+                (:if, (:call, :<, :sv, :su), (:block,
+                    (:line, 159, :none),
+                    (:(=), :v, (:vcat, :v, (:call, :zeros, (:call, :eltype, :v), (:call, :-, :su, :sv))))
+                  ))
+              )),
+            (:line, 161, :none),
+            (:call, :flipdim, (:call, :conv, (:call, :flipdim, :u, 1), :v), 1)
+          ))
+      ))
+  ))
