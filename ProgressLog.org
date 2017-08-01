@@ -1,0 +1,2 @@
+* 1 August
+- Implement a clojure library which communicated with a julia repl via network and passes symbolically created jlir to it.
