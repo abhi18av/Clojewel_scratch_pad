@@ -1,0 +1,276 @@
+(:quote, (:block,
+    (:line, 1, :none),
+    (:module, true, :reader, (:block,
+        (:line, 1, :none),
+        (:line, 3, :none),
+        (:export, :read_str),
+        (:line, 5, :none),
+        (:import, :types),
+        (:line, 7, :none),
+        (:type, true, :Reader, (:block,
+            (:line, 8, :none),
+            :tokens,
+            (:line, 9, :none),
+            (:(::), :position, :Int64)
+          )),
+        (:line, 12, :none),
+        (:function, (:call, :next, (:(::), :rdr, :Reader)), (:block,
+            (:line, 13, :none),
+            (:if, (:call, :>, (:., :rdr, (:quote, #QuoteNode
+                    :position
+                  )), (:call, :length, (:., :rdr, (:quote, #QuoteNode
+                      :tokens
+                    )))), (:block,
+                (:line, 14, :none),
+                (:return, :nothing)
+              )),
+            (:line, 16, :none),
+            (:+=, (:., :rdr, (:quote, #QuoteNode
+                  :position
+                )), 1),
+            (:line, 17, :none),
+            (:ref, (:., :rdr, (:quote, #QuoteNode
+                  :tokens
+                )), (:call, :-, (:., :rdr, (:quote, #QuoteNode
+                    :position
+                  )), 1))
+          )),
+        (:line, 20, :none),
+        (:function, (:call, :peek, (:(::), :rdr, :Reader)), (:block,
+            (:line, 21, :none),
+            (:if, (:call, :>, (:., :rdr, (:quote, #QuoteNode
+                    :position
+                  )), (:call, :length, (:., :rdr, (:quote, #QuoteNode
+                      :tokens
+                    )))), (:block,
+                (:line, 22, :none),
+                (:return, :nothing)
+              )),
+            (:line, 24, :none),
+            (:ref, (:., :rdr, (:quote, #QuoteNode
+                  :tokens
+                )), (:., :rdr, (:quote, #QuoteNode
+                  :position
+                )))
+          )),
+        (:line, 28, :none),
+        (:function, (:call, :tokenize, :str), (:block,
+            (:line, 29, :none),
+            (:(=), :re, (:macrocall, Symbol("@r_str"), "[\\s,]*(~@|[\\[\\]{}()'`~^@]|\"(?:\\\\.|[^\\\\\"])*\"|;.*|[^\\s\\[\\]{}('\"`,;)]*)")),
+            (:line, 30, :none),
+            (:(=), :tokens, (:call, :map, (:->, :m, (:block,
+                    (:line, 30, :none),
+                    (:ref, (:., :m, (:quote, #QuoteNode
+                          :captures
+                        )), 1)
+                  )), (:call, :eachmatch, :re, :str))),
+            (:line, 31, :none),
+            (:call, :filter, (:->, :t, (:block,
+                  (:line, 31, :none),
+                  (:&&, (:call, :(!=), :t, ""), (:call, :(!=), (:ref, :t, 1), ';'))
+                )), :tokens)
+          )),
+        (:line, 34, :none),
+        (:function, (:call, :read_atom, :rdr), (:block,
+            (:line, 35, :none),
+            (:(=), :token, (:call, :next, :rdr)),
+            (:line, 36, :none),
+            (:if, (:call, :ismatch, (:macrocall, Symbol("@r_str"), "^-?[0-9]+\$"), :token), (:block,
+                (:line, 37, :none),
+                (:call, :parse, :Int, :token)
+              ), (:block,
+                (:line, 38, :none),
+                (:if, (:call, :ismatch, (:macrocall, Symbol("@r_str"), "^-?[0-9][0-9.]*\$"), :token), (:block,
+                    (:line, 39, :none),
+                    (:call, :float, :token)
+                  ), (:block,
+                    (:line, 40, :none),
+                    (:if, (:call, :ismatch, (:macrocall, Symbol("@r_str"), "^\".*\"\$"), :token), (:block,
+                        (:line, 41, :none),
+                        (:call, :replace, (:call, :replace, (:call, :replace, (:ref, :token, (:(:), 2, (:call, :-, :end, 1))), "\\\"", "\""), "\\n", "\n"), "\\\\", "\\")
+                      ), (:block,
+                        (:line, 47, :none),
+                        (:if, (:call, :(==), (:ref, :token, 1), ':'), (:block,
+                            (:line, 48, :none),
+                            (:string, "ʞ", (:ref, :token, (:(:), 2, :end)))
+                          ), (:block,
+                            (:line, 49, :none),
+                            (:if, (:call, :(==), :token, "nil"), (:block,
+                                (:line, 50, :none),
+                                :nothing
+                              ), (:block,
+                                (:line, 51, :none),
+                                (:if, (:call, :(==), :token, "true"), (:block,
+                                    (:line, 52, :none),
+                                    true
+                                  ), (:block,
+                                    (:line, 53, :none),
+                                    (:if, (:call, :(==), :token, "false"), (:block,
+                                        (:line, 54, :none),
+                                        false
+                                      ), (:block,
+                                        (:line, 56, :none),
+                                        (:call, :symbol, :token)
+                                      ))
+                                  ))
+                              ))
+                          ))
+                      ))
+                  ))
+              ))
+          )),
+        (:line, 60, :none),
+        (:function, (:call, :read_list, :rdr, (:kw, :start, "("), (:kw, :last, ")")), (:block,
+            (:line, 61, :none),
+            (:(=), :ast, (:ref, :Any)),
+            (:line, 62, :none),
+            (:(=), :token, (:call, :next, :rdr)),
+            (:line, 63, :none),
+            (:if, (:call, :(!=), :token, :start), (:block,
+                (:line, 64, :none),
+                (:call, :error, (:string, "expected '", :start, "'"))
+              )),
+            (:line, 66, :none),
+            (:while, (:call, :(!=), (:(=), :token, (:call, :peek, :rdr)), :last), (:block,
+                (:line, 67, :none),
+                (:if, (:call, :(==), :token, :nothing), (:block,
+                    (:line, 68, :none),
+                    (:call, :error, (:string, "expected '", :last, "', got EOF"))
+                  )),
+                (:line, 70, :none),
+                (:call, :push!, :ast, (:call, :read_form, :rdr))
+              )),
+            (:line, 72, :none),
+            (:call, :next, :rdr),
+            (:line, 73, :none),
+            :ast
+          )),
+        (:line, 76, :none),
+        (:function, (:call, :read_vector, :rdr), (:block,
+            (:line, 77, :none),
+            (:(=), :lst, (:call, :read_list, :rdr, "[", "]")),
+            (:line, 78, :none),
+            (:call, :tuple, (:..., :lst))
+          )),
+        (:line, 81, :none),
+        (:function, (:call, :read_hash_map, :rdr), (:block,
+            (:line, 82, :none),
+            (:(=), :lst, (:call, :read_list, :rdr, "{", "}")),
+            (:line, 83, :none),
+            (:call, (:., :types, (:quote, #QuoteNode
+                  :hash_map
+                )), (:..., :lst))
+          )),
+        (:line, 86, :none),
+        (:function, (:call, :read_form, :rdr), (:block,
+            (:line, 87, :none),
+            (:(=), :token, (:call, :peek, :rdr)),
+            (:line, 88, :none),
+            (:if, (:call, :(==), :token, "'"), (:block,
+                (:line, 89, :none),
+                (:call, :next, :rdr),
+                (:line, 90, :none),
+                (:vcat, (:vect, (:quote, #QuoteNode
+                      :quote
+                    )), (:ref, :Any, (:call, :read_form, :rdr)))
+              ), (:block,
+                (:line, 91, :none),
+                (:if, (:call, :(==), :token, "`"), (:block,
+                    (:line, 92, :none),
+                    (:call, :next, :rdr),
+                    (:line, 93, :none),
+                    (:vcat, (:vect, (:quote, #QuoteNode
+                          :quasiquote
+                        )), (:ref, :Any, (:call, :read_form, :rdr)))
+                  ), (:block,
+                    (:line, 94, :none),
+                    (:if, (:call, :(==), :token, "~"), (:block,
+                        (:line, 95, :none),
+                        (:call, :next, :rdr),
+                        (:line, 96, :none),
+                        (:vcat, (:vect, (:quote, #QuoteNode
+                              :unquote
+                            )), (:ref, :Any, (:call, :read_form, :rdr)))
+                      ), (:block,
+                        (:line, 97, :none),
+                        (:if, (:call, :(==), :token, "~@"), (:block,
+                            (:line, 98, :none),
+                            (:call, :next, :rdr),
+                            (:line, 99, :none),
+                            (:vcat, (:vect, (:call, :symbol, "splice-unquote")), (:ref, :Any, (:call, :read_form, :rdr)))
+                          ), (:block,
+                            (:line, 100, :none),
+                            (:if, (:call, :(==), :token, "^"), (:block,
+                                (:line, 101, :none),
+                                (:call, :next, :rdr),
+                                (:line, 102, :none),
+                                (:(=), :meta, (:call, :read_form, :rdr)),
+                                (:line, 103, :none),
+                                (:vcat, (:vect, (:call, :symbol, "with-meta")), (:ref, :Any, (:call, :read_form, :rdr)), (:ref, :Any, :meta))
+                              ), (:block,
+                                (:line, 104, :none),
+                                (:if, (:call, :(==), :token, "@"), (:block,
+                                    (:line, 105, :none),
+                                    (:call, :next, :rdr),
+                                    (:line, 106, :none),
+                                    (:vcat, (:vect, (:call, :symbol, "deref")), (:ref, :Any, (:call, :read_form, :rdr)))
+                                  ), (:block,
+                                    (:line, 108, :none),
+                                    (:if, (:call, :(==), :token, ")"), (:block,
+                                        (:line, 109, :none),
+                                        (:call, :error, "unexpected ')'")
+                                      ), (:block,
+                                        (:line, 110, :none),
+                                        (:if, (:call, :(==), :token, "("), (:block,
+                                            (:line, 111, :none),
+                                            (:call, :read_list, :rdr)
+                                          ), (:block,
+                                            (:line, 112, :none),
+                                            (:if, (:call, :(==), :token, "]"), (:block,
+                                                (:line, 113, :none),
+                                                (:call, :error, "unexpected ']'")
+                                              ), (:block,
+                                                (:line, 114, :none),
+                                                (:if, (:call, :(==), :token, "["), (:block,
+                                                    (:line, 115, :none),
+                                                    (:call, :read_vector, :rdr)
+                                                  ), (:block,
+                                                    (:line, 116, :none),
+                                                    (:if, (:call, :(==), :token, "}"), (:block,
+                                                        (:line, 117, :none),
+                                                        (:call, :error, "unexpected '}'")
+                                                      ), (:block,
+                                                        (:line, 118, :none),
+                                                        (:if, (:call, :(==), :token, "{"), (:block,
+                                                            (:line, 119, :none),
+                                                            (:call, :read_hash_map, :rdr)
+                                                          ), (:block,
+                                                            (:line, 121, :none),
+                                                            (:call, :read_atom, :rdr)
+                                                          ))
+                                                      ))
+                                                  ))
+                                              ))
+                                          ))
+                                      ))
+                                  ))
+                              ))
+                          ))
+                      ))
+                  ))
+              ))
+          )),
+        (:line, 125, :none),
+        (:function, (:call, :read_str, :str), (:block,
+            (:line, 126, :none),
+            (:(=), :tokens, (:call, :tokenize, :str)),
+            (:line, 127, :none),
+            (:if, (:call, :(==), (:call, :length, :tokens), 0), (:block,
+                (:line, 128, :none),
+                (:return, :nothing)
+              )),
+            (:line, 130, :none),
+            (:call, :read_form, (:call, :Reader, :tokens, 1))
+          ))
+      ))
+  ))

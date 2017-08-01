@@ -1,0 +1,89 @@
+(:quote, (:block,
+    (:line, 1, :none),
+    (:module, true, :printer, (:block,
+        (:line, 1, :none),
+        (:line, 3, :none),
+        (:import, :types),
+        (:line, 5, :none),
+        (:export, :pr_str),
+        (:line, 7, :none),
+        (:function, (:call, :pr_str, :obj, (:kw, :print_readably, true)), (:block,
+            (:line, 8, :none),
+            (:(=), :_r, :print_readably),
+            (:line, 9, :none),
+            (:if, (:call, :isa, :obj, :Array), (:block,
+                (:line, 10, :none),
+                (:string, "(", (:call, :join, (:comprehension, (:generator, (:call, :pr_str, :o, :_r), (:(=), :o, :obj))), " "), ")")
+              ), (:block,
+                (:line, 11, :none),
+                (:if, (:call, :isa, :obj, :Tuple), (:block,
+                    (:line, 12, :none),
+                    (:string, "[", (:call, :join, (:comprehension, (:generator, (:call, :pr_str, :o, :_r), (:(=), :o, :obj))), " "), "]")
+                  ), (:block,
+                    (:line, 13, :none),
+                    (:if, (:call, :isa, :obj, :Dict), (:block,
+                        (:line, 14, :none),
+                        (:string, "{", (:call, :join, (:comprehension, (:generator, (:string, (:call, :pr_str, (:ref, :o, 1), :_r), " ", (:call, :pr_str, (:ref, :o, 2), :_r)), (:(=), :o, :obj))), " "), "}")
+                      ), (:block,
+                        (:line, 15, :none),
+                        (:if, (:call, :isa, :obj, :AbstractString), (:block,
+                            (:line, 16, :none),
+                            (:if, (:&&, (:call, :>, (:call, :length, :obj), 0), (:call, :(==), (:ref, :obj, 1), 'ʞ')), (:block,
+                                (:line, 17, :none),
+                                (:string, ":", (:ref, :obj, (:(:), 3, :end)))
+                              ), (:block,
+                                (:line, 18, :none),
+                                (:if, :_r, (:block,
+                                    (:line, 19, :none),
+                                    (:(=), :str, (:call, :replace, (:call, :replace, (:call, :replace, :obj, "\\", "\\\\"), "\"", "\\\""), "\n", "\\n")),
+                                    (:line, 23, :none),
+                                    (:string, "\"", :str, "\"")
+                                  ), (:block,
+                                    (:line, 25, :none),
+                                    :obj
+                                  ))
+                              ))
+                          ), (:block,
+                            (:line, 27, :none),
+                            (:if, (:call, :(==), :obj, :nothing), (:block,
+                                (:line, 28, :none),
+                                "nil"
+                              ), (:block,
+                                (:line, 29, :none),
+                                (:if, (:call, :(==), (:call, :typeof, :obj), (:., :types, (:quote, #QuoteNode
+                                        :MalFunc
+                                      ))), (:block,
+                                    (:line, 30, :none),
+                                    (:string, "(fn* ", (:call, :pr_str, (:., :obj, (:quote, #QuoteNode
+                                            :params
+                                          )), true), " ", (:call, :pr_str, (:., :obj, (:quote, #QuoteNode
+                                            :ast
+                                          )), true), ")")
+                                  ), (:block,
+                                    (:line, 31, :none),
+                                    (:if, (:call, :(==), (:call, :typeof, :obj), (:., :types, (:quote, #QuoteNode
+                                            :Atom
+                                          ))), (:block,
+                                        (:line, 32, :none),
+                                        (:string, "(atom ", (:call, :pr_str, (:., :obj, (:quote, #QuoteNode
+                                                :val
+                                              )), true), ")")
+                                      ), (:block,
+                                        (:line, 33, :none),
+                                        (:if, (:call, :(==), (:call, :typeof, :obj), :Function), (:block,
+                                            (:line, 34, :none),
+                                            (:string, "#<native function: ", (:call, :string, :obj), ">")
+                                          ), (:block,
+                                            (:line, 36, :none),
+                                            (:call, :string, :obj)
+                                          ))
+                                      ))
+                                  ))
+                              ))
+                          ))
+                      ))
+                  ))
+              ))
+          ))
+      ))
+  ))

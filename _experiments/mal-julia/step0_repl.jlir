@@ -1,0 +1,40 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:call, :push!, :LOAD_PATH, (:call, :pwd), "/usr/share/julia/base"),
+    (:line, 4, :none),
+    (:import, :readline_mod),
+    (:line, 7, :none),
+    (:function, (:call, :READ, :str), (:block,
+        (:line, 8, :none),
+        :str
+      )),
+    (:line, 12, :none),
+    (:function, (:call, :EVAL, :ast, :env), (:block,
+        (:line, 13, :none),
+        :ast
+      )),
+    (:line, 17, :none),
+    (:function, (:call, :PRINT, :exp), (:block,
+        (:line, 18, :none),
+        :exp
+      )),
+    (:line, 22, :none),
+    (:function, (:call, :REP, :str), (:block,
+        (:line, 23, :none),
+        (:return, (:call, :PRINT, (:call, :EVAL, (:call, :READ, :str), (:vect,))))
+      )),
+    (:line, 26, :none),
+    (:while, true, (:block,
+        (:line, 27, :none),
+        (:(=), :line, (:call, (:., :readline_mod, (:quote, #QuoteNode
+                :do_readline
+              )), "user> ")),
+        (:line, 28, :none),
+        (:if, (:call, :(===), :line, :nothing), (:block,
+            (:line, 28, :none),
+            (:break,)
+          )),
+        (:line, 29, :none),
+        (:call, :println, (:call, :REP, :line))
+      ))
+  ))

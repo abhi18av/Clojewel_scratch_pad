@@ -1,0 +1,70 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:call, :push!, :LOAD_PATH, (:call, :pwd), "/usr/share/julia/base"),
+    (:line, 4, :none),
+    (:import, :readline_mod),
+    (:line, 5, :none),
+    (:import, :reader),
+    (:line, 6, :none),
+    (:import, :printer),
+    (:line, 9, :none),
+    (:function, (:call, :READ, :str), (:block,
+        (:line, 10, :none),
+        (:call, (:., :reader, (:quote, #QuoteNode
+              :read_str
+            )), :str)
+      )),
+    (:line, 14, :none),
+    (:function, (:call, :EVAL, :ast, :env), (:block,
+        (:line, 15, :none),
+        :ast
+      )),
+    (:line, 19, :none),
+    (:function, (:call, :PRINT, :exp), (:block,
+        (:line, 20, :none),
+        (:call, (:., :printer, (:quote, #QuoteNode
+              :pr_str
+            )), :exp)
+      )),
+    (:line, 24, :none),
+    (:function, (:call, :REP, :str), (:block,
+        (:line, 25, :none),
+        (:return, (:call, :PRINT, (:call, :EVAL, (:call, :READ, :str), (:vect,))))
+      )),
+    (:line, 28, :none),
+    (:while, true, (:block,
+        (:line, 29, :none),
+        (:(=), :line, (:call, (:., :readline_mod, (:quote, #QuoteNode
+                :do_readline
+              )), "user> ")),
+        (:line, 30, :none),
+        (:if, (:call, :(===), :line, :nothing), (:block,
+            (:line, 30, :none),
+            (:break,)
+          )),
+        (:line, 31, :none),
+        (:try, (:block,
+            (:line, 32, :none),
+            (:call, :println, (:call, :REP, :line))
+          ), :e, (:block,
+            (:line, 34, :none),
+            (:if, (:call, :isa, :e, :ErrorException), (:block,
+                (:line, 35, :none),
+                (:call, :println, (:string, "Error: ", (:., :e, (:quote, #QuoteNode
+                        :msg
+                      ))))
+              ), (:block,
+                (:line, 37, :none),
+                (:call, :println, (:string, "Error: ", (:call, :string, :e)))
+              )),
+            (:line, 39, :none),
+            (:(=), :bt, (:call, :catch_backtrace)),
+            (:line, 40, :none),
+            (:call, (:., :Base, (:quote, #QuoteNode
+                  :show_backtrace
+                )), :STDERR, :bt),
+            (:line, 41, :none),
+            (:call, :println)
+          ))
+      ))
+  ))

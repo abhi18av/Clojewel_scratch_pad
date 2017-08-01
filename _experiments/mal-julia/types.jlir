@@ -1,0 +1,132 @@
+(:quote, (:block,
+    (:line, 1, :none),
+    (:module, true, :types, (:block,
+        (:line, 1, :none),
+        (:line, 3, :none),
+        (:export, :MalException, :MalFunc, :sequential_Q, :equal_Q, :hash_map, :Atom),
+        (:line, 5, :none),
+        (:import, :Base, :copy),
+        (:line, 7, :none),
+        (:type, true, (:<:, :MalException, :Exception), (:block,
+            (:line, 8, :none),
+            :malval
+          )),
+        (:line, 11, :none),
+        (:type, true, :MalFunc, (:block,
+            (:line, 12, :none),
+            (:(::), :fn, :Function),
+            (:line, 13, :none),
+            :ast,
+            (:line, 14, :none),
+            :env,
+            (:line, 15, :none),
+            :params,
+            (:line, 16, :none),
+            :ismacro,
+            (:line, 17, :none),
+            :meta
+          )),
+        (:line, 21, :none),
+        (:function, (:call, :MalFunc, :fn, :ast, :env, :params), (:block,
+            (:line, 22, :none),
+            (:call, :MalFunc, :fn, :ast, :env, :params, false, :nothing)
+          )),
+        (:line, 25, :none),
+        (:function, (:call, :copy, (:(::), :f, :MalFunc)), (:block,
+            (:line, 26, :none),
+            (:call, :MalFunc, (:., :f, (:quote, #QuoteNode
+                  :fn
+                )), (:., :f, (:quote, #QuoteNode
+                  :ast
+                )), (:., :f, (:quote, #QuoteNode
+                  :env
+                )), (:., :f, (:quote, #QuoteNode
+                  :params
+                )), (:., :f, (:quote, #QuoteNode
+                  :ismacro
+                )), (:., :f, (:quote, #QuoteNode
+                  :meta
+                )))
+          )),
+        (:line, 29, :none),
+        (:function, (:call, :sequential_Q, :obj), (:block,
+            (:line, 30, :none),
+            (:||, (:call, :isa, :obj, :Array), (:call, :isa, :obj, :Tuple))
+          )),
+        (:line, 33, :none),
+        (:function, (:call, :equal_Q, :a, :b), (:block,
+            (:line, 34, :none),
+            (:(=), :ota, (:call, :typeof, :a)),
+            (:line, 35, :none),
+            (:(=), :otb, (:call, :typeof, :b)),
+            (:line, 36, :none),
+            (:if, (:call, :!, (:||, (:call, :(===), :ota, :otb), (:&&, (:call, :sequential_Q, :a), (:call, :sequential_Q, :b)))), (:block,
+                (:line, 37, :none),
+                (:return, false)
+              )),
+            (:line, 40, :none),
+            (:if, (:call, :sequential_Q, :a), (:block,
+                (:line, 41, :none),
+                (:if, (:call, :(!==), (:call, :length, :a), (:call, :length, :b)), (:block,
+                    (:line, 42, :none),
+                    (:return, false)
+                  )),
+                (:line, 44, :none),
+                (:for, (:(=), (:tuple, :x, :y), (:call, :zip, :a, :b)), (:block,
+                    (:line, 45, :none),
+                    (:if, (:call, :!, (:call, :equal_Q, :x, :y)), (:block,
+                        (:line, 46, :none),
+                        (:return, false)
+                      ))
+                  )),
+                (:line, 49, :none),
+                (:return, true)
+              ), (:block,
+                (:line, 50, :none),
+                (:if, (:call, :isa, :a, :AbstractString), (:block,
+                    (:line, 51, :none),
+                    (:call, :(==), :a, :b)
+                  ), (:block,
+                    (:line, 52, :none),
+                    (:if, (:call, :isa, :a, :Dict), (:block,
+                        (:line, 53, :none),
+                        (:if, (:call, :(!==), (:call, :length, :a), (:call, :length, :b)), (:block,
+                            (:line, 54, :none),
+                            (:return, false)
+                          )),
+                        (:line, 56, :none),
+                        (:for, (:(=), (:tuple, :k, :v), :a), (:block,
+                            (:line, 57, :none),
+                            (:if, (:call, :!, (:call, :equal_Q, :v, (:ref, :b, :k))), (:block,
+                                (:line, 58, :none),
+                                (:return, false)
+                              ))
+                          )),
+                        (:line, 61, :none),
+                        (:return, true)
+                      ), (:block,
+                        (:line, 63, :none),
+                        (:call, :(===), :a, :b)
+                      ))
+                  ))
+              ))
+          )),
+        (:line, 67, :none),
+        (:function, (:call, :hash_map, (:..., :lst)), (:block,
+            (:line, 68, :none),
+            (:(=), :hm, (:call, :Dict)),
+            (:line, 69, :none),
+            (:for, (:(=), :i, (:(:), 1, 2, (:call, :length, :lst))), (:block,
+                (:line, 70, :none),
+                (:(=), (:ref, :hm, (:ref, :lst, :i)), (:ref, :lst, (:call, :+, :i, 1)))
+              )),
+            (:line, 72, :none),
+            :hm
+          )),
+        (:line, 75, :none),
+        (:type, true, :Atom, (:block,
+            (:line, 76, :none),
+            :val
+          ))
+      ))
+  ))

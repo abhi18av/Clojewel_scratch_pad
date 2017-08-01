@@ -1,0 +1,378 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:call, :push!, :LOAD_PATH, (:call, :pwd), "/usr/share/julia/base"),
+    (:line, 4, :none),
+    (:import, :readline_mod),
+    (:line, 5, :none),
+    (:import, :reader),
+    (:line, 6, :none),
+    (:import, :printer),
+    (:line, 7, :none),
+    (:using, :env),
+    (:line, 8, :none),
+    (:import, :core),
+    (:line, 9, :none),
+    (:using, :types),
+    (:line, 12, :none),
+    (:function, (:call, :READ, :str), (:block,
+        (:line, 13, :none),
+        (:call, (:., :reader, (:quote, #QuoteNode
+              :read_str
+            )), :str)
+      )),
+    (:line, 17, :none),
+    (:function, (:call, :ispair, :ast), (:block,
+        (:line, 18, :none),
+        (:&&, (:||, (:call, :isa, :ast, :Array), (:call, :isa, :ast, :Tuple)), (:call, :>, (:call, :length, :ast), 0))
+      )),
+    (:line, 21, :none),
+    (:function, (:call, :quasiquote, :ast), (:block,
+        (:line, 22, :none),
+        (:if, (:call, :!, (:call, :ispair, :ast)), (:block,
+            (:line, 23, :none),
+            (:vcat, (:vect, (:quote, #QuoteNode
+                  :quote
+                )), (:ref, :Any, :ast))
+          ), (:block,
+            (:line, 24, :none),
+            (:if, (:call, :(==), (:ref, :ast, 1), (:quote, #QuoteNode
+                  :unquote
+                )), (:block,
+                (:line, 25, :none),
+                (:ref, :ast, 2)
+              ), (:block,
+                (:line, 26, :none),
+                (:if, (:&&, (:call, :ispair, (:ref, :ast, 1)), (:call, :(==), (:ref, (:ref, :ast, 1), 1), (:call, :symbol, "splice-unquote"))), (:block,
+                    (:line, 27, :none),
+                    (:vcat, (:vect, (:quote, #QuoteNode
+                          :concat
+                        )), (:ref, :Any, (:ref, (:ref, :ast, 1), 2)), (:ref, :Any, (:call, :quasiquote, (:ref, :ast, (:(:), 2, :end)))))
+                  ), (:block,
+                    (:line, 29, :none),
+                    (:vcat, (:vect, (:quote, #QuoteNode
+                          :cons
+                        )), (:ref, :Any, (:call, :quasiquote, (:ref, :ast, 1))), (:ref, :Any, (:call, :quasiquote, (:ref, :ast, (:(:), 2, :end)))))
+                  ))
+              ))
+          ))
+      )),
+    (:line, 33, :none),
+    (:function, (:call, :ismacroCall, :ast, :env), (:block,
+        (:line, 34, :none),
+        (:return, (:&&, (:call, :isa, :ast, :Array), (:&&, (:call, :!, (:call, :isempty, :ast)), (:&&, (:call, :isa, (:ref, :ast, 1), :Symbol), (:&&, (:call, :(!=), (:call, :env_find, :env, (:ref, :ast, 1)), :nothing), (:&&, (:call, :isa, (:call, :env_get, :env, (:ref, :ast, 1)), :MalFunc), (:., (:call, :env_get, :env, (:ref, :ast, 1)), (:quote, #QuoteNode
+                        :ismacro
+                      ))))))))
+      )),
+    (:line, 42, :none),
+    (:function, (:call, :macroexpand, :ast, :env), (:block,
+        (:line, 43, :none),
+        (:while, (:call, :ismacroCall, :ast, :env), (:block,
+            (:line, 44, :none),
+            (:(=), :mac, (:call, :env_get, :env, (:ref, :ast, 1))),
+            (:line, 45, :none),
+            (:(=), :ast, (:call, (:., :mac, (:quote, #QuoteNode
+                    :fn
+                  )), (:..., (:ref, :ast, (:(:), 2, :end)))))
+          )),
+        (:line, 47, :none),
+        :ast
+      )),
+    (:line, 50, :none),
+    (:function, (:call, :eval_ast, :ast, :env), (:block,
+        (:line, 51, :none),
+        (:if, (:call, :(==), (:call, :typeof, :ast), :Symbol), (:block,
+            (:line, 52, :none),
+            (:call, :env_get, :env, :ast)
+          ), (:block,
+            (:line, 53, :none),
+            (:if, (:||, (:call, :isa, :ast, :Array), (:call, :isa, :ast, :Tuple)), (:block,
+                (:line, 54, :none),
+                (:call, :map, (:->, :x, (:block,
+                      (:line, 54, :none),
+                      (:call, :EVAL, :x, :env)
+                    )), :ast)
+              ), (:block,
+                (:line, 55, :none),
+                (:if, (:call, :isa, :ast, :Dict), (:block,
+                    (:line, 56, :none),
+                    (:dict_comprehension, (:generator, (:(=>), (:call, :EVAL, (:ref, :x, 1), :env), (:call, :EVAL, (:ref, :x, 2), :env)), (:(=), :x, :ast)))
+                  ), (:block,
+                    (:line, 58, :none),
+                    :ast
+                  ))
+              ))
+          ))
+      )),
+    (:line, 62, :none),
+    (:function, (:call, :EVAL, :ast, :env), (:block,
+        (:line, 63, :none),
+        (:while, true, (:block,
+            (:line, 65, :none),
+            (:if, (:call, :!, (:call, :isa, :ast, :Array)), (:block,
+                (:line, 65, :none),
+                (:return, (:call, :eval_ast, :ast, :env))
+              )),
+            (:line, 68, :none),
+            (:(=), :ast, (:call, :macroexpand, :ast, :env)),
+            (:line, 69, :none),
+            (:if, (:call, :!, (:call, :isa, :ast, :Array)), (:block,
+                (:line, 69, :none),
+                (:return, (:call, :eval_ast, :ast, :env))
+              )),
+            (:line, 70, :none),
+            (:if, (:call, :isempty, :ast), (:block,
+                (:line, 70, :none),
+                (:return, :ast)
+              )),
+            (:line, 72, :none),
+            (:if, (:call, :(==), (:quote, #QuoteNode
+                  :def!
+                ), (:ref, :ast, 1)), (:block,
+                (:line, 73, :none),
+                (:return, (:call, :env_set, :env, (:ref, :ast, 2), (:call, :EVAL, (:ref, :ast, 3), :env)))
+              ), (:block,
+                (:line, 74, :none),
+                (:if, (:call, :(==), (:call, :symbol, "let*"), (:ref, :ast, 1)), (:block,
+                    (:line, 75, :none),
+                    (:(=), :let_env, (:call, :Env, :env)),
+                    (:line, 76, :none),
+                    (:for, (:(=), :i, (:(:), 1, 2, (:call, :length, (:ref, :ast, 2)))), (:block,
+                        (:line, 77, :none),
+                        (:call, :env_set, :let_env, (:ref, (:ref, :ast, 2), :i), (:call, :EVAL, (:ref, (:ref, :ast, 2), (:call, :+, :i, 1)), :let_env))
+                      )),
+                    (:line, 79, :none),
+                    (:(=), :env, :let_env),
+                    (:line, 80, :none),
+                    (:(=), :ast, (:ref, :ast, 3))
+                  ), (:block,
+                    (:line, 82, :none),
+                    (:if, (:call, :(==), (:quote, #QuoteNode
+                          :quote
+                        ), (:ref, :ast, 1)), (:block,
+                        (:line, 83, :none),
+                        (:return, (:ref, :ast, 2))
+                      ), (:block,
+                        (:line, 84, :none),
+                        (:if, (:call, :(==), (:quote, #QuoteNode
+                              :quasiquote
+                            ), (:ref, :ast, 1)), (:block,
+                            (:line, 85, :none),
+                            (:(=), :ast, (:call, :quasiquote, (:ref, :ast, 2)))
+                          ), (:block,
+                            (:line, 87, :none),
+                            (:if, (:call, :(==), (:quote, #QuoteNode
+                                  :defmacro!
+                                ), (:ref, :ast, 1)), (:block,
+                                (:line, 88, :none),
+                                (:(=), :func, (:call, :EVAL, (:ref, :ast, 3), :env)),
+                                (:line, 89, :none),
+                                (:(=), (:., :func, (:quote, #QuoteNode
+                                      :ismacro
+                                    )), true),
+                                (:line, 90, :none),
+                                (:return, (:call, :env_set, :env, (:ref, :ast, 2), :func))
+                              ), (:block,
+                                (:line, 91, :none),
+                                (:if, (:call, :(==), (:quote, #QuoteNode
+                                      :macroexpand
+                                    ), (:ref, :ast, 1)), (:block,
+                                    (:line, 92, :none),
+                                    (:return, (:call, :macroexpand, (:ref, :ast, 2), :env))
+                                  ), (:block,
+                                    (:line, 93, :none),
+                                    (:if, (:call, :(==), (:call, :symbol, "try*"), (:ref, :ast, 1)), (:block,
+                                        (:line, 94, :none),
+                                        (:try, (:block,
+                                            (:line, 95, :none),
+                                            (:return, (:call, :EVAL, (:ref, :ast, 2), :env))
+                                          ), :exc, (:block,
+                                            (:line, 97, :none),
+                                            (:(=), :e, (:call, :string, :exc)),
+                                            (:line, 98, :none),
+                                            (:if, (:call, :isa, :exc, :MalException), (:block,
+                                                (:line, 99, :none),
+                                                (:(=), :e, (:., :exc, (:quote, #QuoteNode
+                                                      :malval
+                                                    )))
+                                              ), (:block,
+                                                (:line, 100, :none),
+                                                (:if, (:call, :isa, :exc, :ErrorException), (:block,
+                                                    (:line, 101, :none),
+                                                    (:(=), :e, (:., :exc, (:quote, #QuoteNode
+                                                          :msg
+                                                        )))
+                                                  ), (:block,
+                                                    (:line, 103, :none),
+                                                    (:(=), :e, (:call, :string, :e))
+                                                  ))
+                                              )),
+                                            (:line, 105, :none),
+                                            (:if, (:&&, (:call, :>, (:call, :length, :ast), 2), (:call, :(==), (:ref, (:ref, :ast, 3), 1), (:call, :symbol, "catch*"))), (:block,
+                                                (:line, 106, :none),
+                                                (:return, (:call, :EVAL, (:ref, (:ref, :ast, 3), 3), (:call, :Env, :env, (:ref, :Any, (:ref, (:ref, :ast, 3), 2)), (:ref, :Any, :e))))
+                                              ), (:block,
+                                                (:line, 108, :none),
+                                                (:call, :rethrow, :exc)
+                                              ))
+                                          ))
+                                      ), (:block,
+                                        (:line, 111, :none),
+                                        (:if, (:call, :(==), (:quote, #QuoteNode
+                                              :do
+                                            ), (:ref, :ast, 1)), (:block,
+                                            (:line, 112, :none),
+                                            (:call, :eval_ast, (:ref, :ast, (:(:), 2, (:call, :-, :end, 1))), :env),
+                                            (:line, 113, :none),
+                                            (:(=), :ast, (:ref, :ast, :end))
+                                          ), (:block,
+                                            (:line, 115, :none),
+                                            (:if, (:call, :(==), (:quote, #QuoteNode
+                                                  :if
+                                                ), (:ref, :ast, 1)), (:block,
+                                                (:line, 116, :none),
+                                                (:(=), :cond, (:call, :EVAL, (:ref, :ast, 2), :env)),
+                                                (:line, 117, :none),
+                                                (:if, (:||, (:call, :(===), :cond, :nothing), (:call, :(===), :cond, false)), (:block,
+                                                    (:line, 118, :none),
+                                                    (:if, (:call, :(>=), (:call, :length, :ast), 4), (:block,
+                                                        (:line, 119, :none),
+                                                        (:(=), :ast, (:ref, :ast, 4))
+                                                      ), (:block,
+                                                        (:line, 122, :none),
+                                                        (:return, :nothing)
+                                                      ))
+                                                  ), (:block,
+                                                    (:line, 125, :none),
+                                                    (:(=), :ast, (:ref, :ast, 3))
+                                                  ))
+                                              ), (:block,
+                                                (:line, 128, :none),
+                                                (:if, (:call, :(==), (:call, :symbol, "fn*"), (:ref, :ast, 1)), (:block,
+                                                    (:line, 129, :none),
+                                                    (:return, (:call, :MalFunc, (:->, (:tuple, (:..., :args)), (:block,
+                                                            (:line, 130, :none),
+                                                            (:call, :EVAL, (:ref, :ast, 3), (:call, :Env, :env, (:ref, :ast, 2), (:ref, :Any, (:..., :args))))
+                                                          )), (:ref, :ast, 3), :env, (:ref, :ast, 2)))
+                                                  ), (:block,
+                                                    (:line, 133, :none),
+                                                    (:(=), :el, (:call, :eval_ast, :ast, :env)),
+                                                    (:line, 134, :none),
+                                                    (:(=), (:tuple, :f, :args), (:tuple, (:ref, :el, 1), (:ref, :el, (:(:), 2, :end)))),
+                                                    (:line, 135, :none),
+                                                    (:if, (:call, :isa, :f, :MalFunc), (:block,
+                                                        (:line, 136, :none),
+                                                        (:(=), :ast, (:., :f, (:quote, #QuoteNode
+                                                              :ast
+                                                            ))),
+                                                        (:line, 137, :none),
+                                                        (:(=), :env, (:call, :Env, (:., :f, (:quote, #QuoteNode
+                                                                :env
+                                                              )), (:., :f, (:quote, #QuoteNode
+                                                                :params
+                                                              )), :args))
+                                                      ), (:block,
+                                                        (:line, 140, :none),
+                                                        (:return, (:call, :f, (:..., :args)))
+                                                      ))
+                                                  ))
+                                              ))
+                                          ))
+                                      ))
+                                  ))
+                              ))
+                          ))
+                      ))
+                  ))
+              ))
+          ))
+      )),
+    (:line, 147, :none),
+    (:function, (:call, :PRINT, :exp), (:block,
+        (:line, 148, :none),
+        (:call, (:., :printer, (:quote, #QuoteNode
+              :pr_str
+            )), :exp)
+      )),
+    (:line, 152, :none),
+    (:(=), :repl_env, :nothing),
+    (:line, 153, :none),
+    (:function, (:call, :REP, :str), (:block,
+        (:line, 154, :none),
+        (:return, (:call, :PRINT, (:call, :EVAL, (:call, :READ, :str), :repl_env)))
+      )),
+    (:line, 158, :none),
+    (:(=), :repl_env, (:call, :Env, :nothing, (:., :core, (:quote, #QuoteNode
+            :ns
+          )))),
+    (:line, 159, :none),
+    (:call, :env_set, :repl_env, (:quote, #QuoteNode
+        :eval
+      ), (:->, :ast, (:block,
+          (:line, 159, :none),
+          (:call, :EVAL, :ast, :repl_env)
+        ))),
+    (:line, 160, :none),
+    (:call, :env_set, :repl_env, (:call, :symbol, "*ARGV*"), (:ref, :ARGS, (:(:), 2, :end))),
+    (:line, 163, :none),
+    (:call, :REP, "(def! *host-language* \"julia\")"),
+    (:line, 164, :none),
+    (:call, :REP, "(def! not (fn* (a) (if a false true)))"),
+    (:line, 165, :none),
+    (:call, :REP, "(def! load-file (fn* (f) (eval (read-string (str \"(do \" (slurp f) \")\")))))"),
+    (:line, 166, :none),
+    (:call, :REP, "(defmacro! cond (fn* (& xs) (if (> (count xs) 0) (list 'if (first xs) (if (> (count xs) 1) (nth xs 1) (throw \"odd number of forms to cond\")) (cons 'cond (rest (rest xs)))))))"),
+    (:line, 167, :none),
+    (:call, :REP, "(def! *gensym-counter* (atom 0))"),
+    (:line, 168, :none),
+    (:call, :REP, "(def! gensym (fn* [] (symbol (str \"G__\" (swap! *gensym-counter* (fn* [x] (+ 1 x)))))))"),
+    (:line, 169, :none),
+    (:call, :REP, "(defmacro! or (fn* (& xs) (if (empty? xs) nil (if (= 1 (count xs)) (first xs) (let* (condvar (gensym)) `(let* (~condvar ~(first xs)) (if ~condvar ~condvar (or ~@(rest xs)))))))))"),
+    (:line, 172, :none),
+    (:if, (:call, :>, (:call, :length, :ARGS), 0), (:block,
+        (:line, 173, :none),
+        (:call, :REP, (:string, "(load-file \"", (:ref, :ARGS, 1), "\")")),
+        (:line, 174, :none),
+        (:call, :exit, 0)
+      )),
+    (:line, 177, :none),
+    (:call, :REP, "(println (str \"Mal [\" *host-language* \"]\"))"),
+    (:line, 178, :none),
+    (:while, true, (:block,
+        (:line, 179, :none),
+        (:(=), :line, (:call, (:., :readline_mod, (:quote, #QuoteNode
+                :do_readline
+              )), "user> ")),
+        (:line, 180, :none),
+        (:if, (:call, :(===), :line, :nothing), (:block,
+            (:line, 180, :none),
+            (:break,)
+          )),
+        (:line, 181, :none),
+        (:try, (:block,
+            (:line, 182, :none),
+            (:call, :println, (:call, :REP, :line))
+          ), :e, (:block,
+            (:line, 184, :none),
+            (:if, (:call, :isa, :e, :ErrorException), (:block,
+                (:line, 185, :none),
+                (:call, :println, (:string, "Error: ", (:., :e, (:quote, #QuoteNode
+                        :msg
+                      ))))
+              ), (:block,
+                (:line, 187, :none),
+                (:call, :println, (:string, "Error: ", (:call, :string, :e)))
+              )),
+            (:line, 190, :none),
+            (:if, (:call, :!, (:call, :isa, :e, :StackOverflowError)), (:block,
+                (:line, 191, :none),
+                (:(=), :bt, (:call, :catch_backtrace)),
+                (:line, 192, :none),
+                (:call, (:., :Base, (:quote, #QuoteNode
+                      :show_backtrace
+                    )), :STDERR, :bt)
+              )),
+            (:line, 194, :none),
+            (:call, :println)
+          ))
+      ))
+  ))

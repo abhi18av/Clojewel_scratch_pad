@@ -1,0 +1,24 @@
+(:quote, (:block,
+    (:line, 1, :none),
+    (:module, true, :readline_mod, (:block,
+        (:line, 1, :none),
+        (:line, 3, :none),
+        (:export, :do_readline),
+        (:line, 5, :none),
+        (:function, (:call, :do_readline, :prompt), (:block,
+            (:line, 6, :none),
+            (:call, :print, :prompt),
+            (:line, 7, :none),
+            (:call, :flush, :STDOUT),
+            (:line, 8, :none),
+            (:(=), :line, (:call, :readline, :STDIN)),
+            (:line, 9, :none),
+            (:if, (:call, :(==), :line, ""), (:block,
+                (:line, 10, :none),
+                (:return, :nothing)
+              )),
+            (:line, 12, :none),
+            (:call, :chomp, :line)
+          ))
+      ))
+  ))
