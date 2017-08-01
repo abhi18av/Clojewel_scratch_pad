@@ -22,7 +22,7 @@
 
 ;(julia "-e" "eval(Expr(:call, :println, (:call, :+, 1, 1)))")
 
-
+; Cleary this can be converted into a Julia expression symbolically.
 (def expr "eval(Expr(:call, :print, Expr(:call, :+, 1, 1)))")
 
 (julia "-e" expr)
