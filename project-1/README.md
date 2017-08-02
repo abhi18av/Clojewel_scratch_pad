@@ -2,8 +2,9 @@
 
 The purpose of this sample project is to
 
-- connect to Julia repl using network connection
-- pass the forms constructed in Clojure repl to julia for evaluation 
+- [x] have julia repl evaluate simple "-e" scripts.
+- [] connect to Julia repl using network connection
+- [] pass the forms constructed in Clojure repl to julia for evaluation 
 
 ```clojure
 (jl/eval "(:call , :+ , 1, 1)")
@@ -13,13 +14,13 @@ The purpose of this sample project is to
 ```
 
 
-- create simple JLIR expressions from clojure.
+- [] create simple JLIR expressions from clojure.
 
 The following clojure code get transformed into Julia code.
 
 ```clojure
 
-(println "Clojure!")
+(jl println "Clojure!")
 
 ```
 
