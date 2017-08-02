@@ -1,4 +1,19 @@
 # Understand how to read a function in string form and then eval it.
+
+expression1 = "Expr(:call, :+, 1, 1)"
+
+eval(eval(parse(expression1)))
+
+
+
+function eval_from_string_s_expr(s)
+
+eval(eval(parse(s)))
+
+end
+
+
+
 Meta.show_sexpr(parse("Expr(:call, :+, 1, 1)"))
 
 parse("Expr(:call, :+, 1, 1)").args
