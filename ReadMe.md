@@ -41,5 +41,12 @@ project
 - Julia-edn package
 - Julia->Clojure code converter => Syntax transformers
 	- Might de-transform julia code to spec'd / type'd clojure code.
-- Emacs packages for such inter-language conversion
-- 
+- Emacs packages for such inter-language conversion 
+
+
+
+## Resources
+
+- https://stackoverflow.com/questions/45451245/how-to-unparse-a-julia-expression
+	- https://github.com/ZacLN/CSTParser.jl
+	- https://github.com/KristofferC/Tokenize.jl
