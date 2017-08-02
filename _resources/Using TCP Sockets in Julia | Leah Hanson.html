@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  
+  <meta charset="UTF-8">
+  <title>
+    Using TCP Sockets in Julia | Leah Hanson
+  </title>
+
+
+  
+  <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.leahhanson.us/post/julia/julia-sockets.html"/>
+
+  
+  <link rel="stylesheet" href="/css/sanitize.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/highlight_monokai.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/custom.css">
+  
+  
+  <link href="http://blog.leahhanson.us/index.xml" rel="alternate" type="application/rss+xml" title="Leah Hanson" />
+  <link href="http://blog.leahhanson.us/index.xml" rel="feed" type="application/rss+xml" title="Leah Hanson" />
+
+  
+  <script type="text/javascript">var switchTo5x=true;</script>
+  <script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script>
+  <script type="text/javascript">stLight.options({publisher: "2b9fffc6-b3fe-4988-a0ef-4f9dcce98eaa", doNotHash: true, doNotCopy: true, hashAddressBar: false});</script>
+
+
+</head>
+
+
+
+<body>
+<div class="container">
+
+  
+  <header role="banner">
+    <div class="row gutters">
+      <div id="site-title" class="col span_6">
+        <h1><a href="http://blog.leahhanson.us">Leah Hanson</a></h1>
+        
+      </div>
+      <div id="social" class="col span_6">
+         <ul class="nav navbar-nav navbar-right">
+          
+          <li>
+
+            <a href="http://blog.leahhanson.us/about.html"
+            >
+
+            
+
+            About
+            </a>
+          </li>
+          
+          <li>
+
+            <a href="http://blog.leahhanson.us/post.html"
+             title="Show list of posts">
+
+            
+
+            Posts
+            </a>
+          </li>
+          
+          <li>
+
+            <a href="http://blog.leahhanson.us/speaking.html"
+            >
+
+            
+
+            Speaking
+            </a>
+          </li>
+          
+          
+          
+          
+          <li><a href="http://blog.leahhanson.us/index.xml" type="application/rss+xml" target="_blank">RSS</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+
+  
+  <main id="single" role="main">
+    <div class="article-header">
+      <h1>Using TCP Sockets in Julia</h1>
+      <div class="meta">
+        Apr 2, 2013 &nbsp;
+        
+          #<a href="/tags/julialang">julialang</a>&nbsp;
+        
+          #<a href="/tags/code">code</a>&nbsp;
+        
+          #<a href="/tags/tutorial">tutorial</a>&nbsp;
+        
+      </div>
+    </div>
+    <article>
+      
+
+<blockquote>
+<p>This post was updated on June 28, 2013 to reflect changes in the TcpServer/TcpSocket api in Julia.</p>
+</blockquote>
+
+<p>Recently, I&rsquo;ve been writing the
+<a href="https://github.com/hackerschool/WebSockets.jl">WebSockets implementation</a> for Julia.</p>
+
+<p><code>TcpSocket</code>s were not well documented
+when we started using them,
+so I figure a tutorial might be useful
+for anyone else who might want to use TCP sockets in Julia.</p>
+
+<h2 id="repl-server:5e248c121bd167bbb6e8d75c6526ea38">REPL server</h2>
+
+<p>I&rsquo;m still figuring out this &ldquo;try things out in the REPL first&rdquo; thing
+(due to usually using compiled languages),
+but here&rsquo;s a first example of how you might play with TCP sockets
+in the Julia REPL (on the right) and netcat in another terminal (on the left).</p>
+
+<table>
+<thead>
+<tr>
+<th>terminal1</th>
+<th>terminal2</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td></td>
+<td>$ <code>julia</code></td>
+</tr>
+
+<tr>
+<td></td>
+<td>&gt; <code>server = listen(8080)</code></td>
+</tr>
+
+<tr>
+<td></td>
+<td>TcpServer(listening)</td>
+</tr>
+
+<tr>
+<td></td>
+<td>&gt; <code>conn = accept(server)</code></td>
+</tr>
+
+<tr>
+<td>$ <code>nc localhost 8080</code></td>
+<td></td>
+</tr>
+
+<tr>
+<td></td>
+<td>TcpSocket(connected,0 bytes waiting)</td>
+</tr>
+
+<tr>
+<td></td>
+<td>&gt; <code>line = readline(conn)</code></td>
+</tr>
+
+<tr>
+<td><code>hi</code></td>
+<td></td>
+</tr>
+
+<tr>
+<td></td>
+<td>&ldquo;hi\n&rdquo;</td>
+</tr>
+
+<tr>
+<td></td>
+<td>&gt; <code>write(conn, &quot;Hello&quot;)</code></td>
+</tr>
+
+<tr>
+<td>Hello</td>
+<td>5</td>
+</tr>
+
+<tr>
+<td></td>
+<td>&gt; <code>close(conn)</code></td>
+</tr>
+
+<tr>
+<td>$</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+
+<p>The code-formated parts are what you type.
+The normally-formated parts are what the computer prints.</p>
+
+<p>Basically, you start <code>julia</code>, and open a TCP server for listening.
+You can only <code>accept</code> connections on a <code>TcpServer</code>, not <code>write</code> or <code>read</code>.</p>
+
+<p>After creating a <code>TcpServer</code>, you wait for a connection to accept.
+At this point, you&rsquo;ll need to switch terminals and open a connection from netcat.
+(You can switch the order of <code>accept</code> and starting netcat.)</p>
+
+<p>Notice that <code>accept</code> returns a <code>TcpSocket</code>.
+We can do two things with a <code>TcpSocket</code>: read or write.</p>
+
+<p>Using <code>readline</code>, we can block until we get a full line from the connection.
+In order to stop blocking, you&rsquo;ll need to enter a line in netcat.
+You need to press enter in netcat for <code>readline</code> to return in Julia.</p>
+
+<p>You can also write text to the TCP connection from Julia.
+The <code>write</code> function takes a <code>TcpSocket</code> and a string to write.
+The text you <code>write</code> from Julia will appear in netcat, as expected.</p>
+
+<p>You can call <code>close</code> on a <code>TcpSocket</code> to close the TCP connection.
+Closing the TCP connection makes the netcat session close.</p>
+
+<h2 id="echo-server:5e248c121bd167bbb6e8d75c6526ea38">Echo Server</h2>
+
+<p>A very simple server to run over TCP is an echo server.
+Each time you send this server a line of text,
+it will repeat that line back to you.</p>
+
+<p>Here is the entire file:</p>
+
+<pre><code class="language-jl">server = listen(8080)
+while true
+  conn = accept(server)
+  @async begin
+    try
+      while true
+        line = readline(conn)
+        write(conn,line)
+      end
+    catch err
+      print(&quot;connection ended with error $err&quot;)
+    end
+  end
+end
+</code></pre>
+
+<h3 id="running-the-example:5e248c121bd167bbb6e8d75c6526ea38">Running the example</h3>
+
+<p>Put this file in <code>echoserver.jl</code>.
+Then, you can run it with <code>julia echoserver.jl</code>.</p>
+
+<p>With the server running, open up netcat again (<code>nc localhost 8080</code>).
+Type in some text and press enter.
+You should see the same text printed again under what you typed.</p>
+
+<h3 id="the-structure-of-the-server:5e248c121bd167bbb6e8d75c6526ea38">The structure of the server</h3>
+
+<p>The core of this server is a pair of <code>while true</code> loops.
+The outer one accepts each incoming connection.
+The inner one reads lines from the client and echos them.</p>
+
+<p>The <code>try</code> <code>catch</code> block catches any error thrown in the while loop.
+The thrown error is bound to <code>err</code>.
+The <code>$err</code> in the string literal is how you embed values in Julia strings.</p>
+
+<p>Given two strings, <code>s1</code> and <code>s2</code>, <code>&quot;$s1$s2&quot;</code> would be their concatenation.
+You can also embed arbitrary Julia expressions: <code>&quot;$(2+2)&quot;</code> would be <code>&quot;4&quot;</code>.</p>
+
+<h3 id="handling-multiple-connections-async:5e248c121bd167bbb6e8d75c6526ea38">Handling Multiple Connections: <code>@async</code></h3>
+
+<p><code>@async</code> is a macro. It affects the <code>begin</code> to <code>end</code> block that directly follows it.
+<code>@async</code> starts a new coroutine to handle the execution of the block.</p>
+
+<p>Coroutines are like threads in that there are multiple threads of execution in the program at once,
+but do not involve concurrent execution.
+Only one coroutine is running at once, but the language runtime switches between them.</p>
+
+<p>This means that the main connection-accepting routine will see the <code>@async</code> block return immediately.
+This allows the outer while loop to continue accepting connections, while another routine handles each existing connection.</p>
+
+<p>If you remove the <code>@async</code> part, your echo server will only deal with one client connection at a time.
+You can test this using two (or more) instances of netcat, each in their own terminal window.</p>
+
+<p>Inside the <code>@async</code> block, we&rsquo;re in a new coroutine.
+We can sit in our <code>while true</code> loop for as long as we want without affecting the server&rsquo;s ability to accept connections.</p>
+
+<p>Coroutines have very low overhead, so making a new one for each connection is reasonable.
+Webstack.jl works on this same one-thread-per-connection principle.</p>
+
+<h3 id="basic-tcpsocket-api:5e248c121bd167bbb6e8d75c6526ea38">Basic <code>TcpSocket</code> API</h3>
+
+<ul>
+<li><strong><code>listen(8080)</code></strong> binds a <code>TcpServer</code> to a socket listening for connections on port 8080.</li>
+<li><strong><code>accept(server)</code></strong> blocks until there is a connection to accept on <code>server</code>, then accepts it and returns a <code>TcpSocket</code>.</li>
+<li><strong><code>readline(conn)</code></strong> blocks until a complete line comes in on <code>conn</code>, then returns it.</li>
+<li><strong><code>read(conn,Uint8)</code></strong> blocks until there is a byte to read from <code>conn</code>, and then returns it.
+You can use <code>convert(Char,u)</code> to convert a <code>Uint8</code> into a <code>Char</code>. This will let you see the ASCII letter for the <code>Uint8</code> you read.</li>
+<li><strong><code>read(conn,Char)</code></strong> blocks until there is a byte to read from <code>conn</code>, and then returns it.</li>
+<li><strong><code>write(conn,line)</code></strong> writes <code>line</code> to <code>conn</code>.</li>
+</ul>
+
+      
+      
+      
+    </article>
+    
+
+
+<script type="text/javascript">
+     
+    var disqus_shortname = '';
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+  </main>
+  
+  <nav class="pagination-single">
+    
+      <span class="previous">&larr; <a href="http://blog.leahhanson.us/post/monad-tutorial.html" rel="prev">A Simple Monad Tutorial</a></span>
+    
+    
+      <span class="next"><a href="http://blog.leahhanson.us/post/julia/julia-fizzbuzz.html" rel="next">Writing FizzBuzz in Julia</a> &rarr;</span>
+    
+  </nav>
+
+
+  
+  <footer role="contentinfo">
+    <div style="text-align:center;">
+      
+      
+    </div>
+  </footer>
+
+
+</div>
+
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-27374490-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+</body>
+</html>
+
