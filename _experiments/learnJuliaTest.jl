@@ -89,9 +89,9 @@ false
 println("I'm Julia. Nice to meet you!")
 
 # String can be compared lexicographically
-#"good" > "bye" # => true
-#"good" == "good" # => true
-#"1 + 2 = 3" == "1 + 2 = $(1+2)" # => true
+"good" > "bye" # => true
+"good" == "good" # => true
+"1 + 2 = 3" == "1 + 2 = $(1+2)" # => true
 
 ####################################################
 ## 2. Variables and Collections
@@ -99,7 +99,10 @@ println("I'm Julia. Nice to meet you!")
 
 # You don't declare variables before assigning to them.
 some_var = 5 # => 5
-#some_var # => 5
+some_var # => 5
+
+some_string_var = "some_string_var"
+
 
 # Accessing a previously unassigned variable is an error
 try
@@ -115,7 +118,7 @@ SomeOtherVar123! = 6 # => 6
 # You can also use certain unicode characters
 ☃ = 8 # => 8
 # These are especially handy for mathematical notation
-#2 * π # => 6.283185307179586
+2 * π # => 6.283185307179586
 
 # A note on naming conventions in Julia:
 #
@@ -210,7 +213,7 @@ length(a) # => 8
 
 # Tuples are immutable.
 tup = (1, 2, 3) # => (1,2,3) # an (Int64,Int64,Int64) tuple.
-#tup[1] # => 1
+tup[1] # => 1
 try:
     tup[1] = 3 # => ERROR: no method setindex!((Int64,Int64,Int64),Int64,Int64)
 catch e
@@ -390,8 +393,8 @@ f_add(x, y) = x + y # => "f (generic function with 1 method)"
 f_add(3, 4) # => 7
 
 # Function can also return multiple values as tuple
-fxn(x, y) = x + y, x - y
-fxn(3, 4) # => (7, -1)
+f(x, y) = x + y, x - y
+f(3, 4) # => (7, -1)
 
 # You can define functions that take a variable number of
 # positional arguments
@@ -451,12 +454,12 @@ all_the_args(1, 3, keyword_arg=4)
 #   keyword arg: 4
 
 # Julia has first class functions
-#function create_adder(x)
-#    adder = function (y)
-#        return x + y
-#    end
-#    return adder
-#end
+function create_adder(x)
+    adder = function (y)
+        return x + y
+    end
+    return adder
+end
 
 # This is "stabby lambda syntax" for creating anonymous functions
 (x -> x > 2)(3) # => true
@@ -467,12 +470,12 @@ function create_adder(x)
 end
 
 # You can also name the internal function, if you want
-#function create_adder(x)
-#    function adder(y)
-#        x + y
-#    end
-#    adder
-#end
+function create_adder(x)
+    function adder(y)
+        x + y
+    end
+    adder
+end
 
 add_10 = create_adder(10)
 add_10(3) # => 13
@@ -548,19 +551,19 @@ subtypes(AbstractString)    # 8-element Array{Any,1}:
                             #  UTF16String
                             #  UTF8String
 
-# Every type has a supertype type; use the `supertype` function to get it.
+# Every type has a super type; use the `super` function to get it.
 typeof(5) # => Int64
-supertype(Int64) # => Signed
-supertype(Signed) # => Integer
-supertype(Integer) # => Real
-supertype(Real) # => Number
-supertype(Number) # => Any
-supertype(supertype(Signed)) # => Real
-supertype(Any) # => Any
+super(Int64) # => Signed
+super(Signed) # => Integer
+super(Integer) # => Real
+super(Real) # => Number
+super(Number) # => Any
+super(super(Signed)) # => Real
+super(Any) # => Any
 # All of these type, except for Int64, are abstract.
 typeof("fire") # => ASCIIString
-supertype(String) # => DirectIndexString
-supertype(DirectIndexString) # => AbstractString
+super(ASCIIString) # => DirectIndexString
+super(DirectIndexString) # => AbstractString
 # Likewise here with ASCIIString
 
 # <: is the subtyping operator
@@ -660,7 +663,7 @@ catch
 end
 
 # Also let the cat go first
-#fight(c::Cat,l::Lion) = println("The cat beats the Lion")
+fight(c::Cat,l::Lion) = println("The cat beats the Lion")
 # => Warning: New definition
 #    fight(Cat,Lion) at none:1
 # is ambiguous with
