@@ -101,6 +101,8 @@ println("I'm Julia. Nice to meet you!")
 some_var = 5 # => 5
 some_var # => 5
 
+some_string_var = "some_string_var"
+
 # Accessing a previously unassigned variable is an error
 try
     some_other_var # => ERROR: some_other_var not defined

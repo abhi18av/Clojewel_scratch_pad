@@ -1,14 +1,18 @@
 # Understand how to read a function in string form and then eval it.
 
-expression1 = "Expr(:call, :+, 1, 1)"
+ex1 = "Expr(:call, :+, 1, 1)"
 
-eval(eval(parse(expression1)))
+eval(eval(parse(ex1)))
 
 
 
-function eval_from_string_s_expr(s)
+function eval_from_string_s_expr_string(s::String)
 
-eval(eval(parse(s)))
+string_expression1 = " Expr" * s * " "
+
+string_expression2 = replace(string_expression1 , " (", " Expr(")
+
+eval(eval(parse(string_expression2)))
 
 end
 
