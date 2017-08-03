@@ -15,7 +15,6 @@
 3.2 # => 3.2 (Float64)
 2 + 1im # => 2 + 1im (Complex{Int64})
 2//3 # => 2//3 https://www.ft.com/content/163dc810-2efe-11e6-bf8d-26294ad519fc
-(Rational{Int64})
 
 # All of the normal infix operators are available.
 1 + 1 # => 2
