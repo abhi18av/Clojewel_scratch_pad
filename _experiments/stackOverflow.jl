@@ -37,7 +37,7 @@ end
     
     
 B     = IOBuffer();              # will use to 'capture' the s_expr in
-Expr1 = :(1 + 2 * 3);            # the expr we want to generate an s_expr for
+Expr1 = :(function add9( x) x + 9 end);            # the expr we want to generate an s_expr for
 Meta.show_sexpr(B, Expr1);       # push s_expr into buffer B
     
     

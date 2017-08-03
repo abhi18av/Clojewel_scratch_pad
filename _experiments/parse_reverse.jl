@@ -1,6 +1,6 @@
 
 
-"""rxpe_esrap: parse expr in reverse :p """
+# parse_reverse: parse expr in reverse :p 
 function parse_reverse(S_expr::Tuple)
     return Expr( Any[isa(i, Tuple) ? parse_reverse(i) : i for i in S_expr]... );
 end
@@ -12,7 +12,7 @@ Meta.show_sexpr(B, Expr1);       # push s_expr into buffer B
     
     
 seek(B, 0);                      # 'rewind' buffer
-    SExprStr = readstring(B);      # get buffer contents as string
+SExprStr = readstring(B);      # get buffer contents as string
 close(B);                        # please to be closink after finished, da?
 SExpr = parse(SExprStr) |> eval;
 
