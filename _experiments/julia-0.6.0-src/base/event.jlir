@@ -1,0 +1,638 @@
+(:quote, (:block,
+    (:line, 5, :none),
+    (:macrocall, :(Core.@doc), "    Condition()\n\nCreate an edge-triggered event source that tasks can wait for. Tasks that call [`wait`](@ref) on a\n`Condition` are suspended and queued. Tasks are woken up when [`notify`](@ref) is later called on\nthe `Condition`. Edge triggering means that only tasks waiting at the time [`notify`](@ref) is\ncalled can be woken up. For level-triggered notifications, you must keep extra state to keep\ntrack of whether a notification has happened. The [`Channel`](@ref) type does\nthis, and so can be used for level-triggered events.\n", (:type, true, :Condition, (:block,
+          (:line, 16, :none),
+          (:(::), :waitq, (:curly, :Vector, :Any)),
+          (:line, 18, :none),
+          (:(=), (:call, :Condition), (:block,
+              (:line, 18, :none),
+              (:call, :new, (:vect,))
+            ))
+        ))),
+    (:line, 21, :none),
+    (:function, (:call, :wait, (:(::), :c, :Condition)), (:block,
+        (:line, 22, :none),
+        (:(=), :ct, (:call, :current_task)),
+        (:line, 24, :none),
+        (:call, :push!, (:., :c, (:quote, #QuoteNode
+              :waitq
+            )), :ct),
+        (:line, 26, :none),
+        (:try, (:block,
+            (:line, 27, :none),
+            (:return, (:call, :wait))
+          ), false, (:block,
+            (:line, 29, :none),
+            (:call, :filter!, (:->, :x, (:block,
+                  (:line, 29, :none),
+                  (:call, :(!==), :x, :ct)
+                )), (:., :c, (:quote, #QuoteNode
+                  :waitq
+                ))),
+            (:line, 30, :none),
+            (:call, :rethrow)
+          ))
+      )),
+    (:line, 34, :none),
+    (:macrocall, :(Core.@doc), "    notify(condition, val=nothing; all=true, error=false)\n\nWake up tasks waiting for a condition, passing them `val`. If `all` is `true` (the default),\nall waiting tasks are woken, otherwise only one is. If `error` is `true`, the passed value\nis raised as an exception in the woken tasks.\n\nReturns the count of tasks woken up. Returns 0 if no tasks are waiting on `condition`.\n", (:(=), (:call, :notify, (:parameters, (:kw, :all, true), (:kw, :error, false)), (:(::), :c, :Condition), (:kw, (:(::), :arg, :ANY), :nothing)), (:block,
+          (:line, 43, :none),
+          (:call, :notify, :c, :arg, :all, :error)
+        ))),
+    (:line, 44, :none),
+    (:function, (:call, :notify, (:(::), :c, :Condition), :arg, :all, :error), (:block,
+        (:line, 45, :none),
+        (:(=), :cnt, 0),
+        (:line, 46, :none),
+        (:if, :all, (:block,
+            (:line, 47, :none),
+            (:(=), :cnt, (:call, :length, (:., :c, (:quote, #QuoteNode
+                    :waitq
+                  )))),
+            (:line, 48, :none),
+            (:for, (:(=), :t, (:., :c, (:quote, #QuoteNode
+                    :waitq
+                  ))), (:block,
+                (:line, 49, :none),
+                (:if, :error, (:call, :schedule, :t, :arg, (:kw, :error, :error)), (:call, :schedule, :t, :arg))
+              )),
+            (:line, 51, :none),
+            (:call, :empty!, (:., :c, (:quote, #QuoteNode
+                  :waitq
+                )))
+          ), (:block,
+            (:line, 52, :none),
+            (:if, (:call, :!, (:call, :isempty, (:., :c, (:quote, #QuoteNode
+                      :waitq
+                    )))), (:block,
+                (:line, 53, :none),
+                (:(=), :cnt, 1),
+                (:line, 54, :none),
+                (:(=), :t, (:call, :shift!, (:., :c, (:quote, #QuoteNode
+                        :waitq
+                      )))),
+                (:line, 55, :none),
+                (:if, :error, (:call, :schedule, :t, :arg, (:kw, :error, :error)), (:call, :schedule, :t, :arg))
+              ))
+          )),
+        (:line, 57, :none),
+        :cnt
+      )),
+    (:line, 60, :none),
+    (:(=), (:call, :notify_error, (:(::), :c, :Condition), :err), (:block,
+        (:line, 60, :none),
+        (:call, :notify, :c, :err, true, true)
+      )),
+    (:line, 62, :none),
+    (:(=), (:call, :n_waiters, (:(::), :c, :Condition)), (:block,
+        (:line, 62, :none),
+        (:call, :length, (:., :c, (:quote, #QuoteNode
+              :waitq
+            )))
+      )),
+    (:line, 65, :none),
+    (:macrocall, :(Core.@doc), "    @schedule\n\nWrap an expression in a [`Task`](@ref) and add it to the local machine's scheduler queue.\nSimilar to [`@async`](@ref) except that an enclosing `@sync` does NOT wait for tasks\nstarted with an `@schedule`.\n", (:macro, (:call, :schedule, :expr), (:block,
+          (:line, 73, :none),
+          (:(=), :thunk, (:call, :esc, (:quote, (:->, (:tuple,), (:block,
+                    (:line, 73, :none),
+                    (:$, :expr)
+                  ))))),
+          (:line, 74, :none),
+          (:quote, (:call, :enq_work, (:call, :Task, (:$, :thunk))))
+        ))),
+    (:line, 79, :none),
+    (:const, (:global, (:(=), :Workqueue, (:ref, :Task)))),
+    (:line, 81, :none),
+    (:function, (:call, :enq_work, (:(::), :t, :Task)), (:block,
+        (:line, 82, :none),
+        (:||, (:call, :(==), (:., :t, (:quote, #QuoteNode
+                :state
+              )), (:quote, #QuoteNode
+              :runnable
+            )), (:call, :error, "schedule: Task not runnable")),
+        (:line, 83, :none),
+        (:call, :ccall, (:quote, #QuoteNode
+            :uv_stop
+          ), :Void, (:tuple, (:curly, :Ptr, :Void)), (:call, :eventloop)),
+        (:line, 84, :none),
+        (:call, :push!, :Workqueue, :t),
+        (:line, 85, :none),
+        (:(=), (:., :t, (:quote, #QuoteNode
+              :state
+            )), (:quote, #QuoteNode
+            :queued
+          )),
+        (:line, 86, :none),
+        (:return, :t)
+      )),
+    (:line, 89, :none),
+    (:(=), (:call, :schedule, (:(::), :t, :Task)), (:block,
+        (:line, 89, :none),
+        (:call, :enq_work, :t)
+      )),
+    (:line, 91, :none),
+    (:macrocall, :(Core.@doc), "    schedule(t::Task, [val]; error=false)\n\nAdd a [`Task`](@ref) to the scheduler's queue. This causes the task to run constantly when the system\nis otherwise idle, unless the task performs a blocking operation such as [`wait`](@ref).\n\nIf a second argument `val` is provided, it will be passed to the task (via the return value of\n[`yieldto`](@ref)) when it runs again. If `error` is `true`, the value is raised as an exception in\nthe woken task.\n\n```jldoctest\njulia> a5() = det(rand(1000, 1000));\n\njulia> b = Task(a5);\n\njulia> istaskstarted(b)\nfalse\n\njulia> schedule(b);\n\njulia> yield();\n\njulia> istaskstarted(b)\ntrue\n\njulia> istaskdone(b)\ntrue\n```\n", (:function, (:call, :schedule, (:parameters, (:kw, :error, false)), (:(::), :t, :Task), :arg), (:block,
+          (:line, 122, :none),
+          (:if, :error, (:block,
+              (:line, 123, :none),
+              (:(=), (:., :t, (:quote, #QuoteNode
+                    :exception
+                  )), :arg)
+            ), (:block,
+              (:line, 125, :none),
+              (:(=), (:., :t, (:quote, #QuoteNode
+                    :result
+                  )), :arg)
+            )),
+          (:line, 127, :none),
+          (:return, (:call, :enq_work, :t))
+        ))),
+    (:line, 131, :none),
+    (:function, (:call, :schedule_and_wait, (:(::), :t, :Task), (:kw, :arg, :nothing)), (:block,
+        (:line, 132, :none),
+        (:||, (:call, :(==), (:., :t, (:quote, #QuoteNode
+                :state
+              )), (:quote, #QuoteNode
+              :runnable
+            )), (:call, :error, "schedule: Task not runnable")),
+        (:line, 133, :none),
+        (:if, (:call, :isempty, :Workqueue), (:block,
+            (:line, 134, :none),
+            (:return, (:call, :yieldto, :t, :arg))
+          ), (:block,
+            (:line, 136, :none),
+            (:(=), (:., :t, (:quote, #QuoteNode
+                  :result
+                )), :arg),
+            (:line, 137, :none),
+            (:call, :push!, :Workqueue, :t),
+            (:line, 138, :none),
+            (:(=), (:., :t, (:quote, #QuoteNode
+                  :state
+                )), (:quote, #QuoteNode
+                :queued
+              ))
+          )),
+        (:line, 140, :none),
+        (:return, (:call, :wait))
+      )),
+    (:line, 143, :none),
+    (:macrocall, :(Core.@doc), "    yield()\n\nSwitch to the scheduler to allow another scheduled task to run. A task that calls this\nfunction is still runnable, and will be restarted immediately if there are no other runnable\ntasks.\n", (:(=), (:call, :yield), (:block,
+          (:line, 150, :none),
+          (:block,
+            (:call, :enq_work, (:call, :current_task)),
+            (:call, :wait)
+          )
+        ))),
+    (:line, 152, :none),
+    (:macrocall, :(Core.@doc), "    yield(t::Task, arg = nothing)\n\nA fast, unfair-scheduling version of `schedule(t, arg); yield()` which\nimmediately yields to `t` before calling the scheduler.\n", (:function, (:call, :yield, (:(::), :t, :Task), (:kw, (:(::), :x, :ANY), :nothing)), (:block,
+          (:line, 159, :none),
+          (:||, (:call, :(==), (:., :t, (:quote, #QuoteNode
+                  :state
+                )), (:quote, #QuoteNode
+                :runnable
+              )), (:call, :error, "schedule: Task not runnable")),
+          (:line, 160, :none),
+          (:(=), (:., :t, (:quote, #QuoteNode
+                :result
+              )), :x),
+          (:line, 161, :none),
+          (:call, :enq_work, (:call, :current_task)),
+          (:line, 162, :none),
+          (:return, (:call, :try_yieldto, :ensure_self_descheduled, :t))
+        ))),
+    (:line, 165, :none),
+    (:macrocall, :(Core.@doc), "    yieldto(t::Task, arg = nothing)\n\nSwitch to the given task. The first time a task is switched to, the task's function is\ncalled with no arguments. On subsequent switches, `arg` is returned from the task's last\ncall to `yieldto`. This is a low-level call that only switches tasks, not considering states\nor scheduling in any way. Its use is discouraged.\n", (:function, (:call, :yieldto, (:(::), :t, :Task), (:kw, (:(::), :x, :ANY), :nothing)), (:block,
+          (:line, 174, :none),
+          (:(=), (:., :t, (:quote, #QuoteNode
+                :result
+              )), :x),
+          (:line, 175, :none),
+          (:return, (:call, :try_yieldto, :Void, :t))
+        ))),
+    (:line, 178, :none),
+    (:function, (:where, (:call, :try_yieldto, (:(::), :undo, :F), (:(::), :t, :Task)), :F), (:block,
+        (:line, 179, :none),
+        (:try, (:block,
+            (:line, 180, :none),
+            (:call, :ccall, (:quote, #QuoteNode
+                :jl_switchto
+              ), :Void, (:tuple, :Any), :t)
+          ), :e, (:block,
+            (:line, 182, :none),
+            (:call, :undo),
+            (:line, 183, :none),
+            (:call, :rethrow, :e)
+          )),
+        (:line, 185, :none),
+        (:(=), :ct, (:call, :current_task)),
+        (:line, 186, :none),
+        (:(=), :exc, (:., :ct, (:quote, #QuoteNode
+              :exception
+            ))),
+        (:line, 187, :none),
+        (:if, (:call, :(!==), :exc, :nothing), (:block,
+            (:line, 188, :none),
+            (:(=), (:., :ct, (:quote, #QuoteNode
+                  :exception
+                )), :nothing),
+            (:line, 189, :none),
+            (:call, :throw, :exc)
+          )),
+        (:line, 191, :none),
+        (:(=), :result, (:., :ct, (:quote, #QuoteNode
+              :result
+            ))),
+        (:line, 192, :none),
+        (:(=), (:., :ct, (:quote, #QuoteNode
+              :result
+            )), :nothing),
+        (:line, 193, :none),
+        (:return, :result)
+      )),
+    (:line, 197, :none),
+    (:function, (:call, :throwto, (:(::), :t, :Task), (:(::), :exc, :ANY)), (:block,
+        (:line, 198, :none),
+        (:(=), (:., :t, (:quote, #QuoteNode
+              :exception
+            )), :exc),
+        (:line, 199, :none),
+        (:return, (:call, :yieldto, :t))
+      )),
+    (:line, 202, :none),
+    (:function, (:call, :ensure_self_descheduled), (:block,
+        (:line, 204, :none),
+        (:(=), :ct, (:call, :current_task)),
+        (:line, 205, :none),
+        (:if, (:call, :(==), (:., :ct, (:quote, #QuoteNode
+                :state
+              )), (:quote, #QuoteNode
+              :queued
+            )), (:block,
+            (:line, 206, :none),
+            (:(=), :i, (:call, :findfirst, :Workqueue, :ct)),
+            (:line, 207, :none),
+            (:||, (:call, :(==), :i, 0), (:call, :deleteat!, :Workqueue, :i)),
+            (:line, 208, :none),
+            (:(=), (:., :ct, (:quote, #QuoteNode
+                  :state
+                )), (:quote, #QuoteNode
+                :runnable
+              ))
+          )),
+        (:line, 210, :none),
+        :nothing
+      )),
+    (:line, 213, :none),
+    (:function, (:call, :wait), (:block,
+        (:line, 214, :none),
+        (:while, true, (:block,
+            (:line, 215, :none),
+            (:if, (:call, :isempty, :Workqueue), (:block,
+                (:line, 216, :none),
+                (:(=), :c, (:call, :process_events, true)),
+                (:line, 217, :none),
+                (:if, (:&&, (:call, :(==), :c, 0), (:&&, (:call, :(!=), (:call, :eventloop), :C_NULL), (:call, :isempty, :Workqueue))), (:block,
+                    (:line, 220, :none),
+                    (:call, :pause)
+                  ))
+              ), (:block,
+                (:line, 223, :none),
+                (:let, (:block,
+                    (:line, 224, :none),
+                    (:if, (:call, :(!=), (:., :t, (:quote, #QuoteNode
+                            :state
+                          )), (:quote, #QuoteNode
+                          :queued
+                        )), (:block,
+                        (:line, 229, :none),
+                        (:call, :ccall, (:quote, #QuoteNode
+                            :jl_safe_printf
+                          ), :Void, (:tuple, (:curly, :Ptr, :UInt8), (:curly, :Vararg, :Int32)), "\nWARNING: Workqueue inconsistency detected: shift!(Workqueue).state != :queued\n"),
+                        (:line, 231, :none),
+                        (:continue,)
+                      )),
+                    (:line, 233, :none),
+                    (:(=), (:., :t, (:quote, #QuoteNode
+                          :state
+                        )), (:quote, #QuoteNode
+                        :runnable
+                      )),
+                    (:line, 234, :none),
+                    (:(=), :result, (:call, :try_yieldto, (:->, (:tuple,), (:block,
+                            (:line, 237, :none),
+                            (:call, :unshift!, :Workqueue, :t),
+                            (:line, 238, :none),
+                            (:(=), (:., :t, (:quote, #QuoteNode
+                                  :state
+                                )), (:quote, #QuoteNode
+                                :queued
+                              )),
+                            (:line, 239, :none),
+                            (:call, :ensure_self_descheduled)
+                          )), :t)),
+                    (:line, 241, :none),
+                    (:call, :process_events, false),
+                    (:line, 243, :none),
+                    (:return, :result)
+                  ), (:(=), :t, (:call, :shift!, :Workqueue)))
+              ))
+          ))
+      )),
+    (:line, 250, :none),
+    (:if, (:call, :is_windows), (:block,
+        (:line, 251, :none),
+        (:(=), (:call, :pause), (:block,
+            (:line, 251, :none),
+            (:call, :ccall, (:quote, #QuoteNode
+                :Sleep
+              ), :stdcall, :Void, (:tuple, :UInt32), 0xffffffff)
+          ))
+      ), (:block,
+        (:line, 253, :none),
+        (:(=), (:call, :pause), (:block,
+            (:line, 253, :none),
+            (:call, :ccall, (:quote, #QuoteNode
+                :pause
+              ), :Void, (:tuple,))
+          ))
+      )),
+    (:line, 259, :none),
+    (:macrocall, :(Core.@doc), "    AsyncCondition()\n\nCreate a async condition that wakes up tasks waiting for it\n(by calling [`wait`](@ref) on the object)\nwhen notified from C by a call to `uv_async_send`.\nWaiting tasks are woken with an error when the object is closed (by [`close`](@ref).\nUse [`isopen`](@ref) to check whether it is still active.\n", (:type, true, :AsyncCondition, (:block,
+          (:line, 269, :none),
+          (:(::), :handle, (:curly, :Ptr, :Void)),
+          (:line, 270, :none),
+          (:(::), :cond, :Condition),
+          (:line, 271, :none),
+          (:(::), :isopen, :Bool),
+          (:line, 273, :none),
+          (:function, (:call, :AsyncCondition), (:block,
+              (:line, 274, :none),
+              (:(=), :this, (:call, :new, (:call, (:., :Libc, (:quote, #QuoteNode
+                        :malloc
+                      )), :_sizeof_uv_async), (:call, :Condition), true)),
+              (:line, 275, :none),
+              (:call, :associate_julia_struct, (:., :this, (:quote, #QuoteNode
+                    :handle
+                  )), :this),
+              (:line, 276, :none),
+              (:call, :finalizer, :this, :uvfinalize),
+              (:line, 277, :none),
+              (:(=), :err, (:call, :ccall, (:quote, #QuoteNode
+                    :uv_async_init
+                  ), :Cint, (:tuple, (:curly, :Ptr, :Void), (:curly, :Ptr, :Void), (:curly, :Ptr, :Void)), (:call, :eventloop), :this, (:(::), :uv_jl_asynccb, (:curly, :Ptr, :Void)))),
+              (:line, 279, :none),
+              (:if, (:call, :(!=), :err, 0), (:block,
+                  (:line, 281, :none),
+                  (:call, (:., :Libc, (:quote, #QuoteNode
+                        :free
+                      )), (:., :this, (:quote, #QuoteNode
+                        :handle
+                      ))),
+                  (:line, 282, :none),
+                  (:(=), (:., :this, (:quote, #QuoteNode
+                        :handle
+                      )), :C_NULL),
+                  (:line, 283, :none),
+                  (:call, :throw, (:call, :UVError, "uv_async_init", :err))
+                )),
+              (:line, 285, :none),
+              (:return, :this)
+            ))
+        ))),
+    (:line, 289, :none),
+    (:macrocall, :(Core.@doc), "    AsyncCondition(callback::Function)\n\nCreate a async condition that calls the given `callback` function. The `callback` is passed one argument,\nthe async condition object itself.\n", (:function, (:call, :AsyncCondition, (:(::), :cb, :Function)), (:block,
+          (:line, 296, :none),
+          (:(=), :async, (:call, :AsyncCondition)),
+          (:line, 297, :none),
+          (:(=), :waiter, (:call, :Task, (:function, (:tuple,), (:block,
+                  (:line, 298, :none),
+                  (:while, (:call, :isopen, :async), (:block,
+                      (:line, 299, :none),
+                      (:(=), :success, (:try, (:block,
+                            (:line, 300, :none),
+                            (:call, :wait, :async),
+                            (:line, 301, :none),
+                            true
+                          ), :exc, (:block,
+                            (:line, 303, :none),
+                            (:||, (:call, :isa, :exc, :EOFError), (:call, :rethrow, :exc))
+                          ))),
+                      (:line, 305, :none),
+                      (:&&, :success, (:call, :cb, :async))
+                    ))
+                )))),
+          (:line, 310, :none),
+          (:call, :yield, :waiter),
+          (:line, 311, :none),
+          (:return, :async)
+        ))),
+    (:line, 316, :none),
+    (:macrocall, :(Core.@doc), "    Timer(delay, repeat=0)\n\nCreate a timer that wakes up tasks waiting for it (by calling [`wait`](@ref) on the timer object) at\na specified interval.  Times are in seconds.  Waiting tasks are woken with an error when the\ntimer is closed (by [`close`](@ref). Use [`isopen`](@ref) to check whether a timer is still active.\n", (:type, true, :Timer, (:block,
+          (:line, 324, :none),
+          (:(::), :handle, (:curly, :Ptr, :Void)),
+          (:line, 325, :none),
+          (:(::), :cond, :Condition),
+          (:line, 326, :none),
+          (:(::), :isopen, :Bool),
+          (:line, 328, :none),
+          (:function, (:call, :Timer, (:(::), :timeout, :Real), (:kw, (:(::), :repeat, :Real), 0.0)), (:block,
+              (:line, 329, :none),
+              (:||, (:call, :≥, :timeout, 0), (:call, :throw, (:call, :ArgumentError, (:string, "timer cannot have negative timeout of ", :timeout, " seconds")))),
+              (:line, 330, :none),
+              (:||, (:call, :≥, :repeat, 0), (:call, :throw, (:call, :ArgumentError, (:string, "timer cannot have negative repeat interval of ", :repeat, " seconds")))),
+              (:line, 332, :none),
+              (:(=), :this, (:call, :new, (:call, (:., :Libc, (:quote, #QuoteNode
+                        :malloc
+                      )), :_sizeof_uv_timer), (:call, :Condition), true)),
+              (:line, 333, :none),
+              (:(=), :err, (:call, :ccall, (:quote, #QuoteNode
+                    :uv_timer_init
+                  ), :Cint, (:tuple, (:curly, :Ptr, :Void), (:curly, :Ptr, :Void)), (:call, :eventloop), :this)),
+              (:line, 334, :none),
+              (:if, (:call, :(!=), :err, 0), (:block,
+                  (:line, 336, :none),
+                  (:call, (:., :Libc, (:quote, #QuoteNode
+                        :free
+                      )), (:., :this, (:quote, #QuoteNode
+                        :handle
+                      ))),
+                  (:line, 337, :none),
+                  (:(=), (:., :this, (:quote, #QuoteNode
+                        :handle
+                      )), :C_NULL),
+                  (:line, 338, :none),
+                  (:call, :throw, (:call, :UVError, "uv_timer_init", :err))
+                )),
+              (:line, 341, :none),
+              (:call, :associate_julia_struct, (:., :this, (:quote, #QuoteNode
+                    :handle
+                  )), :this),
+              (:line, 342, :none),
+              (:call, :finalizer, :this, :uvfinalize),
+              (:line, 344, :none),
+              (:call, :ccall, (:quote, #QuoteNode
+                  :uv_update_time
+                ), :Void, (:tuple, (:curly, :Ptr, :Void)), (:call, :eventloop)),
+              (:line, 345, :none),
+              (:call, :ccall, (:quote, #QuoteNode
+                  :uv_timer_start
+                ), :Cint, (:tuple, (:curly, :Ptr, :Void), (:curly, :Ptr, :Void), :UInt64, :UInt64), :this, (:(::), :uv_jl_timercb, (:curly, :Ptr, :Void)), (:call, :+, (:call, :UInt64, (:call, :round, (:call, :*, :timeout, 1000))), 1), (:call, :UInt64, (:call, :round, (:call, :*, :repeat, 1000)))),
+              (:line, 348, :none),
+              (:return, :this)
+            ))
+        ))),
+    (:line, 352, :none),
+    (:(=), (:call, :unsafe_convert, (:(::), (:curly, :Type, (:curly, :Ptr, :Void))), (:(::), :t, :Timer)), (:block,
+        (:line, 352, :none),
+        (:., :t, (:quote, #QuoteNode
+            :handle
+          ))
+      )),
+    (:line, 353, :none),
+    (:(=), (:call, :unsafe_convert, (:(::), (:curly, :Type, (:curly, :Ptr, :Void))), (:(::), :async, :AsyncCondition)), (:block,
+        (:line, 353, :none),
+        (:., :async, (:quote, #QuoteNode
+            :handle
+          ))
+      )),
+    (:line, 355, :none),
+    (:function, (:call, :wait, (:(::), :t, (:curly, :Union, :Timer, :AsyncCondition))), (:block,
+        (:line, 356, :none),
+        (:||, (:call, :isopen, :t), (:call, :throw, (:call, :EOFError))),
+        (:line, 357, :none),
+        (:call, :stream_wait, :t, (:., :t, (:quote, #QuoteNode
+              :cond
+            )))
+      )),
+    (:line, 360, :none),
+    (:(=), (:call, :isopen, (:(::), :t, (:curly, :Union, :Timer, :AsyncCondition))), (:block,
+        (:line, 360, :none),
+        (:., :t, (:quote, #QuoteNode
+            :isopen
+          ))
+      )),
+    (:line, 362, :none),
+    (:function, (:call, :close, (:(::), :t, (:curly, :Union, :Timer, :AsyncCondition))), (:block,
+        (:line, 363, :none),
+        (:if, (:&&, (:call, :(!=), (:., :t, (:quote, #QuoteNode
+                  :handle
+                )), :C_NULL), (:call, :isopen, :t)), (:block,
+            (:line, 364, :none),
+            (:(=), (:., :t, (:quote, #QuoteNode
+                  :isopen
+                )), false),
+            (:line, 365, :none),
+            (:&&, (:call, :isa, :t, :Timer), (:call, :ccall, (:quote, #QuoteNode
+                  :uv_timer_stop
+                ), :Cint, (:tuple, (:curly, :Ptr, :Void)), :t)),
+            (:line, 366, :none),
+            (:call, :ccall, (:quote, #QuoteNode
+                :jl_close_uv
+              ), :Void, (:tuple, (:curly, :Ptr, :Void)), :t)
+          )),
+        (:line, 368, :none),
+        :nothing
+      )),
+    (:line, 371, :none),
+    (:function, (:call, :uvfinalize, (:(::), :t, (:curly, :Union, :Timer, :AsyncCondition))), (:block,
+        (:line, 372, :none),
+        (:if, (:call, :(!=), (:., :t, (:quote, #QuoteNode
+                :handle
+              )), :C_NULL), (:block,
+            (:line, 373, :none),
+            (:call, :disassociate_julia_struct, (:., :t, (:quote, #QuoteNode
+                  :handle
+                ))),
+            (:line, 374, :none),
+            (:call, :close, :t),
+            (:line, 375, :none),
+            (:(=), (:., :t, (:quote, #QuoteNode
+                  :handle
+                )), :C_NULL)
+          )),
+        (:line, 377, :none),
+        (:(=), (:., :t, (:quote, #QuoteNode
+              :isopen
+            )), false),
+        (:line, 378, :none),
+        :nothing
+      )),
+    (:line, 381, :none),
+    (:function, (:call, :_uv_hook_close, (:(::), :t, (:curly, :Union, :Timer, :AsyncCondition))), (:block,
+        (:line, 382, :none),
+        (:call, :uvfinalize, :t),
+        (:line, 383, :none),
+        (:call, :notify_error, (:., :t, (:quote, #QuoteNode
+              :cond
+            )), (:call, :EOFError)),
+        (:line, 384, :none),
+        :nothing
+      )),
+    (:line, 387, :none),
+    (:function, (:call, :uv_asynccb, (:(::), :handle, (:curly, :Ptr, :Void))), (:block,
+        (:line, 388, :none),
+        (:(=), :async, (:macrocall, Symbol("@handle_as"), :handle, :AsyncCondition)),
+        (:line, 389, :none),
+        (:call, :notify, (:., :async, (:quote, #QuoteNode
+              :cond
+            ))),
+        (:line, 390, :none),
+        :nothing
+      )),
+    (:line, 393, :none),
+    (:function, (:call, :uv_timercb, (:(::), :handle, (:curly, :Ptr, :Void))), (:block,
+        (:line, 394, :none),
+        (:(=), :t, (:macrocall, Symbol("@handle_as"), :handle, :Timer)),
+        (:line, 395, :none),
+        (:if, (:call, :(==), (:call, :ccall, (:quote, #QuoteNode
+                :uv_timer_get_repeat
+              ), :UInt64, (:tuple, (:curly, :Ptr, :Void)), :t), 0), (:block,
+            (:line, 397, :none),
+            (:call, :close, :t)
+          )),
+        (:line, 399, :none),
+        (:call, :notify, (:., :t, (:quote, #QuoteNode
+              :cond
+            ))),
+        (:line, 400, :none),
+        :nothing
+      )),
+    (:line, 403, :none),
+    (:macrocall, :(Core.@doc), "    sleep(seconds)\n\nBlock the current task for a specified number of seconds. The minimum sleep time is 1\nmillisecond or input of `0.001`.\n", (:function, (:call, :sleep, (:(::), :sec, :Real)), (:block,
+          (:line, 410, :none),
+          (:||, (:call, :≥, :sec, 0), (:call, :throw, (:call, :ArgumentError, (:string, "cannot sleep for ", :sec, " seconds")))),
+          (:line, 411, :none),
+          (:call, :wait, (:call, :Timer, :sec)),
+          (:line, 412, :none),
+          :nothing
+        ))),
+    (:line, 416, :none),
+    (:macrocall, :(Core.@doc), "    Timer(callback::Function, delay, repeat=0)\n\nCreate a timer to call the given `callback` function. The `callback` is passed one argument,\nthe timer object itself. The callback will be invoked after the specified initial `delay`,\nand then repeating with the given `repeat` interval. If `repeat` is `0`, the timer is only\ntriggered once. Times are in seconds. A timer is stopped and has its resources freed by\ncalling [`close`](@ref) on it.\n", (:function, (:call, :Timer, (:(::), :cb, :Function), (:(::), :timeout, :Real), (:kw, (:(::), :repeat, :Real), 0.0)), (:block,
+          (:line, 426, :none),
+          (:(=), :t, (:call, :Timer, :timeout, :repeat)),
+          (:line, 427, :none),
+          (:(=), :waiter, (:call, :Task, (:function, (:tuple,), (:block,
+                  (:line, 428, :none),
+                  (:while, (:call, :isopen, :t), (:block,
+                      (:line, 429, :none),
+                      (:(=), :success, (:try, (:block,
+                            (:line, 430, :none),
+                            (:call, :wait, :t),
+                            (:line, 431, :none),
+                            true
+                          ), :exc, (:block,
+                            (:line, 433, :none),
+                            (:||, (:call, :isa, :exc, :EOFError), (:call, :rethrow, :exc)),
+                            (:line, 434, :none),
+                            false
+                          ))),
+                      (:line, 436, :none),
+                      (:&&, :success, (:call, :cb, :t))
+                    ))
+                )))),
+          (:line, 441, :none),
+          (:call, :yield, :waiter),
+          (:line, 442, :none),
+          (:return, :t)
+        )))
+  ))

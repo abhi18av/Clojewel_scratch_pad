@@ -1,0 +1,1276 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:function, (:call, :_truncate_at_width_or_chars, :str, :width, (:kw, :chars, ""), (:kw, :truncmark, "…")), (:block,
+        (:line, 4, :none),
+        (:(=), :truncwidth, (:call, :strwidth, :truncmark)),
+        (:line, 5, :none),
+        (:&&, (:||, (:call, :(<=), :width, 0), (:call, :<, :width, :truncwidth)), (:return, "")),
+        (:line, 7, :none),
+        (:(=), :wid, (:(=), :truncidx, (:(=), :lastidx, 0))),
+        (:line, 8, :none),
+        (:(=), :idx, (:call, :start, :str)),
+        (:line, 9, :none),
+        (:while, (:call, :!, (:call, :done, :str, :idx)), (:block,
+            (:line, 10, :none),
+            (:(=), :lastidx, :idx),
+            (:line, 11, :none),
+            (:(=), (:tuple, :c, :idx), (:call, :next, :str, :idx)),
+            (:line, 12, :none),
+            (:+=, :wid, (:call, :charwidth, :c)),
+            (:line, 13, :none),
+            (:&&, (:call, :(>=), :wid, (:call, :-, :width, :truncwidth)), (:&&, (:call, :(==), :truncidx, 0), (:(=), :truncidx, :lastidx))),
+            (:line, 14, :none),
+            (:&&, (:||, (:call, :(>=), :wid, :width), (:call, :in, :c, :chars)), (:break,))
+          )),
+        (:line, 17, :none),
+        (:&&, (:call, :(!=), :lastidx, 0), (:&&, (:call, :in, (:ref, :str, :lastidx), :chars), (:(=), :lastidx, (:call, :prevind, :str, :lastidx)))),
+        (:line, 18, :none),
+        (:&&, (:call, :(==), :truncidx, 0), (:(=), :truncidx, :lastidx)),
+        (:line, 19, :none),
+        (:if, (:call, :<, :lastidx, (:call, :endof, :str)), (:block,
+            (:line, 20, :none),
+            (:return, (:call, :String, (:call, :*, (:call, :SubString, :str, 1, :truncidx), :truncmark)))
+          ), (:block,
+            (:line, 22, :none),
+            (:return, (:call, :String, :str))
+          ))
+      )),
+    (:line, 26, :none),
+    (:function, (:where, (:where, (:call, :show, (:(::), :io, :IO), (:(::), :t, (:curly, :Associative, :K, :V))), :V), :K), (:block,
+        (:line, 27, :none),
+        (:(=), :recur_io, (:call, :IOContext, :io, (:call, :(=>), (:quote, #QuoteNode
+                :SHOWN_SET
+              ), :t))),
+        (:line, 28, :none),
+        (:(=), (:(::), :limit, :Bool), (:call, :get, :io, (:quote, #QuoteNode
+              :limit
+            ), false)),
+        (:line, 29, :none),
+        (:if, (:call, :!, (:call, :haskey, :io, (:quote, #QuoteNode
+                :compact
+              ))), (:block,
+            (:line, 30, :none),
+            (:(=), :recur_io, (:call, :IOContext, :recur_io, (:call, :(=>), (:quote, #QuoteNode
+                    :compact
+                  ), true)))
+          )),
+        (:line, 34, :none),
+        (:if, (:call, :isempty, :t), (:block,
+            (:line, 35, :none),
+            (:call, :print, :io, (:call, :typeof, :t), "()")
+          ), (:block,
+            (:line, 37, :none),
+            (:if, (:&&, (:call, :isleaftype, :K), (:call, :isleaftype, :V)), (:block,
+                (:line, 38, :none),
+                (:call, :print, :io, (:., (:call, :typeof, :t), (:quote, #QuoteNode
+                      :name
+                    )))
+              ), (:block,
+                (:line, 40, :none),
+                (:call, :print, :io, (:call, :typeof, :t))
+              )),
+            (:line, 42, :none),
+            (:call, :print, :io, '('),
+            (:line, 43, :none),
+            (:if, (:call, :!, (:call, :show_circular, :io, :t)), (:block,
+                (:line, 44, :none),
+                (:(=), :first, true),
+                (:line, 45, :none),
+                (:(=), :n, 0),
+                (:line, 46, :none),
+                (:for, (:(=), :pair, :t), (:block,
+                    (:line, 47, :none),
+                    (:||, :first, (:call, :print, :io, ',')),
+                    (:line, 48, :none),
+                    (:(=), :first, false),
+                    (:line, 49, :none),
+                    (:call, :show, :recur_io, :pair),
+                    (:line, 50, :none),
+                    (:+=, :n, 1),
+                    (:line, 51, :none),
+                    (:&&, :limit, (:&&, (:call, :(>=), :n, 10), (:block,
+                          (:call, :print, :io, "…"),
+                          (:break,)
+                        )))
+                  ))
+              )),
+            (:line, 54, :none),
+            (:call, :print, :io, ')')
+          ))
+      )),
+    (:line, 58, :none),
+    (:abstract, :AbstractSerializer),
+    (:line, 63, :none),
+    (:const, (:global, (:(=), :maxallowedprobe, 16))),
+    (:line, 64, :none),
+    (:const, (:global, (:(=), :maxprobeshift, 6))),
+    (:line, 66, :none),
+    (:(=), (:call, :_tablesz, (:(::), :x, :Integer)), (:block,
+        (:line, 66, :none),
+        (:if, (:call, :<, :x, 16), 16, (:call, :<<, (:call, :one, :x), (:call, :-, (:call, :<<, (:call, :sizeof, :x), 3), (:call, :leading_zeros, (:call, :-, :x, 1)))))
+      )),
+    (:line, 68, :none),
+    (:macrocall, :(Core.@doc), "    Dict([itr])\n\n`Dict{K,V}()` constructs a hash table with keys of type `K` and values of type `V`.\n\nGiven a single iterable argument, constructs a [`Dict`](@ref) whose key-value pairs\nare taken from 2-tuples `(key,value)` generated by the argument.\n\n```jldoctest\njulia> Dict([(\"A\", 1), (\"B\", 2)])\nDict{String,Int64} with 2 entries:\n  \"B\" => 2\n  \"A\" => 1\n```\n\nAlternatively, a sequence of pair arguments may be passed.\n\n```jldoctest\njulia> Dict(\"A\"=>1, \"B\"=>2)\nDict{String,Int64} with 2 entries:\n  \"B\" => 2\n  \"A\" => 1\n```\n", (:type, true, (:<:, (:curly, :Dict, :K, :V), (:curly, :Associative, :K, :V)), (:block,
+          (:line, 93, :none),
+          (:(::), :slots, (:curly, :Array, :UInt8, 1)),
+          (:line, 94, :none),
+          (:(::), :keys, (:curly, :Array, :K, 1)),
+          (:line, 95, :none),
+          (:(::), :vals, (:curly, :Array, :V, 1)),
+          (:line, 96, :none),
+          (:(::), :ndel, :Int),
+          (:line, 97, :none),
+          (:(::), :count, :Int),
+          (:line, 98, :none),
+          (:(::), :age, :UInt),
+          (:line, 99, :none),
+          (:(::), :idxfloor, :Int),
+          (:line, 100, :none),
+          (:(::), :maxprobe, :Int),
+          (:line, 102, :none),
+          (:function, (:where, (:where, (:call, (:curly, :Dict, :K, :V)), :V), :K), (:block,
+              (:line, 103, :none),
+              (:(=), :n, 16),
+              (:line, 104, :none),
+              (:call, :new, (:call, :zeros, :UInt8, :n), (:call, (:curly, :Array, :K, 1), :n), (:call, (:curly, :Array, :V, 1), :n), 0, 0, 0, 1, 0)
+            )),
+          (:line, 106, :none),
+          (:function, (:where, (:where, (:call, (:curly, :Dict, :K, :V), (:(::), :d, (:curly, :Dict, :K, :V))), :V), :K), (:block,
+              (:line, 107, :none),
+              (:if, (:call, :>, (:., :d, (:quote, #QuoteNode
+                      :ndel
+                    )), 0), (:block,
+                  (:line, 108, :none),
+                  (:call, :rehash!, :d)
+                )),
+              (:line, 110, :none),
+              (:macrocall, Symbol("@assert"), (:call, :(==), (:., :d, (:quote, #QuoteNode
+                      :ndel
+                    )), 0)),
+              (:line, 111, :none),
+              (:call, :new, (:call, :copy, (:., :d, (:quote, #QuoteNode
+                      :slots
+                    ))), (:call, :copy, (:., :d, (:quote, #QuoteNode
+                      :keys
+                    ))), (:call, :copy, (:., :d, (:quote, #QuoteNode
+                      :vals
+                    ))), 0, (:., :d, (:quote, #QuoteNode
+                    :count
+                  )), (:., :d, (:quote, #QuoteNode
+                    :age
+                  )), (:., :d, (:quote, #QuoteNode
+                    :idxfloor
+                  )), (:., :d, (:quote, #QuoteNode
+                    :maxprobe
+                  )))
+            ))
+        ))),
+    (:line, 115, :none),
+    (:function, (:where, (:where, (:call, (:curly, :Dict, :K, :V), :kv), :V), :K), (:block,
+        (:line, 116, :none),
+        (:(=), :h, (:call, (:curly, :Dict, :K, :V))),
+        (:line, 117, :none),
+        (:for, (:(=), (:tuple, :k, :v), :kv), (:block,
+            (:line, 118, :none),
+            (:(=), (:ref, :h, :k), :v)
+          )),
+        (:line, 120, :none),
+        (:return, :h)
+      )),
+    (:line, 122, :none),
+    (:(=), (:where, (:call, (:curly, :Dict, :K, :V), (:(::), :p, :Pair)), :K, :V), (:block,
+        (:line, 122, :none),
+        (:call, :setindex!, (:call, (:curly, :Dict, :K, :V)), (:., :p, (:quote, #QuoteNode
+              :second
+            )), (:., :p, (:quote, #QuoteNode
+              :first
+            )))
+      )),
+    (:line, 123, :none),
+    (:function, (:where, (:where, (:call, (:curly, :Dict, :K, :V), (:..., (:(::), :ps, :Pair))), :V), :K), (:block,
+        (:line, 124, :none),
+        (:(=), :h, (:call, (:curly, :Dict, :K, :V))),
+        (:line, 125, :none),
+        (:call, :sizehint!, :h, (:call, :length, :ps)),
+        (:line, 126, :none),
+        (:for, (:(=), :p, :ps), (:block,
+            (:line, 127, :none),
+            (:(=), (:ref, :h, (:., :p, (:quote, #QuoteNode
+                    :first
+                  ))), (:., :p, (:quote, #QuoteNode
+                  :second
+                )))
+          )),
+        (:line, 129, :none),
+        (:return, :h)
+      )),
+    (:line, 132, :none),
+    (:(=), (:call, :Dict), (:block,
+        (:line, 132, :none),
+        (:call, (:curly, :Dict, :Any, :Any))
+      )),
+    (:line, 133, :none),
+    (:(=), (:call, :Dict, (:(::), :kv, (:curly, :Tuple))), (:block,
+        (:line, 133, :none),
+        (:call, :Dict)
+      )),
+    (:line, 134, :none),
+    (:(=), (:call, :copy, (:(::), :d, :Dict)), (:block,
+        (:line, 134, :none),
+        (:call, :Dict, :d)
+      )),
+    (:line, 136, :none),
+    (:const, (:(=), :AnyDict, (:curly, :Dict, :Any, :Any))),
+    (:line, 138, :none),
+    (:(=), (:where, (:call, :Dict, (:..., (:(::), :ps, (:curly, :Pair, :K, :V)))), :K, :V), (:block,
+        (:line, 138, :none),
+        (:call, (:curly, :Dict, :K, :V), :ps)
+      )),
+    (:line, 139, :none),
+    (:(=), (:where, (:call, :Dict, (:..., (:(::), :ps, (:curly, :Pair, :K)))), :K), (:block,
+        (:line, 139, :none),
+        (:call, (:curly, :Dict, :K, :Any), :ps)
+      )),
+    (:line, 140, :none),
+    (:(=), (:where, (:call, :Dict, (:..., (:(::), :ps, (:where, (:curly, :Pair, :K, :V), :K)))), :V), (:block,
+        (:line, 140, :none),
+        (:call, (:curly, :Dict, :Any, :V), :ps)
+      )),
+    (:line, 141, :none),
+    (:(=), (:call, :Dict, (:..., (:(::), :ps, :Pair))), (:block,
+        (:line, 141, :none),
+        (:call, (:curly, :Dict, :Any, :Any), :ps)
+      )),
+    (:line, 143, :none),
+    (:function, (:call, :Dict, :kv), (:block,
+        (:line, 144, :none),
+        (:try, (:block,
+            (:line, 145, :none),
+            (:call, :associative_with_eltype, (:->, (:tuple, :K, :V), (:block,
+                  (:line, 145, :none),
+                  (:curly, :Dict, :K, :V)
+                )), :kv, (:call, :eltype, :kv))
+          ), :e, (:block,
+            (:line, 147, :none),
+            (:if, (:||, (:call, :!, (:call, :applicable, :start, :kv)), (:call, :!, (:call, :all, (:->, :x, (:block,
+                        (:line, 147, :none),
+                        (:call, :isa, :x, (:curly, :Union, :Tuple, :Pair))
+                      )), :kv))), (:block,
+                (:line, 148, :none),
+                (:call, :throw, (:call, :ArgumentError, "Dict(kv): kv needs to be an iterator of tuples or pairs"))
+              ), (:block,
+                (:line, 150, :none),
+                (:call, :rethrow, :e)
+              ))
+          ))
+      )),
+    (:line, 155, :none),
+    (:(=), (:curly, :TP, :K, :V), (:curly, :Union, (:curly, :Type, (:curly, :Tuple, :K, :V)), (:curly, :Type, (:curly, :Pair, :K, :V)))),
+    (:line, 157, :none),
+    (:(=), (:where, (:call, :associative_with_eltype, :DT_apply, :kv, (:(::), (:curly, :TP, :K, :V))), :K, :V), (:block,
+        (:line, 157, :none),
+        (:call, (:call, :DT_apply, :K, :V), :kv)
+      )),
+    (:line, 158, :none),
+    (:(=), (:where, (:call, :associative_with_eltype, :DT_apply, (:(::), :kv, :Generator), (:(::), (:curly, :TP, :K, :V))), :K, :V), (:block,
+        (:line, 158, :none),
+        (:call, (:call, :DT_apply, :K, :V), :kv)
+      )),
+    (:line, 159, :none),
+    (:(=), (:where, (:call, :associative_with_eltype, :DT_apply, (:(::), (:curly, :Type, (:curly, :Pair, :K, :V)))), :K, :V), (:block,
+        (:line, 159, :none),
+        (:call, (:call, :DT_apply, :K, :V))
+      )),
+    (:line, 160, :none),
+    (:(=), (:call, :associative_with_eltype, :DT_apply, (:(::), :Type)), (:block,
+        (:line, 160, :none),
+        (:call, (:call, :DT_apply, :Any, :Any))
+      )),
+    (:line, 161, :none),
+    (:(=), (:where, (:call, :associative_with_eltype, (:(::), :DT_apply, :F), :kv, :t), :F), (:block,
+        (:line, 161, :none),
+        (:call, :grow_to!, (:call, :associative_with_eltype, :DT_apply, (:call, :_default_eltype, (:call, :typeof, :kv))), :kv)
+      )),
+    (:line, 162, :none),
+    (:function, (:where, (:call, :associative_with_eltype, (:(::), :DT_apply, :F), (:(::), :kv, :Generator), :t), :F), (:block,
+        (:line, 163, :none),
+        (:(=), :T, (:call, :_default_eltype, (:call, :typeof, :kv))),
+        (:line, 164, :none),
+        (:if, (:&&, (:<:, :T, (:curly, :Union, :Pair, (:curly, :Tuple, :Any, :Any))), (:call, :isleaftype, :T)), (:block,
+            (:line, 165, :none),
+            (:return, (:call, :associative_with_eltype, :DT_apply, :kv, :T))
+          )),
+        (:line, 167, :none),
+        (:return, (:call, :grow_to!, (:call, :associative_with_eltype, :DT_apply, :T), :kv))
+      )),
+    (:line, 172, :none),
+    (:function, (:call, :grow_to!, (:(::), :dest, :Associative), :itr), (:block,
+        (:line, 173, :none),
+        (:(=), :out, (:call, :grow_to!, (:call, :similar, :dest, (:curly, :Pair, (:curly, :Union), (:curly, :Union))), :itr, (:call, :start, :itr))),
+        (:line, 174, :none),
+        (:return, (:if, (:call, :isempty, :out), :dest, :out))
+      )),
+    (:line, 177, :none),
+    (:function, (:where, (:where, (:call, :grow_to!, (:(::), :dest, (:curly, :Associative, :K, :V)), :itr, :st), :V), :K), (:block,
+        (:line, 178, :none),
+        (:while, (:call, :!, (:call, :done, :itr, :st)), (:block,
+            (:line, 179, :none),
+            (:(=), (:tuple, (:tuple, :k, :v), :st), (:call, :next, :itr, :st)),
+            (:line, 180, :none),
+            (:if, (:&&, (:call, :isa, :k, :K), (:call, :isa, :v, :V)), (:block,
+                (:line, 181, :none),
+                (:(=), (:ref, :dest, :k), :v)
+              ), (:block,
+                (:line, 183, :none),
+                (:(=), :new, (:call, :similar, :dest, (:curly, :Pair, (:call, :typejoin, :K, (:call, :typeof, :k)), (:call, :typejoin, :V, (:call, :typeof, :v))))),
+                (:line, 184, :none),
+                (:call, :copy!, :new, :dest),
+                (:line, 185, :none),
+                (:(=), (:ref, :new, :k), :v),
+                (:line, 186, :none),
+                (:return, (:call, :grow_to!, :new, :itr, :st))
+              ))
+          )),
+        (:line, 189, :none),
+        (:return, :dest)
+      )),
+    (:line, 192, :none),
+    (:(=), (:where, (:call, :similar, (:(::), :d, (:curly, :Dict, :K, :V))), :K, :V), (:block,
+        (:line, 192, :none),
+        (:call, (:curly, :Dict, :K, :V))
+      )),
+    (:line, 193, :none),
+    (:(=), (:where, (:call, :similar, (:(::), :d, :Dict), (:(::), (:curly, :Type, (:curly, :Pair, :K, :V)))), :K, :V), (:block,
+        (:line, 193, :none),
+        (:call, (:curly, :Dict, :K, :V))
+      )),
+    (:line, 196, :none),
+    (:function, (:where, (:where, (:call, :convert, (:(::), (:curly, :Type, (:curly, :Dict, :K, :V))), (:(::), :d, :Associative)), :V), :K), (:block,
+        (:line, 197, :none),
+        (:(=), :h, (:call, (:curly, :Dict, :K, :V))),
+        (:line, 198, :none),
+        (:for, (:(=), (:tuple, :k, :v), :d), (:block,
+            (:line, 199, :none),
+            (:(=), :ck, (:call, :convert, :K, :k)),
+            (:line, 200, :none),
+            (:if, (:call, :!, (:call, :haskey, :h, :ck)), (:block,
+                (:line, 201, :none),
+                (:(=), (:ref, :h, :ck), (:call, :convert, :V, :v))
+              ), (:block,
+                (:line, 203, :none),
+                (:call, :error, "key collision during dictionary conversion")
+              ))
+          )),
+        (:line, 206, :none),
+        (:return, :h)
+      )),
+    (:line, 208, :none),
+    (:(=), (:where, (:call, :convert, (:(::), (:curly, :Type, (:curly, :Dict, :K, :V))), (:(::), :d, (:curly, :Dict, :K, :V))), :K, :V), (:block,
+        (:line, 208, :none),
+        :d
+      )),
+    (:line, 210, :none),
+    (:(=), (:call, :hashindex, :key, :sz), (:block,
+        (:line, 210, :none),
+        (:(::), (:call, :+, (:call, :&, (:call, :%, (:call, :hash, :key), :Int), (:call, :-, :sz, 1)), 1), :Int)
+      )),
+    (:line, 212, :none),
+    (:(=), (:call, :isslotempty, (:(::), :h, :Dict), (:(::), :i, :Int)), (:block,
+        (:line, 212, :none),
+        (:call, :(==), (:ref, (:., :h, (:quote, #QuoteNode
+                :slots
+              )), :i), 0x00)
+      )),
+    (:line, 213, :none),
+    (:(=), (:call, :isslotfilled, (:(::), :h, :Dict), (:(::), :i, :Int)), (:block,
+        (:line, 213, :none),
+        (:call, :(==), (:ref, (:., :h, (:quote, #QuoteNode
+                :slots
+              )), :i), 0x01)
+      )),
+    (:line, 214, :none),
+    (:(=), (:call, :isslotmissing, (:(::), :h, :Dict), (:(::), :i, :Int)), (:block,
+        (:line, 214, :none),
+        (:call, :(==), (:ref, (:., :h, (:quote, #QuoteNode
+                :slots
+              )), :i), 0x02)
+      )),
+    (:line, 216, :none),
+    (:function, (:where, (:where, (:call, :rehash!, (:(::), :h, (:curly, :Dict, :K, :V)), (:kw, :newsz, (:call, :length, (:., :h, (:quote, #QuoteNode
+                    :keys
+                  ))))), :V), :K), (:block,
+        (:line, 217, :none),
+        (:(=), :olds, (:., :h, (:quote, #QuoteNode
+              :slots
+            ))),
+        (:line, 218, :none),
+        (:(=), :oldk, (:., :h, (:quote, #QuoteNode
+              :keys
+            ))),
+        (:line, 219, :none),
+        (:(=), :oldv, (:., :h, (:quote, #QuoteNode
+              :vals
+            ))),
+        (:line, 220, :none),
+        (:(=), :sz, (:call, :length, :olds)),
+        (:line, 221, :none),
+        (:(=), :newsz, (:call, :_tablesz, :newsz)),
+        (:line, 222, :none),
+        (:+=, (:., :h, (:quote, #QuoteNode
+              :age
+            )), 1),
+        (:line, 223, :none),
+        (:(=), (:., :h, (:quote, #QuoteNode
+              :idxfloor
+            )), 1),
+        (:line, 224, :none),
+        (:if, (:call, :(==), (:., :h, (:quote, #QuoteNode
+                :count
+              )), 0), (:block,
+            (:line, 225, :none),
+            (:call, :resize!, (:., :h, (:quote, #QuoteNode
+                  :slots
+                )), :newsz),
+            (:line, 226, :none),
+            (:call, :fill!, (:., :h, (:quote, #QuoteNode
+                  :slots
+                )), 0),
+            (:line, 227, :none),
+            (:call, :resize!, (:., :h, (:quote, #QuoteNode
+                  :keys
+                )), :newsz),
+            (:line, 228, :none),
+            (:call, :resize!, (:., :h, (:quote, #QuoteNode
+                  :vals
+                )), :newsz),
+            (:line, 229, :none),
+            (:(=), (:., :h, (:quote, #QuoteNode
+                  :ndel
+                )), 0),
+            (:line, 230, :none),
+            (:return, :h)
+          )),
+        (:line, 233, :none),
+        (:(=), :slots, (:call, :zeros, :UInt8, :newsz)),
+        (:line, 234, :none),
+        (:(=), :keys, (:call, (:curly, :Array, :K, 1), :newsz)),
+        (:line, 235, :none),
+        (:(=), :vals, (:call, (:curly, :Array, :V, 1), :newsz)),
+        (:line, 236, :none),
+        (:(=), :age0, (:., :h, (:quote, #QuoteNode
+              :age
+            ))),
+        (:line, 237, :none),
+        (:(=), :count, 0),
+        (:line, 238, :none),
+        (:(=), :maxprobe, (:., :h, (:quote, #QuoteNode
+              :maxprobe
+            ))),
+        (:line, 240, :none),
+        (:for, (:(=), :i, (:(:), 1, :sz)), (:block,
+            (:line, 241, :none),
+            (:if, (:call, :(==), (:ref, :olds, :i), 0x01), (:block,
+                (:line, 242, :none),
+                (:(=), :k, (:ref, :oldk, :i)),
+                (:line, 243, :none),
+                (:(=), :v, (:ref, :oldv, :i)),
+                (:line, 244, :none),
+                (:(=), :index0, (:(=), :index, (:call, :hashindex, :k, :newsz))),
+                (:line, 245, :none),
+                (:while, (:call, :(!=), (:ref, :slots, :index), 0), (:block,
+                    (:line, 246, :none),
+                    (:(=), :index, (:call, :+, (:call, :&, :index, (:call, :-, :newsz, 1)), 1))
+                  )),
+                (:line, 248, :none),
+                (:(=), :probe, (:call, :&, (:call, :-, :index, :index0), (:call, :-, :newsz, 1))),
+                (:line, 249, :none),
+                (:&&, (:call, :>, :probe, :maxprobe), (:(=), :maxprobe, :probe)),
+                (:line, 250, :none),
+                (:(=), (:ref, :slots, :index), 0x01),
+                (:line, 251, :none),
+                (:(=), (:ref, :keys, :index), :k),
+                (:line, 252, :none),
+                (:(=), (:ref, :vals, :index), :v),
+                (:line, 253, :none),
+                (:+=, :count, 1),
+                (:line, 255, :none),
+                (:if, (:call, :(!=), (:., :h, (:quote, #QuoteNode
+                        :age
+                      )), :age0), (:block,
+                    (:line, 257, :none),
+                    (:return, (:call, :rehash!, :h, :newsz))
+                  ))
+              ))
+          )),
+        (:line, 262, :none),
+        (:(=), (:., :h, (:quote, #QuoteNode
+              :slots
+            )), :slots),
+        (:line, 263, :none),
+        (:(=), (:., :h, (:quote, #QuoteNode
+              :keys
+            )), :keys),
+        (:line, 264, :none),
+        (:(=), (:., :h, (:quote, #QuoteNode
+              :vals
+            )), :vals),
+        (:line, 265, :none),
+        (:(=), (:., :h, (:quote, #QuoteNode
+              :count
+            )), :count),
+        (:line, 266, :none),
+        (:(=), (:., :h, (:quote, #QuoteNode
+              :ndel
+            )), 0),
+        (:line, 267, :none),
+        (:(=), (:., :h, (:quote, #QuoteNode
+              :maxprobe
+            )), :maxprobe),
+        (:line, 268, :none),
+        (:macrocall, Symbol("@assert"), (:call, :(==), (:., :h, (:quote, #QuoteNode
+                :age
+              )), :age0)),
+        (:line, 270, :none),
+        (:return, :h)
+      )),
+    (:line, 273, :none),
+    (:function, (:call, :sizehint!, (:(::), :d, :Dict), :newsz), (:block,
+        (:line, 274, :none),
+        (:(=), :oldsz, (:call, :length, (:., :d, (:quote, #QuoteNode
+                :slots
+              )))),
+        (:line, 275, :none),
+        (:if, (:call, :(<=), :newsz, :oldsz), (:block,
+            (:line, 279, :none),
+            (:return, :d)
+          )),
+        (:line, 282, :none),
+        (:(=), :newsz, (:call, :max, :newsz, (:call, :>>, (:call, :*, :oldsz, 5), 2))),
+        (:line, 283, :none),
+        (:call, :rehash!, :d, :newsz)
+      )),
+    (:line, 286, :none),
+    (:macrocall, :(Core.@doc), "    empty!(collection) -> collection\n\nRemove all elements from a `collection`.\n\n```jldoctest\njulia> A = Dict(\"a\" => 1, \"b\" => 2)\nDict{String,Int64} with 2 entries:\n  \"b\" => 2\n  \"a\" => 1\n\njulia> empty!(A);\n\njulia> A\nDict{String,Int64} with 0 entries\n```\n", (:function, (:where, (:where, (:call, :empty!, (:(::), :h, (:curly, :Dict, :K, :V))), :V), :K), (:block,
+          (:line, 304, :none),
+          (:call, :fill!, (:., :h, (:quote, #QuoteNode
+                :slots
+              )), 0x00),
+          (:line, 305, :none),
+          (:(=), :sz, (:call, :length, (:., :h, (:quote, #QuoteNode
+                  :slots
+                )))),
+          (:line, 306, :none),
+          (:call, :empty!, (:., :h, (:quote, #QuoteNode
+                :keys
+              ))),
+          (:line, 307, :none),
+          (:call, :empty!, (:., :h, (:quote, #QuoteNode
+                :vals
+              ))),
+          (:line, 308, :none),
+          (:call, :resize!, (:., :h, (:quote, #QuoteNode
+                :keys
+              )), :sz),
+          (:line, 309, :none),
+          (:call, :resize!, (:., :h, (:quote, #QuoteNode
+                :vals
+              )), :sz),
+          (:line, 310, :none),
+          (:(=), (:., :h, (:quote, #QuoteNode
+                :ndel
+              )), 0),
+          (:line, 311, :none),
+          (:(=), (:., :h, (:quote, #QuoteNode
+                :count
+              )), 0),
+          (:line, 312, :none),
+          (:+=, (:., :h, (:quote, #QuoteNode
+                :age
+              )), 1),
+          (:line, 313, :none),
+          (:(=), (:., :h, (:quote, #QuoteNode
+                :idxfloor
+              )), 1),
+          (:line, 314, :none),
+          (:return, :h)
+        ))),
+    (:line, 318, :none),
+    (:function, (:where, (:where, (:call, :ht_keyindex, (:(::), :h, (:curly, :Dict, :K, :V)), :key), :V), :K), (:block,
+        (:line, 319, :none),
+        (:(=), :sz, (:call, :length, (:., :h, (:quote, #QuoteNode
+                :keys
+              )))),
+        (:line, 320, :none),
+        (:(=), :iter, 0),
+        (:line, 321, :none),
+        (:(=), :maxprobe, (:., :h, (:quote, #QuoteNode
+              :maxprobe
+            ))),
+        (:line, 322, :none),
+        (:(=), :index, (:call, :hashindex, :key, :sz)),
+        (:line, 323, :none),
+        (:(=), :keys, (:., :h, (:quote, #QuoteNode
+              :keys
+            ))),
+        (:line, 325, :none),
+        (:while, true, (:block,
+            (:line, 326, :none),
+            (:if, (:call, :isslotempty, :h, :index), (:block,
+                (:line, 327, :none),
+                (:break,)
+              )),
+            (:line, 329, :none),
+            (:if, (:&&, (:call, :!, (:call, :isslotmissing, :h, :index)), (:||, (:call, :(===), :key, (:ref, :keys, :index)), (:call, :isequal, :key, (:ref, :keys, :index)))), (:block,
+                (:line, 330, :none),
+                (:return, :index)
+              )),
+            (:line, 333, :none),
+            (:(=), :index, (:call, :+, (:call, :&, :index, (:call, :-, :sz, 1)), 1)),
+            (:line, 334, :none),
+            (:+=, :iter, 1),
+            (:line, 335, :none),
+            (:&&, (:call, :>, :iter, :maxprobe), (:break,))
+          )),
+        (:line, 337, :none),
+        (:return, -1)
+      )),
+    (:line, 343, :none),
+    (:function, (:where, (:where, (:call, :ht_keyindex2, (:(::), :h, (:curly, :Dict, :K, :V)), :key), :V), :K), (:block,
+        (:line, 344, :none),
+        (:(=), :age0, (:., :h, (:quote, #QuoteNode
+              :age
+            ))),
+        (:line, 345, :none),
+        (:(=), :sz, (:call, :length, (:., :h, (:quote, #QuoteNode
+                :keys
+              )))),
+        (:line, 346, :none),
+        (:(=), :iter, 0),
+        (:line, 347, :none),
+        (:(=), :maxprobe, (:., :h, (:quote, #QuoteNode
+              :maxprobe
+            ))),
+        (:line, 348, :none),
+        (:(=), :index, (:call, :hashindex, :key, :sz)),
+        (:line, 349, :none),
+        (:(=), :avail, 0),
+        (:line, 350, :none),
+        (:(=), :keys, (:., :h, (:quote, #QuoteNode
+              :keys
+            ))),
+        (:line, 352, :none),
+        (:while, true, (:block,
+            (:line, 353, :none),
+            (:if, (:call, :isslotempty, :h, :index), (:block,
+                (:line, 354, :none),
+                (:if, (:call, :<, :avail, 0), (:block,
+                    (:line, 355, :none),
+                    (:return, :avail)
+                  )),
+                (:line, 357, :none),
+                (:return, (:call, :-, :index))
+              )),
+            (:line, 360, :none),
+            (:if, (:call, :isslotmissing, :h, :index), (:block,
+                (:line, 361, :none),
+                (:if, (:call, :(==), :avail, 0), (:block,
+                    (:line, 364, :none),
+                    (:(=), :avail, (:call, :-, :index))
+                  ))
+              ), (:block,
+                (:line, 366, :none),
+                (:if, (:||, (:call, :(===), :key, (:ref, :keys, :index)), (:call, :isequal, :key, (:ref, :keys, :index))), (:block,
+                    (:line, 367, :none),
+                    (:return, :index)
+                  ))
+              )),
+            (:line, 370, :none),
+            (:(=), :index, (:call, :+, (:call, :&, :index, (:call, :-, :sz, 1)), 1)),
+            (:line, 371, :none),
+            (:+=, :iter, 1),
+            (:line, 372, :none),
+            (:&&, (:call, :>, :iter, :maxprobe), (:break,))
+          )),
+        (:line, 375, :none),
+        (:&&, (:call, :<, :avail, 0), (:return, :avail)),
+        (:line, 377, :none),
+        (:(=), :maxallowed, (:call, :max, :maxallowedprobe, (:call, :>>, :sz, :maxprobeshift))),
+        (:line, 379, :none),
+        (:while, (:call, :<, :iter, :maxallowed), (:block,
+            (:line, 380, :none),
+            (:if, (:call, :!, (:call, :isslotfilled, :h, :index)), (:block,
+                (:line, 381, :none),
+                (:(=), (:., :h, (:quote, #QuoteNode
+                      :maxprobe
+                    )), :iter),
+                (:line, 382, :none),
+                (:return, (:call, :-, :index))
+              )),
+            (:line, 384, :none),
+            (:(=), :index, (:call, :+, (:call, :&, :index, (:call, :-, :sz, 1)), 1)),
+            (:line, 385, :none),
+            (:+=, :iter, 1)
+          )),
+        (:line, 388, :none),
+        (:call, :rehash!, :h, (:if, (:call, :>, (:., :h, (:quote, #QuoteNode
+                  :count
+                )), 64000), (:call, :*, :sz, 2), (:call, :*, :sz, 4))),
+        (:line, 390, :none),
+        (:return, (:call, :ht_keyindex2, :h, :key))
+      )),
+    (:line, 393, :none),
+    (:function, (:call, :_setindex!, (:(::), :h, :Dict), :v, :key, :index), (:block,
+        (:line, 394, :none),
+        (:(=), (:ref, (:., :h, (:quote, #QuoteNode
+                :slots
+              )), :index), 0x01),
+        (:line, 395, :none),
+        (:(=), (:ref, (:., :h, (:quote, #QuoteNode
+                :keys
+              )), :index), :key),
+        (:line, 396, :none),
+        (:(=), (:ref, (:., :h, (:quote, #QuoteNode
+                :vals
+              )), :index), :v),
+        (:line, 397, :none),
+        (:+=, (:., :h, (:quote, #QuoteNode
+              :count
+            )), 1),
+        (:line, 398, :none),
+        (:+=, (:., :h, (:quote, #QuoteNode
+              :age
+            )), 1),
+        (:line, 399, :none),
+        (:if, (:call, :<, :index, (:., :h, (:quote, #QuoteNode
+                :idxfloor
+              ))), (:block,
+            (:line, 400, :none),
+            (:(=), (:., :h, (:quote, #QuoteNode
+                  :idxfloor
+                )), :index)
+          )),
+        (:line, 403, :none),
+        (:(=), :sz, (:call, :length, (:., :h, (:quote, #QuoteNode
+                :keys
+              )))),
+        (:line, 405, :none),
+        (:if, (:||, (:call, :(>=), (:., :h, (:quote, #QuoteNode
+                  :ndel
+                )), (:call, :>>, (:call, :*, 3, :sz), 2)), (:call, :>, (:call, :*, (:., :h, (:quote, #QuoteNode
+                    :count
+                  )), 3), (:call, :*, :sz, 2))), (:block,
+            (:line, 407, :none),
+            (:call, :rehash!, :h, (:if, (:call, :>, (:., :h, (:quote, #QuoteNode
+                      :count
+                    )), 64000), (:call, :*, (:., :h, (:quote, #QuoteNode
+                      :count
+                    )), 2), (:call, :*, (:., :h, (:quote, #QuoteNode
+                      :count
+                    )), 4)))
+          ))
+      )),
+    (:line, 411, :none),
+    (:function, (:where, (:where, (:call, :setindex!, (:(::), :h, (:curly, :Dict, :K, :V)), :v0, :key0), :V), :K), (:block,
+        (:line, 412, :none),
+        (:(=), :key, (:call, :convert, :K, :key0)),
+        (:line, 413, :none),
+        (:if, (:call, :!, (:call, :isequal, :key, :key0)), (:block,
+            (:line, 414, :none),
+            (:call, :throw, (:call, :ArgumentError, (:string, :key0, " is not a valid key for type ", :K)))
+          )),
+        (:line, 416, :none),
+        (:call, :setindex!, :h, :v0, :key)
+      )),
+    (:line, 419, :none),
+    (:function, (:where, (:where, (:call, :setindex!, (:(::), :h, (:curly, :Dict, :K, :V)), :v0, (:(::), :key, :K)), :V), :K), (:block,
+        (:line, 420, :none),
+        (:(=), :v, (:call, :convert, :V, :v0)),
+        (:line, 421, :none),
+        (:(=), :index, (:call, :ht_keyindex2, :h, :key)),
+        (:line, 423, :none),
+        (:if, (:call, :>, :index, 0), (:block,
+            (:line, 424, :none),
+            (:+=, (:., :h, (:quote, #QuoteNode
+                  :age
+                )), 1),
+            (:line, 425, :none),
+            (:(=), (:ref, (:., :h, (:quote, #QuoteNode
+                    :keys
+                  )), :index), :key),
+            (:line, 426, :none),
+            (:(=), (:ref, (:., :h, (:quote, #QuoteNode
+                    :vals
+                  )), :index), :v)
+          ), (:block,
+            (:line, 428, :none),
+            (:call, :_setindex!, :h, :v, :key, (:call, :-, :index))
+          )),
+        (:line, 431, :none),
+        (:return, :h)
+      )),
+    (:line, 434, :none),
+    (:(=), (:where, (:call, :get!, (:(::), :h, (:curly, :Dict, :K, :V)), :key0, :default), :K, :V), (:block,
+        (:line, 434, :none),
+        (:call, :get!, (:->, (:tuple,), (:block,
+              (:line, 434, :none),
+              :default
+            )), :h, :key0)
+      )),
+    (:line, 435, :none),
+    (:function, (:where, (:where, (:call, :get!, (:(::), :default, :Callable), (:(::), :h, (:curly, :Dict, :K, :V)), :key0), :V), :K), (:block,
+        (:line, 436, :none),
+        (:(=), :key, (:call, :convert, :K, :key0)),
+        (:line, 437, :none),
+        (:if, (:call, :!, (:call, :isequal, :key, :key0)), (:block,
+            (:line, 438, :none),
+            (:call, :throw, (:call, :ArgumentError, (:string, :key0, " is not a valid key for type ", :K)))
+          )),
+        (:line, 440, :none),
+        (:return, (:call, :get!, :default, :h, :key))
+      )),
+    (:line, 443, :none),
+    (:function, (:where, (:where, (:call, :get!, (:(::), :default, :Callable), (:(::), :h, (:curly, :Dict, :K, :V)), (:(::), :key, :K)), :V), :K), (:block,
+        (:line, 444, :none),
+        (:(=), :index, (:call, :ht_keyindex2, :h, :key)),
+        (:line, 446, :none),
+        (:&&, (:call, :>, :index, 0), (:return, (:ref, (:., :h, (:quote, #QuoteNode
+                  :vals
+                )), :index))),
+        (:line, 448, :none),
+        (:(=), :age0, (:., :h, (:quote, #QuoteNode
+              :age
+            ))),
+        (:line, 449, :none),
+        (:(=), :v, (:call, :convert, :V, (:call, :default))),
+        (:line, 450, :none),
+        (:if, (:call, :(!=), (:., :h, (:quote, #QuoteNode
+                :age
+              )), :age0), (:block,
+            (:line, 451, :none),
+            (:(=), :index, (:call, :ht_keyindex2, :h, :key))
+          )),
+        (:line, 453, :none),
+        (:if, (:call, :>, :index, 0), (:block,
+            (:line, 454, :none),
+            (:+=, (:., :h, (:quote, #QuoteNode
+                  :age
+                )), 1),
+            (:line, 455, :none),
+            (:(=), (:ref, (:., :h, (:quote, #QuoteNode
+                    :keys
+                  )), :index), :key),
+            (:line, 456, :none),
+            (:(=), (:ref, (:., :h, (:quote, #QuoteNode
+                    :vals
+                  )), :index), :v)
+          ), (:block,
+            (:line, 458, :none),
+            (:call, :_setindex!, :h, :v, :key, (:call, :-, :index))
+          )),
+        (:line, 460, :none),
+        (:return, :v)
+      )),
+    (:line, 465, :none),
+    (:macro, (:call, :get!, :h, :key0, :default), (:block,
+        (:line, 466, :none),
+        (:return, (:quote, (:block,
+              (:line, 467, :none),
+              (:call, :get!, (:->, (:tuple,), (:block,
+                    (:line, 467, :none),
+                    (:$, (:call, :esc, :default))
+                  )), (:$, (:call, :esc, :h)), (:$, (:call, :esc, :key0)))
+            )))
+      )),
+    (:line, 472, :none),
+    (:function, (:where, (:where, (:call, :getindex, (:(::), :h, (:curly, :Dict, :K, :V)), :key), :V), :K), (:block,
+        (:line, 473, :none),
+        (:(=), :index, (:call, :ht_keyindex, :h, :key)),
+        (:line, 474, :none),
+        (:return, (:if, (:call, :<, :index, 0), (:call, :throw, (:call, :KeyError, :key)), (:(::), (:ref, (:., :h, (:quote, #QuoteNode
+                    :vals
+                  )), :index), :V)))
+      )),
+    (:line, 477, :none),
+    (:function, (:where, (:where, (:call, :get, (:(::), :h, (:curly, :Dict, :K, :V)), :key, :default), :V), :K), (:block,
+        (:line, 478, :none),
+        (:(=), :index, (:call, :ht_keyindex, :h, :key)),
+        (:line, 479, :none),
+        (:return, (:if, (:call, :<, :index, 0), :default, (:(::), (:ref, (:., :h, (:quote, #QuoteNode
+                    :vals
+                  )), :index), :V)))
+      )),
+    (:line, 482, :none),
+    (:function, (:where, (:where, (:call, :get, (:(::), :default, :Callable), (:(::), :h, (:curly, :Dict, :K, :V)), :key), :V), :K), (:block,
+        (:line, 483, :none),
+        (:(=), :index, (:call, :ht_keyindex, :h, :key)),
+        (:line, 484, :none),
+        (:return, (:if, (:call, :<, :index, 0), (:call, :default), (:(::), (:ref, (:., :h, (:quote, #QuoteNode
+                    :vals
+                  )), :index), :V)))
+      )),
+    (:line, 487, :none),
+    (:macrocall, :(Core.@doc), "    haskey(collection, key) -> Bool\n\nDetermine whether a collection has a mapping for a given key.\n\n```jldoctest\njulia> a = Dict('a'=>2, 'b'=>3)\nDict{Char,Int64} with 2 entries:\n  'b' => 3\n  'a' => 2\n\njulia> haskey(a,'a')\ntrue\n\njulia> haskey(a,'c')\nfalse\n```\n", (:(=), (:call, :haskey, (:(::), :h, :Dict), :key), (:block,
+          (:line, 505, :none),
+          (:call, :(>=), (:call, :ht_keyindex, :h, :key), 0)
+        ))),
+    (:line, 506, :none),
+    (:(=), (:call, :in, :key, (:(::), :v, (:curly, :KeyIterator, (:<:, :Dict)))), (:block,
+        (:line, 506, :none),
+        (:call, :(>=), (:call, :ht_keyindex, (:., :v, (:quote, #QuoteNode
+                :dict
+              )), :key), 0)
+      )),
+    (:line, 508, :none),
+    (:macrocall, :(Core.@doc), "    getkey(collection, key, default)\n\nReturn the key matching argument `key` if one exists in `collection`, otherwise return `default`.\n\n```jldoctest\njulia> a = Dict('a'=>2, 'b'=>3)\nDict{Char,Int64} with 2 entries:\n  'b' => 3\n  'a' => 2\n\njulia> getkey(a,'a',1)\n'a': ASCII/Unicode U+0061 (category Ll: Letter, lowercase)\n\njulia> getkey(a,'d','a')\n'a': ASCII/Unicode U+0061 (category Ll: Letter, lowercase)\n```\n", (:function, (:where, (:where, (:call, :getkey, (:(::), :h, (:curly, :Dict, :K, :V)), :key, :default), :V), :K), (:block,
+          (:line, 527, :none),
+          (:(=), :index, (:call, :ht_keyindex, :h, :key)),
+          (:line, 528, :none),
+          (:return, (:if, (:call, :<, :index, 0), :default, (:(::), (:ref, (:., :h, (:quote, #QuoteNode
+                      :keys
+                    )), :index), :K)))
+        ))),
+    (:line, 531, :none),
+    (:function, (:call, :_pop!, (:(::), :h, :Dict), :index), (:block,
+        (:line, 532, :none),
+        (:(=), :val, (:ref, (:., :h, (:quote, #QuoteNode
+                :vals
+              )), :index)),
+        (:line, 533, :none),
+        (:call, :_delete!, :h, :index),
+        (:line, 534, :none),
+        (:return, :val)
+      )),
+    (:line, 537, :none),
+    (:function, (:call, :pop!, (:(::), :h, :Dict), :key), (:block,
+        (:line, 538, :none),
+        (:(=), :index, (:call, :ht_keyindex, :h, :key)),
+        (:line, 539, :none),
+        (:return, (:if, (:call, :>, :index, 0), (:call, :_pop!, :h, :index), (:call, :throw, (:call, :KeyError, :key))))
+      )),
+    (:line, 542, :none),
+    (:function, (:call, :pop!, (:(::), :h, :Dict), :key, :default), (:block,
+        (:line, 543, :none),
+        (:(=), :index, (:call, :ht_keyindex, :h, :key)),
+        (:line, 544, :none),
+        (:return, (:if, (:call, :>, :index, 0), (:call, :_pop!, :h, :index), :default))
+      )),
+    (:line, 547, :none),
+    (:function, (:call, :_delete!, (:(::), :h, :Dict), :index), (:block,
+        (:line, 548, :none),
+        (:(=), (:ref, (:., :h, (:quote, #QuoteNode
+                :slots
+              )), :index), 0x02),
+        (:line, 549, :none),
+        (:call, :ccall, (:quote, #QuoteNode
+            :jl_arrayunset
+          ), :Void, (:tuple, :Any, :UInt), (:., :h, (:quote, #QuoteNode
+              :keys
+            )), (:call, :-, :index, 1)),
+        (:line, 550, :none),
+        (:call, :ccall, (:quote, #QuoteNode
+            :jl_arrayunset
+          ), :Void, (:tuple, :Any, :UInt), (:., :h, (:quote, #QuoteNode
+              :vals
+            )), (:call, :-, :index, 1)),
+        (:line, 551, :none),
+        (:+=, (:., :h, (:quote, #QuoteNode
+              :ndel
+            )), 1),
+        (:line, 552, :none),
+        (:-=, (:., :h, (:quote, #QuoteNode
+              :count
+            )), 1),
+        (:line, 553, :none),
+        (:+=, (:., :h, (:quote, #QuoteNode
+              :age
+            )), 1),
+        (:line, 554, :none),
+        (:return, :h)
+      )),
+    (:line, 557, :none),
+    (:function, (:call, :delete!, (:(::), :h, :Dict), :key), (:block,
+        (:line, 558, :none),
+        (:(=), :index, (:call, :ht_keyindex, :h, :key)),
+        (:line, 559, :none),
+        (:if, (:call, :>, :index, 0), (:block,
+            (:line, 560, :none),
+            (:call, :_delete!, :h, :index)
+          )),
+        (:line, 562, :none),
+        (:return, :h)
+      )),
+    (:line, 565, :none),
+    (:function, (:call, :skip_deleted, (:(::), :h, :Dict), :i), (:block,
+        (:line, 566, :none),
+        (:(=), :L, (:call, :length, (:., :h, (:quote, #QuoteNode
+                :slots
+              )))),
+        (:line, 567, :none),
+        (:while, (:&&, (:call, :(<=), :i, :L), (:call, :!, (:call, :isslotfilled, :h, :i))), (:block,
+            (:line, 568, :none),
+            (:+=, :i, 1)
+          )),
+        (:line, 570, :none),
+        (:return, :i)
+      )),
+    (:line, 573, :none),
+    (:function, (:call, :start, (:(::), :t, :Dict)), (:block,
+        (:line, 574, :none),
+        (:(=), :i, (:call, :skip_deleted, :t, (:., :t, (:quote, #QuoteNode
+                :idxfloor
+              )))),
+        (:line, 575, :none),
+        (:(=), (:., :t, (:quote, #QuoteNode
+              :idxfloor
+            )), :i),
+        (:line, 576, :none),
+        (:return, :i)
+      )),
+    (:line, 578, :none),
+    (:(=), (:call, :done, (:(::), :t, :Dict), :i), (:block,
+        (:line, 578, :none),
+        (:call, :>, :i, (:call, :length, (:., :t, (:quote, #QuoteNode
+                :vals
+              ))))
+      )),
+    (:line, 579, :none),
+    (:(=), (:where, (:call, :next, (:(::), :t, (:curly, :Dict, :K, :V)), :i), :K, :V), (:block,
+        (:line, 579, :none),
+        (:tuple, (:call, (:curly, :Pair, :K, :V), (:ref, (:., :t, (:quote, #QuoteNode
+                  :keys
+                )), :i), (:ref, (:., :t, (:quote, #QuoteNode
+                  :vals
+                )), :i)), (:call, :skip_deleted, :t, (:call, :+, :i, 1)))
+      )),
+    (:line, 581, :none),
+    (:(=), (:call, :isempty, (:(::), :t, :Dict)), (:block,
+        (:line, 581, :none),
+        (:call, :(==), (:., :t, (:quote, #QuoteNode
+              :count
+            )), 0)
+      )),
+    (:line, 582, :none),
+    (:(=), (:call, :length, (:(::), :t, :Dict)), (:block,
+        (:line, 582, :none),
+        (:., :t, (:quote, #QuoteNode
+            :count
+          ))
+      )),
+    (:line, 584, :none),
+    (:(=), (:call, :next, (:(::), :v, (:curly, :KeyIterator, (:<:, :Dict))), :i), (:block,
+        (:line, 584, :none),
+        (:tuple, (:ref, (:., (:., :v, (:quote, #QuoteNode
+                  :dict
+                )), (:quote, #QuoteNode
+                :keys
+              )), :i), (:call, :skip_deleted, (:., :v, (:quote, #QuoteNode
+                :dict
+              )), (:call, :+, :i, 1)))
+      )),
+    (:line, 585, :none),
+    (:(=), (:call, :next, (:(::), :v, (:curly, :ValueIterator, (:<:, :Dict))), :i), (:block,
+        (:line, 585, :none),
+        (:tuple, (:ref, (:., (:., :v, (:quote, #QuoteNode
+                  :dict
+                )), (:quote, #QuoteNode
+                :vals
+              )), :i), (:call, :skip_deleted, (:., :v, (:quote, #QuoteNode
+                :dict
+              )), (:call, :+, :i, 1)))
+      )),
+    (:line, 589, :none),
+    (:function, (:call, :filter!, :f, (:(::), :d, (:curly, :Union, :ObjectIdDict, :Dict))), (:block,
+        (:line, 590, :none),
+        (:for, (:(=), (:tuple, :k, :v), :d), (:block,
+            (:line, 591, :none),
+            (:if, (:call, :!, (:call, :f, :k, :v)), (:block,
+                (:line, 592, :none),
+                (:call, :delete!, :d, :k)
+              ))
+          )),
+        (:line, 595, :none),
+        (:return, :d)
+      )),
+    (:line, 598, :none),
+    (:type, false, (:<:, (:curly, :ImmutableDict, :K, :V), (:curly, :Associative, :K, :V)), (:block,
+        (:line, 599, :none),
+        (:(::), :parent, (:curly, :ImmutableDict, :K, :V)),
+        (:line, 600, :none),
+        (:(::), :key, :K),
+        (:line, 601, :none),
+        (:(::), :value, :V),
+        (:line, 602, :none),
+        (:(=), (:where, (:call, (:curly, :ImmutableDict, :K, :V)), :K, :V), (:block,
+            (:line, 602, :none),
+            (:call, :new)
+          )),
+        (:line, 603, :none),
+        (:(=), (:where, (:call, (:curly, :ImmutableDict, :K, :V), :key, :value), :K, :V), (:block,
+            (:line, 603, :none),
+            (:block,
+              (:(=), :empty, (:call, :new)),
+              (:call, :new, :empty, :key, :value)
+            )
+          )),
+        (:line, 604, :none),
+        (:(=), (:where, (:call, (:curly, :ImmutableDict, :K, :V), (:(::), :parent, :ImmutableDict), :key, :value), :K, :V), (:block,
+            (:line, 604, :none),
+            (:call, :new, :parent, :key, :value)
+          ))
+      )),
+    (:line, 607, :none),
+    (:macrocall, :(Core.@doc), "    ImmutableDict\n\nImmutableDict is a Dictionary implemented as an immutable linked list,\nwhich is optimal for small dictionaries that are constructed over many individual insertions\nNote that it is not possible to remove a value, although it can be partially overridden and hidden\nby inserting a new value with the same key\n\n    ImmutableDict(KV::Pair)\n\nCreate a new entry in the Immutable Dictionary for the key => value pair\n\n - use `(key => value) in dict` to see if this particular combination is in the properties set\n - use `get(dict, key, default)` to retrieve the most recent value for a particular key\n\n", :ImmutableDict),
+    (:line, 624, :none),
+    (:(=), (:where, (:call, :ImmutableDict, (:(::), :KV, (:curly, :Pair, :K, :V))), :K, :V), (:block,
+        (:line, 624, :none),
+        (:call, (:curly, :ImmutableDict, :K, :V), (:ref, :KV, 1), (:ref, :KV, 2))
+      )),
+    (:line, 625, :none),
+    (:(=), (:where, (:call, :ImmutableDict, (:(::), :t, (:curly, :ImmutableDict, :K, :V)), (:(::), :KV, :Pair)), :K, :V), (:block,
+        (:line, 625, :none),
+        (:call, (:curly, :ImmutableDict, :K, :V), :t, (:ref, :KV, 1), (:ref, :KV, 2))
+      )),
+    (:line, 627, :none),
+    (:function, (:call, :in, (:(::), :key_value, :Pair), (:(::), :dict, :ImmutableDict), (:kw, :valcmp, :(==))), (:block,
+        (:line, 628, :none),
+        (:(=), (:tuple, :key, :value), :key_value),
+        (:line, 629, :none),
+        (:while, (:call, :isdefined, :dict, (:quote, #QuoteNode
+              :parent
+            )), (:block,
+            (:line, 630, :none),
+            (:if, (:call, :(==), (:., :dict, (:quote, #QuoteNode
+                    :key
+                  )), :key), (:block,
+                (:line, 631, :none),
+                (:&&, (:call, :valcmp, :value, (:., :dict, (:quote, #QuoteNode
+                        :value
+                      ))), (:return, true))
+              )),
+            (:line, 633, :none),
+            (:(=), :dict, (:., :dict, (:quote, #QuoteNode
+                  :parent
+                )))
+          )),
+        (:line, 635, :none),
+        (:return, false)
+      )),
+    (:line, 638, :none),
+    (:function, (:call, :haskey, (:(::), :dict, :ImmutableDict), :key), (:block,
+        (:line, 639, :none),
+        (:while, (:call, :isdefined, :dict, (:quote, #QuoteNode
+              :parent
+            )), (:block,
+            (:line, 640, :none),
+            (:&&, (:call, :(==), (:., :dict, (:quote, #QuoteNode
+                    :key
+                  )), :key), (:return, true)),
+            (:line, 641, :none),
+            (:(=), :dict, (:., :dict, (:quote, #QuoteNode
+                  :parent
+                )))
+          )),
+        (:line, 643, :none),
+        (:return, false)
+      )),
+    (:line, 646, :none),
+    (:function, (:call, :getindex, (:(::), :dict, :ImmutableDict), :key), (:block,
+        (:line, 647, :none),
+        (:while, (:call, :isdefined, :dict, (:quote, #QuoteNode
+              :parent
+            )), (:block,
+            (:line, 648, :none),
+            (:&&, (:call, :(==), (:., :dict, (:quote, #QuoteNode
+                    :key
+                  )), :key), (:return, (:., :dict, (:quote, #QuoteNode
+                    :value
+                  )))),
+            (:line, 649, :none),
+            (:(=), :dict, (:., :dict, (:quote, #QuoteNode
+                  :parent
+                )))
+          )),
+        (:line, 651, :none),
+        (:call, :throw, (:call, :KeyError, :key))
+      )),
+    (:line, 653, :none),
+    (:function, (:call, :get, (:(::), :dict, :ImmutableDict), :key, :default), (:block,
+        (:line, 654, :none),
+        (:while, (:call, :isdefined, :dict, (:quote, #QuoteNode
+              :parent
+            )), (:block,
+            (:line, 655, :none),
+            (:&&, (:call, :(==), (:., :dict, (:quote, #QuoteNode
+                    :key
+                  )), :key), (:return, (:., :dict, (:quote, #QuoteNode
+                    :value
+                  )))),
+            (:line, 656, :none),
+            (:(=), :dict, (:., :dict, (:quote, #QuoteNode
+                  :parent
+                )))
+          )),
+        (:line, 658, :none),
+        (:return, :default)
+      )),
+    (:line, 662, :none),
+    (:(=), (:call, :start, (:(::), :t, :ImmutableDict)), (:block,
+        (:line, 662, :none),
+        :t
+      )),
+    (:line, 663, :none),
+    (:(=), (:where, (:call, :next, (:(::), (:curly, :ImmutableDict, :K, :V)), :t), :K, :V), (:block,
+        (:line, 663, :none),
+        (:tuple, (:call, (:curly, :Pair, :K, :V), (:., :t, (:quote, #QuoteNode
+                :key
+              )), (:., :t, (:quote, #QuoteNode
+                :value
+              ))), (:., :t, (:quote, #QuoteNode
+              :parent
+            )))
+      )),
+    (:line, 664, :none),
+    (:(=), (:call, :done, (:(::), :ImmutableDict), :t), (:block,
+        (:line, 664, :none),
+        (:call, :!, (:call, :isdefined, :t, (:quote, #QuoteNode
+              :parent
+            )))
+      )),
+    (:line, 665, :none),
+    (:(=), (:call, :length, (:(::), :t, :ImmutableDict)), (:block,
+        (:line, 665, :none),
+        (:call, :count, (:->, :x, (:block,
+              (:line, 665, :none),
+              true
+            )), :t)
+      )),
+    (:line, 666, :none),
+    (:(=), (:call, :isempty, (:(::), :t, :ImmutableDict)), (:block,
+        (:line, 666, :none),
+        (:call, :done, :t, (:call, :start, :t))
+      )),
+    (:line, 667, :none),
+    (:function, (:call, :similar, (:(::), :t, :ImmutableDict)), (:block,
+        (:line, 668, :none),
+        (:while, (:call, :isdefined, :t, (:quote, #QuoteNode
+              :parent
+            )), (:block,
+            (:line, 669, :none),
+            (:(=), :t, (:., :t, (:quote, #QuoteNode
+                  :parent
+                )))
+          )),
+        (:line, 671, :none),
+        (:return, :t)
+      )),
+    (:line, 674, :none),
+    (:(=), (:call, (:curly, :_similar_for, (:<:, :P, :Pair)), (:(::), :c, :Dict), (:(::), (:curly, :Type, :P)), :itr, :isz), (:block,
+        (:line, 674, :none),
+        (:call, :similar, :c, :P)
+      )),
+    (:line, 675, :none),
+    (:(=), (:call, :_similar_for, (:(::), :c, :Associative), :T, :itr, :isz), (:block,
+        (:line, 675, :none),
+        (:call, :throw, (:call, :ArgumentError, "for Associatives, similar requires an element type of Pair;\n  if calling map, consider a comprehension instead"))
+      ))
+  ))

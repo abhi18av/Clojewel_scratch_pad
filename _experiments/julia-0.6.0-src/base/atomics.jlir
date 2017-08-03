@@ -1,0 +1,298 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:using, :Core, :Intrinsics, :llvmcall),
+    (:line, 5, :none),
+    (:toplevel, (:import, :Base, :setindex!), (:import, :Base, :getindex), (:import, :Base, :unsafe_convert)),
+    (:line, 6, :none),
+    (:toplevel, (:import, :Base, :Sys, :ARCH), (:import, :Base, :Sys, :WORD_SIZE)),
+    (:line, 8, :none),
+    (:export, :Atomic, :atomic_cas!, :atomic_xchg!, :atomic_add!, :atomic_sub!, :atomic_and!, :atomic_nand!, :atomic_or!, :atomic_xor!, :atomic_max!, :atomic_min!, :atomic_fence),
+    (:line, 20, :none),
+    (:if, (:||, (:&&, (:call, :<, (:call, :VersionNumber, (:., :Base, (:quote, #QuoteNode
+                  :libllvm_version
+                ))), (:macrocall, Symbol("@v_str"), "3.9-")), (:call, :(===), :ARCH, (:quote, #QuoteNode
+              :i686
+            ))), (:call, :startswith, (:call, :string, :ARCH), "arm")), (:block,
+        (:line, 22, :none),
+        (:const, (:(=), :inttypes, (:tuple, :Int8, :Int16, :Int32, :Int64, :UInt8, :UInt16, :UInt32, :UInt64)))
+      ), (:block,
+        (:line, 25, :none),
+        (:const, (:(=), :inttypes, (:tuple, :Int8, :Int16, :Int32, :Int64, :Int128, :UInt8, :UInt16, :UInt32, :UInt64, :UInt128)))
+      )),
+    (:line, 28, :none),
+    (:const, (:(=), :floattypes, (:tuple, :Float16, :Float32, :Float64))),
+    (:line, 30, :none),
+    (:const, (:(=), :atomictypes, (:tuple, (:..., :inttypes), (:..., :floattypes)))),
+    (:line, 31, :none),
+    (:const, (:(=), :IntTypes, (:curly, :Union, (:..., :inttypes)))),
+    (:line, 32, :none),
+    (:const, (:(=), :FloatTypes, (:curly, :Union, (:..., :floattypes)))),
+    (:line, 33, :none),
+    (:const, (:(=), :AtomicTypes, (:curly, :Union, (:..., :atomictypes)))),
+    (:line, 35, :none),
+    (:macrocall, :(Core.@doc), "    Threads.Atomic{T}\n\nHolds a reference to an object of type `T`, ensuring that it is only\naccessed atomically, i.e. in a thread-safe manner.\n\nOnly certain \"simple\" types can be used atomically, namely the\nprimitive integer and float-point types. These are `Int8`...`Int128`,\n`UInt8`...`UInt128`, and `Float16`...`Float64`.\n\nNew atomic objects can be created from a non-atomic values; if none is\nspecified, the atomic object is initialized with zero.\n\nAtomic objects can be accessed using the `[]` notation:\n\n```jldoctest\njulia> x = Threads.Atomic{Int}(3)\nBase.Threads.Atomic{Int64}(3)\n\njulia> x[] = 1\n1\n\njulia> x[]\n1\n```\n\nAtomic operations use an `atomic_` prefix, such as `atomic_add!`,\n`atomic_xchg!`, etc.\n", (:type, true, (:curly, :Atomic, (:<:, :T, :AtomicTypes)), (:block,
+          (:line, 65, :none),
+          (:(::), :value, :T),
+          (:line, 66, :none),
+          (:(=), (:where, (:call, (:curly, :Atomic, :T)), (:<:, :T, :AtomicTypes)), (:block,
+              (:line, 66, :none),
+              (:call, :new, (:call, :zero, :T))
+            )),
+          (:line, 67, :none),
+          (:(=), (:where, (:call, (:curly, :Atomic, :T), :value), (:<:, :T, :AtomicTypes)), (:block,
+              (:line, 67, :none),
+              (:call, :new, :value)
+            ))
+        ))),
+    (:line, 70, :none),
+    (:(=), (:call, :Atomic), (:block,
+        (:line, 70, :none),
+        (:call, (:curly, :Atomic, :Int))
+      )),
+    (:line, 72, :none),
+    (:macrocall, :(Core.@doc), "    Threads.atomic_cas!{T}(x::Atomic{T}, cmp::T, newval::T)\n\nAtomically compare-and-set `x`\n\nAtomically compares the value in `x` with `cmp`. If equal, write\n`newval` to `x`. Otherwise, leaves `x` unmodified. Returns the old\nvalue in `x`. By comparing the returned value to `cmp` (via `===`) one\nknows whether `x` was modified and now holds the new value `newval`.\n\nFor further details, see LLVM's `cmpxchg` instruction.\n\nThis function can be used to implement transactional semantics. Before\nthe transaction, one records the value in `x`. After the transaction,\nthe new value is stored only if `x` has not been modified in the mean\ntime.\n\n```jldoctest\njulia> x = Threads.Atomic{Int}(3)\nBase.Threads.Atomic{Int64}(3)\n\njulia> Threads.atomic_cas!(x, 4, 2);\n\njulia> x\nBase.Threads.Atomic{Int64}(3)\n\njulia> Threads.atomic_cas!(x, 3, 2);\n\njulia> x\nBase.Threads.Atomic{Int64}(2)\n```\n", (:function, :atomic_cas!)),
+    (:line, 106, :none),
+    (:macrocall, :(Core.@doc), "    Threads.atomic_xchg!{T}(x::Atomic{T}, newval::T)\n\nAtomically exchange the value in `x`\n\nAtomically exchanges the value in `x` with `newval`. Returns the **old**\nvalue.\n\nFor further details, see LLVM's `atomicrmw xchg` instruction.\n\n```jldoctest\njulia> x = Threads.Atomic{Int}(3)\nBase.Threads.Atomic{Int64}(3)\n\njulia> Threads.atomic_xchg!(x, 2)\n3\n\njulia> x[]\n2\n```\n", (:function, :atomic_xchg!)),
+    (:line, 129, :none),
+    (:macrocall, :(Core.@doc), "    Threads.atomic_add!{T}(x::Atomic{T}, val::T)\n\nAtomically add `val` to `x`\n\nPerforms `x[] += val` atomically. Returns the **old** value.\n\nFor further details, see LLVM's `atomicrmw add` instruction.\n\n```jldoctest\njulia> x = Threads.Atomic{Int}(3)\nBase.Threads.Atomic{Int64}(3)\n\njulia> Threads.atomic_add!(x, 2)\n3\n\njulia> x[]\n5\n```\n", (:function, :atomic_add!)),
+    (:line, 151, :none),
+    (:macrocall, :(Core.@doc), "    Threads.atomic_sub!{T}(x::Atomic{T}, val::T)\n\nAtomically subtract `val` from `x`\n\nPerforms `x[] -= val` atomically. Returns the **old** value.\n\nFor further details, see LLVM's `atomicrmw sub` instruction.\n\n```jldoctest\njulia> x = Threads.Atomic{Int}(3)\nBase.Threads.Atomic{Int64}(3)\n\njulia> Threads.atomic_sub!(x, 2)\n3\n\njulia> x[]\n1\n```\n", (:function, :atomic_sub!)),
+    (:line, 173, :none),
+    (:macrocall, :(Core.@doc), "    Threads.atomic_and!{T}(x::Atomic{T}, val::T)\n\nAtomically bitwise-and `x` with `val`\n\nPerforms `x[] &= val` atomically. Returns the **old** value.\n\nFor further details, see LLVM's `atomicrmw and` instruction.\n\n```jldoctest\njulia> x = Threads.Atomic{Int}(3)\nBase.Threads.Atomic{Int64}(3)\n\njulia> Threads.atomic_and!(x, 2)\n3\n\njulia> x[]\n2\n```\n", (:function, :atomic_and!)),
+    (:line, 195, :none),
+    (:macrocall, :(Core.@doc), "    Threads.atomic_nand!{T}(x::Atomic{T}, val::T)\n\nAtomically bitwise-nand (not-and) `x` with `val`\n\nPerforms `x[] = ~(x[] & val)` atomically. Returns the **old** value.\n\nFor further details, see LLVM's `atomicrmw nand` instruction.\n\n```jldoctest\njulia> x = Threads.Atomic{Int}(3)\nBase.Threads.Atomic{Int64}(3)\n\njulia> Threads.atomic_nand!(x, 2)\n3\n\njulia> x[]\n-3\n```\n", (:function, :atomic_nand!)),
+    (:line, 217, :none),
+    (:macrocall, :(Core.@doc), "    Threads.atomic_or!{T}(x::Atomic{T}, val::T)\n\nAtomically bitwise-or `x` with `val`\n\nPerforms `x[] |= val` atomically. Returns the **old** value.\n\nFor further details, see LLVM's `atomicrmw or` instruction.\n\n```jldoctest\njulia> x = Threads.Atomic{Int}(5)\nBase.Threads.Atomic{Int64}(5)\n\njulia> Threads.atomic_or!(x, 7)\n5\n\njulia> x[]\n7\n```\n", (:function, :atomic_or!)),
+    (:line, 239, :none),
+    (:macrocall, :(Core.@doc), "    Threads.atomic_xor!{T}(x::Atomic{T}, val::T)\n\nAtomically bitwise-xor (exclusive-or) `x` with `val`\n\nPerforms `x[] \$= val` atomically. Returns the **old** value.\n\nFor further details, see LLVM's `atomicrmw xor` instruction.\n\n```jldoctest\njulia> x = Threads.Atomic{Int}(5)\nBase.Threads.Atomic{Int64}(5)\n\njulia> Threads.atomic_xor!(x, 7)\n5\n\njulia> x[]\n2\n```\n", (:function, :atomic_xor!)),
+    (:line, 261, :none),
+    (:macrocall, :(Core.@doc), "    Threads.atomic_max!{T}(x::Atomic{T}, val::T)\n\nAtomically store the maximum of `x` and `val` in `x`\n\nPerforms `x[] = max(x[], val)` atomically. Returns the **old** value.\n\nFor further details, see LLVM's `atomicrmw max` instruction.\n\n```jldoctest\njulia> x = Threads.Atomic{Int}(5)\nBase.Threads.Atomic{Int64}(5)\n\njulia> Threads.atomic_max!(x, 7)\n5\n\njulia> x[]\n7\n```\n", (:function, :atomic_max!)),
+    (:line, 283, :none),
+    (:macrocall, :(Core.@doc), "    Threads.atomic_min!{T}(x::Atomic{T}, val::T)\n\nAtomically store the minimum of `x` and `val` in `x`\n\nPerforms `x[] = min(x[], val)` atomically. Returns the **old** value.\n\nFor further details, see LLVM's `atomicrmw min` instruction.\n\n```jldoctest\njulia> x = Threads.Atomic{Int}(7)\nBase.Threads.Atomic{Int64}(7)\n\njulia> Threads.atomic_min!(x, 5)\n7\n\njulia> x[]\n5\n```\n", (:function, :atomic_min!)),
+    (:line, 305, :none),
+    (:(=), (:where, (:call, :unsafe_convert, (:(::), (:curly, :Type, (:curly, :Ptr, :T))), (:(::), :x, (:curly, :Atomic, :T))), :T), (:block,
+        (:line, 305, :none),
+        (:call, :convert, (:curly, :Ptr, :T), (:call, :pointer_from_objref, :x))
+      )),
+    (:line, 306, :none),
+    (:(=), (:where, (:call, :setindex!, (:(::), :x, (:curly, :Atomic, :T)), :v), :T), (:block,
+        (:line, 306, :none),
+        (:call, :setindex!, :x, (:call, :convert, :T, :v))
+      )),
+    (:line, 308, :none),
+    (:const, (:(=), :llvmtypes, (:call, :Dict, (:call, :(=>), :Bool, "i1"), (:call, :(=>), :Int8, "i8"), (:call, :(=>), :UInt8, "i8"), (:call, :(=>), :Int16, "i16"), (:call, :(=>), :UInt16, "i16"), (:call, :(=>), :Int32, "i32"), (:call, :(=>), :UInt32, "i32"), (:call, :(=>), :Int64, "i64"), (:call, :(=>), :UInt64, "i64"), (:call, :(=>), :Int128, "i128"), (:call, :(=>), :UInt128, "i128"), (:call, :(=>), :Float16, "i16"), (:call, :(=>), :Float32, "float"), (:call, :(=>), :Float64, "double")))),
+    (:line, 319, :none),
+    (:(=), (:where, (:call, :inttype, (:(::), (:curly, :Type, :T))), (:<:, :T, :Integer)), (:block,
+        (:line, 319, :none),
+        :T
+      )),
+    (:line, 320, :none),
+    (:(=), (:call, :inttype, (:(::), (:curly, :Type, :Float16))), (:block,
+        (:line, 320, :none),
+        :Int16
+      )),
+    (:line, 321, :none),
+    (:(=), (:call, :inttype, (:(::), (:curly, :Type, :Float32))), (:block,
+        (:line, 321, :none),
+        :Int32
+      )),
+    (:line, 322, :none),
+    (:(=), (:call, :inttype, (:(::), (:curly, :Type, :Float64))), (:block,
+        (:line, 322, :none),
+        :Int64
+      )),
+    (:line, 325, :none),
+    (:(=), (:where, (:call, :alignment, (:(::), (:curly, :Type, :T))), :T), (:block,
+        (:line, 325, :none),
+        (:call, :ccall, (:quote, #QuoteNode
+            :jl_alignment
+          ), :Cint, (:tuple, :Csize_t), (:call, :sizeof, :T))
+      )),
+    (:line, 330, :none),
+    (:for, (:(=), :typ, :atomictypes), (:block,
+        (:line, 331, :none),
+        (:(=), :lt, (:ref, :llvmtypes, :typ)),
+        (:line, 332, :none),
+        (:(=), :ilt, (:ref, :llvmtypes, (:call, :inttype, :typ))),
+        (:line, 333, :none),
+        (:(=), :rt, (:if, (:call, :(>=), (:call, :VersionNumber, (:., :Base, (:quote, #QuoteNode
+                    :libllvm_version
+                  ))), (:macrocall, Symbol("@v_str"), "3.6")), (:string, :lt, ", ", :lt, "*"), (:string, :lt, "*"))),
+        (:line, 334, :none),
+        (:(=), :irt, (:if, (:call, :(>=), (:call, :VersionNumber, (:., :Base, (:quote, #QuoteNode
+                    :libllvm_version
+                  ))), (:macrocall, Symbol("@v_str"), "3.6")), (:string, :ilt, ", ", :ilt, "*"), (:string, :ilt, "*"))),
+        (:line, 335, :none),
+        (:if, (:call, :(>=), (:call, :VersionNumber, (:., :Base, (:quote, #QuoteNode
+                  :libllvm_version
+                ))), (:macrocall, Symbol("@v_str"), "3.8")), (:block,
+            (:line, 336, :none),
+            (:macrocall, Symbol("@eval"), (:(=), (:call, :getindex, (:(::), :x, (:curly, :Atomic, (:$, :typ)))), (:block,
+                  (:line, 336, :none),
+                  (:call, :llvmcall, (:$, (:string, "%rv = load atomic ", :rt, " %0 acquire, align ", (:call, :alignment, :typ), "\nret ", :lt, " %rv\n")), (:$, :typ), (:curly, :Tuple, (:curly, :Ptr, (:$, :typ))), (:call, :unsafe_convert, (:curly, :Ptr, (:$, :typ)), :x))
+                ))),
+            (:line, 341, :none),
+            (:macrocall, Symbol("@eval"), (:(=), (:call, :setindex!, (:(::), :x, (:curly, :Atomic, (:$, :typ))), (:(::), :v, (:$, :typ))), (:block,
+                  (:line, 341, :none),
+                  (:call, :llvmcall, (:$, (:string, "store atomic ", :lt, " %1, ", :lt, "* %0 release, align ", (:call, :alignment, :typ), "\nret void\n")), :Void, (:curly, :Tuple, (:curly, :Ptr, (:$, :typ)), (:$, :typ)), (:call, :unsafe_convert, (:curly, :Ptr, (:$, :typ)), :x), :v)
+                )))
+          ), (:block,
+            (:line, 347, :none),
+            (:if, (:<:, :typ, :Integer), (:block,
+                (:line, 348, :none),
+                (:macrocall, Symbol("@eval"), (:(=), (:call, :getindex, (:(::), :x, (:curly, :Atomic, (:$, :typ)))), (:block,
+                      (:line, 348, :none),
+                      (:call, :llvmcall, (:$, (:string, "%rv = load atomic ", :rt, " %0 acquire, align ", (:call, :alignment, :typ), "\nret ", :lt, " %rv\n")), (:$, :typ), (:curly, :Tuple, (:curly, :Ptr, (:$, :typ))), (:call, :unsafe_convert, (:curly, :Ptr, (:$, :typ)), :x))
+                    ))),
+                (:line, 353, :none),
+                (:macrocall, Symbol("@eval"), (:(=), (:call, :setindex!, (:(::), :x, (:curly, :Atomic, (:$, :typ))), (:(::), :v, (:$, :typ))), (:block,
+                      (:line, 353, :none),
+                      (:call, :llvmcall, (:$, (:string, "store atomic ", :lt, " %1, ", :lt, "* %0 release, align ", (:call, :alignment, :typ), "\nret void\n")), :Void, (:curly, :Tuple, (:curly, :Ptr, (:$, :typ)), (:$, :typ)), (:call, :unsafe_convert, (:curly, :Ptr, (:$, :typ)), :x), :v)
+                    )))
+              ), (:block,
+                (:line, 359, :none),
+                (:macrocall, Symbol("@eval"), (:(=), (:call, :getindex, (:(::), :x, (:curly, :Atomic, (:$, :typ)))), (:block,
+                      (:line, 359, :none),
+                      (:call, :llvmcall, (:$, (:string, "%iptr = bitcast ", :lt, "* %0 to ", :ilt, "*\n%irv = load atomic ", :irt, " %iptr acquire, align ", (:call, :alignment, :typ), "\n%rv = bitcast ", :ilt, " %irv to ", :lt, "\nret ", :lt, " %rv\n")), (:$, :typ), (:curly, :Tuple, (:curly, :Ptr, (:$, :typ))), (:call, :unsafe_convert, (:curly, :Ptr, (:$, :typ)), :x))
+                    ))),
+                (:line, 366, :none),
+                (:macrocall, Symbol("@eval"), (:(=), (:call, :setindex!, (:(::), :x, (:curly, :Atomic, (:$, :typ))), (:(::), :v, (:$, :typ))), (:block,
+                      (:line, 366, :none),
+                      (:call, :llvmcall, (:$, (:string, "%iptr = bitcast ", :lt, "* %0 to ", :ilt, "*\n%ival = bitcast ", :lt, " %1 to ", :ilt, "\nstore atomic ", :ilt, " %ival, ", :ilt, "* %iptr release, align ", (:call, :alignment, :typ), "\nret void\n")), :Void, (:curly, :Tuple, (:curly, :Ptr, (:$, :typ)), (:$, :typ)), (:call, :unsafe_convert, (:curly, :Ptr, (:$, :typ)), :x), :v)
+                    )))
+              ))
+          )),
+        (:line, 376, :none),
+        (:if, (:call, :(>=), (:call, :VersionNumber, (:., :Base, (:quote, #QuoteNode
+                  :libllvm_version
+                ))), (:macrocall, Symbol("@v_str"), "3.5")), (:block,
+            (:line, 377, :none),
+            (:if, (:<:, :typ, :Integer), (:block,
+                (:line, 378, :none),
+                (:macrocall, Symbol("@eval"), (:(=), (:call, :atomic_cas!, (:(::), :x, (:curly, :Atomic, (:$, :typ))), (:(::), :cmp, (:$, :typ)), (:(::), :new, (:$, :typ))), (:block,
+                      (:line, 378, :none),
+                      (:call, :llvmcall, (:$, (:string, "%rs = cmpxchg ", :lt, "* %0, ", :lt, " %1, ", :lt, " %2 acq_rel acquire\n%rv = extractvalue { ", :lt, ", i1 } %rs, 0\nret ", :lt, " %rv\n")), (:$, :typ), (:curly, :Tuple, (:curly, :Ptr, (:$, :typ)), (:$, :typ), (:$, :typ)), (:call, :unsafe_convert, (:curly, :Ptr, (:$, :typ)), :x), :cmp, :new)
+                    )))
+              ), (:block,
+                (:line, 386, :none),
+                (:macrocall, Symbol("@eval"), (:(=), (:call, :atomic_cas!, (:(::), :x, (:curly, :Atomic, (:$, :typ))), (:(::), :cmp, (:$, :typ)), (:(::), :new, (:$, :typ))), (:block,
+                      (:line, 386, :none),
+                      (:call, :llvmcall, (:$, (:string, "%iptr = bitcast ", :lt, "* %0 to ", :ilt, "*\n%icmp = bitcast ", :lt, " %1 to ", :ilt, "\n%inew = bitcast ", :lt, " %2 to ", :ilt, "\n%irs = cmpxchg ", :ilt, "* %iptr, ", :ilt, " %icmp, ", :ilt, " %inew acq_rel acquire\n%irv = extractvalue { ", :ilt, ", i1 } %irs, 0\n%rv = bitcast ", :ilt, " %irv to ", :lt, "\nret ", :lt, " %rv\n")), (:$, :typ), (:curly, :Tuple, (:curly, :Ptr, (:$, :typ)), (:$, :typ), (:$, :typ)), (:call, :unsafe_convert, (:curly, :Ptr, (:$, :typ)), :x), :cmp, :new)
+                    )))
+              ))
+          ), (:block,
+            (:line, 399, :none),
+            (:if, (:<:, :typ, :Integer), (:block,
+                (:line, 400, :none),
+                (:macrocall, Symbol("@eval"), (:(=), (:call, :atomic_cas!, (:(::), :x, (:curly, :Atomic, (:$, :typ))), (:(::), :cmp, (:$, :typ)), (:(::), :new, (:$, :typ))), (:block,
+                      (:line, 400, :none),
+                      (:call, :llvmcall, (:$, (:string, "%rv = cmpxchg ", :lt, "* %0, ", :lt, " %1, ", :lt, " %2 acq_rel\nret ", :lt, " %rv\n")), (:$, :typ), (:curly, :Tuple, (:curly, :Ptr, (:$, :typ)), (:$, :typ), (:$, :typ)), (:call, :unsafe_convert, (:curly, :Ptr, (:$, :typ)), :x), :cmp, :new)
+                    )))
+              ), (:block,
+                (:line, 407, :none),
+                (:macrocall, Symbol("@eval"), (:(=), (:call, :atomic_cas!, (:(::), :x, (:curly, :Atomic, (:$, :typ))), (:(::), :cmp, (:$, :typ)), (:(::), :new, (:$, :typ))), (:block,
+                      (:line, 407, :none),
+                      (:call, :llvmcall, (:$, (:string, "%iptr = bitcast ", :lt, "* %0 to ", :ilt, "*\n%icmp = bitcast ", :lt, " %1 to ", :ilt, "\n%inew = bitcast ", :lt, " %2 to ", :ilt, "\n%irv = cmpxchg ", :ilt, "* %iptr, ", :ilt, " %icmp, ", :ilt, " %inew acq_rel\n%rv = bitcast ", :ilt, " %irv to ", :lt, "\nret ", :lt, " %rv\n")), (:$, :typ), (:curly, :Tuple, (:curly, :Ptr, (:$, :typ)), (:$, :typ), (:$, :typ)), (:call, :unsafe_convert, (:curly, :Ptr, (:$, :typ)), :x), :cmp, :new)
+                    )))
+              ))
+          )),
+        (:line, 419, :none),
+        (:for, (:(=), :rmwop, (:vect, (:quote, #QuoteNode
+                :xchg
+              ), (:quote, #QuoteNode
+                :add
+              ), (:quote, #QuoteNode
+                :sub
+              ), (:quote, #QuoteNode
+                :and
+              ), (:quote, #QuoteNode
+                :nand
+              ), (:quote, #QuoteNode
+                :or
+              ), (:quote, #QuoteNode
+                :xor
+              ), (:quote, #QuoteNode
+                :max
+              ), (:quote, #QuoteNode
+                :min
+              ))), (:block,
+            (:line, 420, :none),
+            (:(=), :rmw, (:call, :string, :rmwop)),
+            (:line, 421, :none),
+            (:(=), :fn, (:call, :Symbol, "atomic_", :rmw, "!")),
+            (:line, 422, :none),
+            (:if, (:&&, (:||, (:call, :(==), :rmw, "max"), (:call, :(==), :rmw, "min")), (:<:, :typ, :Unsigned)), (:block,
+                (:line, 424, :none),
+                (:(=), :rmw, (:call, :*, "u", :rmw))
+              )),
+            (:line, 426, :none),
+            (:if, (:<:, :typ, :Integer), (:block,
+                (:line, 427, :none),
+                (:macrocall, Symbol("@eval"), (:(=), (:call, (:$, :fn), (:(::), :x, (:curly, :Atomic, (:$, :typ))), (:(::), :v, (:$, :typ))), (:block,
+                      (:line, 427, :none),
+                      (:call, :llvmcall, (:$, (:string, "%rv = atomicrmw ", :rmw, " ", :lt, "* %0, ", :lt, " %1 acq_rel\nret ", :lt, " %rv\n")), (:$, :typ), (:curly, :Tuple, (:curly, :Ptr, (:$, :typ)), (:$, :typ)), (:call, :unsafe_convert, (:curly, :Ptr, (:$, :typ)), :x), :v)
+                    )))
+              ), (:block,
+                (:line, 433, :none),
+                (:||, (:call, :(==), :rmwop, (:quote, #QuoteNode
+                      :xchg
+                    )), (:continue,)),
+                (:line, 434, :none),
+                (:macrocall, Symbol("@eval"), (:(=), (:call, (:$, :fn), (:(::), :x, (:curly, :Atomic, (:$, :typ))), (:(::), :v, (:$, :typ))), (:block,
+                      (:line, 434, :none),
+                      (:call, :llvmcall, (:$, (:string, "%iptr = bitcast ", :lt, "* %0 to ", :ilt, "*\n%ival = bitcast ", :lt, " %1 to ", :ilt, "\n%irv = atomicrmw ", :rmw, " ", :ilt, "* %iptr, ", :ilt, " %ival acq_rel\n%rv = bitcast ", :ilt, " %irv to ", :lt, "\nret ", :lt, " %rv\n")), (:$, :typ), (:curly, :Tuple, (:curly, :Ptr, (:$, :typ)), (:$, :typ)), (:call, :unsafe_convert, (:curly, :Ptr, (:$, :typ)), :x), :v)
+                    )))
+              ))
+          ))
+      )),
+    (:line, 447, :none),
+    (:const, (:(=), :opnames, (:call, (:curly, :Dict, :Symbol, :Symbol), (:call, :(=>), (:quote, #QuoteNode
+              :+
+            ), (:quote, #QuoteNode
+              :add
+            )), (:call, :(=>), (:quote, #QuoteNode
+              :-
+            ), (:quote, #QuoteNode
+              :sub
+            ))))),
+    (:line, 448, :none),
+    (:for, (:(=), :op, (:vect, (:quote, #QuoteNode
+            :+
+          ), (:quote, #QuoteNode
+            :-
+          ), (:quote, #QuoteNode
+            :max
+          ), (:quote, #QuoteNode
+            :min
+          ))), (:block,
+        (:line, 449, :none),
+        (:(=), :opname, (:call, :get, :opnames, :op, :op)),
+        (:line, 450, :none),
+        (:macrocall, Symbol("@eval"), (:function, (:where, (:call, (:$, (:call, :Symbol, "atomic_", :opname, "!")), (:(::), :var, (:curly, :Atomic, :T)), (:(::), :val, :T)), (:<:, :T, :FloatTypes)), (:block,
+              (:line, 451, :none),
+              (:(=), :IT, (:call, :inttype, :T)),
+              (:line, 452, :none),
+              (:(=), :old, (:ref, :var)),
+              (:line, 453, :none),
+              (:while, true, (:block,
+                  (:line, 454, :none),
+                  (:(=), :new, (:call, (:$, :op), :old, :val)),
+                  (:line, 455, :none),
+                  (:(=), :cmp, :old),
+                  (:line, 456, :none),
+                  (:(=), :old, (:call, :atomic_cas!, :var, :cmp, :new)),
+                  (:line, 457, :none),
+                  (:&&, (:call, :(==), (:call, :reinterpret, :IT, :old), (:call, :reinterpret, :IT, :cmp)), (:return, :new)),
+                  (:line, 459, :none),
+                  (:call, :ccall, (:quote, #QuoteNode
+                      :jl_gc_safepoint
+                    ), :Void, (:tuple,))
+                ))
+            )))
+      )),
+    (:line, 464, :none),
+    (:macrocall, :(Core.@doc), "    Threads.atomic_fence()\n\nInsert a sequential-consistency memory fence\n\nInserts a memory fence with sequentially-consistent ordering\nsemantics. There are algorithms where this is needed, i.e. where an\nacquire/release ordering is insufficient.\n\nThis is likely a very expensive operation. Given that all other atomic\noperations in Julia already have acquire/release semantics, explicit\nfences should not be necessary in most cases.\n\nFor further details, see LLVM's `fence` instruction.\n", (:(=), (:call, :atomic_fence), (:block,
+          (:line, 479, :none),
+          (:call, :llvmcall, "fence seq_cst\nret void\n", :Void, (:curly, :Tuple))
+        )))
+  ))

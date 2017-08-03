@@ -1,0 +1,605 @@
+(:quote, (:block,
+    (:line, 5, :none),
+    (:toplevel, (:import, :Core, :Intrinsics, :cglobal), (:import, :Core, :Intrinsics, :bitcast)),
+    (:line, 7, :none),
+    (:(=), (:call, :cfunction, :f, :r, :a), (:block,
+        (:line, 7, :none),
+        (:call, :ccall, (:quote, #QuoteNode
+            :jl_function_ptr
+          ), (:curly, :Ptr, :Void), (:tuple, :Any, :Any, :Any), :f, :r, :a)
+      )),
+    (:line, 9, :none),
+    (:if, (:call, :ccall, (:quote, #QuoteNode
+          :jl_is_char_signed
+        ), (:curly, :Ref, :Bool), (:tuple,)), (:block,
+        (:line, 10, :none),
+        (:const, (:(=), :Cchar, :Int8))
+      ), (:block,
+        (:line, 12, :none),
+        (:const, (:(=), :Cchar, :UInt8))
+      )),
+    (:line, 14, :none),
+    (:macrocall, :(Core.@doc), "    Cchar\n\nEquivalent to the native `char` c-type.\n", :Cchar),
+    (:line, 21, :none),
+    (:if, (:call, :is_windows), (:block,
+        (:line, 22, :none),
+        (:const, (:(=), :Clong, :Int32)),
+        (:line, 23, :none),
+        (:const, (:(=), :Culong, :UInt32)),
+        (:line, 24, :none),
+        (:const, (:(=), :Cwchar_t, :UInt16))
+      ), (:block,
+        (:line, 26, :none),
+        (:const, (:(=), :Clong, :Int)),
+        (:line, 27, :none),
+        (:const, (:(=), :Culong, :UInt)),
+        (:line, 28, :none),
+        (:const, (:(=), :Cwchar_t, :Int32))
+      )),
+    (:line, 31, :none),
+    (:macrocall, :(Core.@doc), "    Clong\n\nEquivalent to the native `signed long` c-type.\n", :Clong),
+    (:line, 38, :none),
+    (:macrocall, :(Core.@doc), "    Culong\n\nEquivalent to the native `unsigned long` c-type.\n", :Culong),
+    (:line, 45, :none),
+    (:macrocall, :(Core.@doc), "    Cwchar_t\n\nEquivalent to the native `wchar_t` c-type ([`Int32`](@ref)).\n", :Cwchar_t),
+    (:line, 52, :none),
+    (:if, (:call, :!, (:call, :is_windows)), (:block,
+        (:line, 53, :none),
+        (:const, (:(=), :sizeof_mode_t, (:call, :ccall, (:quote, #QuoteNode
+                :jl_sizeof_mode_t
+              ), :Cint, (:tuple,)))),
+        (:line, 54, :none),
+        (:if, (:call, :(==), :sizeof_mode_t, 2), (:block,
+            (:line, 55, :none),
+            (:const, (:(=), :Cmode_t, :Int16))
+          ), (:block,
+            (:line, 56, :none),
+            (:if, (:call, :(==), :sizeof_mode_t, 4), (:block,
+                (:line, 57, :none),
+                (:const, (:(=), :Cmode_t, :Int32))
+              ), (:block,
+                (:line, 58, :none),
+                (:if, (:call, :(==), :sizeof_mode_t, 8), (:block,
+                    (:line, 59, :none),
+                    (:const, (:(=), :Cmode_t, :Int64))
+                  ))
+              ))
+          ))
+      )),
+    (:line, 64, :none),
+    (:(=), (:call, :convert, (:(::), (:curly, :Type, :Cstring)), (:(::), :p, (:curly, :Ptr, (:<:, (:curly, :Union, :Int8, :UInt8))))), (:block,
+        (:line, 64, :none),
+        (:call, :bitcast, :Cstring, :p)
+      )),
+    (:line, 65, :none),
+    (:(=), (:call, :convert, (:(::), (:curly, :Type, :Cwstring)), (:(::), :p, (:curly, :Ptr, :Cwchar_t))), (:block,
+        (:line, 65, :none),
+        (:call, :bitcast, :Cwstring, :p)
+      )),
+    (:line, 66, :none),
+    (:(=), (:where, (:call, :convert, (:(::), (:curly, :Type, (:curly, :Ptr, :T))), (:(::), :p, :Cstring)), (:<:, :T, (:curly, :Union, :Int8, :UInt8))), (:block,
+        (:line, 66, :none),
+        (:call, :bitcast, (:curly, :Ptr, :T), :p)
+      )),
+    (:line, 67, :none),
+    (:(=), (:call, :convert, (:(::), (:curly, :Type, (:curly, :Ptr, :Cwchar_t))), (:(::), :p, :Cwstring)), (:block,
+        (:line, 67, :none),
+        (:call, :bitcast, (:curly, :Ptr, :Cwchar_t), :p)
+      )),
+    (:line, 70, :none),
+    (:(=), (:where, (:call, :convert, (:(::), (:curly, :Type, :T)), (:(::), :p, (:curly, :Ptr, :Void))), (:<:, :T, (:curly, :Union, :Cstring, :Cwstring))), (:block,
+        (:line, 70, :none),
+        (:call, :bitcast, :T, :p)
+      )),
+    (:line, 72, :none),
+    (:(=), (:call, :pointer, (:(::), :p, :Cstring)), (:block,
+        (:line, 72, :none),
+        (:call, :convert, (:curly, :Ptr, :UInt8), :p)
+      )),
+    (:line, 73, :none),
+    (:(=), (:call, :pointer, (:(::), :p, :Cwstring)), (:block,
+        (:line, 73, :none),
+        (:call, :convert, (:curly, :Ptr, :Cwchar_t), :p)
+      )),
+    (:line, 76, :none),
+    (:(=), (:call, :(==), (:(::), :x, (:curly, :Union, :Cstring, :Cwstring)), (:(::), :y, :Ptr)), (:block,
+        (:line, 76, :none),
+        (:call, :(==), (:call, :pointer, :x), :y)
+      )),
+    (:line, 77, :none),
+    (:(=), (:call, :(==), (:(::), :x, :Ptr), (:(::), :y, (:curly, :Union, :Cstring, :Cwstring))), (:block,
+        (:line, 77, :none),
+        (:call, :(==), :x, (:call, :pointer, :y))
+      )),
+    (:line, 79, :none),
+    (:(=), (:call, :unsafe_string, (:(::), :s, :Cstring)), (:block,
+        (:line, 79, :none),
+        (:call, :unsafe_string, (:call, :convert, (:curly, :Ptr, :UInt8), :s))
+      )),
+    (:line, 82, :none),
+    (:(=), (:call, :cconvert, (:(::), (:curly, :Type, :Cstring)), (:(::), :s, :String)), (:block,
+        (:line, 82, :none),
+        :s
+      )),
+    (:line, 83, :none),
+    (:(=), (:call, :cconvert, (:(::), (:curly, :Type, :Cstring)), (:(::), :s, :AbstractString)), (:block,
+        (:line, 83, :none),
+        (:call, :cconvert, :Cstring, (:(::), (:call, :String, :s), :String))
+      )),
+    (:line, 86, :none),
+    (:function, (:call, :cconvert, (:(::), (:curly, :Type, :Cwstring)), (:(::), :s, :AbstractString)), (:block,
+        (:line, 87, :none),
+        (:(=), :v, (:call, :transcode, :Cwchar_t, (:call, (:curly, :Vector, :UInt8), (:call, :String, :s)))),
+        (:line, 88, :none),
+        (:||, (:&&, (:call, :!, (:call, :isempty, :v)), (:call, :(==), (:ref, :v, :end), 0)), (:call, :push!, :v, 0)),
+        (:line, 89, :none),
+        (:return, :v)
+      )),
+    (:line, 92, :none),
+    (:(=), (:call, :eltype, (:(::), (:curly, :Type, :Cstring))), (:block,
+        (:line, 92, :none),
+        :UInt8
+      )),
+    (:line, 93, :none),
+    (:(=), (:call, :eltype, (:(::), (:curly, :Type, :Cwstring))), (:block,
+        (:line, 93, :none),
+        :Cwchar_t
+      )),
+    (:line, 95, :none),
+    (:(=), (:call, :containsnul, (:(::), :p, :Ptr), :len), (:block,
+        (:line, 95, :none),
+        (:call, :(!=), :C_NULL, (:call, :ccall, (:quote, #QuoteNode
+              :memchr
+            ), (:curly, :Ptr, :Cchar), (:tuple, (:curly, :Ptr, :Cchar), :Cint, :Csize_t), :p, 0, :len))
+      )),
+    (:line, 97, :none),
+    (:(=), (:call, :containsnul, (:(::), :s, :String)), (:block,
+        (:line, 97, :none),
+        (:call, :containsnul, (:call, :unsafe_convert, (:curly, :Ptr, :Cchar), :s), (:call, :sizeof, :s))
+      )),
+    (:line, 98, :none),
+    (:(=), (:call, :containsnul, (:(::), :s, :AbstractString)), (:block,
+        (:line, 98, :none),
+        (:call, :in, '\0', :s)
+      )),
+    (:line, 100, :none),
+    (:function, (:call, :unsafe_convert, (:(::), (:curly, :Type, :Cstring)), (:(::), :s, (:curly, :Union, :String, (:curly, :Vector, :UInt8)))), (:block,
+        (:line, 101, :none),
+        (:(=), :p, (:call, :unsafe_convert, (:curly, :Ptr, :Cchar), :s)),
+        (:line, 102, :none),
+        (:&&, (:call, :containsnul, :p, (:call, :sizeof, :s)), (:call, :throw, (:call, :ArgumentError, (:string, "embedded NULs are not allowed in C strings: ", (:call, :repr, :s))))),
+        (:line, 104, :none),
+        (:return, (:call, :Cstring, :p))
+      )),
+    (:line, 107, :none),
+    (:function, (:call, :unsafe_convert, (:(::), (:curly, :Type, :Cwstring)), (:(::), :v, (:curly, :Vector, :Cwchar_t))), (:block,
+        (:line, 108, :none),
+        (:for, (:(=), :i, (:(:), 1, (:call, :-, (:call, :length, :v), 1))), (:block,
+            (:line, 109, :none),
+            (:&&, (:call, :(==), (:ref, :v, :i), 0), (:call, :throw, (:call, :ArgumentError, (:string, "embedded NULs are not allowed in C strings: ", (:call, :repr, :v)))))
+          )),
+        (:line, 112, :none),
+        (:||, (:call, :(==), (:ref, :v, :end), 0), (:call, :throw, (:call, :ArgumentError, (:string, "C string data must be NUL terminated: ", (:call, :repr, :v))))),
+        (:line, 114, :none),
+        (:(=), :p, (:call, :unsafe_convert, (:curly, :Ptr, :Cwchar_t), :v)),
+        (:line, 115, :none),
+        (:return, (:call, :Cwstring, :p))
+      )),
+    (:line, 119, :none),
+    (:(=), (:call, :convert, (:(::), (:curly, :Type, :Cstring)), (:(::), :s, :Symbol)), (:block,
+        (:line, 119, :none),
+        (:call, :Cstring, (:call, :unsafe_convert, (:curly, :Ptr, :Cchar), :s))
+      )),
+    (:line, 121, :none),
+    (:if, (:call, :is_windows), (:block,
+        (:line, 122, :none),
+        "    Base.cwstring(s)\n\nConverts a string `s` to a NUL-terminated `Vector{Cwchar_t}`, suitable for passing to C\nfunctions expecting a `Ptr{Cwchar_t}`. The main advantage of using this over the implicit\nconversion provided by `Cwstring` is if the function is called multiple times with the\nsame argument.\n\nThis is only available on Windows.\n",
+        (:line, 132, :none),
+        (:function, (:call, :cwstring, (:(::), :s, :AbstractString)), (:block,
+            (:line, 133, :none),
+            (:(=), :bytes, (:call, (:curly, :Vector, :UInt8), (:call, :String, :s))),
+            (:line, 134, :none),
+            (:&&, (:call, :in, 0, :bytes), (:call, :throw, (:call, :ArgumentError, (:string, "embedded NULs are not allowed in C strings: ", (:call, :repr, :s))))),
+            (:line, 135, :none),
+            (:return, (:call, :push!, (:call, :transcode, :UInt16, :bytes), 0))
+          ))
+      )),
+    (:line, 142, :none),
+    (:macrocall, :(Core.@doc), "    transcode(T, src)\n\nConvert string data between Unicode encodings. `src` is either a\n`String` or a `Vector{UIntXX}` of UTF-XX code units, where\n`XX` is 8, 16, or 32. `T` indicates the encoding of the return value:\n`String` to return a (UTF-8 encoded) `String` or `UIntXX`\nto return a `Vector{UIntXX}` of UTF-`XX` data.   (The alias `Cwchar_t`\ncan also be used as the integer type, for converting `wchar_t*` strings\nused by external C libraries.)\n\nThe `transcode` function succeeds as long as the input data can be\nreasonably represented in the target encoding; it always succeeds for\nconversions between UTF-XX encodings, even for invalid Unicode data.\n\nOnly conversion to/from UTF-8 is currently supported.\n", (:function, :transcode)),
+    (:line, 161, :none),
+    (:(=), (:where, (:call, :transcode, (:(::), (:curly, :Type, :T)), (:(::), :src, (:curly, :Vector, :T))), (:<:, :T, (:curly, :Union, :UInt8, :UInt16, :UInt32, :Int32))), (:block,
+        (:line, 161, :none),
+        :src
+      )),
+    (:line, 162, :none),
+    (:(=), (:where, (:call, :transcode, (:(::), (:curly, :Type, :T)), (:(::), :src, :String)), (:<:, :T, (:curly, :Union, :Int32, :UInt32))), (:block,
+        (:line, 162, :none),
+        (:typed_comprehension, :T, (:generator, (:call, :T, :c), (:(=), :c, :src)))
+      )),
+    (:line, 163, :none),
+    (:(=), (:where, (:call, :transcode, (:(::), (:curly, :Type, :T)), (:(::), :src, (:curly, :Vector, :UInt8))), (:<:, :T, (:curly, :Union, :Int32, :UInt32))), (:block,
+        (:line, 163, :none),
+        (:call, :transcode, :T, (:call, :String, :src))
+      )),
+    (:line, 164, :none),
+    (:function, (:call, :transcode, (:(::), (:curly, :Type, :UInt8)), (:(::), :src, (:curly, :Vector, (:<:, (:curly, :Union, :Int32, :UInt32))))), (:block,
+        (:line, 165, :none),
+        (:(=), :buf, (:call, :IOBuffer)),
+        (:line, 166, :none),
+        (:for, (:(=), :c, :src), (:block,
+            (:line, 166, :none),
+            (:call, :print, :buf, (:call, :Char, :c))
+          )),
+        (:line, 167, :none),
+        (:call, :take!, :buf)
+      )),
+    (:line, 169, :none),
+    (:(=), (:call, :transcode, (:(::), (:curly, :Type, :String)), (:(::), :src, :String)), (:block,
+        (:line, 169, :none),
+        :src
+      )),
+    (:line, 170, :none),
+    (:(=), (:call, :transcode, :T, (:(::), :src, :String)), (:block,
+        (:line, 170, :none),
+        (:call, :transcode, :T, (:call, (:curly, :Vector, :UInt8), :src))
+      )),
+    (:line, 171, :none),
+    (:(=), (:call, :transcode, (:(::), (:curly, :Type, :String)), :src), (:block,
+        (:line, 171, :none),
+        (:call, :String, (:call, :transcode, :UInt8, :src))
+      )),
+    (:line, 173, :none),
+    (:function, (:call, :transcode, (:(::), (:curly, :Type, :UInt16)), (:(::), :src, (:curly, :Vector, :UInt8))), (:block,
+        (:line, 174, :none),
+        (:(=), :dst, (:ref, :UInt16)),
+        (:line, 175, :none),
+        (:(=), (:tuple, :i, :n), (:tuple, 1, (:call, :length, :src))),
+        (:line, 176, :none),
+        (:||, (:call, :>, :n, 0), (:return, :dst)),
+        (:line, 177, :none),
+        (:call, :sizehint!, :dst, (:call, :*, 2, :n)),
+        (:line, 178, :none),
+        (:(=), :a, (:ref, :src, 1)),
+        (:line, 179, :none),
+        (:while, true, (:block,
+            (:line, 180, :none),
+            (:if, (:&&, (:call, :<, :i, :n), (:comparison, -64, :(<=), (:call, :%, :a, :Int8), :(<=), -12)), (:block,
+                (:line, 181, :none),
+                (:(=), :b, (:ref, :src, (:+=, :i, 1))),
+                (:line, 182, :none),
+                (:if, (:||, (:call, :(<=), -64, (:call, :%, :b, :Int8)), (:&&, (:call, :(==), :a, 0xf4), (:call, :<, 0x8f, :b))), (:block,
+                    (:line, 184, :none),
+                    (:call, :push!, :dst, :a),
+                    (:line, 185, :none),
+                    (:(=), :a, :b),
+                    (:line, 185, :none),
+                    (:continue,)
+                  ), (:block,
+                    (:line, 186, :none),
+                    (:if, (:call, :<, :a, 0xe0), (:block,
+                        (:line, 187, :none),
+                        (:call, :push!, :dst, (:call, :xor, 0x3080, (:call, :<<, (:call, :UInt16, :a), 6), :b))
+                      ), (:block,
+                        (:line, 188, :none),
+                        (:if, (:call, :<, :i, :n), (:block,
+                            (:line, 189, :none),
+                            (:(=), :c, (:ref, :src, (:+=, :i, 1))),
+                            (:line, 190, :none),
+                            (:if, (:call, :(<=), -64, (:call, :%, :c, :Int8)), (:block,
+                                (:line, 191, :none),
+                                (:call, :push!, :dst, :a, :b),
+                                (:line, 192, :none),
+                                (:(=), :a, :c),
+                                (:line, 192, :none),
+                                (:continue,)
+                              ), (:block,
+                                (:line, 193, :none),
+                                (:if, (:call, :<, :a, 0xf0), (:block,
+                                    (:line, 194, :none),
+                                    (:call, :push!, :dst, (:call, :xor, 0x2080, (:call, :<<, (:call, :UInt16, :a), 12), (:call, :<<, (:call, :UInt16, :b), 6), :c))
+                                  ), (:block,
+                                    (:line, 195, :none),
+                                    (:if, (:call, :<, :i, :n), (:block,
+                                        (:line, 196, :none),
+                                        (:(=), :d, (:ref, :src, (:+=, :i, 1))),
+                                        (:line, 197, :none),
+                                        (:if, (:call, :(<=), -64, (:call, :%, :d, :Int8)), (:block,
+                                            (:line, 198, :none),
+                                            (:call, :push!, :dst, :a, :b, :c),
+                                            (:line, 199, :none),
+                                            (:(=), :a, :d),
+                                            (:line, 199, :none),
+                                            (:continue,)
+                                          ), (:block,
+                                            (:line, 200, :none),
+                                            (:if, (:&&, (:call, :(==), :a, 0xf0), (:call, :<, :b, 0x90)), (:block,
+                                                (:line, 201, :none),
+                                                (:call, :push!, :dst, (:call, :xor, 0x2080, (:call, :<<, (:call, :UInt16, :b), 12), (:call, :<<, (:call, :UInt16, :c), 6), :d))
+                                              ), (:block,
+                                                (:line, 203, :none),
+                                                (:call, :push!, :dst, (:call, :+, 0xe5b8, (:call, :<<, (:call, :UInt16, :a), 8), (:call, :<<, (:call, :UInt16, :b), 2), (:call, :>>, :c, 4)), (:call, :xor, 0xdc80, (:call, :<<, (:call, :UInt16, (:call, :&, :c, 0x0f)), 6), :d))
+                                              ))
+                                          ))
+                                      ), (:block,
+                                        (:line, 207, :none),
+                                        (:call, :push!, :dst, :a, :b, :c),
+                                        (:line, 208, :none),
+                                        (:break,)
+                                      ))
+                                  ))
+                              ))
+                          ), (:block,
+                            (:line, 211, :none),
+                            (:call, :push!, :dst, :a, :b),
+                            (:line, 212, :none),
+                            (:break,)
+                          ))
+                      ))
+                  ))
+              ), (:block,
+                (:line, 215, :none),
+                (:call, :push!, :dst, :a)
+              )),
+            (:line, 217, :none),
+            (:||, (:call, :<, :i, :n), (:break,)),
+            (:line, 218, :none),
+            (:(=), :a, (:ref, :src, (:+=, :i, 1)))
+          )),
+        (:line, 220, :none),
+        (:return, :dst)
+      )),
+    (:line, 223, :none),
+    (:function, (:call, :transcode, (:(::), (:curly, :Type, :UInt8)), (:(::), :src, (:curly, :Vector, :UInt16))), (:block,
+        (:line, 224, :none),
+        (:(=), :n, (:call, :length, :src)),
+        (:line, 225, :none),
+        (:&&, (:call, :(==), :n, 0), (:return, (:ref, :UInt8))),
+        (:line, 233, :none),
+        (:(=), :a, (:ref, :src, 1)),
+        (:line, 234, :none),
+        (:(=), (:tuple, :i, :m), (:tuple, 1, 0)),
+        (:line, 235, :none),
+        (:while, true, (:block,
+            (:line, 236, :none),
+            (:if, (:call, :<, :a, 0x80), (:block,
+                (:line, 237, :none),
+                (:+=, :m, 1)
+              ), (:block,
+                (:line, 238, :none),
+                (:if, (:call, :<, :a, 0x0800), (:block,
+                    (:line, 239, :none),
+                    (:+=, :m, 2)
+                  ), (:block,
+                    (:line, 240, :none),
+                    (:if, (:&&, (:call, :(==), (:call, :&, :a, 0xfc00), 0xd800), (:call, :<, :i, (:call, :length, :src))), (:block,
+                        (:line, 241, :none),
+                        (:(=), :b, (:ref, :src, (:+=, :i, 1))),
+                        (:line, 242, :none),
+                        (:if, (:call, :(==), (:call, :&, :b, 0xfc00), 0xdc00), (:block,
+                            (:line, 243, :none),
+                            (:+=, :m, 4)
+                          ), (:block,
+                            (:line, 245, :none),
+                            (:+=, :m, 3),
+                            (:line, 246, :none),
+                            (:(=), :a, :b),
+                            (:line, 246, :none),
+                            (:continue,)
+                          ))
+                      ), (:block,
+                        (:line, 251, :none),
+                        (:+=, :m, 3)
+                      ))
+                  ))
+              )),
+            (:line, 253, :none),
+            (:||, (:call, :<, :i, :n), (:break,)),
+            (:line, 254, :none),
+            (:(=), :a, (:ref, :src, (:+=, :i, 1)))
+          )),
+        (:line, 257, :none),
+        (:(=), :dst, (:call, :StringVector, :m)),
+        (:line, 258, :none),
+        (:(=), :a, (:ref, :src, 1)),
+        (:line, 259, :none),
+        (:(=), (:tuple, :i, :j), (:tuple, 1, 0)),
+        (:line, 260, :none),
+        (:while, true, (:block,
+            (:line, 261, :none),
+            (:if, (:call, :<, :a, 0x80), (:block,
+                (:line, 262, :none),
+                (:(=), (:ref, :dst, (:+=, :j, 1)), (:call, :%, :a, :UInt8))
+              ), (:block,
+                (:line, 263, :none),
+                (:if, (:call, :<, :a, 0x0800), (:block,
+                    (:line, 264, :none),
+                    (:(=), (:ref, :dst, (:+=, :j, 1)), (:call, :|, 0xc0, (:call, :%, (:call, :>>, :a, 6), :UInt8))),
+                    (:line, 265, :none),
+                    (:(=), (:ref, :dst, (:+=, :j, 1)), (:call, :|, 0x80, (:call, :&, (:call, :%, :a, :UInt8), 0x3f)))
+                  ), (:block,
+                    (:line, 266, :none),
+                    (:if, (:&&, (:call, :(==), (:call, :&, :a, 0xfc00), 0xd800), (:call, :<, :i, :n)), (:block,
+                        (:line, 267, :none),
+                        (:(=), :b, (:ref, :src, (:+=, :i, 1))),
+                        (:line, 268, :none),
+                        (:if, (:call, :(==), (:call, :&, :b, 0xfc00), 0xdc00), (:block,
+                            (:line, 270, :none),
+                            (:+=, :a, 0x2840),
+                            (:line, 271, :none),
+                            (:(=), (:ref, :dst, (:+=, :j, 1)), (:call, :|, 0xf0, (:call, :%, (:call, :>>, :a, 8), :UInt8))),
+                            (:line, 272, :none),
+                            (:(=), (:ref, :dst, (:+=, :j, 1)), (:call, :|, 0x80, (:call, :>>, (:call, :%, :a, :UInt8), 2))),
+                            (:line, 273, :none),
+                            (:(=), (:ref, :dst, (:+=, :j, 1)), (:call, :xor, 0xf0, (:call, :&, (:call, :<<, (:call, :%, :a, :UInt8), 4), 0x3f), (:call, :%, (:call, :>>, :b, 6), :UInt8))),
+                            (:line, 274, :none),
+                            (:(=), (:ref, :dst, (:+=, :j, 1)), (:call, :|, 0x80, (:call, :&, (:call, :%, :b, :UInt8), 0x3f)))
+                          ), (:block,
+                            (:line, 276, :none),
+                            (:(=), (:ref, :dst, (:+=, :j, 1)), (:call, :|, 0xe0, (:call, :%, (:call, :>>, :a, 12), :UInt8))),
+                            (:line, 277, :none),
+                            (:(=), (:ref, :dst, (:+=, :j, 1)), (:call, :|, 0x80, (:call, :&, (:call, :%, (:call, :>>, :a, 6), :UInt8), 0x3f))),
+                            (:line, 278, :none),
+                            (:(=), (:ref, :dst, (:+=, :j, 1)), (:call, :|, 0x80, (:call, :&, (:call, :%, :a, :UInt8), 0x3f))),
+                            (:line, 279, :none),
+                            (:(=), :a, :b),
+                            (:line, 279, :none),
+                            (:continue,)
+                          ))
+                      ), (:block,
+                        (:line, 284, :none),
+                        (:(=), (:ref, :dst, (:+=, :j, 1)), (:call, :|, 0xe0, (:call, :%, (:call, :>>, :a, 12), :UInt8))),
+                        (:line, 285, :none),
+                        (:(=), (:ref, :dst, (:+=, :j, 1)), (:call, :|, 0x80, (:call, :&, (:call, :%, (:call, :>>, :a, 6), :UInt8), 0x3f))),
+                        (:line, 286, :none),
+                        (:(=), (:ref, :dst, (:+=, :j, 1)), (:call, :|, 0x80, (:call, :&, (:call, :%, :a, :UInt8), 0x3f)))
+                      ))
+                  ))
+              )),
+            (:line, 288, :none),
+            (:||, (:call, :<, :i, :n), (:break,)),
+            (:line, 289, :none),
+            (:(=), :a, (:ref, :src, (:+=, :i, 1)))
+          )),
+        (:line, 291, :none),
+        (:return, :dst)
+      )),
+    (:line, 301, :none),
+    (:(=), (:call, :sigatomic_begin), (:block,
+        (:line, 301, :none),
+        (:call, :ccall, (:quote, #QuoteNode
+            :jl_sigatomic_begin
+          ), :Void, (:tuple,))
+      )),
+    (:line, 302, :none),
+    (:(=), (:call, :sigatomic_end), (:block,
+        (:line, 302, :none),
+        (:call, :ccall, (:quote, #QuoteNode
+            :jl_sigatomic_end
+          ), :Void, (:tuple,))
+      )),
+    (:line, 304, :none),
+    (:macrocall, :(Core.@doc), "    disable_sigint(f::Function)\n\nDisable Ctrl-C handler during execution of a function on the current task,\nfor calling external code that may call julia code that is not interrupt safe.\nIntended to be called using `do` block syntax as follows:\n\n    disable_sigint() do\n        # interrupt-unsafe code\n        ...\n    end\n\nThis is not needed on worker threads (`Threads.threadid() != 1`) since the\n`InterruptException` will only be delivered to the master thread.\nExternal functions that do not call julia code or julia runtime\nautomatically disable sigint during their execution.\n", (:function, (:call, :disable_sigint, (:(::), :f, :Function)), (:block,
+          (:line, 322, :none),
+          (:call, :sigatomic_begin),
+          (:line, 323, :none),
+          (:(=), :res, (:call, :f)),
+          (:line, 325, :none),
+          (:call, :sigatomic_end),
+          (:line, 326, :none),
+          :res
+        ))),
+    (:line, 329, :none),
+    (:macrocall, :(Core.@doc), "    reenable_sigint(f::Function)\n\nRe-enable Ctrl-C handler during execution of a function.\nTemporarily reverses the effect of `disable_sigint`.\n", (:function, (:call, :reenable_sigint, (:(::), :f, :Function)), (:block,
+          (:line, 336, :none),
+          (:call, :sigatomic_end),
+          (:line, 337, :none),
+          (:(=), :res, (:call, :f)),
+          (:line, 339, :none),
+          (:call, :sigatomic_begin),
+          (:line, 340, :none),
+          :res
+        ))),
+    (:line, 343, :none),
+    (:function, (:call, :ccallable, (:(::), :f, :Function), (:(::), :rt, :Type), (:(::), :argt, :Type), (:kw, (:(::), :name, (:curly, :Union, :AbstractString, :Symbol)), (:call, :string, :f))), (:block,
+        (:line, 344, :none),
+        (:call, :ccall, (:quote, #QuoteNode
+            :jl_extern_c
+          ), :Void, (:tuple, :Any, :Any, :Any, :Cstring), :f, :rt, :argt, :name)
+      )),
+    (:line, 347, :none),
+    (:function, (:call, :expand_ccallable, :rt, :def), (:block,
+        (:line, 348, :none),
+        (:if, (:&&, (:call, :isa, :def, :Expr), (:||, (:call, :(===), (:., :def, (:quote, #QuoteNode
+                    :head
+                  )), (:quote, #QuoteNode
+                  :(=)
+                )), (:call, :(===), (:., :def, (:quote, #QuoteNode
+                    :head
+                  )), (:quote, #QuoteNode
+                  :function
+                )))), (:block,
+            (:line, 349, :none),
+            (:(=), :sig, (:ref, (:., :def, (:quote, #QuoteNode
+                    :args
+                  )), 1)),
+            (:line, 350, :none),
+            (:if, (:call, :(===), (:., :sig, (:quote, #QuoteNode
+                    :head
+                  )), (:quote, #QuoteNode
+                  :(::)
+                )), (:block,
+                (:line, 351, :none),
+                (:if, (:call, :(===), :rt, :nothing), (:block,
+                    (:line, 352, :none),
+                    (:(=), :rt, (:ref, (:., :sig, (:quote, #QuoteNode
+                            :args
+                          )), 2))
+                  )),
+                (:line, 354, :none),
+                (:(=), :sig, (:ref, (:., :sig, (:quote, #QuoteNode
+                        :args
+                      )), 1))
+              )),
+            (:line, 356, :none),
+            (:if, (:call, :(===), :rt, :nothing), (:block,
+                (:line, 357, :none),
+                (:call, :error, "@ccallable requires a return type")
+              )),
+            (:line, 359, :none),
+            (:if, (:call, :(===), (:., :sig, (:quote, #QuoteNode
+                    :head
+                  )), (:quote, #QuoteNode
+                  :call
+                )), (:block,
+                (:line, 360, :none),
+                (:(=), :name, (:ref, (:., :sig, (:quote, #QuoteNode
+                        :args
+                      )), 1)),
+                (:line, 361, :none),
+                (:(=), :at, (:call, :map, (:->, (:tuple, :a), (:block,
+                        (:line, 362, :none),
+                        (:if, (:&&, (:call, :isa, :a, :Expr), (:call, :(===), (:., :a, (:quote, #QuoteNode
+                                  :head
+                                )), (:quote, #QuoteNode
+                                :(::)
+                              ))), (:block,
+                            (:line, 363, :none),
+                            (:ref, (:., :a, (:quote, #QuoteNode
+                                  :args
+                                )), 2)
+                          ), (:block,
+                            (:line, 365, :none),
+                            (:quote, #QuoteNode
+                              :Any
+                            )
+                          ))
+                      )), (:ref, (:., :sig, (:quote, #QuoteNode
+                          :args
+                        )), (:(:), 2, :end)))),
+                (:line, 368, :none),
+                (:return, (:quote, (:block,
+                      (:line, 369, :none),
+                      (:$, (:call, :esc, :def)),
+                      (:line, 370, :none),
+                      (:call, :ccallable, (:$, (:call, :esc, :name)), (:$, (:call, :esc, :rt)), (:$, (:call, :Expr, (:quote, #QuoteNode
+                              :curly
+                            ), (:quote, #QuoteNode
+                              :Tuple
+                            ), (:..., (:call, :map, :esc, :at)))), (:$, (:call, :string, :name)))
+                    )))
+              ))
+          )),
+        (:line, 374, :none),
+        (:call, :error, "expected method definition in @ccallable")
+      )),
+    (:line, 377, :none),
+    (:macro, (:call, :ccallable, :def), (:block,
+        (:line, 378, :none),
+        (:call, :expand_ccallable, :nothing, :def)
+      )),
+    (:line, 380, :none),
+    (:macro, (:call, :ccallable, :rt, :def), (:block,
+        (:line, 381, :none),
+        (:call, :expand_ccallable, :rt, :def)
+      ))
+  ))

@@ -1,0 +1,1664 @@
+(:quote, (:block,
+    (:line, 5, :none),
+    (:macrocall, :(Core.@doc), "    Inf16\n\nPositive infinity of type [`Float16`](@ref).\n", (:const, (:(=), :Inf16, (:call, :bitcast, :Float16, 0x7c00)))),
+    (:line, 11, :none),
+    (:macrocall, :(Core.@doc), "    NaN16\n\nA not-a-number value of type [`Float16`](@ref).\n", (:const, (:(=), :NaN16, (:call, :bitcast, :Float16, 0x7e00)))),
+    (:line, 17, :none),
+    (:macrocall, :(Core.@doc), "    Inf32\n\nPositive infinity of type [`Float32`](@ref).\n", (:const, (:(=), :Inf32, (:call, :bitcast, :Float32, 0x7f800000)))),
+    (:line, 23, :none),
+    (:macrocall, :(Core.@doc), "    NaN32\n\nA not-a-number value of type [`Float32`](@ref).\n", (:const, (:(=), :NaN32, (:call, :bitcast, :Float32, 0x7fc00000)))),
+    (:line, 29, :none),
+    (:const, (:(=), :Inf64, (:call, :bitcast, :Float64, 0x7ff0000000000000))),
+    (:line, 30, :none),
+    (:const, (:(=), :NaN64, (:call, :bitcast, :Float64, 0x7ff8000000000000))),
+    (:line, 32, :none),
+    (:macrocall, :(Core.@doc), "    Inf\n\nPositive infinity of type [`Float64`](@ref).\n", (:const, (:(=), :Inf, :Inf64))),
+    (:line, 38, :none),
+    (:macrocall, :(Core.@doc), "    NaN\n\nA not-a-number value of type [`Float64`](@ref).\n", (:const, (:(=), :NaN, :NaN64))),
+    (:line, 46, :none),
+    (:(=), (:call, :convert, (:(::), (:curly, :Type, :Float16)), (:(::), :x, :Integer)), (:block,
+        (:line, 46, :none),
+        (:call, :convert, :Float16, (:call, :convert, :Float32, :x))
+      )),
+    (:line, 47, :none),
+    (:for, (:(=), :t, (:tuple, :Int8, :Int16, :Int32, :Int64, :Int128, :UInt8, :UInt16, :UInt32, :UInt64, :UInt128)), (:block,
+        (:line, 48, :none),
+        (:macrocall, Symbol("@eval"), (:(=), (:call, :promote_rule, (:(::), (:curly, :Type, :Float16)), (:(::), (:curly, :Type, (:$, :t)))), (:block,
+              (:line, 48, :none),
+              :Float16
+            )))
+      )),
+    (:line, 50, :none),
+    (:(=), (:call, :promote_rule, (:(::), (:curly, :Type, :Float16)), (:(::), (:curly, :Type, :Bool))), (:block,
+        (:line, 50, :none),
+        :Float16
+      )),
+    (:line, 52, :none),
+    (:for, (:(=), :t1, (:tuple, :Float32, :Float64)), (:block,
+        (:line, 53, :none),
+        (:for, (:(=), :st, (:tuple, :Int8, :Int16, :Int32, :Int64)), (:block,
+            (:line, 54, :none),
+            (:macrocall, Symbol("@eval"), (:block,
+                (:line, 55, :none),
+                (:(=), (:call, :convert, (:(::), (:curly, :Type, (:$, :t1))), (:(::), :x, (:$, :st))), (:block,
+                    (:line, 55, :none),
+                    (:call, :sitofp, (:$, :t1), :x)
+                  )),
+                (:line, 56, :none),
+                (:(=), (:call, :promote_rule, (:(::), (:curly, :Type, (:$, :t1))), (:(::), (:curly, :Type, (:$, :st)))), (:block,
+                    (:line, 56, :none),
+                    (:$, :t1)
+                  ))
+              ))
+          )),
+        (:line, 59, :none),
+        (:for, (:(=), :ut, (:tuple, :Bool, :UInt8, :UInt16, :UInt32, :UInt64)), (:block,
+            (:line, 60, :none),
+            (:macrocall, Symbol("@eval"), (:block,
+                (:line, 61, :none),
+                (:(=), (:call, :convert, (:(::), (:curly, :Type, (:$, :t1))), (:(::), :x, (:$, :ut))), (:block,
+                    (:line, 61, :none),
+                    (:call, :uitofp, (:$, :t1), :x)
+                  )),
+                (:line, 62, :none),
+                (:(=), (:call, :promote_rule, (:(::), (:curly, :Type, (:$, :t1))), (:(::), (:curly, :Type, (:$, :ut)))), (:block,
+                    (:line, 62, :none),
+                    (:$, :t1)
+                  ))
+              ))
+          ))
+      )),
+    (:line, 66, :none),
+    (:(=), (:call, :convert, (:(::), (:curly, :Type, :Integer)), (:(::), :x, :Float16)), (:block,
+        (:line, 66, :none),
+        (:call, :convert, :Integer, (:call, :Float32, :x))
+      )),
+    (:line, 67, :none),
+    (:(=), (:where, (:call, :convert, (:(::), (:curly, :Type, :T)), (:(::), :x, :Float16)), (:<:, :T, :Integer)), (:block,
+        (:line, 67, :none),
+        (:call, :convert, :T, (:call, :Float32, :x))
+      )),
+    (:line, 70, :none),
+    (:(=), (:call, :promote_rule, (:(::), (:curly, :Type, :Float64)), (:(::), (:curly, :Type, :UInt128))), (:block,
+        (:line, 70, :none),
+        :Float64
+      )),
+    (:line, 71, :none),
+    (:(=), (:call, :promote_rule, (:(::), (:curly, :Type, :Float64)), (:(::), (:curly, :Type, :Int128))), (:block,
+        (:line, 71, :none),
+        :Float64
+      )),
+    (:line, 72, :none),
+    (:(=), (:call, :promote_rule, (:(::), (:curly, :Type, :Float32)), (:(::), (:curly, :Type, :UInt128))), (:block,
+        (:line, 72, :none),
+        :Float32
+      )),
+    (:line, 73, :none),
+    (:(=), (:call, :promote_rule, (:(::), (:curly, :Type, :Float32)), (:(::), (:curly, :Type, :Int128))), (:block,
+        (:line, 73, :none),
+        :Float32
+      )),
+    (:line, 75, :none),
+    (:function, (:call, :convert, (:(::), (:curly, :Type, :Float64)), (:(::), :x, :UInt128)), (:block,
+        (:line, 76, :none),
+        (:&&, (:call, :(==), :x, 0), (:return, 0.0)),
+        (:line, 77, :none),
+        (:(=), :n, (:call, :-, 128, (:call, :leading_zeros, :x))),
+        (:line, 78, :none),
+        (:if, (:call, :(<=), :n, 53), (:block,
+            (:line, 79, :none),
+            (:(=), :y, (:call, :&, (:call, :<<, (:call, :%, :x, :UInt64), (:call, :-, 53, :n)), 0x000fffffffffffff))
+          ), (:block,
+            (:line, 81, :none),
+            (:(=), :y, (:call, :&, (:call, :%, (:call, :>>, :x, (:call, :-, :n, 54)), :UInt64), 0x001fffffffffffff)),
+            (:line, 82, :none),
+            (:(=), :y, (:call, :>>, (:call, :+, :y, 1), 1)),
+            (:line, 83, :none),
+            (:&=, :y, (:call, :~, (:call, :UInt64, (:call, :(==), (:call, :trailing_zeros, :x), (:call, :-, :n, 54)))))
+          )),
+        (:line, 85, :none),
+        (:(=), :d, (:call, :<<, (:call, :%, (:call, :+, :n, 1022), :UInt64), 52)),
+        (:line, 86, :none),
+        (:call, :reinterpret, :Float64, (:call, :+, :d, :y))
+      )),
+    (:line, 89, :none),
+    (:function, (:call, :convert, (:(::), (:curly, :Type, :Float64)), (:(::), :x, :Int128)), (:block,
+        (:line, 90, :none),
+        (:&&, (:call, :(==), :x, 0), (:return, 0.0)),
+        (:line, 91, :none),
+        (:(=), :s, (:call, :&, (:call, :%, (:call, :>>>, :x, 64), :UInt64), 0x8000000000000000)),
+        (:line, 92, :none),
+        (:(=), :x, (:call, :%, (:call, :abs, :x), :UInt128)),
+        (:line, 93, :none),
+        (:(=), :n, (:call, :-, 128, (:call, :leading_zeros, :x))),
+        (:line, 94, :none),
+        (:if, (:call, :(<=), :n, 53), (:block,
+            (:line, 95, :none),
+            (:(=), :y, (:call, :&, (:call, :<<, (:call, :%, :x, :UInt64), (:call, :-, 53, :n)), 0x000fffffffffffff))
+          ), (:block,
+            (:line, 97, :none),
+            (:(=), :y, (:call, :&, (:call, :%, (:call, :>>, :x, (:call, :-, :n, 54)), :UInt64), 0x001fffffffffffff)),
+            (:line, 98, :none),
+            (:(=), :y, (:call, :>>, (:call, :+, :y, 1), 1)),
+            (:line, 99, :none),
+            (:&=, :y, (:call, :~, (:call, :UInt64, (:call, :(==), (:call, :trailing_zeros, :x), (:call, :-, :n, 54)))))
+          )),
+        (:line, 101, :none),
+        (:(=), :d, (:call, :<<, (:call, :%, (:call, :+, :n, 1022), :UInt64), 52)),
+        (:line, 102, :none),
+        (:call, :reinterpret, :Float64, (:call, :+, (:call, :|, :s, :d), :y))
+      )),
+    (:line, 105, :none),
+    (:function, (:call, :convert, (:(::), (:curly, :Type, :Float32)), (:(::), :x, :UInt128)), (:block,
+        (:line, 106, :none),
+        (:&&, (:call, :(==), :x, 0), (:return, 0.0f0)),
+        (:line, 107, :none),
+        (:(=), :n, (:call, :-, 128, (:call, :leading_zeros, :x))),
+        (:line, 108, :none),
+        (:if, (:call, :(<=), :n, 24), (:block,
+            (:line, 109, :none),
+            (:(=), :y, (:call, :&, (:call, :<<, (:call, :%, :x, :UInt32), (:call, :-, 24, :n)), 0x007fffff))
+          ), (:block,
+            (:line, 111, :none),
+            (:(=), :y, (:call, :&, (:call, :%, (:call, :>>, :x, (:call, :-, :n, 25)), :UInt32), 0x00ffffff)),
+            (:line, 112, :none),
+            (:(=), :y, (:call, :>>, (:call, :+, :y, (:call, :one, :UInt32)), 1)),
+            (:line, 113, :none),
+            (:&=, :y, (:call, :~, (:call, :UInt32, (:call, :(==), (:call, :trailing_zeros, :x), (:call, :-, :n, 25)))))
+          )),
+        (:line, 115, :none),
+        (:(=), :d, (:call, :<<, (:call, :%, (:call, :+, :n, 126), :UInt32), 23)),
+        (:line, 116, :none),
+        (:call, :reinterpret, :Float32, (:call, :+, :d, :y))
+      )),
+    (:line, 119, :none),
+    (:function, (:call, :convert, (:(::), (:curly, :Type, :Float32)), (:(::), :x, :Int128)), (:block,
+        (:line, 120, :none),
+        (:&&, (:call, :(==), :x, 0), (:return, 0.0f0)),
+        (:line, 121, :none),
+        (:(=), :s, (:call, :&, (:call, :%, (:call, :>>>, :x, 96), :UInt32), 0x80000000)),
+        (:line, 122, :none),
+        (:(=), :x, (:call, :%, (:call, :abs, :x), :UInt128)),
+        (:line, 123, :none),
+        (:(=), :n, (:call, :-, 128, (:call, :leading_zeros, :x))),
+        (:line, 124, :none),
+        (:if, (:call, :(<=), :n, 24), (:block,
+            (:line, 125, :none),
+            (:(=), :y, (:call, :&, (:call, :<<, (:call, :%, :x, :UInt32), (:call, :-, 24, :n)), 0x007fffff))
+          ), (:block,
+            (:line, 127, :none),
+            (:(=), :y, (:call, :&, (:call, :%, (:call, :>>, :x, (:call, :-, :n, 25)), :UInt32), 0x00ffffff)),
+            (:line, 128, :none),
+            (:(=), :y, (:call, :>>, (:call, :+, :y, (:call, :one, :UInt32)), 1)),
+            (:line, 129, :none),
+            (:&=, :y, (:call, :~, (:call, :UInt32, (:call, :(==), (:call, :trailing_zeros, :x), (:call, :-, :n, 25)))))
+          )),
+        (:line, 131, :none),
+        (:(=), :d, (:call, :<<, (:call, :%, (:call, :+, :n, 126), :UInt32), 23)),
+        (:line, 132, :none),
+        (:call, :reinterpret, :Float32, (:call, :+, (:call, :|, :s, :d), :y))
+      )),
+    (:line, 135, :none),
+    (:function, (:call, :convert, (:(::), (:curly, :Type, :Float16)), (:(::), :val, :Float32)), (:block,
+        (:line, 136, :none),
+        (:(=), :f, (:call, :reinterpret, :UInt32, :val)),
+        (:line, 137, :none),
+        (:(=), :i, (:call, :+, (:call, :&, (:call, :>>, :f, 23), 0x01ff), 1)),
+        (:line, 138, :none),
+        (:(=), :sh, (:ref, :shifttable, :i)),
+        (:line, 139, :none),
+        (:&=, :f, 0x007fffff),
+        (:line, 140, :none),
+        (:(=), (:(::), :h, :UInt16), (:call, :+, (:ref, :basetable, :i), (:call, :>>, :f, :sh))),
+        (:line, 144, :none),
+        (:(=), :nextbit, (:call, :&, (:call, :>>, :f, (:call, :-, :sh, 1)), 1)),
+        (:line, 145, :none),
+        (:if, (:call, :(!=), :nextbit, 0), (:block,
+            (:line, 147, :none),
+            (:if, (:||, (:call, :(==), (:call, :&, :h, 1), 1), (:call, :(!=), (:call, :&, :f, (:call, :-, (:call, :<<, 1, (:call, :-, :sh, 1)), 1)), 0)), (:block,
+                (:line, 148, :none),
+                (:+=, :h, 1)
+              ))
+          )),
+        (:line, 151, :none),
+        (:call, :reinterpret, :Float16, :h)
+      )),
+    (:line, 154, :none),
+    (:function, (:call, :convert, (:(::), (:curly, :Type, :Float32)), (:(::), :val, :Float16)), (:block,
+        (:line, 155, :none),
+        (:local, (:(=), (:(::), :ival, :UInt32), (:call, :reinterpret, :UInt16, :val))),
+        (:line, 156, :none),
+        (:local, (:(=), (:(::), :sign, :UInt32), (:call, :>>, (:call, :&, :ival, 0x8000), 15))),
+        (:line, 157, :none),
+        (:local, (:(=), (:(::), :exp, :UInt32), (:call, :>>, (:call, :&, :ival, 0x7c00), 10))),
+        (:line, 158, :none),
+        (:local, (:(=), (:(::), :sig, :UInt32), (:call, :>>, (:call, :&, :ival, 0x03ff), 0))),
+        (:line, 159, :none),
+        (:local, (:(::), :ret, :UInt32)),
+        (:line, 161, :none),
+        (:if, (:call, :(==), :exp, 0), (:block,
+            (:line, 162, :none),
+            (:if, (:call, :(==), :sig, 0), (:block,
+                (:line, 163, :none),
+                (:(=), :sign, (:call, :<<, :sign, 31)),
+                (:line, 164, :none),
+                (:(=), :ret, (:call, :|, (:call, :|, :sign, :exp), :sig))
+              ), (:block,
+                (:line, 166, :none),
+                (:(=), :n_bit, 1),
+                (:line, 167, :none),
+                (:(=), :bit, 0x0200),
+                (:line, 168, :none),
+                (:while, (:call, :(==), (:call, :&, :bit, :sig), 0), (:block,
+                    (:line, 169, :none),
+                    (:(=), :n_bit, (:call, :+, :n_bit, 1)),
+                    (:line, 170, :none),
+                    (:(=), :bit, (:call, :>>, :bit, 1))
+                  )),
+                (:line, 172, :none),
+                (:(=), :sign, (:call, :<<, :sign, 31)),
+                (:line, 173, :none),
+                (:(=), :exp, (:call, :<<, (:call, :+, (:call, :-, -14, :n_bit), 127), 23)),
+                (:line, 174, :none),
+                (:(=), :sig, (:call, :<<, (:call, :<<, (:call, :&, :sig, (:call, :~, :bit)), :n_bit), (:call, :-, 23, 10))),
+                (:line, 175, :none),
+                (:(=), :ret, (:call, :|, (:call, :|, :sign, :exp), :sig))
+              ))
+          ), (:block,
+            (:line, 177, :none),
+            (:if, (:call, :(==), :exp, 0x1f), (:block,
+                (:line, 178, :none),
+                (:if, (:call, :(==), :sig, 0), (:block,
+                    (:line, 179, :none),
+                    (:if, (:call, :(==), :sign, 0), (:block,
+                        (:line, 180, :none),
+                        (:(=), :ret, 0x7f800000)
+                      ), (:block,
+                        (:line, 182, :none),
+                        (:(=), :ret, 0xff800000)
+                      ))
+                  ), (:block,
+                    (:line, 185, :none),
+                    (:(=), :ret, (:call, :|, 0x7fc00000, (:call, :<<, :sign, 31)))
+                  ))
+              ), (:block,
+                (:line, 188, :none),
+                (:(=), :sign, (:call, :<<, :sign, 31)),
+                (:line, 189, :none),
+                (:(=), :exp, (:call, :<<, (:call, :+, (:call, :-, :exp, 15), 127), 23)),
+                (:line, 190, :none),
+                (:(=), :sig, (:call, :<<, :sig, (:call, :-, 23, 10))),
+                (:line, 191, :none),
+                (:(=), :ret, (:call, :|, (:call, :|, :sign, :exp), :sig))
+              ))
+          )),
+        (:line, 193, :none),
+        (:return, (:call, :reinterpret, :Float32, :ret))
+      )),
+    (:line, 200, :none),
+    (:const, (:(=), :basetable, (:call, (:curly, :Vector, :UInt16), 512))),
+    (:line, 201, :none),
+    (:const, (:(=), :shifttable, (:call, (:curly, :Vector, :UInt8), 512))),
+    (:line, 203, :none),
+    (:for, (:(=), :i, (:(:), 0, 255)), (:block,
+        (:line, 204, :none),
+        (:(=), :e, (:call, :-, :i, 127)),
+        (:line, 205, :none),
+        (:if, (:call, :<, :e, -24), (:block,
+            (:line, 206, :none),
+            (:(=), (:ref, :basetable, (:call, :+, (:call, :|, :i, 0x0000), 1)), 0x0000),
+            (:line, 207, :none),
+            (:(=), (:ref, :basetable, (:call, :+, (:call, :|, :i, 0x0100), 1)), 0x8000),
+            (:line, 208, :none),
+            (:(=), (:ref, :shifttable, (:call, :+, (:call, :|, :i, 0x0000), 1)), 24),
+            (:line, 209, :none),
+            (:(=), (:ref, :shifttable, (:call, :+, (:call, :|, :i, 0x0100), 1)), 24)
+          ), (:block,
+            (:line, 210, :none),
+            (:if, (:call, :<, :e, -14), (:block,
+                (:line, 211, :none),
+                (:(=), (:ref, :basetable, (:call, :+, (:call, :|, :i, 0x0000), 1)), (:call, :>>, 0x0400, (:call, :-, (:call, :-, :e), 14))),
+                (:line, 212, :none),
+                (:(=), (:ref, :basetable, (:call, :+, (:call, :|, :i, 0x0100), 1)), (:call, :|, (:call, :>>, 0x0400, (:call, :-, (:call, :-, :e), 14)), 0x8000)),
+                (:line, 213, :none),
+                (:(=), (:ref, :shifttable, (:call, :+, (:call, :|, :i, 0x0000), 1)), (:call, :-, (:call, :-, :e), 1)),
+                (:line, 214, :none),
+                (:(=), (:ref, :shifttable, (:call, :+, (:call, :|, :i, 0x0100), 1)), (:call, :-, (:call, :-, :e), 1))
+              ), (:block,
+                (:line, 215, :none),
+                (:if, (:call, :(<=), :e, 15), (:block,
+                    (:line, 216, :none),
+                    (:(=), (:ref, :basetable, (:call, :+, (:call, :|, :i, 0x0000), 1)), (:call, :<<, (:call, :+, :e, 15), 10)),
+                    (:line, 217, :none),
+                    (:(=), (:ref, :basetable, (:call, :+, (:call, :|, :i, 0x0100), 1)), (:call, :|, (:call, :<<, (:call, :+, :e, 15), 10), 0x8000)),
+                    (:line, 218, :none),
+                    (:(=), (:ref, :shifttable, (:call, :+, (:call, :|, :i, 0x0000), 1)), 13),
+                    (:line, 219, :none),
+                    (:(=), (:ref, :shifttable, (:call, :+, (:call, :|, :i, 0x0100), 1)), 13)
+                  ), (:block,
+                    (:line, 220, :none),
+                    (:if, (:call, :<, :e, 128), (:block,
+                        (:line, 221, :none),
+                        (:(=), (:ref, :basetable, (:call, :+, (:call, :|, :i, 0x0000), 1)), 0x7c00),
+                        (:line, 222, :none),
+                        (:(=), (:ref, :basetable, (:call, :+, (:call, :|, :i, 0x0100), 1)), 0xfc00),
+                        (:line, 223, :none),
+                        (:(=), (:ref, :shifttable, (:call, :+, (:call, :|, :i, 0x0000), 1)), 24),
+                        (:line, 224, :none),
+                        (:(=), (:ref, :shifttable, (:call, :+, (:call, :|, :i, 0x0100), 1)), 24)
+                      ), (:block,
+                        (:line, 226, :none),
+                        (:(=), (:ref, :basetable, (:call, :+, (:call, :|, :i, 0x0000), 1)), 0x7c00),
+                        (:line, 227, :none),
+                        (:(=), (:ref, :basetable, (:call, :+, (:call, :|, :i, 0x0100), 1)), 0xfc00),
+                        (:line, 228, :none),
+                        (:(=), (:ref, :shifttable, (:call, :+, (:call, :|, :i, 0x0000), 1)), 13),
+                        (:line, 229, :none),
+                        (:(=), (:ref, :shifttable, (:call, :+, (:call, :|, :i, 0x0100), 1)), 13)
+                      ))
+                  ))
+              ))
+          ))
+      )),
+    (:line, 233, :none),
+    (:(=), (:call, :convert, (:(::), (:curly, :Type, :Float32)), (:(::), :x, :Float64)), (:block,
+        (:line, 233, :none),
+        (:call, :fptrunc, :Float32, :x)
+      )),
+    (:line, 234, :none),
+    (:(=), (:call, :convert, (:(::), (:curly, :Type, :Float16)), (:(::), :x, :Float64)), (:block,
+        (:line, 234, :none),
+        (:call, :convert, :Float16, (:call, :convert, :Float32, :x))
+      )),
+    (:line, 237, :none),
+    (:(=), (:call, :convert, (:(::), (:curly, :Type, :Float64)), (:(::), :x, :Float32)), (:block,
+        (:line, 237, :none),
+        (:call, :fpext, :Float64, :x)
+      )),
+    (:line, 238, :none),
+    (:(=), (:call, :convert, (:(::), (:curly, :Type, :Float64)), (:(::), :x, :Float16)), (:block,
+        (:line, 238, :none),
+        (:call, :convert, :Float64, (:call, :convert, :Float32, :x))
+      )),
+    (:line, 240, :none),
+    (:(=), (:call, :convert, (:(::), (:curly, :Type, :AbstractFloat)), (:(::), :x, :Bool)), (:block,
+        (:line, 240, :none),
+        (:call, :convert, :Float64, :x)
+      )),
+    (:line, 241, :none),
+    (:(=), (:call, :convert, (:(::), (:curly, :Type, :AbstractFloat)), (:(::), :x, :Int8)), (:block,
+        (:line, 241, :none),
+        (:call, :convert, :Float64, :x)
+      )),
+    (:line, 242, :none),
+    (:(=), (:call, :convert, (:(::), (:curly, :Type, :AbstractFloat)), (:(::), :x, :Int16)), (:block,
+        (:line, 242, :none),
+        (:call, :convert, :Float64, :x)
+      )),
+    (:line, 243, :none),
+    (:(=), (:call, :convert, (:(::), (:curly, :Type, :AbstractFloat)), (:(::), :x, :Int32)), (:block,
+        (:line, 243, :none),
+        (:call, :convert, :Float64, :x)
+      )),
+    (:line, 244, :none),
+    (:(=), (:call, :convert, (:(::), (:curly, :Type, :AbstractFloat)), (:(::), :x, :Int64)), (:block,
+        (:line, 244, :none),
+        (:call, :convert, :Float64, :x)
+      )),
+    (:line, 245, :none),
+    (:(=), (:call, :convert, (:(::), (:curly, :Type, :AbstractFloat)), (:(::), :x, :Int128)), (:block,
+        (:line, 245, :none),
+        (:call, :convert, :Float64, :x)
+      )),
+    (:line, 246, :none),
+    (:(=), (:call, :convert, (:(::), (:curly, :Type, :AbstractFloat)), (:(::), :x, :UInt8)), (:block,
+        (:line, 246, :none),
+        (:call, :convert, :Float64, :x)
+      )),
+    (:line, 247, :none),
+    (:(=), (:call, :convert, (:(::), (:curly, :Type, :AbstractFloat)), (:(::), :x, :UInt16)), (:block,
+        (:line, 247, :none),
+        (:call, :convert, :Float64, :x)
+      )),
+    (:line, 248, :none),
+    (:(=), (:call, :convert, (:(::), (:curly, :Type, :AbstractFloat)), (:(::), :x, :UInt32)), (:block,
+        (:line, 248, :none),
+        (:call, :convert, :Float64, :x)
+      )),
+    (:line, 249, :none),
+    (:(=), (:call, :convert, (:(::), (:curly, :Type, :AbstractFloat)), (:(::), :x, :UInt64)), (:block,
+        (:line, 249, :none),
+        (:call, :convert, :Float64, :x)
+      )),
+    (:line, 250, :none),
+    (:(=), (:call, :convert, (:(::), (:curly, :Type, :AbstractFloat)), (:(::), :x, :UInt128)), (:block,
+        (:line, 250, :none),
+        (:call, :convert, :Float64, :x)
+      )),
+    (:line, 252, :none),
+    (:macrocall, :(Core.@doc), "    float(x)\n\nConvert a number or array to a floating point data type.\nWhen passed a string, this function is equivalent to `parse(Float64, x)`.\n", (:(=), (:call, :float, :x), (:block,
+          (:line, 258, :none),
+          (:call, :convert, :AbstractFloat, :x)
+        ))),
+    (:line, 260, :none),
+    (:macrocall, :(Core.@doc), "    float(T::Type)\n\nReturns an appropriate type to represent a value of type `T` as a floating point value.\nEquivalent to `typeof(float(zero(T)))`.\n\n```jldoctest\njulia> float(Complex{Int})\nComplex{Float64}\n\njulia> float(Int)\nFloat64\n```\n", (:(=), (:where, (:call, :float, (:(::), (:curly, :Type, :T))), (:<:, :T, :Number)), (:block,
+          (:line, 274, :none),
+          (:call, :typeof, (:call, :float, (:call, :zero, :T)))
+        ))),
+    (:line, 276, :none),
+    (:for, (:(=), :Ti, (:tuple, :Int8, :Int16, :Int32, :Int64)), (:block,
+        (:line, 277, :none),
+        (:macrocall, Symbol("@eval"), (:block,
+            (:line, 278, :none),
+            (:(=), (:call, :unsafe_trunc, (:(::), (:curly, :Type, (:$, :Ti))), (:(::), :x, :Float16)), (:block,
+                (:line, 278, :none),
+                (:call, :unsafe_trunc, (:$, :Ti), (:call, :Float32, :x))
+              )),
+            (:line, 279, :none),
+            (:(=), (:call, :unsafe_trunc, (:(::), (:curly, :Type, (:$, :Ti))), (:(::), :x, :Float32)), (:block,
+                (:line, 279, :none),
+                (:call, :fptosi, (:$, :Ti), :x)
+              )),
+            (:line, 280, :none),
+            (:(=), (:call, :unsafe_trunc, (:(::), (:curly, :Type, (:$, :Ti))), (:(::), :x, :Float64)), (:block,
+                (:line, 280, :none),
+                (:call, :fptosi, (:$, :Ti), :x)
+              ))
+          ))
+      )),
+    (:line, 283, :none),
+    (:for, (:(=), :Ti, (:tuple, :UInt8, :UInt16, :UInt32, :UInt64)), (:block,
+        (:line, 284, :none),
+        (:macrocall, Symbol("@eval"), (:block,
+            (:line, 285, :none),
+            (:(=), (:call, :unsafe_trunc, (:(::), (:curly, :Type, (:$, :Ti))), (:(::), :x, :Float16)), (:block,
+                (:line, 285, :none),
+                (:call, :unsafe_trunc, (:$, :Ti), (:call, :Float32, :x))
+              )),
+            (:line, 286, :none),
+            (:(=), (:call, :unsafe_trunc, (:(::), (:curly, :Type, (:$, :Ti))), (:(::), :x, :Float32)), (:block,
+                (:line, 286, :none),
+                (:call, :fptoui, (:$, :Ti), :x)
+              )),
+            (:line, 287, :none),
+            (:(=), (:call, :unsafe_trunc, (:(::), (:curly, :Type, (:$, :Ti))), (:(::), :x, :Float64)), (:block,
+                (:line, 287, :none),
+                (:call, :fptoui, (:$, :Ti), :x)
+              ))
+          ))
+      )),
+    (:line, 291, :none),
+    (:function, (:call, :unsafe_trunc, (:(::), (:curly, :Type, :UInt128)), (:(::), :x, :Float64)), (:block,
+        (:line, 292, :none),
+        (:(=), :xu, (:call, :reinterpret, :UInt64, :x)),
+        (:line, 293, :none),
+        (:(=), :k, (:call, :-, (:call, :&, (:call, :Int, (:call, :>>, :xu, 52)), 0x07ff), 1075)),
+        (:line, 294, :none),
+        (:(=), :xu, (:call, :|, (:call, :&, :xu, 0x000fffffffffffff), 0x0010000000000000)),
+        (:line, 295, :none),
+        (:if, (:call, :(<=), :k, 0), (:block,
+            (:line, 296, :none),
+            (:call, :UInt128, (:call, :>>, :xu, (:call, :-, :k)))
+          ), (:block,
+            (:line, 298, :none),
+            (:call, :<<, (:call, :UInt128, :xu), :k)
+          ))
+      )),
+    (:line, 301, :none),
+    (:function, (:call, :unsafe_trunc, (:(::), (:curly, :Type, :Int128)), (:(::), :x, :Float64)), (:block,
+        (:line, 302, :none),
+        (:call, :copysign, (:call, :%, (:call, :unsafe_trunc, :UInt128, :x), :Int128), :x)
+      )),
+    (:line, 305, :none),
+    (:function, (:call, :unsafe_trunc, (:(::), (:curly, :Type, :UInt128)), (:(::), :x, :Float32)), (:block,
+        (:line, 306, :none),
+        (:(=), :xu, (:call, :reinterpret, :UInt32, :x)),
+        (:line, 307, :none),
+        (:(=), :k, (:call, :-, (:call, :&, (:call, :Int, (:call, :>>, :xu, 23)), 0x00ff), 150)),
+        (:line, 308, :none),
+        (:(=), :xu, (:call, :|, (:call, :&, :xu, 0x007fffff), 0x00800000)),
+        (:line, 309, :none),
+        (:if, (:call, :(<=), :k, 0), (:block,
+            (:line, 310, :none),
+            (:call, :UInt128, (:call, :>>, :xu, (:call, :-, :k)))
+          ), (:block,
+            (:line, 312, :none),
+            (:call, :<<, (:call, :UInt128, :xu), :k)
+          ))
+      )),
+    (:line, 315, :none),
+    (:function, (:call, :unsafe_trunc, (:(::), (:curly, :Type, :Int128)), (:(::), :x, :Float32)), (:block,
+        (:line, 316, :none),
+        (:call, :copysign, (:call, :%, (:call, :unsafe_trunc, :UInt128, :x), :Int128), :x)
+      )),
+    (:line, 319, :none),
+    (:(=), (:call, :unsafe_trunc, (:(::), (:curly, :Type, :UInt128)), (:(::), :x, :Float16)), (:block,
+        (:line, 319, :none),
+        (:call, :unsafe_trunc, :UInt128, (:call, :Float32, :x))
+      )),
+    (:line, 320, :none),
+    (:(=), (:call, :unsafe_trunc, (:(::), (:curly, :Type, :Int128)), (:(::), :x, :Float16)), (:block,
+        (:line, 320, :none),
+        (:call, :unsafe_trunc, :Int128, (:call, :Float32, :x))
+      )),
+    (:line, 324, :none),
+    (:(=), (:call, :trunc, (:(::), (:curly, :Type, :Signed)), (:(::), :x, :Float32)), (:block,
+        (:line, 324, :none),
+        (:call, :trunc, :Int, :x)
+      )),
+    (:line, 325, :none),
+    (:(=), (:call, :trunc, (:(::), (:curly, :Type, :Signed)), (:(::), :x, :Float64)), (:block,
+        (:line, 325, :none),
+        (:call, :trunc, :Int, :x)
+      )),
+    (:line, 326, :none),
+    (:(=), (:call, :trunc, (:(::), (:curly, :Type, :Unsigned)), (:(::), :x, :Float32)), (:block,
+        (:line, 326, :none),
+        (:call, :trunc, :UInt, :x)
+      )),
+    (:line, 327, :none),
+    (:(=), (:call, :trunc, (:(::), (:curly, :Type, :Unsigned)), (:(::), :x, :Float64)), (:block,
+        (:line, 327, :none),
+        (:call, :trunc, :UInt, :x)
+      )),
+    (:line, 328, :none),
+    (:(=), (:call, :trunc, (:(::), (:curly, :Type, :Integer)), (:(::), :x, :Float32)), (:block,
+        (:line, 328, :none),
+        (:call, :trunc, :Int, :x)
+      )),
+    (:line, 329, :none),
+    (:(=), (:call, :trunc, (:(::), (:curly, :Type, :Integer)), (:(::), :x, :Float64)), (:block,
+        (:line, 329, :none),
+        (:call, :trunc, :Int, :x)
+      )),
+    (:line, 330, :none),
+    (:(=), (:where, (:call, :trunc, (:(::), (:curly, :Type, :T)), (:(::), :x, :Float16)), (:<:, :T, :Integer)), (:block,
+        (:line, 330, :none),
+        (:call, :trunc, :T, (:call, :Float32, :x))
+      )),
+    (:line, 333, :none),
+    (:(=), (:where, (:call, :floor, (:(::), (:curly, :Type, :T)), (:(::), :x, :AbstractFloat)), (:<:, :T, :Integer)), (:block,
+        (:line, 333, :none),
+        (:call, :trunc, :T, (:call, :floor, :x))
+      )),
+    (:line, 334, :none),
+    (:(=), (:where, (:call, :floor, (:(::), (:curly, :Type, :T)), (:(::), :x, :Float16)), (:<:, :T, :Integer)), (:block,
+        (:line, 334, :none),
+        (:call, :floor, :T, (:call, :Float32, :x))
+      )),
+    (:line, 335, :none),
+    (:(=), (:where, (:call, :ceil, (:(::), (:curly, :Type, :T)), (:(::), :x, :AbstractFloat)), (:<:, :T, :Integer)), (:block,
+        (:line, 335, :none),
+        (:call, :trunc, :T, (:call, :ceil, :x))
+      )),
+    (:line, 336, :none),
+    (:(=), (:where, (:call, :ceil, (:(::), (:curly, :Type, :T)), (:(::), :x, :Float16)), (:<:, :T, :Integer)), (:block,
+        (:line, 336, :none),
+        (:call, :ceil, :T, (:call, :Float32, :x))
+      )),
+    (:line, 337, :none),
+    (:(=), (:where, (:call, :round, (:(::), (:curly, :Type, :T)), (:(::), :x, :AbstractFloat)), (:<:, :T, :Integer)), (:block,
+        (:line, 337, :none),
+        (:call, :trunc, :T, (:call, :round, :x))
+      )),
+    (:line, 338, :none),
+    (:(=), (:where, (:call, :round, (:(::), (:curly, :Type, :T)), (:(::), :x, :Float16)), (:<:, :T, :Integer)), (:block,
+        (:line, 338, :none),
+        (:call, :round, :T, (:call, :Float32, :x))
+      )),
+    (:line, 340, :none),
+    (:(=), (:call, :trunc, (:(::), :x, :Float64)), (:block,
+        (:line, 340, :none),
+        (:call, :trunc_llvm, :x)
+      )),
+    (:line, 341, :none),
+    (:(=), (:call, :trunc, (:(::), :x, :Float32)), (:block,
+        (:line, 341, :none),
+        (:call, :trunc_llvm, :x)
+      )),
+    (:line, 342, :none),
+    (:(=), (:call, :trunc, (:(::), :x, :Float16)), (:block,
+        (:line, 342, :none),
+        (:call, :Float16, (:call, :trunc, (:call, :Float32, :x)))
+      )),
+    (:line, 344, :none),
+    (:(=), (:call, :floor, (:(::), :x, :Float64)), (:block,
+        (:line, 344, :none),
+        (:call, :floor_llvm, :x)
+      )),
+    (:line, 345, :none),
+    (:(=), (:call, :floor, (:(::), :x, :Float32)), (:block,
+        (:line, 345, :none),
+        (:call, :floor_llvm, :x)
+      )),
+    (:line, 346, :none),
+    (:(=), (:call, :floor, (:(::), :x, :Float16)), (:block,
+        (:line, 346, :none),
+        (:call, :Float16, (:call, :floor, (:call, :Float32, :x)))
+      )),
+    (:line, 348, :none),
+    (:(=), (:call, :ceil, (:(::), :x, :Float64)), (:block,
+        (:line, 348, :none),
+        (:call, :ceil_llvm, :x)
+      )),
+    (:line, 349, :none),
+    (:(=), (:call, :ceil, (:(::), :x, :Float32)), (:block,
+        (:line, 349, :none),
+        (:call, :ceil_llvm, :x)
+      )),
+    (:line, 350, :none),
+    (:(=), (:call, :ceil, (:(::), :x, :Float16)), (:block,
+        (:line, 350, :none),
+        (:call, :Float16, (:call, :ceil, (:call, :Float32, :x)))
+      )),
+    (:line, 352, :none),
+    (:(=), (:call, :round, (:(::), :x, :Float64)), (:block,
+        (:line, 352, :none),
+        (:call, :rint_llvm, :x)
+      )),
+    (:line, 353, :none),
+    (:(=), (:call, :round, (:(::), :x, :Float32)), (:block,
+        (:line, 353, :none),
+        (:call, :rint_llvm, :x)
+      )),
+    (:line, 354, :none),
+    (:(=), (:call, :round, (:(::), :x, :Float16)), (:block,
+        (:line, 354, :none),
+        (:call, :Float16, (:call, :round, (:call, :Float32, :x)))
+      )),
+    (:line, 357, :none),
+    (:(=), (:call, :promote_rule, (:(::), (:curly, :Type, :Float32)), (:(::), (:curly, :Type, :Float16))), (:block,
+        (:line, 357, :none),
+        :Float32
+      )),
+    (:line, 358, :none),
+    (:(=), (:call, :promote_rule, (:(::), (:curly, :Type, :Float64)), (:(::), (:curly, :Type, :Float16))), (:block,
+        (:line, 358, :none),
+        :Float64
+      )),
+    (:line, 359, :none),
+    (:(=), (:call, :promote_rule, (:(::), (:curly, :Type, :Float64)), (:(::), (:curly, :Type, :Float32))), (:block,
+        (:line, 359, :none),
+        :Float64
+      )),
+    (:line, 361, :none),
+    (:(=), (:call, :widen, (:(::), (:curly, :Type, :Float16))), (:block,
+        (:line, 361, :none),
+        :Float32
+      )),
+    (:line, 362, :none),
+    (:(=), (:call, :widen, (:(::), (:curly, :Type, :Float32))), (:block,
+        (:line, 362, :none),
+        :Float64
+      )),
+    (:line, 364, :none),
+    (:(=), (:call, :_default_type, (:(::), :T, (:curly, :Union, (:curly, :Type, :Real), (:curly, :Type, :AbstractFloat)))), (:block,
+        (:line, 364, :none),
+        :Float64
+      )),
+    (:line, 367, :none),
+    (:(=), (:call, :-, (:(::), :x, :Float64)), (:block,
+        (:line, 367, :none),
+        (:call, :neg_float, :x)
+      )),
+    (:line, 368, :none),
+    (:(=), (:call, :-, (:(::), :x, :Float32)), (:block,
+        (:line, 368, :none),
+        (:call, :neg_float, :x)
+      )),
+    (:line, 369, :none),
+    (:(=), (:call, :-, (:(::), :x, :Float16)), (:block,
+        (:line, 369, :none),
+        (:call, :reinterpret, :Float16, (:call, :⊻, (:call, :reinterpret, :UInt16, :x), 0x8000))
+      )),
+    (:line, 371, :none),
+    (:for, (:(=), :op, (:tuple, (:quote, #QuoteNode
+            :+
+          ), (:quote, #QuoteNode
+            :-
+          ), (:quote, #QuoteNode
+            :*
+          ), (:quote, #QuoteNode
+            :/
+          ), (:quote, #QuoteNode
+            :\
+          ), (:quote, #QuoteNode
+            :^
+          ))), (:block,
+        (:line, 372, :none),
+        (:macrocall, Symbol("@eval"), (:(=), (:call, (:$, :op), (:(::), :a, :Float16), (:(::), :b, :Float16)), (:block,
+              (:line, 372, :none),
+              (:call, :Float16, (:call, (:$, :op), (:call, :Float32, :a), (:call, :Float32, :b)))
+            )))
+      )),
+    (:line, 374, :none),
+    (:(=), (:call, :+, (:(::), :x, :Float32), (:(::), :y, :Float32)), (:block,
+        (:line, 374, :none),
+        (:call, :add_float, :x, :y)
+      )),
+    (:line, 375, :none),
+    (:(=), (:call, :+, (:(::), :x, :Float64), (:(::), :y, :Float64)), (:block,
+        (:line, 375, :none),
+        (:call, :add_float, :x, :y)
+      )),
+    (:line, 376, :none),
+    (:(=), (:call, :-, (:(::), :x, :Float32), (:(::), :y, :Float32)), (:block,
+        (:line, 376, :none),
+        (:call, :sub_float, :x, :y)
+      )),
+    (:line, 377, :none),
+    (:(=), (:call, :-, (:(::), :x, :Float64), (:(::), :y, :Float64)), (:block,
+        (:line, 377, :none),
+        (:call, :sub_float, :x, :y)
+      )),
+    (:line, 378, :none),
+    (:(=), (:call, :*, (:(::), :x, :Float32), (:(::), :y, :Float32)), (:block,
+        (:line, 378, :none),
+        (:call, :mul_float, :x, :y)
+      )),
+    (:line, 379, :none),
+    (:(=), (:call, :*, (:(::), :x, :Float64), (:(::), :y, :Float64)), (:block,
+        (:line, 379, :none),
+        (:call, :mul_float, :x, :y)
+      )),
+    (:line, 380, :none),
+    (:(=), (:call, :/, (:(::), :x, :Float32), (:(::), :y, :Float32)), (:block,
+        (:line, 380, :none),
+        (:call, :div_float, :x, :y)
+      )),
+    (:line, 381, :none),
+    (:(=), (:call, :/, (:(::), :x, :Float64), (:(::), :y, :Float64)), (:block,
+        (:line, 381, :none),
+        (:call, :div_float, :x, :y)
+      )),
+    (:line, 383, :none),
+    (:(=), (:call, :muladd, (:(::), :x, :Float32), (:(::), :y, :Float32), (:(::), :z, :Float32)), (:block,
+        (:line, 383, :none),
+        (:call, :muladd_float, :x, :y, :z)
+      )),
+    (:line, 384, :none),
+    (:(=), (:call, :muladd, (:(::), :x, :Float64), (:(::), :y, :Float64), (:(::), :z, :Float64)), (:block,
+        (:line, 384, :none),
+        (:call, :muladd_float, :x, :y, :z)
+      )),
+    (:line, 385, :none),
+    (:function, (:call, :muladd, (:(::), :a, :Float16), (:(::), :b, :Float16), (:(::), :c, :Float16)), (:block,
+        (:line, 386, :none),
+        (:call, :Float16, (:call, :muladd, (:call, :Float32, :a), (:call, :Float32, :b), (:call, :Float32, :c)))
+      )),
+    (:line, 393, :none),
+    (:for, (:(=), :func, (:tuple, (:quote, #QuoteNode
+            :div
+          ), (:quote, #QuoteNode
+            :fld
+          ), (:quote, #QuoteNode
+            :cld
+          ), (:quote, #QuoteNode
+            :rem
+          ), (:quote, #QuoteNode
+            :mod
+          ))), (:block,
+        (:line, 394, :none),
+        (:macrocall, Symbol("@eval"), (:block,
+            (:line, 395, :none),
+            (:(=), (:call, (:$, :func), (:(::), :a, :Float16), (:(::), :b, :Float16)), (:block,
+                (:line, 395, :none),
+                (:call, :Float16, (:call, (:$, :func), (:call, :Float32, :a), (:call, :Float32, :b)))
+              ))
+          ))
+      )),
+    (:line, 399, :none),
+    (:(=), (:call, :rem, (:(::), :x, :Float32), (:(::), :y, :Float32)), (:block,
+        (:line, 399, :none),
+        (:call, :rem_float, :x, :y)
+      )),
+    (:line, 400, :none),
+    (:(=), (:call, :rem, (:(::), :x, :Float64), (:(::), :y, :Float64)), (:block,
+        (:line, 400, :none),
+        (:call, :rem_float, :x, :y)
+      )),
+    (:line, 402, :none),
+    (:(=), (:where, (:call, :cld, (:(::), :x, :T), (:(::), :y, :T)), (:<:, :T, :AbstractFloat)), (:block,
+        (:line, 402, :none),
+        (:call, :-, (:call, :fld, (:call, :-, :x), :y))
+      )),
+    (:line, 404, :none),
+    (:function, (:where, (:call, :mod, (:(::), :x, :T), (:(::), :y, :T)), (:<:, :T, :AbstractFloat)), (:block,
+        (:line, 405, :none),
+        (:(=), :r, (:call, :rem, :x, :y)),
+        (:line, 406, :none),
+        (:if, (:call, :(==), :r, 0), (:block,
+            (:line, 407, :none),
+            (:call, :copysign, :r, :y)
+          ), (:block,
+            (:line, 408, :none),
+            (:if, (:call, :⊻, (:call, :>, :r, 0), (:call, :>, :y, 0)), (:block,
+                (:line, 409, :none),
+                (:call, :+, :r, :y)
+              ), (:block,
+                (:line, 411, :none),
+                :r
+              ))
+          ))
+      )),
+    (:line, 416, :none),
+    (:function, (:call, :(==), (:(::), :x, :Float16), (:(::), :y, :Float16)), (:block,
+        (:line, 417, :none),
+        (:(=), :ix, (:call, :reinterpret, :UInt16, :x)),
+        (:line, 418, :none),
+        (:(=), :iy, (:call, :reinterpret, :UInt16, :y)),
+        (:line, 419, :none),
+        (:if, (:call, :>, (:call, :&, (:call, :|, :ix, :iy), 0x7fff), 0x7c00), (:block,
+            (:line, 420, :none),
+            (:return, false)
+          )),
+        (:line, 422, :none),
+        (:if, (:call, :(==), (:call, :&, (:call, :|, :ix, :iy), 0x7fff), 0x0000), (:block,
+            (:line, 423, :none),
+            (:return, true)
+          )),
+        (:line, 425, :none),
+        (:return, (:call, :(==), :ix, :iy))
+      )),
+    (:line, 427, :none),
+    (:(=), (:call, :(==), (:(::), :x, :Float32), (:(::), :y, :Float32)), (:block,
+        (:line, 427, :none),
+        (:call, :eq_float, :x, :y)
+      )),
+    (:line, 428, :none),
+    (:(=), (:call, :(==), (:(::), :x, :Float64), (:(::), :y, :Float64)), (:block,
+        (:line, 428, :none),
+        (:call, :eq_float, :x, :y)
+      )),
+    (:line, 429, :none),
+    (:(=), (:call, :(!=), (:(::), :x, :Float32), (:(::), :y, :Float32)), (:block,
+        (:line, 429, :none),
+        (:call, :ne_float, :x, :y)
+      )),
+    (:line, 430, :none),
+    (:(=), (:call, :(!=), (:(::), :x, :Float64), (:(::), :y, :Float64)), (:block,
+        (:line, 430, :none),
+        (:call, :ne_float, :x, :y)
+      )),
+    (:line, 431, :none),
+    (:(=), (:call, :<, (:(::), :x, :Float32), (:(::), :y, :Float32)), (:block,
+        (:line, 431, :none),
+        (:call, :lt_float, :x, :y)
+      )),
+    (:line, 432, :none),
+    (:(=), (:call, :<, (:(::), :x, :Float64), (:(::), :y, :Float64)), (:block,
+        (:line, 432, :none),
+        (:call, :lt_float, :x, :y)
+      )),
+    (:line, 433, :none),
+    (:(=), (:call, :(<=), (:(::), :x, :Float32), (:(::), :y, :Float32)), (:block,
+        (:line, 433, :none),
+        (:call, :le_float, :x, :y)
+      )),
+    (:line, 434, :none),
+    (:(=), (:call, :(<=), (:(::), :x, :Float64), (:(::), :y, :Float64)), (:block,
+        (:line, 434, :none),
+        (:call, :le_float, :x, :y)
+      )),
+    (:line, 436, :none),
+    (:(=), (:call, :isequal, (:(::), :x, :Float32), (:(::), :y, :Float32)), (:block,
+        (:line, 436, :none),
+        (:call, :fpiseq, :x, :y)
+      )),
+    (:line, 437, :none),
+    (:(=), (:call, :isequal, (:(::), :x, :Float64), (:(::), :y, :Float64)), (:block,
+        (:line, 437, :none),
+        (:call, :fpiseq, :x, :y)
+      )),
+    (:line, 438, :none),
+    (:(=), (:call, :isless, (:(::), :x, :Float32), (:(::), :y, :Float32)), (:block,
+        (:line, 438, :none),
+        (:call, :fpislt, :x, :y)
+      )),
+    (:line, 439, :none),
+    (:(=), (:call, :isless, (:(::), :x, :Float64), (:(::), :y, :Float64)), (:block,
+        (:line, 439, :none),
+        (:call, :fpislt, :x, :y)
+      )),
+    (:line, 440, :none),
+    (:for, (:(=), :op, (:tuple, (:quote, #QuoteNode
+            :<
+          ), (:quote, #QuoteNode
+            :(<=)
+          ), (:quote, #QuoteNode
+            :isless
+          ))), (:block,
+        (:line, 441, :none),
+        (:macrocall, Symbol("@eval"), (:(=), (:call, (:$, :op), (:(::), :a, :Float16), (:(::), :b, :Float16)), (:block,
+              (:line, 441, :none),
+              (:call, (:$, :op), (:call, :Float32, :a), (:call, :Float32, :b))
+            )))
+      )),
+    (:line, 444, :none),
+    (:function, (:call, :cmp, (:(::), :x, :AbstractFloat), (:(::), :y, :AbstractFloat)), (:block,
+        (:line, 445, :none),
+        (:&&, (:||, (:call, :isnan, :x), (:call, :isnan, :y)), (:call, :throw, (:call, :DomainError))),
+        (:line, 446, :none),
+        (:call, :ifelse, (:call, :<, :x, :y), -1, (:call, :ifelse, (:call, :>, :x, :y), 1, 0))
+      )),
+    (:line, 449, :none),
+    (:function, (:call, :cmp, (:(::), :x, :Real), (:(::), :y, :AbstractFloat)), (:block,
+        (:line, 450, :none),
+        (:&&, (:call, :isnan, :y), (:call, :throw, (:call, :DomainError))),
+        (:line, 451, :none),
+        (:call, :ifelse, (:call, :<, :x, :y), -1, (:call, :ifelse, (:call, :>, :x, :y), 1, 0))
+      )),
+    (:line, 454, :none),
+    (:function, (:call, :cmp, (:(::), :x, :AbstractFloat), (:(::), :y, :Real)), (:block,
+        (:line, 455, :none),
+        (:&&, (:call, :isnan, :x), (:call, :throw, (:call, :DomainError))),
+        (:line, 456, :none),
+        (:call, :ifelse, (:call, :<, :x, :y), -1, (:call, :ifelse, (:call, :>, :x, :y), 1, 0))
+      )),
+    (:line, 472, :none),
+    (:for, (:(=), :Ti, (:tuple, :Int64, :UInt64, :Int128, :UInt128)), (:block,
+        (:line, 473, :none),
+        (:for, (:(=), :Tf, (:tuple, :Float32, :Float64)), (:block,
+            (:line, 474, :none),
+            (:macrocall, Symbol("@eval"), (:block,
+                (:line, 475, :none),
+                (:function, (:call, :(==), (:(::), :x, (:$, :Tf)), (:(::), :y, (:$, :Ti))), (:block,
+                    (:line, 476, :none),
+                    (:(=), :fy, (:call, (:$, :Tf), :y)),
+                    (:line, 477, :none),
+                    (:call, :&, (:call, :&, (:call, :(==), :x, :fy), (:call, :(!=), :fy, (:$, (:call, :Tf, (:call, :typemax, :Ti))))), (:call, :(==), :y, (:call, :unsafe_trunc, (:$, :Ti), :fy)))
+                  )),
+                (:line, 479, :none),
+                (:(=), (:call, :(==), (:(::), :y, (:$, :Ti)), (:(::), :x, (:$, :Tf))), (:block,
+                    (:line, 479, :none),
+                    (:call, :(==), :x, :y)
+                  )),
+                (:line, 481, :none),
+                (:function, (:call, :<, (:(::), :x, (:$, :Ti)), (:(::), :y, (:$, :Tf))), (:block,
+                    (:line, 482, :none),
+                    (:(=), :fx, (:call, (:$, :Tf), :x)),
+                    (:line, 483, :none),
+                    (:call, :|, (:call, :<, :fx, :y), (:call, :&, (:call, :(==), :fx, :y), (:call, :|, (:call, :(==), :fx, (:$, (:call, :Tf, (:call, :typemax, :Ti)))), (:call, :<, :x, (:call, :unsafe_trunc, (:$, :Ti), :fx)))))
+                  )),
+                (:line, 485, :none),
+                (:function, (:call, :(<=), (:(::), :x, (:$, :Ti)), (:(::), :y, (:$, :Tf))), (:block,
+                    (:line, 486, :none),
+                    (:(=), :fx, (:call, (:$, :Tf), :x)),
+                    (:line, 487, :none),
+                    (:call, :|, (:call, :<, :fx, :y), (:call, :&, (:call, :(==), :fx, :y), (:call, :|, (:call, :(==), :fx, (:$, (:call, :Tf, (:call, :typemax, :Ti)))), (:call, :(<=), :x, (:call, :unsafe_trunc, (:$, :Ti), :fx)))))
+                  )),
+                (:line, 490, :none),
+                (:function, (:call, :<, (:(::), :x, (:$, :Tf)), (:(::), :y, (:$, :Ti))), (:block,
+                    (:line, 491, :none),
+                    (:(=), :fy, (:call, (:$, :Tf), :y)),
+                    (:line, 492, :none),
+                    (:call, :|, (:call, :<, :x, :fy), (:call, :&, (:call, :&, (:call, :(==), :x, :fy), (:call, :<, :fy, (:$, (:call, :Tf, (:call, :typemax, :Ti))))), (:call, :<, (:call, :unsafe_trunc, (:$, :Ti), :fy), :y)))
+                  )),
+                (:line, 494, :none),
+                (:function, (:call, :(<=), (:(::), :x, (:$, :Tf)), (:(::), :y, (:$, :Ti))), (:block,
+                    (:line, 495, :none),
+                    (:(=), :fy, (:call, (:$, :Tf), :y)),
+                    (:line, 496, :none),
+                    (:call, :|, (:call, :<, :x, :fy), (:call, :&, (:call, :&, (:call, :(==), :x, :fy), (:call, :<, :fy, (:$, (:call, :Tf, (:call, :typemax, :Ti))))), (:call, :(<=), (:call, :unsafe_trunc, (:$, :Ti), :fy), :y)))
+                  ))
+              ))
+          ))
+      )),
+    (:line, 502, :none),
+    (:(=), (:call, :(==), (:(::), :x, :Float32), (:(::), :y, (:curly, :Union, :Int32, :UInt32))), (:block,
+        (:line, 502, :none),
+        (:call, :(==), (:call, :Float64, :x), (:call, :Float64, :y))
+      )),
+    (:line, 503, :none),
+    (:(=), (:call, :(==), (:(::), :x, (:curly, :Union, :Int32, :UInt32)), (:(::), :y, :Float32)), (:block,
+        (:line, 503, :none),
+        (:call, :(==), (:call, :Float64, :x), (:call, :Float64, :y))
+      )),
+    (:line, 505, :none),
+    (:(=), (:call, :<, (:(::), :x, :Float32), (:(::), :y, (:curly, :Union, :Int32, :UInt32))), (:block,
+        (:line, 505, :none),
+        (:call, :<, (:call, :Float64, :x), (:call, :Float64, :y))
+      )),
+    (:line, 506, :none),
+    (:(=), (:call, :<, (:(::), :x, (:curly, :Union, :Int32, :UInt32)), (:(::), :y, :Float32)), (:block,
+        (:line, 506, :none),
+        (:call, :<, (:call, :Float64, :x), (:call, :Float64, :y))
+      )),
+    (:line, 508, :none),
+    (:(=), (:call, :(<=), (:(::), :x, :Float32), (:(::), :y, (:curly, :Union, :Int32, :UInt32))), (:block,
+        (:line, 508, :none),
+        (:call, :(<=), (:call, :Float64, :x), (:call, :Float64, :y))
+      )),
+    (:line, 509, :none),
+    (:(=), (:call, :(<=), (:(::), :x, (:curly, :Union, :Int32, :UInt32)), (:(::), :y, :Float32)), (:block,
+        (:line, 509, :none),
+        (:call, :(<=), (:call, :Float64, :x), (:call, :Float64, :y))
+      )),
+    (:line, 512, :none),
+    (:(=), (:call, :abs, (:(::), :x, :Float16)), (:block,
+        (:line, 512, :none),
+        (:call, :reinterpret, :Float16, (:call, :&, (:call, :reinterpret, :UInt16, :x), 0x7fff))
+      )),
+    (:line, 513, :none),
+    (:(=), (:call, :abs, (:(::), :x, :Float32)), (:block,
+        (:line, 513, :none),
+        (:call, :abs_float, :x)
+      )),
+    (:line, 514, :none),
+    (:(=), (:call, :abs, (:(::), :x, :Float64)), (:block,
+        (:line, 514, :none),
+        (:call, :abs_float, :x)
+      )),
+    (:line, 516, :none),
+    (:macrocall, :(Core.@doc), "    isnan(f) -> Bool\n\nTest whether a floating point number is not a number (NaN).\n", (:(=), (:call, :isnan, (:(::), :x, :AbstractFloat)), (:block,
+          (:line, 521, :none),
+          (:call, :(!=), :x, :x)
+        ))),
+    (:line, 522, :none),
+    (:(=), (:call, :isnan, (:(::), :x, :Float16)), (:block,
+        (:line, 522, :none),
+        (:call, :>, (:call, :&, (:call, :reinterpret, :UInt16, :x), 0x7fff), 0x7c00)
+      )),
+    (:line, 523, :none),
+    (:(=), (:call, :isnan, (:(::), :x, :Real)), (:block,
+        (:line, 523, :none),
+        false
+      )),
+    (:line, 525, :none),
+    (:macrocall, :(Core.@doc), "    isfinite(f) -> Bool\n\nTest whether a number is finite.\n\n```jldoctest\njulia> isfinite(5)\ntrue\n\njulia> isfinite(NaN32)\nfalse\n```\n", (:(=), (:call, :isfinite, (:(::), :x, :AbstractFloat)), (:block,
+          (:line, 538, :none),
+          (:call, :(==), (:call, :-, :x, :x), 0)
+        ))),
+    (:line, 539, :none),
+    (:(=), (:call, :isfinite, (:(::), :x, :Float16)), (:block,
+        (:line, 539, :none),
+        (:call, :(!=), (:call, :&, (:call, :reinterpret, :UInt16, :x), 0x7c00), 0x7c00)
+      )),
+    (:line, 540, :none),
+    (:(=), (:call, :isfinite, (:(::), :x, :Real)), (:block,
+        (:line, 540, :none),
+        (:call, :(!=), (:ref, (:call, :decompose, :x), 3), 0)
+      )),
+    (:line, 541, :none),
+    (:(=), (:call, :isfinite, (:(::), :x, :Integer)), (:block,
+        (:line, 541, :none),
+        true
+      )),
+    (:line, 543, :none),
+    (:macrocall, :(Core.@doc), "    isinf(f) -> Bool\n\nTest whether a number is infinite.\n", (:(=), (:call, :isinf, (:(::), :x, :Real)), (:block,
+          (:line, 548, :none),
+          (:call, :&, (:call, :!, (:call, :isnan, :x)), (:call, :!, (:call, :isfinite, :x)))
+        ))),
+    (:line, 552, :none),
+    (:(=), (:call, :hx, (:(::), :a, :UInt64), (:(::), :b, :Float64), (:(::), :h, :UInt)), (:block,
+        (:line, 552, :none),
+        (:call, :hash_uint64, (:call, :-, (:call, :+, (:call, :*, 3, :a), (:call, :reinterpret, :UInt64, :b)), :h))
+      )),
+    (:line, 553, :none),
+    (:const, (:(=), :hx_NaN, (:call, :hx, (:call, :UInt64, 0), :NaN, (:call, :UInt, 0)))),
+    (:line, 555, :none),
+    (:(=), (:call, :hash, (:(::), :x, :UInt64), (:(::), :h, :UInt)), (:block,
+        (:line, 555, :none),
+        (:call, :hx, :x, (:call, :Float64, :x), :h)
+      )),
+    (:line, 556, :none),
+    (:(=), (:call, :hash, (:(::), :x, :Int64), (:(::), :h, :UInt)), (:block,
+        (:line, 556, :none),
+        (:call, :hx, (:call, :reinterpret, :UInt64, (:call, :abs, :x)), (:call, :Float64, :x), :h)
+      )),
+    (:line, 557, :none),
+    (:(=), (:call, :hash, (:(::), :x, :Float64), (:(::), :h, :UInt)), (:block,
+        (:line, 557, :none),
+        (:if, (:call, :isnan, :x), (:call, :⊻, :hx_NaN, :h), (:call, :hx, (:call, :fptoui, :UInt64, (:call, :abs, :x)), :x, :h))
+      )),
+    (:line, 559, :none),
+    (:(=), (:call, :hash, (:(::), :x, (:curly, :Union, :Bool, :Int8, :UInt8, :Int16, :UInt16, :Int32, :UInt32)), (:(::), :h, :UInt)), (:block,
+        (:line, 559, :none),
+        (:call, :hash, (:call, :Int64, :x), :h)
+      )),
+    (:line, 560, :none),
+    (:(=), (:call, :hash, (:(::), :x, :Float32), (:(::), :h, :UInt)), (:block,
+        (:line, 560, :none),
+        (:call, :hash, (:call, :Float64, :x), :h)
+      )),
+    (:line, 563, :none),
+    (:(=), (:call, :precision, (:(::), (:curly, :Type, :Float16))), (:block,
+        (:line, 563, :none),
+        11
+      )),
+    (:line, 564, :none),
+    (:(=), (:call, :precision, (:(::), (:curly, :Type, :Float32))), (:block,
+        (:line, 564, :none),
+        24
+      )),
+    (:line, 565, :none),
+    (:(=), (:call, :precision, (:(::), (:curly, :Type, :Float64))), (:block,
+        (:line, 565, :none),
+        53
+      )),
+    (:line, 566, :none),
+    (:(=), (:where, (:call, :precision, (:(::), :T)), (:<:, :T, :AbstractFloat)), (:block,
+        (:line, 566, :none),
+        (:call, :precision, :T)
+      )),
+    (:line, 568, :none),
+    (:macrocall, :(Core.@doc), "    uabs(x::Integer)\n\nReturns the absolute value of `x`, possibly returning a different type should the\noperation be susceptible to overflow. This typically arises when `x` is a two's complement\nsigned integer, so that `abs(typemin(x)) == typemin(x) < 0`, in which case the result of\n`uabs(x)` will be an unsigned integer of the same size.\n", (:(=), (:call, :uabs, (:(::), :x, :Integer)), (:block,
+          (:line, 576, :none),
+          (:call, :abs, :x)
+        ))),
+    (:line, 577, :none),
+    (:(=), (:call, :uabs, (:(::), :x, :Signed)), (:block,
+        (:line, 577, :none),
+        (:call, :unsigned, (:call, :abs, :x))
+      )),
+    (:line, 580, :none),
+    (:macrocall, :(Core.@doc), "    nextfloat(x::AbstractFloat, n::Integer)\n\nThe result of `n` iterative applications of `nextfloat` to `x` if `n >= 0`, or `-n`\napplications of `prevfloat` if `n < 0`.\n", (:function, (:call, :nextfloat, (:(::), :f, (:curly, :Union, :Float16, :Float32, :Float64)), (:(::), :d, :Integer)), (:block,
+          (:line, 587, :none),
+          (:(=), :F, (:call, :typeof, :f)),
+          (:line, 588, :none),
+          (:(=), :fumax, (:call, :reinterpret, :Unsigned, (:call, :F, :Inf))),
+          (:line, 589, :none),
+          (:(=), :U, (:call, :typeof, :fumax)),
+          (:line, 591, :none),
+          (:&&, (:call, :isnan, :f), (:return, :f)),
+          (:line, 592, :none),
+          (:(=), :fi, (:call, :reinterpret, :Signed, :f)),
+          (:line, 593, :none),
+          (:(=), :fneg, (:call, :<, :fi, 0)),
+          (:line, 594, :none),
+          (:(=), :fu, (:call, :unsigned, (:call, :&, :fi, (:call, :typemax, :fi)))),
+          (:line, 596, :none),
+          (:(=), :dneg, (:call, :<, :d, 0)),
+          (:line, 597, :none),
+          (:(=), :da, (:call, :uabs, :d)),
+          (:line, 598, :none),
+          (:if, (:call, :>, :da, (:call, :typemax, :U)), (:block,
+              (:line, 599, :none),
+              (:(=), :fneg, :dneg),
+              (:line, 600, :none),
+              (:(=), :fu, :fumax)
+            ), (:block,
+              (:line, 602, :none),
+              (:(=), :du, (:call, :%, :da, :U)),
+              (:line, 603, :none),
+              (:if, (:call, :⊻, :fneg, :dneg), (:block,
+                  (:line, 604, :none),
+                  (:if, (:call, :>, :du, :fu), (:block,
+                      (:line, 605, :none),
+                      (:(=), :fu, (:call, :min, :fumax, (:call, :-, :du, :fu))),
+                      (:line, 606, :none),
+                      (:(=), :fneg, (:call, :!, :fneg))
+                    ), (:block,
+                      (:line, 608, :none),
+                      (:(=), :fu, (:call, :-, :fu, :du))
+                    ))
+                ), (:block,
+                  (:line, 611, :none),
+                  (:if, (:call, :<, (:call, :-, :fumax, :fu), :du), (:block,
+                      (:line, 612, :none),
+                      (:(=), :fu, :fumax)
+                    ), (:block,
+                      (:line, 614, :none),
+                      (:(=), :fu, (:call, :+, :fu, :du))
+                    ))
+                ))
+            )),
+          (:line, 618, :none),
+          (:if, :fneg, (:block,
+              (:line, 619, :none),
+              (:|=, :fu, (:call, :sign_mask, :F))
+            )),
+          (:line, 621, :none),
+          (:call, :reinterpret, :F, :fu)
+        ))),
+    (:line, 624, :none),
+    (:macrocall, :(Core.@doc), "    nextfloat(x::AbstractFloat)\n\nReturns the smallest floating point number `y` of the same type as `x` such `x < y`. If no\nsuch `y` exists (e.g. if `x` is `Inf` or `NaN`), then returns `x`.\n", (:(=), (:call, :nextfloat, (:(::), :x, :AbstractFloat)), (:block,
+          (:line, 630, :none),
+          (:call, :nextfloat, :x, 1)
+        ))),
+    (:line, 632, :none),
+    (:macrocall, :(Core.@doc), "    prevfloat(x::AbstractFloat)\n\nReturns the largest floating point number `y` of the same type as `x` such `y < x`. If no\nsuch `y` exists (e.g. if `x` is `-Inf` or `NaN`), then returns `x`.\n", (:(=), (:call, :prevfloat, (:(::), :x, :AbstractFloat)), (:block,
+          (:line, 638, :none),
+          (:call, :nextfloat, :x, -1)
+        ))),
+    (:line, 640, :none),
+    (:for, (:(=), :Ti, (:tuple, :Int8, :Int16, :Int32, :Int64, :Int128, :UInt8, :UInt16, :UInt32, :UInt64, :UInt128)), (:block,
+        (:line, 641, :none),
+        (:for, (:(=), :Tf, (:tuple, :Float32, :Float64)), (:block,
+            (:line, 642, :none),
+            (:if, (:||, (:<:, :Ti, :Unsigned), (:call, :<, (:call, :sizeof, :Ti), (:call, :sizeof, :Tf))), (:block,
+                (:line, 646, :none),
+                (:macrocall, Symbol("@eval"), (:block,
+                    (:line, 647, :none),
+                    (:function, (:call, :trunc, (:(::), (:curly, :Type, (:$, :Ti))), (:(::), :x, (:$, :Tf))), (:block,
+                        (:line, 648, :none),
+                        (:if, (:comparison, (:$, (:call, :-, (:call, :Tf, (:call, :typemin, :Ti)), (:call, :one, :Tf))), :<, :x, :<, (:$, (:call, :+, (:call, :Tf, (:call, :typemax, :Ti)), (:call, :one, :Tf)))), (:block,
+                            (:line, 649, :none),
+                            (:return, (:call, :unsafe_trunc, (:$, :Ti), :x))
+                          ), (:block,
+                            (:line, 651, :none),
+                            (:call, :throw, (:call, :InexactError))
+                          ))
+                      )),
+                    (:line, 654, :none),
+                    (:function, (:call, :convert, (:(::), (:curly, :Type, (:$, :Ti))), (:(::), :x, (:$, :Tf))), (:block,
+                        (:line, 655, :none),
+                        (:if, (:&&, (:comparison, (:$, (:call, :Tf, (:call, :typemin, :Ti))), :(<=), :x, :(<=), (:$, (:call, :Tf, (:call, :typemax, :Ti)))), (:call, :(==), (:call, :trunc, :x), :x)), (:block,
+                            (:line, 656, :none),
+                            (:return, (:call, :unsafe_trunc, (:$, :Ti), :x))
+                          ), (:block,
+                            (:line, 658, :none),
+                            (:call, :throw, (:call, :InexactError))
+                          ))
+                      ))
+                  ))
+              ), (:block,
+                (:line, 667, :none),
+                (:macrocall, Symbol("@eval"), (:block,
+                    (:line, 668, :none),
+                    (:function, (:call, :trunc, (:(::), (:curly, :Type, (:$, :Ti))), (:(::), :x, (:$, :Tf))), (:block,
+                        (:line, 669, :none),
+                        (:if, (:comparison, (:$, (:call, :Tf, (:call, :typemin, :Ti))), :(<=), :x, :<, (:$, (:call, :Tf, (:call, :typemax, :Ti)))), (:block,
+                            (:line, 670, :none),
+                            (:return, (:call, :unsafe_trunc, (:$, :Ti), :x))
+                          ), (:block,
+                            (:line, 672, :none),
+                            (:call, :throw, (:call, :InexactError))
+                          ))
+                      )),
+                    (:line, 675, :none),
+                    (:function, (:call, :convert, (:(::), (:curly, :Type, (:$, :Ti))), (:(::), :x, (:$, :Tf))), (:block,
+                        (:line, 676, :none),
+                        (:if, (:&&, (:comparison, (:$, (:call, :Tf, (:call, :typemin, :Ti))), :(<=), :x, :<, (:$, (:call, :Tf, (:call, :typemax, :Ti)))), (:call, :(==), (:call, :trunc, :x), :x)), (:block,
+                            (:line, 677, :none),
+                            (:return, (:call, :unsafe_trunc, (:$, :Ti), :x))
+                          ), (:block,
+                            (:line, 679, :none),
+                            (:call, :throw, (:call, :InexactError))
+                          ))
+                      ))
+                  ))
+              ))
+          ))
+      )),
+    (:line, 687, :none),
+    (:macrocall, Symbol("@eval"), (:block,
+        (:line, 688, :none),
+        (:(=), (:call, :issubnormal, (:(::), :x, :Float32)), (:block,
+            (:line, 688, :none),
+            (:call, :&, (:call, :<, (:call, :abs, :x), (:$, (:call, :bitcast, :Float32, 0x00800000))), (:call, :(!=), :x, 0))
+          )),
+        (:line, 689, :none),
+        (:(=), (:call, :issubnormal, (:(::), :x, :Float64)), (:block,
+            (:line, 689, :none),
+            (:call, :&, (:call, :<, (:call, :abs, :x), (:$, (:call, :bitcast, :Float64, 0x0010000000000000))), (:call, :(!=), :x, 0))
+          )),
+        (:line, 691, :none),
+        (:(=), (:call, :typemin, (:(::), (:curly, :Type, :Float16))), (:block,
+            (:line, 691, :none),
+            (:$, (:call, :bitcast, :Float16, 0xfc00))
+          )),
+        (:line, 692, :none),
+        (:(=), (:call, :typemax, (:(::), (:curly, :Type, :Float16))), (:block,
+            (:line, 692, :none),
+            (:$, :Inf16)
+          )),
+        (:line, 693, :none),
+        (:(=), (:call, :typemin, (:(::), (:curly, :Type, :Float32))), (:block,
+            (:line, 693, :none),
+            (:$, (:call, :-, :Inf32))
+          )),
+        (:line, 694, :none),
+        (:(=), (:call, :typemax, (:(::), (:curly, :Type, :Float32))), (:block,
+            (:line, 694, :none),
+            (:$, :Inf32)
+          )),
+        (:line, 695, :none),
+        (:(=), (:call, :typemin, (:(::), (:curly, :Type, :Float64))), (:block,
+            (:line, 695, :none),
+            (:$, (:call, :-, :Inf64))
+          )),
+        (:line, 696, :none),
+        (:(=), (:call, :typemax, (:(::), (:curly, :Type, :Float64))), (:block,
+            (:line, 696, :none),
+            (:$, :Inf64)
+          )),
+        (:line, 697, :none),
+        (:(=), (:where, (:call, :typemin, (:(::), :x, :T)), (:<:, :T, :Real)), (:block,
+            (:line, 697, :none),
+            (:call, :typemin, :T)
+          )),
+        (:line, 698, :none),
+        (:(=), (:where, (:call, :typemax, (:(::), :x, :T)), (:<:, :T, :Real)), (:block,
+            (:line, 698, :none),
+            (:call, :typemax, :T)
+          )),
+        (:line, 700, :none),
+        (:(=), (:call, :realmin, (:(::), (:curly, :Type, :Float16))), (:block,
+            (:line, 700, :none),
+            (:$, (:call, :bitcast, :Float16, 0x0400))
+          )),
+        (:line, 701, :none),
+        (:(=), (:call, :realmin, (:(::), (:curly, :Type, :Float32))), (:block,
+            (:line, 701, :none),
+            (:$, (:call, :bitcast, :Float32, 0x00800000))
+          )),
+        (:line, 702, :none),
+        (:(=), (:call, :realmin, (:(::), (:curly, :Type, :Float64))), (:block,
+            (:line, 702, :none),
+            (:$, (:call, :bitcast, :Float64, 0x0010000000000000))
+          )),
+        (:line, 703, :none),
+        (:(=), (:call, :realmax, (:(::), (:curly, :Type, :Float16))), (:block,
+            (:line, 703, :none),
+            (:$, (:call, :bitcast, :Float16, 0x7bff))
+          )),
+        (:line, 704, :none),
+        (:(=), (:call, :realmax, (:(::), (:curly, :Type, :Float32))), (:block,
+            (:line, 704, :none),
+            (:$, (:call, :bitcast, :Float32, 0x7f7fffff))
+          )),
+        (:line, 705, :none),
+        (:(=), (:call, :realmax, (:(::), (:curly, :Type, :Float64))), (:block,
+            (:line, 705, :none),
+            (:$, (:call, :bitcast, :Float64, 0x7fefffffffffffff))
+          )),
+        (:line, 706, :none),
+        (:(=), (:where, (:call, :realmin, (:(::), :x, :T)), (:<:, :T, :AbstractFloat)), (:block,
+            (:line, 706, :none),
+            (:call, :realmin, :T)
+          )),
+        (:line, 707, :none),
+        (:(=), (:where, (:call, :realmax, (:(::), :x, :T)), (:<:, :T, :AbstractFloat)), (:block,
+            (:line, 707, :none),
+            (:call, :realmax, :T)
+          )),
+        (:line, 708, :none),
+        (:(=), (:call, :realmin), (:block,
+            (:line, 708, :none),
+            (:call, :realmin, :Float64)
+          )),
+        (:line, 709, :none),
+        (:(=), (:call, :realmax), (:block,
+            (:line, 709, :none),
+            (:call, :realmax, :Float64)
+          )),
+        (:line, 711, :none),
+        (:(=), (:call, :eps, (:(::), :x, :AbstractFloat)), (:block,
+            (:line, 711, :none),
+            (:if, (:call, :isfinite, :x), (:if, (:call, :(>=), (:call, :abs, :x), (:call, :realmin, :x)), (:call, :ldexp, (:call, :eps, (:call, :typeof, :x)), (:call, :exponent, :x)), (:call, :nextfloat, (:call, :zero, :x))), (:call, :oftype, :x, :NaN))
+          )),
+        (:line, 712, :none),
+        (:(=), (:call, :eps, (:(::), (:curly, :Type, :Float16))), (:block,
+            (:line, 712, :none),
+            (:$, (:call, :bitcast, :Float16, 0x1400))
+          )),
+        (:line, 713, :none),
+        (:(=), (:call, :eps, (:(::), (:curly, :Type, :Float32))), (:block,
+            (:line, 713, :none),
+            (:$, (:call, :bitcast, :Float32, 0x34000000))
+          )),
+        (:line, 714, :none),
+        (:(=), (:call, :eps, (:(::), (:curly, :Type, :Float64))), (:block,
+            (:line, 714, :none),
+            (:$, (:call, :bitcast, :Float64, 0x3cb0000000000000))
+          )),
+        (:line, 715, :none),
+        (:(=), (:call, :eps), (:block,
+            (:line, 715, :none),
+            (:call, :eps, :Float64)
+          ))
+      )),
+    (:line, 718, :none),
+    (:macrocall, :(Core.@doc), "    eps(::Type{T}) where T<:AbstractFloat\n    eps()\n\nReturns the *machine epsilon* of the floating point type `T` (`T = Float64` by\ndefault). This is defined as the gap between 1 and the next largest value representable by\n`T`, and is equivalent to `eps(one(T))`.\n\n```jldoctest\njulia> eps()\n2.220446049250313e-16\n\njulia> eps(Float32)\n1.1920929f-7\n\njulia> 1.0 + eps()\n1.0000000000000002\n\njulia> 1.0 + eps()/2\n1.0\n```\n", (:call, :eps, (:(::), (:curly, :Type, (:<:, :AbstractFloat))))),
+    (:line, 742, :none),
+    (:macrocall, :(Core.@doc), "    eps(x::AbstractFloat)\n\nReturns the *unit in last place* (ulp) of `x`. This is the distance between consecutive\nrepresentable floating point values at `x`. In most cases, if the distance on either side\nof `x` is different, then the larger of the two is taken, that is\n\n    eps(x) == max(x-prevfloat(x), nextfloat(x)-x)\n\nThe exceptions to this rule are the smallest and largest finite values\n(e.g. `nextfloat(-Inf)` and `prevfloat(Inf)` for [`Float64`](@ref)), which round to the\nsmaller of the values.\n\nThe rationale for this behavior is that `eps` bounds the floating point rounding\nerror. Under the default `RoundNearest` rounding mode, if ``y`` is a real number and ``x``\nis the nearest floating point number to ``y``, then\n\n```math\n|y-x| \\leq \\operatorname{eps}(x)/2.\n```\n\n```jldoctest\njulia> eps(1.0)\n2.220446049250313e-16\n\njulia> eps(prevfloat(2.0))\n2.220446049250313e-16\n\njulia> eps(2.0)\n4.440892098500626e-16\n\njulia> x = prevfloat(Inf)      # largest finite Float64\n1.7976931348623157e308\n\njulia> x + eps(x)/2            # rounds up\nInf\n\njulia> x + prevfloat(eps(x)/2) # rounds down\n1.7976931348623157e308\n```\n", (:call, :eps, (:(::), :AbstractFloat))),
+    (:line, 787, :none),
+    (:(=), (:call, :bswap, (:(::), :x, :Float32)), (:block,
+        (:line, 787, :none),
+        (:call, :bswap_int, :x)
+      )),
+    (:line, 788, :none),
+    (:(=), (:call, :bswap, (:(::), :x, :Float64)), (:block,
+        (:line, 788, :none),
+        (:call, :bswap_int, :x)
+      )),
+    (:line, 791, :none),
+    (:(=), (:call, :reinterpret, (:(::), (:curly, :Type, :Unsigned)), (:(::), :x, :Float64)), (:block,
+        (:line, 791, :none),
+        (:call, :reinterpret, :UInt64, :x)
+      )),
+    (:line, 792, :none),
+    (:(=), (:call, :reinterpret, (:(::), (:curly, :Type, :Unsigned)), (:(::), :x, :Float32)), (:block,
+        (:line, 792, :none),
+        (:call, :reinterpret, :UInt32, :x)
+      )),
+    (:line, 793, :none),
+    (:(=), (:call, :reinterpret, (:(::), (:curly, :Type, :Signed)), (:(::), :x, :Float64)), (:block,
+        (:line, 793, :none),
+        (:call, :reinterpret, :Int64, :x)
+      )),
+    (:line, 794, :none),
+    (:(=), (:call, :reinterpret, (:(::), (:curly, :Type, :Signed)), (:(::), :x, :Float32)), (:block,
+        (:line, 794, :none),
+        (:call, :reinterpret, :Int32, :x)
+      )),
+    (:line, 796, :none),
+    (:(=), (:call, :sign_mask, (:(::), (:curly, :Type, :Float64))), (:block,
+        (:line, 796, :none),
+        0x8000000000000000
+      )),
+    (:line, 797, :none),
+    (:(=), (:call, :exponent_mask, (:(::), (:curly, :Type, :Float64))), (:block,
+        (:line, 797, :none),
+        0x7ff0000000000000
+      )),
+    (:line, 798, :none),
+    (:(=), (:call, :exponent_one, (:(::), (:curly, :Type, :Float64))), (:block,
+        (:line, 798, :none),
+        0x3ff0000000000000
+      )),
+    (:line, 799, :none),
+    (:(=), (:call, :exponent_half, (:(::), (:curly, :Type, :Float64))), (:block,
+        (:line, 799, :none),
+        0x3fe0000000000000
+      )),
+    (:line, 800, :none),
+    (:(=), (:call, :significand_mask, (:(::), (:curly, :Type, :Float64))), (:block,
+        (:line, 800, :none),
+        0x000fffffffffffff
+      )),
+    (:line, 802, :none),
+    (:(=), (:call, :sign_mask, (:(::), (:curly, :Type, :Float32))), (:block,
+        (:line, 802, :none),
+        0x80000000
+      )),
+    (:line, 803, :none),
+    (:(=), (:call, :exponent_mask, (:(::), (:curly, :Type, :Float32))), (:block,
+        (:line, 803, :none),
+        0x7f800000
+      )),
+    (:line, 804, :none),
+    (:(=), (:call, :exponent_one, (:(::), (:curly, :Type, :Float32))), (:block,
+        (:line, 804, :none),
+        0x3f800000
+      )),
+    (:line, 805, :none),
+    (:(=), (:call, :exponent_half, (:(::), (:curly, :Type, :Float32))), (:block,
+        (:line, 805, :none),
+        0x3f000000
+      )),
+    (:line, 806, :none),
+    (:(=), (:call, :significand_mask, (:(::), (:curly, :Type, :Float32))), (:block,
+        (:line, 806, :none),
+        0x007fffff
+      )),
+    (:line, 808, :none),
+    (:(=), (:call, :sign_mask, (:(::), (:curly, :Type, :Float16))), (:block,
+        (:line, 808, :none),
+        0x8000
+      )),
+    (:line, 809, :none),
+    (:(=), (:call, :exponent_mask, (:(::), (:curly, :Type, :Float16))), (:block,
+        (:line, 809, :none),
+        0x7c00
+      )),
+    (:line, 810, :none),
+    (:(=), (:call, :exponent_one, (:(::), (:curly, :Type, :Float16))), (:block,
+        (:line, 810, :none),
+        0x3c00
+      )),
+    (:line, 811, :none),
+    (:(=), (:call, :exponent_half, (:(::), (:curly, :Type, :Float16))), (:block,
+        (:line, 811, :none),
+        0x3800
+      )),
+    (:line, 812, :none),
+    (:(=), (:call, :significand_mask, (:(::), (:curly, :Type, :Float16))), (:block,
+        (:line, 812, :none),
+        0x03ff
+      )),
+    (:line, 815, :none),
+    (:(=), (:call, :fpinttype, (:(::), (:curly, :Type, :Float64))), (:block,
+        (:line, 815, :none),
+        :UInt64
+      )),
+    (:line, 816, :none),
+    (:(=), (:call, :fpinttype, (:(::), (:curly, :Type, :Float32))), (:block,
+        (:line, 816, :none),
+        :UInt32
+      )),
+    (:line, 817, :none),
+    (:(=), (:call, :fpinttype, (:(::), (:curly, :Type, :Float16))), (:block,
+        (:line, 817, :none),
+        :UInt16
+      )),
+    (:line, 821, :none),
+    (:for, (:(=), (:tuple, :F, :T, :n), (:tuple, (:tuple, :Float16, :UInt16, 5), (:tuple, :Float32, :UInt32, 12), (:tuple, :Float64, :UInt64, 26))), (:block,
+        (:line, 822, :none),
+        (:macrocall, Symbol("@eval"), (:block,
+            (:line, 823, :none),
+            (:function, (:call, :truncbits, (:(::), :x, (:$, :F)), :nb), (:block,
+                (:line, 824, :none),
+                (:macrocall, Symbol("@_inline_meta")),
+                (:line, 825, :none),
+                (:call, :truncmask, :x, (:call, :<<, (:call, :typemax, (:$, :T)), :nb))
+              )),
+            (:line, 827, :none),
+            (:function, (:call, :truncmask, (:(::), :x, (:$, :F)), :mask), (:block,
+                (:line, 828, :none),
+                (:macrocall, Symbol("@_inline_meta")),
+                (:line, 829, :none),
+                (:call, :reinterpret, (:$, :F), (:call, :&, :mask, (:call, :reinterpret, (:$, :T), :x)))
+              )),
+            (:line, 831, :none),
+            (:function, (:call, :splitprec, (:(::), :x, (:$, :F))), (:block,
+                (:line, 832, :none),
+                (:macrocall, Symbol("@_inline_meta")),
+                (:line, 833, :none),
+                (:(=), :hi, (:call, :truncmask, :x, (:call, :<<, (:call, :typemax, (:$, :T)), (:$, :n)))),
+                (:line, 834, :none),
+                (:tuple, :hi, (:call, :-, :x, :hi))
+              ))
+          ))
+      )),
+    (:line, 839, :none),
+    (:(=), (:call, :truncbits, :x, :nb), (:block,
+        (:line, 839, :none),
+        :x
+      )),
+    (:line, 840, :none),
+    (:(=), (:call, :truncmask, :x, :mask), (:block,
+        (:line, 840, :none),
+        :x
+      )),
+    (:line, 844, :none),
+    (:(=), (:call, :float, (:(::), :A, (:curly, :AbstractArray, (:<:, :AbstractFloat)))), (:block,
+        (:line, 844, :none),
+        :A
+      )),
+    (:line, 846, :none),
+    (:function, (:where, (:call, :float, (:(::), :A, (:curly, :AbstractArray, :T))), :T), (:block,
+        (:line, 847, :none),
+        (:if, (:call, :!, (:call, :isleaftype, :T)), (:block,
+            (:line, 848, :none),
+            (:call, :error, "`float` not defined on abstractly-typed arrays; please convert to a more specific type")
+          )),
+        (:line, 850, :none),
+        (:call, :convert, (:curly, :AbstractArray, (:call, :typeof, (:call, :float, (:call, :zero, :T)))), :A)
+      )),
+    (:line, 853, :none),
+    (:(=), (:call, :float, (:(::), :r, :StepRange)), (:block,
+        (:line, 853, :none),
+        (:(:), (:call, :float, (:., :r, (:quote, #QuoteNode
+                :start
+              ))), (:call, :float, (:., :r, (:quote, #QuoteNode
+                :step
+              ))), (:call, :float, (:call, :last, :r)))
+      )),
+    (:line, 854, :none),
+    (:(=), (:call, :float, (:(::), :r, :UnitRange)), (:block,
+        (:line, 854, :none),
+        (:(:), (:call, :float, (:., :r, (:quote, #QuoteNode
+                :start
+              ))), (:call, :float, (:call, :last, :r)))
+      )),
+    (:line, 855, :none),
+    (:(=), (:call, :float, (:(::), :r, :StepRangeLen)), (:block,
+        (:line, 855, :none),
+        (:call, :StepRangeLen, (:call, :float, (:., :r, (:quote, #QuoteNode
+                :ref
+              ))), (:call, :float, (:., :r, (:quote, #QuoteNode
+                :step
+              ))), (:call, :length, :r), (:., :r, (:quote, #QuoteNode
+              :offset
+            )))
+      )),
+    (:line, 856, :none),
+    (:function, (:call, :float, (:(::), :r, :LinSpace)), (:block,
+        (:line, 857, :none),
+        (:call, :LinSpace, (:call, :float, (:., :r, (:quote, #QuoteNode
+                :start
+              ))), (:call, :float, (:., :r, (:quote, #QuoteNode
+                :stop
+              ))), (:call, :length, :r))
+      )),
+    (:line, 862, :none),
+    (:function, :big),
+    (:line, 863, :none),
+    (:(=), (:call, :broadcast, (:(::), (:call, :typeof, :big)), (:(::), :r, :UnitRange)), (:block,
+        (:line, 863, :none),
+        (:(:), (:call, :big, (:., :r, (:quote, #QuoteNode
+                :start
+              ))), (:call, :big, (:call, :last, :r)))
+      )),
+    (:line, 864, :none),
+    (:(=), (:call, :broadcast, (:(::), (:call, :typeof, :big)), (:(::), :r, :StepRange)), (:block,
+        (:line, 864, :none),
+        (:(:), (:call, :big, (:., :r, (:quote, #QuoteNode
+                :start
+              ))), (:call, :big, (:., :r, (:quote, #QuoteNode
+                :step
+              ))), (:call, :big, (:call, :last, :r)))
+      )),
+    (:line, 865, :none),
+    (:(=), (:call, :broadcast, (:(::), (:call, :typeof, :big)), (:(::), :r, :StepRangeLen)), (:block,
+        (:line, 865, :none),
+        (:call, :StepRangeLen, (:call, :big, (:., :r, (:quote, #QuoteNode
+                :ref
+              ))), (:call, :big, (:., :r, (:quote, #QuoteNode
+                :step
+              ))), (:call, :length, :r), (:., :r, (:quote, #QuoteNode
+              :offset
+            )))
+      )),
+    (:line, 866, :none),
+    (:function, (:call, :broadcast, (:(::), (:call, :typeof, :big)), (:(::), :r, :LinSpace)), (:block,
+        (:line, 867, :none),
+        (:call, :LinSpace, (:call, :big, (:., :r, (:quote, #QuoteNode
+                :start
+              ))), (:call, :big, (:., :r, (:quote, #QuoteNode
+                :stop
+              ))), (:call, :length, :r))
+      ))
+  ))

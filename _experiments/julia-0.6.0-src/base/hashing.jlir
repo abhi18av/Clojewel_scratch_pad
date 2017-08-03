@@ -1,0 +1,144 @@
+(:quote, (:block,
+    (:line, 5, :none),
+    (:(=), (:call, :hash, (:(::), :x, :Any)), (:block,
+        (:line, 5, :none),
+        (:call, :hash, :x, (:call, :zero, :UInt))
+      )),
+    (:line, 6, :none),
+    (:(=), (:call, :hash, (:(::), :w, :WeakRef), (:(::), :h, :UInt)), (:block,
+        (:line, 6, :none),
+        (:call, :hash, (:., :w, (:quote, #QuoteNode
+              :value
+            )), :h)
+      )),
+    (:line, 10, :none),
+    (:(=), (:call, :hash, (:(::), :x, :ANY), (:(::), :h, :UInt)), (:block,
+        (:line, 10, :none),
+        (:call, :hash_uint, (:call, :-, (:call, :*, 3, :h), (:call, :object_id, :x)))
+      )),
+    (:line, 14, :none),
+    (:function, (:call, :hash_64_64, (:(::), :n, :UInt64)), (:block,
+        (:line, 15, :none),
+        (:local, (:(=), (:(::), :a, :UInt64), :n)),
+        (:line, 16, :none),
+        (:(=), :a, (:call, :+, (:call, :~, :a), (:call, :<<, :a, 21))),
+        (:line, 17, :none),
+        (:(=), :a, (:call, :⊻, :a, (:call, :>>, :a, 24))),
+        (:line, 18, :none),
+        (:(=), :a, (:call, :+, :a, (:call, :<<, :a, 3), (:call, :<<, :a, 8))),
+        (:line, 19, :none),
+        (:(=), :a, (:call, :⊻, :a, (:call, :>>, :a, 14))),
+        (:line, 20, :none),
+        (:(=), :a, (:call, :+, :a, (:call, :<<, :a, 2), (:call, :<<, :a, 4))),
+        (:line, 21, :none),
+        (:(=), :a, (:call, :⊻, :a, (:call, :>>, :a, 28))),
+        (:line, 22, :none),
+        (:(=), :a, (:call, :+, :a, (:call, :<<, :a, 31))),
+        (:line, 23, :none),
+        (:return, :a)
+      )),
+    (:line, 26, :none),
+    (:function, (:call, :hash_64_32, (:(::), :n, :UInt64)), (:block,
+        (:line, 27, :none),
+        (:local, (:(=), (:(::), :a, :UInt64), :n)),
+        (:line, 28, :none),
+        (:(=), :a, (:call, :+, (:call, :~, :a), (:call, :<<, :a, 18))),
+        (:line, 29, :none),
+        (:(=), :a, (:call, :⊻, :a, (:call, :>>, :a, 31))),
+        (:line, 30, :none),
+        (:(=), :a, (:call, :*, :a, 21)),
+        (:line, 31, :none),
+        (:(=), :a, (:call, :⊻, :a, (:call, :>>, :a, 11))),
+        (:line, 32, :none),
+        (:(=), :a, (:call, :+, :a, (:call, :<<, :a, 6))),
+        (:line, 33, :none),
+        (:(=), :a, (:call, :⊻, :a, (:call, :>>, :a, 22))),
+        (:line, 34, :none),
+        (:return, (:call, :%, :a, :UInt32))
+      )),
+    (:line, 37, :none),
+    (:function, (:call, :hash_32_32, (:(::), :n, :UInt32)), (:block,
+        (:line, 38, :none),
+        (:local, (:(=), (:(::), :a, :UInt32), :n)),
+        (:line, 39, :none),
+        (:(=), :a, (:call, :+, :a, 0x7ed55d16, (:call, :<<, :a, 12))),
+        (:line, 40, :none),
+        (:(=), :a, (:call, :⊻, (:call, :⊻, :a, 0xc761c23c), (:call, :>>, :a, 19))),
+        (:line, 41, :none),
+        (:(=), :a, (:call, :+, :a, 0x165667b1, (:call, :<<, :a, 5))),
+        (:line, 42, :none),
+        (:(=), :a, (:call, :⊻, (:call, :+, :a, 0xd3a2646c), (:call, :<<, :a, 9))),
+        (:line, 43, :none),
+        (:(=), :a, (:call, :+, :a, 0xfd7046c5, (:call, :<<, :a, 3))),
+        (:line, 44, :none),
+        (:(=), :a, (:call, :⊻, (:call, :⊻, :a, 0xb55a4f09), (:call, :>>, :a, 16))),
+        (:line, 45, :none),
+        (:return, :a)
+      )),
+    (:line, 48, :none),
+    (:if, (:call, :(===), :UInt, :UInt64), (:block,
+        (:line, 49, :none),
+        (:(=), (:call, :hash_uint64, (:(::), :x, :UInt64)), (:block,
+            (:line, 49, :none),
+            (:call, :hash_64_64, :x)
+          )),
+        (:line, 50, :none),
+        (:(=), (:call, :hash_uint, (:(::), :x, :UInt)), (:block,
+            (:line, 50, :none),
+            (:call, :hash_64_64, :x)
+          ))
+      ), (:block,
+        (:line, 52, :none),
+        (:(=), (:call, :hash_uint64, (:(::), :x, :UInt64)), (:block,
+            (:line, 52, :none),
+            (:call, :hash_64_32, :x)
+          )),
+        (:line, 53, :none),
+        (:(=), (:call, :hash_uint, (:(::), :x, :UInt)), (:block,
+            (:line, 53, :none),
+            (:call, :hash_32_32, :x)
+          ))
+      )),
+    (:line, 58, :none),
+    (:if, (:call, :(===), :UInt, :UInt64), (:block,
+        (:line, 59, :none),
+        (:(=), (:call, :hash, (:(::), :x, :Expr), (:(::), :h, :UInt)), (:block,
+            (:line, 59, :none),
+            (:call, :hash, (:., :x, (:quote, #QuoteNode
+                  :args
+                )), (:call, :hash, (:., :x, (:quote, #QuoteNode
+                    :head
+                  )), (:call, :+, :h, 0x83c7900696d26dc6)))
+          ))
+      ), (:block,
+        (:line, 61, :none),
+        (:(=), (:call, :hash, (:(::), :x, :Expr), (:(::), :h, :UInt)), (:block,
+            (:line, 61, :none),
+            (:call, :hash, (:., :x, (:quote, #QuoteNode
+                  :args
+                )), (:call, :hash, (:., :x, (:quote, #QuoteNode
+                    :head
+                  )), (:call, :+, :h, 0x96d26dc6)))
+          ))
+      )),
+    (:line, 64, :none),
+    (:(=), (:call, :hash, (:(::), :x, :QuoteNode), (:(::), :h, :UInt)), (:block,
+        (:line, 64, :none),
+        (:call, :hash, (:., :x, (:quote, #QuoteNode
+              :value
+            )), (:call, :hash, :QuoteNode, :h))
+      )),
+    (:line, 67, :none),
+    (:const, (:(=), :hashr_seed, (:if, (:call, :(===), :UInt, :UInt64), 0x80707b6821b70087, 0x21b70087))),
+    (:line, 68, :none),
+    (:function, (:call, :hash, (:(::), :r, :Range), (:(::), :h, :UInt)), (:block,
+        (:line, 69, :none),
+        (:+=, :h, :hashr_seed),
+        (:line, 70, :none),
+        (:(=), :h, (:call, :hash, (:call, :first, :r), :h)),
+        (:line, 71, :none),
+        (:(=), :h, (:call, :hash, (:call, :step, :r), :h)),
+        (:line, 72, :none),
+        (:(=), :h, (:call, :hash, (:call, :last, :r), :h))
+      ))
+  ))

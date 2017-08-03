@@ -1,0 +1,116 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:call, (:., (:., :Main, (:quote, #QuoteNode
+            :Core
+          )), (:quote, #QuoteNode
+          :eval
+        )), (:., :Main, (:quote, #QuoteNode
+          :Core
+        )), (:quote, (:module, false, :Inference, (:block,
+            (:line, 3, :none),
+            (:line, 4, :none),
+            (:using, :Core, :Intrinsics),
+            (:line, 5, :none),
+            (:toplevel, (:import, :Core, :print), (:import, :Core, :println), (:import, :Core, :show), (:import, :Core, :write), (:import, :Core, :unsafe_write), (:import, :Core, :STDOUT), (:import, :Core, :STDERR)),
+            (:line, 7, :none),
+            (:call, :ccall, (:quote, #QuoteNode
+                :jl_set_istopmod
+              ), :Void, (:tuple, :Bool), false),
+            (:line, 9, :none),
+            (:(=), (:call, :eval, :x), (:block,
+                (:line, 9, :none),
+                (:call, (:., :Core, (:quote, #QuoteNode
+                      :eval
+                    )), :Inference, :x)
+              )),
+            (:line, 10, :none),
+            (:(=), (:call, :eval, :m, :x), (:block,
+                (:line, 10, :none),
+                (:call, (:., :Core, (:quote, #QuoteNode
+                      :eval
+                    )), :m, :x)
+              )),
+            (:line, 12, :none),
+            (:const, (:(=), :include, (:., :Core, (:quote, #QuoteNode
+                    :include
+                  )))),
+            (:line, 14, :none),
+            (:||, (:call, :isdefined, :Main, (:quote, #QuoteNode
+                  :Base
+                )), (:(=), (:where, (:call, (:(::), (:curly, :Type, :T)), :arg), :T), (:block,
+                  (:line, 14, :none),
+                  (:(::), (:call, :convert, :T, :arg), :T)
+                ))),
+            (:line, 16, :none),
+            (:function, :return_type),
+            (:line, 19, :none),
+            (:call, :include, "essentials.jl"),
+            (:line, 20, :none),
+            (:call, :include, "ctypes.jl"),
+            (:line, 21, :none),
+            (:call, :include, "generator.jl"),
+            (:line, 22, :none),
+            (:call, :include, "reflection.jl"),
+            (:line, 23, :none),
+            (:call, :include, "options.jl"),
+            (:line, 26, :none),
+            (:call, :include, "promotion.jl"),
+            (:line, 27, :none),
+            (:call, :include, "tuple.jl"),
+            (:line, 28, :none),
+            (:call, :include, "pair.jl"),
+            (:line, 29, :none),
+            (:call, :include, "traits.jl"),
+            (:line, 30, :none),
+            (:call, :include, "range.jl"),
+            (:line, 31, :none),
+            (:call, :include, "expr.jl"),
+            (:line, 32, :none),
+            (:call, :include, "error.jl"),
+            (:line, 35, :none),
+            (:call, :include, "bool.jl"),
+            (:line, 36, :none),
+            (:call, :include, "number.jl"),
+            (:line, 37, :none),
+            (:call, :include, "int.jl"),
+            (:line, 38, :none),
+            (:call, :include, "operators.jl"),
+            (:line, 39, :none),
+            (:call, :include, "pointer.jl"),
+            (:line, 40, :none),
+            (:const, (:(=), :checked_add, :+)),
+            (:line, 41, :none),
+            (:const, (:(=), :checked_sub, :-)),
+            (:line, 44, :none),
+            (:call, :include, "indices.jl"),
+            (:line, 45, :none),
+            (:call, :include, "array.jl"),
+            (:line, 46, :none),
+            (:call, :include, "abstractarray.jl"),
+            (:line, 48, :none),
+            (:call, :include, "hashing.jl"),
+            (:line, 49, :none),
+            (:call, :include, "nofloat_hashing.jl"),
+            (:line, 52, :none),
+            (:macro, (:call, :simd, :forloop), (:block,
+                (:line, 53, :none),
+                (:call, :esc, :forloop)
+              )),
+            (:line, 55, :none),
+            (:call, :include, "reduce.jl"),
+            (:line, 58, :none),
+            (:call, :include, "bitarray.jl"),
+            (:line, 59, :none),
+            (:call, :include, "intset.jl"),
+            (:line, 60, :none),
+            (:call, :include, "associative.jl"),
+            (:line, 63, :none),
+            (:call, :include, "docs/core.jl"),
+            (:line, 66, :none),
+            (:call, :include, "inference.jl"),
+            (:line, 67, :none),
+            (:call, :ccall, (:quote, #QuoteNode
+                :jl_set_typeinf_func
+              ), :Void, (:tuple, :Any), :typeinf_ext)
+          ))))
+  ))

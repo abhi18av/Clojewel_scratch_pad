@@ -1,0 +1,608 @@
+(:quote, (:block,
+    (:line, 5, :none),
+    (:const, (:(=), :secret_table_token, (:quote, #QuoteNode
+          :__c782dbf1cf4d6a2e5e3865d7e95634f2e09b5902__
+        ))),
+    (:line, 7, :none),
+    (:(=), (:call, :haskey, (:(::), :d, :Associative), :k), (:block,
+        (:line, 7, :none),
+        (:call, :in, :k, (:call, :keys, :d))
+      )),
+    (:line, 9, :none),
+    (:function, (:call, :in, (:(::), :p, :Pair), (:(::), :a, :Associative), (:kw, :valcmp, :(==))), (:block,
+        (:line, 10, :none),
+        (:(=), :v, (:call, :get, :a, (:ref, :p, 1), :secret_table_token)),
+        (:line, 11, :none),
+        (:if, (:call, :(!==), :v, :secret_table_token), (:block,
+            (:line, 12, :none),
+            (:&&, (:call, :valcmp, :v, (:ref, :p, 2)), (:return, true))
+          )),
+        (:line, 14, :none),
+        (:return, false)
+      )),
+    (:line, 17, :none),
+    (:function, (:call, :in, :p, (:(::), :a, :Associative)), (:block,
+        (:line, 18, :none),
+        (:call, :error, "Associative collections only contain Pairs;\nEither look for e.g. A=>B instead, or use the `keys` or `values`\nfunction if you are looking for a key or value respectively.")
+      )),
+    (:line, 23, :none),
+    (:function, (:call, :summary, (:(::), :t, :Associative)), (:block,
+        (:line, 24, :none),
+        (:(=), :n, (:call, :length, :t)),
+        (:line, 25, :none),
+        (:return, (:call, :string, (:call, :typeof, :t), " with ", :n, (:if, (:call, :(==), :n, 1), " entry", " entries")))
+      )),
+    (:line, 28, :none),
+    (:type, false, (:curly, :KeyIterator, (:<:, :T, :Associative)), (:block,
+        (:line, 29, :none),
+        (:(::), :dict, :T)
+      )),
+    (:line, 31, :none),
+    (:type, false, (:curly, :ValueIterator, (:<:, :T, :Associative)), (:block,
+        (:line, 32, :none),
+        (:(::), :dict, :T)
+      )),
+    (:line, 35, :none),
+    (:(=), (:call, (:curly, :summary, (:<:, :T, (:curly, :Union, :KeyIterator, :ValueIterator))), (:(::), :iter, :T)), (:block,
+        (:line, 35, :none),
+        (:call, :string, (:., :T, (:quote, #QuoteNode
+              :name
+            )), " for a ", (:call, :summary, (:., :iter, (:quote, #QuoteNode
+                :dict
+              ))))
+      )),
+    (:line, 38, :none),
+    (:(=), (:call, :show, (:(::), :io, :IO), (:(::), :iter, (:curly, :Union, :KeyIterator, :ValueIterator))), (:block,
+        (:line, 38, :none),
+        (:call, :show, :io, (:call, :collect, :iter))
+      )),
+    (:line, 40, :none),
+    (:(=), (:call, :length, (:(::), :v, (:curly, :Union, :KeyIterator, :ValueIterator))), (:block,
+        (:line, 40, :none),
+        (:call, :length, (:., :v, (:quote, #QuoteNode
+              :dict
+            )))
+      )),
+    (:line, 41, :none),
+    (:(=), (:call, :isempty, (:(::), :v, (:curly, :Union, :KeyIterator, :ValueIterator))), (:block,
+        (:line, 41, :none),
+        (:call, :isempty, (:., :v, (:quote, #QuoteNode
+              :dict
+            )))
+      )),
+    (:line, 42, :none),
+    (:(=), (:where, (:call, :_tt1, (:(::), (:curly, :Type, (:curly, :Pair, :A, :B)))), :A, :B), (:block,
+        (:line, 42, :none),
+        :A
+      )),
+    (:line, 43, :none),
+    (:(=), (:where, (:call, :_tt2, (:(::), (:curly, :Type, (:curly, :Pair, :A, :B)))), :A, :B), (:block,
+        (:line, 43, :none),
+        :B
+      )),
+    (:line, 44, :none),
+    (:(=), (:where, (:call, :eltype, (:(::), (:curly, :Type, (:curly, :KeyIterator, :D)))), :D), (:block,
+        (:line, 44, :none),
+        (:call, :_tt1, (:call, :eltype, :D))
+      )),
+    (:line, 45, :none),
+    (:(=), (:where, (:call, :eltype, (:(::), (:curly, :Type, (:curly, :ValueIterator, :D)))), :D), (:block,
+        (:line, 45, :none),
+        (:call, :_tt2, (:call, :eltype, :D))
+      )),
+    (:line, 47, :none),
+    (:(=), (:call, :start, (:(::), :v, (:curly, :Union, :KeyIterator, :ValueIterator))), (:block,
+        (:line, 47, :none),
+        (:call, :start, (:., :v, (:quote, #QuoteNode
+              :dict
+            )))
+      )),
+    (:line, 48, :none),
+    (:(=), (:call, :done, (:(::), :v, (:curly, :Union, :KeyIterator, :ValueIterator)), :state), (:block,
+        (:line, 48, :none),
+        (:call, :done, (:., :v, (:quote, #QuoteNode
+              :dict
+            )), :state)
+      )),
+    (:line, 50, :none),
+    (:function, (:call, :next, (:(::), :v, :KeyIterator), :state), (:block,
+        (:line, 51, :none),
+        (:(=), :n, (:call, :next, (:., :v, (:quote, #QuoteNode
+                :dict
+              )), :state)),
+        (:line, 52, :none),
+        (:tuple, (:ref, (:ref, :n, 1), 1), (:ref, :n, 2))
+      )),
+    (:line, 55, :none),
+    (:function, (:call, :next, (:(::), :v, :ValueIterator), :state), (:block,
+        (:line, 56, :none),
+        (:(=), :n, (:call, :next, (:., :v, (:quote, #QuoteNode
+                :dict
+              )), :state)),
+        (:line, 57, :none),
+        (:tuple, (:ref, (:ref, :n, 1), 2), (:ref, :n, 2))
+      )),
+    (:line, 60, :none),
+    (:(=), (:call, :in, :k, (:(::), :v, :KeyIterator)), (:block,
+        (:line, 60, :none),
+        (:call, :(!==), (:call, :get, (:., :v, (:quote, #QuoteNode
+                :dict
+              )), :k, :secret_table_token), :secret_table_token)
+      )),
+    (:line, 63, :none),
+    (:macrocall, :(Core.@doc), "    keys(a::Associative)\n\nReturn an iterator over all keys in a collection.\n`collect(keys(a))` returns an array of keys.\nSince the keys are stored internally in a hash table,\nthe order in which they are returned may vary.\nBut `keys(a)` and `values(a)` both iterate `a` and\nreturn the elements in the same order.\n\n```jldoctest\njulia> a = Dict('a'=>2, 'b'=>3)\nDict{Char,Int64} with 2 entries:\n  'b' => 3\n  'a' => 2\n\njulia> collect(keys(a))\n2-element Array{Char,1}:\n 'b'\n 'a'\n```\n", (:(=), (:call, :keys, (:(::), :a, :Associative)), (:block,
+          (:line, 85, :none),
+          (:call, :KeyIterator, :a)
+        ))),
+    (:line, 86, :none),
+    (:(=), (:call, :eachindex, (:(::), :a, :Associative)), (:block,
+        (:line, 86, :none),
+        (:call, :KeyIterator, :a)
+      )),
+    (:line, 88, :none),
+    (:macrocall, :(Core.@doc), "    values(a::Associative)\n\nReturn an iterator over all values in a collection.\n`collect(values(a))` returns an array of values.\nSince the values are stored internally in a hash table,\nthe order in which they are returned may vary.\nBut `keys(a)` and `values(a)` both iterate `a` and\nreturn the elements in the same order.\n\n```jldoctest\njulia> a = Dict('a'=>2, 'b'=>3)\nDict{Char,Int64} with 2 entries:\n  'b' => 3\n  'a' => 2\n\njulia> collect(values(a))\n2-element Array{Int64,1}:\n 3\n 2\n```\n", (:(=), (:call, :values, (:(::), :a, :Associative)), (:block,
+          (:line, 110, :none),
+          (:call, :ValueIterator, :a)
+        ))),
+    (:line, 112, :none),
+    (:function, (:call, :copy, (:(::), :a, :Associative)), (:block,
+        (:line, 113, :none),
+        (:(=), :b, (:call, :similar, :a)),
+        (:line, 114, :none),
+        (:for, (:(=), (:tuple, :k, :v), :a), (:block,
+            (:line, 115, :none),
+            (:(=), (:ref, :b, :k), :v)
+          )),
+        (:line, 117, :none),
+        (:return, :b)
+      )),
+    (:line, 120, :none),
+    (:macrocall, :(Core.@doc), "    merge!(d::Associative, others::Associative...)\n\nUpdate collection with pairs from the other collections.\nSee also [`merge`](@ref).\n\n```jldoctest\njulia> d1 = Dict(1 => 2, 3 => 4);\n\njulia> d2 = Dict(1 => 4, 4 => 5);\n\njulia> merge!(d1, d2);\n\njulia> d1\nDict{Int64,Int64} with 3 entries:\n  4 => 5\n  3 => 4\n  1 => 4\n```\n", (:function, (:call, :merge!, (:(::), :d, :Associative), (:..., (:(::), :others, :Associative))), (:block,
+          (:line, 141, :none),
+          (:for, (:(=), :other, :others), (:block,
+              (:line, 142, :none),
+              (:for, (:(=), (:tuple, :k, :v), :other), (:block,
+                  (:line, 143, :none),
+                  (:(=), (:ref, :d, :k), :v)
+                ))
+            )),
+          (:line, 146, :none),
+          (:return, :d)
+        ))),
+    (:line, 149, :none),
+    (:macrocall, :(Core.@doc), "    merge!(combine, d::Associative, others::Associative...)\n\nUpdate collection with pairs from the other collections.\nValues with the same key will be combined using the\ncombiner function.\n\n```jldoctest\njulia> d1 = Dict(1 => 2, 3 => 4);\n\njulia> d2 = Dict(1 => 4, 4 => 5);\n\njulia> merge!(+, d1, d2);\n\njulia> d1\nDict{Int64,Int64} with 3 entries:\n  4 => 5\n  3 => 4\n  1 => 6\n\njulia> merge!(-, d1, d1);\n\njulia> d1\nDict{Int64,Int64} with 3 entries:\n  4 => 0\n  3 => 0\n  1 => 0\n```\n", (:function, (:call, :merge!, (:(::), :combine, :Function), (:(::), :d, :Associative), (:..., (:(::), :others, :Associative))), (:block,
+          (:line, 179, :none),
+          (:for, (:(=), :other, :others), (:block,
+              (:line, 180, :none),
+              (:for, (:(=), (:tuple, :k, :v), :other), (:block,
+                  (:line, 181, :none),
+                  (:(=), (:ref, :d, :k), (:if, (:call, :haskey, :d, :k), (:call, :combine, (:ref, :d, :k), :v), :v))
+                ))
+            )),
+          (:line, 184, :none),
+          (:return, :d)
+        ))),
+    (:line, 189, :none),
+    (:function, (:call, :copy!, (:(::), :dest, (:curly, :Union, :Associative, :AbstractSet)), :src), (:block,
+        (:line, 190, :none),
+        (:for, (:(=), :x, :src), (:block,
+            (:line, 191, :none),
+            (:call, :push!, :dest, :x)
+          )),
+        (:line, 193, :none),
+        (:return, :dest)
+      )),
+    (:line, 196, :none),
+    (:macrocall, :(Core.@doc), "    keytype(type)\n\nGet the key type of an associative collection type. Behaves similarly to [`eltype`](@ref).\n\n```jldoctest\njulia> keytype(Dict(Int32(1) => \"foo\"))\nInt32\n```\n", (:(=), (:where, (:call, :keytype, (:(::), (:curly, :Type, (:curly, :Associative, :K, :V)))), :K, :V), (:block,
+          (:line, 206, :none),
+          :K
+        ))),
+    (:line, 207, :none),
+    (:(=), (:call, :keytype, (:(::), :a, :Associative)), (:block,
+        (:line, 207, :none),
+        (:call, :keytype, (:call, :typeof, :a))
+      )),
+    (:line, 208, :none),
+    (:(=), (:where, (:call, :keytype, (:(::), (:curly, :Type, :A))), (:<:, :A, :Associative)), (:block,
+        (:line, 208, :none),
+        (:call, :keytype, (:call, :supertype, :A))
+      )),
+    (:line, 210, :none),
+    (:macrocall, :(Core.@doc), "    valtype(type)\n\nGet the value type of an associative collection type. Behaves similarly to [`eltype`](@ref).\n\n```jldoctest\njulia> valtype(Dict(Int32(1) => \"foo\"))\nString\n```\n", (:(=), (:where, (:call, :valtype, (:(::), (:curly, :Type, (:curly, :Associative, :K, :V)))), :K, :V), (:block,
+          (:line, 220, :none),
+          :V
+        ))),
+    (:line, 221, :none),
+    (:(=), (:call, (:curly, :valtype, (:<:, :A, :Associative)), (:(::), (:curly, :Type, :A))), (:block,
+        (:line, 221, :none),
+        (:call, :valtype, (:call, :supertype, :A))
+      )),
+    (:line, 222, :none),
+    (:(=), (:call, :valtype, (:(::), :a, :Associative)), (:block,
+        (:line, 222, :none),
+        (:call, :valtype, (:call, :typeof, :a))
+      )),
+    (:line, 224, :none),
+    (:macrocall, :(Core.@doc), "    merge(d::Associative, others::Associative...)\n\nConstruct a merged collection from the given collections. If necessary, the\ntypes of the resulting collection will be promoted to accommodate the types of\nthe merged collections. If the same key is present in another collection, the\nvalue for that key will be the value it has in the last collection listed.\n\n```jldoctest\njulia> a = Dict(\"foo\" => 0.0, \"bar\" => 42.0)\nDict{String,Float64} with 2 entries:\n  \"bar\" => 42.0\n  \"foo\" => 0.0\n\njulia> b = Dict(\"baz\" => 17, \"bar\" => 4711)\nDict{String,Int64} with 2 entries:\n  \"bar\" => 4711\n  \"baz\" => 17\n\njulia> merge(a, b)\nDict{String,Float64} with 3 entries:\n  \"bar\" => 4711.0\n  \"baz\" => 17.0\n  \"foo\" => 0.0\n\njulia> merge(b, a)\nDict{String,Float64} with 3 entries:\n  \"bar\" => 42.0\n  \"baz\" => 17.0\n  \"foo\" => 0.0\n```\n", (:(=), (:call, :merge, (:(::), :d, :Associative), (:..., (:(::), :others, :Associative))), (:block,
+          (:line, 256, :none),
+          (:call, :merge!, (:call, :emptymergedict, :d, (:..., :others)), :d, (:..., :others))
+        ))),
+    (:line, 259, :none),
+    (:macrocall, :(Core.@doc), "    merge(combine, d::Associative, others::Associative...)\n\nConstruct a merged collection from the given collections. If necessary, the\ntypes of the resulting collection will be promoted to accommodate the types of\nthe merged collections. Values with the same key will be combined using the\ncombiner function.\n\n```jldoctest\njulia> a = Dict(\"foo\" => 0.0, \"bar\" => 42.0)\nDict{String,Float64} with 2 entries:\n  \"bar\" => 42.0\n  \"foo\" => 0.0\n\njulia> b = Dict(\"baz\" => 17, \"bar\" => 4711)\nDict{String,Int64} with 2 entries:\n  \"bar\" => 4711\n  \"baz\" => 17\n\njulia> merge(+, a, b)\nDict{String,Float64} with 3 entries:\n  \"bar\" => 4753.0\n  \"baz\" => 17.0\n  \"foo\" => 0.0\n```\n", (:(=), (:call, :merge, (:(::), :combine, :Function), (:(::), :d, :Associative), (:..., (:(::), :others, :Associative))), (:block,
+          (:line, 285, :none),
+          (:call, :merge!, :combine, (:call, :emptymergedict, :d, (:..., :others)), :d, (:..., :others))
+        ))),
+    (:line, 288, :none),
+    (:(=), (:call, :promoteK, :K), (:block,
+        (:line, 288, :none),
+        :K
+      )),
+    (:line, 289, :none),
+    (:(=), (:call, :promoteV, :V), (:block,
+        (:line, 289, :none),
+        :V
+      )),
+    (:line, 290, :none),
+    (:(=), (:call, :promoteK, :K, :d, (:..., :ds)), (:block,
+        (:line, 290, :none),
+        (:call, :promoteK, (:call, :promote_type, :K, (:call, :keytype, :d)), (:..., :ds))
+      )),
+    (:line, 291, :none),
+    (:(=), (:call, :promoteV, :V, :d, (:..., :ds)), (:block,
+        (:line, 291, :none),
+        (:call, :promoteV, (:call, :promote_type, :V, (:call, :valtype, :d)), (:..., :ds))
+      )),
+    (:line, 292, :none),
+    (:function, (:call, :emptymergedict, (:(::), :d, :Associative), (:..., (:(::), :others, :Associative))), (:block,
+        (:line, 293, :none),
+        (:(=), :K, (:call, :promoteK, (:call, :keytype, :d), (:..., :others))),
+        (:line, 294, :none),
+        (:(=), :V, (:call, :promoteV, (:call, :valtype, :d), (:..., :others))),
+        (:line, 295, :none),
+        (:call, (:curly, :Dict, :K, :V))
+      )),
+    (:line, 298, :none),
+    (:function, (:call, :filter!, :f, (:(::), :d, :Associative)), (:block,
+        (:line, 299, :none),
+        (:(=), :badkeys, (:call, (:curly, :Vector, (:call, :keytype, :d)), 0)),
+        (:line, 300, :none),
+        (:for, (:(=), (:tuple, :k, :v), :d), (:block,
+            (:line, 303, :none),
+            (:||, (:call, :f, :k, :v), (:call, :push!, :badkeys, :k))
+          )),
+        (:line, 305, :none),
+        (:for, (:(=), :k, :badkeys), (:block,
+            (:line, 306, :none),
+            (:call, :delete!, :d, :k)
+          )),
+        (:line, 308, :none),
+        (:return, :d)
+      )),
+    (:line, 310, :none),
+    (:function, (:call, :filter, :f, (:(::), :d, :Associative)), (:block,
+        (:line, 312, :none),
+        (:(=), :df, (:call, :similar, :d)),
+        (:line, 313, :none),
+        (:for, (:(=), (:tuple, :k, :v), :d), (:block,
+            (:line, 314, :none),
+            (:if, (:call, :f, :k, :v), (:block,
+                (:line, 315, :none),
+                (:(=), (:ref, :df, :k), :v)
+              ))
+          )),
+        (:line, 318, :none),
+        (:return, :df)
+      )),
+    (:line, 321, :none),
+    (:(=), (:where, (:call, :eltype, (:(::), (:curly, :Type, (:curly, :Associative, :K, :V)))), :K, :V), (:block,
+        (:line, 321, :none),
+        (:curly, :Pair, :K, :V)
+      )),
+    (:line, 323, :none),
+    (:function, (:call, :isequal, (:(::), :l, :Associative), (:(::), :r, :Associative)), (:block,
+        (:line, 324, :none),
+        (:&&, (:call, :(===), :l, :r), (:return, true)),
+        (:line, 325, :none),
+        (:if, (:call, :(!=), (:call, :isa, :l, :ObjectIdDict), (:call, :isa, :r, :ObjectIdDict)), (:block,
+            (:line, 326, :none),
+            (:return, false)
+          )),
+        (:line, 328, :none),
+        (:if, (:call, :(!=), (:call, :length, :l), (:call, :length, :r)), (:block,
+            (:line, 328, :none),
+            (:return, false)
+          )),
+        (:line, 329, :none),
+        (:for, (:(=), :pair, :l), (:block,
+            (:line, 330, :none),
+            (:if, (:call, :!, (:call, :in, :pair, :r, :isequal)), (:block,
+                (:line, 331, :none),
+                (:return, false)
+              ))
+          )),
+        (:line, 334, :none),
+        true
+      )),
+    (:line, 337, :none),
+    (:function, (:call, :(==), (:(::), :l, :Associative), (:(::), :r, :Associative)), (:block,
+        (:line, 338, :none),
+        (:&&, (:call, :(===), :l, :r), (:return, true)),
+        (:line, 339, :none),
+        (:if, (:call, :(!=), (:call, :isa, :l, :ObjectIdDict), (:call, :isa, :r, :ObjectIdDict)), (:block,
+            (:line, 340, :none),
+            (:return, false)
+          )),
+        (:line, 342, :none),
+        (:if, (:call, :(!=), (:call, :length, :l), (:call, :length, :r)), (:block,
+            (:line, 342, :none),
+            (:return, false)
+          )),
+        (:line, 343, :none),
+        (:for, (:(=), :pair, :l), (:block,
+            (:line, 344, :none),
+            (:if, (:call, :!, (:call, :in, :pair, :r, :(==))), (:block,
+                (:line, 345, :none),
+                (:return, false)
+              ))
+          )),
+        (:line, 348, :none),
+        true
+      )),
+    (:line, 351, :none),
+    (:const, (:(=), :hasha_seed, (:if, (:call, :(===), :UInt, :UInt64), 0x6d35bb51952d5539, 0x952d5539))),
+    (:line, 352, :none),
+    (:function, (:call, :hash, (:(::), :a, :Associative), (:(::), :h, :UInt)), (:block,
+        (:line, 353, :none),
+        (:(=), :hv, :hasha_seed),
+        (:line, 354, :none),
+        (:for, (:(=), (:tuple, :k, :v), :a), (:block,
+            (:line, 355, :none),
+            (:⊻=, :hv, (:call, :hash, :k, (:call, :hash, :v)))
+          )),
+        (:line, 357, :none),
+        (:call, :hash, :hv, :h)
+      )),
+    (:line, 360, :none),
+    (:function, (:call, :getindex, (:(::), :t, :Associative), :key), (:block,
+        (:line, 361, :none),
+        (:(=), :v, (:call, :get, :t, :key, :secret_table_token)),
+        (:line, 362, :none),
+        (:if, (:call, :(===), :v, :secret_table_token), (:block,
+            (:line, 363, :none),
+            (:call, :throw, (:call, :KeyError, :key))
+          )),
+        (:line, 365, :none),
+        (:return, :v)
+      )),
+    (:line, 370, :none),
+    (:(=), (:call, :getindex, (:(::), :t, :Associative), :k1, :k2, (:..., :ks)), (:block,
+        (:line, 370, :none),
+        (:call, :getindex, :t, (:call, :tuple, :k1, :k2, (:..., :ks)))
+      )),
+    (:line, 371, :none),
+    (:(=), (:call, :setindex!, (:(::), :t, :Associative), :v, :k1, :k2, (:..., :ks)), (:block,
+        (:line, 371, :none),
+        (:call, :setindex!, :t, :v, (:call, :tuple, :k1, :k2, (:..., :ks)))
+      )),
+    (:line, 373, :none),
+    (:(=), (:call, :push!, (:(::), :t, :Associative), (:(::), :p, :Pair)), (:block,
+        (:line, 373, :none),
+        (:call, :setindex!, :t, (:., :p, (:quote, #QuoteNode
+              :second
+            )), (:., :p, (:quote, #QuoteNode
+              :first
+            )))
+      )),
+    (:line, 374, :none),
+    (:(=), (:call, :push!, (:(::), :t, :Associative), (:(::), :p, :Pair), (:(::), :q, :Pair)), (:block,
+        (:line, 374, :none),
+        (:call, :push!, (:call, :push!, :t, :p), :q)
+      )),
+    (:line, 375, :none),
+    (:(=), (:call, :push!, (:(::), :t, :Associative), (:(::), :p, :Pair), (:(::), :q, :Pair), (:..., (:(::), :r, :Pair))), (:block,
+        (:line, 375, :none),
+        (:call, :push!, (:call, :push!, (:call, :push!, :t, :p), :q), (:..., :r))
+      )),
+    (:line, 379, :none),
+    (:macrocall, :(Core.@doc), "    ObjectIdDict([itr])\n\n`ObjectIdDict()` constructs a hash table where the keys are (always)\nobject identities.  Unlike `Dict` it is not parameterized on its key\nand value type and thus its `eltype` is always `Pair{Any,Any}`.\n\nSee [`Dict`](@ref) for further help.\n", (:type, true, (:<:, :ObjectIdDict, (:curly, :Associative, :Any, :Any)), (:block,
+          (:line, 389, :none),
+          (:(::), :ht, (:curly, :Vector, :Any)),
+          (:line, 390, :none),
+          (:(::), :ndel, :Int),
+          (:line, 391, :none),
+          (:(=), (:call, :ObjectIdDict), (:block,
+              (:line, 391, :none),
+              (:call, :new, (:call, (:curly, :Vector, :Any), 32), 0)
+            )),
+          (:line, 393, :none),
+          (:function, (:call, :ObjectIdDict, :itr), (:block,
+              (:line, 394, :none),
+              (:(=), :d, (:call, :ObjectIdDict)),
+              (:line, 395, :none),
+              (:for, (:(=), (:tuple, :k, :v), :itr), (:block,
+                  (:line, 395, :none),
+                  (:(=), (:ref, :d, :k), :v)
+                )),
+              (:line, 396, :none),
+              :d
+            )),
+          (:line, 399, :none),
+          (:function, (:call, :ObjectIdDict, (:..., (:(::), :pairs, :Pair))), (:block,
+              (:line, 400, :none),
+              (:(=), :d, (:call, :ObjectIdDict)),
+              (:line, 401, :none),
+              (:for, (:(=), (:tuple, :k, :v), :pairs), (:block,
+                  (:line, 401, :none),
+                  (:(=), (:ref, :d, :k), :v)
+                )),
+              (:line, 402, :none),
+              :d
+            )),
+          (:line, 405, :none),
+          (:(=), (:call, :ObjectIdDict, (:(::), :o, :ObjectIdDict)), (:block,
+              (:line, 405, :none),
+              (:call, :new, (:call, :copy, (:., :o, (:quote, #QuoteNode
+                      :ht
+                    ))))
+            ))
+        ))),
+    (:line, 408, :none),
+    (:(=), (:call, :similar, (:(::), :d, :ObjectIdDict)), (:block,
+        (:line, 408, :none),
+        (:call, :ObjectIdDict)
+      )),
+    (:line, 410, :none),
+    (:function, (:call, :rehash!, (:(::), :t, :ObjectIdDict), (:kw, :newsz, (:call, :length, (:., :t, (:quote, #QuoteNode
+                :ht
+              ))))), (:block,
+        (:line, 411, :none),
+        (:(=), (:., :t, (:quote, #QuoteNode
+              :ht
+            )), (:call, :ccall, (:quote, #QuoteNode
+              :jl_idtable_rehash
+            ), :Any, (:tuple, :Any, :Csize_t), (:., :t, (:quote, #QuoteNode
+                :ht
+              )), :newsz)),
+        (:line, 412, :none),
+        :t
+      )),
+    (:line, 415, :none),
+    (:function, (:call, :setindex!, (:(::), :t, :ObjectIdDict), (:(::), :v, :ANY), (:(::), :k, :ANY)), (:block,
+        (:line, 416, :none),
+        (:if, (:call, :(>=), (:., :t, (:quote, #QuoteNode
+                :ndel
+              )), (:call, :>>, (:call, :*, 3, (:call, :length, (:., :t, (:quote, #QuoteNode
+                      :ht
+                    )))), 2)), (:block,
+            (:line, 417, :none),
+            (:call, :rehash!, :t, (:call, :max, (:call, :>>, (:call, :length, (:., :t, (:quote, #QuoteNode
+                        :ht
+                      ))), 1), 32)),
+            (:line, 418, :none),
+            (:(=), (:., :t, (:quote, #QuoteNode
+                  :ndel
+                )), 0)
+          )),
+        (:line, 420, :none),
+        (:(=), (:., :t, (:quote, #QuoteNode
+              :ht
+            )), (:call, :ccall, (:quote, #QuoteNode
+              :jl_eqtable_put
+            ), (:curly, :Array, :Any, 1), (:tuple, :Any, :Any, :Any), (:., :t, (:quote, #QuoteNode
+                :ht
+              )), :k, :v)),
+        (:line, 421, :none),
+        (:return, :t)
+      )),
+    (:line, 424, :none),
+    (:(=), (:call, :get, (:(::), :t, :ObjectIdDict), (:(::), :key, :ANY), (:(::), :default, :ANY)), (:block,
+        (:line, 424, :none),
+        (:call, :ccall, (:quote, #QuoteNode
+            :jl_eqtable_get
+          ), :Any, (:tuple, :Any, :Any, :Any), (:., :t, (:quote, #QuoteNode
+              :ht
+            )), :key, :default)
+      )),
+    (:line, 427, :none),
+    (:function, (:call, :pop!, (:(::), :t, :ObjectIdDict), (:(::), :key, :ANY), (:(::), :default, :ANY)), (:block,
+        (:line, 428, :none),
+        (:(=), :val, (:call, :ccall, (:quote, #QuoteNode
+              :jl_eqtable_pop
+            ), :Any, (:tuple, :Any, :Any, :Any), (:., :t, (:quote, #QuoteNode
+                :ht
+              )), :key, :default)),
+        (:line, 430, :none),
+        (:||, (:call, :(===), :val, :default), (:+=, (:., :t, (:quote, #QuoteNode
+                :ndel
+              )), 1)),
+        (:line, 431, :none),
+        (:return, :val)
+      )),
+    (:line, 434, :none),
+    (:function, (:call, :pop!, (:(::), :t, :ObjectIdDict), (:(::), :key, :ANY)), (:block,
+        (:line, 435, :none),
+        (:(=), :val, (:call, :pop!, :t, :key, :secret_table_token)),
+        (:line, 436, :none),
+        (:if, (:call, :(!==), :val, :secret_table_token), :val, (:call, :throw, (:call, :KeyError, :key)))
+      )),
+    (:line, 439, :none),
+    (:function, (:call, :delete!, (:(::), :t, :ObjectIdDict), (:(::), :key, :ANY)), (:block,
+        (:line, 440, :none),
+        (:call, :pop!, :t, :key, :secret_table_token),
+        (:line, 441, :none),
+        :t
+      )),
+    (:line, 444, :none),
+    (:function, (:call, :empty!, (:(::), :t, :ObjectIdDict)), (:block,
+        (:line, 445, :none),
+        (:call, :resize!, (:., :t, (:quote, #QuoteNode
+              :ht
+            )), 32),
+        (:line, 446, :none),
+        (:call, :ccall, (:quote, #QuoteNode
+            :memset
+          ), (:curly, :Ptr, :Void), (:tuple, (:curly, :Ptr, :Void), :Cint, :Csize_t), (:., :t, (:quote, #QuoteNode
+              :ht
+            )), 0, (:call, :sizeof, (:., :t, (:quote, #QuoteNode
+                :ht
+              )))),
+        (:line, 447, :none),
+        (:(=), (:., :t, (:quote, #QuoteNode
+              :ndel
+            )), 0),
+        (:line, 448, :none),
+        (:return, :t)
+      )),
+    (:line, 451, :none),
+    (:(=), (:call, :_oidd_nextind, :a, :i), (:block,
+        (:line, 451, :none),
+        (:call, :reinterpret, :Int, (:call, :ccall, (:quote, #QuoteNode
+              :jl_eqtable_nextind
+            ), :Csize_t, (:tuple, :Any, :Csize_t), :a, :i))
+      )),
+    (:line, 453, :none),
+    (:(=), (:call, :start, (:(::), :t, :ObjectIdDict)), (:block,
+        (:line, 453, :none),
+        (:call, :_oidd_nextind, (:., :t, (:quote, #QuoteNode
+              :ht
+            )), 0)
+      )),
+    (:line, 454, :none),
+    (:(=), (:call, :done, (:(::), :t, :ObjectIdDict), :i), (:block,
+        (:line, 454, :none),
+        (:call, :(==), :i, -1)
+      )),
+    (:line, 455, :none),
+    (:(=), (:call, :next, (:(::), :t, :ObjectIdDict), :i), (:block,
+        (:line, 455, :none),
+        (:tuple, (:call, (:curly, :Pair, :Any, :Any), (:ref, (:., :t, (:quote, #QuoteNode
+                  :ht
+                )), (:call, :+, :i, 1)), (:ref, (:., :t, (:quote, #QuoteNode
+                  :ht
+                )), (:call, :+, :i, 2))), (:call, :_oidd_nextind, (:., :t, (:quote, #QuoteNode
+                :ht
+              )), (:call, :+, :i, 2)))
+      )),
+    (:line, 457, :none),
+    (:function, (:call, :length, (:(::), :d, :ObjectIdDict)), (:block,
+        (:line, 458, :none),
+        (:(=), :n, 0),
+        (:line, 459, :none),
+        (:for, (:(=), :pair, :d), (:block,
+            (:line, 460, :none),
+            (:+=, :n, 1)
+          )),
+        (:line, 462, :none),
+        :n
+      )),
+    (:line, 465, :none),
+    (:(=), (:call, :copy, (:(::), :o, :ObjectIdDict)), (:block,
+        (:line, 465, :none),
+        (:call, :ObjectIdDict, :o)
+      )),
+    (:line, 467, :none),
+    (:(=), (:call, :get!, (:(::), :o, :ObjectIdDict), :key, :default), (:block,
+        (:line, 467, :none),
+        (:(=), (:ref, :o, :key), (:call, :get, :o, :key, :default))
+      ))
+  ))

@@ -1,0 +1,592 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:using, :Base, :Iterators, :Enumerate),
+    (:line, 5, :none),
+    (:macrocall, :(Core.@doc), "    asyncmap(f, c...; ntasks=0, batch_size=nothing)\n\nUses multiple concurrent tasks to map `f` over a collection (or multiple\nequal length collections). For multiple collection arguments, `f` is\napplied elementwise.\n\n`ntasks` specifies the number of tasks to run concurrently.\nDepending on the length of the collections, if `ntasks` is unspecified,\nup to 100 tasks will be used for concurrent mapping.\n\n`ntasks` can also be specified as a zero-arg function. In this case, the\nnumber of tasks to run in parallel is checked before processing every element and a new\ntask started if the value of `ntasks_func()` is less than the current number\nof tasks.\n\nIf `batch_size` is specified, the collection is processed in batch mode. `f` must\nthen be a function that must accept a `Vector` of argument tuples and must\nreturn a vector of results. The input vector will have a length of `batch_size` or less.\n\nThe following examples highlight execution in different tasks by returning\nthe `object_id` of the tasks in which the mapping function is executed.\n\nFirst, with `ntasks` undefined, each element is processed in a different task.\n```\njulia> tskoid() = object_id(current_task());\n\njulia> asyncmap(x->tskoid(), 1:5)\n5-element Array{UInt64,1}:\n 0x6e15e66c75c75853\n 0x440f8819a1baa682\n 0x9fb3eeadd0c83985\n 0xebd3e35fe90d4050\n 0x29efc93edce2b961\n\njulia> length(unique(asyncmap(x->tskoid(), 1:5)))\n5\n```\n\nWith `ntasks=2` all elements are processed in 2 tasks.\n```\njulia> asyncmap(x->tskoid(), 1:5; ntasks=2)\n5-element Array{UInt64,1}:\n 0x027ab1680df7ae94\n 0xa23d2f80cd7cf157\n 0x027ab1680df7ae94\n 0xa23d2f80cd7cf157\n 0x027ab1680df7ae94\n\njulia> length(unique(asyncmap(x->tskoid(), 1:5; ntasks=2)))\n2\n```\n\nWith `batch_size` defined, the mapping function needs to be changed to accept an array\nof argument tuples and return an array of results. `map` is used in the modified mapping\nfunction to achieve this.\n```\njulia> batch_func(input) = map(x->string(\"args_tuple: \", x, \", element_val: \", x[1], \", task: \", tskoid()), input)\nbatch_func (generic function with 1 method)\n\njulia> asyncmap(batch_func, 1:5; ntasks=2, batch_size=2)\n5-element Array{String,1}:\n \"args_tuple: (1,), element_val: 1, task: 9118321258196414413\"\n \"args_tuple: (2,), element_val: 2, task: 4904288162898683522\"\n \"args_tuple: (3,), element_val: 3, task: 9118321258196414413\"\n \"args_tuple: (4,), element_val: 4, task: 4904288162898683522\"\n \"args_tuple: (5,), element_val: 5, task: 9118321258196414413\"\n```\n\n!!! note\n    Currently, all tasks in Julia are executed in a single OS thread co-operatively. Consequently,\n    `ayncmap` is beneficial only when the mapping function involves any I/O - disk, network, remote\n    worker invocation, etc.\n\n", (:function, (:call, :asyncmap, (:parameters, (:kw, :ntasks, 0), (:kw, :batch_size, :nothing)), :f, (:..., :c)), (:block,
+          (:line, 81, :none),
+          (:return, (:call, :async_usemap, (:parameters, (:kw, :ntasks, :ntasks), (:kw, :batch_size, :batch_size)), :f, (:..., :c)))
+        ))),
+    (:line, 84, :none),
+    (:function, (:call, :async_usemap, (:parameters, (:kw, :ntasks, 0), (:kw, :batch_size, :nothing)), :f, (:..., :c)), (:block,
+        (:line, 85, :none),
+        (:(=), :ntasks, (:call, :verify_ntasks, (:ref, :c, 1), :ntasks)),
+        (:line, 86, :none),
+        (:(=), :batch_size, (:call, :verify_batch_size, :batch_size)),
+        (:line, 88, :none),
+        (:if, (:call, :(!==), :batch_size, :nothing), (:block,
+            (:line, 89, :none),
+            (:(=), :exec_func, (:->, :batch, (:block,
+                  (:line, 89, :none),
+                  (:block,
+                    (:line, 91, :none),
+                    (:(=), :batch_refs, (:call, :map, (:->, :x, (:block,
+                            (:line, 91, :none),
+                            (:ref, :x, 1)
+                          )), :batch)),
+                    (:line, 94, :none),
+                    (:(=), :batched_args, (:call, :map, (:->, :x, (:block,
+                            (:line, 94, :none),
+                            (:ref, :x, 2)
+                          )), :batch)),
+                    (:line, 96, :none),
+                    (:(=), :results, (:call, :f, :batched_args)),
+                    (:line, 97, :none),
+                    (:call, :foreach, (:->, :x, (:block,
+                          (:line, 97, :none),
+                          (:(=), (:., (:ref, :batch_refs, (:ref, :x, 1)), (:quote, #QuoteNode
+                                :x
+                              )), (:ref, :x, 2))
+                        )), (:call, :enumerate, :results))
+                  )
+                )))
+          ), (:block,
+            (:line, 100, :none),
+            (:(=), :exec_func, (:->, (:tuple, :r, :args), (:block,
+                  (:line, 100, :none),
+                  (:(=), (:., :r, (:quote, #QuoteNode
+                        :x
+                      )), (:call, :f, (:..., :args)))
+                )))
+          )),
+        (:line, 102, :none),
+        (:(=), (:tuple, :chnl, :worker_tasks), (:call, :setup_chnl_and_tasks, :exec_func, :ntasks, :batch_size)),
+        (:line, 103, :none),
+        (:return, (:call, :wrap_n_exec_twice, :chnl, :worker_tasks, :ntasks, :exec_func, (:..., :c)))
+      )),
+    (:line, 106, :none),
+    (:(=), (:call, :batch_size_err_str, :batch_size), (:block,
+        (:line, 106, :none),
+        (:call, :string, "batch_size must be specified as a positive integer. batch_size=", :batch_size)
+      )),
+    (:line, 107, :none),
+    (:function, (:call, :verify_batch_size, :batch_size), (:block,
+        (:line, 108, :none),
+        (:if, (:call, :(===), :batch_size, :nothing), (:block,
+            (:line, 109, :none),
+            (:return, :batch_size)
+          ), (:block,
+            (:line, 110, :none),
+            (:if, (:call, :isa, :batch_size, :Number), (:block,
+                (:line, 111, :none),
+                (:(=), :batch_size, (:call, :Int, :batch_size)),
+                (:line, 112, :none),
+                (:&&, (:call, :<, :batch_size, 1), (:call, :throw, (:call, :ArgumentError, (:call, :batch_size_err_str, :batch_size)))),
+                (:line, 113, :none),
+                (:return, :batch_size)
+              ), (:block,
+                (:line, 115, :none),
+                (:call, :throw, (:call, :ArgumentError, (:call, :batch_size_err_str, :batch_size)))
+              ))
+          ))
+      )),
+    (:line, 120, :none),
+    (:function, (:call, :verify_ntasks, :iterable, :ntasks), (:block,
+        (:line, 121, :none),
+        (:if, (:call, :!, (:||, (:&&, (:call, :isa, :ntasks, :Number), (:call, :(>=), :ntasks, 0)), (:call, :isa, :ntasks, :Function))), (:block,
+            (:line, 122, :none),
+            (:(=), :err, (:call, :string, "ntasks must be specified as a positive integer or a 0-arg function. ntasks=", :ntasks)),
+            (:line, 123, :none),
+            (:call, :throw, (:call, :ArgumentError, :err))
+          )),
+        (:line, 126, :none),
+        (:if, (:call, :(==), :ntasks, 0), (:block,
+            (:line, 127, :none),
+            (:(=), :chklen, (:call, :iteratorsize, :iterable)),
+            (:line, 128, :none),
+            (:if, (:||, (:call, :(==), :chklen, (:call, :HasLength)), (:call, :(==), :chklen, (:call, :HasShape))), (:block,
+                (:line, 129, :none),
+                (:(=), :ntasks, (:call, :max, 1, (:call, :min, 100, (:call, :length, :iterable))))
+              ), (:block,
+                (:line, 131, :none),
+                (:(=), :ntasks, 100)
+              ))
+          )),
+        (:line, 134, :none),
+        (:return, :ntasks)
+      )),
+    (:line, 137, :none),
+    (:function, (:call, :wrap_n_exec_twice, :chnl, :worker_tasks, :ntasks, :exec_func, (:..., :c)), (:block,
+        (:line, 140, :none),
+        (:(=), :push_arg_to_channel, (:->, (:tuple, (:..., :x)), (:block,
+              (:line, 140, :none),
+              (:block,
+                (:(=), :r, (:call, (:curly, :Ref, :Any), :nothing)),
+                (:call, :put!, :chnl, (:tuple, :r, :x)),
+                :r
+              )
+            ))),
+        (:line, 142, :none),
+        (:if, (:call, :isa, :ntasks, :Function), (:block,
+            (:line, 143, :none),
+            (:(=), :map_f, (:->, (:tuple, (:..., :x)), (:block,
+                  (:line, 143, :none),
+                  (:block,
+                    (:line, 146, :none),
+                    (:if, (:call, :<, (:call, :length, :worker_tasks), (:call, :ntasks)), (:block,
+                        (:line, 147, :none),
+                        (:call, :start_worker_task!, :worker_tasks, :exec_func, :chnl)
+                      )),
+                    (:line, 149, :none),
+                    (:call, :push_arg_to_channel, (:..., :x))
+                  )
+                )))
+          ), (:block,
+            (:line, 152, :none),
+            (:(=), :map_f, :push_arg_to_channel)
+          )),
+        (:line, 154, :none),
+        (:call, :maptwice, :map_f, :chnl, :worker_tasks, (:..., :c))
+      )),
+    (:line, 157, :none),
+    (:function, (:call, :maptwice, :wrapped_f, :chnl, :worker_tasks, (:..., :c)), (:block,
+        (:line, 159, :none),
+        (:(=), :asyncrun_excp, :nothing),
+        (:line, 160, :none),
+        (:local, :asyncrun),
+        (:line, 161, :none),
+        (:try, (:block,
+            (:line, 162, :none),
+            (:(=), :asyncrun, (:call, :map, :wrapped_f, (:..., :c)))
+          ), :ex, (:block,
+            (:line, 164, :none),
+            (:if, (:call, :isa, :ex, :InvalidStateException), (:block,
+                (:line, 168, :none),
+                (:(=), :asyncrun_excp, :ex)
+              ), (:block,
+                (:line, 170, :none),
+                (:call, :rethrow, :ex)
+              ))
+          )),
+        (:line, 175, :none),
+        (:call, :close, :chnl),
+        (:line, 178, :none),
+        (:call, :foreach, (:->, :x, (:block,
+              (:line, 178, :none),
+              (:block,
+                (:(=), :v, (:call, :wait, :x)),
+                (:&&, (:call, :isa, :v, :Exception), (:call, :throw, :v))
+              )
+            )), :worker_tasks),
+        (:line, 181, :none),
+        (:&&, (:call, :(!==), :asyncrun_excp, :nothing), (:call, :throw, :asyncrun_excp)),
+        (:line, 183, :none),
+        (:if, (:call, :isa, :asyncrun, :Ref), (:block,
+            (:line, 185, :none),
+            (:return, (:., :asyncrun, (:quote, #QuoteNode
+                  :x
+                )))
+          ), (:block,
+            (:line, 188, :none),
+            (:return, (:call, :map, (:->, :ref, (:block,
+                    (:line, 188, :none),
+                    (:., :ref, (:quote, #QuoteNode
+                        :x
+                      ))
+                  )), :asyncrun))
+          ))
+      )),
+    (:line, 192, :none),
+    (:function, (:call, :setup_chnl_and_tasks, :exec_func, :ntasks, (:kw, :batch_size, :nothing)), (:block,
+        (:line, 193, :none),
+        (:if, (:call, :isa, :ntasks, :Function), (:block,
+            (:line, 194, :none),
+            (:(=), :nt, (:call, :ntasks)),
+            (:line, 196, :none),
+            (:if, (:call, :(==), :nt, 0), (:block,
+                (:line, 197, :none),
+                (:(=), :nt, 1)
+              ))
+          ), (:block,
+            (:line, 200, :none),
+            (:(=), :nt, :ntasks)
+          )),
+        (:line, 206, :none),
+        (:(=), :chnl, (:call, :Channel, 0)),
+        (:line, 207, :none),
+        (:(=), :worker_tasks, (:vect,)),
+        (:line, 208, :none),
+        (:call, :foreach, (:->, :_, (:block,
+              (:line, 208, :none),
+              (:call, :start_worker_task!, :worker_tasks, :exec_func, :chnl, :batch_size)
+            )), (:(:), 1, :nt)),
+        (:line, 209, :none),
+        (:call, :yield),
+        (:line, 210, :none),
+        (:return, (:tuple, :chnl, :worker_tasks))
+      )),
+    (:line, 213, :none),
+    (:function, (:call, :start_worker_task!, :worker_tasks, :exec_func, :chnl, (:kw, :batch_size, :nothing)), (:block,
+        (:line, 214, :none),
+        (:(=), :t, (:macrocall, Symbol("@schedule"), (:block,
+              (:line, 215, :none),
+              (:(=), :retval, :nothing),
+              (:line, 217, :none),
+              (:try, (:block,
+                  (:line, 218, :none),
+                  (:if, (:call, :isa, :batch_size, :Number), (:block,
+                      (:line, 219, :none),
+                      (:while, (:call, :isopen, :chnl), (:block,
+                          (:line, 222, :none),
+                          (:(=), :batch_collection, (:ref, :Any)),
+                          (:line, 223, :none),
+                          (:(=), :n, 0),
+                          (:line, 224, :none),
+                          (:for, (:(=), :exec_data, :chnl), (:block,
+                              (:line, 225, :none),
+                              (:call, :push!, :batch_collection, :exec_data),
+                              (:line, 226, :none),
+                              (:+=, :n, 1),
+                              (:line, 227, :none),
+                              (:&&, (:call, :(==), :n, :batch_size), (:break,))
+                            )),
+                          (:line, 229, :none),
+                          (:if, (:call, :>, :n, 0), (:block,
+                              (:line, 230, :none),
+                              (:call, :exec_func, :batch_collection)
+                            ))
+                        ))
+                    ), (:block,
+                      (:line, 234, :none),
+                      (:for, (:(=), :exec_data, :chnl), (:block,
+                          (:line, 235, :none),
+                          (:call, :exec_func, (:..., :exec_data))
+                        ))
+                    ))
+                ), :e, (:block,
+                  (:line, 239, :none),
+                  (:call, :close, :chnl),
+                  (:line, 240, :none),
+                  (:(=), :retval, :e)
+                )),
+              (:line, 242, :none),
+              :retval
+            ))),
+        (:line, 244, :none),
+        (:call, :push!, :worker_tasks, :t)
+      )),
+    (:line, 248, :none),
+    (:function, (:call, :asyncmap, (:parameters, (:..., :kwargs)), :f, (:(::), :s, :AbstractString)), (:block,
+        (:line, 249, :none),
+        (:(=), :s2, (:call, (:curly, :Array, :Char, 1), (:call, :length, :s))),
+        (:line, 250, :none),
+        (:call, :asyncmap!, (:parameters, (:..., :kwargs)), :f, :s2, :s),
+        (:line, 251, :none),
+        (:return, (:call, :convert, :String, :s2))
+      )),
+    (:line, 255, :none),
+    (:function, (:call, :asyncmap, (:parameters, (:..., :kwargs)), :f, (:(::), :b, :BitArray)), (:block,
+        (:line, 256, :none),
+        (:(=), :b2, (:call, :async_usemap, (:parameters, (:..., :kwargs)), :f, :b)),
+        (:line, 257, :none),
+        (:if, (:call, :(==), (:call, :eltype, :b2), :Bool), (:block,
+            (:line, 258, :none),
+            (:return, (:call, :BitArray, :b2))
+          )),
+        (:line, 260, :none),
+        (:return, :b2)
+      )),
+    (:line, 265, :none),
+    (:function, (:call, :asyncmap, (:parameters, (:..., :kwargs)), :f, (:..., (:(::), :s, :AbstractSparseArray))), (:block,
+        (:line, 266, :none),
+        (:(=), :sa, (:call, :map, :Array, :s)),
+        (:line, 267, :none),
+        (:return, (:call, :sparse, (:call, :asyncmap, (:parameters, (:..., :kwargs)), :f, (:..., :sa))))
+      )),
+    (:line, 270, :none),
+    (:type, true, :AsyncCollector, (:block,
+        (:line, 271, :none),
+        :f,
+        (:line, 272, :none),
+        :results,
+        (:line, 273, :none),
+        (:(::), :enumerator, :Enumerate),
+        (:line, 274, :none),
+        :ntasks,
+        (:line, 275, :none),
+        :batch_size,
+        (:line, 276, :none),
+        (:(::), :nt_check, :Bool),
+        (:line, 278, :none),
+        (:(=), (:call, :AsyncCollector, :f, :r, (:(::), :en, :Enumerate), :ntasks, :batch_size), (:block,
+            (:line, 278, :none),
+            (:call, :new, :f, :r, :en, :ntasks, :batch_size, (:call, :isa, :ntasks, :Function))
+          ))
+      )),
+    (:line, 281, :none),
+    (:macrocall, :(Core.@doc), "    AsyncCollector(f, results, c...; ntasks=0, batch_size=nothing) -> iterator\n\nReturns an iterator which applies `f` to each element of `c` asynchronously\nand collects output into `results`.\n\nKeyword args `ntasks` and `batch_size` have the same behavior as in\n[`asyncmap()`](@ref). If `batch_size` is specified, `f` must\nbe a function which operates on an array of argument tuples.\n\n!!! note\n    `next(::AsyncCollector, state) -> (nothing, state)`. A successful return\n    from `next` indicates that the next element from the input collection is\n    being processed asynchronously. It blocks until a free worker task becomes\n    available.\n\n!!! note\n    `for _ in AsyncCollector(f, results, c...; ntasks=1) end` is equivalent to\n    `map!(f, results, c...)`.\n", (:function, (:call, :AsyncCollector, (:parameters, (:kw, :ntasks, 0), (:kw, :batch_size, :nothing)), :f, :results, (:..., :c)), (:block,
+          (:line, 302, :none),
+          (:call, :AsyncCollector, :f, :results, (:call, :enumerate, (:call, :zip, (:..., :c))), :ntasks, :batch_size)
+        ))),
+    (:line, 305, :none),
+    (:type, true, :AsyncCollectorState, (:block,
+        (:line, 306, :none),
+        (:(::), :chnl, :Channel),
+        (:line, 307, :none),
+        (:(::), :worker_tasks, (:curly, :Array, :Task, 1)),
+        (:line, 308, :none),
+        :enum_state
+      )),
+    (:line, 311, :none),
+    (:function, (:call, :start, (:(::), :itr, :AsyncCollector)), (:block,
+        (:line, 312, :none),
+        (:(=), (:., :itr, (:quote, #QuoteNode
+              :ntasks
+            )), (:call, :verify_ntasks, (:., :itr, (:quote, #QuoteNode
+                :enumerator
+              )), (:., :itr, (:quote, #QuoteNode
+                :ntasks
+              )))),
+        (:line, 313, :none),
+        (:(=), (:., :itr, (:quote, #QuoteNode
+              :batch_size
+            )), (:call, :verify_batch_size, (:., :itr, (:quote, #QuoteNode
+                :batch_size
+              )))),
+        (:line, 314, :none),
+        (:if, (:call, :(!==), (:., :itr, (:quote, #QuoteNode
+                :batch_size
+              )), :nothing), (:block,
+            (:line, 315, :none),
+            (:(=), :exec_func, (:->, :batch, (:block,
+                  (:line, 315, :none),
+                  (:block,
+                    (:line, 317, :none),
+                    (:(=), :batch_idxs, (:call, :map, (:->, :x, (:block,
+                            (:line, 317, :none),
+                            (:ref, :x, 1)
+                          )), :batch)),
+                    (:line, 320, :none),
+                    (:(=), :batched_args, (:call, :map, (:->, :x, (:block,
+                            (:line, 320, :none),
+                            (:ref, :x, 2)
+                          )), :batch)),
+                    (:line, 322, :none),
+                    (:(=), :results, (:call, :f, :batched_args)),
+                    (:line, 323, :none),
+                    (:call, :foreach, (:->, :x, (:block,
+                          (:line, 323, :none),
+                          (:(=), (:ref, (:., :itr, (:quote, #QuoteNode
+                                  :results
+                                )), (:ref, :batch_idxs, (:ref, :x, 1))), (:ref, :x, 2))
+                        )), (:call, :enumerate, :results))
+                  )
+                )))
+          ), (:block,
+            (:line, 326, :none),
+            (:(=), :exec_func, (:->, (:tuple, :i, :args), (:block,
+                  (:line, 326, :none),
+                  (:(=), (:ref, (:., :itr, (:quote, #QuoteNode
+                          :results
+                        )), :i), (:call, (:., :itr, (:quote, #QuoteNode
+                          :f
+                        )), (:..., :args)))
+                )))
+          )),
+        (:line, 328, :none),
+        (:(=), (:tuple, :chnl, :worker_tasks), (:call, :setup_chnl_and_tasks, (:->, (:tuple, :i, :args), (:block,
+                (:line, 328, :none),
+                (:(=), (:ref, (:., :itr, (:quote, #QuoteNode
+                        :results
+                      )), :i), (:call, (:., :itr, (:quote, #QuoteNode
+                        :f
+                      )), (:..., :args)))
+              )), (:., :itr, (:quote, #QuoteNode
+                :ntasks
+              )), (:., :itr, (:quote, #QuoteNode
+                :batch_size
+              )))),
+        (:line, 329, :none),
+        (:return, (:call, :AsyncCollectorState, :chnl, :worker_tasks, (:call, :start, (:., :itr, (:quote, #QuoteNode
+                  :enumerator
+                )))))
+      )),
+    (:line, 332, :none),
+    (:function, (:call, :done, (:(::), :itr, :AsyncCollector), (:(::), :state, :AsyncCollectorState)), (:block,
+        (:line, 333, :none),
+        (:if, (:||, (:call, :!, (:call, :isopen, (:., :state, (:quote, #QuoteNode
+                    :chnl
+                  )))), (:call, :done, (:., :itr, (:quote, #QuoteNode
+                  :enumerator
+                )), (:., :state, (:quote, #QuoteNode
+                  :enum_state
+                )))), (:block,
+            (:line, 334, :none),
+            (:call, :close, (:., :state, (:quote, #QuoteNode
+                  :chnl
+                ))),
+            (:line, 337, :none),
+            (:call, :foreach, (:->, :x, (:block,
+                  (:line, 337, :none),
+                  (:block,
+                    (:(=), :v, (:call, :wait, :x)),
+                    (:&&, (:call, :isa, :v, :Exception), (:call, :throw, :v))
+                  )
+                )), (:., :state, (:quote, #QuoteNode
+                  :worker_tasks
+                ))),
+            (:line, 338, :none),
+            (:call, :empty!, (:., :state, (:quote, #QuoteNode
+                  :worker_tasks
+                ))),
+            (:line, 339, :none),
+            (:return, true)
+          ), (:block,
+            (:line, 341, :none),
+            (:return, false)
+          ))
+      )),
+    (:line, 345, :none),
+    (:function, (:call, :next, (:(::), :itr, :AsyncCollector), (:(::), :state, :AsyncCollectorState)), (:block,
+        (:line, 346, :none),
+        (:if, (:&&, (:., :itr, (:quote, #QuoteNode
+                :nt_check
+              )), (:call, :<, (:call, :length, (:., :state, (:quote, #QuoteNode
+                    :worker_tasks
+                  ))), (:call, (:., :itr, (:quote, #QuoteNode
+                    :ntasks
+                  ))))), (:block,
+            (:line, 347, :none),
+            (:call, :start_worker_task!, (:., :state, (:quote, #QuoteNode
+                  :worker_tasks
+                )), (:., :itr, (:quote, #QuoteNode
+                  :f
+                )), (:., :state, (:quote, #QuoteNode
+                  :chnl
+                )))
+          )),
+        (:line, 351, :none),
+        (:(=), (:tuple, (:tuple, :i, :args), (:., :state, (:quote, #QuoteNode
+                :enum_state
+              ))), (:call, :next, (:., :itr, (:quote, #QuoteNode
+                :enumerator
+              )), (:., :state, (:quote, #QuoteNode
+                :enum_state
+              )))),
+        (:line, 352, :none),
+        (:call, :put!, (:., :state, (:quote, #QuoteNode
+              :chnl
+            )), (:tuple, :i, :args)),
+        (:line, 354, :none),
+        (:return, (:tuple, :nothing, :state))
+      )),
+    (:line, 357, :none),
+    (:macrocall, :(Core.@doc), "    AsyncGenerator(f, c...; ntasks=0, batch_size=nothing) -> iterator\n\nApply `f` to each element of `c` using at most `ntasks` asynchronous tasks.\n\nKeyword args `ntasks` and `batch_size` have the same behavior as in\n[`asyncmap()`](@ref). If `batch_size` is specified, `f` must\nbe a function which operates on an array of argument tuples.\n\n!!! note\n    `collect(AsyncGenerator(f, c...; ntasks=1))` is equivalent to\n    `map(f, c...)`.\n", (:type, true, :AsyncGenerator, (:block,
+          (:line, 371, :none),
+          (:(::), :collector, :AsyncCollector)
+        ))),
+    (:line, 374, :none),
+    (:function, (:call, :AsyncGenerator, (:parameters, (:kw, :ntasks, 0)), :f, (:..., :c)), (:block,
+        (:line, 375, :none),
+        (:call, :AsyncGenerator, (:call, :AsyncCollector, (:parameters, (:kw, :ntasks, :ntasks)), :f, (:call, (:curly, :Dict, :Int, :Any)), (:..., :c)))
+      )),
+    (:line, 378, :none),
+    (:type, true, :AsyncGeneratorState, (:block,
+        (:line, 379, :none),
+        (:(::), :i, :Int),
+        (:line, 380, :none),
+        (:(::), :collector_state, :AsyncCollectorState)
+      )),
+    (:line, 383, :none),
+    (:(=), (:call, :start, (:(::), :itr, :AsyncGenerator)), (:block,
+        (:line, 383, :none),
+        (:call, :AsyncGeneratorState, 0, (:call, :start, (:., :itr, (:quote, #QuoteNode
+                :collector
+              ))))
+      )),
+    (:line, 386, :none),
+    (:function, (:call, :done, (:(::), :itr, :AsyncGenerator), (:(::), :state, :AsyncGeneratorState)), (:block,
+        (:line, 387, :none),
+        (:&&, (:call, :done, (:., :itr, (:quote, #QuoteNode
+                :collector
+              )), (:., :state, (:quote, #QuoteNode
+                :collector_state
+              ))), (:call, :isempty, (:., (:., :itr, (:quote, #QuoteNode
+                  :collector
+                )), (:quote, #QuoteNode
+                :results
+              ))))
+      )),
+    (:line, 390, :none),
+    (:function, (:call, :next, (:(::), :itr, :AsyncGenerator), (:(::), :state, :AsyncGeneratorState)), (:block,
+        (:line, 391, :none),
+        (:+=, (:., :state, (:quote, #QuoteNode
+              :i
+            )), 1),
+        (:line, 393, :none),
+        (:(=), :results_dict, (:., (:., :itr, (:quote, #QuoteNode
+                :collector
+              )), (:quote, #QuoteNode
+              :results
+            ))),
+        (:line, 394, :none),
+        (:while, (:call, :!, (:call, :haskey, :results_dict, (:., :state, (:quote, #QuoteNode
+                  :i
+                )))), (:block,
+            (:line, 395, :none),
+            (:if, (:call, :done, (:., :itr, (:quote, #QuoteNode
+                    :collector
+                  )), (:., :state, (:quote, #QuoteNode
+                    :collector_state
+                  ))), (:block,
+                (:line, 398, :none),
+                (:&&, (:call, :!, (:call, :haskey, :results_dict, (:., :state, (:quote, #QuoteNode
+                          :i
+                        )))), (:call, :error, "Error processing index ", :i)),
+                (:line, 399, :none),
+                (:break,)
+              )),
+            (:line, 401, :none),
+            (:(=), (:tuple, :_, (:., :state, (:quote, #QuoteNode
+                    :collector_state
+                  ))), (:call, :next, (:., :itr, (:quote, #QuoteNode
+                    :collector
+                  )), (:., :state, (:quote, #QuoteNode
+                    :collector_state
+                  ))))
+          )),
+        (:line, 403, :none),
+        (:(=), :r, (:ref, :results_dict, (:., :state, (:quote, #QuoteNode
+                :i
+              )))),
+        (:line, 404, :none),
+        (:call, :delete!, :results_dict, (:., :state, (:quote, #QuoteNode
+              :i
+            ))),
+        (:line, 406, :none),
+        (:return, (:tuple, :r, :state))
+      )),
+    (:line, 411, :none),
+    (:(=), (:call, :iteratorsize, (:(::), :itr, :AsyncGenerator)), (:block,
+        (:line, 411, :none),
+        (:call, :iteratorsize, (:., (:., :itr, (:quote, #QuoteNode
+                :collector
+              )), (:quote, #QuoteNode
+              :enumerator
+            )))
+      )),
+    (:line, 412, :none),
+    (:(=), (:call, :size, (:(::), :itr, :AsyncGenerator)), (:block,
+        (:line, 412, :none),
+        (:call, :size, (:., (:., :itr, (:quote, #QuoteNode
+                :collector
+              )), (:quote, #QuoteNode
+              :enumerator
+            )))
+      )),
+    (:line, 413, :none),
+    (:(=), (:call, :length, (:(::), :itr, :AsyncGenerator)), (:block,
+        (:line, 413, :none),
+        (:call, :length, (:., (:., :itr, (:quote, #QuoteNode
+                :collector
+              )), (:quote, #QuoteNode
+              :enumerator
+            )))
+      )),
+    (:line, 415, :none),
+    (:macrocall, :(Core.@doc), "    asyncmap!(f, results, c...; ntasks=0, batch_size=nothing)\n\nLike [`asyncmap()`](@ref), but stores output in `results` rather than\nreturning a collection.\n", (:function, (:call, :asyncmap!, (:parameters, (:kw, :ntasks, 0), (:kw, :batch_size, :nothing)), :f, :r, :c1, (:..., :c)), (:block,
+          (:line, 422, :none),
+          (:call, :foreach, :identity, (:call, :AsyncCollector, (:parameters, (:kw, :ntasks, :ntasks), (:kw, :batch_size, :batch_size)), :f, :r, :c1, (:..., :c))),
+          (:line, 423, :none),
+          :c
+        )))
+  ))

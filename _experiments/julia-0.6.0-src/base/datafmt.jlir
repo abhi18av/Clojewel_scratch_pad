@@ -1,0 +1,1227 @@
+(:quote, (:block,
+    (:line, 5, :none),
+    (:module, true, :DataFmt, (:block,
+        (:line, 5, :none),
+        (:line, 7, :none),
+        (:toplevel, (:import, :Base, :_default_delims), (:import, :Base, :tryparse_internal), (:import, :Base, :show)),
+        (:line, 9, :none),
+        (:export, :countlines, :readdlm, :readcsv, :writedlm, :writecsv),
+        (:line, 11, :none),
+        (:(=), (:call, :invalid_dlm, (:(::), (:curly, :Type, :Char))), (:block,
+            (:line, 11, :none),
+            (:call, :reinterpret, :Char, 0xfffffffe)
+          )),
+        (:line, 12, :none),
+        (:(=), (:call, :invalid_dlm, (:(::), (:curly, :Type, :UInt8))), (:block,
+            (:line, 12, :none),
+            0xfe
+          )),
+        (:line, 13, :none),
+        (:(=), (:call, :invalid_dlm, (:(::), (:curly, :Type, :UInt16))), (:block,
+            (:line, 13, :none),
+            0xfffe
+          )),
+        (:line, 14, :none),
+        (:(=), (:call, :invalid_dlm, (:(::), (:curly, :Type, :UInt32))), (:block,
+            (:line, 14, :none),
+            0xfffffffe
+          )),
+        (:line, 16, :none),
+        (:const, (:(=), :offs_chunk_size, 5000)),
+        (:line, 18, :none),
+        (:(=), (:call, :countlines, (:(::), :f, :AbstractString), (:kw, (:(::), :eol, :Char), '\n')), (:block,
+            (:line, 18, :none),
+            (:(::), (:call, :open, (:->, :io, (:block,
+                    (:line, 18, :none),
+                    (:call, :countlines, :io, :eol)
+                  )), :f), :Int)
+          )),
+        (:line, 20, :none),
+        (:macrocall, :(Core.@doc), "    countlines(io::IO, eol::Char='\\n')\n\nRead `io` until the end of the stream/file and count the number of lines. To specify a file\npass the filename as the first argument. EOL markers other than `'\\n'` are supported by\npassing them as the second argument.\n", (:function, (:call, :countlines, (:(::), :io, :IO), (:kw, (:(::), :eol, :Char), '\n')), (:block,
+              (:line, 28, :none),
+              (:||, (:call, :isascii, :eol), (:call, :throw, (:call, :ArgumentError, "only ASCII line terminators are supported"))),
+              (:line, 29, :none),
+              (:(=), :aeol, (:call, :UInt8, :eol)),
+              (:line, 30, :none),
+              (:(=), :a, (:call, (:curly, :Vector, :UInt8), 8192)),
+              (:line, 31, :none),
+              (:(=), :nl, 0),
+              (:line, 32, :none),
+              (:while, (:call, :!, (:call, :eof, :io)), (:block,
+                  (:line, 33, :none),
+                  (:(=), :nb, (:call, :readbytes!, :io, :a)),
+                  (:line, 34, :none),
+                  (:macrocall, Symbol("@simd"), (:for, (:(=), :i, (:(:), 1, :nb)), (:block,
+                        (:line, 35, :none),
+                        (:macrocall, Symbol("@inbounds"), (:+=, :nl, (:call, :(==), (:ref, :a, :i), :aeol)))
+                      )))
+                )),
+              (:line, 38, :none),
+              :nl
+            ))),
+        (:line, 41, :none),
+        (:macrocall, :(Core.@doc), "    readdlm(source, T::Type; options...)\n\nThe columns are assumed to be separated by one or more whitespaces. The end of line\ndelimiter is taken as `\\n`.\n", (:(=), (:call, :readdlm, (:parameters, (:..., :opts)), :input, (:(::), :T, :Type)), (:block,
+              (:line, 47, :none),
+              (:call, :readdlm, (:parameters, (:..., :opts)), :input, (:call, :invalid_dlm, :Char), :T, '\n')
+            ))),
+        (:line, 49, :none),
+        (:macrocall, :(Core.@doc), "    readdlm(source, delim::Char, T::Type; options...)\n\nThe end of line delimiter is taken as `\\n`.\n", (:(=), (:call, :readdlm, (:parameters, (:..., :opts)), :input, (:(::), :dlm, :Char), (:(::), :T, :Type)), (:block,
+              (:line, 54, :none),
+              (:call, :readdlm, (:parameters, (:..., :opts)), :input, :dlm, :T, '\n')
+            ))),
+        (:line, 56, :none),
+        (:macrocall, :(Core.@doc), "    readdlm(source; options...)\n\nThe columns are assumed to be separated by one or more whitespaces. The end of line\ndelimiter is taken as `\\n`. If all data is numeric, the result will be a numeric array. If\nsome elements cannot be parsed as numbers, a heterogeneous array of numbers and strings\nis returned.\n", (:(=), (:call, :readdlm, (:parameters, (:..., :opts)), :input), (:block,
+              (:line, 64, :none),
+              (:call, :readdlm, (:parameters, (:..., :opts)), :input, (:call, :invalid_dlm, :Char), '\n')
+            ))),
+        (:line, 66, :none),
+        (:macrocall, :(Core.@doc), "    readdlm(source, delim::Char; options...)\n\nThe end of line delimiter is taken as `\\n`. If all data is numeric, the result will be a\nnumeric array. If some elements cannot be parsed as numbers, a heterogeneous array of\nnumbers and strings is returned.\n", (:(=), (:call, :readdlm, (:parameters, (:..., :opts)), :input, (:(::), :dlm, :Char)), (:block,
+              (:line, 73, :none),
+              (:call, :readdlm, (:parameters, (:..., :opts)), :input, :dlm, '\n')
+            ))),
+        (:line, 75, :none),
+        (:macrocall, :(Core.@doc), "    readdlm(source, delim::Char, eol::Char; options...)\n\nIf all data is numeric, the result will be a numeric array. If some elements cannot be\nparsed as numbers, a heterogeneous array of numbers and strings is returned.\n", (:(=), (:call, :readdlm, (:parameters, (:..., :opts)), :input, (:(::), :dlm, :Char), (:(::), :eol, :Char)), (:block,
+              (:line, 81, :none),
+              (:call, :readdlm_auto, (:parameters, (:..., :opts)), :input, :dlm, :Float64, :eol, true)
+            ))),
+        (:line, 84, :none),
+        (:macrocall, :(Core.@doc), "    readdlm(source, delim::Char, T::Type, eol::Char; header=false, skipstart=0, skipblanks=true, use_mmap, quotes=true, dims, comments=true, comment_char='#')\n\nRead a matrix from the source where each line (separated by `eol`) gives one row, with\nelements separated by the given delimiter. The source can be a text file, stream or byte\narray. Memory mapped files can be used by passing the byte array representation of the\nmapped segment as source.\n\nIf `T` is a numeric type, the result is an array of that type, with any non-numeric elements\nas `NaN` for floating-point types, or zero. Other useful values of `T` include\n`String`, `AbstractString`, and `Any`.\n\nIf `header` is `true`, the first row of data will be read as header and the tuple\n`(data_cells, header_cells)` is returned instead of only `data_cells`.\n\nSpecifying `skipstart` will ignore the corresponding number of initial lines from the input.\n\nIf `skipblanks` is `true`, blank lines in the input will be ignored.\n\nIf `use_mmap` is `true`, the file specified by `source` is memory mapped for potential\nspeedups. Default is `true` except on Windows. On Windows, you may want to specify `true` if\nthe file is large, and is only read once and not written to.\n\nIf `quotes` is `true`, columns enclosed within double-quote (\") characters are allowed to\ncontain new lines and column delimiters. Double-quote characters within a quoted field must\nbe escaped with another double-quote.  Specifying `dims` as a tuple of the expected rows and\ncolumns (including header, if any) may speed up reading of large files.  If `comments` is\n`true`, lines beginning with `comment_char` and text following `comment_char` in any line\nare ignored.\n", (:(=), (:call, :readdlm, (:parameters, (:..., :opts)), :input, (:(::), :dlm, :Char), (:(::), :T, :Type), (:(::), :eol, :Char)), (:block,
+              (:line, 114, :none),
+              (:call, :readdlm_auto, (:parameters, (:..., :opts)), :input, :dlm, :T, :eol, false)
+            ))),
+        (:line, 117, :none),
+        (:(=), (:call, :readdlm_auto, (:parameters, (:..., :opts)), (:(::), :input, (:curly, :Vector, :UInt8)), (:(::), :dlm, :Char), (:(::), :T, :Type), (:(::), :eol, :Char), (:(::), :auto, :Bool)), (:block,
+            (:line, 117, :none),
+            (:call, :readdlm_string, (:call, :String, :input), :dlm, :T, :eol, :auto, (:call, :val_opts, :opts))
+          )),
+        (:line, 119, :none),
+        (:(=), (:call, :readdlm_auto, (:parameters, (:..., :opts)), (:(::), :input, :IO), (:(::), :dlm, :Char), (:(::), :T, :Type), (:(::), :eol, :Char), (:(::), :auto, :Bool)), (:block,
+            (:line, 119, :none),
+            (:call, :readdlm_string, (:call, :readstring, :input), :dlm, :T, :eol, :auto, (:call, :val_opts, :opts))
+          )),
+        (:line, 121, :none),
+        (:function, (:call, :readdlm_auto, (:parameters, (:..., :opts)), (:(::), :input, :AbstractString), (:(::), :dlm, :Char), (:(::), :T, :Type), (:(::), :eol, :Char), (:(::), :auto, :Bool)), (:block,
+            (:line, 122, :none),
+            (:(=), :optsd, (:call, :val_opts, :opts)),
+            (:line, 123, :none),
+            (:(=), :use_mmap, (:call, :get, :optsd, (:quote, #QuoteNode
+                  :use_mmap
+                ), (:if, (:call, :is_windows), false, true))),
+            (:line, 124, :none),
+            (:(=), :fsz, (:call, :filesize, :input)),
+            (:line, 125, :none),
+            (:if, (:&&, :use_mmap, (:&&, (:call, :>, :fsz, 0), (:call, :<, :fsz, (:call, :typemax, :Int)))), (:block,
+                (:line, 126, :none),
+                (:(=), :a, (:call, :open, (:->, (:tuple, :f), (:block,
+                        (:line, 127, :none),
+                        (:call, (:., :Mmap, (:quote, #QuoteNode
+                              :mmap
+                            )), :f, (:curly, :Vector, :UInt8), (:tuple, (:call, :Int, :fsz)))
+                      )), :input, "r")),
+                (:line, 132, :none),
+                (:return, (:call, :readdlm_string, (:call, :unsafe_string, (:call, :pointer, :a), (:call, :length, :a)), :dlm, :T, :eol, :auto, :optsd))
+              ), (:block,
+                (:line, 134, :none),
+                (:return, (:call, :readdlm_string, (:call, :readstring, :input), :dlm, :T, :eol, :auto, :optsd))
+              ))
+          )),
+        (:line, 144, :none),
+        (:abstract, :DLMHandler),
+        (:line, 146, :none),
+        (:type, true, (:<:, :DLMOffsets, :DLMHandler), (:block,
+            (:line, 147, :none),
+            (:(::), :oarr, (:curly, :Vector, (:curly, :Vector, :Int))),
+            (:line, 148, :none),
+            (:(::), :offidx, :Int),
+            (:line, 149, :none),
+            (:(::), :thresh, :Int),
+            (:line, 150, :none),
+            (:(::), :bufflen, :Int),
+            (:line, 152, :none),
+            (:function, (:call, :DLMOffsets, (:(::), :sbuff, :String)), (:block,
+                (:line, 153, :none),
+                (:(=), :offsets, (:call, (:curly, :Vector, (:curly, :Vector, :Int)), 1)),
+                (:line, 154, :none),
+                (:(=), (:ref, :offsets, 1), (:call, (:curly, :Vector, :Int), :offs_chunk_size)),
+                (:line, 155, :none),
+                (:(=), :thresh, (:call, :ceil, (:call, :/, (:call, :/, (:call, :min, (:call, :typemax, :UInt), (:call, (:., (:., :Base, (:quote, #QuoteNode
+                                  :Sys
+                                )), (:quote, #QuoteNode
+                                :total_memory
+                              )))), (:call, :sizeof, :Int)), 5))),
+                (:line, 156, :none),
+                (:call, :new, :offsets, 1, :thresh, (:call, :sizeof, :sbuff))
+              ))
+          )),
+        (:line, 160, :none),
+        (:function, (:call, :store_cell, (:(::), :dlmoffsets, :DLMOffsets), (:(::), :row, :Int), (:(::), :col, :Int), (:(::), :quoted, :Bool), (:(::), :startpos, :Int), (:(::), :endpos, :Int)), (:block,
+            (:line, 162, :none),
+            (:(=), :offidx, (:., :dlmoffsets, (:quote, #QuoteNode
+                  :offidx
+                ))),
+            (:line, 163, :none),
+            (:&&, (:call, :(==), :offidx, 0), (:return, nothing)),
+            (:line, 165, :none),
+            (:(=), :oarr, (:., :dlmoffsets, (:quote, #QuoteNode
+                  :oarr
+                ))),
+            (:line, 166, :none),
+            (:(=), :offsets, (:ref, :oarr, :end)),
+            (:line, 167, :none),
+            (:if, (:call, :<, (:call, :length, :offsets), :offidx), (:block,
+                (:line, 168, :none),
+                (:(=), :offlen, (:call, :*, :offs_chunk_size, (:call, :length, :oarr))),
+                (:line, 169, :none),
+                (:if, (:call, :>, (:call, :+, :offlen, :offs_chunk_size), (:., :dlmoffsets, (:quote, #QuoteNode
+                        :thresh
+                      ))), (:block,
+                    (:line, 170, :none),
+                    (:(=), :est_tot, (:call, :round, :Int, (:call, :/, (:call, :*, :offlen, (:., :dlmoffsets, (:quote, #QuoteNode
+                                :bufflen
+                              ))), :endpos))),
+                    (:line, 171, :none),
+                    (:if, (:call, :>, (:call, :-, :est_tot, :offlen), :offs_chunk_size), (:block,
+                        (:line, 173, :none),
+                        (:(=), (:., :dlmoffsets, (:quote, #QuoteNode
+                              :oarr
+                            )), (:ref, (:curly, :Vector, :Int))),
+                        (:line, 174, :none),
+                        (:(=), (:., :dlmoffsets, (:quote, #QuoteNode
+                              :offidx
+                            )), 0),
+                        (:line, 175, :none),
+                        (:return, nothing)
+                      ))
+                  )),
+                (:line, 178, :none),
+                (:(=), :offsets, (:call, (:curly, :Vector, :Int), :offs_chunk_size)),
+                (:line, 179, :none),
+                (:call, :push!, :oarr, :offsets),
+                (:line, 180, :none),
+                (:(=), :offidx, 1)
+              )),
+            (:line, 182, :none),
+            (:(=), (:ref, :offsets, :offidx), :row),
+            (:line, 183, :none),
+            (:(=), (:ref, :offsets, (:call, :+, :offidx, 1)), :col),
+            (:line, 184, :none),
+            (:(=), (:ref, :offsets, (:call, :+, :offidx, 2)), (:call, :Int, :quoted)),
+            (:line, 185, :none),
+            (:(=), (:ref, :offsets, (:call, :+, :offidx, 3)), :startpos),
+            (:line, 186, :none),
+            (:(=), (:ref, :offsets, (:call, :+, :offidx, 4)), :endpos),
+            (:line, 187, :none),
+            (:(=), (:., :dlmoffsets, (:quote, #QuoteNode
+                  :offidx
+                )), (:call, :+, :offidx, 5)),
+            (:line, 188, :none),
+            :nothing
+          )),
+        (:line, 191, :none),
+        (:function, (:call, :result, (:(::), :dlmoffsets, :DLMOffsets)), (:block,
+            (:line, 192, :none),
+            (:(=), :trimsz, (:call, :%, (:call, :-, (:., :dlmoffsets, (:quote, #QuoteNode
+                      :offidx
+                    )), 1), :offs_chunk_size)),
+            (:line, 193, :none),
+            (:&&, (:||, (:call, :>, :trimsz, 0), (:call, :(==), (:., :dlmoffsets, (:quote, #QuoteNode
+                      :offidx
+                    )), 1)), (:call, :resize!, (:ref, (:., :dlmoffsets, (:quote, #QuoteNode
+                      :oarr
+                    )), :end), :trimsz)),
+            (:line, 194, :none),
+            (:., :dlmoffsets, (:quote, #QuoteNode
+                :oarr
+              ))
+          )),
+        (:line, 197, :none),
+        (:type, true, (:<:, (:curly, :DLMStore, :T), :DLMHandler), (:block,
+            (:line, 198, :none),
+            (:(::), :hdr, (:curly, :Array, :AbstractString, 2)),
+            (:line, 199, :none),
+            (:(::), :data, (:curly, :Array, :T, 2)),
+            (:line, 201, :none),
+            (:(::), :nrows, :Int),
+            (:line, 202, :none),
+            (:(::), :ncols, :Int),
+            (:line, 203, :none),
+            (:(::), :lastrow, :Int),
+            (:line, 204, :none),
+            (:(::), :lastcol, :Int),
+            (:line, 205, :none),
+            (:(::), :hdr_offset, :Int),
+            (:line, 206, :none),
+            (:(::), :sbuff, :String),
+            (:line, 207, :none),
+            (:(::), :auto, :Bool),
+            (:line, 208, :none),
+            (:(::), :eol, :Char)
+          )),
+        (:line, 211, :none),
+        (:function, (:call, (:curly, :DLMStore, :T), (:(::), (:curly, :Type, :T)), (:(::), :dims, (:curly, :NTuple, 2, :Integer)), (:(::), :has_header, :Bool), (:(::), :sbuff, :String), (:(::), :auto, :Bool), (:(::), :eol, :Char)), (:block,
+            (:line, 213, :none),
+            (:(=), (:tuple, :nrows, :ncols), :dims),
+            (:line, 214, :none),
+            (:&&, (:call, :(<=), :nrows, 0), (:call, :throw, (:call, :ArgumentError, (:string, "number of rows in dims must be > 0, got ", :nrows)))),
+            (:line, 215, :none),
+            (:&&, (:call, :(<=), :ncols, 0), (:call, :throw, (:call, :ArgumentError, (:string, "number of columns in dims must be > 0, got ", :ncols)))),
+            (:line, 216, :none),
+            (:(=), :hdr_offset, (:if, :has_header, 1, 0)),
+            (:line, 217, :none),
+            (:call, (:curly, :DLMStore, :T), (:call, :fill, (:call, :SubString, :sbuff, 1, 0), 1, :ncols), (:call, (:curly, :Matrix, :T), (:call, :-, :nrows, :hdr_offset), :ncols), :nrows, :ncols, 0, 0, :hdr_offset, :sbuff, :auto, :eol)
+          )),
+        (:line, 221, :none),
+        (:(=), (:call, :_chrinstr, (:(::), :sbuff, :String), (:(::), :chr, :UInt8), (:(::), :startpos, :Int), (:(::), :endpos, :Int)), (:block,
+            (:line, 221, :none),
+            (:&&, (:call, :(>=), :endpos, :startpos), (:call, :(!=), :C_NULL, (:call, :ccall, (:quote, #QuoteNode
+                    :memchr
+                  ), (:curly, :Ptr, :UInt8), (:tuple, (:curly, :Ptr, :UInt8), :Int32, :Csize_t), (:call, :-, (:call, :+, (:call, :pointer, :sbuff), :startpos), 1), :chr, (:call, :+, (:call, :-, :endpos, :startpos), 1))))
+          )),
+        (:line, 225, :none),
+        (:function, (:where, (:call, :store_cell, (:(::), :dlmstore, (:curly, :DLMStore, :T)), (:(::), :row, :Int), (:(::), :col, :Int), (:(::), :quoted, :Bool), (:(::), :startpos, :Int), (:(::), :endpos, :Int)), :T), (:block,
+            (:line, 227, :none),
+            (:(=), :drow, (:call, :-, :row, (:., :dlmstore, (:quote, #QuoteNode
+                    :hdr_offset
+                  )))),
+            (:line, 229, :none),
+            (:(=), :ncols, (:., :dlmstore, (:quote, #QuoteNode
+                  :ncols
+                ))),
+            (:line, 230, :none),
+            (:(=), :lastcol, (:., :dlmstore, (:quote, #QuoteNode
+                  :lastcol
+                ))),
+            (:line, 231, :none),
+            (:(=), :lastrow, (:., :dlmstore, (:quote, #QuoteNode
+                  :lastrow
+                ))),
+            (:line, 232, :none),
+            (:(=), (:(::), :cells, (:curly, :Matrix, :T)), (:., :dlmstore, (:quote, #QuoteNode
+                  :data
+                ))),
+            (:line, 233, :none),
+            (:(=), :sbuff, (:., :dlmstore, (:quote, #QuoteNode
+                  :sbuff
+                ))),
+            (:line, 235, :none),
+            (:(=), :endpos, (:call, :prevind, :sbuff, (:call, :nextind, :sbuff, :endpos))),
+            (:line, 236, :none),
+            (:if, (:&&, (:call, :>, :endpos, 0), (:&&, (:call, :(==), '\n', (:., :dlmstore, (:quote, #QuoteNode
+                        :eol
+                      ))), (:call, :(==), '\r', (:call, :Char, (:ref, :sbuff, :endpos))))), (:block,
+                (:line, 237, :none),
+                (:(=), :endpos, (:call, :prevind, :sbuff, :endpos))
+              )),
+            (:line, 239, :none),
+            (:if, :quoted, (:block,
+                (:line, 240, :none),
+                (:+=, :startpos, 1),
+                (:line, 241, :none),
+                (:(=), :endpos, (:call, :prevind, :sbuff, :endpos))
+              )),
+            (:line, 244, :none),
+            (:if, (:call, :>, :drow, 0), (:block,
+                (:line, 246, :none),
+                (:while, (:||, (:call, :>, (:call, :-, :drow, :lastrow), 1), (:&&, (:comparison, :drow, :>, :lastrow, :>, 0), (:call, :<, :lastcol, :ncols))), (:block,
+                    (:line, 247, :none),
+                    (:if, (:||, (:call, :(==), :lastcol, :ncols), (:call, :(==), :lastrow, 0)), (:block,
+                        (:line, 248, :none),
+                        (:(=), :lastcol, 0),
+                        (:line, 249, :none),
+                        (:+=, :lastrow, 1)
+                      )),
+                    (:line, 251, :none),
+                    (:for, (:(=), :cidx, (:(:), (:call, :+, :lastcol, 1), :ncols)), (:block,
+                        (:line, 252, :none),
+                        (:if, (:||, (:<:, :T, :AbstractString), (:call, :(==), :T, :Any)), (:block,
+                            (:line, 253, :none),
+                            (:(=), (:ref, :cells, :lastrow, :cidx), (:call, :SubString, :sbuff, 1, 0))
+                          ), (:block,
+                            (:line, 254, :none),
+                            (:if, (:&&, (:||, (:<:, :T, :Number), (:<:, :T, :Char)), (:., :dlmstore, (:quote, #QuoteNode
+                                    :auto
+                                  ))), (:block,
+                                (:line, 255, :none),
+                                (:call, :throw, (:call, :TypeError, (:quote, #QuoteNode
+                                      :store_cell
+                                    ), "", :Any, :T))
+                              ), (:block,
+                                (:line, 257, :none),
+                                (:call, :error, (:string, "missing value at row ", :lastrow, " column ", :cidx))
+                              ))
+                          ))
+                      )),
+                    (:line, 260, :none),
+                    (:(=), :lastcol, :ncols)
+                  )),
+                (:line, 264, :none),
+                (:if, (:&&, :quoted, (:call, :_chrinstr, :sbuff, (:call, :UInt8, '"'), :startpos, :endpos)), (:block,
+                    (:line, 265, :none),
+                    (:(=), :unescaped, (:call, :replace, (:call, :SubString, :sbuff, :startpos, :endpos), (:macrocall, Symbol("@r_str"), "\"\""), "\"")),
+                    (:line, 266, :none),
+                    (:(=), :fail, (:call, :colval, :unescaped, 1, (:call, :endof, :unescaped), :cells, :drow, :col))
+                  ), (:block,
+                    (:line, 268, :none),
+                    (:(=), :fail, (:call, :colval, :sbuff, :startpos, :endpos, :cells, :drow, :col))
+                  )),
+                (:line, 270, :none),
+                (:if, :fail, (:block,
+                    (:line, 271, :none),
+                    (:(=), :sval, (:call, :SubString, :sbuff, :startpos, :endpos)),
+                    (:line, 272, :none),
+                    (:if, (:&&, (:<:, :T, :Number), (:., :dlmstore, (:quote, #QuoteNode
+                            :auto
+                          ))), (:block,
+                        (:line, 273, :none),
+                        (:call, :throw, (:call, :TypeError, (:quote, #QuoteNode
+                              :store_cell
+                            ), "", :Any, :T))
+                      ), (:block,
+                        (:line, 275, :none),
+                        (:call, :error, (:string, "file entry \"", :sval, "\" cannot be converted to ", :T))
+                      ))
+                  )),
+                (:line, 279, :none),
+                (:(=), (:., :dlmstore, (:quote, #QuoteNode
+                      :lastrow
+                    )), :drow),
+                (:line, 280, :none),
+                (:(=), (:., :dlmstore, (:quote, #QuoteNode
+                      :lastcol
+                    )), :col)
+              ), (:block,
+                (:line, 283, :none),
+                (:if, (:&&, :quoted, (:call, :_chrinstr, :sbuff, (:call, :UInt8, '"'), :startpos, :endpos)), (:block,
+                    (:line, 284, :none),
+                    (:(=), :unescaped, (:call, :replace, (:call, :SubString, :sbuff, :startpos, :endpos), (:macrocall, Symbol("@r_str"), "\"\""), "\"")),
+                    (:line, 285, :none),
+                    (:call, :colval, :unescaped, 1, (:call, :endof, :unescaped), (:., :dlmstore, (:quote, #QuoteNode
+                          :hdr
+                        )), 1, :col)
+                  ), (:block,
+                    (:line, 287, :none),
+                    (:call, :colval, :sbuff, :startpos, :endpos, (:., :dlmstore, (:quote, #QuoteNode
+                          :hdr
+                        )), 1, :col)
+                  ))
+              )),
+            (:line, 291, :none),
+            :nothing
+          )),
+        (:line, 294, :none),
+        (:function, (:where, (:call, :result, (:(::), :dlmstore, (:curly, :DLMStore, :T))), :T), (:block,
+            (:line, 295, :none),
+            (:(=), :nrows, (:call, :-, (:., :dlmstore, (:quote, #QuoteNode
+                    :nrows
+                  )), (:., :dlmstore, (:quote, #QuoteNode
+                    :hdr_offset
+                  )))),
+            (:line, 296, :none),
+            (:(=), :ncols, (:., :dlmstore, (:quote, #QuoteNode
+                  :ncols
+                ))),
+            (:line, 297, :none),
+            (:(=), :lastcol, (:., :dlmstore, (:quote, #QuoteNode
+                  :lastcol
+                ))),
+            (:line, 298, :none),
+            (:(=), :lastrow, (:., :dlmstore, (:quote, #QuoteNode
+                  :lastrow
+                ))),
+            (:line, 299, :none),
+            (:(=), :cells, (:., :dlmstore, (:quote, #QuoteNode
+                  :data
+                ))),
+            (:line, 300, :none),
+            (:(=), :sbuff, (:., :dlmstore, (:quote, #QuoteNode
+                  :sbuff
+                ))),
+            (:line, 302, :none),
+            (:if, (:&&, (:call, :>, :nrows, 0), (:||, (:call, :<, :lastcol, :ncols), (:call, :<, :lastrow, :nrows))), (:block,
+                (:line, 303, :none),
+                (:while, (:call, :(<=), :lastrow, :nrows), (:block,
+                    (:line, 304, :none),
+                    (:&&, (:call, :(==), :lastcol, :ncols), (:block,
+                        (:(=), :lastcol, 0),
+                        (:+=, :lastrow, 1)
+                      )),
+                    (:line, 305, :none),
+                    (:for, (:(=), :cidx, (:(:), (:call, :+, :lastcol, 1), :ncols)), (:block,
+                        (:line, 306, :none),
+                        (:if, (:||, (:<:, :T, :AbstractString), (:call, :(==), :T, :Any)), (:block,
+                            (:line, 307, :none),
+                            (:(=), (:ref, :cells, :lastrow, :cidx), (:call, :SubString, :sbuff, 1, 0))
+                          ), (:block,
+                            (:line, 308, :none),
+                            (:if, (:&&, (:||, (:<:, :T, :Number), (:<:, :T, :Char)), (:., :dlmstore, (:quote, #QuoteNode
+                                    :auto
+                                  ))), (:block,
+                                (:line, 309, :none),
+                                (:call, :throw, (:call, :TypeError, (:quote, #QuoteNode
+                                      :store_cell
+                                    ), "", :Any, :T))
+                              ), (:block,
+                                (:line, 311, :none),
+                                (:call, :error, (:string, "missing value at row ", :lastrow, " column ", :cidx))
+                              ))
+                          ))
+                      )),
+                    (:line, 314, :none),
+                    (:(=), :lastcol, :ncols),
+                    (:line, 315, :none),
+                    (:&&, (:call, :(==), :lastrow, :nrows), (:break,))
+                  )),
+                (:line, 317, :none),
+                (:(=), (:., :dlmstore, (:quote, #QuoteNode
+                      :lastrow
+                    )), :lastrow),
+                (:line, 318, :none),
+                (:(=), (:., :dlmstore, (:quote, #QuoteNode
+                      :lastcol
+                    )), :ncols)
+              )),
+            (:line, 320, :none),
+            (:if, (:call, :>, (:., :dlmstore, (:quote, #QuoteNode
+                    :hdr_offset
+                  )), 0), (:tuple, (:., :dlmstore, (:quote, #QuoteNode
+                    :data
+                  )), (:., :dlmstore, (:quote, #QuoteNode
+                    :hdr
+                  ))), (:., :dlmstore, (:quote, #QuoteNode
+                  :data
+                )))
+          )),
+        (:line, 324, :none),
+        (:function, (:call, :readdlm_string, (:(::), :sbuff, :String), (:(::), :dlm, :Char), (:(::), :T, :Type), (:(::), :eol, :Char), (:(::), :auto, :Bool), (:(::), :optsd, :Dict)), (:block,
+            (:line, 325, :none),
+            (:(=), :ign_empty, (:call, :(==), :dlm, (:call, :invalid_dlm, :Char))),
+            (:line, 326, :none),
+            (:(=), :quotes, (:call, :get, :optsd, (:quote, #QuoteNode
+                  :quotes
+                ), true)),
+            (:line, 327, :none),
+            (:(=), :comments, (:call, :get, :optsd, (:quote, #QuoteNode
+                  :comments
+                ), true)),
+            (:line, 328, :none),
+            (:(=), :comment_char, (:call, :get, :optsd, (:quote, #QuoteNode
+                  :comment_char
+                ), '#')),
+            (:line, 329, :none),
+            (:(=), :dims, (:call, :get, :optsd, (:quote, #QuoteNode
+                  :dims
+                ), :nothing)),
+            (:line, 331, :none),
+            (:(=), :has_header, (:call, :get, :optsd, (:quote, #QuoteNode
+                  :header
+                ), (:call, :get, :optsd, (:quote, #QuoteNode
+                    :has_header
+                  ), false))),
+            (:line, 332, :none),
+            (:&&, (:call, :haskey, :optsd, (:quote, #QuoteNode
+                  :has_header
+                )), (:&&, (:call, :(!=), (:ref, :optsd, (:quote, #QuoteNode
+                      :has_header
+                    )), :has_header), (:call, :throw, (:call, :ArgumentError, "conflicting values for header and has_header")))),
+            (:line, 334, :none),
+            (:(=), :skipstart, (:call, :get, :optsd, (:quote, #QuoteNode
+                  :skipstart
+                ), 0)),
+            (:line, 335, :none),
+            (:||, (:call, :(>=), :skipstart, 0), (:call, :throw, (:call, :ArgumentError, (:string, "skipstart must be ≥ 0, got ", :skipstart)))),
+            (:line, 337, :none),
+            (:(=), :skipblanks, (:call, :get, :optsd, (:quote, #QuoteNode
+                  :skipblanks
+                ), true)),
+            (:line, 339, :none),
+            (:(=), :offset_handler, (:if, (:call, :(===), :dims, :nothing), (:call, :DLMOffsets, :sbuff), (:call, :DLMStore, :T, :dims, :has_header, :sbuff, :auto, :eol))),
+            (:line, 341, :none),
+            (:for, (:(=), :retry, (:(:), 1, 2)), (:block,
+                (:line, 342, :none),
+                (:try, (:block,
+                    (:line, 343, :none),
+                    (:(=), :dims, (:call, :dlm_parse, :sbuff, :eol, :dlm, '"', :comment_char, :ign_empty, :quotes, :comments, :skipstart, :skipblanks, :offset_handler)),
+                    (:line, 344, :none),
+                    (:break,)
+                  ), :ex, (:block,
+                    (:line, 346, :none),
+                    (:if, (:&&, (:call, :isa, :ex, :TypeError), (:call, :(==), (:., :ex, (:quote, #QuoteNode
+                              :func
+                            )), (:quote, #QuoteNode
+                            :store_cell
+                          ))), (:block,
+                        (:line, 347, :none),
+                        (:(=), :T, (:., :ex, (:quote, #QuoteNode
+                              :expected
+                            )))
+                      ), (:block,
+                        (:line, 349, :none),
+                        (:call, :rethrow, :ex)
+                      )),
+                    (:line, 351, :none),
+                    (:(=), :offset_handler, (:if, (:call, :(===), :dims, :nothing), (:call, :DLMOffsets, :sbuff), (:call, :DLMStore, :T, :dims, :has_header, :sbuff, :auto, :eol)))
+                  ))
+              )),
+            (:line, 355, :none),
+            (:&&, (:call, :isa, :offset_handler, :DLMStore), (:return, (:call, :result, :offset_handler))),
+            (:line, 357, :none),
+            (:(=), :offsets, (:call, :result, :offset_handler)),
+            (:line, 358, :none),
+            (:&&, (:call, :!, (:call, :isempty, :offsets)), (:return, (:call, :dlm_fill, :T, :offsets, :dims, :has_header, :sbuff, :auto, :eol))),
+            (:line, 360, :none),
+            (:(=), (:ref, :optsd, (:quote, #QuoteNode
+                  :dims
+                )), :dims),
+            (:line, 361, :none),
+            (:return, (:call, :readdlm_string, :sbuff, :dlm, :T, :eol, :auto, :optsd))
+          )),
+        (:line, 364, :none),
+        (:const, (:(=), :valid_opts, (:vect, (:quote, #QuoteNode
+                :header
+              ), (:quote, #QuoteNode
+                :has_header
+              ), (:quote, #QuoteNode
+                :use_mmap
+              ), (:quote, #QuoteNode
+                :quotes
+              ), (:quote, #QuoteNode
+                :comments
+              ), (:quote, #QuoteNode
+                :dims
+              ), (:quote, #QuoteNode
+                :comment_char
+              ), (:quote, #QuoteNode
+                :skipstart
+              ), (:quote, #QuoteNode
+                :skipblanks
+              )))),
+        (:line, 365, :none),
+        (:const, (:(=), :valid_opt_types, (:vect, :Bool, :Bool, :Bool, :Bool, :Bool, (:curly, :NTuple, 2, :Integer), :Char, :Integer, :Bool))),
+        (:line, 367, :none),
+        (:function, (:call, :val_opts, :opts), (:block,
+            (:line, 368, :none),
+            (:(=), :d, (:call, (:curly, :Dict, :Symbol, (:curly, :Union, :Bool, (:curly, :NTuple, 2, :Integer), :Char, :Integer)))),
+            (:line, 369, :none),
+            (:for, (:(=), (:tuple, :opt_name, :opt_val), :opts), (:block,
+                (:line, 370, :none),
+                (:||, (:call, :in, :opt_name, :valid_opts), (:call, :throw, (:call, :ArgumentError, (:string, "unknown option ", :opt_name)))),
+                (:line, 372, :none),
+                (:(=), :opt_typ, (:ref, :valid_opt_types, (:call, :findfirst, :valid_opts, :opt_name))),
+                (:line, 373, :none),
+                (:||, (:call, :isa, :opt_val, :opt_typ), (:call, :throw, (:call, :ArgumentError, (:string, :opt_name, " should be of type ", :opt_typ, ", got ", (:call, :typeof, :opt_val))))),
+                (:line, 375, :none),
+                (:(=), (:ref, :d, :opt_name), :opt_val)
+              )),
+            (:line, 377, :none),
+            (:return, :d)
+          )),
+        (:line, 380, :none),
+        (:function, (:call, :dlm_fill, (:(::), :T, :DataType), (:(::), :offarr, (:curly, :Vector, (:curly, :Vector, :Int))), (:(::), :dims, (:curly, :NTuple, 2, :Integer)), (:(::), :has_header, :Bool), (:(::), :sbuff, :String), (:(::), :auto, :Bool), (:(::), :eol, :Char)), (:block,
+            (:line, 381, :none),
+            (:(=), :idx, 1),
+            (:line, 382, :none),
+            (:(=), :offidx, 1),
+            (:line, 383, :none),
+            (:(=), :offsets, (:ref, :offarr, 1)),
+            (:line, 384, :none),
+            (:(=), :row, 0),
+            (:line, 385, :none),
+            (:(=), :col, 0),
+            (:line, 386, :none),
+            (:try, (:block,
+                (:line, 387, :none),
+                (:(=), :dh, (:call, :DLMStore, :T, :dims, :has_header, :sbuff, :auto, :eol)),
+                (:line, 388, :none),
+                (:while, (:call, :(<=), :idx, (:call, :length, :offsets)), (:block,
+                    (:line, 389, :none),
+                    (:(=), :row, (:ref, :offsets, :idx)),
+                    (:line, 390, :none),
+                    (:(=), :col, (:ref, :offsets, (:call, :+, :idx, 1))),
+                    (:line, 391, :none),
+                    (:(=), :quoted, (:call, :(!=), (:ref, :offsets, (:call, :+, :idx, 2)), 0)),
+                    (:line, 392, :none),
+                    (:(=), :startpos, (:ref, :offsets, (:call, :+, :idx, 3))),
+                    (:line, 393, :none),
+                    (:(=), :endpos, (:ref, :offsets, (:call, :+, :idx, 4))),
+                    (:line, 395, :none),
+                    (:&&, (:call, :>, (:+=, :idx, 5), :offs_chunk_size), (:&&, (:call, :<, :offidx, (:call, :length, :offarr)), (:block,
+                          (:(=), :idx, 1),
+                          (:(=), :offsets, (:ref, :offarr, (:+=, :offidx, 1)))
+                        ))),
+                    (:line, 397, :none),
+                    (:call, :store_cell, :dh, :row, :col, :quoted, :startpos, :endpos)
+                  )),
+                (:line, 399, :none),
+                (:return, (:call, :result, :dh))
+              ), :ex, (:block,
+                (:line, 401, :none),
+                (:&&, (:call, :isa, :ex, :TypeError), (:&&, (:call, :(==), (:., :ex, (:quote, #QuoteNode
+                          :func
+                        )), (:quote, #QuoteNode
+                        :store_cell
+                      )), (:return, (:call, :dlm_fill, (:., :ex, (:quote, #QuoteNode
+                            :expected
+                          )), :offarr, :dims, :has_header, :sbuff, :auto, :eol)))),
+                (:line, 402, :none),
+                (:call, :error, (:string, "at row ", :row, ", column ", :col, " : ", :ex))
+              ))
+          )),
+        (:line, 406, :none),
+        (:function, (:call, :colval, (:(::), :sbuff, :String), (:(::), :startpos, :Int), (:(::), :endpos, :Int), (:(::), :cells, (:curly, :Array, :Bool, 2)), (:(::), :row, :Int), (:(::), :col, :Int)), (:block,
+            (:line, 407, :none),
+            (:(=), :n, (:call, :tryparse_internal, :Bool, :sbuff, :startpos, :endpos, 0, false)),
+            (:line, 408, :none),
+            (:||, (:call, :isnull, :n), (:(=), (:ref, :cells, :row, :col), (:call, :get, :n))),
+            (:line, 409, :none),
+            (:call, :isnull, :n)
+          )),
+        (:line, 411, :none),
+        (:function, (:call, (:curly, :colval, (:<:, :T, :Integer)), (:(::), :sbuff, :String), (:(::), :startpos, :Int), (:(::), :endpos, :Int), (:(::), :cells, (:curly, :Array, :T, 2)), (:(::), :row, :Int), (:(::), :col, :Int)), (:block,
+            (:line, 412, :none),
+            (:(=), :n, (:call, :tryparse_internal, :T, :sbuff, :startpos, :endpos, 0, false)),
+            (:line, 413, :none),
+            (:||, (:call, :isnull, :n), (:(=), (:ref, :cells, :row, :col), (:call, :get, :n))),
+            (:line, 414, :none),
+            (:call, :isnull, :n)
+          )),
+        (:line, 416, :none),
+        (:function, (:call, :colval, (:(::), :sbuff, :String), (:(::), :startpos, :Int), (:(::), :endpos, :Int), (:(::), :cells, (:curly, :Array, :Float64, 2)), (:(::), :row, :Int), (:(::), :col, :Int)), (:block,
+            (:line, 417, :none),
+            (:(=), :n, (:call, :ccall, (:quote, #QuoteNode
+                  :jl_try_substrtod
+                ), (:curly, :Nullable, :Float64), (:tuple, (:curly, :Ptr, :UInt8), :Csize_t, :Csize_t), :sbuff, (:call, :-, :startpos, 1), (:call, :+, (:call, :-, :endpos, :startpos), 1))),
+            (:line, 418, :none),
+            (:||, (:call, :isnull, :n), (:(=), (:ref, :cells, :row, :col), (:call, :get, :n))),
+            (:line, 419, :none),
+            (:call, :isnull, :n)
+          )),
+        (:line, 421, :none),
+        (:function, (:call, :colval, (:(::), :sbuff, :String), (:(::), :startpos, :Int), (:(::), :endpos, :Int), (:(::), :cells, (:curly, :Array, :Float32, 2)), (:(::), :row, :Int), (:(::), :col, :Int)), (:block,
+            (:line, 422, :none),
+            (:(=), :n, (:call, :ccall, (:quote, #QuoteNode
+                  :jl_try_substrtof
+                ), (:curly, :Nullable, :Float32), (:tuple, (:curly, :Ptr, :UInt8), :Csize_t, :Csize_t), :sbuff, (:call, :-, :startpos, 1), (:call, :+, (:call, :-, :endpos, :startpos), 1))),
+            (:line, 423, :none),
+            (:||, (:call, :isnull, :n), (:(=), (:ref, :cells, :row, :col), (:call, :get, :n))),
+            (:line, 424, :none),
+            (:call, :isnull, :n)
+          )),
+        (:line, 426, :none),
+        (:function, (:call, :colval, (:(::), :sbuff, :String), (:(::), :startpos, :Int), (:(::), :endpos, :Int), (:(::), :cells, (:curly, :Array, (:<:, :AbstractString), 2)), (:(::), :row, :Int), (:(::), :col, :Int)), (:block,
+            (:line, 427, :none),
+            (:(=), (:ref, :cells, :row, :col), (:call, :SubString, :sbuff, :startpos, :endpos)),
+            (:line, 428, :none),
+            (:return, false)
+          )),
+        (:line, 430, :none),
+        (:function, (:call, :colval, (:(::), :sbuff, :String), (:(::), :startpos, :Int), (:(::), :endpos, :Int), (:(::), :cells, (:curly, :Array, :Any, 2)), (:(::), :row, :Int), (:(::), :col, :Int)), (:block,
+            (:line, 432, :none),
+            (:(=), :len, (:call, :+, (:call, :-, :endpos, :startpos), 1)),
+            (:line, 433, :none),
+            (:if, (:call, :>, :len, 0), (:block,
+                (:line, 435, :none),
+                (:(=), :ni64, (:call, :tryparse_internal, :Int, :sbuff, :startpos, :endpos, 0, false)),
+                (:line, 436, :none),
+                (:||, (:call, :isnull, :ni64), (:block,
+                    (:(=), (:ref, :cells, :row, :col), (:call, :get, :ni64)),
+                    (:return, false)
+                  )),
+                (:line, 439, :none),
+                (:(=), :nb, (:call, :tryparse_internal, :Bool, :sbuff, :startpos, :endpos, 0, false)),
+                (:line, 440, :none),
+                (:||, (:call, :isnull, :nb), (:block,
+                    (:(=), (:ref, :cells, :row, :col), (:call, :get, :nb)),
+                    (:return, false)
+                  )),
+                (:line, 443, :none),
+                (:(=), :nf64, (:call, :ccall, (:quote, #QuoteNode
+                      :jl_try_substrtod
+                    ), (:curly, :Nullable, :Float64), (:tuple, (:curly, :Ptr, :UInt8), :Csize_t, :Csize_t), :sbuff, (:call, :-, :startpos, 1), (:call, :+, (:call, :-, :endpos, :startpos), 1))),
+                (:line, 444, :none),
+                (:||, (:call, :isnull, :nf64), (:block,
+                    (:(=), (:ref, :cells, :row, :col), (:call, :get, :nf64)),
+                    (:return, false)
+                  ))
+              )),
+            (:line, 446, :none),
+            (:(=), (:ref, :cells, :row, :col), (:call, :SubString, :sbuff, :startpos, :endpos)),
+            (:line, 447, :none),
+            false
+          )),
+        (:line, 449, :none),
+        (:function, (:call, :colval, (:(::), :sbuff, :String), (:(::), :startpos, :Int), (:(::), :endpos, :Int), (:(::), :cells, (:curly, :Array, (:<:, :Char), 2)), (:(::), :row, :Int), (:(::), :col, :Int)), (:block,
+            (:line, 450, :none),
+            (:if, (:call, :(==), :startpos, :endpos), (:block,
+                (:line, 451, :none),
+                (:(=), (:ref, :cells, :row, :col), (:ref, (:call, :next, :sbuff, :startpos), 1)),
+                (:line, 452, :none),
+                (:return, false)
+              ), (:block,
+                (:line, 454, :none),
+                (:return, true)
+              ))
+          )),
+        (:line, 457, :none),
+        (:(=), (:call, :colval, (:(::), :sbuff, :String), (:(::), :startpos, :Int), (:(::), :endpos, :Int), (:(::), :cells, :Array), (:(::), :row, :Int), (:(::), :col, :Int)), (:block,
+            (:line, 457, :none),
+            true
+          )),
+        (:line, 459, :none),
+        (:function, (:where, (:call, :dlm_parse, (:(::), :dbuff, :String), (:(::), :eol, :D), (:(::), :dlm, :D), (:(::), :qchar, :D), (:(::), :cchar, :D), (:(::), :ign_adj_dlm, :Bool), (:(::), :allow_quote, :Bool), (:(::), :allow_comments, :Bool), (:(::), :skipstart, :Int), (:(::), :skipblanks, :Bool), (:(::), :dh, :DLMHandler)), :D), (:block,
+            (:line, 462, :none),
+            (:(=), :ncols, (:(=), :nrows, (:(=), :col, 0))),
+            (:line, 463, :none),
+            (:(=), :is_default_dlm, (:call, :(==), :dlm, (:call, :invalid_dlm, :D))),
+            (:line, 464, :none),
+            (:(=), :error_str, ""),
+            (:line, 468, :none),
+            (:(=), :state, (:if, (:call, :>, :skipstart, 0), 5, 0)),
+            (:line, 469, :none),
+            (:(=), :is_eol, (:(=), :is_dlm, (:(=), :is_cr, (:(=), :is_quote, (:(=), :is_comment, (:(=), :expct_col, false)))))),
+            (:line, 470, :none),
+            (:(=), :idx, 1),
+            (:line, 471, :none),
+            (:try, (:block,
+                (:line, 472, :none),
+                (:(=), :slen, (:call, :sizeof, :dbuff)),
+                (:line, 473, :none),
+                (:(=), :col_start_idx, 1),
+                (:line, 474, :none),
+                (:(=), :was_cr, false),
+                (:line, 475, :none),
+                (:while, (:call, :(<=), :idx, :slen), (:block,
+                    (:line, 476, :none),
+                    (:(=), (:tuple, :val, :idx), (:call, :next, :dbuff, :idx)),
+                    (:line, 477, :none),
+                    (:if, (:(=), :is_eol, (:call, :(==), (:call, :Char, :val), (:call, :Char, :eol))), (:block,
+                        (:line, 478, :none),
+                        (:(=), :is_dlm, (:(=), :is_comment, (:(=), :is_cr, (:(=), :is_quote, false))))
+                      ), (:block,
+                        (:line, 479, :none),
+                        (:if, (:(=), :is_dlm, (:if, :is_default_dlm, (:call, :in, (:call, :Char, :val), :_default_delims), (:call, :(==), (:call, :Char, :val), (:call, :Char, :dlm)))), (:block,
+                            (:line, 480, :none),
+                            (:(=), :is_comment, (:(=), :is_cr, (:(=), :is_quote, false)))
+                          ), (:block,
+                            (:line, 481, :none),
+                            (:if, (:(=), :is_quote, (:call, :(==), (:call, :Char, :val), (:call, :Char, :qchar))), (:block,
+                                (:line, 482, :none),
+                                (:(=), :is_comment, (:(=), :is_cr, false))
+                              ), (:block,
+                                (:line, 483, :none),
+                                (:if, (:(=), :is_comment, (:call, :(==), (:call, :Char, :val), (:call, :Char, :cchar))), (:block,
+                                    (:line, 484, :none),
+                                    (:(=), :is_cr, false)
+                                  ), (:block,
+                                    (:line, 486, :none),
+                                    (:(=), :is_cr, (:&&, (:call, :(==), (:call, :Char, :eol), '\n'), (:call, :(==), (:call, :Char, :val), '\r')))
+                                  ))
+                              ))
+                          ))
+                      )),
+                    (:line, 489, :none),
+                    (:if, (:call, :(==), 2, :state), (:block,
+                        (:line, 490, :none),
+                        (:if, :is_dlm, (:block,
+                            (:line, 491, :none),
+                            (:(=), :state, 0),
+                            (:line, 492, :none),
+                            (:+=, :col, 1),
+                            (:line, 493, :none),
+                            (:call, :store_cell, :dh, (:call, :+, :nrows, 1), :col, false, :col_start_idx, (:call, :-, :idx, 2)),
+                            (:line, 494, :none),
+                            (:(=), :col_start_idx, :idx),
+                            (:line, 495, :none),
+                            (:&&, (:call, :!, :ign_adj_dlm), (:(=), :expct_col, true))
+                          ), (:block,
+                            (:line, 496, :none),
+                            (:if, :is_eol, (:block,
+                                (:line, 497, :none),
+                                (:+=, :nrows, 1),
+                                (:line, 498, :none),
+                                (:+=, :col, 1),
+                                (:line, 499, :none),
+                                (:call, :store_cell, :dh, :nrows, :col, false, :col_start_idx, (:call, :-, :idx, (:if, :was_cr, 3, 2))),
+                                (:line, 500, :none),
+                                (:(=), :col_start_idx, :idx),
+                                (:line, 501, :none),
+                                (:(=), :ncols, (:call, :max, :ncols, :col)),
+                                (:line, 502, :none),
+                                (:(=), :col, 0),
+                                (:line, 503, :none),
+                                (:(=), :state, 0)
+                              ), (:block,
+                                (:line, 504, :none),
+                                (:if, (:&&, :is_comment, :allow_comments), (:block,
+                                    (:line, 505, :none),
+                                    (:+=, :nrows, 1),
+                                    (:line, 506, :none),
+                                    (:+=, :col, 1),
+                                    (:line, 507, :none),
+                                    (:call, :store_cell, :dh, :nrows, :col, false, :col_start_idx, (:call, :-, :idx, 2)),
+                                    (:line, 508, :none),
+                                    (:(=), :ncols, (:call, :max, :ncols, :col)),
+                                    (:line, 509, :none),
+                                    (:(=), :col, 0),
+                                    (:line, 510, :none),
+                                    (:(=), :state, 4)
+                                  ))
+                              ))
+                          ))
+                      ), (:block,
+                        (:line, 512, :none),
+                        (:if, (:call, :(==), 1, :state), (:block,
+                            (:line, 513, :none),
+                            (:&&, :is_quote, (:(=), :state, 3))
+                          ), (:block,
+                            (:line, 514, :none),
+                            (:if, (:call, :(==), 4, :state), (:block,
+                                (:line, 515, :none),
+                                (:if, :is_eol, (:block,
+                                    (:line, 516, :none),
+                                    (:(=), :col_start_idx, :idx),
+                                    (:line, 517, :none),
+                                    (:(=), :state, 0)
+                                  ))
+                              ), (:block,
+                                (:line, 519, :none),
+                                (:if, (:call, :(==), 0, :state), (:block,
+                                    (:line, 520, :none),
+                                    (:if, :is_quote, (:block,
+                                        (:line, 521, :none),
+                                        (:(=), :state, (:if, (:&&, :allow_quote, (:call, :!, :was_cr)), 1, 2)),
+                                        (:line, 522, :none),
+                                        (:(=), :expct_col, false)
+                                      ), (:block,
+                                        (:line, 523, :none),
+                                        (:if, :is_dlm, (:block,
+                                            (:line, 524, :none),
+                                            (:if, (:call, :!, :ign_adj_dlm), (:block,
+                                                (:line, 525, :none),
+                                                (:(=), :expct_col, true),
+                                                (:line, 526, :none),
+                                                (:+=, :col, 1),
+                                                (:line, 527, :none),
+                                                (:call, :store_cell, :dh, (:call, :+, :nrows, 1), :col, false, :col_start_idx, (:call, :-, :idx, 2))
+                                              )),
+                                            (:line, 529, :none),
+                                            (:(=), :col_start_idx, :idx)
+                                          ), (:block,
+                                            (:line, 530, :none),
+                                            (:if, :is_eol, (:block,
+                                                (:line, 531, :none),
+                                                (:if, (:||, (:call, :>, :col, 0), (:call, :!, :skipblanks)), (:block,
+                                                    (:line, 532, :none),
+                                                    (:+=, :nrows, 1),
+                                                    (:line, 533, :none),
+                                                    (:if, :expct_col, (:block,
+                                                        (:line, 534, :none),
+                                                        (:+=, :col, 1),
+                                                        (:line, 535, :none),
+                                                        (:call, :store_cell, :dh, :nrows, :col, false, :col_start_idx, (:call, :-, :idx, (:if, :was_cr, 3, 2)))
+                                                      )),
+                                                    (:line, 537, :none),
+                                                    (:(=), :ncols, (:call, :max, :ncols, :col)),
+                                                    (:line, 538, :none),
+                                                    (:(=), :col, 0)
+                                                  )),
+                                                (:line, 540, :none),
+                                                (:(=), :col_start_idx, :idx),
+                                                (:line, 541, :none),
+                                                (:(=), :expct_col, false)
+                                              ), (:block,
+                                                (:line, 542, :none),
+                                                (:if, (:&&, :is_comment, :allow_comments), (:block,
+                                                    (:line, 543, :none),
+                                                    (:if, (:call, :>, :col, 0), (:block,
+                                                        (:line, 544, :none),
+                                                        (:+=, :nrows, 1),
+                                                        (:line, 545, :none),
+                                                        (:if, :expct_col, (:block,
+                                                            (:line, 546, :none),
+                                                            (:+=, :col, 1),
+                                                            (:line, 547, :none),
+                                                            (:call, :store_cell, :dh, :nrows, :col, false, :col_start_idx, (:call, :-, :idx, 2))
+                                                          )),
+                                                        (:line, 549, :none),
+                                                        (:(=), :ncols, (:call, :max, :ncols, :col)),
+                                                        (:line, 550, :none),
+                                                        (:(=), :col, 0)
+                                                      )),
+                                                    (:line, 552, :none),
+                                                    (:(=), :expct_col, false),
+                                                    (:line, 553, :none),
+                                                    (:(=), :state, 4)
+                                                  ), (:block,
+                                                    (:line, 554, :none),
+                                                    (:if, (:call, :!, :is_cr), (:block,
+                                                        (:line, 555, :none),
+                                                        (:(=), :state, 2),
+                                                        (:line, 556, :none),
+                                                        (:(=), :expct_col, false)
+                                                      ))
+                                                  ))
+                                              ))
+                                          ))
+                                      ))
+                                  ), (:block,
+                                    (:line, 558, :none),
+                                    (:if, (:call, :(==), 3, :state), (:block,
+                                        (:line, 559, :none),
+                                        (:if, (:&&, :is_quote, (:call, :!, :was_cr)), (:block,
+                                            (:line, 560, :none),
+                                            (:(=), :state, 1)
+                                          ), (:block,
+                                            (:line, 561, :none),
+                                            (:if, (:&&, :is_dlm, (:call, :!, :was_cr)), (:block,
+                                                (:line, 562, :none),
+                                                (:(=), :state, 0),
+                                                (:line, 563, :none),
+                                                (:+=, :col, 1),
+                                                (:line, 564, :none),
+                                                (:call, :store_cell, :dh, (:call, :+, :nrows, 1), :col, true, :col_start_idx, (:call, :-, :idx, 2)),
+                                                (:line, 565, :none),
+                                                (:(=), :col_start_idx, :idx),
+                                                (:line, 566, :none),
+                                                (:&&, (:call, :!, :ign_adj_dlm), (:(=), :expct_col, true))
+                                              ), (:block,
+                                                (:line, 567, :none),
+                                                (:if, :is_eol, (:block,
+                                                    (:line, 568, :none),
+                                                    (:+=, :nrows, 1),
+                                                    (:line, 569, :none),
+                                                    (:+=, :col, 1),
+                                                    (:line, 570, :none),
+                                                    (:call, :store_cell, :dh, :nrows, :col, true, :col_start_idx, (:call, :-, :idx, (:if, :was_cr, 3, 2))),
+                                                    (:line, 571, :none),
+                                                    (:(=), :col_start_idx, :idx),
+                                                    (:line, 572, :none),
+                                                    (:(=), :ncols, (:call, :max, :ncols, :col)),
+                                                    (:line, 573, :none),
+                                                    (:(=), :col, 0),
+                                                    (:line, 574, :none),
+                                                    (:(=), :state, 0)
+                                                  ), (:block,
+                                                    (:line, 575, :none),
+                                                    (:if, (:&&, :is_comment, (:&&, :allow_comments, (:call, :!, :was_cr))), (:block,
+                                                        (:line, 576, :none),
+                                                        (:+=, :nrows, 1),
+                                                        (:line, 577, :none),
+                                                        (:+=, :col, 1),
+                                                        (:line, 578, :none),
+                                                        (:call, :store_cell, :dh, :nrows, :col, true, :col_start_idx, (:call, :-, :idx, 2)),
+                                                        (:line, 579, :none),
+                                                        (:(=), :ncols, (:call, :max, :ncols, :col)),
+                                                        (:line, 580, :none),
+                                                        (:(=), :col, 0),
+                                                        (:line, 581, :none),
+                                                        (:(=), :state, 4)
+                                                      ), (:block,
+                                                        (:line, 582, :none),
+                                                        (:if, (:||, (:&&, :is_cr, :was_cr), (:call, :!, :is_cr)), (:block,
+                                                            (:line, 583, :none),
+                                                            (:(=), :error_str, (:call, :escape_string, (:string, "unexpected character '", (:call, :Char, :val), "' after quoted field at row ", (:call, :+, :nrows, 1), " column ", (:call, :+, :col, 1)))),
+                                                            (:line, 584, :none),
+                                                            (:break,)
+                                                          ))
+                                                      ))
+                                                  ))
+                                              ))
+                                          ))
+                                      ), (:block,
+                                        (:line, 586, :none),
+                                        (:if, (:call, :(==), 5, :state), (:block,
+                                            (:line, 587, :none),
+                                            (:if, :is_eol, (:block,
+                                                (:line, 588, :none),
+                                                (:(=), :col_start_idx, :idx),
+                                                (:line, 589, :none),
+                                                (:-=, :skipstart, 1),
+                                                (:line, 590, :none),
+                                                (:&&, (:call, :(==), 0, :skipstart), (:(=), :state, 0))
+                                              ))
+                                          ))
+                                      ))
+                                  ))
+                              ))
+                          ))
+                      )),
+                    (:line, 593, :none),
+                    (:(=), :was_cr, :is_cr)
+                  )),
+                (:line, 596, :none),
+                (:if, (:call, :isempty, :error_str), (:block,
+                    (:line, 597, :none),
+                    (:if, (:call, :(==), 1, :state), (:block,
+                        (:line, 598, :none),
+                        (:(=), :error_str, (:string, "truncated column at row ", (:call, :+, :nrows, 1), " column ", (:call, :+, :col, 1)))
+                      ), (:block,
+                        (:line, 599, :none),
+                        (:if, (:||, (:call, :(==), 2, :state), (:||, (:call, :(==), 3, :state), (:&&, (:call, :(==), 0, :state), :is_dlm))), (:block,
+                            (:line, 600, :none),
+                            (:+=, :col, 1),
+                            (:line, 601, :none),
+                            (:+=, :nrows, 1),
+                            (:line, 602, :none),
+                            (:call, :store_cell, :dh, :nrows, :col, (:call, :(==), 3, :state), :col_start_idx, (:call, :-, :idx, 1)),
+                            (:line, 603, :none),
+                            (:(=), :ncols, (:call, :max, :ncols, :col))
+                          ))
+                      ))
+                  ))
+              ), :ex, (:block,
+                (:line, 607, :none),
+                (:if, (:&&, (:call, :isa, :ex, :TypeError), (:call, :(==), (:., :ex, (:quote, #QuoteNode
+                          :func
+                        )), (:quote, #QuoteNode
+                        :store_cell
+                      ))), (:block,
+                    (:line, 608, :none),
+                    (:call, :rethrow, :ex)
+                  ), (:block,
+                    (:line, 610, :none),
+                    (:call, :error, (:string, "at row ", (:call, :+, :nrows, 1), ", column ", :col, " : ", :ex, ")"))
+                  ))
+              )),
+            (:line, 613, :none),
+            (:&&, (:call, :!, (:call, :isempty, :error_str)), (:call, :error, :error_str)),
+            (:line, 615, :none),
+            (:return, (:tuple, :nrows, :ncols))
+          )),
+        (:line, 618, :none),
+        (:(=), (:call, :readcsv, (:parameters, (:..., :opts)), :io), (:block,
+            (:line, 618, :none),
+            (:call, :readdlm, (:parameters, (:..., :opts)), :io, ',')
+          )),
+        (:line, 619, :none),
+        (:(=), (:call, :readcsv, (:parameters, (:..., :opts)), :io, (:(::), :T, :Type)), (:block,
+            (:line, 619, :none),
+            (:call, :readdlm, (:parameters, (:..., :opts)), :io, ',', :T)
+          )),
+        (:line, 622, :none),
+        (:(=), (:call, :writedlm_cell, (:(::), :io, :IO), (:(::), :elt, :AbstractFloat), :dlm, :quotes), (:block,
+            (:line, 622, :none),
+            (:call, :print_shortest, :io, :elt)
+          )),
+        (:line, 623, :none),
+        (:function, (:call, (:curly, :writedlm_cell, :T), (:(::), :io, :IO), (:(::), :elt, :AbstractString), (:(::), :dlm, :T), (:(::), :quotes, :Bool)), (:block,
+            (:line, 624, :none),
+            (:if, (:&&, :quotes, (:&&, (:call, :!, (:call, :isempty, :elt)), (:||, (:call, :in, '"', :elt), (:||, (:call, :in, '\n', :elt), (:if, (:<:, :T, :Char), (:call, :in, :dlm, :elt), (:call, :contains, :elt, :dlm)))))), (:block,
+                (:line, 625, :none),
+                (:call, :print, :io, '"', (:call, :replace, :elt, (:macrocall, Symbol("@r_str"), "\""), "\"\""), '"')
+              ), (:block,
+                (:line, 627, :none),
+                (:call, :print, :io, :elt)
+              ))
+          )),
+        (:line, 630, :none),
+        (:(=), (:call, :writedlm_cell, (:(::), :io, :IO), :elt, :dlm, :quotes), (:block,
+            (:line, 630, :none),
+            (:call, :print, :io, :elt)
+          )),
+        (:line, 631, :none),
+        (:function, (:call, :writedlm, (:parameters, (:..., :opts)), (:(::), :io, :IO), (:(::), :a, :AbstractMatrix), :dlm), (:block,
+            (:line, 632, :none),
+            (:(=), :optsd, (:call, :val_opts, :opts)),
+            (:line, 633, :none),
+            (:(=), :quotes, (:call, :get, :optsd, (:quote, #QuoteNode
+                  :quotes
+                ), true)),
+            (:line, 634, :none),
+            (:(=), :pb, (:call, :PipeBuffer)),
+            (:line, 635, :none),
+            (:(=), :lastc, (:call, :last, (:call, :indices, :a, 2))),
+            (:line, 636, :none),
+            (:for, (:(=), :i, (:call, :indices, :a, 1)), (:block,
+                (:line, 637, :none),
+                (:for, (:(=), :j, (:call, :indices, :a, 2)), (:block,
+                    (:line, 638, :none),
+                    (:call, :writedlm_cell, :pb, (:ref, :a, :i, :j), :dlm, :quotes),
+                    (:line, 639, :none),
+                    (:if, (:call, :(==), :j, :lastc), (:call, :write, :pb, '\n'), (:call, :print, :pb, :dlm))
+                  )),
+                (:line, 641, :none),
+                (:&&, (:call, :>, (:call, :nb_available, :pb), (:call, :*, 16, 1024)), (:call, :write, :io, (:call, :take!, :pb)))
+              )),
+            (:line, 643, :none),
+            (:call, :write, :io, (:call, :take!, :pb)),
+            (:line, 644, :none),
+            :nothing
+          )),
+        (:line, 647, :none),
+        (:(=), (:call, :writedlm, (:parameters, (:..., :opts)), (:(::), :io, :IO), (:(::), :a, (:curly, :AbstractArray, (:<:, :Any), 0)), :dlm), (:block,
+            (:line, 647, :none),
+            (:call, :writedlm, (:parameters, (:..., :opts)), :io, (:call, :reshape, :a, 1), :dlm)
+          )),
+        (:line, 650, :none),
+        (:function, (:call, :writedlm_row, (:(::), :io, :IO), :row, :dlm, :quotes), (:block,
+            (:line, 651, :none),
+            (:(=), :state, (:call, :start, :row)),
+            (:line, 652, :none),
+            (:while, (:call, :!, (:call, :done, :row, :state)), (:block,
+                (:line, 653, :none),
+                (:(=), (:tuple, :x, :state), (:call, :next, :row, :state)),
+                (:line, 654, :none),
+                (:call, :writedlm_cell, :io, :x, :dlm, :quotes),
+                (:line, 655, :none),
+                (:if, (:call, :done, :row, :state), (:call, :write, :io, '\n'), (:call, :print, :io, :dlm))
+              ))
+          )),
+        (:line, 663, :none),
+        (:function, (:call, :writedlm_row, (:(::), :io, :IO), (:(::), :row, (:curly, :Union, :Number, :AbstractString)), :dlm, :quotes), (:block,
+            (:line, 664, :none),
+            (:call, :writedlm_cell, :io, :row, :dlm, :quotes),
+            (:line, 665, :none),
+            (:call, :write, :io, '\n')
+          )),
+        (:line, 669, :none),
+        (:function, (:call, :writedlm, (:parameters, (:..., :opts)), (:(::), :io, :IO), :itr, :dlm), (:block,
+            (:line, 670, :none),
+            (:(=), :optsd, (:call, :val_opts, :opts)),
+            (:line, 671, :none),
+            (:(=), :quotes, (:call, :get, :optsd, (:quote, #QuoteNode
+                  :quotes
+                ), true)),
+            (:line, 672, :none),
+            (:(=), :pb, (:call, :PipeBuffer)),
+            (:line, 673, :none),
+            (:for, (:(=), :row, :itr), (:block,
+                (:line, 674, :none),
+                (:call, :writedlm_row, :pb, :row, :dlm, :quotes),
+                (:line, 675, :none),
+                (:&&, (:call, :>, (:call, :nb_available, :pb), (:call, :*, 16, 1024)), (:call, :write, :io, (:call, :take!, :pb)))
+              )),
+            (:line, 677, :none),
+            (:call, :write, :io, (:call, :take!, :pb)),
+            (:line, 678, :none),
+            :nothing
+          )),
+        (:line, 681, :none),
+        (:function, (:call, :writedlm, (:parameters, (:..., :opts)), (:(::), :fname, :AbstractString), :a, :dlm), (:block,
+            (:line, 682, :none),
+            (:call, :open, (:->, (:tuple, :io), (:block,
+                  (:line, 683, :none),
+                  (:call, :writedlm, (:parameters, (:..., :opts)), :io, :a, :dlm)
+                )), :fname, "w")
+          )),
+        (:line, 687, :none),
+        (:macrocall, :(Core.@doc), "    writedlm(f, A, delim='\\t'; opts)\n\nWrite `A` (a vector, matrix, or an iterable collection of iterable rows) as text to `f`\n(either a filename string or an `IO` stream) using the given delimiter\n`delim` (which defaults to tab, but can be any printable Julia object, typically a `Char` or\n`AbstractString`).\n\nFor example, two vectors `x` and `y` of the same length can be written as two columns of\ntab-delimited text to `f` by either `writedlm(f, [x y])` or by `writedlm(f, zip(x, y))`.\n", (:(=), (:call, :writedlm, (:parameters, (:..., :opts)), :io, :a), (:block,
+              (:line, 698, :none),
+              (:call, :writedlm, (:parameters, (:..., :opts)), :io, :a, '\t')
+            ))),
+        (:line, 700, :none),
+        (:macrocall, :(Core.@doc), "    writecsv(filename, A; opts)\n\nEquivalent to [`writedlm`](@ref) with `delim` set to comma.\n", (:(=), (:call, :writecsv, (:parameters, (:..., :opts)), :io, :a), (:block,
+              (:line, 705, :none),
+              (:call, :writedlm, (:parameters, (:..., :opts)), :io, :a, ',')
+            ))),
+        (:line, 707, :none),
+        (:(=), (:call, :show, (:(::), :io, :IO), (:(::), (:macrocall, Symbol("@MIME_str"), "text/csv")), :a), (:block,
+            (:line, 707, :none),
+            (:call, :writedlm, :io, :a, ',')
+          )),
+        (:line, 708, :none),
+        (:(=), (:call, :show, (:(::), :io, :IO), (:(::), (:macrocall, Symbol("@MIME_str"), "text/tab-separated-values")), :a), (:block,
+            (:line, 708, :none),
+            (:call, :writedlm, :io, :a, '\t')
+          ))
+      ))
+  ))

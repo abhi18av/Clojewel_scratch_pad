@@ -1,0 +1,536 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:type, false, (:<:, :IntSet, (:curly, :AbstractSet, :Int)), (:block,
+        (:line, 4, :none),
+        (:(::), :bits, :BitVector),
+        (:line, 5, :none),
+        (:(=), (:call, :IntSet), (:block,
+            (:line, 5, :none),
+            (:call, :new, (:call, :falses, 256))
+          ))
+      )),
+    (:line, 7, :none),
+    (:(=), (:call, :IntSet, :itr), (:block,
+        (:line, 7, :none),
+        (:call, :union!, (:call, :IntSet), :itr)
+      )),
+    (:line, 9, :none),
+    (:(=), (:call, :eltype, (:(::), (:curly, :Type, :IntSet))), (:block,
+        (:line, 9, :none),
+        :Int
+      )),
+    (:line, 10, :none),
+    (:(=), (:call, :similar, (:(::), :s, :IntSet)), (:block,
+        (:line, 10, :none),
+        (:call, :IntSet)
+      )),
+    (:line, 11, :none),
+    (:(=), (:call, :copy, (:(::), :s1, :IntSet)), (:block,
+        (:line, 11, :none),
+        (:call, :copy!, (:call, :IntSet), :s1)
+      )),
+    (:line, 12, :none),
+    (:function, (:call, :copy!, (:(::), :dest, :IntSet), (:(::), :src, :IntSet)), (:block,
+        (:line, 13, :none),
+        (:call, :resize!, (:., :dest, (:quote, #QuoteNode
+              :bits
+            )), (:call, :length, (:., :src, (:quote, #QuoteNode
+                :bits
+              )))),
+        (:line, 14, :none),
+        (:call, :copy!, (:., :dest, (:quote, #QuoteNode
+              :bits
+            )), (:., :src, (:quote, #QuoteNode
+              :bits
+            ))),
+        (:line, 15, :none),
+        :dest
+      )),
+    (:line, 17, :none),
+    (:(=), (:call, :eltype, (:(::), :s, :IntSet)), (:block,
+        (:line, 17, :none),
+        :Int
+      )),
+    (:line, 18, :none),
+    (:(=), (:call, :sizehint!, (:(::), :s, :IntSet), (:(::), :n, :Integer)), (:block,
+        (:line, 18, :none),
+        (:block,
+          (:call, :_resize0!, (:., :s, (:quote, #QuoteNode
+                :bits
+              )), (:call, :max, :n, (:call, :length, (:., :s, (:quote, #QuoteNode
+                    :bits
+                  ))))),
+          :s
+        )
+      )),
+    (:line, 21, :none),
+    (:macrocall, Symbol("@inline"), (:function, (:call, :_setint!, (:(::), :s, :IntSet), (:(::), :idx, :Integer), (:(::), :b, :Bool)), (:block,
+          (:line, 22, :none),
+          (:if, (:call, :>, :idx, (:call, :length, (:., :s, (:quote, #QuoteNode
+                    :bits
+                  )))), (:block,
+              (:line, 23, :none),
+              (:||, :b, (:return, :s)),
+              (:line, 24, :none),
+              (:(=), :newlen, (:call, :+, :idx, (:call, :>>, :idx, 1))),
+              (:line, 25, :none),
+              (:call, :_resize0!, (:., :s, (:quote, #QuoteNode
+                    :bits
+                  )), (:call, :ifelse, (:call, :<, :newlen, 0), (:call, :typemax, :Int), :newlen))
+            )),
+          (:line, 27, :none),
+          (:macrocall, Symbol("@inbounds"), (:(=), (:ref, (:., :s, (:quote, #QuoteNode
+                    :bits
+                  )), :idx), :b)),
+          (:line, 28, :none),
+          :s
+        ))),
+    (:line, 33, :none),
+    (:macrocall, Symbol("@inline"), (:function, (:call, :_resize0!, (:(::), :b, :BitVector), (:(::), :newlen, :Integer)), (:block,
+          (:line, 34, :none),
+          (:(=), :len, (:call, :length, :b)),
+          (:line, 35, :none),
+          (:call, :resize!, :b, :newlen),
+          (:line, 36, :none),
+          (:&&, (:call, :<, :len, :newlen), (:macrocall, Symbol("@inbounds"), (:(=), (:ref, :b, (:(:), (:call, :+, :len, 1), :newlen)), false))),
+          (:line, 37, :none),
+          :b
+        ))),
+    (:line, 42, :none),
+    (:function, (:call, :_matched_map!, :f, (:(::), :b1, :BitArray), (:(::), :b2, :BitArray)), (:block,
+        (:line, 43, :none),
+        (:(=), (:tuple, :l1, :l2), (:tuple, (:call, :length, :b1), (:call, :length, :b2))),
+        (:line, 44, :none),
+        (:if, (:call, :(==), :l1, :l2), (:block,
+            (:line, 45, :none),
+            (:call, :map!, :f, :b1, :b1, :b2)
+          ), (:block,
+            (:line, 46, :none),
+            (:if, (:call, :<, :l1, :l2), (:block,
+                (:line, 47, :none),
+                (:call, :_resize0!, :b1, :l2),
+                (:line, 48, :none),
+                (:call, :map!, :f, :b1, :b1, :b2)
+              ), (:block,
+                (:line, 49, :none),
+                (:if, (:call, :>, :l1, :l2), (:block,
+                    (:line, 50, :none),
+                    (:if, (:comparison, (:call, :f, false, false), :(==), (:call, :f, true, false), :(==), false), (:block,
+                        (:line, 52, :none),
+                        (:call, :resize!, :b1, :l2),
+                        (:line, 53, :none),
+                        (:call, :map!, :f, :b1, :b1, :b2)
+                      ), (:block,
+                        (:line, 56, :none),
+                        (:call, :_resize0!, :b2, :l1),
+                        (:line, 57, :none),
+                        (:call, :map!, :f, :b1, :b1, :b2),
+                        (:line, 58, :none),
+                        (:call, :resize!, :b2, :l2)
+                      ))
+                  ))
+              ))
+          )),
+        (:line, 61, :none),
+        :b1
+      )),
+    (:line, 64, :none),
+    (:macrocall, Symbol("@noinline"), (:(=), (:call, :_throw_intset_bounds_err), (:block,
+          (:line, 64, :none),
+          (:call, :throw, (:call, :ArgumentError, "elements of IntSet must be between 1 and typemax(Int)"))
+        ))),
+    (:line, 65, :none),
+    (:macrocall, Symbol("@noinline"), (:(=), (:call, :_throw_keyerror, :n), (:block,
+          (:line, 65, :none),
+          (:call, :throw, (:call, :KeyError, :n))
+        ))),
+    (:line, 67, :none),
+    (:macrocall, Symbol("@inline"), (:function, (:call, :push!, (:(::), :s, :IntSet), (:(::), :n, :Integer)), (:block,
+          (:line, 68, :none),
+          (:||, (:comparison, 0, :<, :n, :(<=), (:call, :typemax, :Int)), (:call, :_throw_intset_bounds_err)),
+          (:line, 69, :none),
+          (:call, :_setint!, :s, :n, true)
+        ))),
+    (:line, 71, :none),
+    (:(=), (:call, :push!, (:(::), :s, :IntSet), (:..., (:(::), :ns, :Integer))), (:block,
+        (:line, 71, :none),
+        (:block,
+          (:for, (:(=), :n, :ns), (:block,
+              (:line, 71, :none),
+              (:call, :push!, :s, :n)
+            )),
+          :s
+        )
+      )),
+    (:line, 73, :none),
+    (:macrocall, Symbol("@inline"), (:function, (:call, :pop!, (:(::), :s, :IntSet)), (:block,
+          (:line, 74, :none),
+          (:call, :pop!, :s, (:call, :last, :s))
+        ))),
+    (:line, 76, :none),
+    (:macrocall, Symbol("@inline"), (:function, (:call, :pop!, (:(::), :s, :IntSet), (:(::), :n, :Integer)), (:block,
+          (:line, 77, :none),
+          (:if, (:call, :in, :n, :s), (:block,
+              (:call, :_delete!, :s, :n),
+              :n
+            ), (:call, :_throw_keyerror, :n))
+        ))),
+    (:line, 79, :none),
+    (:macrocall, Symbol("@inline"), (:function, (:call, :pop!, (:(::), :s, :IntSet), (:(::), :n, :Integer), :default), (:block,
+          (:line, 80, :none),
+          (:if, (:call, :in, :n, :s), (:block,
+              (:call, :_delete!, :s, :n),
+              :n
+            ), :default)
+        ))),
+    (:line, 82, :none),
+    (:macrocall, Symbol("@inline"), (:(=), (:call, :_delete!, (:(::), :s, :IntSet), (:(::), :n, :Integer)), (:block,
+          (:line, 82, :none),
+          (:call, :_setint!, :s, :n, false)
+        ))),
+    (:line, 83, :none),
+    (:macrocall, Symbol("@inline"), (:(=), (:call, :delete!, (:(::), :s, :IntSet), (:(::), :n, :Integer)), (:block,
+          (:line, 83, :none),
+          (:if, (:call, :<, :n, 0), :s, (:call, :_delete!, :s, :n))
+        ))),
+    (:line, 84, :none),
+    (:(=), (:call, :shift!, (:(::), :s, :IntSet)), (:block,
+        (:line, 84, :none),
+        (:call, :pop!, :s, (:call, :first, :s))
+      )),
+    (:line, 86, :none),
+    (:(=), (:call, :empty!, (:(::), :s, :IntSet)), (:block,
+        (:line, 86, :none),
+        (:block,
+          (:call, :fill!, (:., :s, (:quote, #QuoteNode
+                :bits
+              )), false),
+          :s
+        )
+      )),
+    (:line, 87, :none),
+    (:(=), (:call, :isempty, (:(::), :s, :IntSet)), (:block,
+        (:line, 87, :none),
+        (:call, :!, (:call, :any, (:., :s, (:quote, #QuoteNode
+                :bits
+              ))))
+      )),
+    (:line, 91, :none),
+    (:(=), (:call, :union, (:(::), :s, :IntSet)), (:block,
+        (:line, 91, :none),
+        (:call, :copy, :s)
+      )),
+    (:line, 92, :none),
+    (:(=), (:call, :union, (:(::), :s1, :IntSet), (:(::), :s2, :IntSet)), (:block,
+        (:line, 92, :none),
+        (:call, :union!, (:call, :copy, :s1), :s2)
+      )),
+    (:line, 93, :none),
+    (:(=), (:call, :union, (:(::), :s1, :IntSet), (:..., (:(::), :ss, :IntSet))), (:block,
+        (:line, 93, :none),
+        (:call, :union, :s1, (:call, :union, (:..., :ss)))
+      )),
+    (:line, 94, :none),
+    (:(=), (:call, :union, (:(::), :s, :IntSet), :ns), (:block,
+        (:line, 94, :none),
+        (:call, :union!, (:call, :copy, :s), :ns)
+      )),
+    (:line, 95, :none),
+    (:(=), (:call, :union!, (:(::), :s, :IntSet), :ns), (:block,
+        (:line, 95, :none),
+        (:block,
+          (:for, (:(=), :n, :ns), (:block,
+              (:line, 95, :none),
+              (:call, :push!, :s, :n)
+            )),
+          :s
+        )
+      )),
+    (:line, 96, :none),
+    (:function, (:call, :union!, (:(::), :s1, :IntSet), (:(::), :s2, :IntSet)), (:block,
+        (:line, 97, :none),
+        (:call, :_matched_map!, :|, (:., :s1, (:quote, #QuoteNode
+              :bits
+            )), (:., :s2, (:quote, #QuoteNode
+              :bits
+            ))),
+        (:line, 98, :none),
+        :s1
+      )),
+    (:line, 101, :none),
+    (:(=), (:call, :intersect, (:(::), :s1, :IntSet)), (:block,
+        (:line, 101, :none),
+        (:call, :copy, :s1)
+      )),
+    (:line, 102, :none),
+    (:(=), (:call, :intersect, (:(::), :s1, :IntSet), (:..., (:(::), :ss, :IntSet))), (:block,
+        (:line, 102, :none),
+        (:call, :intersect, :s1, (:call, :intersect, (:..., :ss)))
+      )),
+    (:line, 103, :none),
+    (:function, (:call, :intersect, (:(::), :s1, :IntSet), :ns), (:block,
+        (:line, 104, :none),
+        (:(=), :s, (:call, :IntSet)),
+        (:line, 105, :none),
+        (:for, (:(=), :n, :ns), (:block,
+            (:line, 106, :none),
+            (:&&, (:call, :in, :n, :s1), (:call, :push!, :s, :n))
+          )),
+        (:line, 108, :none),
+        :s
+      )),
+    (:line, 110, :none),
+    (:(=), (:call, :intersect, (:(::), :s1, :IntSet), (:(::), :s2, :IntSet)), (:block,
+        (:line, 110, :none),
+        (:if, (:call, :(>=), (:call, :length, (:., :s1, (:quote, #QuoteNode
+                  :bits
+                ))), (:call, :length, (:., :s2, (:quote, #QuoteNode
+                  :bits
+                )))), (:call, :intersect!, (:call, :copy, :s1), :s2), (:call, :intersect!, (:call, :copy, :s2), :s1))
+      )),
+    (:line, 112, :none),
+    (:macrocall, :(Core.@doc), "    intersect!(s1::IntSet, s2::IntSet)\n\nIntersects sets `s1` and `s2` and overwrites the set `s1` with the result. If needed, `s1`\nwill be expanded to the size of `s2`.\n", (:function, (:call, :intersect!, (:(::), :s1, :IntSet), (:(::), :s2, :IntSet)), (:block,
+          (:line, 119, :none),
+          (:call, :_matched_map!, :&, (:., :s1, (:quote, #QuoteNode
+                :bits
+              )), (:., :s2, (:quote, #QuoteNode
+                :bits
+              ))),
+          (:line, 120, :none),
+          :s1
+        ))),
+    (:line, 123, :none),
+    (:(=), (:call, :setdiff, (:(::), :s, :IntSet), :ns), (:block,
+        (:line, 123, :none),
+        (:call, :setdiff!, (:call, :copy, :s), :ns)
+      )),
+    (:line, 124, :none),
+    (:(=), (:call, :setdiff!, (:(::), :s, :IntSet), :ns), (:block,
+        (:line, 124, :none),
+        (:block,
+          (:for, (:(=), :n, :ns), (:block,
+              (:line, 124, :none),
+              (:call, :_delete!, :s, :n)
+            )),
+          :s
+        )
+      )),
+    (:line, 125, :none),
+    (:function, (:call, :setdiff!, (:(::), :s1, :IntSet), (:(::), :s2, :IntSet)), (:block,
+        (:line, 126, :none),
+        (:call, :_matched_map!, :>, (:., :s1, (:quote, #QuoteNode
+              :bits
+            )), (:., :s2, (:quote, #QuoteNode
+              :bits
+            ))),
+        (:line, 127, :none),
+        :s1
+      )),
+    (:line, 130, :none),
+    (:(=), (:call, :symdiff, (:(::), :s, :IntSet), :ns), (:block,
+        (:line, 130, :none),
+        (:call, :symdiff!, (:call, :copy, :s), :ns)
+      )),
+    (:line, 131, :none),
+    (:macrocall, :(Core.@doc), "    symdiff!(s, itr)\n\nFor each element in `itr`, destructively toggle its inclusion in set `s`.\n", (:(=), (:call, :symdiff!, (:(::), :s, :IntSet), :ns), (:block,
+          (:line, 136, :none),
+          (:block,
+            (:for, (:(=), :n, :ns), (:block,
+                (:line, 136, :none),
+                (:call, :symdiff!, :s, :n)
+              )),
+            :s
+          )
+        ))),
+    (:line, 137, :none),
+    (:macrocall, :(Core.@doc), "    symdiff!(s, n)\n\nThe set `s` is destructively modified to toggle the inclusion of integer `n`.\n", (:function, (:call, :symdiff!, (:(::), :s, :IntSet), (:(::), :n, :Integer)), (:block,
+          (:line, 143, :none),
+          (:||, (:comparison, 0, :(<=), :n, :<, (:call, :typemax, :Int)), (:call, :_throw_intset_bounds_err)),
+          (:line, 144, :none),
+          (:(=), :val, (:call, :!, (:call, :in, :n, :s))),
+          (:line, 145, :none),
+          (:call, :_setint!, :s, :n, :val),
+          (:line, 146, :none),
+          :s
+        ))),
+    (:line, 148, :none),
+    (:function, (:call, :symdiff!, (:(::), :s1, :IntSet), (:(::), :s2, :IntSet)), (:block,
+        (:line, 149, :none),
+        (:call, :_matched_map!, :xor, (:., :s1, (:quote, #QuoteNode
+              :bits
+            )), (:., :s2, (:quote, #QuoteNode
+              :bits
+            ))),
+        (:line, 150, :none),
+        :s1
+      )),
+    (:line, 153, :none),
+    (:macrocall, Symbol("@inline"), (:function, (:call, :in, (:(::), :n, :Integer), (:(::), :s, :IntSet)), (:block,
+          (:line, 154, :none),
+          (:if, (:comparison, 1, :(<=), :n, :(<=), (:call, :length, (:., :s, (:quote, #QuoteNode
+                    :bits
+                  )))), (:block,
+              (:line, 155, :none),
+              (:macrocall, Symbol("@inbounds"), (:(=), :b, (:ref, (:., :s, (:quote, #QuoteNode
+                        :bits
+                      )), :n)))
+            ), (:block,
+              (:line, 157, :none),
+              (:(=), :b, false)
+            )),
+          (:line, 159, :none),
+          :b
+        ))),
+    (:line, 163, :none),
+    (:(=), (:call, :start, (:(::), :s, :IntSet)), (:block,
+        (:line, 163, :none),
+        (:ref, (:call, :next, :s, 0), 2)
+      )),
+    (:line, 164, :none),
+    (:function, (:call, :next, (:(::), :s, :IntSet), :i), (:block,
+        (:line, 165, :none),
+        (:(=), :nextidx, (:if, (:call, :(==), :i, (:call, :typemax, :Int)), 0, (:call, :findnext, (:., :s, (:quote, #QuoteNode
+                  :bits
+                )), (:call, :+, :i, 1)))),
+        (:line, 166, :none),
+        (:tuple, :i, :nextidx)
+      )),
+    (:line, 168, :none),
+    (:(=), (:call, :done, (:(::), :s, :IntSet), :i), (:block,
+        (:line, 168, :none),
+        (:call, :(<=), :i, 0)
+      )),
+    (:line, 171, :none),
+    (:macrocall, Symbol("@noinline"), (:(=), (:call, :_throw_intset_notempty_error), (:block,
+          (:line, 171, :none),
+          (:call, :throw, (:call, :ArgumentError, "collection must be non-empty"))
+        ))),
+    (:line, 172, :none),
+    (:function, (:call, :last, (:(::), :s, :IntSet)), (:block,
+        (:line, 173, :none),
+        (:(=), :idx, (:call, :findprev, (:., :s, (:quote, #QuoteNode
+                :bits
+              )), (:call, :length, (:., :s, (:quote, #QuoteNode
+                  :bits
+                ))))),
+        (:line, 174, :none),
+        (:if, (:call, :(==), :idx, 0), (:call, :_throw_intset_notempty_error), :idx)
+      )),
+    (:line, 177, :none),
+    (:(=), (:call, :length, (:(::), :s, :IntSet)), (:block,
+        (:line, 177, :none),
+        (:call, :sum, (:., :s, (:quote, #QuoteNode
+              :bits
+            )))
+      )),
+    (:line, 179, :none),
+    (:function, (:call, :show, (:(::), :io, :IO), (:(::), :s, :IntSet)), (:block,
+        (:line, 180, :none),
+        (:call, :print, :io, "IntSet(["),
+        (:line, 181, :none),
+        (:(=), :first, true),
+        (:line, 182, :none),
+        (:for, (:(=), :n, :s), (:block,
+            (:line, 183, :none),
+            (:&&, (:call, :!, :first), (:call, :print, :io, ", ")),
+            (:line, 184, :none),
+            (:call, :print, :io, :n),
+            (:line, 185, :none),
+            (:(=), :first, false)
+          )),
+        (:line, 187, :none),
+        (:call, :print, :io, "])")
+      )),
+    (:line, 190, :none),
+    (:function, (:call, :(==), (:(::), :s1, :IntSet), (:(::), :s2, :IntSet)), (:block,
+        (:line, 191, :none),
+        (:(=), :l1, (:call, :length, (:., :s1, (:quote, #QuoteNode
+                :bits
+              )))),
+        (:line, 192, :none),
+        (:(=), :l2, (:call, :length, (:., :s2, (:quote, #QuoteNode
+                :bits
+              )))),
+        (:line, 194, :none),
+        (:&&, (:call, :(==), :l1, :l2), (:return, (:call, :(==), (:., :s1, (:quote, #QuoteNode
+                  :bits
+                )), (:., :s2, (:quote, #QuoteNode
+                  :bits
+                ))))),
+        (:line, 197, :none),
+        (:if, (:call, :<, :l1, :l2), (:block,
+            (:line, 198, :none),
+            (:(=), (:tuple, :s2, :s1), (:tuple, :s1, :s2)),
+            (:line, 199, :none),
+            (:(=), (:tuple, :l2, :l1), (:tuple, :l1, :l2))
+          )),
+        (:line, 202, :none),
+        (:(=), :c1, (:., (:., :s1, (:quote, #QuoteNode
+                :bits
+              )), (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 203, :none),
+        (:(=), :c2, (:., (:., :s2, (:quote, #QuoteNode
+                :bits
+              )), (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 204, :none),
+        (:macrocall, Symbol("@inbounds"), (:for, (:(=), :i, (:(:), 1, (:call, :length, :c2))), (:block,
+              (:line, 205, :none),
+              (:||, (:call, :(==), (:ref, :c1, :i), (:ref, :c2, :i)), (:return, false))
+            ))),
+        (:line, 208, :none),
+        (:macrocall, Symbol("@inbounds"), (:for, (:(=), :i, (:(:), (:call, :+, (:call, :length, :c2), 1), (:call, :length, :c1))), (:block,
+              (:line, 209, :none),
+              (:||, (:call, :(==), (:ref, :c1, :i), (:call, :UInt64, 0)), (:return, false))
+            ))),
+        (:line, 211, :none),
+        (:return, true)
+      )),
+    (:line, 214, :none),
+    (:(=), (:call, :issubset, (:(::), :a, :IntSet), (:(::), :b, :IntSet)), (:block,
+        (:line, 214, :none),
+        (:call, :isequal, :a, (:call, :intersect, :a, :b))
+      )),
+    (:line, 215, :none),
+    (:(=), (:call, :<, (:(::), :a, :IntSet), (:(::), :b, :IntSet)), (:block,
+        (:line, 215, :none),
+        (:&&, (:call, :(<=), :a, :b), (:call, :!, (:call, :isequal, :a, :b)))
+      )),
+    (:line, 216, :none),
+    (:(=), (:call, :(<=), (:(::), :a, :IntSet), (:(::), :b, :IntSet)), (:block,
+        (:line, 216, :none),
+        (:call, :issubset, :a, :b)
+      )),
+    (:line, 218, :none),
+    (:const, (:(=), :hashis_seed, (:if, (:call, :(===), :UInt, :UInt64), 0x88989f1fc7dea67d, 0xc7dea67d))),
+    (:line, 219, :none),
+    (:function, (:call, :hash, (:(::), :s, :IntSet), (:(::), :h, :UInt)), (:block,
+        (:line, 220, :none),
+        (:⊻=, :h, :hashis_seed),
+        (:line, 221, :none),
+        (:(=), :bc, (:., (:., :s, (:quote, #QuoteNode
+                :bits
+              )), (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 222, :none),
+        (:(=), :i, (:call, :length, :bc)),
+        (:line, 223, :none),
+        (:while, (:&&, (:call, :>, :i, 0), (:call, :(==), (:ref, :bc, :i), (:call, :UInt64, 0))), (:block,
+            (:line, 225, :none),
+            (:-=, :i, 1)
+          )),
+        (:line, 227, :none),
+        (:while, (:call, :>, :i, 0), (:block,
+            (:line, 228, :none),
+            (:(=), :h, (:call, :hash, (:ref, :bc, :i), :h)),
+            (:line, 229, :none),
+            (:-=, :i, 1)
+          )),
+        (:line, 231, :none),
+        :h
+      ))
+  ))

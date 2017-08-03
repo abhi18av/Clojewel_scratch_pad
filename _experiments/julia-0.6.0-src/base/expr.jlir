@@ -1,0 +1,445 @@
+(:quote, (:block,
+    (:line, 5, :none),
+    (:macrocall, :(Core.@doc), "    gensym([tag])\n\nGenerates a symbol which will not conflict with other variable names.\n", (:(=), (:call, :gensym), (:block,
+          (:line, 10, :none),
+          (:call, :ccall, (:quote, #QuoteNode
+              :jl_gensym
+            ), (:curly, :Ref, :Symbol), (:tuple,))
+        ))),
+    (:line, 12, :none),
+    (:(=), (:call, :gensym, (:(::), :s, :String)), (:block,
+        (:line, 12, :none),
+        (:call, :ccall, (:quote, #QuoteNode
+            :jl_tagged_gensym
+          ), (:curly, :Ref, :Symbol), (:tuple, (:curly, :Ptr, :UInt8), :Int32), :s, (:call, :sizeof, :s))
+      )),
+    (:line, 14, :none),
+    (:(=), (:call, :gensym, (:..., (:(::), :ss, :String))), (:block,
+        (:line, 14, :none),
+        (:call, :map, :gensym, :ss)
+      )),
+    (:line, 15, :none),
+    (:(=), (:call, :gensym, (:(::), :s, :Symbol)), (:block,
+        (:line, 15, :none),
+        (:call, :ccall, (:quote, #QuoteNode
+            :jl_tagged_gensym
+          ), (:curly, :Ref, :Symbol), (:tuple, (:curly, :Ptr, :UInt8), :Int32), :s, (:call, :ccall, (:quote, #QuoteNode
+              :strlen
+            ), :Csize_t, (:tuple, (:curly, :Ptr, :UInt8)), :s))
+      )),
+    (:line, 18, :none),
+    (:macrocall, :(Core.@doc), "    @gensym\n\nGenerates a gensym symbol for a variable. For example, `@gensym x y` is transformed into\n`x = gensym(\"x\"); y = gensym(\"y\")`.\n", (:macro, (:call, :gensym, (:..., :names)), (:block,
+          (:line, 25, :none),
+          (:(=), :blk, (:call, :Expr, (:quote, #QuoteNode
+                :block
+              ))),
+          (:line, 26, :none),
+          (:for, (:(=), :name, :names), (:block,
+              (:line, 27, :none),
+              (:call, :push!, (:., :blk, (:quote, #QuoteNode
+                    :args
+                  )), (:quote, (:(=), (:$, (:call, :esc, :name)), (:call, :gensym, (:$, (:call, :string, :name))))))
+            )),
+          (:line, 29, :none),
+          (:call, :push!, (:., :blk, (:quote, #QuoteNode
+                :args
+              )), (:quote, #QuoteNode
+              :nothing
+            )),
+          (:line, 30, :none),
+          (:return, :blk)
+        ))),
+    (:line, 35, :none),
+    (:(=), (:call, :copy, (:(::), :e, :Expr)), (:block,
+        (:line, 35, :none),
+        (:block,
+          (:(=), :n, (:call, :Expr, (:., :e, (:quote, #QuoteNode
+                  :head
+                )))),
+          (:(=), (:., :n, (:quote, #QuoteNode
+                :args
+              )), (:call, :copy_exprargs, (:., :e, (:quote, #QuoteNode
+                  :args
+                )))),
+          (:(=), (:., :n, (:quote, #QuoteNode
+                :typ
+              )), (:., :e, (:quote, #QuoteNode
+                :typ
+              ))),
+          :n
+        )
+      )),
+    (:line, 41, :none),
+    (:(=), (:call, :copy_exprs, (:(::), :x, :Expr)), (:block,
+        (:line, 41, :none),
+        (:call, :copy, :x)
+      )),
+    (:line, 42, :none),
+    (:(=), (:call, :copy_exprs, (:(::), :x, :ANY)), (:block,
+        (:line, 42, :none),
+        :x
+      )),
+    (:line, 43, :none),
+    (:(=), (:call, :copy_exprargs, (:(::), :x, (:curly, :Array, :Any, 1))), (:block,
+        (:line, 43, :none),
+        (:typed_comprehension, :Any, (:generator, (:call, :copy_exprs, :a), (:(=), :a, :x)))
+      )),
+    (:line, 45, :none),
+    (:(=), (:call, :(==), (:(::), :x, :Expr), (:(::), :y, :Expr)), (:block,
+        (:line, 45, :none),
+        (:&&, (:call, :(===), (:., :x, (:quote, #QuoteNode
+                :head
+              )), (:., :y, (:quote, #QuoteNode
+                :head
+              ))), (:call, :isequal, (:., :x, (:quote, #QuoteNode
+                :args
+              )), (:., :y, (:quote, #QuoteNode
+                :args
+              ))))
+      )),
+    (:line, 46, :none),
+    (:(=), (:call, :(==), (:(::), :x, :QuoteNode), (:(::), :y, :QuoteNode)), (:block,
+        (:line, 46, :none),
+        (:call, :isequal, (:., :x, (:quote, #QuoteNode
+              :value
+            )), (:., :y, (:quote, #QuoteNode
+              :value
+            )))
+      )),
+    (:line, 48, :none),
+    (:macrocall, :(Core.@doc), "    expand(x)\n\nTakes the expression `x` and returns an equivalent expression in lowered form.\nSee also [`code_lowered`](@ref).\n", (:(=), (:call, :expand, (:(::), :x, :ANY)), (:block,
+          (:line, 54, :none),
+          (:call, :ccall, (:quote, #QuoteNode
+              :jl_expand
+            ), :Any, (:tuple, :Any), :x)
+        ))),
+    (:line, 56, :none),
+    (:macrocall, :(Core.@doc), "    macroexpand(x)\n\nTakes the expression `x` and returns an equivalent expression with all macros removed (expanded).\n", (:(=), (:call, :macroexpand, (:(::), :x, :ANY)), (:block,
+          (:line, 61, :none),
+          (:call, :ccall, (:quote, #QuoteNode
+              :jl_macroexpand
+            ), :Any, (:tuple, :Any), :x)
+        ))),
+    (:line, 63, :none),
+    (:macrocall, :(Core.@doc), "    @macroexpand\n\nReturn equivalent expression with all macros removed (expanded).\n\nThere is a subtle difference between `@macroexpand` and `macroexpand` in that expansion takes place in\ndifferent contexts. This is best seen in the following example:\n\n```jldoctest\njulia> module M\n           macro m()\n               1\n           end\n           function f()\n               (@macroexpand(@m), macroexpand(:(@m)))\n           end\n       end\nM\n\njulia> macro m()\n           2\n       end\n@m (macro with 1 method)\n\njulia> M.f()\n(1, 2)\n```\nWith `@macroexpand` the expression expands where `@macroexpand` appears in the code (module\n`M` in the example). With `macroexpand` the expression expands in the current module where\nthe code was finally called (REPL in the example).\nNote that when calling `macroexpand` or `@macroexpand` directly from the REPL, both of these contexts coincide, hence there is no difference.\n", (:macro, (:call, :macroexpand, :code), (:block,
+          (:line, 96, :none),
+          (:(=), :code_expanded, (:call, :macroexpand, :code)),
+          (:line, 97, :none),
+          (:call, :QuoteNode, :code_expanded)
+        ))),
+    (:line, 102, :none),
+    (:macrocall, :(Core.@doc), "    eval([m::Module], expr::Expr)\n\nEvaluate an expression in the given module and return the result. Every `Module` (except\nthose defined with `baremodule`) has its own 1-argument definition of `eval`, which\nevaluates expressions in that module.\n", (:., :Core, (:quote, #QuoteNode
+          :eval
+        ))),
+    (:line, 111, :none),
+    (:macrocall, :(Core.@doc), "    @inline\n\nGive a hint to the compiler that this function is worth inlining.\n\nSmall functions typically do not need the `@inline` annotation,\nas the compiler does it automatically. By using `@inline` on bigger functions,\nan extra nudge can be given to the compiler to inline it.\nThis is shown in the following example:\n\n```julia\n@inline function bigfunction(x)\n    #=\n        Function Definition\n    =#\nend\n```\n", (:macro, (:call, :inline, :ex), (:block,
+          (:line, 130, :none),
+          (:call, :esc, (:if, (:call, :isa, :ex, :Expr), (:call, :pushmeta!, :ex, (:quote, #QuoteNode
+                  :inline
+                )), :ex))
+        ))),
+    (:line, 133, :none),
+    (:macrocall, :(Core.@doc), "    @noinline\n\nPrevents the compiler from inlining a function.\n\nSmall functions are typically inlined automatically.\nBy using `@noinline` on small functions, auto-inlining can be\nprevented. This is shown in the following example:\n\n```julia\n@noinline function smallfunction(x)\n    #=\n        Function Definition\n    =#\nend\n```\n", (:macro, (:call, :noinline, :ex), (:block,
+          (:line, 151, :none),
+          (:call, :esc, (:if, (:call, :isa, :ex, :Expr), (:call, :pushmeta!, :ex, (:quote, #QuoteNode
+                  :noinline
+                )), :ex))
+        ))),
+    (:line, 154, :none),
+    (:macro, (:call, :pure, :ex), (:block,
+        (:line, 155, :none),
+        (:call, :esc, (:if, (:call, :isa, :ex, :Expr), (:call, :pushmeta!, :ex, (:quote, #QuoteNode
+                :pure
+              )), :ex))
+      )),
+    (:line, 158, :none),
+    (:macrocall, :(Core.@doc), "    @propagate_inbounds\n\nTells the compiler to inline a function while retaining the caller's inbounds context.\n", (:macro, (:call, :propagate_inbounds, :ex), (:block,
+          (:line, 164, :none),
+          (:if, (:call, :isa, :ex, :Expr), (:block,
+              (:line, 165, :none),
+              (:call, :pushmeta!, :ex, (:quote, #QuoteNode
+                  :inline
+                )),
+              (:line, 166, :none),
+              (:call, :pushmeta!, :ex, (:quote, #QuoteNode
+                  :propagate_inbounds
+                )),
+              (:line, 167, :none),
+              (:call, :esc, :ex)
+            ), (:block,
+              (:line, 169, :none),
+              (:call, :esc, :ex)
+            ))
+        ))),
+    (:line, 173, :none),
+    (:macrocall, :(Core.@doc), "    @polly\n\nTells the compiler to apply the polyhedral optimizer Polly to a function.\n", (:macro, (:call, :polly, :ex), (:block,
+          (:line, 179, :none),
+          (:call, :esc, (:if, (:call, :isa, :ex, :Expr), (:call, :pushmeta!, :ex, (:quote, #QuoteNode
+                  :polly
+                )), :ex))
+        ))),
+    (:line, 184, :none),
+    (:function, (:call, :pushmeta!, (:(::), :ex, :Expr), (:(::), :sym, :Symbol), (:..., (:(::), :args, :Any))), (:block,
+        (:line, 185, :none),
+        (:if, (:call, :isempty, :args), (:block,
+            (:line, 186, :none),
+            (:(=), :tag, :sym)
+          ), (:block,
+            (:line, 188, :none),
+            (:(=), :tag, (:call, :Expr, :sym, (:..., :args)))
+          )),
+        (:line, 191, :none),
+        (:(=), :inner, :ex),
+        (:line, 192, :none),
+        (:while, (:call, :(==), (:., :inner, (:quote, #QuoteNode
+                :head
+              )), (:quote, #QuoteNode
+              :macrocall
+            )), (:block,
+            (:line, 193, :none),
+            (:(=), :inner, (:(::), (:ref, (:., :inner, (:quote, #QuoteNode
+                      :args
+                    )), :end), :Expr))
+          )),
+        (:line, 196, :none),
+        (:(=), (:tuple, :idx, :exargs), (:call, :findmeta, :inner)),
+        (:line, 197, :none),
+        (:if, (:call, :(!=), :idx, 0), (:block,
+            (:line, 198, :none),
+            (:call, :push!, (:., (:ref, :exargs, :idx), (:quote, #QuoteNode
+                  :args
+                )), :tag)
+          ), (:block,
+            (:line, 200, :none),
+            (:(=), (:(::), :body, :Expr), (:ref, (:., :inner, (:quote, #QuoteNode
+                    :args
+                  )), 2)),
+            (:line, 201, :none),
+            (:call, :unshift!, (:., :body, (:quote, #QuoteNode
+                  :args
+                )), (:call, :Expr, (:quote, #QuoteNode
+                  :meta
+                ), :tag))
+          )),
+        (:line, 203, :none),
+        :ex
+      )),
+    (:line, 206, :none),
+    (:function, (:call, :popmeta!, (:(::), :body, :Expr), (:(::), :sym, :Symbol)), (:block,
+        (:line, 207, :none),
+        (:||, (:call, :(==), (:., :body, (:quote, #QuoteNode
+                :head
+              )), (:quote, #QuoteNode
+              :block
+            )), (:return, (:tuple, false, (:vect,)))),
+        (:line, 208, :none),
+        (:call, :popmeta!, (:., :body, (:quote, #QuoteNode
+              :args
+            )), :sym)
+      )),
+    (:line, 210, :none),
+    (:(=), (:call, :popmeta!, :arg, :sym), (:block,
+        (:line, 210, :none),
+        (:tuple, false, (:vect,))
+      )),
+    (:line, 211, :none),
+    (:function, (:call, :popmeta!, (:(::), :body, (:curly, :Array, :Any, 1)), (:(::), :sym, :Symbol)), (:block,
+        (:line, 212, :none),
+        (:(=), (:tuple, :idx, :blockargs), (:call, :findmeta_block, :body, (:->, :args, (:block,
+                (:line, 212, :none),
+                (:call, :(!=), (:call, :findmetaarg, :args, :sym), 0)
+              )))),
+        (:line, 213, :none),
+        (:if, (:call, :(==), :idx, 0), (:block,
+            (:line, 214, :none),
+            (:return, (:tuple, false, (:vect,)))
+          )),
+        (:line, 216, :none),
+        (:(=), :metaargs, (:., (:ref, :blockargs, :idx), (:quote, #QuoteNode
+              :args
+            ))),
+        (:line, 217, :none),
+        (:(=), :i, (:call, :findmetaarg, (:., (:ref, :blockargs, :idx), (:quote, #QuoteNode
+                :args
+              )), :sym)),
+        (:line, 218, :none),
+        (:if, (:call, :(==), :i, 0), (:block,
+            (:line, 219, :none),
+            (:return, (:tuple, false, (:vect,)))
+          )),
+        (:line, 221, :none),
+        (:(=), :ret, (:if, (:call, :isa, (:ref, :metaargs, :i), :Expr), (:., (:(::), (:ref, :metaargs, :i), :Expr), (:quote, #QuoteNode
+                :args
+              )), (:vect,))),
+        (:line, 222, :none),
+        (:call, :deleteat!, :metaargs, :i),
+        (:line, 223, :none),
+        (:&&, (:call, :isempty, :metaargs), (:call, :deleteat!, :blockargs, :idx)),
+        (:line, 224, :none),
+        (:tuple, true, :ret)
+      )),
+    (:line, 228, :none),
+    (:function, (:call, :findmetaarg, :metaargs, :sym), (:block,
+        (:line, 229, :none),
+        (:for, (:(=), :i, (:(:), 1, (:call, :length, :metaargs))), (:block,
+            (:line, 230, :none),
+            (:(=), :arg, (:ref, :metaargs, :i)),
+            (:line, 231, :none),
+            (:if, (:||, (:&&, (:call, :isa, :arg, :Symbol), (:call, :(==), (:(::), :arg, :Symbol), :sym)), (:&&, (:call, :isa, :arg, :Expr), (:call, :(==), (:., (:(::), :arg, :Expr), (:quote, #QuoteNode
+                        :head
+                      )), :sym))), (:block,
+                (:line, 233, :none),
+                (:return, :i)
+              ))
+          )),
+        (:line, 236, :none),
+        (:return, 0)
+      )),
+    (:line, 239, :none),
+    (:function, (:call, :is_short_function_def, :ex), (:block,
+        (:line, 240, :none),
+        (:||, (:call, :(==), (:., :ex, (:quote, #QuoteNode
+                :head
+              )), (:quote, #QuoteNode
+              :(=)
+            )), (:return, false)),
+        (:line, 241, :none),
+        (:while, (:&&, (:call, :(>=), (:call, :length, (:., :ex, (:quote, #QuoteNode
+                    :args
+                  ))), 1), (:call, :isa, (:ref, (:., :ex, (:quote, #QuoteNode
+                    :args
+                  )), 1), :Expr)), (:block,
+            (:line, 242, :none),
+            (:&&, (:call, :(==), (:., (:ref, (:., :ex, (:quote, #QuoteNode
+                        :args
+                      )), 1), (:quote, #QuoteNode
+                    :head
+                  )), (:quote, #QuoteNode
+                  :call
+                )), (:return, true)),
+            (:line, 243, :none),
+            (:||, (:||, (:call, :(==), (:., (:ref, (:., :ex, (:quote, #QuoteNode
+                          :args
+                        )), 1), (:quote, #QuoteNode
+                      :head
+                    )), (:quote, #QuoteNode
+                    :where
+                  )), (:call, :(==), (:., (:ref, (:., :ex, (:quote, #QuoteNode
+                          :args
+                        )), 1), (:quote, #QuoteNode
+                      :head
+                    )), (:quote, #QuoteNode
+                    :(::)
+                  ))), (:return, false)),
+            (:line, 244, :none),
+            (:(=), :ex, (:ref, (:., :ex, (:quote, #QuoteNode
+                    :args
+                  )), 1))
+          )),
+        (:line, 246, :none),
+        (:return, false)
+      )),
+    (:line, 249, :none),
+    (:function, (:call, :findmeta, (:(::), :ex, :Expr)), (:block,
+        (:line, 250, :none),
+        (:if, (:||, (:call, :(==), (:., :ex, (:quote, #QuoteNode
+                  :head
+                )), (:quote, #QuoteNode
+                :function
+              )), (:call, :is_short_function_def, :ex)), (:block,
+            (:line, 251, :none),
+            (:(=), (:(::), :body, :Expr), (:ref, (:., :ex, (:quote, #QuoteNode
+                    :args
+                  )), 2)),
+            (:line, 252, :none),
+            (:||, (:call, :(==), (:., :body, (:quote, #QuoteNode
+                    :head
+                  )), (:quote, #QuoteNode
+                  :block
+                )), (:call, :error, :body, " is not a block expression")),
+            (:line, 253, :none),
+            (:return, (:call, :findmeta_block, (:., :ex, (:quote, #QuoteNode
+                    :args
+                  ))))
+          )),
+        (:line, 255, :none),
+        (:call, :error, :ex, " is not a function expression")
+      )),
+    (:line, 258, :none),
+    (:(=), (:call, :findmeta, (:(::), :ex, (:curly, :Array, :Any, 1))), (:block,
+        (:line, 258, :none),
+        (:call, :findmeta_block, :ex)
+      )),
+    (:line, 260, :none),
+    (:function, (:call, :findmeta_block, :exargs, (:kw, :argsmatch, (:->, :args, (:block,
+              (:line, 260, :none),
+              true
+            )))), (:block,
+        (:line, 261, :none),
+        (:for, (:(=), :i, (:(:), 1, (:call, :length, :exargs))), (:block,
+            (:line, 262, :none),
+            (:(=), :a, (:ref, :exargs, :i)),
+            (:line, 263, :none),
+            (:if, (:call, :isa, :a, :Expr), (:block,
+                (:line, 264, :none),
+                (:if, (:&&, (:call, :(==), (:., (:(::), :a, :Expr), (:quote, #QuoteNode
+                          :head
+                        )), (:quote, #QuoteNode
+                        :meta
+                      )), (:call, :argsmatch, (:., (:(::), :a, :Expr), (:quote, #QuoteNode
+                          :args
+                        )))), (:block,
+                    (:line, 265, :none),
+                    (:return, (:tuple, :i, :exargs))
+                  ), (:block,
+                    (:line, 266, :none),
+                    (:if, (:call, :(==), (:., (:(::), :a, :Expr), (:quote, #QuoteNode
+                            :head
+                          )), (:quote, #QuoteNode
+                          :block
+                        )), (:block,
+                        (:line, 267, :none),
+                        (:(=), (:tuple, :idx, :exa), (:call, :findmeta_block, (:., :a, (:quote, #QuoteNode
+                                :args
+                              )), :argsmatch)),
+                        (:line, 268, :none),
+                        (:if, (:call, :(!=), :idx, 0), (:block,
+                            (:line, 269, :none),
+                            (:return, (:tuple, :idx, :exa))
+                          ))
+                      ))
+                  ))
+              ))
+          )),
+        (:line, 274, :none),
+        (:return, (:tuple, 0, (:vect,)))
+      )),
+    (:line, 277, :none),
+    (:(=), (:call, :remove_linenums!, :ex), (:block,
+        (:line, 277, :none),
+        :ex
+      )),
+    (:line, 278, :none),
+    (:function, (:call, :remove_linenums!, (:(::), :ex, :Expr)), (:block,
+        (:line, 279, :none),
+        (:call, :filter!, (:->, :x, (:block,
+              (:line, 279, :none),
+              (:call, :!, (:||, (:&&, (:call, :isa, :x, :Expr), (:call, :(===), (:., :x, (:quote, #QuoteNode
+                          :head
+                        )), (:quote, #QuoteNode
+                        :line
+                      ))), (:call, :isa, :x, :LineNumberNode)))
+            )), (:., :ex, (:quote, #QuoteNode
+              :args
+            ))),
+        (:line, 280, :none),
+        (:for, (:(=), :subex, (:., :ex, (:quote, #QuoteNode
+                :args
+              ))), (:block,
+            (:line, 281, :none),
+            (:call, :remove_linenums!, :subex)
+          )),
+        (:line, 283, :none),
+        :ex
+      ))
+  ))

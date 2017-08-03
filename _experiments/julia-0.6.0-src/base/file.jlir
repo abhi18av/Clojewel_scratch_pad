@@ -1,0 +1,777 @@
+(:quote, (:block,
+    (:line, 5, :none),
+    (:export, :cd, :chmod, :chown, :cp, :cptree, :mkdir, :mkpath, :mktemp, :mktempdir, :mv, :pwd, :rename, :readlink, :readdir, :rm, :samefile, :sendfile, :symlink, :tempdir, :tempname, :touch, :unlink, :walkdir),
+    (:line, 32, :none),
+    (:macrocall, :(Core.@doc), "    pwd() -> AbstractString\n\nGet the current working directory.\n", (:function, (:call, :pwd), (:block,
+          (:line, 38, :none),
+          (:(=), :b, (:call, (:curly, :Vector, :UInt8), 1024)),
+          (:line, 39, :none),
+          (:(=), :len, (:call, (:curly, :Ref, :Csize_t), (:call, :length, :b))),
+          (:line, 40, :none),
+          (:call, :uv_error, (:quote, #QuoteNode
+              :getcwd
+            ), (:call, :ccall, (:quote, #QuoteNode
+                :uv_cwd
+              ), :Cint, (:tuple, (:curly, :Ptr, :UInt8), (:curly, :Ptr, :Csize_t)), :b, :len)),
+          (:line, 41, :none),
+          (:call, :String, (:ref, :b, (:(:), 1, (:ref, :len))))
+        ))),
+    (:line, 44, :none),
+    (:macrocall, :(Core.@doc), "    cd(dir::AbstractString=homedir())\n\nSet the current working directory.\n", (:function, (:call, :cd, (:(::), :dir, :AbstractString)), (:block,
+          (:line, 50, :none),
+          (:call, :uv_error, (:string, "chdir ", :dir), (:call, :ccall, (:quote, #QuoteNode
+                :uv_chdir
+              ), :Cint, (:tuple, :Cstring), :dir))
+        ))),
+    (:line, 52, :none),
+    (:(=), (:call, :cd), (:block,
+        (:line, 52, :none),
+        (:call, :cd, (:call, :homedir))
+      )),
+    (:line, 54, :none),
+    (:if, (:call, :is_windows), (:block,
+        (:line, 55, :none),
+        (:function, (:call, :cd, (:(::), :f, :Function), (:(::), :dir, :AbstractString)), (:block,
+            (:line, 56, :none),
+            (:(=), :old, (:call, :pwd)),
+            (:line, 57, :none),
+            (:try, (:block,
+                (:line, 58, :none),
+                (:call, :cd, :dir),
+                (:line, 59, :none),
+                (:call, :f)
+              ), false, false, (:block,
+                (:line, 61, :none),
+                (:call, :cd, :old)
+              ))
+          ))
+      ), (:block,
+        (:line, 65, :none),
+        (:function, (:call, :cd, (:(::), :f, :Function), (:(::), :dir, :AbstractString)), (:block,
+            (:line, 66, :none),
+            (:(=), :fd, (:call, :ccall, (:quote, #QuoteNode
+                  :open
+                ), :Int32, (:tuple, :Cstring, :Int32), (:quote, #QuoteNode
+                  :.
+                ), 0)),
+            (:line, 67, :none),
+            (:call, :systemerror, (:quote, #QuoteNode
+                :open
+              ), (:call, :(==), :fd, -1)),
+            (:line, 68, :none),
+            (:try, (:block,
+                (:line, 69, :none),
+                (:call, :cd, :dir),
+                (:line, 70, :none),
+                (:call, :f)
+              ), false, false, (:block,
+                (:line, 72, :none),
+                (:call, :systemerror, (:quote, #QuoteNode
+                    :fchdir
+                  ), (:call, :(!=), (:call, :ccall, (:quote, #QuoteNode
+                        :fchdir
+                      ), :Int32, (:tuple, :Int32), :fd), 0)),
+                (:line, 73, :none),
+                (:call, :systemerror, (:quote, #QuoteNode
+                    :close
+                  ), (:call, :(!=), (:call, :ccall, (:quote, #QuoteNode
+                        :close
+                      ), :Int32, (:tuple, :Int32), :fd), 0))
+              ))
+          ))
+      )),
+    (:line, 77, :none),
+    (:macrocall, :(Core.@doc), "    cd(f::Function, dir::AbstractString=homedir())\n\nTemporarily changes the current working directory and applies function `f` before returning.\n", (:(=), (:call, :cd, (:(::), :f, :Function)), (:block,
+          (:line, 82, :none),
+          (:call, :cd, :f, (:call, :homedir))
+        ))),
+    (:line, 84, :none),
+    (:macrocall, :(Core.@doc), "    mkdir(path::AbstractString, mode::Unsigned=0o777)\n\nMake a new directory with name `path` and permissions `mode`. `mode` defaults to `0o777`,\nmodified by the current file creation mask. This function never creates more than one\ndirectory. If the directory already exists, or some intermediate directories do not exist,\nthis function throws an error. See [`mkpath`](@ref) for a function which creates all\nrequired intermediate directories.\n", (:function, (:call, :mkdir, (:(::), :path, :AbstractString), (:kw, (:(::), :mode, :Unsigned), 0x01ff)), (:block,
+          (:line, 94, :none),
+          (:macrocall, Symbol("@static"), (:if, (:call, :is_windows), (:block,
+                (:line, 95, :none),
+                (:(=), :ret, (:call, :ccall, (:quote, #QuoteNode
+                      :_wmkdir
+                    ), :Int32, (:tuple, :Cwstring), :path))
+              ), (:block,
+                (:line, 97, :none),
+                (:(=), :ret, (:call, :ccall, (:quote, #QuoteNode
+                      :mkdir
+                    ), :Int32, (:tuple, :Cstring, :UInt32), :path, :mode))
+              ))),
+          (:line, 99, :none),
+          (:call, :systemerror, (:parameters, (:kw, :extrainfo, :path)), (:quote, #QuoteNode
+              :mkdir
+            ), (:call, :(!=), :ret, 0))
+        ))),
+    (:line, 102, :none),
+    (:macrocall, :(Core.@doc), "    mkpath(path::AbstractString, mode::Unsigned=0o777)\n\nCreate all directories in the given `path`, with permissions `mode`. `mode` defaults to\n`0o777`, modified by the current file creation mask.\n", (:function, (:call, :mkpath, (:(::), :path, :AbstractString), (:kw, (:(::), :mode, :Unsigned), 0x01ff)), (:block,
+          (:line, 109, :none),
+          (:&&, (:call, :isdirpath, :path), (:(=), :path, (:call, :dirname, :path))),
+          (:line, 110, :none),
+          (:(=), :dir, (:call, :dirname, :path)),
+          (:line, 111, :none),
+          (:&&, (:||, (:call, :(==), :path, :dir), (:call, :isdir, :path)), (:return, nothing)),
+          (:line, 112, :none),
+          (:call, :mkpath, :dir, :mode),
+          (:line, 113, :none),
+          (:try, (:block,
+              (:line, 114, :none),
+              (:call, :mkdir, :path, :mode)
+            ), :err, (:block,
+              (:line, 118, :none),
+              (:if, (:&&, (:call, :isa, :err, :SystemError), (:call, :isdir, :path)), (:block,
+                  (:line, 119, :none),
+                  (:return, nothing)
+                ), (:block,
+                  (:line, 121, :none),
+                  (:call, :rethrow)
+                ))
+            ))
+        ))),
+    (:line, 126, :none),
+    (:(=), (:call, :mkdir, (:(::), :path, :AbstractString), (:(::), :mode, :Signed)), (:block,
+        (:line, 126, :none),
+        (:call, :throw, (:call, :ArgumentError, (:string, "mode must be an unsigned integer; try 0o", :mode)))
+      )),
+    (:line, 127, :none),
+    (:(=), (:call, :mkpath, (:(::), :path, :AbstractString), (:(::), :mode, :Signed)), (:block,
+        (:line, 127, :none),
+        (:call, :throw, (:call, :ArgumentError, (:string, "mode must be an unsigned integer; try 0o", :mode)))
+      )),
+    (:line, 129, :none),
+    (:macrocall, :(Core.@doc), "    rm(path::AbstractString; force::Bool=false, recursive::Bool=false)\n\nDelete the file, link, or empty directory at the given path. If `force=true` is passed, a\nnon-existing path is not treated as error. If `recursive=true` is passed and the path is a\ndirectory, then all contents are removed recursively.\n", (:function, (:call, :rm, (:parameters, (:kw, (:(::), :force, :Bool), false), (:kw, (:(::), :recursive, :Bool), false)), (:(::), :path, :AbstractString)), (:block,
+          (:line, 137, :none),
+          (:if, (:||, (:call, :islink, :path), (:call, :!, (:call, :isdir, :path))), (:block,
+              (:line, 138, :none),
+              (:try, (:block,
+                  (:line, 139, :none),
+                  (:macrocall, Symbol("@static"), (:if, (:call, :is_windows), (:block,
+                        (:line, 141, :none),
+                        (:if, (:call, :(==), (:call, :&, (:call, :filemode, :path), 0x92), 0), (:block,
+                            (:line, 142, :none),
+                            (:call, :chmod, :path, 0x01ff)
+                          ))
+                      ))),
+                  (:line, 145, :none),
+                  (:call, :unlink, :path)
+                ), :err, (:block,
+                  (:line, 147, :none),
+                  (:if, (:&&, :force, (:&&, (:call, :isa, :err, :UVError), (:call, :(==), (:., :err, (:quote, #QuoteNode
+                              :code
+                            )), (:., :Base, (:quote, #QuoteNode
+                              :UV_ENOENT
+                            ))))), (:block,
+                      (:line, 148, :none),
+                      (:return, nothing)
+                    )),
+                  (:line, 150, :none),
+                  (:call, :rethrow)
+                ))
+            ), (:block,
+              (:line, 153, :none),
+              (:if, :recursive, (:block,
+                  (:line, 154, :none),
+                  (:for, (:(=), :p, (:call, :readdir, :path)), (:block,
+                      (:line, 155, :none),
+                      (:call, :rm, (:call, :joinpath, :path, :p), (:kw, :force, :force), (:kw, :recursive, true))
+                    ))
+                )),
+              (:line, 158, :none),
+              (:macrocall, Symbol("@static"), (:if, (:call, :is_windows), (:block,
+                    (:line, 159, :none),
+                    (:(=), :ret, (:call, :ccall, (:quote, #QuoteNode
+                          :_wrmdir
+                        ), :Int32, (:tuple, :Cwstring), :path))
+                  ), (:block,
+                    (:line, 161, :none),
+                    (:(=), :ret, (:call, :ccall, (:quote, #QuoteNode
+                          :rmdir
+                        ), :Int32, (:tuple, :Cstring), :path))
+                  ))),
+              (:line, 163, :none),
+              (:call, :systemerror, (:quote, #QuoteNode
+                  :rmdir
+                ), (:call, :(!=), :ret, 0), (:kw, :extrainfo, :path))
+            ))
+        ))),
+    (:line, 169, :none),
+    (:function, (:call, :checkfor_mv_cp_cptree, (:parameters, (:kw, (:(::), :remove_destination, :Bool), false)), (:(::), :src, :AbstractString), (:(::), :dst, :AbstractString), (:(::), :txt, :AbstractString)), (:block,
+        (:line, 171, :none),
+        (:if, (:call, :ispath, :dst), (:block,
+            (:line, 172, :none),
+            (:if, :remove_destination, (:block,
+                (:line, 175, :none),
+                (:if, (:call, (:., :Base, (:quote, #QuoteNode
+                        :samefile
+                      )), :src, :dst), (:block,
+                    (:line, 176, :none),
+                    (:(=), :abs_src, (:if, (:call, :islink, :src), (:call, :abspath, (:call, :readlink, :src)), (:call, :abspath, :src))),
+                    (:line, 177, :none),
+                    (:(=), :abs_dst, (:if, (:call, :islink, :dst), (:call, :abspath, (:call, :readlink, :dst)), (:call, :abspath, :dst))),
+                    (:line, 178, :none),
+                    (:call, :throw, (:call, :ArgumentError, (:call, :string, "'src' and 'dst' refer to the same file/dir.", "This is not supported.\n  ", (:string, "`src` refers to: ", :abs_src, "\n  "), (:string, "`dst` refers to: ", :abs_dst, "\n"))))
+                  )),
+                (:line, 183, :none),
+                (:call, :rm, (:parameters, (:kw, :recursive, true)), :dst)
+              ), (:block,
+                (:line, 185, :none),
+                (:call, :throw, (:call, :ArgumentError, (:call, :string, (:string, "'", :dst, "' exists. `remove_destination=true` "), (:string, "is required to remove '", :dst, "' before ", :txt, "."))))
+              ))
+          ))
+      )),
+    (:line, 191, :none),
+    (:function, (:call, :cptree, (:parameters, (:kw, (:(::), :remove_destination, :Bool), false), (:kw, (:(::), :follow_symlinks, :Bool), false)), (:(::), :src, :AbstractString), (:(::), :dst, :AbstractString)), (:block,
+        (:line, 193, :none),
+        (:||, (:call, :isdir, :src), (:call, :throw, (:call, :ArgumentError, (:string, "'", :src, "' is not a directory. Use `cp(src, dst)`")))),
+        (:line, 194, :none),
+        (:call, :checkfor_mv_cp_cptree, (:parameters, (:kw, :remove_destination, :remove_destination)), :src, :dst, "copying"),
+        (:line, 195, :none),
+        (:call, :mkdir, :dst),
+        (:line, 196, :none),
+        (:for, (:(=), :name, (:call, :readdir, :src)), (:block,
+            (:line, 197, :none),
+            (:(=), :srcname, (:call, :joinpath, :src, :name)),
+            (:line, 198, :none),
+            (:if, (:&&, (:call, :!, :follow_symlinks), (:call, :islink, :srcname)), (:block,
+                (:line, 199, :none),
+                (:call, :symlink, (:call, :readlink, :srcname), (:call, :joinpath, :dst, :name))
+              ), (:block,
+                (:line, 200, :none),
+                (:if, (:call, :isdir, :srcname), (:block,
+                    (:line, 201, :none),
+                    (:call, :cptree, (:parameters, (:kw, :remove_destination, :remove_destination), (:kw, :follow_symlinks, :follow_symlinks)), :srcname, (:call, :joinpath, :dst, :name))
+                  ), (:block,
+                    (:line, 204, :none),
+                    (:call, :sendfile, :srcname, (:call, :joinpath, :dst, :name))
+                  ))
+              ))
+          ))
+      )),
+    (:line, 209, :none),
+    (:macrocall, :(Core.@doc), "    cp(src::AbstractString, dst::AbstractString; remove_destination::Bool=false, follow_symlinks::Bool=false)\n\nCopy the file, link, or directory from `src` to `dest`.\n`remove_destination=true` will first remove an existing `dst`.\n\nIf `follow_symlinks=false`, and `src` is a symbolic link, `dst` will be created as a\nsymbolic link. If `follow_symlinks=true` and `src` is a symbolic link, `dst` will be a copy\nof the file or directory `src` refers to.\n", (:function, (:call, :cp, (:parameters, (:kw, (:(::), :remove_destination, :Bool), false), (:kw, (:(::), :follow_symlinks, :Bool), false)), (:(::), :src, :AbstractString), (:(::), :dst, :AbstractString)), (:block,
+          (:line, 221, :none),
+          (:call, :checkfor_mv_cp_cptree, (:parameters, (:kw, :remove_destination, :remove_destination)), :src, :dst, "copying"),
+          (:line, 222, :none),
+          (:if, (:&&, (:call, :!, :follow_symlinks), (:call, :islink, :src)), (:block,
+              (:line, 223, :none),
+              (:call, :symlink, (:call, :readlink, :src), :dst)
+            ), (:block,
+              (:line, 224, :none),
+              (:if, (:call, :isdir, :src), (:block,
+                  (:line, 225, :none),
+                  (:call, :cptree, (:parameters, (:kw, :remove_destination, :remove_destination), (:kw, :follow_symlinks, :follow_symlinks)), :src, :dst)
+                ), (:block,
+                  (:line, 227, :none),
+                  (:call, :sendfile, :src, :dst)
+                ))
+            ))
+        ))),
+    (:line, 231, :none),
+    (:macrocall, :(Core.@doc), "    mv(src::AbstractString, dst::AbstractString; remove_destination::Bool=false)\n\nMove the file, link, or directory from `src` to `dst`.\n`remove_destination=true` will first remove an existing `dst`.\n", (:function, (:call, :mv, (:parameters, (:kw, (:(::), :remove_destination, :Bool), false)), (:(::), :src, :AbstractString), (:(::), :dst, :AbstractString)), (:block,
+          (:line, 238, :none),
+          (:call, :checkfor_mv_cp_cptree, (:parameters, (:kw, :remove_destination, :remove_destination)), :src, :dst, "moving"),
+          (:line, 239, :none),
+          (:call, :rename, :src, :dst)
+        ))),
+    (:line, 242, :none),
+    (:macrocall, :(Core.@doc), "    touch(path::AbstractString)\n\nUpdate the last-modified timestamp on a file to the current time.\n", (:function, (:call, :touch, (:(::), :path, :AbstractString)), (:block,
+          (:line, 248, :none),
+          (:(=), :f, (:call, :open, :path, (:call, :|, :JL_O_WRONLY, :JL_O_CREAT), 0x01b6)),
+          (:line, 249, :none),
+          (:try, (:block,
+              (:line, 250, :none),
+              (:(=), :t, (:call, :time)),
+              (:line, 251, :none),
+              (:call, :futime, :f, :t, :t)
+            ), false, false, (:block,
+              (:line, 253, :none),
+              (:call, :close, :f)
+            ))
+        ))),
+    (:line, 257, :none),
+    (:if, (:call, :is_windows), (:block,
+        (:line, 259, :none),
+        (:function, (:call, :tempdir), (:block,
+            (:line, 260, :none),
+            (:(=), :temppath, (:call, (:curly, :Vector, :UInt16), 32767)),
+            (:line, 261, :none),
+            (:(=), :lentemppath, (:call, :ccall, (:quote, #QuoteNode
+                  :GetTempPathW
+                ), :stdcall, :UInt32, (:tuple, :UInt32, (:curly, :Ptr, :UInt16)), (:call, :length, :temppath), :temppath)),
+            (:line, 262, :none),
+            (:if, (:||, (:call, :(>=), :lentemppath, (:call, :length, :temppath)), (:call, :(==), :lentemppath, 0)), (:block,
+                (:line, 263, :none),
+                (:call, :error, (:string, "GetTempPath failed: ", (:call, (:., :Libc, (:quote, #QuoteNode
+                          :FormatMessage
+                        )))))
+              )),
+            (:line, 265, :none),
+            (:call, :resize!, :temppath, :lentemppath),
+            (:line, 266, :none),
+            (:return, (:call, :transcode, :String, :temppath))
+          )),
+        (:line, 268, :none),
+        (:(=), (:call, :tempname, (:kw, (:(::), :uunique, :UInt32), (:call, :UInt32, 0))), (:block,
+            (:line, 268, :none),
+            (:call, :tempname, (:call, :tempdir), :uunique)
+          )),
+        (:line, 269, :none),
+        (:const, (:(=), :temp_prefix, (:call, :cwstring, "jl_"))),
+        (:line, 270, :none),
+        (:function, (:call, :tempname, (:(::), :temppath, :AbstractString), (:(::), :uunique, :UInt32)), (:block,
+            (:line, 271, :none),
+            (:(=), :tempp, (:call, :cwstring, :temppath)),
+            (:line, 272, :none),
+            (:(=), :tname, (:call, (:curly, :Vector, :UInt16), 32767)),
+            (:line, 273, :none),
+            (:(=), :uunique, (:call, :ccall, (:quote, #QuoteNode
+                  :GetTempFileNameW
+                ), :stdcall, :UInt32, (:tuple, (:curly, :Ptr, :UInt16), (:curly, :Ptr, :UInt16), :UInt32, (:curly, :Ptr, :UInt16)), :tempp, :temp_prefix, :uunique, :tname)),
+            (:line, 274, :none),
+            (:(=), :lentname, (:call, :-, (:call, :findfirst, :tname, 0), 1)),
+            (:line, 275, :none),
+            (:if, (:||, (:call, :(==), :uunique, 0), (:call, :(<=), :lentname, 0)), (:block,
+                (:line, 276, :none),
+                (:call, :error, (:string, "GetTempFileName failed: ", (:call, (:., :Libc, (:quote, #QuoteNode
+                          :FormatMessage
+                        )))))
+              )),
+            (:line, 278, :none),
+            (:call, :resize!, :tname, :lentname),
+            (:line, 279, :none),
+            (:return, (:call, :transcode, :String, :tname))
+          )),
+        (:line, 282, :none),
+        (:function, (:call, :mktemp, (:kw, :parent, (:call, :tempdir))), (:block,
+            (:line, 283, :none),
+            (:(=), :filename, (:call, :tempname, :parent, (:call, :UInt32, 0))),
+            (:line, 284, :none),
+            (:return, (:tuple, :filename, (:call, (:., :Base, (:quote, #QuoteNode
+                      :open
+                    )), :filename, "r+")))
+          )),
+        (:line, 287, :none),
+        (:function, (:call, :mktempdir, (:kw, :parent, (:call, :tempdir))), (:block,
+            (:line, 288, :none),
+            (:(=), (:(::), :seed, :UInt32), (:call, :rand, :UInt32)),
+            (:line, 289, :none),
+            (:while, true, (:block,
+                (:line, 290, :none),
+                (:if, (:call, :(==), (:call, :&, :seed, (:call, :typemax, :UInt16)), 0), (:block,
+                    (:line, 291, :none),
+                    (:+=, :seed, 1)
+                  )),
+                (:line, 293, :none),
+                (:(=), :filename, (:call, :tempname, :parent, :seed)),
+                (:line, 294, :none),
+                (:(=), :ret, (:call, :ccall, (:quote, #QuoteNode
+                      :_wmkdir
+                    ), :Int32, (:tuple, (:curly, :Ptr, :UInt16)), (:call, :cwstring, :filename))),
+                (:line, 295, :none),
+                (:if, (:call, :(==), :ret, 0), (:block,
+                    (:line, 296, :none),
+                    (:return, :filename)
+                  )),
+                (:line, 298, :none),
+                (:call, :systemerror, (:quote, #QuoteNode
+                    :mktempdir
+                  ), (:call, :(!=), (:call, (:., :Libc, (:quote, #QuoteNode
+                          :errno
+                        ))), (:., :Libc, (:quote, #QuoteNode
+                        :EEXIST
+                      )))),
+                (:line, 299, :none),
+                (:+=, :seed, 1)
+              ))
+          ))
+      ), (:block,
+        (:line, 305, :none),
+        (:function, (:call, :tempname), (:block,
+            (:line, 306, :none),
+            (:(=), :d, (:call, :get, :ENV, "TMPDIR", :C_NULL)),
+            (:line, 307, :none),
+            (:(=), :p, (:call, :ccall, (:quote, #QuoteNode
+                  :tempnam
+                ), :Cstring, (:tuple, :Cstring, :Cstring), :d, (:quote, #QuoteNode
+                  :julia
+                ))),
+            (:line, 308, :none),
+            (:call, :systemerror, (:quote, #QuoteNode
+                :tempnam
+              ), (:call, :(==), :p, :C_NULL)),
+            (:line, 309, :none),
+            (:(=), :s, (:call, :unsafe_string, :p)),
+            (:line, 310, :none),
+            (:call, (:., :Libc, (:quote, #QuoteNode
+                  :free
+                )), :p),
+            (:line, 311, :none),
+            (:return, :s)
+          )),
+        (:line, 315, :none),
+        (:(=), (:call, :tempdir), (:block,
+            (:line, 315, :none),
+            (:call, :dirname, (:call, :tempname))
+          )),
+        (:line, 318, :none),
+        (:function, (:call, :mktemp, (:kw, :parent, (:call, :tempdir))), (:block,
+            (:line, 319, :none),
+            (:(=), :b, (:call, :joinpath, :parent, "tmpXXXXXX")),
+            (:line, 320, :none),
+            (:(=), :p, (:call, :ccall, (:quote, #QuoteNode
+                  :mkstemp
+                ), :Int32, (:tuple, :Cstring), :b)),
+            (:line, 321, :none),
+            (:call, :systemerror, (:quote, #QuoteNode
+                :mktemp
+              ), (:call, :(==), :p, -1)),
+            (:line, 322, :none),
+            (:return, (:tuple, :b, (:call, :fdio, :p, true)))
+          )),
+        (:line, 326, :none),
+        (:function, (:call, :mktempdir, (:kw, :parent, (:call, :tempdir))), (:block,
+            (:line, 327, :none),
+            (:(=), :b, (:call, :joinpath, :parent, "tmpXXXXXX")),
+            (:line, 328, :none),
+            (:(=), :p, (:call, :ccall, (:quote, #QuoteNode
+                  :mkdtemp
+                ), :Cstring, (:tuple, :Cstring), :b)),
+            (:line, 329, :none),
+            (:call, :systemerror, (:quote, #QuoteNode
+                :mktempdir
+              ), (:call, :(==), :p, :C_NULL)),
+            (:line, 330, :none),
+            (:return, (:call, :unsafe_string, :p))
+          ))
+      )),
+    (:line, 336, :none),
+    (:macrocall, :(Core.@doc), "    tempdir()\n\nObtain the path of a temporary directory (possibly shared with other processes).\n", (:call, :tempdir)),
+    (:line, 343, :none),
+    (:macrocall, :(Core.@doc), "    tempname()\n\nGenerate a unique temporary file path.\n", (:call, :tempname)),
+    (:line, 350, :none),
+    (:macrocall, :(Core.@doc), "    mktemp(parent=tempdir())\n\nReturns `(path, io)`, where `path` is the path of a new temporary file in `parent` and `io`\nis an open file object for this path.\n", (:call, :mktemp, :parent)),
+    (:line, 358, :none),
+    (:macrocall, :(Core.@doc), "    mktempdir(parent=tempdir())\n\nCreate a temporary directory in the `parent` directory and return its path.\nIf `parent` does not exist, throw an error.\n", (:call, :mktempdir, :parent)),
+    (:line, 367, :none),
+    (:macrocall, :(Core.@doc), "    mktemp(f::Function, parent=tempdir())\n\nApply the function `f` to the result of [`mktemp(parent)`](@ref) and remove the\ntemporary file upon completion.\n", (:function, (:call, :mktemp, (:(::), :fn, :Function), (:kw, :parent, (:call, :tempdir))), (:block,
+          (:line, 374, :none),
+          (:(=), (:tuple, :tmp_path, :tmp_io), (:call, :mktemp, :parent)),
+          (:line, 375, :none),
+          (:try, (:block,
+              (:line, 376, :none),
+              (:call, :fn, :tmp_path, :tmp_io)
+            ), false, false, (:block,
+              (:line, 378, :none),
+              (:call, :close, :tmp_io),
+              (:line, 379, :none),
+              (:call, :rm, :tmp_path)
+            ))
+        ))),
+    (:line, 383, :none),
+    (:macrocall, :(Core.@doc), "    mktempdir(f::Function, parent=tempdir())\n\nApply the function `f` to the result of [`mktempdir(parent)`](@ref) and remove the\ntemporary directory upon completion.\n", (:function, (:call, :mktempdir, (:(::), :fn, :Function), (:kw, :parent, (:call, :tempdir))), (:block,
+          (:line, 390, :none),
+          (:(=), :tmpdir, (:call, :mktempdir, :parent)),
+          (:line, 391, :none),
+          (:try, (:block,
+              (:line, 392, :none),
+              (:call, :fn, :tmpdir)
+            ), false, false, (:block,
+              (:line, 394, :none),
+              (:call, :rm, :tmpdir, (:kw, :recursive, true))
+            ))
+        ))),
+    (:line, 398, :none),
+    (:type, false, :uv_dirent_t, (:block,
+        (:line, 399, :none),
+        (:(::), :name, (:curly, :Ptr, :UInt8)),
+        (:line, 400, :none),
+        (:(::), :typ, :Cint)
+      )),
+    (:line, 403, :none),
+    (:macrocall, :(Core.@doc), "    readdir(dir::AbstractString=\".\") -> Vector{String}\n\nReturns the files and directories in the directory `dir` (or the current working directory if not given).\n", (:function, (:call, :readdir, (:(::), :path, :AbstractString)), (:block,
+          (:line, 410, :none),
+          (:(=), :uv_readdir_req, (:call, :zeros, :UInt8, (:call, :ccall, (:quote, #QuoteNode
+                  :jl_sizeof_uv_fs_t
+                ), :Int32, (:tuple,)))),
+          (:line, 413, :none),
+          (:(=), :err, (:call, :ccall, (:quote, #QuoteNode
+                :uv_fs_scandir
+              ), :Int32, (:tuple, (:curly, :Ptr, :Void), (:curly, :Ptr, :UInt8), :Cstring, :Cint, (:curly, :Ptr, :Void)), (:call, :eventloop), :uv_readdir_req, :path, 0, :C_NULL)),
+          (:line, 415, :none),
+          (:&&, (:call, :<, :err, 0), (:call, :throw, (:call, :SystemError, (:string, "unable to read directory ", :path), (:call, :-, :err)))),
+          (:line, 419, :none),
+          (:(=), :entries, (:ref, :String)),
+          (:line, 420, :none),
+          (:(=), :ent, (:call, (:curly, :Ref, :uv_dirent_t))),
+          (:line, 421, :none),
+          (:while, (:call, :(!=), (:., :Base, (:quote, #QuoteNode
+                  :UV_EOF
+                )), (:call, :ccall, (:quote, #QuoteNode
+                  :uv_fs_scandir_next
+                ), :Cint, (:tuple, (:curly, :Ptr, :Void), (:curly, :Ptr, :uv_dirent_t)), :uv_readdir_req, :ent)), (:block,
+              (:line, 422, :none),
+              (:call, :push!, :entries, (:call, :unsafe_string, (:., (:ref, :ent), (:quote, #QuoteNode
+                      :name
+                    ))))
+            )),
+          (:line, 426, :none),
+          (:call, :ccall, (:quote, #QuoteNode
+              :jl_uv_fs_req_cleanup
+            ), :Void, (:tuple, (:curly, :Ptr, :UInt8)), :uv_readdir_req),
+          (:line, 428, :none),
+          (:return, :entries)
+        ))),
+    (:line, 431, :none),
+    (:(=), (:call, :readdir), (:block,
+        (:line, 431, :none),
+        (:call, :readdir, ".")
+      )),
+    (:line, 433, :none),
+    (:macrocall, :(Core.@doc), "    walkdir(dir; topdown=true, follow_symlinks=false, onerror=throw)\n\nThe `walkdir` method returns an iterator that walks the directory tree of a directory.\nThe iterator returns a tuple containing `(rootpath, dirs, files)`.\nThe directory tree can be traversed top-down or bottom-up.\nIf `walkdir` encounters a [`SystemError`](@ref)\nit will rethrow the error by default.\nA custom error handling function can be provided through `onerror` keyword argument.\n`onerror` is called with a `SystemError` as argument.\n\n    for (root, dirs, files) in walkdir(\".\")\n        println(\"Directories in \$root\")\n        for dir in dirs\n            println(joinpath(root, dir)) # path to directories\n        end\n        println(\"Files in \$root\")\n        for file in files\n            println(joinpath(root, file)) # path to files\n        end\n    end\n\n", (:function, (:call, :walkdir, (:parameters, (:kw, :topdown, true), (:kw, :follow_symlinks, false), (:kw, :onerror, :throw)), :root), (:block,
+          (:line, 457, :none),
+          (:(=), :content, :nothing),
+          (:line, 458, :none),
+          (:try, (:block,
+              (:line, 459, :none),
+              (:(=), :content, (:call, :readdir, :root))
+            ), :err, (:block,
+              (:line, 461, :none),
+              (:||, (:call, :isa, :err, :SystemError), (:call, :throw, :err)),
+              (:line, 462, :none),
+              (:call, :onerror, :err),
+              (:line, 464, :none),
+              (:(=), :chnl, (:call, :Channel, 0)),
+              (:line, 465, :none),
+              (:call, :close, :chnl),
+              (:line, 466, :none),
+              (:return, :chnl)
+            )),
+          (:line, 468, :none),
+          (:(=), :dirs, (:call, (:curly, :Vector, (:call, :eltype, :content)), 0)),
+          (:line, 469, :none),
+          (:(=), :files, (:call, (:curly, :Vector, (:call, :eltype, :content)), 0)),
+          (:line, 470, :none),
+          (:for, (:(=), :name, :content), (:block,
+              (:line, 471, :none),
+              (:if, (:call, :isdir, (:call, :joinpath, :root, :name)), (:block,
+                  (:line, 472, :none),
+                  (:call, :push!, :dirs, :name)
+                ), (:block,
+                  (:line, 474, :none),
+                  (:call, :push!, :files, :name)
+                ))
+            )),
+          (:line, 478, :none),
+          (:function, (:call, :_it, :chnl), (:block,
+              (:line, 479, :none),
+              (:if, :topdown, (:block,
+                  (:line, 480, :none),
+                  (:call, :put!, :chnl, (:tuple, :root, :dirs, :files))
+                )),
+              (:line, 482, :none),
+              (:for, (:(=), :dir, :dirs), (:block,
+                  (:line, 483, :none),
+                  (:(=), :path, (:call, :joinpath, :root, :dir)),
+                  (:line, 484, :none),
+                  (:if, (:||, :follow_symlinks, (:call, :!, (:call, :islink, :path))), (:block,
+                      (:line, 485, :none),
+                      (:for, (:(=), (:tuple, :root_l, :dirs_l, :files_l), (:call, :walkdir, :path, (:kw, :topdown, :topdown), (:kw, :follow_symlinks, :follow_symlinks), (:kw, :onerror, :onerror))), (:block,
+                          (:line, 486, :none),
+                          (:call, :put!, :chnl, (:tuple, :root_l, :dirs_l, :files_l))
+                        ))
+                    ))
+                )),
+              (:line, 490, :none),
+              (:if, (:call, :!, :topdown), (:block,
+                  (:line, 491, :none),
+                  (:call, :put!, :chnl, (:tuple, :root, :dirs, :files))
+                ))
+            )),
+          (:line, 495, :none),
+          (:return, (:call, :Channel, :_it))
+        ))),
+    (:line, 498, :none),
+    (:function, (:call, :unlink, (:(::), :p, :AbstractString)), (:block,
+        (:line, 499, :none),
+        (:(=), :err, (:call, :ccall, (:quote, #QuoteNode
+              :jl_fs_unlink
+            ), :Int32, (:tuple, :Cstring), :p)),
+        (:line, 500, :none),
+        (:call, :uv_error, "unlink", :err),
+        (:line, 501, :none),
+        :nothing
+      )),
+    (:line, 505, :none),
+    (:function, (:call, :rename, (:(::), :src, :AbstractString), (:(::), :dst, :AbstractString)), (:block,
+        (:line, 506, :none),
+        (:(=), :err, (:call, :ccall, (:quote, #QuoteNode
+              :jl_fs_rename
+            ), :Int32, (:tuple, :Cstring, :Cstring), :src, :dst)),
+        (:line, 508, :none),
+        (:if, (:call, :<, :err, 0), (:block,
+            (:line, 510, :none),
+            (:call, :cp, (:parameters, (:kw, :remove_destination, false), (:kw, :follow_symlinks, false)), :src, :dst),
+            (:line, 511, :none),
+            (:call, :rm, (:parameters, (:kw, :recursive, true)), :src)
+          )),
+        (:line, 513, :none),
+        :nothing
+      )),
+    (:line, 516, :none),
+    (:function, (:call, :sendfile, (:(::), :src, :AbstractString), (:(::), :dst, :AbstractString)), (:block,
+        (:line, 517, :none),
+        (:local, (:(=), :src_open, false)),
+        (:line, 518, :none),
+        (:local, (:(=), :dst_open, false)),
+        (:line, 519, :none),
+        (:local, :src_file, :dst_file),
+        (:line, 520, :none),
+        (:try, (:block,
+            (:line, 521, :none),
+            (:(=), :src_file, (:call, :open, :src, :JL_O_RDONLY)),
+            (:line, 522, :none),
+            (:(=), :src_open, true),
+            (:line, 523, :none),
+            (:(=), :dst_file, (:call, :open, :dst, (:call, :|, (:call, :|, :JL_O_CREAT, :JL_O_TRUNC), :JL_O_WRONLY), (:call, :|, (:call, :|, (:call, :|, (:call, :|, (:call, :|, :S_IRUSR, :S_IWUSR), :S_IRGRP), :S_IWGRP), :S_IROTH), :S_IWOTH))),
+            (:line, 525, :none),
+            (:(=), :dst_open, true),
+            (:line, 527, :none),
+            (:(=), :bytes, (:call, :filesize, (:call, :stat, :src_file))),
+            (:line, 528, :none),
+            (:call, :sendfile, :dst_file, :src_file, (:call, :Int64, 0), (:call, :Int, :bytes))
+          ), false, false, (:block,
+            (:line, 530, :none),
+            (:if, (:&&, :src_open, (:call, :isopen, :src_file)), (:block,
+                (:line, 531, :none),
+                (:call, :close, :src_file)
+              )),
+            (:line, 533, :none),
+            (:if, (:&&, :dst_open, (:call, :isopen, :dst_file)), (:block,
+                (:line, 534, :none),
+                (:call, :close, :dst_file)
+              ))
+          ))
+      )),
+    (:line, 539, :none),
+    (:if, (:call, :is_windows), (:block,
+        (:line, 540, :none),
+        (:const, (:(=), :UV_FS_SYMLINK_JUNCTION, 0x0002))
+      )),
+    (:line, 543, :none),
+    (:macrocall, :(Core.@doc), "    symlink(target::AbstractString, link::AbstractString)\n\nCreates a symbolic link to `target` with the name `link`.\n\n!!! note\n    This function raises an error under operating systems that do not support\n    soft symbolic links, such as Windows XP.\n", (:function, (:call, :symlink, (:(::), :p, :AbstractString), (:(::), :np, :AbstractString)), (:block,
+          (:line, 553, :none),
+          (:macrocall, Symbol("@static"), (:if, (:call, :is_windows), (:block,
+                (:line, 554, :none),
+                (:if, (:call, :<, (:call, (:., :Sys, (:quote, #QuoteNode
+                          :windows_version
+                        ))), (:., :Sys, (:quote, #QuoteNode
+                        :WINDOWS_VISTA_VER
+                      ))), (:block,
+                    (:line, 555, :none),
+                    (:call, :error, "Windows XP does not support soft symlinks")
+                  ))
+              ))),
+          (:line, 558, :none),
+          (:(=), :flags, 0),
+          (:line, 559, :none),
+          (:macrocall, Symbol("@static"), (:if, (:call, :is_windows), (:block,
+                (:line, 560, :none),
+                (:if, (:call, :isdir, :p), (:block,
+                    (:line, 561, :none),
+                    (:|=, :flags, :UV_FS_SYMLINK_JUNCTION),
+                    (:line, 562, :none),
+                    (:(=), :p, (:call, :abspath, :p))
+                  ))
+              ))),
+          (:line, 565, :none),
+          (:(=), :err, (:call, :ccall, (:quote, #QuoteNode
+                :jl_fs_symlink
+              ), :Int32, (:tuple, :Cstring, :Cstring, :Cint), :p, :np, :flags)),
+          (:line, 566, :none),
+          (:macrocall, Symbol("@static"), (:if, (:call, :is_windows), (:block,
+                (:line, 567, :none),
+                (:if, (:&&, (:call, :<, :err, 0), (:call, :!, (:call, :isdir, :p))), (:block,
+                    (:line, 568, :none),
+                    (:call, (:., :Base, (:quote, #QuoteNode
+                          :warn_once
+                        )), "Note: on Windows, creating file symlinks requires Administrator privileges.")
+                  ))
+              ))),
+          (:line, 571, :none),
+          (:call, :uv_error, "symlink", :err)
+        ))),
+    (:line, 574, :none),
+    (:macrocall, :(Core.@doc), "    readlink(path::AbstractString) -> AbstractString\n\nReturns the target location a symbolic link `path` points to.\n", (:function, (:call, :readlink, (:(::), :path, :AbstractString)), (:block,
+          (:line, 580, :none),
+          (:(=), :req, (:call, (:., :Libc, (:quote, #QuoteNode
+                  :malloc
+                )), :_sizeof_uv_fs)),
+          (:line, 581, :none),
+          (:try, (:block,
+              (:line, 582, :none),
+              (:(=), :ret, (:call, :ccall, (:quote, #QuoteNode
+                    :uv_fs_readlink
+                  ), :Int32, (:tuple, (:curly, :Ptr, :Void), (:curly, :Ptr, :Void), :Cstring, (:curly, :Ptr, :Void)), (:call, :eventloop), :req, :path, :C_NULL)),
+              (:line, 585, :none),
+              (:if, (:call, :<, :ret, 0), (:block,
+                  (:line, 586, :none),
+                  (:call, :ccall, (:quote, #QuoteNode
+                      :uv_fs_req_cleanup
+                    ), :Void, (:tuple, (:curly, :Ptr, :Void)), :req),
+                  (:line, 587, :none),
+                  (:call, :uv_error, "readlink", :ret),
+                  (:line, 588, :none),
+                  (:call, :assert, false)
+                )),
+              (:line, 590, :none),
+              (:(=), :tgt, (:call, :unsafe_string, (:call, :ccall, (:quote, #QuoteNode
+                      :jl_uv_fs_t_ptr
+                    ), (:curly, :Ptr, :Cchar), (:tuple, (:curly, :Ptr, :Void)), :req))),
+              (:line, 591, :none),
+              (:call, :ccall, (:quote, #QuoteNode
+                  :uv_fs_req_cleanup
+                ), :Void, (:tuple, (:curly, :Ptr, :Void)), :req),
+              (:line, 592, :none),
+              (:return, :tgt)
+            ), false, false, (:block,
+              (:line, 594, :none),
+              (:call, (:., :Libc, (:quote, #QuoteNode
+                    :free
+                  )), :req)
+            ))
+        ))),
+    (:line, 598, :none),
+    (:macrocall, :(Core.@doc), "    chmod(path::AbstractString, mode::Integer; recursive::Bool=false)\n\nChange the permissions mode of `path` to `mode`. Only integer `mode`s (e.g. `0o777`) are\ncurrently supported. If `recursive=true` and the path is a directory all permissions in\nthat directory will be recursively changed.\n", (:function, (:call, :chmod, (:parameters, (:kw, (:(::), :recursive, :Bool), false)), (:(::), :path, :AbstractString), (:(::), :mode, :Integer)), (:block,
+          (:line, 606, :none),
+          (:(=), :err, (:call, :ccall, (:quote, #QuoteNode
+                :jl_fs_chmod
+              ), :Int32, (:tuple, :Cstring, :Cint), :path, :mode)),
+          (:line, 607, :none),
+          (:call, :uv_error, "chmod", :err),
+          (:line, 608, :none),
+          (:if, (:&&, :recursive, (:call, :isdir, :path)), (:block,
+              (:line, 609, :none),
+              (:for, (:(=), :p, (:call, :readdir, :path)), (:block,
+                  (:line, 610, :none),
+                  (:if, (:call, :!, (:call, :islink, (:call, :joinpath, :path, :p))), (:block,
+                      (:line, 611, :none),
+                      (:call, :chmod, (:call, :joinpath, :path, :p), :mode, (:kw, :recursive, true))
+                    ))
+                ))
+            )),
+          (:line, 615, :none),
+          :nothing
+        ))),
+    (:line, 618, :none),
+    (:macrocall, :(Core.@doc), "    chown(path::AbstractString, owner::Integer, group::Integer=-1)\n\nChange the owner and/or group of `path` to `owner` and/or `group`. If the value entered for `owner` or `group`\nis `-1` the corresponding ID will not change. Only integer `owner`s and `group`s are currently supported.\n", (:function, (:call, :chown, (:(::), :path, :AbstractString), (:(::), :owner, :Integer), (:kw, (:(::), :group, :Integer), -1)), (:block,
+          (:line, 625, :none),
+          (:(=), :err, (:call, :ccall, (:quote, #QuoteNode
+                :jl_fs_chown
+              ), :Int32, (:tuple, :Cstring, :Cint, :Cint), :path, :owner, :group)),
+          (:line, 626, :none),
+          (:call, :uv_error, "chown", :err),
+          (:line, 627, :none),
+          :nothing
+        )))
+  ))

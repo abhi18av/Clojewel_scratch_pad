@@ -1,0 +1,393 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:(=), (:curly, :Dims, :N), (:curly, :NTuple, :N, :Int)),
+    (:line, 4, :none),
+    (:(=), (:curly, :DimsInteger, :N), (:curly, :NTuple, :N, :Integer)),
+    (:line, 5, :none),
+    (:(=), (:curly, :Indices, :N), (:curly, :NTuple, :N, :AbstractUnitRange)),
+    (:line, 9, :none),
+    (:(=), (:call, :promote_shape, (:(::), (:curly, :Tuple)), (:(::), (:curly, :Tuple))), (:block,
+        (:line, 9, :none),
+        (:tuple,)
+      )),
+    (:line, 11, :none),
+    (:function, (:call, :promote_shape, (:(::), :a, (:curly, :Tuple, :Int)), (:(::), :b, (:curly, :Tuple, :Int))), (:block,
+        (:line, 12, :none),
+        (:if, (:call, :(!=), (:ref, :a, 1), (:ref, :b, 1)), (:block,
+            (:line, 13, :none),
+            (:call, :throw, (:call, :DimensionMismatch, "dimensions must match"))
+          )),
+        (:line, 15, :none),
+        (:return, :a)
+      )),
+    (:line, 18, :none),
+    (:function, (:call, :promote_shape, (:(::), :a, (:curly, :Tuple, :Int, :Int)), (:(::), :b, (:curly, :Tuple, :Int))), (:block,
+        (:line, 19, :none),
+        (:if, (:||, (:call, :(!=), (:ref, :a, 1), (:ref, :b, 1)), (:call, :(!=), (:ref, :a, 2), 1)), (:block,
+            (:line, 20, :none),
+            (:call, :throw, (:call, :DimensionMismatch, "dimensions must match"))
+          )),
+        (:line, 22, :none),
+        (:return, :a)
+      )),
+    (:line, 25, :none),
+    (:(=), (:call, :promote_shape, (:(::), :a, (:curly, :Tuple, :Int)), (:(::), :b, (:curly, :Tuple, :Int, :Int))), (:block,
+        (:line, 25, :none),
+        (:call, :promote_shape, :b, :a)
+      )),
+    (:line, 27, :none),
+    (:function, (:call, :promote_shape, (:(::), :a, (:curly, :Tuple, :Int, :Int)), (:(::), :b, (:curly, :Tuple, :Int, :Int))), (:block,
+        (:line, 28, :none),
+        (:if, (:||, (:call, :(!=), (:ref, :a, 1), (:ref, :b, 1)), (:call, :(!=), (:ref, :a, 2), (:ref, :b, 2))), (:block,
+            (:line, 29, :none),
+            (:call, :throw, (:call, :DimensionMismatch, "dimensions must match"))
+          )),
+        (:line, 31, :none),
+        (:return, :a)
+      )),
+    (:line, 34, :none),
+    (:macrocall, :(Core.@doc), "    promote_shape(s1, s2)\n\nCheck two array shapes for compatibility, allowing trailing singleton dimensions, and return\nwhichever shape has more dimensions.\n\n```jldoctest\njulia> a = ones(3,4,1,1,1);\n\njulia> b = ones(3,4);\n\njulia> promote_shape(a,b)\n(Base.OneTo(3), Base.OneTo(4), Base.OneTo(1), Base.OneTo(1), Base.OneTo(1))\n\njulia> promote_shape((2,3,1,4), (2, 3, 1, 4, 1))\n(2, 3, 1, 4, 1)\n```\n", (:function, (:call, :promote_shape, (:(::), :a, :Dims), (:(::), :b, :Dims)), (:block,
+          (:line, 53, :none),
+          (:if, (:call, :<, (:call, :length, :a), (:call, :length, :b)), (:block,
+              (:line, 54, :none),
+              (:return, (:call, :promote_shape, :b, :a))
+            )),
+          (:line, 56, :none),
+          (:for, (:(=), :i, (:(:), 1, (:call, :length, :b))), (:block,
+              (:line, 57, :none),
+              (:if, (:call, :(!=), (:ref, :a, :i), (:ref, :b, :i)), (:block,
+                  (:line, 58, :none),
+                  (:call, :throw, (:call, :DimensionMismatch, "dimensions must match"))
+                ))
+            )),
+          (:line, 61, :none),
+          (:for, (:(=), :i, (:(:), (:call, :+, (:call, :length, :b), 1), (:call, :length, :a))), (:block,
+              (:line, 62, :none),
+              (:if, (:call, :(!=), (:ref, :a, :i), 1), (:block,
+                  (:line, 63, :none),
+                  (:call, :throw, (:call, :DimensionMismatch, "dimensions must match"))
+                ))
+            )),
+          (:line, 66, :none),
+          (:return, :a)
+        ))),
+    (:line, 69, :none),
+    (:function, (:call, :promote_shape, (:(::), :a, :AbstractArray), (:(::), :b, :AbstractArray)), (:block,
+        (:line, 70, :none),
+        (:call, :promote_shape, (:call, :indices, :a), (:call, :indices, :b))
+      )),
+    (:line, 73, :none),
+    (:function, (:call, :promote_shape, (:(::), :a, :Indices), (:(::), :b, :Indices)), (:block,
+        (:line, 74, :none),
+        (:if, (:call, :<, (:call, :length, :a), (:call, :length, :b)), (:block,
+            (:line, 75, :none),
+            (:return, (:call, :promote_shape, :b, :a))
+          )),
+        (:line, 77, :none),
+        (:for, (:(=), :i, (:(:), 1, (:call, :length, :b))), (:block,
+            (:line, 78, :none),
+            (:if, (:call, :(!=), (:ref, :a, :i), (:ref, :b, :i)), (:block,
+                (:line, 79, :none),
+                (:call, :throw, (:call, :DimensionMismatch, "dimensions must match"))
+              ))
+          )),
+        (:line, 82, :none),
+        (:for, (:(=), :i, (:(:), (:call, :+, (:call, :length, :b), 1), (:call, :length, :a))), (:block,
+            (:line, 83, :none),
+            (:if, (:call, :(!=), (:ref, :a, :i), (:(:), 1, 1)), (:block,
+                (:line, 84, :none),
+                (:call, :throw, (:call, :DimensionMismatch, "dimensions must match"))
+              ))
+          )),
+        (:line, 87, :none),
+        (:return, :a)
+      )),
+    (:line, 90, :none),
+    (:function, (:call, :throw_setindex_mismatch, :X, :I), (:block,
+        (:line, 91, :none),
+        (:if, (:call, :(==), (:call, :length, :I), 1), (:block,
+            (:line, 92, :none),
+            (:call, :throw, (:call, :DimensionMismatch, (:string, "tried to assign ", (:call, :length, :X), " elements to ", (:ref, :I, 1), " destinations")))
+          ), (:block,
+            (:line, 94, :none),
+            (:call, :throw, (:call, :DimensionMismatch, (:string, "tried to assign ", (:call, :dims2string, (:call, :size, :X)), " array to ", (:call, :dims2string, :I), " destination")))
+          ))
+      )),
+    (:line, 103, :none),
+    (:function, (:call, :setindex_shape_check, (:(::), :X, :AbstractArray), (:..., (:(::), :I, :Integer))), (:block,
+        (:line, 104, :none),
+        (:(=), :li, (:call, :ndims, :X)),
+        (:line, 105, :none),
+        (:(=), :lj, (:call, :length, :I)),
+        (:line, 106, :none),
+        (:(=), :i, (:(=), :j, 1)),
+        (:line, 107, :none),
+        (:while, true, (:block,
+            (:line, 108, :none),
+            (:(=), :ii, (:call, :length, (:call, :indices, :X, :i))),
+            (:line, 109, :none),
+            (:(=), :jj, (:ref, :I, :j)),
+            (:line, 110, :none),
+            (:if, (:||, (:call, :(==), :i, :li), (:call, :(==), :j, :lj)), (:block,
+                (:line, 111, :none),
+                (:while, (:call, :<, :i, :li), (:block,
+                    (:line, 112, :none),
+                    (:+=, :i, 1),
+                    (:line, 113, :none),
+                    (:*=, :ii, (:call, :length, (:call, :indices, :X, :i)))
+                  )),
+                (:line, 115, :none),
+                (:while, (:call, :<, :j, :lj), (:block,
+                    (:line, 116, :none),
+                    (:+=, :j, 1),
+                    (:line, 117, :none),
+                    (:*=, :jj, (:ref, :I, :j))
+                  )),
+                (:line, 119, :none),
+                (:if, (:call, :(!=), :ii, :jj), (:block,
+                    (:line, 120, :none),
+                    (:call, :throw_setindex_mismatch, :X, :I)
+                  )),
+                (:line, 122, :none),
+                (:return, nothing)
+              )),
+            (:line, 124, :none),
+            (:if, (:call, :(==), :ii, :jj), (:block,
+                (:line, 125, :none),
+                (:+=, :i, 1),
+                (:line, 126, :none),
+                (:+=, :j, 1)
+              ), (:block,
+                (:line, 127, :none),
+                (:if, (:call, :(==), :ii, 1), (:block,
+                    (:line, 128, :none),
+                    (:+=, :i, 1)
+                  ), (:block,
+                    (:line, 129, :none),
+                    (:if, (:call, :(==), :jj, 1), (:block,
+                        (:line, 130, :none),
+                        (:+=, :j, 1)
+                      ), (:block,
+                        (:line, 132, :none),
+                        (:call, :throw_setindex_mismatch, :X, :I)
+                      ))
+                  ))
+              ))
+          ))
+      )),
+    (:line, 137, :none),
+    (:(=), (:call, :setindex_shape_check, (:(::), :X, :AbstractArray)), (:block,
+        (:line, 137, :none),
+        (:||, (:call, :(==), (:call, :_length, :X), 1), (:call, :throw_setindex_mismatch, :X, (:tuple,)))
+      )),
+    (:line, 140, :none),
+    (:(=), (:call, :setindex_shape_check, (:(::), :X, :AbstractArray), (:(::), :i, :Integer)), (:block,
+        (:line, 140, :none),
+        (:||, (:call, :(==), (:call, :_length, :X), :i), (:call, :throw_setindex_mismatch, :X, (:tuple, :i)))
+      )),
+    (:line, 143, :none),
+    (:(=), (:call, :setindex_shape_check, (:(::), :X, (:curly, :AbstractArray, (:<:, :Any), 1)), (:(::), :i, :Integer)), (:block,
+        (:line, 143, :none),
+        (:||, (:call, :(==), (:call, :_length, :X), :i), (:call, :throw_setindex_mismatch, :X, (:tuple, :i)))
+      )),
+    (:line, 146, :none),
+    (:(=), (:call, :setindex_shape_check, (:(::), :X, (:curly, :AbstractArray, (:<:, :Any), 1)), (:(::), :i, :Integer), (:(::), :j, :Integer)), (:block,
+        (:line, 146, :none),
+        (:||, (:call, :(==), (:call, :_length, :X), (:call, :*, :i, :j)), (:call, :throw_setindex_mismatch, :X, (:tuple, :i, :j)))
+      )),
+    (:line, 149, :none),
+    (:function, (:call, :setindex_shape_check, (:(::), :X, (:curly, :AbstractArray, (:<:, :Any), 2)), (:(::), :i, :Integer), (:(::), :j, :Integer)), (:block,
+        (:line, 150, :none),
+        (:if, (:call, :(!=), (:call, :length, :X), (:call, :*, :i, :j)), (:block,
+            (:line, 151, :none),
+            (:call, :throw_setindex_mismatch, :X, (:tuple, :i, :j))
+          )),
+        (:line, 153, :none),
+        (:(=), :sx1, (:call, :length, (:call, :indices, :X, 1))),
+        (:line, 154, :none),
+        (:if, (:call, :!, (:||, (:call, :(==), :i, 1), (:||, (:call, :(==), :i, :sx1), (:call, :(==), :sx1, 1)))), (:block,
+            (:line, 155, :none),
+            (:call, :throw_setindex_mismatch, :X, (:tuple, :i, :j))
+          ))
+      )),
+    (:line, 158, :none),
+    (:(=), (:call, :setindex_shape_check, :X, (:..., :I)), (:block,
+        (:line, 158, :none),
+        :nothing
+      )),
+    (:line, 161, :none),
+    (:macrocall, :(Core.@doc), "    to_index(A, i)\n\nConvert index `i` to an `Int` or array of indices to be used as an index into array `A`.\n\nCustom array types may specialize `to_index(::CustomArray, i)` to provide\nspecial indexing behaviors. Note that some index types (like `Colon`) require\nmore context in order to transform them into an array of indices; those get\nconverted in the more complicated `to_indices` function. By default, this\nsimply calls the generic `to_index(i)`. This must return either an `Int` or an\n`AbstractArray` of scalar indices that are supported by `A`.\n", (:(=), (:call, :to_index, :A, :i), (:block,
+          (:line, 173, :none),
+          (:call, :to_index, :i)
+        ))),
+    (:line, 175, :none),
+    (:macrocall, :(Core.@doc), "    to_index(i)\n\nConvert index `i` to an `Int` or array of `Int`s to be used as an index for all arrays.\n\nCustom index types may specialize `to_index(::CustomIndex)` to provide special\nindexing behaviors. This must return either an `Int` or an `AbstractArray` of\n`Int`s.\n", (:(=), (:call, :to_index, (:(::), :i, :Integer)), (:block,
+          (:line, 184, :none),
+          (:(::), (:call, :convert, :Int, :i), :Int)
+        ))),
+    (:line, 185, :none),
+    (:(=), (:call, :to_index, (:(::), :I, (:curly, :AbstractArray, :Bool))), (:block,
+        (:line, 185, :none),
+        (:call, :LogicalIndex, :I)
+      )),
+    (:line, 186, :none),
+    (:(=), (:call, :to_index, (:(::), :I, :AbstractArray)), (:block,
+        (:line, 186, :none),
+        :I
+      )),
+    (:line, 187, :none),
+    (:(=), (:call, :to_index, (:(::), :I, (:curly, :AbstractArray, (:<:, (:curly, :Union, :AbstractArray, :Colon))))), (:block,
+        (:line, 187, :none),
+        (:call, :throw, (:call, :ArgumentError, (:string, "invalid index: ", :I)))
+      )),
+    (:line, 188, :none),
+    (:(=), (:call, :to_index, (:(::), :Colon)), (:block,
+        (:line, 188, :none),
+        (:call, :throw, (:call, :ArgumentError, "colons must be converted by to_indices(...)"))
+      )),
+    (:line, 189, :none),
+    (:(=), (:call, :to_index, :i), (:block,
+        (:line, 189, :none),
+        (:call, :throw, (:call, :ArgumentError, (:string, "invalid index: ", :i)))
+      )),
+    (:line, 193, :none),
+    (:macrocall, :(Core.@doc), "    to_indices(A, I::Tuple)\n\nConvert the tuple `I` to a tuple of indices for use in indexing into array `A`.\n\nThe returned tuple must only contain either `Int`s or `AbstractArray`s of\nscalar indices that are supported by array `A`. It will error upon encountering\na novel index type that it does not know how to process.\n\nFor simple index types, it defers to the unexported `Base.to_index(A, i)` to\nprocess each index `i`. While this internal function is not intended to be\ncalled directly, `Base.to_index` may be extended by custom array or index types\nto provide custom indexing behaviors.\n\nMore complicated index types may require more context about the dimension into\nwhich they index. To support those cases, `to_indices(A, I)` calls\n`to_indices(A, indices(A), I)`, which then recursively walks through both the\ngiven tuple of indices and the dimensional indices of `A` in tandem. As such,\nnot all index types are guaranteed to propagate to `Base.to_index`.\n", (:(=), (:call, :to_indices, :A, (:(::), :I, :Tuple)), (:block,
+          (:line, 213, :none),
+          (:block,
+            (:macrocall, Symbol("@_inline_meta")),
+            (:call, :to_indices, :A, (:call, :indices, :A), :I)
+          )
+        ))),
+    (:line, 214, :none),
+    (:(=), (:call, :to_indices, :A, :inds, (:(::), (:curly, :Tuple))), (:block,
+        (:line, 214, :none),
+        (:tuple,)
+      )),
+    (:line, 215, :none),
+    (:(=), (:call, :to_indices, :A, :inds, (:(::), :I, (:curly, :Tuple, :Any, (:curly, :Vararg, :Any)))), (:block,
+        (:line, 215, :none),
+        (:block,
+          (:macrocall, Symbol("@_inline_meta")),
+          (:tuple, (:call, :to_index, :A, (:ref, :I, 1)), (:..., (:call, :to_indices, :A, (:call, :_maybetail, :inds), (:call, :tail, :I))))
+        )
+      )),
+    (:line, 218, :none),
+    (:(=), (:call, :_maybetail, (:(::), (:curly, :Tuple))), (:block,
+        (:line, 218, :none),
+        (:tuple,)
+      )),
+    (:line, 219, :none),
+    (:(=), (:call, :_maybetail, (:(::), :t, :Tuple)), (:block,
+        (:line, 219, :none),
+        (:call, :tail, :t)
+      )),
+    (:line, 221, :none),
+    (:macrocall, :(Core.@doc), "   Slice(indices)\n\nRepresent an AbstractUnitRange of indices as a vector of the indices themselves.\n\nUpon calling `to_indices()`, Colons are converted to Slice objects to represent\nthe indices over which the Colon spans. Slice objects are themselves unit\nranges with the same indices as those they wrap. This means that indexing into\nSlice objects with an integer always returns that exact integer, and they\niterate over all the wrapped indices, even supporting offset indices.\n", (:type, false, (:<:, (:curly, :Slice, (:<:, :T, :AbstractUnitRange)), (:curly, :AbstractUnitRange, :Int)), (:block,
+          (:line, 233, :none),
+          (:(::), :indices, :T)
+        ))),
+    (:line, 235, :none),
+    (:(=), (:call, :indices, (:(::), :S, :Slice)), (:block,
+        (:line, 235, :none),
+        (:tuple, (:., :S, (:quote, #QuoteNode
+              :indices
+            )))
+      )),
+    (:line, 236, :none),
+    (:(=), (:call, :unsafe_indices, (:(::), :S, :Slice)), (:block,
+        (:line, 236, :none),
+        (:tuple, (:., :S, (:quote, #QuoteNode
+              :indices
+            )))
+      )),
+    (:line, 237, :none),
+    (:(=), (:call, :indices1, (:(::), :S, :Slice)), (:block,
+        (:line, 237, :none),
+        (:., :S, (:quote, #QuoteNode
+            :indices
+          ))
+      )),
+    (:line, 238, :none),
+    (:(=), (:call, :first, (:(::), :S, :Slice)), (:block,
+        (:line, 238, :none),
+        (:call, :first, (:., :S, (:quote, #QuoteNode
+              :indices
+            )))
+      )),
+    (:line, 239, :none),
+    (:(=), (:call, :last, (:(::), :S, :Slice)), (:block,
+        (:line, 239, :none),
+        (:call, :last, (:., :S, (:quote, #QuoteNode
+              :indices
+            )))
+      )),
+    (:line, 240, :none),
+    (:(=), (:call, :errmsg, :A), (:block,
+        (:line, 240, :none),
+        (:call, :error, (:string, "size not supported for arrays with indices ", (:call, :indices, :A), "; see https://docs.julialang.org/en/latest/devdocs/offset-arrays/"))
+      )),
+    (:line, 241, :none),
+    (:(=), (:call, :size, (:(::), :S, :Slice)), (:block,
+        (:line, 241, :none),
+        (:if, (:call, :(==), (:call, :first, (:., :S, (:quote, #QuoteNode
+                  :indices
+                ))), 1), (:tuple, (:call, :length, (:., :S, (:quote, #QuoteNode
+                  :indices
+                )))), (:call, :errmsg, :S))
+      )),
+    (:line, 242, :none),
+    (:(=), (:call, :length, (:(::), :S, :Slice)), (:block,
+        (:line, 242, :none),
+        (:if, (:call, :(==), (:call, :first, (:., :S, (:quote, #QuoteNode
+                  :indices
+                ))), 1), (:call, :length, (:., :S, (:quote, #QuoteNode
+                :indices
+              ))), (:call, :errmsg, :S))
+      )),
+    (:line, 243, :none),
+    (:(=), (:call, :unsafe_length, (:(::), :S, :Slice)), (:block,
+        (:line, 243, :none),
+        (:if, (:call, :(==), (:call, :first, (:., :S, (:quote, #QuoteNode
+                  :indices
+                ))), 1), (:call, :unsafe_length, (:., :S, (:quote, #QuoteNode
+                :indices
+              ))), (:call, :errmsg, :S))
+      )),
+    (:line, 244, :none),
+    (:(=), (:call, :getindex, (:(::), :S, :Slice), (:(::), :i, :Int)), (:block,
+        (:line, 244, :none),
+        (:block,
+          (:macrocall, Symbol("@_inline_meta")),
+          (:macrocall, Symbol("@boundscheck"), (:call, :checkbounds, :S, :i)),
+          :i
+        )
+      )),
+    (:line, 245, :none),
+    (:(=), (:call, :show, (:(::), :io, :IO), (:(::), :r, :Slice)), (:block,
+        (:line, 245, :none),
+        (:call, :print, :io, "Base.Slice(", (:., :r, (:quote, #QuoteNode
+              :indices
+            )), ")")
+      )),
+    (:line, 246, :none),
+    (:(=), (:call, :start, (:(::), :S, :Slice)), (:block,
+        (:line, 246, :none),
+        (:call, :start, (:., :S, (:quote, #QuoteNode
+              :indices
+            )))
+      )),
+    (:line, 247, :none),
+    (:(=), (:call, :next, (:(::), :S, :Slice), :s), (:block,
+        (:line, 247, :none),
+        (:call, :next, (:., :S, (:quote, #QuoteNode
+              :indices
+            )), :s)
+      )),
+    (:line, 248, :none),
+    (:(=), (:call, :done, (:(::), :S, :Slice), :s), (:block,
+        (:line, 248, :none),
+        (:call, :done, (:., :S, (:quote, #QuoteNode
+              :indices
+            )), :s)
+      ))
+  ))

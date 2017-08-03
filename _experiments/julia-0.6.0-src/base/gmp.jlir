@@ -1,0 +1,1541 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:module, true, :GMP, (:block,
+        (:line, 3, :none),
+        (:line, 5, :none),
+        (:export, :BigInt),
+        (:line, 7, :none),
+        (:toplevel, (:import, :Base, :*), (:import, :Base, :+), (:import, :Base, :-), (:import, :Base, :/), (:import, :Base, :<), (:import, :Base, :<<), (:import, :Base, :>>), (:import, :Base, :>>>), (:import, :Base, :(<=)), (:import, :Base, :(==)), (:import, :Base, :>), (:import, :Base, :(>=)), (:import, :Base, :^), (:import, :Base, :~), (:import, :Base, :&), (:import, :Base, :|), (:import, :Base, :xor), (:import, :Base, :binomial), (:import, :Base, :cmp), (:import, :Base, :convert), (:import, :Base, :div), (:import, :Base, :divrem), (:import, :Base, :factorial), (:import, :Base, :fld), (:import, :Base, :gcd), (:import, :Base, :gcdx), (:import, :Base, :lcm), (:import, :Base, :mod), (:import, :Base, :ndigits), (:import, :Base, :promote_rule), (:import, :Base, :rem), (:import, :Base, :show), (:import, :Base, :isqrt), (:import, :Base, :string), (:import, :Base, :powermod), (:import, :Base, :sum), (:import, :Base, :trailing_zeros), (:import, :Base, :trailing_ones), (:import, :Base, :count_ones), (:import, :Base, :base), (:import, :Base, :tryparse_internal), (:import, :Base, :bin), (:import, :Base, :oct), (:import, :Base, :dec), (:import, :Base, :hex), (:import, :Base, :isequal), (:import, :Base, :invmod), (:import, :Base, :prevpow2), (:import, :Base, :nextpow2), (:import, :Base, :ndigits0z), (:import, :Base, :widen), (:import, :Base, :signed), (:import, :Base, :unsafe_trunc), (:import, :Base, :trunc), (:import, :Base, :iszero), (:import, :Base, :flipsign), (:import, :Base, :signbit)),
+        (:line, 14, :none),
+        (:if, (:call, :(==), :Clong, :Int32), (:block,
+            (:line, 15, :none),
+            (:const, (:(=), :ClongMax, (:curly, :Union, :Int8, :Int16, :Int32))),
+            (:line, 16, :none),
+            (:const, (:(=), :CulongMax, (:curly, :Union, :UInt8, :UInt16, :UInt32)))
+          ), (:block,
+            (:line, 18, :none),
+            (:const, (:(=), :ClongMax, (:curly, :Union, :Int8, :Int16, :Int32, :Int64))),
+            (:line, 19, :none),
+            (:const, (:(=), :CulongMax, (:curly, :Union, :UInt8, :UInt16, :UInt32, :UInt64)))
+          )),
+        (:line, 21, :none),
+        (:const, (:(=), :CdoubleMax, (:curly, :Union, :Float16, :Float32, :Float64))),
+        (:line, 23, :none),
+        (:(=), (:call, :gmp_version), (:block,
+            (:line, 23, :none),
+            (:call, :VersionNumber, (:call, :unsafe_string, (:call, :unsafe_load, (:call, :cglobal, (:tuple, (:quote, #QuoteNode
+                        :__gmp_version
+                      ), (:quote, #QuoteNode
+                        :libgmp
+                      )), (:curly, :Ptr, :Cchar)))))
+          )),
+        (:line, 24, :none),
+        (:(=), (:call, :gmp_bits_per_limb), (:block,
+            (:line, 24, :none),
+            (:call, :Int, (:call, :unsafe_load, (:call, :cglobal, (:tuple, (:quote, #QuoteNode
+                      :__gmp_bits_per_limb
+                    ), (:quote, #QuoteNode
+                      :libgmp
+                    )), :Cint)))
+          )),
+        (:line, 26, :none),
+        (:const, (:(=), :GMP_VERSION, (:call, :gmp_version))),
+        (:line, 27, :none),
+        (:const, (:(=), :GMP_BITS_PER_LIMB, (:call, :gmp_bits_per_limb))),
+        (:line, 32, :none),
+        (:if, (:call, :(==), :GMP_BITS_PER_LIMB, 32), (:block,
+            (:line, 33, :none),
+            (:const, (:(=), :Limb, :UInt32))
+          ), (:block,
+            (:line, 34, :none),
+            (:if, (:call, :(==), :GMP_BITS_PER_LIMB, 64), (:block,
+                (:line, 35, :none),
+                (:const, (:(=), :Limb, :UInt64))
+              ), (:block,
+                (:line, 37, :none),
+                (:call, :error, (:string, "GMP: cannot determine the type mp_limb_t (__gmp_bits_per_limb == ", :GMP_BITS_PER_LIMB, ")"))
+              ))
+          )),
+        (:line, 40, :none),
+        (:macrocall, :(Core.@doc), "    BigInt <: Integer\n\nArbitrary precision integer type.\n", (:type, true, (:<:, :BigInt, :Integer), (:block,
+              (:line, 46, :none),
+              (:(::), :alloc, :Cint),
+              (:line, 47, :none),
+              (:(::), :size, :Cint),
+              (:line, 48, :none),
+              (:(::), :d, (:curly, :Ptr, :Limb)),
+              (:line, 49, :none),
+              (:function, (:call, :BigInt), (:block,
+                  (:line, 50, :none),
+                  (:(=), :b, (:call, :new, (:call, :zero, :Cint), (:call, :zero, :Cint), :C_NULL)),
+                  (:line, 51, :none),
+                  (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                        :__gmpz_init
+                      ), (:quote, #QuoteNode
+                        :libgmp
+                      )), :Void, (:tuple, (:curly, :Ptr, :BigInt)), (:&, :b)),
+                  (:line, 52, :none),
+                  (:call, :finalizer, :b, (:call, :cglobal, (:tuple, (:quote, #QuoteNode
+                          :__gmpz_clear
+                        ), (:quote, #QuoteNode
+                          :libgmp
+                        )))),
+                  (:line, 53, :none),
+                  (:return, :b)
+                ))
+            ))),
+        (:line, 57, :none),
+        (:const, (:(=), :ZERO, (:call, :BigInt))),
+        (:line, 58, :none),
+        (:const, (:(=), :ONE, (:call, :BigInt))),
+        (:line, 59, :none),
+        (:const, (:(=), :_ONE, (:ref, :Limb, 1))),
+        (:line, 61, :none),
+        (:macrocall, :(Core.@doc), "    BigInt(x)\n\nCreate an arbitrary precision integer. `x` may be an `Int` (or anything that can be\nconverted to an `Int`). The usual mathematical operators are defined for this type, and\nresults are promoted to a [`BigInt`](@ref).\n\nInstances can be constructed from strings via [`parse`](@ref), or using the `big`\nstring literal.\n\n```jldoctest\njulia> parse(BigInt, \"42\")\n42\n\njulia> big\"313\"\n313\n```\n", (:call, :BigInt, :x)),
+        (:line, 81, :none),
+        (:function, (:call, :__init__), (:block,
+            (:line, 82, :none),
+            (:try, (:block,
+                (:line, 83, :none),
+                (:if, (:||, (:call, :(!=), (:., (:call, :gmp_version), (:quote, #QuoteNode
+                          :major
+                        )), (:., :GMP_VERSION, (:quote, #QuoteNode
+                          :major
+                        ))), (:call, :(!=), (:call, :gmp_bits_per_limb), :GMP_BITS_PER_LIMB)), (:block,
+                    (:line, 84, :none),
+                    (:call, :error, (:call, :string, (:string, "The dynamically loaded GMP library (version ", (:call, :gmp_version), " with __gmp_bits_per_limb == ", (:call, :gmp_bits_per_limb), ")\n"), (:string, "does not correspond to the compile time version (version ", :GMP_VERSION, " with __gmp_bits_per_limb == ", :GMP_BITS_PER_LIMB, ").\n"), "Please rebuild Julia."))
+                  )),
+                (:line, 89, :none),
+                (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                      :__gmp_set_memory_functions
+                    ), (:quote, #QuoteNode
+                      :libgmp
+                    )), :Void, (:tuple, (:curly, :Ptr, :Void), (:curly, :Ptr, :Void), (:curly, :Ptr, :Void)), (:call, :cglobal, (:quote, #QuoteNode
+                      :jl_gc_counted_malloc
+                    )), (:call, :cglobal, (:quote, #QuoteNode
+                      :jl_gc_counted_realloc_with_old_size
+                    )), (:call, :cglobal, (:quote, #QuoteNode
+                      :jl_gc_counted_free
+                    ))),
+                (:line, 95, :none),
+                (:(=), (:tuple, (:., :ZERO, (:quote, #QuoteNode
+                        :alloc
+                      )), (:., :ZERO, (:quote, #QuoteNode
+                        :size
+                      )), (:., :ZERO, (:quote, #QuoteNode
+                        :d
+                      ))), (:tuple, 0, 0, :C_NULL)),
+                (:line, 96, :none),
+                (:(=), (:tuple, (:., :ONE, (:quote, #QuoteNode
+                        :alloc
+                      )), (:., :ONE, (:quote, #QuoteNode
+                        :size
+                      )), (:., :ONE, (:quote, #QuoteNode
+                        :d
+                      ))), (:tuple, 1, 1, (:call, :pointer, :_ONE)))
+              ), :ex, (:block,
+                (:line, 98, :none),
+                (:call, (:., :Base, (:quote, #QuoteNode
+                      :showerror_nostdio
+                    )), :ex, "WARNING: Error during initialization of module GMP")
+              ))
+          )),
+        (:line, 103, :none),
+        (:(=), (:call, :widen, (:(::), (:curly, :Type, :Int128))), (:block,
+            (:line, 103, :none),
+            :BigInt
+          )),
+        (:line, 104, :none),
+        (:(=), (:call, :widen, (:(::), (:curly, :Type, :UInt128))), (:block,
+            (:line, 104, :none),
+            :BigInt
+          )),
+        (:line, 105, :none),
+        (:(=), (:call, :widen, (:(::), (:curly, :Type, :BigInt))), (:block,
+            (:line, 105, :none),
+            :BigInt
+          )),
+        (:line, 107, :none),
+        (:(=), (:call, :signed, (:(::), :x, :BigInt)), (:block,
+            (:line, 107, :none),
+            :x
+          )),
+        (:line, 109, :none),
+        (:(=), (:call, :convert, (:(::), (:curly, :Type, :BigInt)), (:(::), :x, :BigInt)), (:block,
+            (:line, 109, :none),
+            :x
+          )),
+        (:line, 111, :none),
+        (:function, (:call, :tryparse_internal, (:(::), (:curly, :Type, :BigInt)), (:(::), :s, :AbstractString), (:(::), :startpos, :Int), (:(::), :endpos, :Int), (:(::), :base_, :Integer), (:(::), :raise, :Bool)), (:block,
+            (:line, 112, :none),
+            (:(=), :_n, (:call, (:curly, :Nullable, :BigInt))),
+            (:line, 115, :none),
+            (:(=), :bstr, (:if, (:&&, (:call, :(==), :startpos, (:call, :start, :s)), (:call, :(==), :endpos, (:call, :endof, :s))), (:call, :String, :s), (:call, :String, (:call, :SubString, :s, :startpos, :endpos)))),
+            (:line, 117, :none),
+            (:(=), (:tuple, :sgn, :base, :i), (:call, (:., :Base, (:quote, #QuoteNode
+                    :parseint_preamble
+                  )), true, (:call, :Int, :base_), :bstr, (:call, :start, :bstr), (:call, :endof, :bstr))),
+            (:line, 118, :none),
+            (:if, (:call, :!, (:comparison, 2, :(<=), :base, :(<=), 62)), (:block,
+                (:line, 119, :none),
+                (:&&, :raise, (:call, :throw, (:call, :ArgumentError, (:string, "invalid base: base must be 2 ≤ base ≤ 62, got ", :base)))),
+                (:line, 120, :none),
+                (:return, :_n)
+              )),
+            (:line, 122, :none),
+            (:if, (:call, :(==), :i, 0), (:block,
+                (:line, 123, :none),
+                (:&&, :raise, (:call, :throw, (:call, :ArgumentError, (:string, "premature end of integer: ", (:call, :repr, :bstr))))),
+                (:line, 124, :none),
+                (:return, :_n)
+              )),
+            (:line, 126, :none),
+            (:(=), :z, (:call, :BigInt)),
+            (:line, 127, :none),
+            (:if, (:call, (:., :Base, (:quote, #QuoteNode
+                    :containsnul
+                  )), :bstr), (:block,
+                (:line, 128, :none),
+                (:(=), :err, -1)
+              ), (:block,
+                (:line, 130, :none),
+                (:(=), :err, (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                        :__gmpz_set_str
+                      ), (:quote, #QuoteNode
+                        :libgmp
+                      )), :Int32, (:tuple, (:curly, :Ptr, :BigInt), (:curly, :Ptr, :UInt8), :Int32), (:&, :z), (:call, :+, (:call, :pointer, :bstr), (:call, :-, :i, (:call, :start, :bstr))), :base))
+              )),
+            (:line, 134, :none),
+            (:if, (:call, :(!=), :err, 0), (:block,
+                (:line, 135, :none),
+                (:&&, :raise, (:call, :throw, (:call, :ArgumentError, (:string, "invalid BigInt: ", (:call, :repr, :bstr))))),
+                (:line, 136, :none),
+                (:return, :_n)
+              )),
+            (:line, 138, :none),
+            (:call, :Nullable, (:call, :flipsign!, :z, :sgn))
+          )),
+        (:line, 141, :none),
+        (:function, (:call, :convert, (:(::), (:curly, :Type, :BigInt)), (:(::), :x, (:curly, :Union, :Clong, :Int32))), (:block,
+            (:line, 142, :none),
+            (:(=), :z, (:call, :BigInt)),
+            (:line, 143, :none),
+            (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                  :__gmpz_set_si
+                ), (:quote, #QuoteNode
+                  :libgmp
+                )), :Void, (:tuple, (:curly, :Ptr, :BigInt), :Clong), (:&, :z), :x),
+            (:line, 144, :none),
+            (:return, :z)
+          )),
+        (:line, 146, :none),
+        (:function, (:call, :convert, (:(::), (:curly, :Type, :BigInt)), (:(::), :x, (:curly, :Union, :Culong, :UInt32))), (:block,
+            (:line, 147, :none),
+            (:(=), :z, (:call, :BigInt)),
+            (:line, 148, :none),
+            (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                  :__gmpz_set_ui
+                ), (:quote, #QuoteNode
+                  :libgmp
+                )), :Void, (:tuple, (:curly, :Ptr, :BigInt), :Culong), (:&, :z), :x),
+            (:line, 149, :none),
+            (:return, :z)
+          )),
+        (:line, 152, :none),
+        (:(=), (:call, :convert, (:(::), (:curly, :Type, :BigInt)), (:(::), :x, :Bool)), (:block,
+            (:line, 152, :none),
+            (:call, :BigInt, (:call, :UInt, :x))
+          )),
+        (:line, 155, :none),
+        (:function, (:call, :unsafe_trunc, (:(::), (:curly, :Type, :BigInt)), (:(::), :x, (:curly, :Union, :Float32, :Float64))), (:block,
+            (:line, 156, :none),
+            (:(=), :z, (:call, :BigInt)),
+            (:line, 157, :none),
+            (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                  :__gmpz_set_d
+                ), (:quote, #QuoteNode
+                  :libgmp
+                )), :Void, (:tuple, (:curly, :Ptr, :BigInt), :Cdouble), (:&, :z), :x),
+            (:line, 158, :none),
+            (:return, :z)
+          )),
+        (:line, 161, :none),
+        (:function, (:call, :convert, (:(::), (:curly, :Type, :BigInt)), (:(::), :x, (:curly, :Union, :Float32, :Float64))), (:block,
+            (:line, 162, :none),
+            (:||, (:call, :isinteger, :x), (:call, :throw, (:call, :InexactError))),
+            (:line, 163, :none),
+            (:call, :unsafe_trunc, :BigInt, :x)
+          )),
+        (:line, 166, :none),
+        (:function, (:call, :trunc, (:(::), (:curly, :Type, :BigInt)), (:(::), :x, (:curly, :Union, :Float32, :Float64))), (:block,
+            (:line, 167, :none),
+            (:||, (:call, :isfinite, :x), (:call, :throw, (:call, :InexactError))),
+            (:line, 168, :none),
+            (:call, :unsafe_trunc, :BigInt, :x)
+          )),
+        (:line, 171, :none),
+        (:(=), (:call, :convert, (:(::), (:curly, :Type, :BigInt)), (:(::), :x, :Float16)), (:block,
+            (:line, 171, :none),
+            (:call, :BigInt, (:call, :Float64, :x))
+          )),
+        (:line, 172, :none),
+        (:(=), (:call, :convert, (:(::), (:curly, :Type, :BigInt)), (:(::), :x, :Float32)), (:block,
+            (:line, 172, :none),
+            (:call, :BigInt, (:call, :Float64, :x))
+          )),
+        (:line, 174, :none),
+        (:function, (:call, :convert, (:(::), (:curly, :Type, :BigInt)), (:(::), :x, :Integer)), (:block,
+            (:line, 175, :none),
+            (:if, (:call, :<, :x, 0), (:block,
+                (:line, 176, :none),
+                (:if, (:call, :(<=), (:call, :typemin, :Clong), :x), (:block,
+                    (:line, 177, :none),
+                    (:return, (:call, :BigInt, (:call, :convert, :Clong, :x)))
+                  )),
+                (:line, 179, :none),
+                (:(=), :b, (:call, :BigInt, 0)),
+                (:line, 180, :none),
+                (:(=), :shift, 0),
+                (:line, 181, :none),
+                (:while, (:call, :<, :x, -1), (:block,
+                    (:line, 182, :none),
+                    (:+=, :b, (:call, :<<, (:call, :BigInt, (:call, :~, (:call, :UInt32, (:call, :&, :x, 0xffffffff)))), :shift)),
+                    (:line, 183, :none),
+                    (:>>=, :x, 32),
+                    (:line, 184, :none),
+                    (:+=, :shift, 32)
+                  )),
+                (:line, 186, :none),
+                (:return, (:call, :-, (:call, :-, :b), 1))
+              ), (:block,
+                (:line, 188, :none),
+                (:if, (:call, :(<=), :x, (:call, :typemax, :Culong)), (:block,
+                    (:line, 189, :none),
+                    (:return, (:call, :BigInt, (:call, :convert, :Culong, :x)))
+                  )),
+                (:line, 191, :none),
+                (:(=), :b, (:call, :BigInt, 0)),
+                (:line, 192, :none),
+                (:(=), :shift, 0),
+                (:line, 193, :none),
+                (:while, (:call, :>, :x, 0), (:block,
+                    (:line, 194, :none),
+                    (:+=, :b, (:call, :<<, (:call, :BigInt, (:call, :UInt32, (:call, :&, :x, 0xffffffff))), :shift)),
+                    (:line, 195, :none),
+                    (:>>>=, :x, 32),
+                    (:line, 196, :none),
+                    (:+=, :shift, 32)
+                  )),
+                (:line, 198, :none),
+                (:return, :b)
+              ))
+          )),
+        (:line, 203, :none),
+        (:(=), (:call, :rem, (:(::), :x, :BigInt), (:(::), (:curly, :Type, :Bool))), (:block,
+            (:line, 203, :none),
+            (:call, :(!=), (:call, :&, :x, 1), 0)
+          )),
+        (:line, 204, :none),
+        (:function, (:call, (:curly, :rem, (:<:, :T, (:curly, :Union, :Unsigned, :Signed))), (:(::), :x, :BigInt), (:(::), (:curly, :Type, :T))), (:block,
+            (:line, 205, :none),
+            (:(=), :u, (:call, :zero, :T)),
+            (:line, 206, :none),
+            (:for, (:(=), :l, (:(:), 1, (:call, :min, (:call, :abs, (:., :x, (:quote, #QuoteNode
+                          :size
+                        ))), (:call, :cld, (:call, :sizeof, :T), (:call, :sizeof, :Limb))))), (:block,
+                (:line, 207, :none),
+                (:+=, :u, (:call, :<<, (:call, :%, (:call, :unsafe_load, (:., :x, (:quote, #QuoteNode
+                            :d
+                          )), :l), :T), (:call, :*, (:call, :<<, (:call, :sizeof, :Limb), 3), (:call, :-, :l, 1))))
+              )),
+            (:line, 209, :none),
+            (:call, :flipsign, :u, :x)
+          )),
+        (:line, 212, :none),
+        (:(=), (:call, :rem, (:(::), :x, :Integer), (:(::), (:curly, :Type, :BigInt))), (:block,
+            (:line, 212, :none),
+            (:call, :convert, :BigInt, :x)
+          )),
+        (:line, 214, :none),
+        (:function, (:where, (:call, :convert, (:(::), (:curly, :Type, :T)), (:(::), :x, :BigInt)), (:<:, :T, :Unsigned)), (:block,
+            (:line, 215, :none),
+            (:if, (:call, :<, (:call, :sizeof, :T), (:call, :sizeof, :Limb)), (:block,
+                (:line, 216, :none),
+                (:call, :convert, :T, (:call, :convert, :Limb, :x))
+              ), (:block,
+                (:line, 218, :none),
+                (:||, (:comparison, 0, :(<=), (:., :x, (:quote, #QuoteNode
+                        :size
+                      )), :(<=), (:call, :cld, (:call, :sizeof, :T), (:call, :sizeof, :Limb))), (:call, :throw, (:call, :InexactError))),
+                (:line, 219, :none),
+                (:call, :%, :x, :T)
+              ))
+          )),
+        (:line, 223, :none),
+        (:function, (:where, (:call, :convert, (:(::), (:curly, :Type, :T)), (:(::), :x, :BigInt)), (:<:, :T, :Signed)), (:block,
+            (:line, 224, :none),
+            (:(=), :n, (:call, :abs, (:., :x, (:quote, #QuoteNode
+                    :size
+                  )))),
+            (:line, 225, :none),
+            (:if, (:call, :<, (:call, :sizeof, :T), (:call, :sizeof, :Limb)), (:block,
+                (:line, 226, :none),
+                (:(=), :SLimb, (:call, :typeof, (:call, :Signed, (:call, :one, :Limb)))),
+                (:line, 227, :none),
+                (:call, :convert, :T, (:call, :convert, :SLimb, :x))
+              ), (:block,
+                (:line, 229, :none),
+                (:||, (:comparison, 0, :(<=), :n, :(<=), (:call, :cld, (:call, :sizeof, :T), (:call, :sizeof, :Limb))), (:call, :throw, (:call, :InexactError))),
+                (:line, 230, :none),
+                (:(=), :y, (:call, :%, :x, :T)),
+                (:line, 231, :none),
+                (:&&, (:call, :⊻, (:call, :ispos, :x), (:call, :>, :y, 0)), (:call, :throw, (:call, :InexactError))),
+                (:line, 232, :none),
+                :y
+              ))
+          )),
+        (:line, 237, :none),
+        (:function, (:call, (:(::), (:curly, :Type, :Float64)), (:(::), :n, :BigInt), (:(::), (:curly, :RoundingMode, (:quote, #QuoteNode
+                  :ToZero
+                )))), (:block,
+            (:line, 238, :none),
+            (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                  :__gmpz_get_d
+                ), (:quote, #QuoteNode
+                  :libgmp
+                )), :Float64, (:tuple, (:curly, :Ptr, :BigInt)), (:&, :n))
+          )),
+        (:line, 241, :none),
+        (:function, (:where, (:call, (:(::), (:curly, :Type, :T)), (:(::), :n, :BigInt), (:(::), (:curly, :RoundingMode, (:quote, #QuoteNode
+                    :ToZero
+                  )))), (:<:, :T, (:curly, :Union, :Float16, :Float32))), (:block,
+            (:line, 242, :none),
+            (:call, :T, (:call, :Float64, :n, :RoundToZero), :RoundToZero)
+          )),
+        (:line, 245, :none),
+        (:function, (:where, (:call, (:(::), (:curly, :Type, :T)), (:(::), :n, :BigInt), (:(::), (:curly, :RoundingMode, (:quote, #QuoteNode
+                    :Down
+                  )))), (:<:, :T, :CdoubleMax)), (:block,
+            (:line, 246, :none),
+            (:(=), :x, (:call, :T, :n, :RoundToZero)),
+            (:line, 247, :none),
+            (:if, (:call, :>, :x, :n), (:call, :prevfloat, :x), :x)
+          )),
+        (:line, 249, :none),
+        (:function, (:where, (:call, (:(::), (:curly, :Type, :T)), (:(::), :n, :BigInt), (:(::), (:curly, :RoundingMode, (:quote, #QuoteNode
+                    :Up
+                  )))), (:<:, :T, :CdoubleMax)), (:block,
+            (:line, 250, :none),
+            (:(=), :x, (:call, :T, :n, :RoundToZero)),
+            (:line, 251, :none),
+            (:if, (:call, :<, :x, :n), (:call, :nextfloat, :x), :x)
+          )),
+        (:line, 254, :none),
+        (:function, (:where, (:call, (:(::), (:curly, :Type, :T)), (:(::), :n, :BigInt), (:(::), (:curly, :RoundingMode, (:quote, #QuoteNode
+                    :Nearest
+                  )))), (:<:, :T, :CdoubleMax)), (:block,
+            (:line, 255, :none),
+            (:(=), :x, (:call, :T, :n, :RoundToZero)),
+            (:line, 256, :none),
+            (:if, (:comparison, (:call, :maxintfloat, :T), :(<=), (:call, :abs, :x), :<, (:call, :T, :Inf)), (:block,
+                (:line, 257, :none),
+                (:(=), :r, (:call, :-, :n, (:call, :BigInt, :x))),
+                (:line, 258, :none),
+                (:(=), :h, (:call, :/, (:call, :eps, :x), 2)),
+                (:line, 259, :none),
+                (:if, (:call, :iseven, (:call, :reinterpret, :Unsigned, :x)), (:block,
+                    (:line, 260, :none),
+                    (:if, (:call, :<, :r, (:call, :-, :h)), (:block,
+                        (:line, 261, :none),
+                        (:return, (:call, :prevfloat, :x))
+                      ), (:block,
+                        (:line, 262, :none),
+                        (:if, (:call, :>, :r, :h), (:block,
+                            (:line, 263, :none),
+                            (:return, (:call, :nextfloat, :x))
+                          ))
+                      ))
+                  ), (:block,
+                    (:line, 266, :none),
+                    (:if, (:call, :(<=), :r, (:call, :-, :h)), (:block,
+                        (:line, 267, :none),
+                        (:return, (:call, :prevfloat, :x))
+                      ), (:block,
+                        (:line, 268, :none),
+                        (:if, (:call, :(>=), :r, :h), (:block,
+                            (:line, 269, :none),
+                            (:return, (:call, :nextfloat, :x))
+                          ))
+                      ))
+                  ))
+              )),
+            (:line, 273, :none),
+            :x
+          )),
+        (:line, 276, :none),
+        (:(=), (:call, :convert, (:(::), (:curly, :Type, :Float64)), (:(::), :n, :BigInt)), (:block,
+            (:line, 276, :none),
+            (:call, :Float64, :n, :RoundNearest)
+          )),
+        (:line, 277, :none),
+        (:(=), (:call, :convert, (:(::), (:curly, :Type, :Float32)), (:(::), :n, :BigInt)), (:block,
+            (:line, 277, :none),
+            (:call, :Float32, :n, :RoundNearest)
+          )),
+        (:line, 278, :none),
+        (:(=), (:call, :convert, (:(::), (:curly, :Type, :Float16)), (:(::), :n, :BigInt)), (:block,
+            (:line, 278, :none),
+            (:call, :Float16, :n, :RoundNearest)
+          )),
+        (:line, 280, :none),
+        (:(=), (:call, :promote_rule, (:(::), (:curly, :Type, :BigInt)), (:(::), (:curly, :Type, (:<:, :Integer)))), (:block,
+            (:line, 280, :none),
+            :BigInt
+          )),
+        (:line, 283, :none),
+        (:for, (:(=), (:tuple, :fJ, :fC), (:tuple, (:tuple, (:quote, #QuoteNode
+                  :+
+                ), (:quote, #QuoteNode
+                  :add
+                )), (:tuple, (:quote, #QuoteNode
+                  :-
+                ), (:quote, #QuoteNode
+                  :sub
+                )), (:tuple, (:quote, #QuoteNode
+                  :*
+                ), (:quote, #QuoteNode
+                  :mul
+                )), (:tuple, (:quote, #QuoteNode
+                  :fld
+                ), (:quote, #QuoteNode
+                  :fdiv_q
+                )), (:tuple, (:quote, #QuoteNode
+                  :div
+                ), (:quote, #QuoteNode
+                  :tdiv_q
+                )), (:tuple, (:quote, #QuoteNode
+                  :mod
+                ), (:quote, #QuoteNode
+                  :fdiv_r
+                )), (:tuple, (:quote, #QuoteNode
+                  :rem
+                ), (:quote, #QuoteNode
+                  :tdiv_r
+                )), (:tuple, (:quote, #QuoteNode
+                  :gcd
+                ), (:quote, #QuoteNode
+                  :gcd
+                )), (:tuple, (:quote, #QuoteNode
+                  :lcm
+                ), (:quote, #QuoteNode
+                  :lcm
+                )), (:tuple, (:quote, #QuoteNode
+                  :&
+                ), (:quote, #QuoteNode
+                  :and
+                )), (:tuple, (:quote, #QuoteNode
+                  :|
+                ), (:quote, #QuoteNode
+                  :ior
+                )), (:tuple, (:quote, #QuoteNode
+                  :xor
+                ), (:quote, #QuoteNode
+                  :xor
+                )))), (:block,
+            (:line, 287, :none),
+            (:macrocall, Symbol("@eval"), (:block,
+                (:line, 288, :none),
+                (:function, (:call, (:$, :fJ), (:(::), :x, :BigInt), (:(::), :y, :BigInt)), (:block,
+                    (:line, 289, :none),
+                    (:(=), :z, (:call, :BigInt)),
+                    (:line, 290, :none),
+                    (:call, :ccall, (:tuple, (:$, (:call, :string, (:quote, #QuoteNode
+                              :__gmpz_
+                            ), :fC)), (:quote, #QuoteNode
+                          :libgmp
+                        )), :Void, (:tuple, (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt)), (:&, :z), (:&, :x), (:&, :y)),
+                    (:line, 291, :none),
+                    (:return, :z)
+                  ))
+              ))
+          )),
+        (:line, 296, :none),
+        (:(=), (:call, :/, (:(::), :x, :BigInt), (:(::), :y, :BigInt)), (:block,
+            (:line, 296, :none),
+            (:call, :/, (:call, :float, :x), (:call, :float, :y))
+          )),
+        (:line, 298, :none),
+        (:function, (:call, :invmod, (:(::), :x, :BigInt), (:(::), :y, :BigInt)), (:block,
+            (:line, 299, :none),
+            (:(=), :z, (:call, :zero, :BigInt)),
+            (:line, 300, :none),
+            (:(=), :ya, (:call, :abs, :y)),
+            (:line, 301, :none),
+            (:if, (:call, :(==), :ya, 1), (:block,
+                (:line, 302, :none),
+                (:return, :z)
+              )),
+            (:line, 304, :none),
+            (:if, (:||, (:call, :(==), :y, 0), (:call, :(==), (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                        :__gmpz_invert
+                      ), (:quote, #QuoteNode
+                        :libgmp
+                      )), :Cint, (:tuple, (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt)), (:&, :z), (:&, :x), (:&, :ya)), 0)), (:block,
+                (:line, 305, :none),
+                (:call, :throw, (:call, :DomainError))
+              )),
+            (:line, 310, :none),
+            (:if, (:call, :<, :y, 0), (:block,
+                (:line, 311, :none),
+                (:(=), :z, (:call, :+, :z, :y))
+              )),
+            (:line, 314, :none),
+            (:return, :z)
+          )),
+        (:line, 318, :none),
+        (:for, (:(=), (:tuple, :fJ, :fC), (:tuple, (:tuple, (:quote, #QuoteNode
+                  :+
+                ), (:quote, #QuoteNode
+                  :add
+                )), (:tuple, (:quote, #QuoteNode
+                  :*
+                ), (:quote, #QuoteNode
+                  :mul
+                )), (:tuple, (:quote, #QuoteNode
+                  :&
+                ), (:quote, #QuoteNode
+                  :and
+                )), (:tuple, (:quote, #QuoteNode
+                  :|
+                ), (:quote, #QuoteNode
+                  :ior
+                )), (:tuple, (:quote, #QuoteNode
+                  :xor
+                ), (:quote, #QuoteNode
+                  :xor
+                )))), (:block,
+            (:line, 319, :none),
+            (:macrocall, Symbol("@eval"), (:block,
+                (:line, 320, :none),
+                (:function, (:call, (:$, :fJ), (:(::), :a, :BigInt), (:(::), :b, :BigInt), (:(::), :c, :BigInt)), (:block,
+                    (:line, 321, :none),
+                    (:(=), :z, (:call, :BigInt)),
+                    (:line, 322, :none),
+                    (:call, :ccall, (:tuple, (:$, (:call, :string, (:quote, #QuoteNode
+                              :__gmpz_
+                            ), :fC)), (:quote, #QuoteNode
+                          :libgmp
+                        )), :Void, (:tuple, (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt)), (:&, :z), (:&, :a), (:&, :b)),
+                    (:line, 323, :none),
+                    (:call, :ccall, (:tuple, (:$, (:call, :string, (:quote, #QuoteNode
+                              :__gmpz_
+                            ), :fC)), (:quote, #QuoteNode
+                          :libgmp
+                        )), :Void, (:tuple, (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt)), (:&, :z), (:&, :z), (:&, :c)),
+                    (:line, 324, :none),
+                    (:return, :z)
+                  )),
+                (:line, 326, :none),
+                (:function, (:call, (:$, :fJ), (:(::), :a, :BigInt), (:(::), :b, :BigInt), (:(::), :c, :BigInt), (:(::), :d, :BigInt)), (:block,
+                    (:line, 327, :none),
+                    (:(=), :z, (:call, :BigInt)),
+                    (:line, 328, :none),
+                    (:call, :ccall, (:tuple, (:$, (:call, :string, (:quote, #QuoteNode
+                              :__gmpz_
+                            ), :fC)), (:quote, #QuoteNode
+                          :libgmp
+                        )), :Void, (:tuple, (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt)), (:&, :z), (:&, :a), (:&, :b)),
+                    (:line, 329, :none),
+                    (:call, :ccall, (:tuple, (:$, (:call, :string, (:quote, #QuoteNode
+                              :__gmpz_
+                            ), :fC)), (:quote, #QuoteNode
+                          :libgmp
+                        )), :Void, (:tuple, (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt)), (:&, :z), (:&, :z), (:&, :c)),
+                    (:line, 330, :none),
+                    (:call, :ccall, (:tuple, (:$, (:call, :string, (:quote, #QuoteNode
+                              :__gmpz_
+                            ), :fC)), (:quote, #QuoteNode
+                          :libgmp
+                        )), :Void, (:tuple, (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt)), (:&, :z), (:&, :z), (:&, :d)),
+                    (:line, 331, :none),
+                    (:return, :z)
+                  )),
+                (:line, 333, :none),
+                (:function, (:call, (:$, :fJ), (:(::), :a, :BigInt), (:(::), :b, :BigInt), (:(::), :c, :BigInt), (:(::), :d, :BigInt), (:(::), :e, :BigInt)), (:block,
+                    (:line, 334, :none),
+                    (:(=), :z, (:call, :BigInt)),
+                    (:line, 335, :none),
+                    (:call, :ccall, (:tuple, (:$, (:call, :string, (:quote, #QuoteNode
+                              :__gmpz_
+                            ), :fC)), (:quote, #QuoteNode
+                          :libgmp
+                        )), :Void, (:tuple, (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt)), (:&, :z), (:&, :a), (:&, :b)),
+                    (:line, 336, :none),
+                    (:call, :ccall, (:tuple, (:$, (:call, :string, (:quote, #QuoteNode
+                              :__gmpz_
+                            ), :fC)), (:quote, #QuoteNode
+                          :libgmp
+                        )), :Void, (:tuple, (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt)), (:&, :z), (:&, :z), (:&, :c)),
+                    (:line, 337, :none),
+                    (:call, :ccall, (:tuple, (:$, (:call, :string, (:quote, #QuoteNode
+                              :__gmpz_
+                            ), :fC)), (:quote, #QuoteNode
+                          :libgmp
+                        )), :Void, (:tuple, (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt)), (:&, :z), (:&, :z), (:&, :d)),
+                    (:line, 338, :none),
+                    (:call, :ccall, (:tuple, (:$, (:call, :string, (:quote, #QuoteNode
+                              :__gmpz_
+                            ), :fC)), (:quote, #QuoteNode
+                          :libgmp
+                        )), :Void, (:tuple, (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt)), (:&, :z), (:&, :z), (:&, :e)),
+                    (:line, 339, :none),
+                    (:return, :z)
+                  ))
+              ))
+          )),
+        (:line, 345, :none),
+        (:function, (:call, :+, (:(::), :x, :BigInt), (:(::), :c, :CulongMax)), (:block,
+            (:line, 346, :none),
+            (:(=), :z, (:call, :BigInt)),
+            (:line, 347, :none),
+            (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                  :__gmpz_add_ui
+                ), (:quote, #QuoteNode
+                  :libgmp
+                )), :Void, (:tuple, (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt), :Culong), (:&, :z), (:&, :x), :c),
+            (:line, 348, :none),
+            (:return, :z)
+          )),
+        (:line, 350, :none),
+        (:(=), (:call, :+, (:(::), :c, :CulongMax), (:(::), :x, :BigInt)), (:block,
+            (:line, 350, :none),
+            (:call, :+, :x, :c)
+          )),
+        (:line, 352, :none),
+        (:function, (:call, :-, (:(::), :x, :BigInt), (:(::), :c, :CulongMax)), (:block,
+            (:line, 353, :none),
+            (:(=), :z, (:call, :BigInt)),
+            (:line, 354, :none),
+            (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                  :__gmpz_sub_ui
+                ), (:quote, #QuoteNode
+                  :libgmp
+                )), :Void, (:tuple, (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt), :Culong), (:&, :z), (:&, :x), :c),
+            (:line, 355, :none),
+            (:return, :z)
+          )),
+        (:line, 357, :none),
+        (:function, (:call, :-, (:(::), :c, :CulongMax), (:(::), :x, :BigInt)), (:block,
+            (:line, 358, :none),
+            (:(=), :z, (:call, :BigInt)),
+            (:line, 359, :none),
+            (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                  :__gmpz_ui_sub
+                ), (:quote, #QuoteNode
+                  :libgmp
+                )), :Void, (:tuple, (:curly, :Ptr, :BigInt), :Culong, (:curly, :Ptr, :BigInt)), (:&, :z), :c, (:&, :x)),
+            (:line, 360, :none),
+            (:return, :z)
+          )),
+        (:line, 362, :none),
+        (:(=), (:call, :+, (:(::), :x, :BigInt), (:(::), :c, :ClongMax)), (:block,
+            (:line, 362, :none),
+            (:if, (:call, :<, :c, 0), (:call, :-, :x, (:call, :-, (:call, :%, :c, :Culong))), (:call, :+, :x, (:call, :convert, :Culong, :c)))
+          )),
+        (:line, 363, :none),
+        (:(=), (:call, :+, (:(::), :c, :ClongMax), (:(::), :x, :BigInt)), (:block,
+            (:line, 363, :none),
+            (:if, (:call, :<, :c, 0), (:call, :-, :x, (:call, :-, (:call, :%, :c, :Culong))), (:call, :+, :x, (:call, :convert, :Culong, :c)))
+          )),
+        (:line, 364, :none),
+        (:(=), (:call, :-, (:(::), :x, :BigInt), (:(::), :c, :ClongMax)), (:block,
+            (:line, 364, :none),
+            (:if, (:call, :<, :c, 0), (:call, :+, :x, (:call, :-, (:call, :%, :c, :Culong))), (:call, :-, :x, (:call, :convert, :Culong, :c)))
+          )),
+        (:line, 365, :none),
+        (:(=), (:call, :-, (:(::), :c, :ClongMax), (:(::), :x, :BigInt)), (:block,
+            (:line, 365, :none),
+            (:if, (:call, :<, :c, 0), (:call, :-, (:call, :+, :x, (:call, :-, (:call, :%, :c, :Culong)))), (:call, :-, (:call, :convert, :Culong, :c), :x))
+          )),
+        (:line, 367, :none),
+        (:function, (:call, :*, (:(::), :x, :BigInt), (:(::), :c, :CulongMax)), (:block,
+            (:line, 368, :none),
+            (:(=), :z, (:call, :BigInt)),
+            (:line, 369, :none),
+            (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                  :__gmpz_mul_ui
+                ), (:quote, #QuoteNode
+                  :libgmp
+                )), :Void, (:tuple, (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt), :Culong), (:&, :z), (:&, :x), :c),
+            (:line, 370, :none),
+            (:return, :z)
+          )),
+        (:line, 372, :none),
+        (:(=), (:call, :*, (:(::), :c, :CulongMax), (:(::), :x, :BigInt)), (:block,
+            (:line, 372, :none),
+            (:call, :*, :x, :c)
+          )),
+        (:line, 373, :none),
+        (:function, (:call, :*, (:(::), :x, :BigInt), (:(::), :c, :ClongMax)), (:block,
+            (:line, 374, :none),
+            (:(=), :z, (:call, :BigInt)),
+            (:line, 375, :none),
+            (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                  :__gmpz_mul_si
+                ), (:quote, #QuoteNode
+                  :libgmp
+                )), :Void, (:tuple, (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt), :Clong), (:&, :z), (:&, :x), :c),
+            (:line, 376, :none),
+            (:return, :z)
+          )),
+        (:line, 378, :none),
+        (:(=), (:call, :*, (:(::), :c, :ClongMax), (:(::), :x, :BigInt)), (:block,
+            (:line, 378, :none),
+            (:call, :*, :x, :c)
+          )),
+        (:line, 380, :none),
+        (:(=), (:call, :/, (:(::), :x, :BigInt), (:(::), :y, (:curly, :Union, :ClongMax, :CulongMax))), (:block,
+            (:line, 380, :none),
+            (:call, :/, (:call, :float, :x), :y)
+          )),
+        (:line, 381, :none),
+        (:(=), (:call, :/, (:(::), :x, (:curly, :Union, :ClongMax, :CulongMax)), (:(::), :y, :BigInt)), (:block,
+            (:line, 381, :none),
+            (:call, :/, :x, (:call, :float, :y))
+          )),
+        (:line, 384, :none),
+        (:for, (:(=), (:tuple, :fJ, :fC), (:tuple, (:tuple, (:quote, #QuoteNode
+                  :-
+                ), (:quote, #QuoteNode
+                  :neg
+                )), (:tuple, (:quote, #QuoteNode
+                  :~
+                ), (:quote, #QuoteNode
+                  :com
+                )))), (:block,
+            (:line, 385, :none),
+            (:macrocall, Symbol("@eval"), (:block,
+                (:line, 386, :none),
+                (:function, (:call, (:$, :fJ), (:(::), :x, :BigInt)), (:block,
+                    (:line, 387, :none),
+                    (:(=), :z, (:call, :BigInt)),
+                    (:line, 388, :none),
+                    (:call, :ccall, (:tuple, (:$, (:call, :string, (:quote, #QuoteNode
+                              :__gmpz_
+                            ), :fC)), (:quote, #QuoteNode
+                          :libgmp
+                        )), :Void, (:tuple, (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt)), (:&, :z), (:&, :x)),
+                    (:line, 389, :none),
+                    (:return, :z)
+                  ))
+              ))
+          )),
+        (:line, 394, :none),
+        (:function, (:call, :<<, (:(::), :x, :BigInt), (:(::), :c, :UInt)), (:block,
+            (:line, 395, :none),
+            (:&&, (:call, :(==), :c, 0), (:return, :x)),
+            (:line, 396, :none),
+            (:(=), :z, (:call, :BigInt)),
+            (:line, 397, :none),
+            (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                  :__gmpz_mul_2exp
+                ), (:quote, #QuoteNode
+                  :libgmp
+                )), :Void, (:tuple, (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt), :Culong), (:&, :z), (:&, :x), :c),
+            (:line, 398, :none),
+            (:return, :z)
+          )),
+        (:line, 401, :none),
+        (:function, (:call, :>>, (:(::), :x, :BigInt), (:(::), :c, :UInt)), (:block,
+            (:line, 402, :none),
+            (:&&, (:call, :(==), :c, 0), (:return, :x)),
+            (:line, 403, :none),
+            (:(=), :z, (:call, :BigInt)),
+            (:line, 404, :none),
+            (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                  :__gmpz_fdiv_q_2exp
+                ), (:quote, #QuoteNode
+                  :libgmp
+                )), :Void, (:tuple, (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt), :Culong), (:&, :z), (:&, :x), :c),
+            (:line, 405, :none),
+            (:return, :z)
+          )),
+        (:line, 408, :none),
+        (:(=), (:call, :>>>, (:(::), :x, :BigInt), (:(::), :c, :UInt)), (:block,
+            (:line, 408, :none),
+            (:call, :>>, :x, :c)
+          )),
+        (:line, 411, :none),
+        (:(=), (:call, :trailing_zeros, (:(::), :x, :BigInt)), (:block,
+            (:line, 411, :none),
+            (:call, :Int, (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                    :__gmpz_scan1
+                  ), (:quote, #QuoteNode
+                    :libgmp
+                  )), :Culong, (:tuple, (:curly, :Ptr, :BigInt), :Culong), (:&, :x), 0))
+          )),
+        (:line, 412, :none),
+        (:(=), (:call, :trailing_ones, (:(::), :x, :BigInt)), (:block,
+            (:line, 412, :none),
+            (:call, :Int, (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                    :__gmpz_scan0
+                  ), (:quote, #QuoteNode
+                    :libgmp
+                  )), :Culong, (:tuple, (:curly, :Ptr, :BigInt), :Culong), (:&, :x), 0))
+          )),
+        (:line, 414, :none),
+        (:(=), (:call, :count_ones, (:(::), :x, :BigInt)), (:block,
+            (:line, 414, :none),
+            (:call, :Int, (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                    :__gmpz_popcount
+                  ), (:quote, #QuoteNode
+                    :libgmp
+                  )), :Culong, (:tuple, (:curly, :Ptr, :BigInt)), (:&, :x)))
+          )),
+        (:line, 416, :none),
+        (:macrocall, :(Core.@doc), "    count_ones_abs(x::BigInt)\n\nNumber of ones in the binary representation of abs(x).\n", (:(=), (:call, :count_ones_abs, (:(::), :x, :BigInt)), (:block,
+              (:line, 421, :none),
+              (:if, (:call, :iszero, :x), 0, (:call, :%, (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                        :__gmpn_popcount
+                      ), (:quote, #QuoteNode
+                        :libgmp
+                      )), :Culong, (:tuple, (:curly, :Ptr, :Limb), :Csize_t), (:., :x, (:quote, #QuoteNode
+                        :d
+                      )), (:call, :abs, (:., :x, (:quote, #QuoteNode
+                          :size
+                        )))), :Int))
+            ))),
+        (:line, 423, :none),
+        (:function, (:call, :divrem, (:(::), :x, :BigInt), (:(::), :y, :BigInt)), (:block,
+            (:line, 424, :none),
+            (:(=), :z1, (:call, :BigInt)),
+            (:line, 425, :none),
+            (:(=), :z2, (:call, :BigInt)),
+            (:line, 426, :none),
+            (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                  :__gmpz_tdiv_qr
+                ), (:quote, #QuoteNode
+                  :libgmp
+                )), :Void, (:tuple, (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt)), (:&, :z1), (:&, :z2), (:&, :x), (:&, :y)),
+            (:line, 427, :none),
+            (:tuple, :z1, :z2)
+          )),
+        (:line, 430, :none),
+        (:function, (:call, :cmp, (:(::), :x, :BigInt), (:(::), :y, :BigInt)), (:block,
+            (:line, 431, :none),
+            (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                  :__gmpz_cmp
+                ), (:quote, #QuoteNode
+                  :libgmp
+                )), :Int32, (:tuple, (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt)), (:&, :x), (:&, :y))
+          )),
+        (:line, 433, :none),
+        (:function, (:call, :cmp, (:(::), :x, :BigInt), (:(::), :y, :ClongMax)), (:block,
+            (:line, 434, :none),
+            (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                  :__gmpz_cmp_si
+                ), (:quote, #QuoteNode
+                  :libgmp
+                )), :Int32, (:tuple, (:curly, :Ptr, :BigInt), :Clong), (:&, :x), :y)
+          )),
+        (:line, 436, :none),
+        (:function, (:call, :cmp, (:(::), :x, :BigInt), (:(::), :y, :CulongMax)), (:block,
+            (:line, 437, :none),
+            (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                  :__gmpz_cmp_ui
+                ), (:quote, #QuoteNode
+                  :libgmp
+                )), :Int32, (:tuple, (:curly, :Ptr, :BigInt), :Culong), (:&, :x), :y)
+          )),
+        (:line, 439, :none),
+        (:(=), (:call, :cmp, (:(::), :x, :BigInt), (:(::), :y, :Integer)), (:block,
+            (:line, 439, :none),
+            (:call, :cmp, :x, (:call, :big, :y))
+          )),
+        (:line, 440, :none),
+        (:(=), (:call, :cmp, (:(::), :x, :Integer), (:(::), :y, :BigInt)), (:block,
+            (:line, 440, :none),
+            (:call, :-, (:call, :cmp, :y, :x))
+          )),
+        (:line, 442, :none),
+        (:function, (:call, :cmp, (:(::), :x, :BigInt), (:(::), :y, :CdoubleMax)), (:block,
+            (:line, 443, :none),
+            (:&&, (:call, :isnan, :y), (:call, :throw, (:call, :DomainError))),
+            (:line, 444, :none),
+            (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                  :__gmpz_cmp_d
+                ), (:quote, #QuoteNode
+                  :libgmp
+                )), :Int32, (:tuple, (:curly, :Ptr, :BigInt), :Cdouble), (:&, :x), :y)
+          )),
+        (:line, 446, :none),
+        (:(=), (:call, :cmp, (:(::), :x, :CdoubleMax), (:(::), :y, :BigInt)), (:block,
+            (:line, 446, :none),
+            (:call, :-, (:call, :cmp, :y, :x))
+          )),
+        (:line, 448, :none),
+        (:function, (:call, :isqrt, (:(::), :x, :BigInt)), (:block,
+            (:line, 449, :none),
+            (:(=), :z, (:call, :BigInt)),
+            (:line, 450, :none),
+            (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                  :__gmpz_sqrt
+                ), (:quote, #QuoteNode
+                  :libgmp
+                )), :Void, (:tuple, (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt)), (:&, :z), (:&, :x)),
+            (:line, 451, :none),
+            (:return, :z)
+          )),
+        (:line, 454, :none),
+        (:function, (:call, :^, (:(::), :x, :BigInt), (:(::), :y, :Culong)), (:block,
+            (:line, 455, :none),
+            (:(=), :z, (:call, :BigInt)),
+            (:line, 456, :none),
+            (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                  :__gmpz_pow_ui
+                ), (:quote, #QuoteNode
+                  :libgmp
+                )), :Void, (:tuple, (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt), :Culong), (:&, :z), (:&, :x), :y),
+            (:line, 457, :none),
+            (:return, :z)
+          )),
+        (:line, 460, :none),
+        (:function, (:call, :bigint_pow, (:(::), :x, :BigInt), (:(::), :y, :Integer)), (:block,
+            (:line, 461, :none),
+            (:if, (:call, :<, :y, 0), (:block,
+                (:line, 461, :none),
+                (:call, :throw, (:call, :DomainError))
+              )),
+            (:line, 462, :none),
+            (:if, (:call, :(==), :x, 1), (:block,
+                (:line, 462, :none),
+                (:return, :x)
+              )),
+            (:line, 463, :none),
+            (:if, (:call, :(==), :x, -1), (:block,
+                (:line, 463, :none),
+                (:return, (:if, (:call, :isodd, :y), :x, (:call, :-, :x)))
+              )),
+            (:line, 464, :none),
+            (:if, (:call, :>, :y, (:call, :typemax, :Culong)), (:block,
+                (:line, 465, :none),
+                (:&&, (:call, :(==), :x, 0), (:return, :x)),
+                (:line, 475, :none),
+                (:call, :throw, (:call, :OverflowError))
+              )),
+            (:line, 477, :none),
+            (:return, (:call, :^, :x, (:call, :convert, :Culong, :y)))
+          )),
+        (:line, 480, :none),
+        (:(=), (:call, :^, (:(::), :x, :BigInt), (:(::), :y, :BigInt)), (:block,
+            (:line, 480, :none),
+            (:call, :bigint_pow, :x, :y)
+          )),
+        (:line, 481, :none),
+        (:(=), (:call, :^, (:(::), :x, :BigInt), (:(::), :y, :Bool)), (:block,
+            (:line, 481, :none),
+            (:if, :y, :x, (:call, :one, :x))
+          )),
+        (:line, 482, :none),
+        (:(=), (:call, :^, (:(::), :x, :BigInt), (:(::), :y, :Integer)), (:block,
+            (:line, 482, :none),
+            (:call, :bigint_pow, :x, :y)
+          )),
+        (:line, 483, :none),
+        (:(=), (:call, :^, (:(::), :x, :Integer), (:(::), :y, :BigInt)), (:block,
+            (:line, 483, :none),
+            (:call, :bigint_pow, (:call, :BigInt, :x), :y)
+          )),
+        (:line, 484, :none),
+        (:(=), (:call, :^, (:(::), :x, :Bool), (:(::), :y, :BigInt)), (:block,
+            (:line, 484, :none),
+            (:call, (:., :Base, (:quote, #QuoteNode
+                  :power_by_squaring
+                )), :x, :y)
+          )),
+        (:line, 486, :none),
+        (:function, (:call, :powermod, (:(::), :x, :BigInt), (:(::), :p, :BigInt), (:(::), :m, :BigInt)), (:block,
+            (:line, 487, :none),
+            (:(=), :r, (:call, :BigInt)),
+            (:line, 488, :none),
+            (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                  :__gmpz_powm
+                ), (:quote, #QuoteNode
+                  :libgmp
+                )), :Void, (:tuple, (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt)), (:&, :r), (:&, :x), (:&, :p), (:&, :m)),
+            (:line, 491, :none),
+            (:return, (:if, (:&&, (:call, :<, :m, 0), (:call, :>, :r, 0)), (:call, :+, :r, :m), :r))
+          )),
+        (:line, 494, :none),
+        (:(=), (:call, :powermod, (:(::), :x, :Integer), (:(::), :p, :Integer), (:(::), :m, :BigInt)), (:block,
+            (:line, 494, :none),
+            (:call, :powermod, (:call, :big, :x), (:call, :big, :p), :m)
+          )),
+        (:line, 496, :none),
+        (:function, (:call, :gcdx, (:(::), :a, :BigInt), (:(::), :b, :BigInt)), (:block,
+            (:line, 497, :none),
+            (:if, (:call, :iszero, :b), (:block,
+                (:line, 498, :none),
+                (:return, (:if, (:call, :<, :a, 0), (:tuple, (:call, :-, :a), (:call, :-, :ONE), :b), (:tuple, :a, (:call, :one, :BigInt), :b)))
+              )),
+            (:line, 502, :none),
+            (:(=), :g, (:call, :BigInt)),
+            (:line, 503, :none),
+            (:(=), :s, (:call, :BigInt)),
+            (:line, 504, :none),
+            (:(=), :t, (:call, :BigInt)),
+            (:line, 505, :none),
+            (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                  :__gmpz_gcdext
+                ), (:quote, #QuoteNode
+                  :libgmp
+                )), :Void, (:tuple, (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt)), (:&, :g), (:&, :s), (:&, :t), (:&, :a), (:&, :b)),
+            (:line, 508, :none),
+            (:if, (:call, :(==), :t, 0), (:block,
+                (:line, 510, :none),
+                (:if, (:call, :(==), :a, :b), (:block,
+                    (:line, 511, :none),
+                    (:return, (:tuple, :g, :t, :s))
+                  ), (:block,
+                    (:line, 512, :none),
+                    (:if, (:call, :(==), (:call, :abs, :a), (:call, :abs, :b)), (:block,
+                        (:line, 513, :none),
+                        (:return, (:tuple, :g, :t, (:call, :-, :s)))
+                      ))
+                  ))
+              )),
+            (:line, 516, :none),
+            (:tuple, :g, :s, :t)
+          )),
+        (:line, 519, :none),
+        (:function, (:call, :sum, (:(::), :arr, (:curly, :AbstractArray, :BigInt))), (:block,
+            (:line, 520, :none),
+            (:(=), :n, (:call, :BigInt, 0)),
+            (:line, 521, :none),
+            (:for, (:(=), :i, :arr), (:block,
+                (:line, 522, :none),
+                (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                      :__gmpz_add
+                    ), (:quote, #QuoteNode
+                      :libgmp
+                    )), :Void, (:tuple, (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt)), (:&, :n), (:&, :n), (:&, :i))
+              )),
+            (:line, 526, :none),
+            (:return, :n)
+          )),
+        (:line, 529, :none),
+        (:function, (:call, :factorial, (:(::), :x, :BigInt)), (:block,
+            (:line, 530, :none),
+            (:&&, (:call, :isneg, :x), (:return, (:call, :BigInt, 0))),
+            (:line, 531, :none),
+            (:(=), :z, (:call, :BigInt)),
+            (:line, 532, :none),
+            (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                  :__gmpz_fac_ui
+                ), (:quote, #QuoteNode
+                  :libgmp
+                )), :Void, (:tuple, (:curly, :Ptr, :BigInt), :Culong), (:&, :z), :x),
+            (:line, 533, :none),
+            (:return, :z)
+          )),
+        (:line, 536, :none),
+        (:function, (:call, :binomial, (:(::), :n, :BigInt), (:(::), :k, :UInt)), (:block,
+            (:line, 537, :none),
+            (:(=), :z, (:call, :BigInt)),
+            (:line, 538, :none),
+            (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                  :__gmpz_bin_ui
+                ), (:quote, #QuoteNode
+                  :libgmp
+                )), :Void, (:tuple, (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt), :Culong), (:&, :z), (:&, :n), :k),
+            (:line, 539, :none),
+            (:return, :z)
+          )),
+        (:line, 541, :none),
+        (:(=), (:call, :binomial, (:(::), :n, :BigInt), (:(::), :k, :Integer)), (:block,
+            (:line, 541, :none),
+            (:if, (:call, :<, :k, 0), (:call, :BigInt, 0), (:call, :binomial, :n, (:call, :UInt, :k)))
+          )),
+        (:line, 543, :none),
+        (:(=), (:call, :(==), (:(::), :x, :BigInt), (:(::), :y, :BigInt)), (:block,
+            (:line, 543, :none),
+            (:call, :(==), (:call, :cmp, :x, :y), 0)
+          )),
+        (:line, 544, :none),
+        (:(=), (:call, :(==), (:(::), :x, :BigInt), (:(::), :i, :Integer)), (:block,
+            (:line, 544, :none),
+            (:call, :(==), (:call, :cmp, :x, :i), 0)
+          )),
+        (:line, 545, :none),
+        (:(=), (:call, :(==), (:(::), :i, :Integer), (:(::), :x, :BigInt)), (:block,
+            (:line, 545, :none),
+            (:call, :(==), (:call, :cmp, :x, :i), 0)
+          )),
+        (:line, 546, :none),
+        (:(=), (:call, :(==), (:(::), :x, :BigInt), (:(::), :f, :CdoubleMax)), (:block,
+            (:line, 546, :none),
+            (:if, (:call, :isnan, :f), false, (:call, :(==), (:call, :cmp, :x, :f), 0))
+          )),
+        (:line, 547, :none),
+        (:(=), (:call, :(==), (:(::), :f, :CdoubleMax), (:(::), :x, :BigInt)), (:block,
+            (:line, 547, :none),
+            (:if, (:call, :isnan, :f), false, (:call, :(==), (:call, :cmp, :x, :f), 0))
+          )),
+        (:line, 548, :none),
+        (:(=), (:call, :iszero, (:(::), :x, :BigInt)), (:block,
+            (:line, 548, :none),
+            (:call, :(==), (:., :x, (:quote, #QuoteNode
+                  :size
+                )), 0)
+          )),
+        (:line, 550, :none),
+        (:(=), (:call, :(<=), (:(::), :x, :BigInt), (:(::), :y, :BigInt)), (:block,
+            (:line, 550, :none),
+            (:call, :(<=), (:call, :cmp, :x, :y), 0)
+          )),
+        (:line, 551, :none),
+        (:(=), (:call, :(<=), (:(::), :x, :BigInt), (:(::), :i, :Integer)), (:block,
+            (:line, 551, :none),
+            (:call, :(<=), (:call, :cmp, :x, :i), 0)
+          )),
+        (:line, 552, :none),
+        (:(=), (:call, :(<=), (:(::), :i, :Integer), (:(::), :x, :BigInt)), (:block,
+            (:line, 552, :none),
+            (:call, :(>=), (:call, :cmp, :x, :i), 0)
+          )),
+        (:line, 553, :none),
+        (:(=), (:call, :(<=), (:(::), :x, :BigInt), (:(::), :f, :CdoubleMax)), (:block,
+            (:line, 553, :none),
+            (:if, (:call, :isnan, :f), false, (:call, :(<=), (:call, :cmp, :x, :f), 0))
+          )),
+        (:line, 554, :none),
+        (:(=), (:call, :(<=), (:(::), :f, :CdoubleMax), (:(::), :x, :BigInt)), (:block,
+            (:line, 554, :none),
+            (:if, (:call, :isnan, :f), false, (:call, :(>=), (:call, :cmp, :x, :f), 0))
+          )),
+        (:line, 556, :none),
+        (:(=), (:call, :<, (:(::), :x, :BigInt), (:(::), :y, :BigInt)), (:block,
+            (:line, 556, :none),
+            (:call, :<, (:call, :cmp, :x, :y), 0)
+          )),
+        (:line, 557, :none),
+        (:(=), (:call, :<, (:(::), :x, :BigInt), (:(::), :i, :Integer)), (:block,
+            (:line, 557, :none),
+            (:call, :<, (:call, :cmp, :x, :i), 0)
+          )),
+        (:line, 558, :none),
+        (:(=), (:call, :<, (:(::), :i, :Integer), (:(::), :x, :BigInt)), (:block,
+            (:line, 558, :none),
+            (:call, :>, (:call, :cmp, :x, :i), 0)
+          )),
+        (:line, 559, :none),
+        (:(=), (:call, :<, (:(::), :x, :BigInt), (:(::), :f, :CdoubleMax)), (:block,
+            (:line, 559, :none),
+            (:if, (:call, :isnan, :f), false, (:call, :<, (:call, :cmp, :x, :f), 0))
+          )),
+        (:line, 560, :none),
+        (:(=), (:call, :<, (:(::), :f, :CdoubleMax), (:(::), :x, :BigInt)), (:block,
+            (:line, 560, :none),
+            (:if, (:call, :isnan, :f), false, (:call, :>, (:call, :cmp, :x, :f), 0))
+          )),
+        (:line, 561, :none),
+        (:(=), (:call, :isneg, (:(::), :x, :BigInt)), (:block,
+            (:line, 561, :none),
+            (:call, :<, (:., :x, (:quote, #QuoteNode
+                  :size
+                )), 0)
+          )),
+        (:line, 562, :none),
+        (:(=), (:call, :ispos, (:(::), :x, :BigInt)), (:block,
+            (:line, 562, :none),
+            (:call, :>, (:., :x, (:quote, #QuoteNode
+                  :size
+                )), 0)
+          )),
+        (:line, 564, :none),
+        (:(=), (:call, :signbit, (:(::), :x, :BigInt)), (:block,
+            (:line, 564, :none),
+            (:call, :isneg, :x)
+          )),
+        (:line, 565, :none),
+        (:(=), (:call, :flipsign!, (:(::), :x, :BigInt), (:(::), :y, :Integer)), (:block,
+            (:line, 565, :none),
+            (:block,
+              (:&&, (:call, :signbit, :y), (:(=), (:., :x, (:quote, #QuoteNode
+                      :size
+                    )), (:call, :-, (:., :x, (:quote, #QuoteNode
+                        :size
+                      ))))),
+              :x
+            )
+          )),
+        (:line, 566, :none),
+        (:(=), (:call, :flipsign, (:(::), :x, :BigInt), (:(::), :y, :Integer)), (:block,
+            (:line, 566, :none),
+            (:if, (:call, :signbit, :y), (:call, :-, :x), :x)
+          )),
+        (:line, 568, :none),
+        (:(=), (:call, :string, (:(::), :x, :BigInt)), (:block,
+            (:line, 568, :none),
+            (:call, :dec, :x)
+          )),
+        (:line, 569, :none),
+        (:(=), (:call, :show, (:(::), :io, :IO), (:(::), :x, :BigInt)), (:block,
+            (:line, 569, :none),
+            (:call, :print, :io, (:call, :string, :x))
+          )),
+        (:line, 571, :none),
+        (:(=), (:call, :bin, (:(::), :n, :BigInt)), (:block,
+            (:line, 571, :none),
+            (:call, :base, 2, :n)
+          )),
+        (:line, 572, :none),
+        (:(=), (:call, :oct, (:(::), :n, :BigInt)), (:block,
+            (:line, 572, :none),
+            (:call, :base, 8, :n)
+          )),
+        (:line, 573, :none),
+        (:(=), (:call, :dec, (:(::), :n, :BigInt)), (:block,
+            (:line, 573, :none),
+            (:call, :base, 10, :n)
+          )),
+        (:line, 574, :none),
+        (:(=), (:call, :hex, (:(::), :n, :BigInt)), (:block,
+            (:line, 574, :none),
+            (:call, :base, 16, :n)
+          )),
+        (:line, 576, :none),
+        (:(=), (:call, :bin, (:(::), :n, :BigInt), (:(::), :pad, :Int)), (:block,
+            (:line, 576, :none),
+            (:call, :base, 2, :n, :pad)
+          )),
+        (:line, 577, :none),
+        (:(=), (:call, :oct, (:(::), :n, :BigInt), (:(::), :pad, :Int)), (:block,
+            (:line, 577, :none),
+            (:call, :base, 8, :n, :pad)
+          )),
+        (:line, 578, :none),
+        (:(=), (:call, :dec, (:(::), :n, :BigInt), (:(::), :pad, :Int)), (:block,
+            (:line, 578, :none),
+            (:call, :base, 10, :n, :pad)
+          )),
+        (:line, 579, :none),
+        (:(=), (:call, :hex, (:(::), :n, :BigInt), (:(::), :pad, :Int)), (:block,
+            (:line, 579, :none),
+            (:call, :base, 16, :n, :pad)
+          )),
+        (:line, 581, :none),
+        (:function, (:call, :base, (:(::), :b, :Integer), (:(::), :n, :BigInt)), (:block,
+            (:line, 582, :none),
+            (:||, (:comparison, 2, :(<=), :b, :(<=), 62), (:call, :throw, (:call, :ArgumentError, (:string, "base must be 2 ≤ base ≤ 62, got ", :b)))),
+            (:line, 583, :none),
+            (:(=), :nd, (:call, :ndigits, :n, :b)),
+            (:line, 584, :none),
+            (:(=), :str, (:call, (:., :Base, (:quote, #QuoteNode
+                    :_string_n
+                  )), (:if, (:call, :<, :n, 0), (:call, :+, :nd, 1), :nd))),
+            (:line, 585, :none),
+            (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                  :__gmpz_get_str
+                ), (:quote, #QuoteNode
+                  :libgmp
+                )), (:curly, :Ptr, :UInt8), (:tuple, (:curly, :Ptr, :UInt8), :Cint, (:curly, :Ptr, :BigInt)), :str, :b, (:&, :n)),
+            (:line, 586, :none),
+            (:return, :str)
+          )),
+        (:line, 589, :none),
+        (:function, (:call, :base, (:(::), :b, :Integer), (:(::), :n, :BigInt), (:(::), :pad, :Integer)), (:block,
+            (:line, 590, :none),
+            (:(=), :s, (:call, :base, :b, :n)),
+            (:line, 591, :none),
+            (:(=), :buf, (:call, :IOBuffer)),
+            (:line, 592, :none),
+            (:if, (:call, :<, :n, 0), (:block,
+                (:line, 593, :none),
+                (:(=), :s, (:ref, :s, (:(:), 2, :end))),
+                (:line, 594, :none),
+                (:call, :write, :buf, '-')
+              )),
+            (:line, 596, :none),
+            (:for, (:(=), :i, (:(:), 1, (:call, :-, :pad, (:call, :sizeof, :s)))), (:block,
+                (:line, 597, :none),
+                (:call, :write, :buf, '0')
+              )),
+            (:line, 599, :none),
+            (:call, :write, :buf, :s),
+            (:line, 600, :none),
+            (:call, :String, :buf)
+          )),
+        (:line, 603, :none),
+        (:function, (:call, :ndigits0z, (:(::), :x, :BigInt), (:kw, (:(::), :b, :Integer), 10)), (:block,
+            (:line, 604, :none),
+            (:&&, (:call, :<, :b, 2), (:call, :throw, (:call, :DomainError))),
+            (:line, 605, :none),
+            (:if, (:&&, (:call, :ispow2, :b), (:comparison, 2, :(<=), :b, :(<=), 62)), (:block,
+                (:line, 606, :none),
+                (:call, :Int, (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                        :__gmpz_sizeinbase
+                      ), (:quote, #QuoteNode
+                        :libgmp
+                      )), :Csize_t, (:tuple, (:curly, :Ptr, :BigInt), :Cint), (:&, :x), :b))
+              ), (:block,
+                (:line, 610, :none),
+                (:(=), :n, (:call, :Int, (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                          :__gmpz_sizeinbase
+                        ), (:quote, #QuoteNode
+                          :libgmp
+                        )), :Csize_t, (:tuple, (:curly, :Ptr, :BigInt), :Cint), (:&, :x), 2))),
+                (:line, 611, :none),
+                (:(=), :lb, (:call, :log2, :b)),
+                (:line, 612, :none),
+                (:(=), (:tuple, :q, :r), (:call, :divrem, :n, :lb)),
+                (:line, 613, :none),
+                (:(=), :iq, (:call, :Int, :q)),
+                (:line, 614, :none),
+                (:(=), :maxerr, (:call, :*, :q, (:call, :eps, :lb))),
+                (:line, 615, :none),
+                (:if, (:call, :<, (:call, :-, :r, 1.0), :maxerr), (:block,
+                    (:line, 616, :none),
+                    (:if, (:call, :(>=), (:call, :abs, :x), (:call, :^, (:call, :big, :b), :iq)), (:call, :+, :iq, 1), :iq)
+                  ), (:block,
+                    (:line, 617, :none),
+                    (:if, (:call, :<, (:call, :-, :lb, :r), :maxerr), (:block,
+                        (:line, 618, :none),
+                        (:if, (:call, :(>=), (:call, :abs, :x), (:call, :^, (:call, :big, :b), (:call, :+, :iq, 1))), (:call, :+, :iq, 2), (:call, :+, :iq, 1))
+                      ), (:block,
+                        (:line, 620, :none),
+                        (:call, :+, :iq, 1)
+                      ))
+                  ))
+              ))
+          )),
+        (:line, 624, :none),
+        (:(=), (:call, :ndigits, (:(::), :x, :BigInt), (:kw, (:(::), :b, :Integer), 10)), (:block,
+            (:line, 624, :none),
+            (:if, (:call, :iszero, :x), 1, (:call, :ndigits0z, :x, :b))
+          )),
+        (:line, 628, :none),
+        (:(=), (:call, :prevpow2, (:(::), :x, :BigInt)), (:block,
+            (:line, 628, :none),
+            (:if, (:comparison, -2, :(<=), :x, :(<=), 2), :x, (:call, :flipsign!, (:call, :<<, :ONE, (:call, :-, (:call, :ndigits, :x, 2), 1)), :x))
+          )),
+        (:line, 629, :none),
+        (:(=), (:call, :nextpow2, (:(::), :x, :BigInt)), (:block,
+            (:line, 629, :none),
+            (:if, (:call, :(<=), (:call, :count_ones_abs, :x), 1), :x, (:call, :flipsign!, (:call, :<<, :ONE, (:call, :ndigits, :x, 2)), :x))
+          )),
+        (:line, 631, :none),
+        (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+                :checked_abs
+              )), (:(::), :x, :BigInt)), (:block,
+            (:line, 631, :none),
+            (:call, :abs, :x)
+          )),
+        (:line, 632, :none),
+        (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+                :checked_neg
+              )), (:(::), :x, :BigInt)), (:block,
+            (:line, 632, :none),
+            (:call, :-, :x)
+          )),
+        (:line, 633, :none),
+        (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+                :checked_add
+              )), (:(::), :a, :BigInt), (:(::), :b, :BigInt)), (:block,
+            (:line, 633, :none),
+            (:call, :+, :a, :b)
+          )),
+        (:line, 634, :none),
+        (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+                :checked_sub
+              )), (:(::), :a, :BigInt), (:(::), :b, :BigInt)), (:block,
+            (:line, 634, :none),
+            (:call, :-, :a, :b)
+          )),
+        (:line, 635, :none),
+        (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+                :checked_mul
+              )), (:(::), :a, :BigInt), (:(::), :b, :BigInt)), (:block,
+            (:line, 635, :none),
+            (:call, :*, :a, :b)
+          )),
+        (:line, 636, :none),
+        (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+                :checked_div
+              )), (:(::), :a, :BigInt), (:(::), :b, :BigInt)), (:block,
+            (:line, 636, :none),
+            (:call, :div, :a, :b)
+          )),
+        (:line, 637, :none),
+        (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+                :checked_rem
+              )), (:(::), :a, :BigInt), (:(::), :b, :BigInt)), (:block,
+            (:line, 637, :none),
+            (:call, :rem, :a, :b)
+          )),
+        (:line, 638, :none),
+        (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+                :checked_fld
+              )), (:(::), :a, :BigInt), (:(::), :b, :BigInt)), (:block,
+            (:line, 638, :none),
+            (:call, :fld, :a, :b)
+          )),
+        (:line, 639, :none),
+        (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+                :checked_mod
+              )), (:(::), :a, :BigInt), (:(::), :b, :BigInt)), (:block,
+            (:line, 639, :none),
+            (:call, :mod, :a, :b)
+          )),
+        (:line, 640, :none),
+        (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+                :checked_cld
+              )), (:(::), :a, :BigInt), (:(::), :b, :BigInt)), (:block,
+            (:line, 640, :none),
+            (:call, :cld, :a, :b)
+          )),
+        (:line, 641, :none),
+        (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+                :add_with_overflow
+              )), (:(::), :a, :BigInt), (:(::), :b, :BigInt)), (:block,
+            (:line, 641, :none),
+            (:tuple, (:call, :+, :a, :b), false)
+          )),
+        (:line, 642, :none),
+        (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+                :sub_with_overflow
+              )), (:(::), :a, :BigInt), (:(::), :b, :BigInt)), (:block,
+            (:line, 642, :none),
+            (:tuple, (:call, :-, :a, :b), false)
+          )),
+        (:line, 643, :none),
+        (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+                :mul_with_overflow
+              )), (:(::), :a, :BigInt), (:(::), :b, :BigInt)), (:block,
+            (:line, 643, :none),
+            (:tuple, (:call, :*, :a, :b), false)
+          )),
+        (:line, 645, :none),
+        (:function, (:call, (:., :Base, (:quote, #QuoteNode
+                :deepcopy_internal
+              )), (:(::), :x, :BigInt), (:(::), :stackdict, :ObjectIdDict)), (:block,
+            (:line, 646, :none),
+            (:if, (:call, :haskey, :stackdict, :x), (:block,
+                (:line, 647, :none),
+                (:return, (:ref, :stackdict, :x))
+              )),
+            (:line, 649, :none),
+            (:(=), :y, (:call, :BigInt)),
+            (:line, 650, :none),
+            (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                  :__gmpz_set
+                ), (:quote, #QuoteNode
+                  :libgmp
+                )), :Void, (:tuple, (:curly, :Ptr, :BigInt), (:curly, :Ptr, :BigInt)), (:&, :y), (:&, :x)),
+            (:line, 651, :none),
+            (:(=), (:ref, :stackdict, :x), :y),
+            (:line, 652, :none),
+            (:return, :y)
+          ))
+      ))
+  ))

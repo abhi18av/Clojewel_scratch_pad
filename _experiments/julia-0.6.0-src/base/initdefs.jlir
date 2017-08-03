@@ -1,0 +1,100 @@
+(:quote, (:block,
+    (:line, 5, :none),
+    (:macrocall, :(Core.@doc), "    PROGRAM_FILE\n\nA string containing the script name passed to Julia from the command line. Note that the\nscript name remains unchanged from within included files. Alternatively see\n[`@__FILE__`](@ref).\n", (:(=), :PROGRAM_FILE, "")),
+    (:line, 14, :none),
+    (:macrocall, :(Core.@doc), "    ARGS\n\nAn array of the command line arguments passed to Julia, as strings.\n", (:const, (:(=), :ARGS, (:ref, :String)))),
+    (:line, 21, :none),
+    (:(=), (:call, :exit, :n), (:block,
+        (:line, 21, :none),
+        (:call, :ccall, (:quote, #QuoteNode
+            :jl_exit
+          ), :Void, (:tuple, :Int32), :n)
+      )),
+    (:line, 22, :none),
+    (:(=), (:call, :exit), (:block,
+        (:line, 22, :none),
+        (:call, :exit, 0)
+      )),
+    (:line, 23, :none),
+    (:(=), (:call, :quit), (:block,
+        (:line, 23, :none),
+        (:call, :exit)
+      )),
+    (:line, 25, :none),
+    (:const, (:(=), :roottask, (:call, :current_task))),
+    (:line, 27, :none),
+    (:(=), :is_interactive, false),
+    (:line, 28, :none),
+    (:(=), (:call, :isinteractive), (:block,
+        (:line, 28, :none),
+        (:(::), :is_interactive, :Bool)
+      )),
+    (:line, 30, :none),
+    (:macrocall, :(Core.@doc), "    LOAD_PATH\n\nAn array of paths as strings or custom loader objects for the `require`\nfunction and `using` and `import` statements to consider when loading\ncode. To create a custom loader type, define the type and then add\nappropriate methods to the `Base.load_hook` function with the following\nsignature:\n\n    Base.load_hook(loader::Loader, name::String, found::Any)\n\nThe `loader` argument is the current value in `LOAD_PATH`, `name` is the\nname of the module to load, and `found` is the path of any previously\nfound code to provide `name`. If no provider has been found earlier in\n`LOAD_PATH` then the value of `found` will be `nothing`. Custom loader\nfunctionality is experimental and may break or change in Julia 1.0.\n", (:const, (:(=), :LOAD_PATH, (:ref, :Any)))),
+    (:line, 48, :none),
+    (:const, (:(=), :LOAD_CACHE_PATH, (:ref, :String))),
+    (:line, 50, :none),
+    (:function, (:call, :init_load_path), (:block,
+        (:line, 51, :none),
+        (:(=), :vers, (:string, "v", (:., :VERSION, (:quote, #QuoteNode
+                :major
+              )), ".", (:., :VERSION, (:quote, #QuoteNode
+                :minor
+              )))),
+        (:line, 52, :none),
+        (:if, (:call, :haskey, :ENV, "JULIA_LOAD_PATH"), (:block,
+            (:line, 53, :none),
+            (:call, :prepend!, :LOAD_PATH, (:call, :split, (:ref, :ENV, "JULIA_LOAD_PATH"), (:macrocall, Symbol("@static"), (:if, (:call, :is_windows), ';', ':'))))
+          )),
+        (:line, 55, :none),
+        (:call, :push!, :LOAD_PATH, (:call, :abspath, :JULIA_HOME, "..", "local", "share", "julia", "site", :vers)),
+        (:line, 56, :none),
+        (:call, :push!, :LOAD_PATH, (:call, :abspath, :JULIA_HOME, "..", "share", "julia", "site", :vers))
+      )),
+    (:line, 60, :none),
+    (:function, (:call, :early_init), (:block,
+        (:line, 61, :none),
+        (:const, (:global, (:(=), :JULIA_HOME, (:call, :ccall, (:quote, #QuoteNode
+                  :jl_get_julia_home
+                ), :Any, (:tuple,))))),
+        (:line, 63, :none),
+        (:(=), (:ref, :ENV, "OPENBLAS_MAIN_FREE"), (:call, :get, :ENV, "OPENBLAS_MAIN_FREE", (:call, :get, :ENV, "GOTOBLAS_MAIN_FREE", "1"))),
+        (:line, 65, :none),
+        (:if, (:&&, (:call, :>, (:., :Sys, (:quote, #QuoteNode
+                  :CPU_CORES
+                )), 8), (:&&, (:call, :!, (:call, :in, "OPENBLAS_NUM_THREADS", (:call, :keys, :ENV))), (:call, :!, (:call, :in, "OMP_NUM_THREADS", (:call, :keys, :ENV))))), (:block,
+            (:line, 67, :none),
+            (:(=), (:ref, :ENV, "OPENBLAS_NUM_THREADS"), 8)
+          ))
+      )),
+    (:line, 71, :none),
+    (:macrocall, :(Core.@doc), "    JULIA_HOME\n\nA string containing the full path to the directory containing the `julia` executable.\n", (:quote, #QuoteNode
+        :JULIA_HOME
+      )),
+    (:line, 78, :none),
+    (:const, (:(=), :atexit_hooks, (:vect,))),
+    (:line, 80, :none),
+    (:(=), (:call, :atexit, (:(::), :f, :Function)), (:block,
+        (:line, 80, :none),
+        (:block,
+          (:call, :unshift!, :atexit_hooks, :f),
+          :nothing
+        )
+      )),
+    (:line, 82, :none),
+    (:function, (:call, :_atexit), (:block,
+        (:line, 83, :none),
+        (:for, (:(=), :f, :atexit_hooks), (:block,
+            (:line, 84, :none),
+            (:try, (:block,
+                (:line, 85, :none),
+                (:call, :f)
+              ), :err, (:block,
+                (:line, 87, :none),
+                (:call, :show, :STDERR, :err),
+                (:line, 88, :none),
+                (:call, :println, :STDERR)
+              ))
+          ))
+      ))
+  ))

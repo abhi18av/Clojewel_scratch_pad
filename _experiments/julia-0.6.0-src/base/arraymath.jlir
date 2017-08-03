@@ -1,0 +1,241 @@
+(:quote, (:block,
+    (:line, 5, :none),
+    (:macrocall, :(Core.@doc), "    conj!(A)\n\nTransform an array to its complex conjugate in-place.\n\nSee also [`conj`](@ref).\n\n```jldoctest\njulia> A = [1+im 2-im; 2+2im 3+im]\n2×2 Array{Complex{Int64},2}:\n 1+1im  2-1im\n 2+2im  3+1im\n\njulia> conj!(A);\n\njulia> A\n2×2 Array{Complex{Int64},2}:\n 1-1im  2+1im\n 2-2im  3-1im\n```\n", (:(=), (:call, :conj!, (:(::), :A, (:curly, :AbstractArray, (:<:, :Number)))), (:block,
+          (:line, 26, :none),
+          (:block,
+            (:macrocall, Symbol("@inbounds"), (:call, :broadcast!, :conj, :A, :A)),
+            :A
+          )
+        ))),
+    (:line, 28, :none),
+    (:for, (:(=), :f, (:tuple, (:quote, #QuoteNode
+            :-
+          ), (:quote, #QuoteNode
+            :conj
+          ), (:quote, #QuoteNode
+            :real
+          ), (:quote, #QuoteNode
+            :imag
+          ))), (:block,
+        (:line, 29, :none),
+        (:macrocall, Symbol("@eval"), (:(=), (:call, (:$, :f), (:(::), :A, :AbstractArray)), (:block,
+              (:line, 29, :none),
+              (:call, :broadcast, (:$, :f), :A)
+            )))
+      )),
+    (:line, 35, :none),
+    (:for, (:(=), :f, (:tuple, (:quote, #QuoteNode
+            :+
+          ), (:quote, #QuoteNode
+            :-
+          ))), (:block,
+        (:line, 36, :none),
+        (:macrocall, Symbol("@eval"), (:function, (:call, (:$, :f), (:(::), :A, :AbstractArray), (:(::), :B, :AbstractArray)), (:block,
+              (:line, 37, :none),
+              (:call, :promote_shape, :A, :B),
+              (:line, 38, :none),
+              (:call, :broadcast, (:$, :f), :A, :B)
+            )))
+      )),
+    (:line, 42, :none),
+    (:for, (:(=), :f, (:tuple, (:quote, #QuoteNode
+            :/
+          ), (:quote, #QuoteNode
+            :\
+          ), (:quote, #QuoteNode
+            :*
+          ), (:quote, #QuoteNode
+            :+
+          ), (:quote, #QuoteNode
+            :-
+          ))), (:block,
+        (:line, 43, :none),
+        (:if, (:call, :(!=), :f, (:quote, #QuoteNode
+              :/
+            )), (:block,
+            (:line, 44, :none),
+            (:macrocall, Symbol("@eval"), (:(=), (:call, (:$, :f), (:(::), :A, :Number), (:(::), :B, :AbstractArray)), (:block,
+                  (:line, 44, :none),
+                  (:call, :broadcast, (:$, :f), :A, :B)
+                )))
+          )),
+        (:line, 46, :none),
+        (:if, (:call, :(!=), :f, (:quote, #QuoteNode
+              :\
+            )), (:block,
+            (:line, 47, :none),
+            (:macrocall, Symbol("@eval"), (:(=), (:call, (:$, :f), (:(::), :A, :AbstractArray), (:(::), :B, :Number)), (:block,
+                  (:line, 47, :none),
+                  (:call, :broadcast, (:$, :f), :A, :B)
+                )))
+          ))
+      )),
+    (:line, 53, :none),
+    (:function, (:where, (:call, :flipdim, (:(::), :A, (:curly, :Array, :T)), (:(::), :d, :Integer)), :T), (:block,
+        (:line, 54, :none),
+        (:(=), :nd, (:call, :ndims, :A)),
+        (:line, 55, :none),
+        (:||, (:comparison, 1, :≤, :d, :≤, :nd), (:call, :throw, (:call, :ArgumentError, (:string, "dimension ", :d, " is not 1 ≤ ", :d, " ≤ ", :nd)))),
+        (:line, 56, :none),
+        (:(=), :sd, (:call, :size, :A, :d)),
+        (:line, 57, :none),
+        (:if, (:||, (:call, :(==), :sd, 1), (:call, :isempty, :A)), (:block,
+            (:line, 58, :none),
+            (:return, (:call, :copy, :A))
+          )),
+        (:line, 61, :none),
+        (:(=), :B, (:call, :similar, :A)),
+        (:line, 63, :none),
+        (:(=), :nnd, 0),
+        (:line, 64, :none),
+        (:for, (:(=), :i, (:(:), 1, :nd)), (:block,
+            (:line, 65, :none),
+            (:+=, :nnd, (:call, :Int, (:||, (:call, :(==), (:call, :size, :A, :i), 1), (:call, :(==), :i, :d))))
+          )),
+        (:line, 67, :none),
+        (:if, (:call, :(==), :nnd, :nd), (:block,
+            (:line, 69, :none),
+            (:for, (:(=), :i, (:(:), 1, :sd)), (:block,
+                (:line, 70, :none),
+                (:(=), (:ref, :B, :i), (:ref, :A, (:call, :-, (:call, :+, :sd, 1), :i)))
+              )),
+            (:line, 72, :none),
+            (:return, :B)
+          )),
+        (:line, 75, :none),
+        (:(=), :d_in, (:call, :size, :A)),
+        (:line, 76, :none),
+        (:(=), :leading, (:ref, :d_in, (:(:), 1, (:call, :-, :d, 1)))),
+        (:line, 77, :none),
+        (:(=), :M, (:call, :prod, :leading)),
+        (:line, 78, :none),
+        (:(=), :N, (:call, :length, :A)),
+        (:line, 79, :none),
+        (:(=), :stride, (:call, :*, :M, :sd)),
+        (:line, 81, :none),
+        (:if, (:call, :(==), :M, 1), (:block,
+            (:line, 82, :none),
+            (:for, (:(=), :j, (:(:), 0, :stride, (:call, :-, :N, :stride))), (:block,
+                (:line, 83, :none),
+                (:for, (:(=), :i, (:(:), 1, :sd)), (:block,
+                    (:line, 84, :none),
+                    (:(=), :ri, (:call, :-, (:call, :+, :sd, 1), :i)),
+                    (:line, 85, :none),
+                    (:(=), (:ref, :B, (:call, :+, :j, :ri)), (:ref, :A, (:call, :+, :j, :i)))
+                  ))
+              ))
+          ), (:block,
+            (:line, 89, :none),
+            (:if, (:&&, (:call, :isbits, :T), (:call, :>, :M, 200)), (:block,
+                (:line, 90, :none),
+                (:for, (:(=), :i, (:(:), 1, :sd)), (:block,
+                    (:line, 91, :none),
+                    (:(=), :ri, (:call, :-, (:call, :+, :sd, 1), :i)),
+                    (:line, 92, :none),
+                    (:for, (:(=), :j, (:(:), 0, :stride, (:call, :-, :N, :stride))), (:block,
+                        (:line, 93, :none),
+                        (:(=), :offs, (:call, :+, :j, 1, (:call, :*, (:call, :-, :i, 1), :M))),
+                        (:line, 94, :none),
+                        (:(=), :boffs, (:call, :+, :j, 1, (:call, :*, (:call, :-, :ri, 1), :M))),
+                        (:line, 95, :none),
+                        (:call, :copy!, :B, :boffs, :A, :offs, :M)
+                      ))
+                  ))
+              ), (:block,
+                (:line, 99, :none),
+                (:for, (:(=), :i, (:(:), 1, :sd)), (:block,
+                    (:line, 100, :none),
+                    (:(=), :ri, (:call, :-, (:call, :+, :sd, 1), :i)),
+                    (:line, 101, :none),
+                    (:for, (:(=), :j, (:(:), 0, :stride, (:call, :-, :N, :stride))), (:block,
+                        (:line, 102, :none),
+                        (:(=), :offs, (:call, :+, :j, 1, (:call, :*, (:call, :-, :i, 1), :M))),
+                        (:line, 103, :none),
+                        (:(=), :boffs, (:call, :+, :j, 1, (:call, :*, (:call, :-, :ri, 1), :M))),
+                        (:line, 104, :none),
+                        (:for, (:(=), :k, (:(:), 0, (:call, :-, :M, 1))), (:block,
+                            (:line, 105, :none),
+                            (:(=), (:ref, :B, (:call, :+, :boffs, :k)), (:ref, :A, (:call, :+, :offs, :k)))
+                          ))
+                      ))
+                  ))
+              ))
+          )),
+        (:line, 111, :none),
+        (:return, :B)
+      )),
+    (:line, 114, :none),
+    (:macrocall, :(Core.@doc), "    rotl90(A)\n\nRotate matrix `A` left 90 degrees.\n\n```jldoctest\njulia> a = [1 2; 3 4]\n2×2 Array{Int64,2}:\n 1  2\n 3  4\n\njulia> rotl90(a)\n2×2 Array{Int64,2}:\n 2  4\n 1  3\n```\n", (:function, (:call, :rotl90, (:(::), :A, :AbstractMatrix)), (:block,
+          (:line, 132, :none),
+          (:(=), (:tuple, :ind1, :ind2), (:call, :indices, :A)),
+          (:line, 133, :none),
+          (:(=), :B, (:call, :similar, :A, (:tuple, :ind2, :ind1))),
+          (:line, 134, :none),
+          (:(=), :n, (:call, :+, (:call, :first, :ind2), (:call, :last, :ind2))),
+          (:line, 135, :none),
+          (:for, (:block,
+              (:(=), :i, (:call, :indices, :A, 1)),
+              (:(=), :j, :ind2)
+            ), (:block,
+              (:line, 136, :none),
+              (:(=), (:ref, :B, (:call, :-, :n, :j), :i), (:ref, :A, :i, :j))
+            )),
+          (:line, 138, :none),
+          (:return, :B)
+        ))),
+    (:line, 141, :none),
+    (:macrocall, :(Core.@doc), "    rotr90(A)\n\nRotate matrix `A` right 90 degrees.\n\n```jldoctest\njulia> a = [1 2; 3 4]\n2×2 Array{Int64,2}:\n 1  2\n 3  4\n\njulia> rotr90(a)\n2×2 Array{Int64,2}:\n 3  1\n 4  2\n```\n", (:function, (:call, :rotr90, (:(::), :A, :AbstractMatrix)), (:block,
+          (:line, 159, :none),
+          (:(=), (:tuple, :ind1, :ind2), (:call, :indices, :A)),
+          (:line, 160, :none),
+          (:(=), :B, (:call, :similar, :A, (:tuple, :ind2, :ind1))),
+          (:line, 161, :none),
+          (:(=), :m, (:call, :+, (:call, :first, :ind1), (:call, :last, :ind1))),
+          (:line, 162, :none),
+          (:for, (:block,
+              (:(=), :i, :ind1),
+              (:(=), :j, (:call, :indices, :A, 2))
+            ), (:block,
+              (:line, 163, :none),
+              (:(=), (:ref, :B, :j, (:call, :-, :m, :i)), (:ref, :A, :i, :j))
+            )),
+          (:line, 165, :none),
+          (:return, :B)
+        ))),
+    (:line, 167, :none),
+    (:macrocall, :(Core.@doc), "    rot180(A)\n\nRotate matrix `A` 180 degrees.\n\n```jldoctest\njulia> a = [1 2; 3 4]\n2×2 Array{Int64,2}:\n 1  2\n 3  4\n\njulia> rot180(a)\n2×2 Array{Int64,2}:\n 4  3\n 2  1\n```\n", (:function, (:call, :rot180, (:(::), :A, :AbstractMatrix)), (:block,
+          (:line, 185, :none),
+          (:(=), :B, (:call, :similar, :A)),
+          (:line, 186, :none),
+          (:(=), (:tuple, :ind1, :ind2), (:tuple, (:call, :indices, :A, 1), (:call, :indices, :A, 2))),
+          (:line, 187, :none),
+          (:(=), (:tuple, :m, :n), (:tuple, (:call, :+, (:call, :first, :ind1), (:call, :last, :ind1)), (:call, :+, (:call, :first, :ind2), (:call, :last, :ind2)))),
+          (:line, 188, :none),
+          (:for, (:block,
+              (:(=), :j, :ind2),
+              (:(=), :i, :ind1)
+            ), (:block,
+              (:line, 189, :none),
+              (:(=), (:ref, :B, (:call, :-, :m, :i), (:call, :-, :n, :j)), (:ref, :A, :i, :j))
+            )),
+          (:line, 191, :none),
+          (:return, :B)
+        ))),
+    (:line, 193, :none),
+    (:macrocall, :(Core.@doc), "    rotl90(A, k)\n\nRotate matrix `A` left 90 degrees an integer `k` number of times.\nIf `k` is zero or a multiple of four, this is equivalent to a `copy`.\n\n```jldoctest\njulia> a = [1 2; 3 4]\n2×2 Array{Int64,2}:\n 1  2\n 3  4\n\njulia> rotl90(a,1)\n2×2 Array{Int64,2}:\n 2  4\n 1  3\n\njulia> rotl90(a,2)\n2×2 Array{Int64,2}:\n 4  3\n 2  1\n\njulia> rotl90(a,3)\n2×2 Array{Int64,2}:\n 3  1\n 4  2\n\njulia> rotl90(a,4)\n2×2 Array{Int64,2}:\n 1  2\n 3  4\n```\n", (:function, (:call, :rotl90, (:(::), :A, :AbstractMatrix), (:(::), :k, :Integer)), (:block,
+          (:line, 227, :none),
+          (:(=), :k, (:call, :mod, :k, 4)),
+          (:line, 228, :none),
+          (:if, (:call, :(==), :k, 1), (:call, :rotl90, :A), (:if, (:call, :(==), :k, 2), (:call, :rot180, :A), (:if, (:call, :(==), :k, 3), (:call, :rotr90, :A), (:call, :copy, :A))))
+        ))),
+    (:line, 232, :none),
+    (:macrocall, :(Core.@doc), "    rotr90(A, k)\n\nRotate matrix `A` right 90 degrees an integer `k` number of times. If `k` is zero or a\nmultiple of four, this is equivalent to a `copy`.\n\n```jldoctest\njulia> a = [1 2; 3 4]\n2×2 Array{Int64,2}:\n 1  2\n 3  4\n\njulia> rotr90(a,1)\n2×2 Array{Int64,2}:\n 3  1\n 4  2\n\njulia> rotr90(a,2)\n2×2 Array{Int64,2}:\n 4  3\n 2  1\n\njulia> rotr90(a,3)\n2×2 Array{Int64,2}:\n 2  4\n 1  3\n\njulia> rotr90(a,4)\n2×2 Array{Int64,2}:\n 1  2\n 3  4\n```\n", (:(=), (:call, :rotr90, (:(::), :A, :AbstractMatrix), (:(::), :k, :Integer)), (:block,
+          (:line, 265, :none),
+          (:call, :rotl90, :A, (:call, :-, :k))
+        ))),
+    (:line, 266, :none),
+    (:macrocall, :(Core.@doc), "    rot180(A, k)\n\nRotate matrix `A` 180 degrees an integer `k` number of times.\nIf `k` is even, this is equivalent to a `copy`.\n\n```jldoctest\njulia> a = [1 2; 3 4]\n2×2 Array{Int64,2}:\n 1  2\n 3  4\n\njulia> rot180(a,1)\n2×2 Array{Int64,2}:\n 4  3\n 2  1\n\njulia> rot180(a,2)\n2×2 Array{Int64,2}:\n 1  2\n 3  4\n```\n", (:(=), (:call, :rot180, (:(::), :A, :AbstractMatrix), (:(::), :k, :Integer)), (:block,
+          (:line, 289, :none),
+          (:if, (:call, :(==), (:call, :mod, :k, 2), 1), (:call, :rot180, :A), (:call, :copy, :A))
+        )))
+  ))

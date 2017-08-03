@@ -1,0 +1,236 @@
+(:quote, (:block,
+    (:line, 21, :none),
+    (:(=), (:call, :error, (:(::), :s, :AbstractString)), (:block,
+        (:line, 21, :none),
+        (:call, :throw, (:call, :ErrorException, :s))
+      )),
+    (:line, 23, :none),
+    (:macrocall, :(Core.@doc), "    error(msg...)\n\nRaise an `ErrorException` with the given message.\n\nSee also [`logging`](@ref).\n", (:(=), (:call, :error, (:..., :s)), (:block,
+          (:line, 30, :none),
+          (:call, :throw, (:call, :ErrorException, (:call, (:., (:., :Main, (:quote, #QuoteNode
+                      :Base
+                    )), (:quote, #QuoteNode
+                    :string
+                  )), (:..., :s))))
+        ))),
+    (:line, 32, :none),
+    (:macrocall, :(Core.@doc), "    rethrow([e])\n\nThrow an object without changing the current exception backtrace. The default argument is\nthe current exception (if called within a `catch` block).\n", (:(=), (:call, :rethrow), (:block,
+          (:line, 38, :none),
+          (:call, :ccall, (:quote, #QuoteNode
+              :jl_rethrow
+            ), :Bottom, (:tuple,))
+        ))),
+    (:line, 39, :none),
+    (:(=), (:call, :rethrow, :e), (:block,
+        (:line, 39, :none),
+        (:call, :ccall, (:quote, #QuoteNode
+            :jl_rethrow_other
+          ), :Bottom, (:tuple, :Any), :e)
+      )),
+    (:line, 41, :none),
+    (:macrocall, :(Core.@doc), "    backtrace()\n\nGet a backtrace object for the current program point.\n", (:(=), (:call, :backtrace), (:block,
+          (:line, 46, :none),
+          (:call, :ccall, (:quote, #QuoteNode
+              :jl_backtrace_from_here
+            ), (:curly, :Array, (:curly, :Ptr, :Void), 1), (:tuple, :Int32), false)
+        ))),
+    (:line, 48, :none),
+    (:macrocall, :(Core.@doc), "    catch_backtrace()\n\nGet the backtrace of the current exception, for use within `catch` blocks.\n", (:(=), (:call, :catch_backtrace), (:block,
+          (:line, 53, :none),
+          (:call, :ccall, (:quote, #QuoteNode
+              :jl_get_backtrace
+            ), (:curly, :Array, (:curly, :Ptr, :Void), 1), (:tuple,))
+        ))),
+    (:line, 56, :none),
+    (:(=), (:call, :kwerr, :kw, (:..., :args)), (:block,
+        (:line, 56, :none),
+        (:call, :throw, (:call, :MethodError, (:., (:., (:., (:call, :typeof, (:ref, :args, 1)), (:quote, #QuoteNode
+                    :name
+                  )), (:quote, #QuoteNode
+                  :mt
+                )), (:quote, #QuoteNode
+                :kwsorter
+              )), (:tuple, :kw, (:..., :args))))
+      )),
+    (:line, 59, :none),
+    (:macrocall, :(Core.@doc), "    systemerror(sysfunc, iftrue)\n\nRaises a `SystemError` for `errno` with the descriptive string `sysfunc` if `iftrue` is `true`\n", (:(=), (:call, :systemerror, (:parameters, (:kw, :extrainfo, :nothing)), :p, (:(::), :b, :Bool)), (:block,
+          (:line, 64, :none),
+          (:if, :b, (:call, :throw, (:call, (:., (:., :Main, (:quote, #QuoteNode
+                      :Base
+                    )), (:quote, #QuoteNode
+                    :SystemError
+                  )), (:call, :string, :p), (:call, (:., :Libc, (:quote, #QuoteNode
+                      :errno
+                    ))), :extrainfo)), :nothing)
+        ))),
+    (:line, 68, :none),
+    (:(=), (:call, :assert, :x), (:block,
+        (:line, 68, :none),
+        (:if, :x, :nothing, (:call, :throw, (:call, (:., (:., :Main, (:quote, #QuoteNode
+                    :Base
+                  )), (:quote, #QuoteNode
+                  :AssertionError
+                )))))
+      )),
+    (:line, 69, :none),
+    (:macro, (:call, :assert, :ex, (:..., :msgs)), (:block,
+        (:line, 70, :none),
+        (:(=), :msg, (:if, (:call, :isempty, :msgs), :ex, (:ref, :msgs, 1))),
+        (:line, 71, :none),
+        (:if, (:call, :isa, :msg, :AbstractString), (:block,
+            (:line, 72, :none),
+            (:(=), :msg, :msg)
+          ), (:block,
+            (:line, 73, :none),
+            (:if, (:&&, (:call, :!, (:call, :isempty, :msgs)), (:||, (:call, :isa, :msg, :Expr), (:call, :isa, :msg, :Symbol))), (:block,
+                (:line, 75, :none),
+                (:(=), :msg, (:quote, (:call, (:., (:., :Main, (:quote, #QuoteNode
+                            :Base
+                          )), (:quote, #QuoteNode
+                          :string
+                        )), (:$, (:call, :esc, :msg)))))
+              ), (:block,
+                (:line, 76, :none),
+                (:if, (:&&, (:call, :isdefined, :Main, (:quote, #QuoteNode
+                        :Base
+                      )), (:&&, (:call, :isdefined, (:., :Main, (:quote, #QuoteNode
+                            :Base
+                          )), (:quote, #QuoteNode
+                          :string
+                        )), (:call, :applicable, (:., (:., :Main, (:quote, #QuoteNode
+                              :Base
+                            )), (:quote, #QuoteNode
+                            :string
+                          )), :msg))), (:block,
+                    (:line, 77, :none),
+                    (:(=), :msg, (:call, (:., (:., :Main, (:quote, #QuoteNode
+                              :Base
+                            )), (:quote, #QuoteNode
+                            :string
+                          )), :msg))
+                  ), (:block,
+                    (:line, 80, :none),
+                    (:(=), :msg, (:quote, (:call, (:., (:., :Main, (:quote, #QuoteNode
+                                :Base
+                              )), (:quote, #QuoteNode
+                              :string
+                            )), (:$, (:call, :Expr, (:quote, #QuoteNode
+                                :quote
+                              ), :msg)))))
+                  ))
+              ))
+          )),
+        (:line, 82, :none),
+        (:return, (:quote, (:if, (:$, (:call, :esc, :ex)), (:$, :nothing), (:call, :throw, (:call, (:., (:., :Main, (:quote, #QuoteNode
+                        :Base
+                      )), (:quote, #QuoteNode
+                      :AssertionError
+                    )), (:$, :msg))))))
+      )),
+    (:line, 85, :none),
+    (:type, false, :ExponentialBackOff, (:block,
+        (:line, 86, :none),
+        (:(::), :n, :Int),
+        (:line, 87, :none),
+        (:(::), :first_delay, :Float64),
+        (:line, 88, :none),
+        (:(::), :max_delay, :Float64),
+        (:line, 89, :none),
+        (:(::), :factor, :Float64),
+        (:line, 90, :none),
+        (:(::), :jitter, :Float64),
+        (:line, 92, :none),
+        (:function, (:call, :ExponentialBackOff, :n, :first_delay, :max_delay, :factor, :jitter), (:block,
+            (:line, 93, :none),
+            (:||, (:call, :all, (:->, :x, (:block,
+                    (:line, 93, :none),
+                    (:call, :(>=), :x, 0)
+                  )), (:tuple, :n, :first_delay, :max_delay, :factor, :jitter)), (:call, :error, "all inputs must be non-negative")),
+            (:line, 94, :none),
+            (:call, :new, :n, :first_delay, :max_delay, :factor, :jitter)
+          ))
+      )),
+    (:line, 98, :none),
+    (:macrocall, :(Core.@doc), "    ExponentialBackOff(; n=1, first_delay=0.05, max_delay=10.0, factor=5.0, jitter=0.1)\n\nA [`Float64`](@ref) iterator of length `n` whose elements exponentially increase at a\nrate in the interval `factor` * (1 ± `jitter`).  The first element is\n`first_delay` and all elements are clamped to `max_delay`.\n", (:(=), (:call, :ExponentialBackOff, (:parameters, (:kw, :n, 1), (:kw, :first_delay, 0.05), (:kw, :max_delay, 10.0), (:kw, :factor, 5.0), (:kw, :jitter, 0.1))), (:block,
+          (:line, 105, :none),
+          (:call, :ExponentialBackOff, :n, :first_delay, :max_delay, :factor, :jitter)
+        ))),
+    (:line, 107, :none),
+    (:(=), (:call, :start, (:(::), :ebo, :ExponentialBackOff)), (:block,
+        (:line, 107, :none),
+        (:tuple, (:., :ebo, (:quote, #QuoteNode
+              :n
+            )), (:call, :min, (:., :ebo, (:quote, #QuoteNode
+                :first_delay
+              )), (:., :ebo, (:quote, #QuoteNode
+                :max_delay
+              ))))
+      )),
+    (:line, 108, :none),
+    (:function, (:call, :next, (:(::), :ebo, :ExponentialBackOff), :state), (:block,
+        (:line, 109, :none),
+        (:(=), :next_n, (:call, :-, (:ref, :state, 1), 1)),
+        (:line, 110, :none),
+        (:(=), :curr_delay, (:ref, :state, 2)),
+        (:line, 111, :none),
+        (:(=), :next_delay, (:call, :min, (:., :ebo, (:quote, #QuoteNode
+                :max_delay
+              )), (:call, :*, (:ref, :state, 2), (:., :ebo, (:quote, #QuoteNode
+                  :factor
+                )), (:call, :+, (:call, :-, 1.0, (:., :ebo, (:quote, #QuoteNode
+                      :jitter
+                    ))), (:call, :*, (:call, :rand), 2.0, (:., :ebo, (:quote, #QuoteNode
+                      :jitter
+                    ))))))),
+        (:line, 112, :none),
+        (:tuple, :curr_delay, (:tuple, :next_n, :next_delay))
+      )),
+    (:line, 114, :none),
+    (:(=), (:call, :done, (:(::), :ebo, :ExponentialBackOff), :state), (:block,
+        (:line, 114, :none),
+        (:call, :<, (:ref, :state, 1), 1)
+      )),
+    (:line, 115, :none),
+    (:(=), (:call, :length, (:(::), :ebo, :ExponentialBackOff)), (:block,
+        (:line, 115, :none),
+        (:., :ebo, (:quote, #QuoteNode
+            :n
+          ))
+      )),
+    (:line, 117, :none),
+    (:macrocall, :(Core.@doc), "    retry(f::Function;  delays=ExponentialBackOff(), check=nothing) -> Function\n\nReturns an anonymous function that calls function `f`.  If an exception arises,\n`f` is repeatedly called again, each time `check` returns `true`, after waiting the\nnumber of seconds specified in `delays`.  `check` should input `delays`'s\ncurrent state and the `Exception`.\n\n# Examples\n```julia\nretry(f, delays=fill(5.0, 3))\nretry(f, delays=rand(5:10, 2))\nretry(f, delays=Base.ExponentialBackOff(n=3, first_delay=5, max_delay=1000))\nretry(http_get, check=(s,e)->e.status == \"503\")(url)\nretry(read, check=(s,e)->isa(e, UVError))(io, 128; all=false)\n```\n", (:function, (:call, :retry, (:parameters, (:kw, :delays, (:call, :ExponentialBackOff)), (:kw, :check, :nothing)), (:(::), :f, :Function)), (:block,
+          (:line, 135, :none),
+          (:->, (:block,
+              (:..., :args),
+              (:..., :kwargs)
+            ), (:block,
+              (:line, 135, :none),
+              (:block,
+                (:line, 136, :none),
+                (:(=), :state, (:call, :start, :delays)),
+                (:line, 137, :none),
+                (:while, true, (:block,
+                    (:line, 138, :none),
+                    (:try, (:block,
+                        (:line, 139, :none),
+                        (:return, (:call, :f, (:parameters, (:..., :kwargs)), (:..., :args)))
+                      ), :e, (:block,
+                        (:line, 141, :none),
+                        (:&&, (:call, :done, :delays, :state), (:call, :rethrow, :e)),
+                        (:line, 142, :none),
+                        (:if, (:call, :(!==), :check, :nothing), (:block,
+                            (:line, 143, :none),
+                            (:(=), (:tuple, :state, :retry_or_not), (:call, :check, :state, :e)),
+                            (:line, 144, :none),
+                            (:||, :retry_or_not, (:call, :rethrow, :e))
+                          ))
+                      )),
+                    (:line, 147, :none),
+                    (:(=), (:tuple, :delay, :state), (:call, :next, :delays, :state)),
+                    (:line, 148, :none),
+                    (:call, :sleep, :delay)
+                  ))
+              )
+            ))
+        )))
+  ))

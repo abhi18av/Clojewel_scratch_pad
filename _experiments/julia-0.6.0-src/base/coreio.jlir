@@ -1,0 +1,126 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:(=), (:call, :show, :x), (:block,
+        (:line, 3, :none),
+        (:call, :show, (:(::), :STDOUT, :IO), :x)
+      )),
+    (:line, 4, :none),
+    (:(=), (:call, :print, (:..., :xs)), (:block,
+        (:line, 4, :none),
+        (:call, :print, (:(::), :STDOUT, :IO), (:..., :xs))
+      )),
+    (:line, 5, :none),
+    (:(=), (:call, :println, (:..., :xs)), (:block,
+        (:line, 5, :none),
+        (:call, :println, (:(::), :STDOUT, :IO), (:..., :xs))
+      )),
+    (:line, 6, :none),
+    (:(=), (:call, :println, (:(::), :io, :IO)), (:block,
+        (:line, 6, :none),
+        (:call, :print, :io, '\n')
+      )),
+    (:line, 8, :none),
+    (:type, false, (:<:, :DevNullStream, :IO), (:block,
+        (:line, 8, :none)
+      )),
+    (:line, 9, :none),
+    (:const, (:(=), :DevNull, (:call, :DevNullStream))),
+    (:line, 10, :none),
+    (:(=), (:call, :isreadable, (:(::), :DevNullStream)), (:block,
+        (:line, 10, :none),
+        false
+      )),
+    (:line, 11, :none),
+    (:(=), (:call, :iswritable, (:(::), :DevNullStream)), (:block,
+        (:line, 11, :none),
+        true
+      )),
+    (:line, 12, :none),
+    (:(=), (:call, :isopen, (:(::), :DevNullStream)), (:block,
+        (:line, 12, :none),
+        true
+      )),
+    (:line, 13, :none),
+    (:(=), (:call, :read, (:(::), :DevNullStream), (:(::), (:curly, :Type, :UInt8))), (:block,
+        (:line, 13, :none),
+        (:call, :throw, (:call, :EOFError))
+      )),
+    (:line, 14, :none),
+    (:(=), (:call, :write, (:(::), :DevNullStream), (:(::), :UInt8)), (:block,
+        (:line, 14, :none),
+        1
+      )),
+    (:line, 15, :none),
+    (:(=), (:(::), (:call, :unsafe_write, (:(::), :DevNullStream), (:(::), (:curly, :Ptr, :UInt8)), (:(::), :n, :UInt)), :Int), (:block,
+        (:line, 15, :none),
+        :n
+      )),
+    (:line, 16, :none),
+    (:(=), (:call, :close, (:(::), :DevNullStream)), (:block,
+        (:line, 16, :none),
+        :nothing
+      )),
+    (:line, 17, :none),
+    (:(=), (:call, :flush, (:(::), :DevNullStream)), (:block,
+        (:line, 17, :none),
+        :nothing
+      )),
+    (:line, 18, :none),
+    (:(=), (:call, :wait_connected, (:(::), :DevNullStream)), (:block,
+        (:line, 18, :none),
+        :nothing
+      )),
+    (:line, 19, :none),
+    (:(=), (:call, :wait_readnb, (:(::), :DevNullStream)), (:block,
+        (:line, 19, :none),
+        (:call, :wait)
+      )),
+    (:line, 20, :none),
+    (:(=), (:call, :wait_readbyte, (:(::), :DevNullStream)), (:block,
+        (:line, 20, :none),
+        (:call, :wait)
+      )),
+    (:line, 21, :none),
+    (:(=), (:call, :wait_close, (:(::), :DevNullStream)), (:block,
+        (:line, 21, :none),
+        (:call, :wait)
+      )),
+    (:line, 22, :none),
+    (:(=), (:call, :eof, (:(::), :DevNullStream)), (:block,
+        (:line, 22, :none),
+        true
+      )),
+    (:line, 24, :none),
+    (:let, (:block,
+        (:line, 25, :none),
+        (:global, :write, :unsafe_write),
+        (:line, 26, :none),
+        (:(=), (:call, :write, (:(::), :io, :CoreIO), (:(::), :x, :UInt8)), (:block,
+            (:line, 26, :none),
+            (:call, (:., :Core, (:quote, #QuoteNode
+                  :write
+                )), :io, :x)
+          )),
+        (:line, 27, :none),
+        (:(=), (:call, :unsafe_write, (:(::), :io, :CoreIO), (:(::), :x, (:curly, :Ptr, :UInt8)), (:(::), :nb, :UInt)), (:block,
+            (:line, 27, :none),
+            (:call, (:., :Core, (:quote, #QuoteNode
+                  :unsafe_write
+                )), :io, :x, :nb)
+          ))
+      ), (:(=), :CoreIO, (:curly, :Union, (:., :Core, (:quote, #QuoteNode
+              :CoreSTDOUT
+            )), (:., :Core, (:quote, #QuoteNode
+              :CoreSTDERR
+            ))))),
+    (:line, 30, :none),
+    (:(=), :STDIN, :DevNull),
+    (:line, 31, :none),
+    (:(=), :STDOUT, (:., :Core, (:quote, #QuoteNode
+          :STDOUT
+        ))),
+    (:line, 32, :none),
+    (:(=), :STDERR, (:., :Core, (:quote, #QuoteNode
+          :STDERR
+        )))
+  ))

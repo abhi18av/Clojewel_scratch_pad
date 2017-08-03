@@ -1,0 +1,964 @@
+(:quote, (:block,
+    (:line, 6, :none),
+    (:type, true, (:<:, (:curly, :AbstractIOBuffer, (:<:, :T, (:curly, :AbstractVector, :UInt8))), :IO), (:block,
+        (:line, 7, :none),
+        (:(::), :data, :T),
+        (:line, 8, :none),
+        (:(::), :readable, :Bool),
+        (:line, 9, :none),
+        (:(::), :writable, :Bool),
+        (:line, 10, :none),
+        (:(::), :seekable, :Bool),
+        (:line, 11, :none),
+        (:(::), :append, :Bool),
+        (:line, 12, :none),
+        (:(::), :size, :Int),
+        (:line, 13, :none),
+        (:(::), :maxsize, :Int),
+        (:line, 14, :none),
+        (:(::), :ptr, :Int),
+        (:line, 15, :none),
+        (:(::), :mark, :Int),
+        (:line, 17, :none),
+        (:function, (:where, (:call, (:curly, :AbstractIOBuffer, :T), (:(::), :data, :T), (:(::), :readable, :Bool), (:(::), :writable, :Bool), (:(::), :seekable, :Bool), (:(::), :append, :Bool), (:(::), :maxsize, :Int)), (:<:, :T, (:curly, :AbstractVector, :UInt8))), (:block,
+            (:line, 19, :none),
+            (:call, :new, :data, :readable, :writable, :seekable, :append, (:call, :length, :data), :maxsize, 1, -1)
+          ))
+      )),
+    (:line, 22, :none),
+    (:const, (:(=), :IOBuffer, (:curly, :AbstractIOBuffer, (:curly, :Vector, :UInt8)))),
+    (:line, 24, :none),
+    (:function, (:where, (:call, :AbstractIOBuffer, (:(::), :data, :T), (:(::), :readable, :Bool), (:(::), :writable, :Bool), (:(::), :seekable, :Bool), (:(::), :append, :Bool), (:(::), :maxsize, :Int)), (:<:, :T, (:curly, :AbstractVector, :UInt8))), (:block,
+        (:line, 26, :none),
+        (:call, (:curly, :AbstractIOBuffer, :T), :data, :readable, :writable, :seekable, :append, :maxsize)
+      )),
+    (:line, 30, :none),
+    (:(=), (:call, :StringVector, (:(::), :n, :Integer)), (:block,
+        (:line, 30, :none),
+        (:call, (:curly, :Vector, :UInt8), (:call, :_string_n, :n))
+      )),
+    (:line, 34, :none),
+    (:macrocall, :(Core.@doc), "    IOBuffer([data,],[readable::Bool=true, writable::Bool=true, [maxsize::Int=typemax(Int)]])\n\nCreate an `IOBuffer`, which may optionally operate on a pre-existing array. If the\nreadable/writable arguments are given, they restrict whether or not the buffer may be read\nfrom or written to respectively. By default the buffer is readable but not writable. The\nlast argument optionally specifies a size beyond which the buffer may not be grown.\n", (:(=), (:call, :IOBuffer, (:(::), :data, (:curly, :AbstractVector, :UInt8)), (:kw, (:(::), :readable, :Bool), true), (:kw, (:(::), :writable, :Bool), false), (:kw, (:(::), :maxsize, :Int), (:call, :typemax, :Int))), (:block,
+          (:line, 42, :none),
+          (:call, :AbstractIOBuffer, :data, :readable, :writable, true, false, :maxsize)
+        ))),
+    (:line, 44, :none),
+    (:function, (:call, :IOBuffer, (:(::), :readable, :Bool), (:(::), :writable, :Bool)), (:block,
+        (:line, 45, :none),
+        (:(=), :b, (:call, :IOBuffer, (:call, :StringVector, 32), :readable, :writable)),
+        (:line, 46, :none),
+        (:(=), (:ref, (:., :b, (:quote, #QuoteNode
+                :data
+              )), :(:)), 0),
+        (:line, 47, :none),
+        (:(=), (:., :b, (:quote, #QuoteNode
+              :size
+            )), 0),
+        (:line, 48, :none),
+        (:return, :b)
+      )),
+    (:line, 51, :none),
+    (:macrocall, :(Core.@doc), "    IOBuffer() -> IOBuffer\n\nCreate an in-memory I/O stream.\n", (:(=), (:call, :IOBuffer), (:block,
+          (:line, 56, :none),
+          (:call, :IOBuffer, true, true)
+        ))),
+    (:line, 58, :none),
+    (:macrocall, :(Core.@doc), "    IOBuffer(size::Int)\n\nCreate a fixed size IOBuffer. The buffer will not grow dynamically.\n", (:(=), (:call, :IOBuffer, (:(::), :maxsize, :Int)), (:block,
+          (:line, 63, :none),
+          (:block,
+            (:(=), :x, (:call, :IOBuffer, (:call, :StringVector, :maxsize), true, true, :maxsize)),
+            (:(=), (:., :x, (:quote, #QuoteNode
+                  :size
+                )), 0),
+            :x
+          )
+        ))),
+    (:line, 67, :none),
+    (:macrocall, :(Core.@doc), "    PipeBuffer(data::Vector{UInt8}=UInt8[],[maxsize::Int=typemax(Int)])\n\nAn [`IOBuffer`](@ref) that allows reading and performs writes by appending.\nSeeking and truncating are not supported.\nSee [`IOBuffer`](@ref) for the available constructors.\nIf `data` is given, creates a `PipeBuffer` to operate on a data vector,\noptionally specifying a size beyond which the underlying `Array` may not be grown.\n", (:(=), (:call, :PipeBuffer, (:kw, (:(::), :data, (:curly, :Vector, :UInt8)), (:ref, :UInt8)), (:kw, (:(::), :maxsize, :Int), (:call, :typemax, :Int))), (:block,
+          (:line, 76, :none),
+          (:call, :AbstractIOBuffer, :data, true, true, false, true, :maxsize)
+        ))),
+    (:line, 78, :none),
+    (:(=), (:call, :PipeBuffer, (:(::), :maxsize, :Int)), (:block,
+        (:line, 78, :none),
+        (:block,
+          (:(=), :x, (:call, :PipeBuffer, (:call, :StringVector, :maxsize), :maxsize)),
+          (:(=), (:., :x, (:quote, #QuoteNode
+                :size
+              )), 0),
+          :x
+        )
+      )),
+    (:line, 80, :none),
+    (:function, (:call, :copy, (:(::), :b, :AbstractIOBuffer)), (:block,
+        (:line, 81, :none),
+        (:(=), :ret, (:call, (:call, :typeof, :b), (:if, (:., :b, (:quote, #QuoteNode
+                  :writable
+                )), (:call, :copy, (:., :b, (:quote, #QuoteNode
+                    :data
+                  ))), (:., :b, (:quote, #QuoteNode
+                  :data
+                ))), (:., :b, (:quote, #QuoteNode
+                :readable
+              )), (:., :b, (:quote, #QuoteNode
+                :writable
+              )), (:., :b, (:quote, #QuoteNode
+                :seekable
+              )), (:., :b, (:quote, #QuoteNode
+                :append
+              )), (:., :b, (:quote, #QuoteNode
+                :maxsize
+              )))),
+        (:line, 83, :none),
+        (:(=), (:., :ret, (:quote, #QuoteNode
+              :size
+            )), (:., :b, (:quote, #QuoteNode
+              :size
+            ))),
+        (:line, 84, :none),
+        (:(=), (:., :ret, (:quote, #QuoteNode
+              :ptr
+            )), (:., :b, (:quote, #QuoteNode
+              :ptr
+            ))),
+        (:line, 85, :none),
+        (:return, :ret)
+      )),
+    (:line, 88, :none),
+    (:(=), (:call, :show, (:(::), :io, :IO), (:(::), :b, :AbstractIOBuffer)), (:block,
+        (:line, 88, :none),
+        (:call, :print, :io, "IOBuffer(data=UInt8[...], ", "readable=", (:., :b, (:quote, #QuoteNode
+              :readable
+            )), ", ", "writable=", (:., :b, (:quote, #QuoteNode
+              :writable
+            )), ", ", "seekable=", (:., :b, (:quote, #QuoteNode
+              :seekable
+            )), ", ", "append=", (:., :b, (:quote, #QuoteNode
+              :append
+            )), ", ", "size=", (:., :b, (:quote, #QuoteNode
+              :size
+            )), ", ", "maxsize=", (:if, (:call, :(==), (:., :b, (:quote, #QuoteNode
+                  :maxsize
+                )), (:call, :typemax, :Int)), "Inf", (:., :b, (:quote, #QuoteNode
+                :maxsize
+              ))), ", ", "ptr=", (:., :b, (:quote, #QuoteNode
+              :ptr
+            )), ", ", "mark=", (:., :b, (:quote, #QuoteNode
+              :mark
+            )), ")")
+      )),
+    (:line, 98, :none),
+    (:function, (:call, :unsafe_read, (:(::), :from, :AbstractIOBuffer), (:(::), :p, (:curly, :Ptr, :UInt8)), (:(::), :nb, :UInt)), (:block,
+        (:line, 99, :none),
+        (:||, (:., :from, (:quote, #QuoteNode
+              :readable
+            )), (:call, :throw, (:call, :ArgumentError, "read failed, IOBuffer is not readable"))),
+        (:line, 100, :none),
+        (:(=), :avail, (:call, :nb_available, :from)),
+        (:line, 101, :none),
+        (:(=), :adv, (:call, :min, :avail, :nb)),
+        (:line, 102, :none),
+        (:call, :unsafe_copy!, :p, (:call, :pointer, (:., :from, (:quote, #QuoteNode
+                :data
+              )), (:., :from, (:quote, #QuoteNode
+                :ptr
+              ))), :adv),
+        (:line, 103, :none),
+        (:+=, (:., :from, (:quote, #QuoteNode
+              :ptr
+            )), :adv),
+        (:line, 104, :none),
+        (:if, (:call, :>, :nb, :avail), (:block,
+            (:line, 105, :none),
+            (:call, :throw, (:call, :EOFError))
+          )),
+        (:line, 107, :none),
+        :nothing
+      )),
+    (:line, 110, :none),
+    (:function, (:where, (:call, :read_sub, (:(::), :from, :AbstractIOBuffer), (:(::), :a, (:curly, :AbstractArray, :T)), :offs, :nel), :T), (:block,
+        (:line, 111, :none),
+        (:||, (:., :from, (:quote, #QuoteNode
+              :readable
+            )), (:call, :throw, (:call, :ArgumentError, "read failed, IOBuffer is not readable"))),
+        (:line, 112, :none),
+        (:if, (:||, (:call, :>, (:call, :-, (:call, :+, :offs, :nel), 1), (:call, :length, :a)), (:||, (:call, :<, :offs, 1), (:call, :<, :nel, 0))), (:block,
+            (:line, 113, :none),
+            (:call, :throw, (:call, :BoundsError))
+          )),
+        (:line, 115, :none),
+        (:if, (:&&, (:call, :isbits, :T), (:call, :isa, :a, :Array)), (:block,
+            (:line, 116, :none),
+            (:(=), :nb, (:call, :UInt, (:call, :*, :nel, (:call, :sizeof, :T)))),
+            (:line, 117, :none),
+            (:call, :unsafe_read, :from, (:call, :pointer, :a, :offs), :nb)
+          ), (:block,
+            (:line, 119, :none),
+            (:for, (:(=), :i, (:(:), :offs, (:call, :-, (:call, :+, :offs, :nel), 1))), (:block,
+                (:line, 120, :none),
+                (:(=), (:ref, :a, :i), (:call, :read, :to, :T))
+              ))
+          )),
+        (:line, 123, :none),
+        (:return, :a)
+      )),
+    (:line, 126, :none),
+    (:macrocall, Symbol("@inline"), (:function, (:call, :read, (:(::), :from, :AbstractIOBuffer), (:(::), (:curly, :Type, :UInt8))), (:block,
+          (:line, 127, :none),
+          (:||, (:., :from, (:quote, #QuoteNode
+                :readable
+              )), (:call, :throw, (:call, :ArgumentError, "read failed, IOBuffer is not readable"))),
+          (:line, 128, :none),
+          (:(=), :ptr, (:., :from, (:quote, #QuoteNode
+                :ptr
+              ))),
+          (:line, 129, :none),
+          (:(=), :size, (:., :from, (:quote, #QuoteNode
+                :size
+              ))),
+          (:line, 130, :none),
+          (:if, (:call, :>, :ptr, :size), (:block,
+              (:line, 131, :none),
+              (:call, :throw, (:call, :EOFError))
+            )),
+          (:line, 133, :none),
+          (:macrocall, Symbol("@inbounds"), (:(=), :byte, (:ref, (:., :from, (:quote, #QuoteNode
+                    :data
+                  )), :ptr))),
+          (:line, 134, :none),
+          (:(=), (:., :from, (:quote, #QuoteNode
+                :ptr
+              )), (:call, :+, :ptr, 1)),
+          (:line, 135, :none),
+          (:return, :byte)
+        ))),
+    (:line, 138, :none),
+    (:function, (:call, :peek, (:(::), :from, :AbstractIOBuffer)), (:block,
+        (:line, 139, :none),
+        (:||, (:., :from, (:quote, #QuoteNode
+              :readable
+            )), (:call, :throw, (:call, :ArgumentError, "read failed, IOBuffer is not readable"))),
+        (:line, 140, :none),
+        (:if, (:call, :>, (:., :from, (:quote, #QuoteNode
+                :ptr
+              )), (:., :from, (:quote, #QuoteNode
+                :size
+              ))), (:block,
+            (:line, 141, :none),
+            (:call, :throw, (:call, :EOFError))
+          )),
+        (:line, 143, :none),
+        (:return, (:ref, (:., :from, (:quote, #QuoteNode
+                :data
+              )), (:., :from, (:quote, #QuoteNode
+                :ptr
+              ))))
+      )),
+    (:line, 146, :none),
+    (:(=), (:where, (:call, :read, (:(::), :from, :AbstractIOBuffer), (:(::), (:curly, :Type, (:curly, :Ptr, :T)))), :T), (:block,
+        (:line, 146, :none),
+        (:call, :convert, (:curly, :Ptr, :T), (:call, :read, :from, :UInt))
+      )),
+    (:line, 148, :none),
+    (:(=), (:call, :isreadable, (:(::), :io, :AbstractIOBuffer)), (:block,
+        (:line, 148, :none),
+        (:., :io, (:quote, #QuoteNode
+            :readable
+          ))
+      )),
+    (:line, 149, :none),
+    (:(=), (:call, :iswritable, (:(::), :io, :AbstractIOBuffer)), (:block,
+        (:line, 149, :none),
+        (:., :io, (:quote, #QuoteNode
+            :writable
+          ))
+      )),
+    (:line, 154, :none),
+    (:(=), (:call, :nb_available, (:(::), :io, :AbstractIOBuffer)), (:block,
+        (:line, 154, :none),
+        (:call, :+, (:call, :-, (:., :io, (:quote, #QuoteNode
+                :size
+              )), (:., :io, (:quote, #QuoteNode
+                :ptr
+              ))), 1)
+      )),
+    (:line, 155, :none),
+    (:(=), (:call, :position, (:(::), :io, :AbstractIOBuffer)), (:block,
+        (:line, 155, :none),
+        (:call, :-, (:., :io, (:quote, #QuoteNode
+              :ptr
+            )), 1)
+      )),
+    (:line, 157, :none),
+    (:function, (:call, :skip, (:(::), :io, :AbstractIOBuffer), (:(::), :n, :Integer)), (:block,
+        (:line, 158, :none),
+        (:(=), :seekto, (:call, :+, (:., :io, (:quote, #QuoteNode
+                :ptr
+              )), :n)),
+        (:line, 159, :none),
+        (:&&, (:call, :<, :n, 0), (:return, (:call, :seek, :io, (:call, :-, :seekto, 1)))),
+        (:line, 160, :none),
+        (:(=), (:., :io, (:quote, #QuoteNode
+              :ptr
+            )), (:call, :min, :seekto, (:call, :+, (:., :io, (:quote, #QuoteNode
+                  :size
+                )), 1))),
+        (:line, 161, :none),
+        (:return, :io)
+      )),
+    (:line, 164, :none),
+    (:function, (:call, :seek, (:(::), :io, :AbstractIOBuffer), (:(::), :n, :Integer)), (:block,
+        (:line, 165, :none),
+        (:if, (:call, :!, (:., :io, (:quote, #QuoteNode
+                :seekable
+              ))), (:block,
+            (:line, 166, :none),
+            (:||, (:call, :ismarked, :io), (:call, :throw, (:call, :ArgumentError, "seek failed, IOBuffer is not seekable and is not marked"))),
+            (:line, 167, :none),
+            (:||, (:call, :(==), :n, (:., :io, (:quote, #QuoteNode
+                    :mark
+                  ))), (:call, :throw, (:call, :ArgumentError, "seek failed, IOBuffer is not seekable and n != mark")))
+          )),
+        (:line, 173, :none),
+        (:(=), (:., :io, (:quote, #QuoteNode
+              :ptr
+            )), (:call, :max, (:call, :min, (:call, :+, :n, 1), (:call, :+, (:., :io, (:quote, #QuoteNode
+                    :size
+                  )), 1)), 1)),
+        (:line, 174, :none),
+        (:return, :io)
+      )),
+    (:line, 177, :none),
+    (:function, (:call, :seekend, (:(::), :io, :AbstractIOBuffer)), (:block,
+        (:line, 178, :none),
+        (:(=), (:., :io, (:quote, #QuoteNode
+              :ptr
+            )), (:call, :+, (:., :io, (:quote, #QuoteNode
+                :size
+              )), 1)),
+        (:line, 179, :none),
+        (:return, :io)
+      )),
+    (:line, 182, :none),
+    (:function, (:call, :truncate, (:(::), :io, :AbstractIOBuffer), (:(::), :n, :Integer)), (:block,
+        (:line, 183, :none),
+        (:||, (:., :io, (:quote, #QuoteNode
+              :writable
+            )), (:call, :throw, (:call, :ArgumentError, "truncate failed, IOBuffer is not writeable"))),
+        (:line, 184, :none),
+        (:||, (:., :io, (:quote, #QuoteNode
+              :seekable
+            )), (:call, :throw, (:call, :ArgumentError, "truncate failed, IOBuffer is not seekable"))),
+        (:line, 185, :none),
+        (:&&, (:call, :<, :n, 0), (:call, :throw, (:call, :ArgumentError, (:string, "truncate failed, n bytes must be ≥ 0, got ", :n)))),
+        (:line, 186, :none),
+        (:&&, (:call, :>, :n, (:., :io, (:quote, #QuoteNode
+                :maxsize
+              ))), (:call, :throw, (:call, :ArgumentError, (:string, "truncate failed, ", :n, " bytes is exceeds IOBuffer maxsize ", (:., :io, (:quote, #QuoteNode
+                    :maxsize
+                  )))))),
+        (:line, 187, :none),
+        (:if, (:call, :>, :n, (:call, :length, (:., :io, (:quote, #QuoteNode
+                  :data
+                )))), (:block,
+            (:line, 188, :none),
+            (:call, :resize!, (:., :io, (:quote, #QuoteNode
+                  :data
+                )), :n)
+          )),
+        (:line, 190, :none),
+        (:(=), (:ref, (:., :io, (:quote, #QuoteNode
+                :data
+              )), (:(:), (:call, :+, (:., :io, (:quote, #QuoteNode
+                    :size
+                  )), 1), :n)), 0),
+        (:line, 191, :none),
+        (:(=), (:., :io, (:quote, #QuoteNode
+              :size
+            )), :n),
+        (:line, 192, :none),
+        (:(=), (:., :io, (:quote, #QuoteNode
+              :ptr
+            )), (:call, :min, (:., :io, (:quote, #QuoteNode
+                :ptr
+              )), (:call, :+, :n, 1))),
+        (:line, 193, :none),
+        (:&&, (:call, :ismarked, :io), (:&&, (:call, :>, (:., :io, (:quote, #QuoteNode
+                  :mark
+                )), :n), (:call, :unmark, :io))),
+        (:line, 194, :none),
+        (:return, :io)
+      )),
+    (:line, 197, :none),
+    (:function, (:call, :compact, (:(::), :io, :AbstractIOBuffer)), (:block,
+        (:line, 198, :none),
+        (:||, (:., :io, (:quote, #QuoteNode
+              :writable
+            )), (:call, :throw, (:call, :ArgumentError, "compact failed, IOBuffer is not writeable"))),
+        (:line, 199, :none),
+        (:&&, (:., :io, (:quote, #QuoteNode
+              :seekable
+            )), (:call, :throw, (:call, :ArgumentError, "compact failed, IOBuffer is seekable"))),
+        (:line, 200, :none),
+        (:local, (:(::), :ptr, :Int), (:(::), :bytes_to_move, :Int)),
+        (:line, 201, :none),
+        (:if, (:&&, (:call, :ismarked, :io), (:call, :<, (:., :io, (:quote, #QuoteNode
+                  :mark
+                )), (:., :io, (:quote, #QuoteNode
+                  :ptr
+                )))), (:block,
+            (:line, 202, :none),
+            (:if, (:call, :(==), (:., :io, (:quote, #QuoteNode
+                    :mark
+                  )), 0), (:block,
+                (:line, 202, :none),
+                (:return, nothing)
+              )),
+            (:line, 203, :none),
+            (:(=), :ptr, (:., :io, (:quote, #QuoteNode
+                  :mark
+                ))),
+            (:line, 204, :none),
+            (:(=), :bytes_to_move, (:call, :+, (:call, :nb_available, :io), (:call, :-, (:., :io, (:quote, #QuoteNode
+                      :ptr
+                    )), (:., :io, (:quote, #QuoteNode
+                      :mark
+                    )))))
+          ), (:block,
+            (:line, 206, :none),
+            (:(=), :ptr, (:., :io, (:quote, #QuoteNode
+                  :ptr
+                ))),
+            (:line, 207, :none),
+            (:(=), :bytes_to_move, (:call, :nb_available, :io))
+          )),
+        (:line, 209, :none),
+        (:call, :copy!, (:., :io, (:quote, #QuoteNode
+              :data
+            )), 1, (:., :io, (:quote, #QuoteNode
+              :data
+            )), :ptr, :bytes_to_move),
+        (:line, 210, :none),
+        (:-=, (:., :io, (:quote, #QuoteNode
+              :size
+            )), (:call, :-, :ptr, 1)),
+        (:line, 211, :none),
+        (:-=, (:., :io, (:quote, #QuoteNode
+              :ptr
+            )), (:call, :-, :ptr, 1)),
+        (:line, 212, :none),
+        (:-=, (:., :io, (:quote, #QuoteNode
+              :mark
+            )), (:call, :-, :ptr, 1)),
+        (:line, 213, :none),
+        (:return, :io)
+      )),
+    (:line, 216, :none),
+    (:macrocall, Symbol("@inline"), (:(=), (:call, :ensureroom, (:(::), :io, :AbstractIOBuffer), (:(::), :nshort, :Int)), (:block,
+          (:line, 216, :none),
+          (:call, :ensureroom, :io, (:call, :UInt, :nshort))
+        ))),
+    (:line, 217, :none),
+    (:macrocall, Symbol("@inline"), (:function, (:call, :ensureroom, (:(::), :io, :AbstractIOBuffer), (:(::), :nshort, :UInt)), (:block,
+          (:line, 218, :none),
+          (:||, (:., :io, (:quote, #QuoteNode
+                :writable
+              )), (:call, :throw, (:call, :ArgumentError, "ensureroom failed, IOBuffer is not writeable"))),
+          (:line, 219, :none),
+          (:if, (:call, :!, (:., :io, (:quote, #QuoteNode
+                  :seekable
+                ))), (:block,
+              (:line, 220, :none),
+              (:||, (:call, :(>=), :nshort, 0), (:call, :throw, (:call, :ArgumentError, (:string, "ensureroom failed, requested number of bytes must be ≥ 0, got ", :nshort)))),
+              (:line, 221, :none),
+              (:if, (:&&, (:call, :!, (:call, :ismarked, :io)), (:&&, (:call, :>, (:., :io, (:quote, #QuoteNode
+                          :ptr
+                        )), 1), (:call, :(<=), (:., :io, (:quote, #QuoteNode
+                          :size
+                        )), (:call, :-, (:., :io, (:quote, #QuoteNode
+                            :ptr
+                          )), 1)))), (:block,
+                  (:line, 222, :none),
+                  (:(=), (:., :io, (:quote, #QuoteNode
+                        :ptr
+                      )), 1),
+                  (:line, 223, :none),
+                  (:(=), (:., :io, (:quote, #QuoteNode
+                        :size
+                      )), 0)
+                ), (:block,
+                  (:line, 225, :none),
+                  (:(=), :datastart, (:if, (:call, :ismarked, :io), (:., :io, (:quote, #QuoteNode
+                          :mark
+                        )), (:., :io, (:quote, #QuoteNode
+                          :ptr
+                        )))),
+                  (:line, 226, :none),
+                  (:if, (:||, (:call, :>, (:call, :+, (:., :io, (:quote, #QuoteNode
+                              :size
+                            )), :nshort), (:., :io, (:quote, #QuoteNode
+                            :maxsize
+                          ))), (:||, (:&&, (:call, :>, :datastart, 4096), (:call, :>, :datastart, (:call, :-, (:., :io, (:quote, #QuoteNode
+                                  :size
+                                )), (:., :io, (:quote, #QuoteNode
+                                  :ptr
+                                ))))), (:call, :>, :datastart, 262144))), (:block,
+                      (:line, 231, :none),
+                      (:call, :compact, :io)
+                    ))
+                ))
+            )),
+          (:line, 235, :none),
+          (:(=), :n, (:call, :min, (:call, :+, :nshort, (:if, (:., :io, (:quote, #QuoteNode
+                      :append
+                    )), (:., :io, (:quote, #QuoteNode
+                      :size
+                    )), (:call, :-, (:., :io, (:quote, #QuoteNode
+                        :ptr
+                      )), 1))), (:., :io, (:quote, #QuoteNode
+                  :maxsize
+                )))),
+          (:line, 236, :none),
+          (:if, (:call, :>, :n, (:call, :length, (:., :io, (:quote, #QuoteNode
+                    :data
+                  )))), (:block,
+              (:line, 237, :none),
+              (:call, :resize!, (:., :io, (:quote, #QuoteNode
+                    :data
+                  )), :n)
+            )),
+          (:line, 239, :none),
+          (:return, :io)
+        ))),
+    (:line, 242, :none),
+    (:(=), (:call, :eof, (:(::), :io, :AbstractIOBuffer)), (:block,
+        (:line, 242, :none),
+        (:call, :(==), (:call, :-, (:., :io, (:quote, #QuoteNode
+                :ptr
+              )), 1), (:., :io, (:quote, #QuoteNode
+              :size
+            )))
+      )),
+    (:line, 244, :none),
+    (:macrocall, Symbol("@noinline"), (:function, (:where, (:call, :close, (:(::), :io, (:curly, :AbstractIOBuffer, :T))), :T), (:block,
+          (:line, 245, :none),
+          (:(=), (:., :io, (:quote, #QuoteNode
+                :readable
+              )), false),
+          (:line, 246, :none),
+          (:(=), (:., :io, (:quote, #QuoteNode
+                :writable
+              )), false),
+          (:line, 247, :none),
+          (:(=), (:., :io, (:quote, #QuoteNode
+                :seekable
+              )), false),
+          (:line, 248, :none),
+          (:(=), (:., :io, (:quote, #QuoteNode
+                :size
+              )), 0),
+          (:line, 249, :none),
+          (:(=), (:., :io, (:quote, #QuoteNode
+                :maxsize
+              )), 0),
+          (:line, 250, :none),
+          (:(=), (:., :io, (:quote, #QuoteNode
+                :ptr
+              )), 1),
+          (:line, 251, :none),
+          (:(=), (:., :io, (:quote, #QuoteNode
+                :mark
+              )), -1),
+          (:line, 252, :none),
+          (:if, (:., :io, (:quote, #QuoteNode
+                :writable
+              )), (:block,
+              (:line, 253, :none),
+              (:call, :resize!, (:., :io, (:quote, #QuoteNode
+                    :data
+                  )), 0)
+            )),
+          (:line, 255, :none),
+          :nothing
+        ))),
+    (:line, 258, :none),
+    (:(=), (:call, :isopen, (:(::), :io, :AbstractIOBuffer)), (:block,
+        (:line, 258, :none),
+        (:||, (:., :io, (:quote, #QuoteNode
+              :readable
+            )), (:||, (:., :io, (:quote, #QuoteNode
+                :writable
+              )), (:||, (:., :io, (:quote, #QuoteNode
+                  :seekable
+                )), (:call, :>, (:call, :nb_available, :io), 0))))
+      )),
+    (:line, 260, :none),
+    (:function, (:call, :String, (:(::), :io, :AbstractIOBuffer)), (:block,
+        (:line, 261, :none),
+        (:||, (:., :io, (:quote, #QuoteNode
+              :readable
+            )), (:call, :throw, (:call, :ArgumentError, "IOBuffer is not readable"))),
+        (:line, 262, :none),
+        (:||, (:., :io, (:quote, #QuoteNode
+              :seekable
+            )), (:call, :throw, (:call, :ArgumentError, "IOBuffer is not seekable"))),
+        (:line, 263, :none),
+        (:return, (:call, :unsafe_string, (:call, :pointer, (:., :io, (:quote, #QuoteNode
+                  :data
+                ))), (:., :io, (:quote, #QuoteNode
+                :size
+              ))))
+      )),
+    (:line, 266, :none),
+    (:macrocall, :(Core.@doc), "    take!(b::IOBuffer)\n\nObtain the contents of an `IOBuffer` as an array, without copying. Afterwards, the\n`IOBuffer` is reset to its initial state.\n", (:function, (:call, :take!, (:(::), :io, :AbstractIOBuffer)), (:block,
+          (:line, 273, :none),
+          (:&&, (:call, :ismarked, :io), (:call, :unmark, :io)),
+          (:line, 274, :none),
+          (:if, (:., :io, (:quote, #QuoteNode
+                :seekable
+              )), (:block,
+              (:line, 275, :none),
+              (:(=), :nbytes, (:., :io, (:quote, #QuoteNode
+                    :size
+                  ))),
+              (:line, 276, :none),
+              (:(=), :data, (:call, :copy!, (:call, :StringVector, :nbytes), 1, (:., :io, (:quote, #QuoteNode
+                      :data
+                    )), 1, :nbytes))
+            ), (:block,
+              (:line, 278, :none),
+              (:(=), :nbytes, (:call, :nb_available, :io)),
+              (:line, 279, :none),
+              (:(=), :data, (:call, :read!, :io, (:call, :StringVector, :nbytes)))
+            )),
+          (:line, 281, :none),
+          (:if, (:., :io, (:quote, #QuoteNode
+                :writable
+              )), (:block,
+              (:line, 282, :none),
+              (:(=), (:., :io, (:quote, #QuoteNode
+                    :ptr
+                  )), 1),
+              (:line, 283, :none),
+              (:(=), (:., :io, (:quote, #QuoteNode
+                    :size
+                  )), 0)
+            )),
+          (:line, 285, :none),
+          (:return, :data)
+        ))),
+    (:line, 287, :none),
+    (:function, (:call, :take!, (:(::), :io, :IOBuffer)), (:block,
+        (:line, 288, :none),
+        (:&&, (:call, :ismarked, :io), (:call, :unmark, :io)),
+        (:line, 289, :none),
+        (:if, (:., :io, (:quote, #QuoteNode
+              :seekable
+            )), (:block,
+            (:line, 290, :none),
+            (:(=), :data, (:., :io, (:quote, #QuoteNode
+                  :data
+                ))),
+            (:line, 291, :none),
+            (:if, (:., :io, (:quote, #QuoteNode
+                  :writable
+                )), (:block,
+                (:line, 292, :none),
+                (:(=), :maxsize, (:if, (:call, :(==), (:., :io, (:quote, #QuoteNode
+                          :maxsize
+                        )), (:call, :typemax, :Int)), 0, (:call, :min, (:call, :length, (:., :io, (:quote, #QuoteNode
+                            :data
+                          ))), (:., :io, (:quote, #QuoteNode
+                          :maxsize
+                        ))))),
+                (:line, 293, :none),
+                (:(=), (:., :io, (:quote, #QuoteNode
+                      :data
+                    )), (:call, :StringVector, :maxsize))
+              ), (:block,
+                (:line, 295, :none),
+                (:(=), :data, (:call, :copy, :data))
+              )),
+            (:line, 297, :none),
+            (:call, :resize!, :data, (:., :io, (:quote, #QuoteNode
+                  :size
+                )))
+          ), (:block,
+            (:line, 299, :none),
+            (:(=), :nbytes, (:call, :nb_available, :io)),
+            (:line, 300, :none),
+            (:(=), :a, (:call, :StringVector, :nbytes)),
+            (:line, 301, :none),
+            (:(=), :data, (:call, :read!, :io, :a))
+          )),
+        (:line, 303, :none),
+        (:if, (:., :io, (:quote, #QuoteNode
+              :writable
+            )), (:block,
+            (:line, 304, :none),
+            (:(=), (:., :io, (:quote, #QuoteNode
+                  :ptr
+                )), 1),
+            (:line, 305, :none),
+            (:(=), (:., :io, (:quote, #QuoteNode
+                  :size
+                )), 0)
+          )),
+        (:line, 307, :none),
+        (:return, :data)
+      )),
+    (:line, 310, :none),
+    (:function, (:call, :write, (:(::), :to, :AbstractIOBuffer), (:(::), :from, :AbstractIOBuffer)), (:block,
+        (:line, 311, :none),
+        (:if, (:call, :(===), :to, :from), (:block,
+            (:line, 312, :none),
+            (:(=), (:., :from, (:quote, #QuoteNode
+                  :ptr
+                )), (:call, :+, (:., :from, (:quote, #QuoteNode
+                    :size
+                  )), 1)),
+            (:line, 313, :none),
+            (:return, 0)
+          )),
+        (:line, 315, :none),
+        (:(=), (:(::), :written, :Int), (:call, :write_sub, :to, (:., :from, (:quote, #QuoteNode
+                :data
+              )), (:., :from, (:quote, #QuoteNode
+                :ptr
+              )), (:call, :nb_available, :from))),
+        (:line, 316, :none),
+        (:+=, (:., :from, (:quote, #QuoteNode
+              :ptr
+            )), :written),
+        (:line, 317, :none),
+        (:return, :written)
+      )),
+    (:line, 320, :none),
+    (:function, (:call, :unsafe_write, (:(::), :to, :AbstractIOBuffer), (:(::), :p, (:curly, :Ptr, :UInt8)), (:(::), :nb, :UInt)), (:block,
+        (:line, 321, :none),
+        (:call, :ensureroom, :to, :nb),
+        (:line, 322, :none),
+        (:(=), :ptr, (:if, (:., :to, (:quote, #QuoteNode
+                :append
+              )), (:call, :+, (:., :to, (:quote, #QuoteNode
+                  :size
+                )), 1), (:., :to, (:quote, #QuoteNode
+                :ptr
+              )))),
+        (:line, 323, :none),
+        (:(=), :written, (:call, :Int, (:call, :min, :nb, (:call, :+, (:call, :-, (:call, :length, (:., :to, (:quote, #QuoteNode
+                        :data
+                      ))), :ptr), 1)))),
+        (:line, 324, :none),
+        (:(=), :towrite, :written),
+        (:line, 325, :none),
+        (:(=), :d, (:., :to, (:quote, #QuoteNode
+              :data
+            ))),
+        (:line, 326, :none),
+        (:while, (:call, :>, :towrite, 0), (:block,
+            (:line, 327, :none),
+            (:macrocall, Symbol("@inbounds"), (:(=), (:ref, :d, :ptr), (:call, :unsafe_load, :p))),
+            (:line, 328, :none),
+            (:+=, :ptr, 1),
+            (:line, 329, :none),
+            (:+=, :p, 1),
+            (:line, 330, :none),
+            (:-=, :towrite, 1)
+          )),
+        (:line, 332, :none),
+        (:(=), (:., :to, (:quote, #QuoteNode
+              :size
+            )), (:call, :max, (:., :to, (:quote, #QuoteNode
+                :size
+              )), (:call, :-, :ptr, 1))),
+        (:line, 333, :none),
+        (:if, (:call, :!, (:., :to, (:quote, #QuoteNode
+                :append
+              ))), (:block,
+            (:line, 334, :none),
+            (:+=, (:., :to, (:quote, #QuoteNode
+                  :ptr
+                )), :written)
+          )),
+        (:line, 336, :none),
+        (:return, :written)
+      )),
+    (:line, 339, :none),
+    (:function, (:call, :write_sub, (:(::), :to, :AbstractIOBuffer), (:(::), :a, (:curly, :AbstractArray, :UInt8)), :offs, :nel), (:block,
+        (:line, 340, :none),
+        (:if, (:||, (:call, :>, (:call, :-, (:call, :+, :offs, :nel), 1), (:call, :length, :a)), (:||, (:call, :<, :offs, 1), (:call, :<, :nel, 0))), (:block,
+            (:line, 341, :none),
+            (:call, :throw, (:call, :BoundsError))
+          )),
+        (:line, 343, :none),
+        (:call, :unsafe_write, :to, (:call, :pointer, :a, :offs), (:call, :UInt, :nel))
+      )),
+    (:line, 346, :none),
+    (:macrocall, Symbol("@inline"), (:function, (:call, :write, (:(::), :to, :AbstractIOBuffer), (:(::), :a, :UInt8)), (:block,
+          (:line, 347, :none),
+          (:call, :ensureroom, :to, (:call, :UInt, 1)),
+          (:line, 348, :none),
+          (:(=), :ptr, (:if, (:., :to, (:quote, #QuoteNode
+                  :append
+                )), (:call, :+, (:., :to, (:quote, #QuoteNode
+                    :size
+                  )), 1), (:., :to, (:quote, #QuoteNode
+                  :ptr
+                )))),
+          (:line, 349, :none),
+          (:if, (:call, :>, :ptr, (:., :to, (:quote, #QuoteNode
+                  :maxsize
+                ))), (:block,
+              (:line, 350, :none),
+              (:return, 0)
+            ), (:block,
+              (:line, 352, :none),
+              (:(=), (:ref, (:., :to, (:quote, #QuoteNode
+                      :data
+                    )), :ptr), :a)
+            )),
+          (:line, 354, :none),
+          (:(=), (:., :to, (:quote, #QuoteNode
+                :size
+              )), (:call, :max, (:., :to, (:quote, #QuoteNode
+                  :size
+                )), :ptr)),
+          (:line, 355, :none),
+          (:if, (:call, :!, (:., :to, (:quote, #QuoteNode
+                  :append
+                ))), (:block,
+              (:line, 356, :none),
+              (:+=, (:., :to, (:quote, #QuoteNode
+                    :ptr
+                  )), 1)
+            )),
+          (:line, 358, :none),
+          (:return, (:call, :sizeof, :UInt8))
+        ))),
+    (:line, 361, :none),
+    (:(=), (:call, :readbytes!, (:(::), :io, :AbstractIOBuffer), (:(::), :b, (:curly, :Array, :UInt8)), (:kw, :nb, (:call, :length, :b))), (:block,
+        (:line, 361, :none),
+        (:call, :readbytes!, :io, :b, (:call, :Int, :nb))
+      )),
+    (:line, 362, :none),
+    (:function, (:call, :readbytes!, (:(::), :io, :AbstractIOBuffer), (:(::), :b, (:curly, :Array, :UInt8)), (:(::), :nb, :Int)), (:block,
+        (:line, 363, :none),
+        (:(=), :nr, (:call, :min, :nb, (:call, :nb_available, :io))),
+        (:line, 364, :none),
+        (:if, (:call, :<, (:call, :length, :b), :nr), (:block,
+            (:line, 365, :none),
+            (:call, :resize!, :b, :nr)
+          )),
+        (:line, 367, :none),
+        (:call, :read_sub, :io, :b, 1, :nr),
+        (:line, 368, :none),
+        (:return, :nr)
+      )),
+    (:line, 370, :none),
+    (:(=), (:call, :read, (:(::), :io, :AbstractIOBuffer)), (:block,
+        (:line, 370, :none),
+        (:call, :read!, :io, (:call, :StringVector, (:call, :nb_available, :io)))
+      )),
+    (:line, 371, :none),
+    (:(=), (:call, :readavailable, (:(::), :io, :AbstractIOBuffer)), (:block,
+        (:line, 371, :none),
+        (:call, :read, :io)
+      )),
+    (:line, 372, :none),
+    (:(=), (:call, :read, (:(::), :io, :AbstractIOBuffer), (:(::), :nb, :Integer)), (:block,
+        (:line, 372, :none),
+        (:call, :read!, :io, (:call, :StringVector, (:call, :min, :nb, (:call, :nb_available, :io))))
+      )),
+    (:line, 374, :none),
+    (:function, (:call, :search, (:(::), :buf, :IOBuffer), (:(::), :delim, :UInt8)), (:block,
+        (:line, 375, :none),
+        (:(=), :p, (:call, :pointer, (:., :buf, (:quote, #QuoteNode
+                :data
+              )), (:., :buf, (:quote, #QuoteNode
+                :ptr
+              )))),
+        (:line, 376, :none),
+        (:(=), :q, (:call, :ccall, (:quote, #QuoteNode
+              :memchr
+            ), (:curly, :Ptr, :UInt8), (:tuple, (:curly, :Ptr, :UInt8), :Int32, :Csize_t), :p, :delim, (:call, :nb_available, :buf))),
+        (:line, 377, :none),
+        (:(=), (:(::), :nb, :Int), (:if, (:call, :(==), :q, :C_NULL), 0, (:call, :+, (:call, :-, :q, :p), 1))),
+        (:line, 378, :none),
+        (:return, :nb)
+      )),
+    (:line, 381, :none),
+    (:function, (:call, :search, (:(::), :buf, :AbstractIOBuffer), (:(::), :delim, :UInt8)), (:block,
+        (:line, 382, :none),
+        (:(=), :data, (:., :buf, (:quote, #QuoteNode
+              :data
+            ))),
+        (:line, 383, :none),
+        (:for, (:(=), :i, (:(:), (:., :buf, (:quote, #QuoteNode
+                  :ptr
+                )), (:., :buf, (:quote, #QuoteNode
+                  :size
+                )))), (:block,
+            (:line, 384, :none),
+            (:macrocall, Symbol("@inbounds"), (:(=), :b, (:ref, :data, :i))),
+            (:line, 385, :none),
+            (:if, (:call, :(==), :b, :delim), (:block,
+                (:line, 386, :none),
+                (:return, (:call, :+, (:call, :-, :i, (:., :buf, (:quote, #QuoteNode
+                          :ptr
+                        ))), 1))
+              ))
+          )),
+        (:line, 389, :none),
+        (:return, 0)
+      )),
+    (:line, 392, :none),
+    (:function, (:call, :readuntil, (:(::), :io, :AbstractIOBuffer), (:(::), :delim, :UInt8)), (:block,
+        (:line, 393, :none),
+        (:(=), :lb, 70),
+        (:line, 394, :none),
+        (:(=), :A, (:call, :StringVector, :lb)),
+        (:line, 395, :none),
+        (:(=), :n, 0),
+        (:line, 396, :none),
+        (:(=), :data, (:., :io, (:quote, #QuoteNode
+              :data
+            ))),
+        (:line, 397, :none),
+        (:for, (:(=), :i, (:(:), (:., :io, (:quote, #QuoteNode
+                  :ptr
+                )), (:., :io, (:quote, #QuoteNode
+                  :size
+                )))), (:block,
+            (:line, 398, :none),
+            (:+=, :n, 1),
+            (:line, 399, :none),
+            (:if, (:call, :>, :n, :lb), (:block,
+                (:line, 400, :none),
+                (:(=), :lb, (:call, :*, :n, 2)),
+                (:line, 401, :none),
+                (:call, :resize!, :A, :lb)
+              )),
+            (:line, 403, :none),
+            (:macrocall, Symbol("@inbounds"), (:(=), :b, (:ref, :data, :i))),
+            (:line, 404, :none),
+            (:macrocall, Symbol("@inbounds"), (:(=), (:ref, :A, :n), :b)),
+            (:line, 405, :none),
+            (:if, (:call, :(==), :b, :delim), (:block,
+                (:line, 406, :none),
+                (:break,)
+              ))
+          )),
+        (:line, 409, :none),
+        (:+=, (:., :io, (:quote, #QuoteNode
+              :ptr
+            )), :n),
+        (:line, 410, :none),
+        (:if, (:call, :(!=), :lb, :n), (:block,
+            (:line, 411, :none),
+            (:call, :resize!, :A, :n)
+          )),
+        (:line, 413, :none),
+        :A
+      ))
+  ))

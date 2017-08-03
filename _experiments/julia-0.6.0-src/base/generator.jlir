@@ -1,0 +1,146 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:macrocall, :(Core.@doc), "    Generator(f, iter)\n\nGiven a function `f` and an iterator `iter`, construct an iterator that yields\nthe values of `f` applied to the elements of `iter`.\nThe syntax `f(x) for x in iter [if cond(x)::Bool]` is syntax for constructing an instance of this\ntype. The `[if cond(x)::Bool]` expression is optional and acts as a \"guard\", effectively\nfiltering out values where the condition is false.\n\n```jldoctest\njulia> g = (abs2(x) for x in 1:5 if x != 3);\n\njulia> for x in g\n           println(x)\n       end\n1\n4\n16\n25\n\njulia> collect(g)\n4-element Array{Int64,1}:\n  1\n  4\n 16\n 25\n```\n", (:type, false, (:curly, :Generator, :I, :F), (:block,
+          (:line, 32, :none),
+          (:(::), :f, :F),
+          (:line, 33, :none),
+          (:(::), :iter, :I)
+        ))),
+    (:line, 36, :none),
+    (:(=), (:call, :Generator, :f, :I1, :I2, (:..., :Is)), (:block,
+        (:line, 36, :none),
+        (:call, :Generator, (:->, :a, (:block,
+              (:line, 36, :none),
+              (:call, :f, (:..., :a))
+            )), (:call, :zip, :I1, :I2, (:..., :Is)))
+      )),
+    (:line, 38, :none),
+    (:(=), (:where, (:call, :Generator, (:(::), (:curly, :Type, :T)), (:(::), :iter, :I)), :T, :I), (:block,
+        (:line, 38, :none),
+        (:call, (:curly, :Generator, :I, (:curly, :Type, :T)), :T, :iter)
+      )),
+    (:line, 40, :none),
+    (:(=), (:call, :start, (:(::), :g, :Generator)), (:block,
+        (:line, 40, :none),
+        (:block,
+          (:macrocall, Symbol("@_inline_meta")),
+          (:call, :start, (:., :g, (:quote, #QuoteNode
+                :iter
+              )))
+        )
+      )),
+    (:line, 41, :none),
+    (:(=), (:call, :done, (:(::), :g, :Generator), :s), (:block,
+        (:line, 41, :none),
+        (:block,
+          (:macrocall, Symbol("@_inline_meta")),
+          (:call, :done, (:., :g, (:quote, #QuoteNode
+                :iter
+              )), :s)
+        )
+      )),
+    (:line, 42, :none),
+    (:function, (:call, :next, (:(::), :g, :Generator), :s), (:block,
+        (:line, 43, :none),
+        (:macrocall, Symbol("@_inline_meta")),
+        (:line, 44, :none),
+        (:(=), (:tuple, :v, :s2), (:call, :next, (:., :g, (:quote, #QuoteNode
+                :iter
+              )), :s)),
+        (:line, 45, :none),
+        (:tuple, (:call, (:., :g, (:quote, #QuoteNode
+                :f
+              )), :v), :s2)
+      )),
+    (:line, 51, :none),
+    (:abstract, :IteratorSize),
+    (:line, 52, :none),
+    (:type, false, (:<:, :SizeUnknown, :IteratorSize), (:block,
+        (:line, 52, :none)
+      )),
+    (:line, 53, :none),
+    (:type, false, (:<:, :HasLength, :IteratorSize), (:block,
+        (:line, 53, :none)
+      )),
+    (:line, 54, :none),
+    (:type, false, (:<:, :HasShape, :IteratorSize), (:block,
+        (:line, 54, :none)
+      )),
+    (:line, 55, :none),
+    (:type, false, (:<:, :IsInfinite, :IteratorSize), (:block,
+        (:line, 55, :none)
+      )),
+    (:line, 57, :none),
+    (:macrocall, :(Core.@doc), "    iteratorsize(itertype::Type) -> IteratorSize\n\nGiven the type of an iterator, returns one of the following values:\n\n* `SizeUnknown()` if the length (number of elements) cannot be determined in advance.\n* `HasLength()` if there is a fixed, finite length.\n* `HasShape()` if there is a known length plus a notion of multidimensional shape (as for an array).\n   In this case the [`size`](@ref) function is valid for the iterator.\n* `IsInfinite()` if the iterator yields values forever.\n\nThe default value (for iterators that do not define this function) is `HasLength()`.\nThis means that most iterators are assumed to implement [`length`](@ref).\n\nThis trait is generally used to select between algorithms that pre-allocate space for their\nresult, and algorithms that resize their result incrementally.\n\n```jldoctest\njulia> Base.iteratorsize(1:5)\nBase.HasShape()\n\njulia> Base.iteratorsize((2,3))\nBase.HasLength()\n```\n", (:(=), (:call, :iteratorsize, :x), (:block,
+          (:line, 82, :none),
+          (:call, :iteratorsize, (:call, :typeof, :x))
+        ))),
+    (:line, 83, :none),
+    (:(=), (:call, :iteratorsize, (:(::), :Type)), (:block,
+        (:line, 83, :none),
+        (:call, :HasLength)
+      )),
+    (:line, 85, :none),
+    (:abstract, :IteratorEltype),
+    (:line, 86, :none),
+    (:type, false, (:<:, :EltypeUnknown, :IteratorEltype), (:block,
+        (:line, 86, :none)
+      )),
+    (:line, 87, :none),
+    (:type, false, (:<:, :HasEltype, :IteratorEltype), (:block,
+        (:line, 87, :none)
+      )),
+    (:line, 89, :none),
+    (:macrocall, :(Core.@doc), "    iteratoreltype(itertype::Type) -> IteratorEltype\n\nGiven the type of an iterator, returns one of the following values:\n\n* `EltypeUnknown()` if the type of elements yielded by the iterator is not known in advance.\n* `HasEltype()` if the element type is known, and [`eltype`](@ref) would return a meaningful value.\n\n`HasEltype()` is the default, since iterators are assumed to implement [`eltype`](@ref).\n\nThis trait is generally used to select between algorithms that pre-allocate a specific\ntype of result, and algorithms that pick a result type based on the types of yielded\nvalues.\n\n```jldoctest\njulia> Base.iteratoreltype(1:5)\nBase.HasEltype()\n```\n", (:(=), (:call, :iteratoreltype, :x), (:block,
+          (:line, 108, :none),
+          (:call, :iteratoreltype, (:call, :typeof, :x))
+        ))),
+    (:line, 109, :none),
+    (:(=), (:call, :iteratoreltype, (:(::), :Type)), (:block,
+        (:line, 109, :none),
+        (:call, :HasEltype)
+      )),
+    (:line, 111, :none),
+    (:(=), (:call, :iteratorsize, (:(::), (:curly, :Type, (:<:, :AbstractArray)))), (:block,
+        (:line, 111, :none),
+        (:call, :HasShape)
+      )),
+    (:line, 112, :none),
+    (:(=), (:where, (:call, :iteratorsize, (:(::), (:curly, :Type, (:curly, :Generator, :I, :F)))), :I, :F), (:block,
+        (:line, 112, :none),
+        (:call, :iteratorsize, :I)
+      )),
+    (:line, 113, :none),
+    (:(=), (:call, :length, (:(::), :g, :Generator)), (:block,
+        (:line, 113, :none),
+        (:call, :length, (:., :g, (:quote, #QuoteNode
+              :iter
+            )))
+      )),
+    (:line, 114, :none),
+    (:(=), (:call, :size, (:(::), :g, :Generator)), (:block,
+        (:line, 114, :none),
+        (:call, :size, (:., :g, (:quote, #QuoteNode
+              :iter
+            )))
+      )),
+    (:line, 115, :none),
+    (:(=), (:call, :indices, (:(::), :g, :Generator)), (:block,
+        (:line, 115, :none),
+        (:call, :indices, (:., :g, (:quote, #QuoteNode
+              :iter
+            )))
+      )),
+    (:line, 116, :none),
+    (:(=), (:call, :ndims, (:(::), :g, :Generator)), (:block,
+        (:line, 116, :none),
+        (:call, :ndims, (:., :g, (:quote, #QuoteNode
+              :iter
+            )))
+      )),
+    (:line, 118, :none),
+    (:(=), (:where, (:call, :iteratoreltype, (:(::), (:curly, :Type, (:curly, :Generator, :I, :T)))), :I, :T), (:block,
+        (:line, 118, :none),
+        (:call, :EltypeUnknown)
+      ))
+  ))

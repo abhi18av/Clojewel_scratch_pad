@@ -1,0 +1,3048 @@
+(:quote, (:block,
+    (:line, 7, :none),
+    (:type, true, (:<:, (:curly, :BitArray, :N), (:curly, :DenseArray, :Bool, :N)), (:block,
+        (:line, 8, :none),
+        (:(::), :chunks, (:curly, :Vector, :UInt64)),
+        (:line, 9, :none),
+        (:(::), :len, :Int),
+        (:line, 10, :none),
+        (:(::), :dims, (:curly, :NTuple, :N, :Int)),
+        (:line, 11, :none),
+        (:function, (:where, (:call, (:curly, :BitArray, :N), (:(::), :dims, (:curly, :Vararg, :Int, :N))), :N), (:block,
+            (:line, 12, :none),
+            (:(=), :n, 1),
+            (:line, 13, :none),
+            (:(=), :i, 1),
+            (:line, 14, :none),
+            (:for, (:(=), :d, :dims), (:block,
+                (:line, 15, :none),
+                (:||, (:call, :(>=), :d, 0), (:call, :throw, (:call, :ArgumentError, (:string, "dimension size must be ≥ 0, got ", :d, " for dimension ", :i)))),
+                (:line, 16, :none),
+                (:*=, :n, :d),
+                (:line, 17, :none),
+                (:+=, :i, 1)
+              )),
+            (:line, 19, :none),
+            (:(=), :nc, (:call, :num_bit_chunks, :n)),
+            (:line, 20, :none),
+            (:(=), :chunks, (:call, (:curly, :Vector, :UInt64), :nc)),
+            (:line, 21, :none),
+            (:&&, (:call, :>, :nc, 0), (:(=), (:ref, :chunks, :end), (:call, :UInt64, 0))),
+            (:line, 22, :none),
+            (:(=), :b, (:call, :new, :chunks, :n)),
+            (:line, 23, :none),
+            (:&&, (:call, :(!=), :N, 1), (:(=), (:., :b, (:quote, #QuoteNode
+                    :dims
+                  )), :dims)),
+            (:line, 24, :none),
+            (:return, :b)
+          ))
+      )),
+    (:line, 31, :none),
+    (:macrocall, :(Core.@doc), "    BitArray(dims::Integer...)\n    BitArray{N}(dims::NTuple{N,Int})\n\nConstruct an uninitialized `BitArray` with the given dimensions.\nBehaves identically to the [`Array`](@ref) constructor.\n\n```julia-repl\njulia> BitArray(2, 2)\n2×2 BitArray{2}:\n false  false\n false  true\n\njulia> BitArray((3, 1))\n3×1 BitArray{2}:\n false\n true\n false\n```\n", (:(=), (:call, :BitArray, (:..., (:(::), :dims, :Integer))), (:block,
+          (:line, 51, :none),
+          (:call, :BitArray, (:call, :map, :Int, :dims))
+        ))),
+    (:line, 52, :none),
+    (:(=), (:where, (:call, :BitArray, (:(::), :dims, (:curly, :NTuple, :N, :Int))), :N), (:block,
+        (:line, 52, :none),
+        (:call, (:curly, :BitArray, :N), (:..., :dims))
+      )),
+    (:line, 54, :none),
+    (:const, (:(=), :BitVector, (:curly, :BitArray, 1))),
+    (:line, 55, :none),
+    (:const, (:(=), :BitMatrix, (:curly, :BitArray, 2))),
+    (:line, 57, :none),
+    (:(=), (:call, :BitVector), (:block,
+        (:line, 57, :none),
+        (:call, (:curly, :BitArray, 1), 0)
+      )),
+    (:line, 61, :none),
+    (:(=), (:call, :length, (:(::), :B, :BitArray)), (:block,
+        (:line, 61, :none),
+        (:., :B, (:quote, #QuoteNode
+            :len
+          ))
+      )),
+    (:line, 62, :none),
+    (:(=), (:call, :size, (:(::), :B, :BitVector)), (:block,
+        (:line, 62, :none),
+        (:tuple, (:., :B, (:quote, #QuoteNode
+              :len
+            )))
+      )),
+    (:line, 63, :none),
+    (:(=), (:call, :size, (:(::), :B, :BitArray)), (:block,
+        (:line, 63, :none),
+        (:., :B, (:quote, #QuoteNode
+            :dims
+          ))
+      )),
+    (:line, 65, :none),
+    (:macrocall, Symbol("@inline"), (:function, (:call, :size, (:(::), :B, :BitVector), :d), (:block,
+          (:line, 66, :none),
+          (:&&, (:call, :<, :d, 1), (:call, :throw_boundserror, (:call, :size, :B), :d)),
+          (:line, 67, :none),
+          (:call, :ifelse, (:call, :(==), :d, 1), (:., :B, (:quote, #QuoteNode
+                :len
+              )), 1)
+        ))),
+    (:line, 70, :none),
+    (:(=), (:call, :isassigned, (:(::), :B, :BitArray), (:(::), :i, :Int)), (:block,
+        (:line, 70, :none),
+        (:comparison, 1, :(<=), :i, :(<=), (:call, :length, :B))
+      )),
+    (:line, 72, :none),
+    (:(=), (:call, :IndexStyle, (:(::), (:curly, :Type, (:<:, :BitArray)))), (:block,
+        (:line, 72, :none),
+        (:call, :IndexLinear)
+      )),
+    (:line, 76, :none),
+    (:const, (:(=), :_msk64, (:call, :~, (:call, :UInt64, 0)))),
+    (:line, 77, :none),
+    (:macrocall, Symbol("@inline"), (:(=), (:call, :_div64, :l), (:block,
+          (:line, 77, :none),
+          (:call, :>>>, :l, 6)
+        ))),
+    (:line, 78, :none),
+    (:macrocall, Symbol("@inline"), (:(=), (:call, :_mod64, :l), (:block,
+          (:line, 78, :none),
+          (:call, :&, :l, 63)
+        ))),
+    (:line, 79, :none),
+    (:macrocall, Symbol("@inline"), (:(=), (:call, :_msk_end, (:(::), :l, :Integer)), (:block,
+          (:line, 79, :none),
+          (:call, :>>>, :_msk64, (:call, :_mod64, (:call, :-, :l)))
+        ))),
+    (:line, 80, :none),
+    (:macrocall, Symbol("@inline"), (:(=), (:call, :_msk_end, (:(::), :B, :BitArray)), (:block,
+          (:line, 80, :none),
+          (:call, :_msk_end, (:call, :length, :B))
+        ))),
+    (:line, 81, :none),
+    (:(=), (:call, :num_bit_chunks, (:(::), :n, :Int)), (:block,
+        (:line, 81, :none),
+        (:call, :_div64, (:call, :+, :n, 63))
+      )),
+    (:line, 83, :none),
+    (:function, (:call, (:curly, :_check_bitarray_consistency, :N), (:(::), :B, (:curly, :BitArray, :N))), (:block,
+        (:line, 84, :none),
+        (:(=), :n, (:call, :length, :B)),
+        (:line, 85, :none),
+        (:if, (:call, :≠, :N, 1), (:block,
+            (:line, 86, :none),
+            (:||, (:call, :all, (:generator, (:call, :≥, :d, 0), (:(=), :d, (:., :B, (:quote, #QuoteNode
+                        :dims
+                      ))))), (:block,
+                (:call, :warn, (:string, "negative d in dims: ", (:., :B, (:quote, #QuoteNode
+                        :dims
+                      )))),
+                (:return, false)
+              )),
+            (:line, 87, :none),
+            (:&&, (:call, :≠, (:call, :prod, (:., :B, (:quote, #QuoteNode
+                      :dims
+                    ))), :n), (:block,
+                (:call, :warn, (:string, "inconsistent dims/len: prod(dims)=", (:call, :prod, (:., :B, (:quote, #QuoteNode
+                          :dims
+                        ))), " len=", :n)),
+                (:return, false)
+              ))
+          )),
+        (:line, 89, :none),
+        (:(=), :Bc, (:., :B, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 90, :none),
+        (:(=), :nc, (:call, :length, :Bc)),
+        (:line, 91, :none),
+        (:||, (:call, :(==), :nc, (:call, :num_bit_chunks, :n)), (:block,
+            (:call, :warn, (:string, "incorrect chunks length for length ", :n, ": expected=", (:call, :num_bit_chunks, :n), " actual=", :nc)),
+            (:return, false)
+          )),
+        (:line, 92, :none),
+        (:&&, (:call, :(==), :n, 0), (:return, true)),
+        (:line, 93, :none),
+        (:||, (:call, :(==), (:call, :&, (:ref, :Bc, :end), (:call, :_msk_end, :n)), (:ref, :Bc, :end)), (:block,
+            (:call, :warn, "nonzero bits in chunk after BitArray end"),
+            (:return, false)
+          )),
+        (:line, 94, :none),
+        (:return, true)
+      )),
+    (:line, 97, :none),
+    (:macrocall, Symbol("@inline"), (:(=), (:call, :get_chunks_id, (:(::), :i, :Integer)), (:block,
+          (:line, 97, :none),
+          (:tuple, (:call, :+, (:call, :_div64, (:call, :-, (:call, :Int, :i), 1)), 1), (:call, :_mod64, (:call, :-, (:call, :Int, :i), 1)))
+        ))),
+    (:line, 99, :none),
+    (:function, (:call, :glue_src_bitchunks, (:(::), :src, (:curly, :Vector, :UInt64)), (:(::), :k, :Int), (:(::), :ks1, :Int), (:(::), :msk_s0, :UInt64), (:(::), :ls0, :Int)), (:block,
+        (:line, 100, :none),
+        (:macrocall, Symbol("@inbounds"), (:block,
+            (:line, 101, :none),
+            (:(=), :chunk, (:call, :>>>, (:call, :&, (:ref, :src, :k), :msk_s0), :ls0)),
+            (:line, 102, :none),
+            (:if, (:&&, (:call, :>, :ks1, :k), (:call, :>, :ls0, 0)), (:block,
+                (:line, 103, :none),
+                (:(=), :chunk_n, (:call, :&, (:ref, :src, (:call, :+, :k, 1)), (:call, :~, :msk_s0))),
+                (:line, 104, :none),
+                (:|=, :chunk, (:call, :<<, :chunk_n, (:call, :-, 64, :ls0)))
+              ))
+          )),
+        (:line, 107, :none),
+        (:return, :chunk)
+      )),
+    (:line, 110, :none),
+    (:function, (:call, :copy_chunks!, (:(::), :dest, (:curly, :Vector, :UInt64)), (:(::), :pos_d, :Integer), (:(::), :src, (:curly, :Vector, :UInt64)), (:(::), :pos_s, :Integer), (:(::), :numbits, :Integer)), (:block,
+        (:line, 111, :none),
+        (:&&, (:call, :(==), :numbits, 0), (:return, nothing)),
+        (:line, 112, :none),
+        (:if, (:&&, (:call, :(===), :dest, :src), (:call, :>, :pos_d, :pos_s)), (:block,
+            (:line, 113, :none),
+            (:return, (:call, :copy_chunks_rtol!, :dest, :pos_d, :pos_s, :numbits))
+          )),
+        (:line, 116, :none),
+        (:(=), (:tuple, :kd0, :ld0), (:call, :get_chunks_id, :pos_d)),
+        (:line, 117, :none),
+        (:(=), (:tuple, :kd1, :ld1), (:call, :get_chunks_id, (:call, :-, (:call, :+, :pos_d, :numbits), 1))),
+        (:line, 118, :none),
+        (:(=), (:tuple, :ks0, :ls0), (:call, :get_chunks_id, :pos_s)),
+        (:line, 119, :none),
+        (:(=), (:tuple, :ks1, :ls1), (:call, :get_chunks_id, (:call, :-, (:call, :+, :pos_s, :numbits), 1))),
+        (:line, 121, :none),
+        (:(=), :delta_kd, (:call, :-, :kd1, :kd0)),
+        (:line, 122, :none),
+        (:(=), :delta_ks, (:call, :-, :ks1, :ks0)),
+        (:line, 124, :none),
+        (:(=), :u, :_msk64),
+        (:line, 125, :none),
+        (:if, (:call, :(==), :delta_kd, 0), (:block,
+            (:line, 126, :none),
+            (:(=), :msk_d0, (:call, :|, (:call, :~, (:call, :<<, :u, :ld0)), (:call, :<<, :u, (:call, :+, :ld1, 1))))
+          ), (:block,
+            (:line, 128, :none),
+            (:(=), :msk_d0, (:call, :~, (:call, :<<, :u, :ld0))),
+            (:line, 129, :none),
+            (:(=), :msk_d1, (:call, :<<, :u, (:call, :+, :ld1, 1)))
+          )),
+        (:line, 131, :none),
+        (:if, (:call, :(==), :delta_ks, 0), (:block,
+            (:line, 132, :none),
+            (:(=), :msk_s0, (:call, :&, (:call, :<<, :u, :ls0), (:call, :~, (:call, :<<, :u, (:call, :+, :ls1, 1)))))
+          ), (:block,
+            (:line, 134, :none),
+            (:(=), :msk_s0, (:call, :<<, :u, :ls0))
+          )),
+        (:line, 137, :none),
+        (:(=), :chunk_s0, (:call, :glue_src_bitchunks, :src, :ks0, :ks1, :msk_s0, :ls0)),
+        (:line, 139, :none),
+        (:(=), (:ref, :dest, :kd0), (:call, :|, (:call, :&, (:ref, :dest, :kd0), :msk_d0), (:call, :&, (:call, :<<, :chunk_s0, :ld0), (:call, :~, :msk_d0)))),
+        (:line, 141, :none),
+        (:&&, (:call, :(==), :delta_kd, 0), (:return, nothing)),
+        (:line, 143, :none),
+        (:for, (:(=), :i, (:(:), 1, (:call, :-, (:call, :-, :kd1, :kd0), 1))), (:block,
+            (:line, 144, :none),
+            (:(=), :chunk_s1, (:call, :glue_src_bitchunks, :src, (:call, :+, :ks0, :i), :ks1, :msk_s0, :ls0)),
+            (:line, 146, :none),
+            (:(=), :chunk_s, (:call, :|, (:call, :>>>, :chunk_s0, (:call, :-, 64, :ld0)), (:call, :<<, :chunk_s1, :ld0))),
+            (:line, 148, :none),
+            (:(=), (:ref, :dest, (:call, :+, :kd0, :i)), :chunk_s),
+            (:line, 150, :none),
+            (:(=), :chunk_s0, :chunk_s1)
+          )),
+        (:line, 153, :none),
+        (:if, (:call, :(>=), :ks1, (:call, :+, :ks0, :delta_kd)), (:block,
+            (:line, 154, :none),
+            (:(=), :chunk_s1, (:call, :glue_src_bitchunks, :src, (:call, :+, :ks0, :delta_kd), :ks1, :msk_s0, :ls0))
+          ), (:block,
+            (:line, 156, :none),
+            (:(=), :chunk_s1, (:call, :UInt64, 0))
+          )),
+        (:line, 159, :none),
+        (:(=), :chunk_s, (:call, :|, (:call, :>>>, :chunk_s0, (:call, :-, 64, :ld0)), (:call, :<<, :chunk_s1, :ld0))),
+        (:line, 161, :none),
+        (:(=), (:ref, :dest, :kd1), (:call, :|, (:call, :&, (:ref, :dest, :kd1), :msk_d1), (:call, :&, :chunk_s, (:call, :~, :msk_d1)))),
+        (:line, 163, :none),
+        (:return, nothing)
+      )),
+    (:line, 166, :none),
+    (:function, (:call, :copy_chunks_rtol!, (:(::), :chunks, (:curly, :Vector, :UInt64)), (:(::), :pos_d, :Integer), (:(::), :pos_s, :Integer), (:(::), :numbits, :Integer)), (:block,
+        (:line, 167, :none),
+        (:&&, (:call, :(==), :pos_d, :pos_s), (:return, nothing)),
+        (:line, 168, :none),
+        (:&&, (:call, :<, :pos_d, :pos_s), (:return, (:call, :copy_chunks!, :chunks, :pos_d, :chunks, :pos_s, :numbits))),
+        (:line, 170, :none),
+        (:(=), :left, :numbits),
+        (:line, 171, :none),
+        (:(=), :s, (:call, :min, :left, 64)),
+        (:line, 172, :none),
+        (:(=), :b, (:call, :-, :left, :s)),
+        (:line, 173, :none),
+        (:(=), :ps, (:call, :+, :pos_s, :b)),
+        (:line, 174, :none),
+        (:(=), :pd, (:call, :+, :pos_d, :b)),
+        (:line, 175, :none),
+        (:(=), :u, :_msk64),
+        (:line, 176, :none),
+        (:while, (:call, :>, :left, 0), (:block,
+            (:line, 177, :none),
+            (:(=), (:tuple, :kd0, :ld0), (:call, :get_chunks_id, :pd)),
+            (:line, 178, :none),
+            (:(=), (:tuple, :kd1, :ld1), (:call, :get_chunks_id, (:call, :-, (:call, :+, :pd, :s), 1))),
+            (:line, 179, :none),
+            (:(=), (:tuple, :ks0, :ls0), (:call, :get_chunks_id, :ps)),
+            (:line, 180, :none),
+            (:(=), (:tuple, :ks1, :ls1), (:call, :get_chunks_id, (:call, :-, (:call, :+, :ps, :s), 1))),
+            (:line, 182, :none),
+            (:(=), :delta_kd, (:call, :-, :kd1, :kd0)),
+            (:line, 183, :none),
+            (:(=), :delta_ks, (:call, :-, :ks1, :ks0)),
+            (:line, 185, :none),
+            (:if, (:call, :(==), :delta_kd, 0), (:block,
+                (:line, 186, :none),
+                (:(=), :msk_d0, (:call, :|, (:call, :~, (:call, :<<, :u, :ld0)), (:call, :<<, :u, (:call, :+, :ld1, 1))))
+              ), (:block,
+                (:line, 188, :none),
+                (:(=), :msk_d0, (:call, :~, (:call, :<<, :u, :ld0))),
+                (:line, 189, :none),
+                (:(=), :msk_d1, (:call, :<<, :u, (:call, :+, :ld1, 1)))
+              )),
+            (:line, 191, :none),
+            (:if, (:call, :(==), :delta_ks, 0), (:block,
+                (:line, 192, :none),
+                (:(=), :msk_s0, (:call, :&, (:call, :<<, :u, :ls0), (:call, :~, (:call, :<<, :u, (:call, :+, :ls1, 1)))))
+              ), (:block,
+                (:line, 194, :none),
+                (:(=), :msk_s0, (:call, :<<, :u, :ls0))
+              )),
+            (:line, 197, :none),
+            (:(=), :chunk_s0, (:call, :&, (:call, :glue_src_bitchunks, :chunks, :ks0, :ks1, :msk_s0, :ls0), (:call, :~, (:call, :<<, :u, :s)))),
+            (:line, 198, :none),
+            (:(=), (:ref, :chunks, :kd0), (:call, :|, (:call, :&, (:ref, :chunks, :kd0), :msk_d0), (:call, :&, (:call, :<<, :chunk_s0, :ld0), (:call, :~, :msk_d0)))),
+            (:line, 200, :none),
+            (:if, (:call, :(!=), :delta_kd, 0), (:block,
+                (:line, 201, :none),
+                (:(=), :chunk_s, (:call, :>>>, :chunk_s0, (:call, :-, 64, :ld0))),
+                (:line, 203, :none),
+                (:(=), (:ref, :chunks, :kd1), (:call, :|, (:call, :&, (:ref, :chunks, :kd1), :msk_d1), (:call, :&, :chunk_s, (:call, :~, :msk_d1))))
+              )),
+            (:line, 206, :none),
+            (:-=, :left, :s),
+            (:line, 207, :none),
+            (:(=), :s, (:call, :min, :left, 64)),
+            (:line, 208, :none),
+            (:(=), :b, (:call, :-, :left, :s)),
+            (:line, 209, :none),
+            (:(=), :ps, (:call, :+, :pos_s, :b)),
+            (:line, 210, :none),
+            (:(=), :pd, (:call, :+, :pos_d, :b))
+          ))
+      )),
+    (:line, 214, :none),
+    (:function, (:call, :fill_chunks!, (:(::), :Bc, (:curly, :Array, :UInt64)), (:(::), :x, :Bool), (:(::), :pos, :Integer), (:(::), :numbits, :Integer)), (:block,
+        (:line, 215, :none),
+        (:&&, (:call, :(<=), :numbits, 0), (:return, nothing)),
+        (:line, 216, :none),
+        (:(=), (:tuple, :k0, :l0), (:call, :get_chunks_id, :pos)),
+        (:line, 217, :none),
+        (:(=), (:tuple, :k1, :l1), (:call, :get_chunks_id, (:call, :-, (:call, :+, :pos, :numbits), 1))),
+        (:line, 219, :none),
+        (:(=), :u, :_msk64),
+        (:line, 220, :none),
+        (:if, (:call, :(==), :k1, :k0), (:block,
+            (:line, 221, :none),
+            (:(=), :msk0, (:call, :&, (:call, :<<, :u, :l0), (:call, :~, (:call, :<<, :u, (:call, :+, :l1, 1)))))
+          ), (:block,
+            (:line, 223, :none),
+            (:(=), :msk0, (:call, :<<, :u, :l0)),
+            (:line, 224, :none),
+            (:(=), :msk1, (:call, :~, (:call, :<<, :u, (:call, :+, :l1, 1))))
+          )),
+        (:line, 226, :none),
+        (:macrocall, Symbol("@inbounds"), (:if, :x, (:block,
+              (:line, 227, :none),
+              (:|=, (:ref, :Bc, :k0), :msk0),
+              (:line, 228, :none),
+              (:for, (:(=), :k, (:(:), (:call, :+, :k0, 1), (:call, :-, :k1, 1))), (:block,
+                  (:line, 229, :none),
+                  (:(=), (:ref, :Bc, :k), :u)
+                )),
+              (:line, 231, :none),
+              (:&&, (:call, :>, :k1, :k0), (:|=, (:ref, :Bc, :k1), :msk1))
+            ), (:block,
+              (:line, 233, :none),
+              (:&=, (:ref, :Bc, :k0), (:call, :~, :msk0)),
+              (:line, 234, :none),
+              (:for, (:(=), :k, (:(:), (:call, :+, :k0, 1), (:call, :-, :k1, 1))), (:block,
+                  (:line, 235, :none),
+                  (:(=), (:ref, :Bc, :k), 0)
+                )),
+              (:line, 237, :none),
+              (:&&, (:call, :>, :k1, :k0), (:&=, (:ref, :Bc, :k1), (:call, :~, :msk1)))
+            )))
+      )),
+    (:line, 241, :none),
+    (:(=), (:call, :copy_to_bitarray_chunks!, (:(::), :dest, (:curly, :Vector, :UInt64)), (:(::), :pos_d, :Int), (:(::), :src, :BitArray), (:(::), :pos_s, :Int), (:(::), :numbits, :Int)), (:block,
+        (:line, 241, :none),
+        (:call, :copy_chunks!, :dest, :pos_d, (:., :src, (:quote, #QuoteNode
+              :chunks
+            )), :pos_s, :numbits)
+      )),
+    (:line, 246, :none),
+    (:function, (:call, :pack8bools, (:(::), :z, :UInt64)), (:block,
+        (:line, 247, :none),
+        (:|=, :z, (:call, :>>>, :z, 7)),
+        (:line, 248, :none),
+        (:|=, :z, (:call, :>>>, :z, 14)),
+        (:line, 249, :none),
+        (:|=, :z, (:call, :>>>, :z, 28)),
+        (:line, 250, :none),
+        (:&=, :z, 0xff),
+        (:line, 251, :none),
+        (:return, :z)
+      )),
+    (:line, 254, :none),
+    (:function, (:call, :copy_to_bitarray_chunks!, (:(::), :Bc, (:curly, :Vector, :UInt64)), (:(::), :pos_d, :Int), (:(::), :C, (:curly, :Array, :Bool)), (:(::), :pos_s, :Int), (:(::), :numbits, :Int)), (:block,
+        (:line, 255, :none),
+        (:(=), (:tuple, :kd0, :ld0), (:call, :get_chunks_id, :pos_d)),
+        (:line, 256, :none),
+        (:(=), (:tuple, :kd1, :ld1), (:call, :get_chunks_id, (:call, :-, (:call, :+, :pos_d, :numbits), 1))),
+        (:line, 258, :none),
+        (:(=), :delta_kd, (:call, :-, :kd1, :kd0)),
+        (:line, 260, :none),
+        (:(=), :u, :_msk64),
+        (:line, 261, :none),
+        (:if, (:call, :(==), :delta_kd, 0), (:block,
+            (:line, 262, :none),
+            (:(=), :msk_d0, (:(=), :msk_d1, (:call, :|, (:call, :~, (:call, :<<, :u, :ld0)), (:call, :<<, :u, (:call, :+, :ld1, 1))))),
+            (:line, 263, :none),
+            (:(=), :lt0, :ld1)
+          ), (:block,
+            (:line, 265, :none),
+            (:(=), :msk_d0, (:call, :~, (:call, :<<, :u, :ld0))),
+            (:line, 266, :none),
+            (:(=), :msk_d1, (:call, :<<, :u, (:call, :+, :ld1, 1))),
+            (:line, 267, :none),
+            (:(=), :lt0, 63)
+          )),
+        (:line, 270, :none),
+        (:(=), :bind, :kd0),
+        (:line, 271, :none),
+        (:(=), :ind, :pos_s),
+        (:line, 272, :none),
+        (:macrocall, Symbol("@inbounds"), (:if, (:call, :>, :ld0, 0), (:block,
+              (:line, 273, :none),
+              (:(=), :c, (:call, :UInt64, 0)),
+              (:line, 274, :none),
+              (:for, (:(=), :j, (:(:), :ld0, :lt0)), (:block,
+                  (:line, 275, :none),
+                  (:|=, :c, (:call, :<<, (:call, :UInt64, (:ref, :C, :ind)), :j)),
+                  (:line, 276, :none),
+                  (:+=, :ind, 1)
+                )),
+              (:line, 278, :none),
+              (:(=), (:ref, :Bc, :kd0), (:call, :|, (:call, :&, (:ref, :Bc, :kd0), :msk_d0), (:call, :&, :c, (:call, :~, :msk_d0)))),
+              (:line, 279, :none),
+              (:+=, :bind, 1)
+            ))),
+        (:line, 282, :none),
+        (:(=), :nc, (:call, :_div64, (:call, :+, (:call, :-, :numbits, :ind), :pos_s))),
+        (:line, 283, :none),
+        (:(=), :nc8, (:call, :<<, (:call, :>>>, :nc, 3), 3)),
+        (:line, 284, :none),
+        (:if, (:call, :>, :nc8, 0), (:block,
+            (:line, 285, :none),
+            (:(=), :ind8, 1),
+            (:line, 286, :none),
+            (:(=), :P8, (:call, (:curly, :Ptr, :UInt64), (:call, :pointer, :C, :ind))),
+            (:line, 287, :none),
+            (:macrocall, Symbol("@inbounds"), (:for, (:(=), :i, (:(:), 1, :nc8)), (:block,
+                  (:line, 288, :none),
+                  (:(=), :c, (:call, :UInt64, 0)),
+                  (:line, 289, :none),
+                  (:for, (:(=), :j, (:(:), 0, 7)), (:block,
+                      (:line, 291, :none),
+                      (:|=, :c, (:call, :<<, (:call, :pack8bools, (:call, :unsafe_load, :P8, :ind8)), (:call, :<<, :j, 3))),
+                      (:line, 292, :none),
+                      (:+=, :ind8, 1)
+                    )),
+                  (:line, 294, :none),
+                  (:(=), (:ref, :Bc, :bind), :c),
+                  (:line, 295, :none),
+                  (:+=, :bind, 1)
+                ))),
+            (:line, 297, :none),
+            (:+=, :ind, (:call, :<<, (:call, :-, :ind8, 1), 3))
+          )),
+        (:line, 299, :none),
+        (:macrocall, Symbol("@inbounds"), (:for, (:(=), :i, (:(:), (:call, :+, :nc8, 1), :nc)), (:block,
+              (:line, 300, :none),
+              (:(=), :c, (:call, :UInt64, 0)),
+              (:line, 301, :none),
+              (:for, (:(=), :j, (:(:), 0, 63)), (:block,
+                  (:line, 302, :none),
+                  (:|=, :c, (:call, :<<, (:call, :UInt64, (:ref, :C, :ind)), :j)),
+                  (:line, 303, :none),
+                  (:+=, :ind, 1)
+                )),
+              (:line, 305, :none),
+              (:(=), (:ref, :Bc, :bind), :c),
+              (:line, 306, :none),
+              (:+=, :bind, 1)
+            ))),
+        (:line, 308, :none),
+        (:macrocall, Symbol("@inbounds"), (:if, (:call, :≤, :bind, :kd1), (:block,
+              (:line, 309, :none),
+              (:macrocall, Symbol("@assert"), (:call, :(==), :bind, :kd1)),
+              (:line, 310, :none),
+              (:(=), :c, (:call, :UInt64, 0)),
+              (:line, 311, :none),
+              (:for, (:(=), :j, (:(:), 0, :ld1)), (:block,
+                  (:line, 312, :none),
+                  (:|=, :c, (:call, :<<, (:call, :UInt64, (:ref, :C, :ind)), :j)),
+                  (:line, 313, :none),
+                  (:+=, :ind, 1)
+                )),
+              (:line, 315, :none),
+              (:(=), (:ref, :Bc, :kd1), (:call, :|, (:call, :&, (:ref, :Bc, :kd1), :msk_d1), (:call, :&, :c, (:call, :~, :msk_d1))))
+            )))
+      )),
+    (:line, 324, :none),
+    (:const, (:(=), :bitcache_chunks, 64)),
+    (:line, 325, :none),
+    (:const, (:(=), :bitcache_size, (:call, :*, 64, :bitcache_chunks))),
+    (:line, 327, :none),
+    (:(=), (:call, :dumpbitcache, (:(::), :Bc, (:curly, :Vector, :UInt64)), (:(::), :bind, :Int), (:(::), :C, (:curly, :Vector, :Bool))), (:block,
+        (:line, 327, :none),
+        (:call, :copy_to_bitarray_chunks!, :Bc, (:call, :+, (:call, :<<, (:call, :-, :bind, 1), 6), 1), :C, 1, (:call, :min, :bitcache_size, (:call, :<<, (:call, :+, (:call, :-, (:call, :length, :Bc), :bind), 1), 6)))
+      )),
+    (:line, 332, :none),
+    (:(=), (:call, :start, (:(::), :B, :BitArray)), (:block,
+        (:line, 332, :none),
+        0
+      )),
+    (:line, 333, :none),
+    (:(=), (:call, :next, (:(::), :B, :BitArray), (:(::), :i, :Int)), (:block,
+        (:line, 333, :none),
+        (:tuple, (:call, :(!=), (:call, :&, (:ref, (:., :B, (:quote, #QuoteNode
+                    :chunks
+                  )), (:call, :+, (:call, :_div64, :i), 1)), (:call, :<<, (:call, :UInt64, 1), (:call, :_mod64, :i))), 0), (:call, :+, :i, 1))
+      )),
+    (:line, 334, :none),
+    (:(=), (:call, :done, (:(::), :B, :BitArray), (:(::), :i, :Int)), (:block,
+        (:line, 334, :none),
+        (:call, :(>=), :i, (:call, :length, :B))
+      )),
+    (:line, 338, :none),
+    (:(=), (:call, :similar, (:(::), :B, :BitArray)), (:block,
+        (:line, 338, :none),
+        (:call, :BitArray, (:call, :size, :B))
+      )),
+    (:line, 339, :none),
+    (:(=), (:call, :similar, (:(::), :B, :BitArray), (:..., (:(::), :dims, :Int))), (:block,
+        (:line, 339, :none),
+        (:call, :BitArray, :dims)
+      )),
+    (:line, 340, :none),
+    (:(=), (:call, :similar, (:(::), :B, :BitArray), (:(::), :dims, :Dims)), (:block,
+        (:line, 340, :none),
+        (:call, :BitArray, (:..., :dims))
+      )),
+    (:line, 342, :none),
+    (:(=), (:call, :similar, (:(::), :B, :BitArray), (:(::), :T, (:curly, :Type, :Bool)), (:(::), :dims, :Dims)), (:block,
+        (:line, 342, :none),
+        (:call, :BitArray, :dims)
+      )),
+    (:line, 345, :none),
+    (:(=), (:call, :similar, (:(::), :B, :BitArray), (:(::), :T, :Type), (:(::), :dims, :Dims)), (:block,
+        (:line, 345, :none),
+        (:call, (:curly, :Array, :T), :dims)
+      )),
+    (:line, 347, :none),
+    (:function, (:call, :fill!, (:(::), :B, :BitArray), :x), (:block,
+        (:line, 348, :none),
+        (:(=), :y, (:call, :convert, :Bool, :x)),
+        (:line, 349, :none),
+        (:&&, (:call, :isempty, :B), (:return, :B)),
+        (:line, 350, :none),
+        (:(=), :Bc, (:., :B, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 351, :none),
+        (:if, (:call, :!, :y), (:block,
+            (:line, 352, :none),
+            (:call, :fill!, :Bc, 0)
+          ), (:block,
+            (:line, 354, :none),
+            (:call, :fill!, :Bc, :_msk64),
+            (:line, 355, :none),
+            (:&=, (:ref, :Bc, :end), (:call, :_msk_end, :B))
+          )),
+        (:line, 357, :none),
+        (:return, :B)
+      )),
+    (:line, 360, :none),
+    (:macrocall, :(Core.@doc), "    falses(dims)\n\nCreate a `BitArray` with all values set to `false`.\n\n```jldoctest\njulia> falses(2,3)\n2×3 BitArray{2}:\n false  false  false\n false  false  false\n```\n", (:(=), (:call, :falses, (:(::), :dims, :Dims)), (:block,
+          (:line, 372, :none),
+          (:call, :fill!, (:call, :BitArray, :dims), false)
+        ))),
+    (:line, 373, :none),
+    (:(=), (:call, :falses, (:..., (:(::), :dims, :Integer))), (:block,
+        (:line, 373, :none),
+        (:call, :falses, (:call, :map, :Int, :dims))
+      )),
+    (:line, 374, :none),
+    (:macrocall, :(Core.@doc), "    falses(A)\n\nCreate a `BitArray` with all values set to `false` of the same shape as `A`.\n\n```jldoctest\njulia> A = [1 2; 3 4]\n2×2 Array{Int64,2}:\n 1  2\n 3  4\n\njulia> falses(A)\n2×2 BitArray{2}:\n false  false\n false  false\n```\n", (:(=), (:call, :falses, (:(::), :A, :AbstractArray)), (:block,
+          (:line, 391, :none),
+          (:call, :falses, (:call, :size, :A))
+        ))),
+    (:line, 393, :none),
+    (:macrocall, :(Core.@doc), "    trues(dims)\n\nCreate a `BitArray` with all values set to `true`.\n\n```jldoctest\njulia> trues(2,3)\n2×3 BitArray{2}:\n true  true  true\n true  true  true\n```\n", (:(=), (:call, :trues, (:(::), :dims, :Dims)), (:block,
+          (:line, 405, :none),
+          (:call, :fill!, (:call, :BitArray, :dims), true)
+        ))),
+    (:line, 406, :none),
+    (:(=), (:call, :trues, (:..., (:(::), :dims, :Integer))), (:block,
+        (:line, 406, :none),
+        (:call, :trues, (:call, :map, :Int, :dims))
+      )),
+    (:line, 407, :none),
+    (:macrocall, :(Core.@doc), "    trues(A)\n\nCreate a `BitArray` with all values set to `true` of the same shape as `A`.\n\n```jldoctest\njulia> A = [1 2; 3 4]\n2×2 Array{Int64,2}:\n 1  2\n 3  4\n\njulia> trues(A)\n2×2 BitArray{2}:\n true  true\n true  true\n```\n", (:(=), (:call, :trues, (:(::), :A, :AbstractArray)), (:block,
+          (:line, 424, :none),
+          (:call, :trues, (:call, :size, :A))
+        ))),
+    (:line, 426, :none),
+    (:function, (:call, :one, (:(::), :x, :BitMatrix)), (:block,
+        (:line, 427, :none),
+        (:(=), (:tuple, :m, :n), (:call, :size, :x)),
+        (:line, 428, :none),
+        (:||, (:call, :(==), :m, :n), (:call, :throw, (:call, :DimensionMismatch, "multiplicative identity defined only for square matrices"))),
+        (:line, 429, :none),
+        (:(=), :a, (:call, :falses, :n, :n)),
+        (:line, 430, :none),
+        (:for, (:(=), :i, (:(:), 1, :n)), (:block,
+            (:line, 431, :none),
+            (:(=), (:ref, :a, :i, :i), true)
+          )),
+        (:line, 433, :none),
+        (:return, :a)
+      )),
+    (:line, 436, :none),
+    (:function, (:call, :copy!, (:(::), :dest, :BitArray), (:(::), :src, :BitArray)), (:block,
+        (:line, 437, :none),
+        (:&&, (:call, :>, (:call, :length, :src), (:call, :length, :dest)), (:call, :throw, (:call, :BoundsError, :dest, (:call, :+, (:call, :length, :dest), 1)))),
+        (:line, 438, :none),
+        (:(=), :destc, (:., :dest, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 438, :none),
+        (:(=), :srcc, (:., :src, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 439, :none),
+        (:(=), :nc, (:call, :min, (:call, :length, :destc), (:call, :length, :srcc))),
+        (:line, 440, :none),
+        (:&&, (:call, :(==), :nc, 0), (:return, :dest)),
+        (:line, 441, :none),
+        (:macrocall, Symbol("@inbounds"), (:block,
+            (:line, 442, :none),
+            (:for, (:(=), :i, (:(:), 1, (:call, :-, :nc, 1))), (:block,
+                (:line, 443, :none),
+                (:(=), (:ref, :destc, :i), (:ref, :srcc, :i))
+              )),
+            (:line, 445, :none),
+            (:if, (:call, :(==), (:call, :length, :src), (:call, :length, :dest)), (:block,
+                (:line, 446, :none),
+                (:(=), (:ref, :destc, :nc), (:ref, :srcc, :nc))
+              ), (:block,
+                (:line, 448, :none),
+                (:(=), :msk_s, (:call, :_msk_end, :src)),
+                (:line, 449, :none),
+                (:(=), :msk_d, (:call, :~, :msk_s)),
+                (:line, 450, :none),
+                (:(=), (:ref, :destc, :nc), (:call, :|, (:call, :&, :msk_d, (:ref, :destc, :nc)), (:call, :&, :msk_s, (:ref, :srcc, :nc))))
+              ))
+          )),
+        (:line, 453, :none),
+        (:return, :dest)
+      )),
+    (:line, 456, :none),
+    (:function, (:call, :unsafe_copy!, (:(::), :dest, :BitArray), (:(::), :doffs, :Integer), (:(::), :src, (:curly, :Union, :BitArray, :Array)), (:(::), :soffs, :Integer), (:(::), :n, :Integer)), (:block,
+        (:line, 457, :none),
+        (:call, :copy_to_bitarray_chunks!, (:., :dest, (:quote, #QuoteNode
+              :chunks
+            )), :doffs, :src, :soffs, :n),
+        (:line, 458, :none),
+        (:return, :dest)
+      )),
+    (:line, 461, :none),
+    (:function, (:call, :copy!, (:(::), :dest, :BitArray), (:(::), :doffs, :Integer), (:(::), :src, :Array), (:(::), :soffs, :Integer), (:(::), :n, :Integer)), (:block,
+        (:line, 462, :none),
+        (:&&, (:call, :(==), :n, 0), (:return, :dest)),
+        (:line, 463, :none),
+        (:&&, (:call, :<, :soffs, 1), (:call, :throw, (:call, :BoundsError, :src, :soffs))),
+        (:line, 464, :none),
+        (:&&, (:call, :<, :doffs, 1), (:call, :throw, (:call, :BoundsError, :dest, :doffs))),
+        (:line, 465, :none),
+        (:&&, (:call, :>, (:call, :-, (:call, :+, :soffs, :n), 1), (:call, :length, :src)), (:call, :throw, (:call, :BoundsError, :src, (:call, :+, (:call, :length, :src), 1)))),
+        (:line, 466, :none),
+        (:&&, (:call, :>, (:call, :-, (:call, :+, :doffs, :n), 1), (:call, :length, :dest)), (:call, :throw, (:call, :BoundsError, :dest, (:call, :+, (:call, :length, :dest), 1)))),
+        (:line, 467, :none),
+        (:return, (:call, :unsafe_copy!, :dest, :doffs, :src, :soffs, :n))
+      )),
+    (:line, 470, :none),
+    (:function, (:call, :copy!, (:(::), :dest, :BitArray), (:(::), :src, :Array)), (:block,
+        (:line, 471, :none),
+        (:&&, (:call, :>, (:call, :length, :src), (:call, :length, :dest)), (:call, :throw, (:call, :BoundsError, :dest, (:call, :+, (:call, :length, :dest), 1)))),
+        (:line, 472, :none),
+        (:&&, (:call, :(==), (:call, :length, :src), 0), (:return, :det)),
+        (:line, 473, :none),
+        (:return, (:call, :unsafe_copy!, :dest, 1, :src, 1, (:call, :length, :src)))
+      )),
+    (:line, 476, :none),
+    (:function, (:where, (:call, :reshape, (:(::), :B, (:curly, :BitArray, :N)), (:(::), :dims, (:curly, :NTuple, :N, :Int))), :N), (:block,
+        (:line, 477, :none),
+        (:return, (:if, (:call, :(==), :dims, (:call, :size, :B)), :B, (:call, :_bitreshape, :B, :dims)))
+      )),
+    (:line, 479, :none),
+    (:(=), (:call, :reshape, (:(::), :B, :BitArray), (:(::), :dims, (:curly, :Tuple, (:curly, :Vararg, :Int)))), (:block,
+        (:line, 479, :none),
+        (:call, :_bitreshape, :B, :dims)
+      )),
+    (:line, 480, :none),
+    (:function, (:where, (:call, :_bitreshape, (:(::), :B, :BitArray), (:(::), :dims, (:curly, :NTuple, :N, :Int))), :N), (:block,
+        (:line, 481, :none),
+        (:||, (:call, :(==), (:call, :prod, :dims), (:call, :length, :B)), (:call, :throw, (:call, :DimensionMismatch, (:string, "new dimensions ", :dims, " must be consistent with array size ", (:call, :length, :B))))),
+        (:line, 483, :none),
+        (:(=), :Br, (:call, (:curly, :BitArray, :N), (:..., (:call, :ntuple, (:->, :i, (:block,
+                    (:line, 483, :none),
+                    0
+                  )), (:curly, :Val, :N))))),
+        (:line, 484, :none),
+        (:(=), (:., :Br, (:quote, #QuoteNode
+              :chunks
+            )), (:., :B, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 485, :none),
+        (:(=), (:., :Br, (:quote, #QuoteNode
+              :len
+            )), (:call, :prod, :dims)),
+        (:line, 486, :none),
+        (:&&, (:call, :(!=), :N, 1), (:(=), (:., :Br, (:quote, #QuoteNode
+                :dims
+              )), :dims)),
+        (:line, 487, :none),
+        (:return, :Br)
+      )),
+    (:line, 492, :none),
+    (:(=), (:where, (:call, :convert, (:(::), (:curly, :Type, (:curly, :Array, :T))), (:(::), :B, (:curly, :BitArray, :N))), :T, :N), (:block,
+        (:line, 492, :none),
+        (:call, :convert, (:curly, :Array, :T, :N), :B)
+      )),
+    (:line, 493, :none),
+    (:(=), (:where, (:call, :convert, (:(::), (:curly, :Type, (:curly, :Array, :T, :N))), (:(::), :B, (:curly, :BitArray, :N))), :T, :N), (:block,
+        (:line, 493, :none),
+        (:call, :_convert, (:curly, :Array, :T, :N), :B)
+      )),
+    (:line, 494, :none),
+    (:function, (:where, (:call, :_convert, (:(::), (:curly, :Type, (:curly, :Array, :T, :N))), (:(::), :B, (:curly, :BitArray, :N))), :T, :N), (:block,
+        (:line, 495, :none),
+        (:(=), :A, (:call, (:curly, :Array, :T), (:call, :size, :B))),
+        (:line, 496, :none),
+        (:(=), :Bc, (:., :B, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 497, :none),
+        (:macrocall, Symbol("@inbounds"), (:for, (:(=), :i, (:(:), 1, (:call, :length, :A))), (:block,
+              (:line, 498, :none),
+              (:(=), (:ref, :A, :i), (:call, :unsafe_bitgetindex, :Bc, :i))
+            ))),
+        (:line, 500, :none),
+        (:return, :A)
+      )),
+    (:line, 503, :none),
+    (:(=), (:where, (:call, :convert, (:(::), (:curly, :Type, :BitArray)), (:(::), :A, (:curly, :AbstractArray, :T, :N))), :T, :N), (:block,
+        (:line, 503, :none),
+        (:call, :convert, (:curly, :BitArray, :N), :A)
+      )),
+    (:line, 504, :none),
+    (:function, (:where, (:where, (:call, :convert, (:(::), (:curly, :Type, (:curly, :BitArray, :N))), (:(::), :A, (:curly, :AbstractArray, :T, :N))), :N), :T), (:block,
+        (:line, 505, :none),
+        (:(=), :B, (:call, :BitArray, (:call, :size, :A))),
+        (:line, 506, :none),
+        (:(=), :Bc, (:., :B, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 507, :none),
+        (:(=), :l, (:call, :length, :B)),
+        (:line, 508, :none),
+        (:&&, (:call, :(==), :l, 0), (:return, :B)),
+        (:line, 509, :none),
+        (:(=), :ind, 1),
+        (:line, 510, :none),
+        (:macrocall, Symbol("@inbounds"), (:block,
+            (:line, 511, :none),
+            (:for, (:(=), :i, (:(:), 1, (:call, :-, (:call, :length, :Bc), 1))), (:block,
+                (:line, 512, :none),
+                (:(=), :c, (:call, :UInt64, 0)),
+                (:line, 513, :none),
+                (:for, (:(=), :j, (:(:), 0, 63)), (:block,
+                    (:line, 514, :none),
+                    (:|=, :c, (:call, :<<, (:call, :UInt64, (:call, :(!=), (:ref, :A, :ind), 0)), :j)),
+                    (:line, 515, :none),
+                    (:+=, :ind, 1)
+                  )),
+                (:line, 517, :none),
+                (:(=), (:ref, :Bc, :i), :c)
+              )),
+            (:line, 519, :none),
+            (:(=), :c, (:call, :UInt64, 0)),
+            (:line, 520, :none),
+            (:for, (:(=), :j, (:(:), 0, (:call, :_mod64, (:call, :-, :l, 1)))), (:block,
+                (:line, 521, :none),
+                (:|=, :c, (:call, :<<, (:call, :UInt64, (:call, :(!=), (:ref, :A, :ind), 0)), :j)),
+                (:line, 522, :none),
+                (:+=, :ind, 1)
+              )),
+            (:line, 524, :none),
+            (:(=), (:ref, :Bc, :end), :c)
+          )),
+        (:line, 526, :none),
+        (:return, :B)
+      )),
+    (:line, 529, :none),
+    (:function, (:where, (:call, :convert, (:(::), (:curly, :Type, (:curly, :BitArray, :N))), (:(::), :A, (:curly, :Array, :Bool, :N))), :N), (:block,
+        (:line, 530, :none),
+        (:(=), :B, (:call, :BitArray, (:call, :size, :A))),
+        (:line, 531, :none),
+        (:(=), :Bc, (:., :B, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 532, :none),
+        (:(=), :l, (:call, :length, :B)),
+        (:line, 533, :none),
+        (:&&, (:call, :(==), :l, 0), (:return, :B)),
+        (:line, 534, :none),
+        (:call, :copy_to_bitarray_chunks!, :Bc, 1, :A, 1, :l),
+        (:line, 535, :none),
+        (:return, :B)
+      )),
+    (:line, 538, :none),
+    (:(=), (:where, (:call, :convert, (:(::), (:curly, :Type, (:curly, :BitArray, :N))), (:(::), :B, (:curly, :BitArray, :N))), :N), (:block,
+        (:line, 538, :none),
+        :B
+      )),
+    (:line, 539, :none),
+    (:(=), (:where, (:call, :convert, (:(::), (:curly, :Type, (:curly, :AbstractArray, :T, :N))), (:(::), :B, (:curly, :BitArray, :N))), :T, :N), (:block,
+        (:line, 539, :none),
+        (:call, :convert, (:curly, :Array, :T, :N), :B)
+      )),
+    (:line, 541, :none),
+    (:(=), (:where, (:call, :reinterpret, (:(::), (:curly, :Type, :Bool)), (:(::), :B, :BitArray), (:(::), :dims, (:curly, :NTuple, :N, :Int))), :N), (:block,
+        (:line, 541, :none),
+        (:call, :reinterpret, :B, :dims)
+      )),
+    (:line, 542, :none),
+    (:(=), (:where, (:call, :reinterpret, (:(::), :B, :BitArray), (:(::), :dims, (:curly, :NTuple, :N, :Int))), :N), (:block,
+        (:line, 542, :none),
+        (:call, :reshape, :B, :dims)
+      )),
+    (:line, 546, :none),
+    (:(=), (:call, (:curly, :BitArray, :T, :N), (:(::), :A, (:curly, :AbstractArray, :T, :N))), (:block,
+        (:line, 546, :none),
+        (:call, :convert, (:curly, :BitArray, :N), :A)
+      )),
+    (:line, 548, :none),
+    (:macrocall, :(Core.@doc), "    BitArray(itr)\n\nConstruct a `BitArray` generated by the given iterable object. The shape is inferred from\nthe `itr` object.\n\n```jldoctest\njulia> BitArray([1 0; 0 1])\n2×2 BitArray{2}:\n  true  false\n false   true\n\njulia> BitArray(x+y == 3 for x = 1:2, y = 1:3)\n2×3 BitArray{2}:\n false   true  false\n  true  false  false\n\njulia> BitArray(x+y == 3 for x = 1:2 for y = 1:3)\n6-element BitArray{1}:\n false\n  true\n false\n  true\n false\n false\n```\n", (:(=), (:call, :BitArray, :itr), (:block,
+          (:line, 575, :none),
+          (:call, :gen_bitarray, (:call, :iteratorsize, :itr), :itr)
+        ))),
+    (:line, 579, :none),
+    (:(=), (:call, :gen_bitarray, (:(::), :isz, :IteratorSize), :itr), (:block,
+        (:line, 579, :none),
+        (:call, :gen_bitarray_from_itr, :itr, (:call, :start, :itr))
+      )),
+    (:line, 582, :none),
+    (:function, (:call, :gen_bitarray, (:(::), :HasShape), :itr), (:block,
+        (:line, 583, :none),
+        (:(=), :B, (:call, :BitArray, (:call, :size, :itr))),
+        (:line, 584, :none),
+        (:for, (:(=), (:tuple, :I, :x), (:call, :zip, (:call, :CartesianRange, (:call, :indices, :itr)), :itr)), (:block,
+            (:line, 585, :none),
+            (:(=), (:ref, :B, :I), :x)
+          )),
+        (:line, 587, :none),
+        (:return, :B)
+      )),
+    (:line, 591, :none),
+    (:function, (:call, :gen_bitarray, (:(::), :HasShape), (:(::), :itr, :Generator)), (:block,
+        (:line, 592, :none),
+        (:(=), :B, (:call, :BitArray, (:call, :size, :itr))),
+        (:line, 593, :none),
+        (:return, (:call, :fill_bitarray_from_itr!, :B, :itr, (:call, :start, :itr)))
+      )),
+    (:line, 595, :none),
+    (:function, (:call, :gen_bitarray, (:(::), :HasLength), :itr), (:block,
+        (:line, 596, :none),
+        (:(=), :n, (:call, :length, :itr)),
+        (:line, 597, :none),
+        (:(=), :B, (:call, :BitArray, :n)),
+        (:line, 598, :none),
+        (:return, (:call, :fill_bitarray_from_itr!, :B, :itr, (:call, :start, :itr)))
+      )),
+    (:line, 601, :none),
+    (:(=), (:call, :gen_bitarray, (:(::), :IsInfinite), :itr), (:block,
+        (:line, 601, :none),
+        (:call, :throw, (:call, :ArgumentError, "infinite-size iterable used in BitArray constructor"))
+      )),
+    (:line, 606, :none),
+    (:function, (:call, :gen_bitarray_from_itr, :itr, :st), (:block,
+        (:line, 607, :none),
+        (:(=), :B, (:call, :empty!, (:call, :BitArray, :bitcache_size))),
+        (:line, 608, :none),
+        (:(=), :C, (:call, (:curly, :Vector, :Bool), :bitcache_size)),
+        (:line, 609, :none),
+        (:(=), :Bc, (:., :B, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 610, :none),
+        (:(=), :ind, 1),
+        (:line, 611, :none),
+        (:(=), :cind, 1),
+        (:line, 612, :none),
+        (:while, (:call, :!, (:call, :done, :itr, :st)), (:block,
+            (:line, 613, :none),
+            (:(=), (:tuple, :x, :st), (:call, :next, :itr, :st)),
+            (:line, 614, :none),
+            (:macrocall, Symbol("@inbounds"), (:(=), (:ref, :C, :ind), :x)),
+            (:line, 615, :none),
+            (:+=, :ind, 1),
+            (:line, 616, :none),
+            (:if, (:call, :>, :ind, :bitcache_size), (:block,
+                (:line, 617, :none),
+                (:call, :resize!, :B, (:call, :+, (:call, :length, :B), :bitcache_size)),
+                (:line, 618, :none),
+                (:call, :dumpbitcache, :Bc, :cind, :C),
+                (:line, 619, :none),
+                (:+=, :cind, :bitcache_chunks),
+                (:line, 620, :none),
+                (:(=), :ind, 1)
+              ))
+          )),
+        (:line, 623, :none),
+        (:if, (:call, :>, :ind, 1), (:block,
+            (:line, 624, :none),
+            (:macrocall, Symbol("@inbounds"), (:(=), (:ref, :C, (:(:), :ind, :bitcache_size)), false)),
+            (:line, 625, :none),
+            (:call, :resize!, :B, (:call, :-, (:call, :+, (:call, :length, :B), :ind), 1)),
+            (:line, 626, :none),
+            (:call, :dumpbitcache, :Bc, :cind, :C)
+          )),
+        (:line, 628, :none),
+        (:return, :B)
+      )),
+    (:line, 631, :none),
+    (:function, (:call, :fill_bitarray_from_itr!, (:(::), :B, :BitArray), :itr, :st), (:block,
+        (:line, 632, :none),
+        (:(=), :n, (:call, :length, :B)),
+        (:line, 633, :none),
+        (:(=), :C, (:call, (:curly, :Vector, :Bool), :bitcache_size)),
+        (:line, 634, :none),
+        (:(=), :Bc, (:., :B, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 635, :none),
+        (:(=), :ind, 1),
+        (:line, 636, :none),
+        (:(=), :cind, 1),
+        (:line, 637, :none),
+        (:while, (:call, :!, (:call, :done, :itr, :st)), (:block,
+            (:line, 638, :none),
+            (:(=), (:tuple, :x, :st), (:call, :next, :itr, :st)),
+            (:line, 639, :none),
+            (:macrocall, Symbol("@inbounds"), (:(=), (:ref, :C, :ind), :x)),
+            (:line, 640, :none),
+            (:+=, :ind, 1),
+            (:line, 641, :none),
+            (:if, (:call, :>, :ind, :bitcache_size), (:block,
+                (:line, 642, :none),
+                (:call, :dumpbitcache, :Bc, :cind, :C),
+                (:line, 643, :none),
+                (:+=, :cind, :bitcache_chunks),
+                (:line, 644, :none),
+                (:(=), :ind, 1)
+              ))
+          )),
+        (:line, 647, :none),
+        (:if, (:call, :>, :ind, 1), (:block,
+            (:line, 648, :none),
+            (:macrocall, Symbol("@inbounds"), (:(=), (:ref, :C, (:(:), :ind, :bitcache_size)), false)),
+            (:line, 649, :none),
+            (:call, :dumpbitcache, :Bc, :cind, :C)
+          )),
+        (:line, 651, :none),
+        (:return, :B)
+      )),
+    (:line, 657, :none),
+    (:macrocall, Symbol("@inline"), (:function, (:call, :unsafe_bitgetindex, (:(::), :Bc, (:curly, :Vector, :UInt64)), (:(::), :i, :Int)), (:block,
+          (:line, 658, :none),
+          (:(=), (:tuple, :i1, :i2), (:call, :get_chunks_id, :i)),
+          (:line, 659, :none),
+          (:(=), :u, (:call, :<<, (:call, :UInt64, 1), :i2)),
+          (:line, 660, :none),
+          (:macrocall, Symbol("@inbounds"), (:(=), :r, (:call, :(!=), (:call, :&, (:ref, :Bc, :i1), :u), 0))),
+          (:line, 661, :none),
+          (:return, :r)
+        ))),
+    (:line, 664, :none),
+    (:macrocall, Symbol("@inline"), (:function, (:call, :getindex, (:(::), :B, :BitArray), (:(::), :i, :Int)), (:block,
+          (:line, 665, :none),
+          (:macrocall, Symbol("@boundscheck"), (:call, :checkbounds, :B, :i)),
+          (:line, 666, :none),
+          (:call, :unsafe_bitgetindex, (:., :B, (:quote, #QuoteNode
+                :chunks
+              )), :i)
+        ))),
+    (:line, 671, :none),
+    (:macrocall, Symbol("@inline"), (:function, (:call, :unsafe_bitsetindex!, (:(::), :Bc, (:curly, :Array, :UInt64)), (:(::), :x, :Bool), (:(::), :i, :Int)), (:block,
+          (:line, 672, :none),
+          (:(=), (:tuple, :i1, :i2), (:call, :get_chunks_id, :i)),
+          (:line, 673, :none),
+          (:(=), :u, (:call, :<<, (:call, :UInt64, 1), :i2)),
+          (:line, 674, :none),
+          (:macrocall, Symbol("@inbounds"), (:block,
+              (:line, 675, :none),
+              (:(=), :c, (:ref, :Bc, :i1)),
+              (:line, 676, :none),
+              (:(=), (:ref, :Bc, :i1), (:call, :ifelse, :x, (:call, :|, :c, :u), (:call, :&, :c, (:call, :~, :u))))
+            ))
+        ))),
+    (:line, 680, :none),
+    (:macrocall, Symbol("@inline"), (:function, (:call, :setindex!, (:(::), :B, :BitArray), :x, (:(::), :i, :Int)), (:block,
+          (:line, 681, :none),
+          (:macrocall, Symbol("@boundscheck"), (:call, :checkbounds, :B, :i)),
+          (:line, 682, :none),
+          (:call, :unsafe_bitsetindex!, (:., :B, (:quote, #QuoteNode
+                :chunks
+              )), (:call, :convert, :Bool, :x), :i),
+          (:line, 683, :none),
+          (:return, :B)
+        ))),
+    (:line, 686, :none),
+    (:(=), (:call, :indexoffset, :i), (:block,
+        (:line, 686, :none),
+        (:call, :-, (:call, :first, :i), 1)
+      )),
+    (:line, 687, :none),
+    (:(=), (:call, :indexoffset, (:(::), :Colon)), (:block,
+        (:line, 687, :none),
+        0
+      )),
+    (:line, 689, :none),
+    (:macrocall, Symbol("@inline"), (:function, (:call, :setindex!, (:(::), :B, :BitArray), :x, (:(::), :J0, (:curly, :Union, :Colon, (:curly, :UnitRange, :Int)))), (:block,
+          (:line, 690, :none),
+          (:(=), :I0, (:ref, (:call, :to_indices, :B, (:tuple, :J0)), 1)),
+          (:line, 691, :none),
+          (:macrocall, Symbol("@boundscheck"), (:call, :checkbounds, :B, :I0)),
+          (:line, 692, :none),
+          (:(=), :y, (:call, :Bool, :x)),
+          (:line, 693, :none),
+          (:(=), :l0, (:call, :length, :I0)),
+          (:line, 694, :none),
+          (:&&, (:call, :(==), :l0, 0), (:return, :B)),
+          (:line, 695, :none),
+          (:(=), :f0, (:call, :+, (:call, :indexoffset, :I0), 1)),
+          (:line, 696, :none),
+          (:call, :fill_chunks!, (:., :B, (:quote, #QuoteNode
+                :chunks
+              )), :y, :f0, :l0),
+          (:line, 697, :none),
+          (:return, :B)
+        ))),
+    (:line, 703, :none),
+    (:macrocall, Symbol("@inline"), (:function, (:call, :setindex!, (:(::), :B, :BitArray), :x, (:(::), :I, :BitArray)), (:block,
+          (:line, 704, :none),
+          (:macrocall, Symbol("@boundscheck"), (:call, :checkbounds, :B, :I)),
+          (:line, 705, :none),
+          (:call, :_unsafe_setindex!, :B, :x, :I)
+        ))),
+    (:line, 707, :none),
+    (:function, (:call, :_unsafe_setindex!, (:(::), :B, :BitArray), :x, (:(::), :I, :BitArray)), (:block,
+        (:line, 708, :none),
+        (:(=), :y, (:call, :convert, :Bool, :x)),
+        (:line, 709, :none),
+        (:(=), :Bc, (:., :B, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 710, :none),
+        (:(=), :Ic, (:., :I, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 711, :none),
+        (:||, (:call, :(==), (:call, :length, :Bc), (:call, :length, :Ic)), (:call, :throw_boundserror, :B, :I)),
+        (:line, 712, :none),
+        (:macrocall, Symbol("@inbounds"), (:if, :y, (:block,
+              (:line, 713, :none),
+              (:for, (:(=), :i, (:(:), 1, (:call, :length, :Bc))), (:block,
+                  (:line, 714, :none),
+                  (:|=, (:ref, :Bc, :i), (:ref, :Ic, :i))
+                ))
+            ), (:block,
+              (:line, 717, :none),
+              (:for, (:(=), :i, (:(:), 1, (:call, :length, :Bc))), (:block,
+                  (:line, 718, :none),
+                  (:&=, (:ref, :Bc, :i), (:call, :~, (:ref, :Ic, :i)))
+                ))
+            ))),
+        (:line, 721, :none),
+        (:return, :B)
+      )),
+    (:line, 726, :none),
+    (:macrocall, Symbol("@inline"), (:function, (:call, :setindex!, (:(::), :B, :BitArray), (:(::), :X, :AbstractArray), (:(::), :I, :BitArray)), (:block,
+          (:line, 727, :none),
+          (:macrocall, Symbol("@boundscheck"), (:call, :checkbounds, :B, :I)),
+          (:line, 728, :none),
+          (:call, :_unsafe_setindex!, :B, :X, :I)
+        ))),
+    (:line, 730, :none),
+    (:function, (:call, :_unsafe_setindex!, (:(::), :B, :BitArray), (:(::), :X, :AbstractArray), (:(::), :I, :BitArray)), (:block,
+        (:line, 731, :none),
+        (:(=), :Bc, (:., :B, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 732, :none),
+        (:(=), :Ic, (:., :I, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 733, :none),
+        (:||, (:call, :(==), (:call, :length, :Bc), (:call, :length, :Ic)), (:call, :throw_boundserror, :B, :I)),
+        (:line, 734, :none),
+        (:(=), :lc, (:call, :length, :Bc)),
+        (:line, 735, :none),
+        (:(=), :lx, (:call, :length, :X)),
+        (:line, 736, :none),
+        (:(=), :last_chunk_len, (:call, :+, (:call, :_mod64, (:call, :-, (:call, :length, :B), 1)), 1)),
+        (:line, 738, :none),
+        (:(=), :c, 1),
+        (:line, 739, :none),
+        (:for, (:(=), :i, (:(:), 1, :lc)), (:block,
+            (:line, 740, :none),
+            (:macrocall, Symbol("@inbounds"), (:(=), :Imsk, (:ref, :Ic, :i))),
+            (:line, 741, :none),
+            (:macrocall, Symbol("@inbounds"), (:(=), :C, (:ref, :Bc, :i))),
+            (:line, 742, :none),
+            (:(=), :u, (:call, :UInt64, 1)),
+            (:line, 743, :none),
+            (:for, (:(=), :j, (:(:), 1, (:if, (:call, :<, :i, :lc), 64, :last_chunk_len))), (:block,
+                (:line, 744, :none),
+                (:if, (:call, :(!=), (:call, :&, :Imsk, :u), 0), (:block,
+                    (:line, 745, :none),
+                    (:&&, (:call, :<, :lx, :c), (:call, :throw_setindex_mismatch, :X, :c)),
+                    (:line, 746, :none),
+                    (:macrocall, Symbol("@inbounds"), (:(=), :x, (:call, :convert, :Bool, (:ref, :X, :c)))),
+                    (:line, 747, :none),
+                    (:(=), :C, (:call, :ifelse, :x, (:call, :|, :C, :u), (:call, :&, :C, (:call, :~, :u)))),
+                    (:line, 748, :none),
+                    (:+=, :c, 1)
+                  )),
+                (:line, 750, :none),
+                (:<<=, :u, 1)
+              )),
+            (:line, 752, :none),
+            (:macrocall, Symbol("@inbounds"), (:(=), (:ref, :Bc, :i), :C))
+          )),
+        (:line, 754, :none),
+        (:if, (:call, :(!=), (:call, :length, :X), (:call, :-, :c, 1)), (:block,
+            (:line, 755, :none),
+            (:call, :throw_setindex_mismatch, :X, (:call, :-, :c, 1))
+          )),
+        (:line, 757, :none),
+        (:return, :B)
+      )),
+    (:line, 762, :none),
+    (:function, (:call, :push!, (:(::), :B, :BitVector), :item), (:block,
+        (:line, 764, :none),
+        (:(=), :item, (:call, :convert, :Bool, :item)),
+        (:line, 766, :none),
+        (:(=), :Bc, (:., :B, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 768, :none),
+        (:(=), :l, (:call, :_mod64, (:call, :length, :B))),
+        (:line, 769, :none),
+        (:if, (:call, :(==), :l, 0), (:block,
+            (:line, 770, :none),
+            (:call, :ccall, (:quote, #QuoteNode
+                :jl_array_grow_end
+              ), :Void, (:tuple, :Any, :UInt), :Bc, 1),
+            (:line, 771, :none),
+            (:(=), (:ref, :Bc, :end), (:call, :UInt64, 0))
+          )),
+        (:line, 773, :none),
+        (:+=, (:., :B, (:quote, #QuoteNode
+              :len
+            )), 1),
+        (:line, 774, :none),
+        (:if, :item, (:block,
+            (:line, 775, :none),
+            (:(=), (:ref, :B, :end), true)
+          )),
+        (:line, 777, :none),
+        (:return, :B)
+      )),
+    (:line, 780, :none),
+    (:function, (:call, :append!, (:(::), :B, :BitVector), (:(::), :items, :BitVector)), (:block,
+        (:line, 781, :none),
+        (:(=), :n0, (:call, :length, :B)),
+        (:line, 782, :none),
+        (:(=), :n1, (:call, :length, :items)),
+        (:line, 783, :none),
+        (:&&, (:call, :(==), :n1, 0), (:return, :B)),
+        (:line, 784, :none),
+        (:(=), :Bc, (:., :B, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 785, :none),
+        (:(=), :k0, (:call, :length, :Bc)),
+        (:line, 786, :none),
+        (:(=), :k1, (:call, :num_bit_chunks, (:call, :+, :n0, :n1))),
+        (:line, 787, :none),
+        (:if, (:call, :>, :k1, :k0), (:block,
+            (:line, 788, :none),
+            (:call, :ccall, (:quote, #QuoteNode
+                :jl_array_grow_end
+              ), :Void, (:tuple, :Any, :UInt), :Bc, (:call, :-, :k1, :k0)),
+            (:line, 789, :none),
+            (:(=), (:ref, :Bc, :end), (:call, :UInt64, 0))
+          )),
+        (:line, 791, :none),
+        (:+=, (:., :B, (:quote, #QuoteNode
+              :len
+            )), :n1),
+        (:line, 792, :none),
+        (:call, :copy_chunks!, :Bc, (:call, :+, :n0, 1), (:., :items, (:quote, #QuoteNode
+              :chunks
+            )), 1, :n1),
+        (:line, 793, :none),
+        (:return, :B)
+      )),
+    (:line, 796, :none),
+    (:(=), (:call, :append!, (:(::), :B, :BitVector), (:(::), :items, (:curly, :AbstractVector, :Bool))), (:block,
+        (:line, 796, :none),
+        (:call, :append!, :B, (:call, :BitArray, :items))
+      )),
+    (:line, 797, :none),
+    (:(=), (:call, :append!, (:(::), :A, (:curly, :Vector, :Bool)), (:(::), :items, :BitVector)), (:block,
+        (:line, 797, :none),
+        (:call, :append!, :A, (:call, :Array, :items))
+      )),
+    (:line, 799, :none),
+    (:function, (:call, :prepend!, (:(::), :B, :BitVector), (:(::), :items, :BitVector)), (:block,
+        (:line, 800, :none),
+        (:(=), :n0, (:call, :length, :B)),
+        (:line, 801, :none),
+        (:(=), :n1, (:call, :length, :items)),
+        (:line, 802, :none),
+        (:&&, (:call, :(==), :n1, 0), (:return, :B)),
+        (:line, 803, :none),
+        (:(=), :Bc, (:., :B, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 804, :none),
+        (:(=), :k0, (:call, :length, :Bc)),
+        (:line, 805, :none),
+        (:(=), :k1, (:call, :num_bit_chunks, (:call, :+, :n0, :n1))),
+        (:line, 806, :none),
+        (:if, (:call, :>, :k1, :k0), (:block,
+            (:line, 807, :none),
+            (:call, :ccall, (:quote, #QuoteNode
+                :jl_array_grow_end
+              ), :Void, (:tuple, :Any, :UInt), :Bc, (:call, :-, :k1, :k0)),
+            (:line, 808, :none),
+            (:(=), (:ref, :Bc, :end), (:call, :UInt64, 0))
+          )),
+        (:line, 810, :none),
+        (:+=, (:., :B, (:quote, #QuoteNode
+              :len
+            )), :n1),
+        (:line, 811, :none),
+        (:call, :copy_chunks!, :Bc, (:call, :+, 1, :n1), :Bc, 1, :n0),
+        (:line, 812, :none),
+        (:call, :copy_chunks!, :Bc, 1, (:., :items, (:quote, #QuoteNode
+              :chunks
+            )), 1, :n1),
+        (:line, 813, :none),
+        (:return, :B)
+      )),
+    (:line, 816, :none),
+    (:(=), (:call, :prepend!, (:(::), :B, :BitVector), (:(::), :items, (:curly, :AbstractVector, :Bool))), (:block,
+        (:line, 816, :none),
+        (:call, :prepend!, :B, (:call, :BitArray, :items))
+      )),
+    (:line, 817, :none),
+    (:(=), (:call, :prepend!, (:(::), :A, (:curly, :Vector, :Bool)), (:(::), :items, :BitVector)), (:block,
+        (:line, 817, :none),
+        (:call, :prepend!, :A, (:call, :Array, :items))
+      )),
+    (:line, 819, :none),
+    (:function, (:call, :sizehint!, (:(::), :B, :BitVector), (:(::), :sz, :Integer)), (:block,
+        (:line, 820, :none),
+        (:call, :ccall, (:quote, #QuoteNode
+            :jl_array_sizehint
+          ), :Void, (:tuple, :Any, :UInt), (:., :B, (:quote, #QuoteNode
+              :chunks
+            )), (:call, :num_bit_chunks, :sz)),
+        (:line, 821, :none),
+        (:return, :B)
+      )),
+    (:line, 824, :none),
+    (:function, (:call, :resize!, (:(::), :B, :BitVector), (:(::), :n, :Integer)), (:block,
+        (:line, 825, :none),
+        (:(=), :n0, (:call, :length, :B)),
+        (:line, 826, :none),
+        (:&&, (:call, :(==), :n, :n0), (:return, :B)),
+        (:line, 827, :none),
+        (:||, (:call, :(>=), :n, 0), (:call, :throw, (:call, :BoundsError, :B, :n))),
+        (:line, 828, :none),
+        (:if, (:call, :<, :n, :n0), (:block,
+            (:line, 829, :none),
+            (:call, :deleteat!, :B, (:(:), (:call, :+, :n, 1), :n0)),
+            (:line, 830, :none),
+            (:return, :B)
+          )),
+        (:line, 832, :none),
+        (:(=), :Bc, (:., :B, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 833, :none),
+        (:(=), :k0, (:call, :length, :Bc)),
+        (:line, 834, :none),
+        (:(=), :k1, (:call, :num_bit_chunks, (:call, :Int, :n))),
+        (:line, 835, :none),
+        (:if, (:call, :>, :k1, :k0), (:block,
+            (:line, 836, :none),
+            (:call, :ccall, (:quote, #QuoteNode
+                :jl_array_grow_end
+              ), :Void, (:tuple, :Any, :UInt), :Bc, (:call, :-, :k1, :k0)),
+            (:line, 837, :none),
+            (:(=), (:ref, :Bc, :end), (:call, :UInt64, 0))
+          )),
+        (:line, 839, :none),
+        (:(=), (:., :B, (:quote, #QuoteNode
+              :len
+            )), :n),
+        (:line, 840, :none),
+        (:return, :B)
+      )),
+    (:line, 843, :none),
+    (:function, (:call, :pop!, (:(::), :B, :BitVector)), (:block,
+        (:line, 844, :none),
+        (:&&, (:call, :isempty, :B), (:call, :throw, (:call, :ArgumentError, "argument must not be empty"))),
+        (:line, 845, :none),
+        (:(=), :item, (:ref, :B, :end)),
+        (:line, 846, :none),
+        (:(=), (:ref, :B, :end), false),
+        (:line, 848, :none),
+        (:(=), :l, (:call, :_mod64, (:call, :length, :B))),
+        (:line, 849, :none),
+        (:&&, (:call, :(==), :l, 1), (:call, :ccall, (:quote, #QuoteNode
+              :jl_array_del_end
+            ), :Void, (:tuple, :Any, :UInt), (:., :B, (:quote, #QuoteNode
+                :chunks
+              )), 1)),
+        (:line, 850, :none),
+        (:-=, (:., :B, (:quote, #QuoteNode
+              :len
+            )), 1),
+        (:line, 852, :none),
+        (:return, :item)
+      )),
+    (:line, 855, :none),
+    (:function, (:call, :unshift!, (:(::), :B, :BitVector), :item), (:block,
+        (:line, 856, :none),
+        (:(=), :item, (:call, :convert, :Bool, :item)),
+        (:line, 858, :none),
+        (:(=), :Bc, (:., :B, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 860, :none),
+        (:(=), :l, (:call, :_mod64, (:call, :length, :B))),
+        (:line, 861, :none),
+        (:if, (:call, :(==), :l, 0), (:block,
+            (:line, 862, :none),
+            (:call, :ccall, (:quote, #QuoteNode
+                :jl_array_grow_end
+              ), :Void, (:tuple, :Any, :UInt), :Bc, 1),
+            (:line, 863, :none),
+            (:(=), (:ref, :Bc, :end), (:call, :UInt64, 0))
+          )),
+        (:line, 865, :none),
+        (:+=, (:., :B, (:quote, #QuoteNode
+              :len
+            )), 1),
+        (:line, 866, :none),
+        (:if, (:call, :(==), (:., :B, (:quote, #QuoteNode
+                :len
+              )), 1), (:block,
+            (:line, 867, :none),
+            (:(=), (:ref, :Bc, 1), :item),
+            (:line, 868, :none),
+            (:return, :B)
+          )),
+        (:line, 870, :none),
+        (:for, (:(=), :i, (:(:), (:call, :length, :Bc), -1, 2)), (:block,
+            (:line, 871, :none),
+            (:(=), (:ref, :Bc, :i), (:call, :|, (:call, :<<, (:ref, :Bc, :i), 1), (:call, :>>>, (:ref, :Bc, (:call, :-, :i, 1)), 63)))
+          )),
+        (:line, 873, :none),
+        (:(=), (:ref, :Bc, 1), (:call, :|, (:call, :UInt64, :item), (:call, :<<, (:ref, :Bc, 1), 1))),
+        (:line, 874, :none),
+        (:return, :B)
+      )),
+    (:line, 877, :none),
+    (:function, (:call, :shift!, (:(::), :B, :BitVector)), (:block,
+        (:line, 878, :none),
+        (:&&, (:call, :isempty, :B), (:call, :throw, (:call, :ArgumentError, "argument must not be empty"))),
+        (:line, 879, :none),
+        (:macrocall, Symbol("@inbounds"), (:block,
+            (:line, 880, :none),
+            (:(=), :item, (:ref, :B, 1)),
+            (:line, 882, :none),
+            (:(=), :Bc, (:., :B, (:quote, #QuoteNode
+                  :chunks
+                ))),
+            (:line, 884, :none),
+            (:for, (:(=), :i, (:(:), 1, (:call, :-, (:call, :length, :Bc), 1))), (:block,
+                (:line, 885, :none),
+                (:(=), (:ref, :Bc, :i), (:call, :|, (:call, :>>>, (:ref, :Bc, :i), 1), (:call, :<<, (:ref, :Bc, (:call, :+, :i, 1)), 63)))
+              )),
+            (:line, 888, :none),
+            (:(=), :l, (:call, :_mod64, (:call, :length, :B))),
+            (:line, 889, :none),
+            (:if, (:call, :(==), :l, 1), (:block,
+                (:line, 890, :none),
+                (:call, :ccall, (:quote, #QuoteNode
+                    :jl_array_del_end
+                  ), :Void, (:tuple, :Any, :UInt), :Bc, 1)
+              ), (:block,
+                (:line, 892, :none),
+                (:>>>=, (:ref, :Bc, :end), 1)
+              )),
+            (:line, 894, :none),
+            (:-=, (:., :B, (:quote, #QuoteNode
+                  :len
+                )), 1)
+          )),
+        (:line, 897, :none),
+        (:return, :item)
+      )),
+    (:line, 900, :none),
+    (:function, (:call, :insert!, (:(::), :B, :BitVector), (:(::), :i, :Integer), :item), (:block,
+        (:line, 901, :none),
+        (:(=), :n, (:call, :length, :B)),
+        (:line, 902, :none),
+        (:||, (:comparison, 1, :(<=), :i, :(<=), (:call, :+, :n, 1)), (:call, :throw, (:call, :BoundsError, :B, :i))),
+        (:line, 903, :none),
+        (:(=), :item, (:call, :convert, :Bool, :item)),
+        (:line, 905, :none),
+        (:(=), :Bc, (:., :B, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 907, :none),
+        (:(=), (:tuple, :k, :j), (:call, :get_chunks_id, :i)),
+        (:line, 909, :none),
+        (:(=), :l, (:call, :_mod64, (:call, :length, :B))),
+        (:line, 910, :none),
+        (:if, (:call, :(==), :l, 0), (:block,
+            (:line, 911, :none),
+            (:call, :ccall, (:quote, #QuoteNode
+                :jl_array_grow_end
+              ), :Void, (:tuple, :Any, :UInt), :Bc, 1),
+            (:line, 912, :none),
+            (:(=), (:ref, :Bc, :end), (:call, :UInt64, 0))
+          )),
+        (:line, 914, :none),
+        (:+=, (:., :B, (:quote, #QuoteNode
+              :len
+            )), 1),
+        (:line, 916, :none),
+        (:for, (:(=), :t, (:(:), (:call, :length, :Bc), -1, (:call, :+, :k, 1))), (:block,
+            (:line, 917, :none),
+            (:(=), (:ref, :Bc, :t), (:call, :|, (:call, :<<, (:ref, :Bc, :t), 1), (:call, :>>>, (:ref, :Bc, (:call, :-, :t, 1)), 63)))
+          )),
+        (:line, 920, :none),
+        (:(=), :msk_aft, (:call, :<<, :_msk64, :j)),
+        (:line, 921, :none),
+        (:(=), :msk_bef, (:call, :~, :msk_aft)),
+        (:line, 922, :none),
+        (:(=), (:ref, :Bc, :k), (:call, :|, (:call, :&, :msk_bef, (:ref, :Bc, :k)), (:call, :<<, (:call, :&, :msk_aft, (:ref, :Bc, :k)), 1))),
+        (:line, 923, :none),
+        (:(=), (:ref, :B, :i), :item),
+        (:line, 924, :none),
+        :B
+      )),
+    (:line, 927, :none),
+    (:function, (:call, :_deleteat!, (:(::), :B, :BitVector), (:(::), :i, :Integer)), (:block,
+        (:line, 928, :none),
+        (:(=), (:tuple, :k, :j), (:call, :get_chunks_id, :i)),
+        (:line, 930, :none),
+        (:(=), :msk_bef, (:call, :>>>, :_msk64, (:call, :-, 63, :j))),
+        (:line, 931, :none),
+        (:(=), :msk_aft, (:call, :~, :msk_bef)),
+        (:line, 932, :none),
+        (:>>>=, :msk_bef, 1),
+        (:line, 934, :none),
+        (:(=), :Bc, (:., :B, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 936, :none),
+        (:macrocall, Symbol("@inbounds"), (:block,
+            (:line, 937, :none),
+            (:(=), (:ref, :Bc, :k), (:call, :|, (:call, :&, :msk_bef, (:ref, :Bc, :k)), (:call, :>>, (:call, :&, :msk_aft, (:ref, :Bc, :k)), 1))),
+            (:line, 938, :none),
+            (:if, (:call, :>, (:call, :length, :Bc), :k), (:block,
+                (:line, 939, :none),
+                (:|=, (:ref, :Bc, :k), (:call, :<<, (:ref, :Bc, (:call, :+, :k, 1)), 63))
+              )),
+            (:line, 942, :none),
+            (:for, (:(=), :t, (:(:), (:call, :+, :k, 1), (:call, :-, (:call, :length, :Bc), 1))), (:block,
+                (:line, 943, :none),
+                (:(=), (:ref, :Bc, :t), (:call, :|, (:call, :>>>, (:ref, :Bc, :t), 1), (:call, :<<, (:ref, :Bc, (:call, :+, :t, 1)), 63)))
+              )),
+            (:line, 946, :none),
+            (:(=), :l, (:call, :_mod64, (:call, :length, :B))),
+            (:line, 948, :none),
+            (:if, (:call, :(==), :l, 1), (:block,
+                (:line, 949, :none),
+                (:call, :ccall, (:quote, #QuoteNode
+                    :jl_array_del_end
+                  ), :Void, (:tuple, :Any, :UInt), :Bc, 1)
+              ), (:block,
+                (:line, 950, :none),
+                (:if, (:call, :>, (:call, :length, :Bc), :k), (:block,
+                    (:line, 951, :none),
+                    (:>>>=, (:ref, :Bc, :end), 1)
+                  ))
+              ))
+          )),
+        (:line, 955, :none),
+        (:-=, (:., :B, (:quote, #QuoteNode
+              :len
+            )), 1),
+        (:line, 957, :none),
+        (:return, :B)
+      )),
+    (:line, 960, :none),
+    (:function, (:call, :deleteat!, (:(::), :B, :BitVector), (:(::), :i, :Integer)), (:block,
+        (:line, 961, :none),
+        (:(=), :n, (:call, :length, :B)),
+        (:line, 962, :none),
+        (:||, (:comparison, 1, :(<=), :i, :(<=), :n), (:call, :throw, (:call, :BoundsError, :B, :i))),
+        (:line, 964, :none),
+        (:return, (:call, :_deleteat!, :B, :i))
+      )),
+    (:line, 967, :none),
+    (:function, (:call, :deleteat!, (:(::), :B, :BitVector), (:(::), :r, (:curly, :UnitRange, :Int))), (:block,
+        (:line, 968, :none),
+        (:(=), :n, (:call, :length, :B)),
+        (:line, 969, :none),
+        (:(=), :i_f, (:call, :first, :r)),
+        (:line, 970, :none),
+        (:(=), :i_l, (:call, :last, :r)),
+        (:line, 971, :none),
+        (:||, (:call, :(<=), 1, :i_f), (:call, :throw, (:call, :BoundsError, :B, :i_f))),
+        (:line, 972, :none),
+        (:||, (:call, :(<=), :i_l, :n), (:call, :throw, (:call, :BoundsError, :B, (:call, :+, :n, 1)))),
+        (:line, 974, :none),
+        (:(=), :Bc, (:., :B, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 975, :none),
+        (:(=), :new_l, (:call, :-, (:call, :length, :B), (:call, :length, :r))),
+        (:line, 976, :none),
+        (:(=), :delta_k, (:call, :-, (:call, :num_bit_chunks, :new_l), (:call, :length, :Bc))),
+        (:line, 978, :none),
+        (:call, :copy_chunks!, :Bc, :i_f, :Bc, (:call, :+, :i_l, 1), (:call, :-, :n, :i_l)),
+        (:line, 980, :none),
+        (:&&, (:call, :<, :delta_k, 0), (:call, :ccall, (:quote, #QuoteNode
+              :jl_array_del_end
+            ), :Void, (:tuple, :Any, :UInt), :Bc, (:call, :-, :delta_k))),
+        (:line, 982, :none),
+        (:(=), (:., :B, (:quote, #QuoteNode
+              :len
+            )), :new_l),
+        (:line, 984, :none),
+        (:if, (:call, :>, :new_l, 0), (:block,
+            (:line, 985, :none),
+            (:&=, (:ref, :Bc, :end), (:call, :_msk_end, :new_l))
+          )),
+        (:line, 988, :none),
+        (:return, :B)
+      )),
+    (:line, 991, :none),
+    (:function, (:call, :deleteat!, (:(::), :B, :BitVector), :inds), (:block,
+        (:line, 992, :none),
+        (:(=), :n, (:(=), :new_l, (:call, :length, :B))),
+        (:line, 993, :none),
+        (:(=), :s, (:call, :start, :inds)),
+        (:line, 994, :none),
+        (:&&, (:call, :done, :inds, :s), (:return, :B)),
+        (:line, 996, :none),
+        (:(=), :Bc, (:., :B, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 998, :none),
+        (:(=), (:tuple, :p, :s), (:call, :next, :inds, :s)),
+        (:line, 999, :none),
+        (:(=), :q, (:call, :+, :p, 1)),
+        (:line, 1000, :none),
+        (:-=, :new_l, 1),
+        (:line, 1001, :none),
+        (:while, (:call, :!, (:call, :done, :inds, :s)), (:block,
+            (:line, 1002, :none),
+            (:(=), (:tuple, :i, :s), (:call, :next, :inds, :s)),
+            (:line, 1003, :none),
+            (:if, (:call, :!, (:comparison, :q, :(<=), :i, :(<=), :n)), (:block,
+                (:line, 1004, :none),
+                (:&&, (:call, :<, :i, :q), (:call, :throw, (:call, :ArgumentError, "indices must be unique and sorted"))),
+                (:line, 1005, :none),
+                (:call, :throw, (:call, :BoundsError, :B, :i))
+              )),
+            (:line, 1007, :none),
+            (:-=, :new_l, 1),
+            (:line, 1008, :none),
+            (:if, (:call, :>, :i, :q), (:block,
+                (:line, 1009, :none),
+                (:call, :copy_chunks!, :Bc, :p, :Bc, :q, (:call, :-, :i, :q)),
+                (:line, 1010, :none),
+                (:+=, :p, (:call, :-, :i, :q))
+              )),
+            (:line, 1012, :none),
+            (:(=), :q, (:call, :+, :i, 1))
+          )),
+        (:line, 1015, :none),
+        (:&&, (:call, :(<=), :q, :n), (:call, :copy_chunks!, :Bc, :p, :Bc, :q, (:call, :+, (:call, :-, :n, :q), 1))),
+        (:line, 1017, :none),
+        (:(=), :delta_k, (:call, :-, (:call, :num_bit_chunks, :new_l), (:call, :length, :Bc))),
+        (:line, 1018, :none),
+        (:&&, (:call, :<, :delta_k, 0), (:call, :ccall, (:quote, #QuoteNode
+              :jl_array_del_end
+            ), :Void, (:tuple, :Any, :UInt), :Bc, (:call, :-, :delta_k))),
+        (:line, 1020, :none),
+        (:(=), (:., :B, (:quote, #QuoteNode
+              :len
+            )), :new_l),
+        (:line, 1022, :none),
+        (:if, (:call, :>, :new_l, 0), (:block,
+            (:line, 1023, :none),
+            (:&=, (:ref, :Bc, :end), (:call, :_msk_end, :new_l))
+          )),
+        (:line, 1026, :none),
+        (:return, :B)
+      )),
+    (:line, 1029, :none),
+    (:function, (:call, :splice!, (:(::), :B, :BitVector), (:(::), :i, :Integer)), (:block,
+        (:line, 1030, :none),
+        (:(=), :n, (:call, :length, :B)),
+        (:line, 1031, :none),
+        (:||, (:comparison, 1, :(<=), :i, :(<=), :n), (:call, :throw, (:call, :BoundsError, :B, :i))),
+        (:line, 1033, :none),
+        (:(=), :v, (:ref, :B, :i)),
+        (:line, 1034, :none),
+        (:call, :_deleteat!, :B, :i),
+        (:line, 1035, :none),
+        (:return, :v)
+      )),
+    (:line, 1038, :none),
+    (:const, (:(=), :_default_bit_splice, (:call, :BitVector, 0))),
+    (:line, 1040, :none),
+    (:function, (:call, :splice!, (:(::), :B, :BitVector), (:(::), :r, (:curly, :Union, (:curly, :UnitRange, :Int), :Integer)), (:kw, (:(::), :ins, :AbstractArray), :_default_bit_splice)), (:block,
+        (:line, 1041, :none),
+        (:(=), :n, (:call, :length, :B)),
+        (:line, 1042, :none),
+        (:(=), :i_f, (:call, :first, :r)),
+        (:line, 1043, :none),
+        (:(=), :i_l, (:call, :last, :r)),
+        (:line, 1045, :none),
+        (:||, (:comparison, 1, :(<=), :i_f, :(<=), (:call, :+, :n, 1)), (:call, :throw, (:call, :BoundsError, :B, :i_f))),
+        (:line, 1046, :none),
+        (:||, (:call, :(<=), :i_l, :n), (:call, :throw, (:call, :BoundsError, :B, (:call, :+, :n, 1)))),
+        (:line, 1048, :none),
+        (:(=), :Bins, (:call, :convert, :BitArray, :ins)),
+        (:line, 1050, :none),
+        (:if, (:call, :>, :i_f, :n), (:block,
+            (:line, 1051, :none),
+            (:call, :append!, :B, :Bins),
+            (:line, 1052, :none),
+            (:return, (:call, :BitVector, 0))
+          )),
+        (:line, 1055, :none),
+        (:(=), :v, (:ref, :B, :r)),
+        (:line, 1057, :none),
+        (:(=), :Bc, (:., :B, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 1059, :none),
+        (:(=), :lins, (:call, :length, :Bins)),
+        (:line, 1060, :none),
+        (:(=), :ldel, (:call, :length, :r)),
+        (:line, 1062, :none),
+        (:(=), :new_l, (:call, :-, (:call, :+, (:call, :length, :B), :lins), :ldel)),
+        (:line, 1063, :none),
+        (:(=), :delta_k, (:call, :-, (:call, :num_bit_chunks, :new_l), (:call, :length, :Bc))),
+        (:line, 1065, :none),
+        (:&&, (:call, :>, :delta_k, 0), (:call, :ccall, (:quote, #QuoteNode
+              :jl_array_grow_end
+            ), :Void, (:tuple, :Any, :UInt), :Bc, :delta_k)),
+        (:line, 1067, :none),
+        (:call, :copy_chunks!, :Bc, (:call, :+, :i_f, :lins), :Bc, (:call, :+, :i_l, 1), (:call, :-, :n, :i_l)),
+        (:line, 1068, :none),
+        (:call, :copy_chunks!, :Bc, :i_f, (:., :Bins, (:quote, #QuoteNode
+              :chunks
+            )), 1, :lins),
+        (:line, 1070, :none),
+        (:&&, (:call, :<, :delta_k, 0), (:call, :ccall, (:quote, #QuoteNode
+              :jl_array_del_end
+            ), :Void, (:tuple, :Any, :UInt), :Bc, (:call, :-, :delta_k))),
+        (:line, 1072, :none),
+        (:(=), (:., :B, (:quote, #QuoteNode
+              :len
+            )), :new_l),
+        (:line, 1074, :none),
+        (:if, (:call, :>, :new_l, 0), (:block,
+            (:line, 1075, :none),
+            (:&=, (:ref, :Bc, :end), (:call, :_msk_end, :new_l))
+          )),
+        (:line, 1078, :none),
+        (:return, :v)
+      )),
+    (:line, 1081, :none),
+    (:function, (:call, :splice!, (:(::), :B, :BitVector), (:(::), :r, (:curly, :Union, (:curly, :UnitRange, :Int), :Integer)), :ins), (:block,
+        (:line, 1082, :none),
+        (:(=), :Bins, (:call, :BitArray, (:call, :length, :ins))),
+        (:line, 1083, :none),
+        (:(=), :i, 1),
+        (:line, 1084, :none),
+        (:for, (:(=), :x, :ins), (:block,
+            (:line, 1085, :none),
+            (:(=), (:ref, :Bins, :i), (:call, :Bool, :x)),
+            (:line, 1086, :none),
+            (:+=, :i, 1)
+          )),
+        (:line, 1088, :none),
+        (:return, (:call, :splice!, :B, :r, :Bins))
+      )),
+    (:line, 1092, :none),
+    (:function, (:call, :empty!, (:(::), :B, :BitVector)), (:block,
+        (:line, 1093, :none),
+        (:call, :ccall, (:quote, #QuoteNode
+            :jl_array_del_end
+          ), :Void, (:tuple, :Any, :UInt), (:., :B, (:quote, #QuoteNode
+              :chunks
+            )), (:call, :length, (:., :B, (:quote, #QuoteNode
+                :chunks
+              )))),
+        (:line, 1094, :none),
+        (:(=), (:., :B, (:quote, #QuoteNode
+              :len
+            )), 0),
+        (:line, 1095, :none),
+        (:return, :B)
+      )),
+    (:line, 1100, :none),
+    (:function, (:call, :-, (:(::), :B, :BitArray)), (:block,
+        (:line, 1101, :none),
+        (:(=), :A, (:call, :zeros, :Int, (:call, :size, :B))),
+        (:line, 1102, :none),
+        (:(=), :l, (:call, :length, :B)),
+        (:line, 1103, :none),
+        (:&&, (:call, :(==), :l, 0), (:return, :A)),
+        (:line, 1104, :none),
+        (:(=), :Bc, (:., :B, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 1105, :none),
+        (:(=), :ind, 1),
+        (:line, 1106, :none),
+        (:for, (:(=), :i, (:(:), 1, (:call, :-, (:call, :length, :Bc), 1))), (:block,
+            (:line, 1107, :none),
+            (:(=), :u, (:call, :UInt64, 1)),
+            (:line, 1108, :none),
+            (:(=), :c, (:ref, :Bc, :i)),
+            (:line, 1109, :none),
+            (:for, (:(=), :j, (:(:), 1, 64)), (:block,
+                (:line, 1110, :none),
+                (:if, (:call, :(!=), (:call, :&, :c, :u), 0), (:block,
+                    (:line, 1111, :none),
+                    (:(=), (:ref, :A, :ind), -1)
+                  )),
+                (:line, 1113, :none),
+                (:+=, :ind, 1),
+                (:line, 1114, :none),
+                (:<<=, :u, 1)
+              ))
+          )),
+        (:line, 1117, :none),
+        (:(=), :u, (:call, :UInt64, 1)),
+        (:line, 1118, :none),
+        (:(=), :c, (:ref, :Bc, :end)),
+        (:line, 1119, :none),
+        (:for, (:(=), :j, (:(:), 0, (:call, :_mod64, (:call, :-, :l, 1)))), (:block,
+            (:line, 1120, :none),
+            (:if, (:call, :(!=), (:call, :&, :c, :u), 0), (:block,
+                (:line, 1121, :none),
+                (:(=), (:ref, :A, :ind), -1)
+              )),
+            (:line, 1123, :none),
+            (:+=, :ind, 1),
+            (:line, 1124, :none),
+            (:<<=, :u, 1)
+          )),
+        (:line, 1126, :none),
+        (:return, :A)
+      )),
+    (:line, 1128, :none),
+    (:(=), (:call, :broadcast, (:(::), (:call, :typeof, :sign)), (:(::), :B, :BitArray)), (:block,
+        (:line, 1128, :none),
+        (:call, :copy, :B)
+      )),
+    (:line, 1130, :none),
+    (:function, (:call, :broadcast, (:(::), (:call, :typeof, :~)), (:(::), :B, :BitArray)), (:block,
+        (:line, 1131, :none),
+        (:(=), :C, (:call, :similar, :B)),
+        (:line, 1132, :none),
+        (:(=), :Bc, (:., :B, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 1133, :none),
+        (:if, (:call, :!, (:call, :isempty, :Bc)), (:block,
+            (:line, 1134, :none),
+            (:(=), :Cc, (:., :C, (:quote, #QuoteNode
+                  :chunks
+                ))),
+            (:line, 1135, :none),
+            (:for, (:(=), :i, (:(:), 1, (:call, :length, :Bc))), (:block,
+                (:line, 1136, :none),
+                (:(=), (:ref, :Cc, :i), (:call, :~, (:ref, :Bc, :i)))
+              )),
+            (:line, 1138, :none),
+            (:&=, (:ref, :Cc, :end), (:call, :_msk_end, :B))
+          )),
+        (:line, 1140, :none),
+        (:return, :C)
+      )),
+    (:line, 1143, :none),
+    (:macrocall, :(Core.@doc), "    flipbits!(B::BitArray{N}) -> BitArray{N}\n\nPerforms a bitwise not operation on `B`. See [`~`](@ref).\n\n```jldoctest\njulia> A = trues(2,2)\n2×2 BitArray{2}:\n true  true\n true  true\n\njulia> flipbits!(A)\n2×2 BitArray{2}:\n false  false\n false  false\n```\n", (:function, (:call, :flipbits!, (:(::), :B, :BitArray)), (:block,
+          (:line, 1161, :none),
+          (:(=), :Bc, (:., :B, (:quote, #QuoteNode
+                :chunks
+              ))),
+          (:line, 1162, :none),
+          (:macrocall, Symbol("@inbounds"), (:if, (:call, :!, (:call, :isempty, :Bc)), (:block,
+                (:line, 1163, :none),
+                (:for, (:(=), :i, (:(:), 1, (:call, :length, :Bc))), (:block,
+                    (:line, 1164, :none),
+                    (:(=), (:ref, :Bc, :i), (:call, :~, (:ref, :Bc, :i)))
+                  )),
+                (:line, 1166, :none),
+                (:&=, (:ref, :Bc, :end), (:call, :_msk_end, :B))
+              ))),
+          (:line, 1168, :none),
+          (:return, :B)
+        ))),
+    (:line, 1174, :none),
+    (:for, (:(=), :f, (:tuple, (:quote, #QuoteNode
+            :+
+          ), (:quote, #QuoteNode
+            :-
+          ))), (:block,
+        (:line, 1175, :none),
+        (:macrocall, Symbol("@eval"), (:function, (:call, (:$, :f), (:(::), :A, :BitArray), (:(::), :B, :BitArray)), (:block,
+              (:line, 1176, :none),
+              (:(=), :r, (:call, (:curly, :Array, :Int), (:call, :promote_shape, (:call, :size, :A), (:call, :size, :B)))),
+              (:line, 1177, :none),
+              (:(=), :ai, (:call, :start, :A)),
+              (:line, 1178, :none),
+              (:(=), :bi, (:call, :start, :B)),
+              (:line, 1179, :none),
+              (:(=), :ri, 1),
+              (:line, 1180, :none),
+              (:while, (:call, :!, (:call, :done, :A, :ai)), (:block,
+                  (:line, 1181, :none),
+                  (:(=), (:tuple, :a, :ai), (:call, :next, :A, :ai)),
+                  (:line, 1182, :none),
+                  (:(=), (:tuple, :b, :bi), (:call, :next, :B, :bi)),
+                  (:line, 1183, :none),
+                  (:macrocall, Symbol("@inbounds"), (:(=), (:ref, :r, :ri), (:call, (:$, :f), :a, :b))),
+                  (:line, 1184, :none),
+                  (:+=, :ri, 1)
+                )),
+              (:line, 1186, :none),
+              (:return, :r)
+            )))
+      )),
+    (:line, 1190, :none),
+    (:for, (:(=), :f, (:tuple, (:quote, #QuoteNode
+            :/
+          ), (:quote, #QuoteNode
+            :\
+          ))), (:block,
+        (:line, 1191, :none),
+        (:macrocall, Symbol("@eval"), (:block,
+            (:line, 1192, :none),
+            (:(=), (:call, (:$, :f), (:(::), :A, (:curly, :Union, :BitMatrix, :BitVector)), (:(::), :B, (:curly, :Union, :BitMatrix, :BitVector))), (:block,
+                (:line, 1192, :none),
+                (:call, (:$, :f), (:call, :Array, :A), (:call, :Array, :B))
+              ))
+          ))
+      )),
+    (:line, 1195, :none),
+    (:(=), (:call, :/, (:(::), :B, :BitArray), (:(::), :x, :Number)), (:block,
+        (:line, 1195, :none),
+        (:call, :/, (:call, :Array, :B), :x)
+      )),
+    (:line, 1196, :none),
+    (:(=), (:call, :/, (:(::), :x, :Number), (:(::), :B, :BitArray)), (:block,
+        (:line, 1196, :none),
+        (:call, :/, :x, (:call, :Array, :B))
+      )),
+    (:line, 1199, :none),
+    (:(=), (:call, :broadcast, (:(::), (:call, :typeof, :&)), (:(::), :B, :BitArray), (:(::), :x, :Bool)), (:block,
+        (:line, 1199, :none),
+        (:if, :x, (:call, :copy, :B), (:call, :falses, (:call, :size, :B)))
+      )),
+    (:line, 1200, :none),
+    (:(=), (:call, :broadcast, (:(::), (:call, :typeof, :&)), (:(::), :x, :Bool), (:(::), :B, :BitArray)), (:block,
+        (:line, 1200, :none),
+        (:call, :broadcast, :&, :B, :x)
+      )),
+    (:line, 1201, :none),
+    (:(=), (:call, :broadcast, (:(::), (:call, :typeof, :|)), (:(::), :B, :BitArray), (:(::), :x, :Bool)), (:block,
+        (:line, 1201, :none),
+        (:if, :x, (:call, :trues, (:call, :size, :B)), (:call, :copy, :B))
+      )),
+    (:line, 1202, :none),
+    (:(=), (:call, :broadcast, (:(::), (:call, :typeof, :|)), (:(::), :x, :Bool), (:(::), :B, :BitArray)), (:block,
+        (:line, 1202, :none),
+        (:call, :broadcast, :|, :B, :x)
+      )),
+    (:line, 1203, :none),
+    (:(=), (:call, :broadcast, (:(::), (:call, :typeof, :xor)), (:(::), :B, :BitArray), (:(::), :x, :Bool)), (:block,
+        (:line, 1203, :none),
+        (:if, :x, (:call, :.~, :B), (:call, :copy, :B))
+      )),
+    (:line, 1204, :none),
+    (:(=), (:call, :broadcast, (:(::), (:call, :typeof, :xor)), (:(::), :x, :Bool), (:(::), :B, :BitArray)), (:block,
+        (:line, 1204, :none),
+        (:call, :broadcast, :xor, :B, :x)
+      )),
+    (:line, 1205, :none),
+    (:for, (:(=), :f, (:tuple, (:quote, #QuoteNode
+            :&
+          ), (:quote, #QuoteNode
+            :|
+          ), (:quote, #QuoteNode
+            :xor
+          ))), (:block,
+        (:line, 1206, :none),
+        (:macrocall, Symbol("@eval"), (:block,
+            (:line, 1207, :none),
+            (:function, (:call, :broadcast, (:(::), (:call, :typeof, (:$, :f))), (:(::), :A, :BitArray), (:(::), :B, :BitArray)), (:block,
+                (:line, 1208, :none),
+                (:(=), :F, (:call, :BitArray, (:..., (:call, :promote_shape, (:call, :size, :A), (:call, :size, :B))))),
+                (:line, 1209, :none),
+                (:(=), :Fc, (:., :F, (:quote, #QuoteNode
+                      :chunks
+                    ))),
+                (:line, 1210, :none),
+                (:(=), :Ac, (:., :A, (:quote, #QuoteNode
+                      :chunks
+                    ))),
+                (:line, 1211, :none),
+                (:(=), :Bc, (:., :B, (:quote, #QuoteNode
+                      :chunks
+                    ))),
+                (:line, 1212, :none),
+                (:&&, (:||, (:call, :isempty, :Ac), (:call, :isempty, :Bc)), (:return, :F)),
+                (:line, 1213, :none),
+                (:for, (:(=), :i, (:(:), 1, (:call, :length, :Fc))), (:block,
+                    (:line, 1214, :none),
+                    (:(=), (:ref, :Fc, :i), (:call, (:$, :f), (:ref, :Ac, :i), (:ref, :Bc, :i)))
+                  )),
+                (:line, 1216, :none),
+                (:&=, (:ref, :Fc, :end), (:call, :_msk_end, :F)),
+                (:line, 1217, :none),
+                (:return, :F)
+              )),
+            (:line, 1219, :none),
+            (:(=), (:call, :broadcast, (:(::), (:call, :typeof, (:$, :f))), (:(::), :A, (:curly, :DenseArray, :Bool)), (:(::), :B, :BitArray)), (:block,
+                (:line, 1219, :none),
+                (:call, :broadcast, (:$, :f), (:call, :BitArray, :A), :B)
+              )),
+            (:line, 1220, :none),
+            (:(=), (:call, :broadcast, (:(::), (:call, :typeof, (:$, :f))), (:(::), :B, :BitArray), (:(::), :A, (:curly, :DenseArray, :Bool))), (:block,
+                (:line, 1220, :none),
+                (:call, :broadcast, (:$, :f), :B, (:call, :BitArray, :A))
+              ))
+          ))
+      )),
+    (:line, 1231, :none),
+    (:function, (:call, :(==), (:(::), :A, :BitArray), (:(::), :B, :BitArray)), (:block,
+        (:line, 1232, :none),
+        (:&&, (:call, :(!=), (:call, :size, :A), (:call, :size, :B)), (:return, false)),
+        (:line, 1233, :none),
+        (:return, (:call, :(==), (:., :A, (:quote, #QuoteNode
+                :chunks
+              )), (:., :B, (:quote, #QuoteNode
+                :chunks
+              ))))
+      )),
+    (:line, 1240, :none),
+    (:function, (:call, :slicedim, (:(::), :A, :BitVector), (:(::), :d, :Integer), (:(::), :i, :Integer)), (:block,
+        (:line, 1241, :none),
+        (:||, (:call, :(>=), :d, 1), (:call, :throw, (:call, :ArgumentError, "dimension must be ≥ 1"))),
+        (:line, 1242, :none),
+        (:if, (:call, :>, :d, 1), (:block,
+            (:line, 1243, :none),
+            (:||, (:call, :(==), :i, 1), (:call, :throw_boundserror, :A, (:tuple, :(:), (:..., (:call, :ntuple, (:->, :k, (:block,
+                          (:line, 1243, :none),
+                          1
+                        )), (:call, :-, :d, 2))), :i))),
+            (:line, 1244, :none),
+            (:ref, :A, :(:))
+          ), (:block,
+            (:line, 1246, :none),
+            (:call, :fill!, (:call, (:curly, :BitArray, 0)), (:ref, :A, :i))
+          ))
+      )),
+    (:line, 1253, :none),
+    (:function, (:call, :flipdim, (:(::), :A, :BitArray), (:(::), :d, :Integer)), (:block,
+        (:line, 1254, :none),
+        (:(=), :nd, (:call, :ndims, :A)),
+        (:line, 1255, :none),
+        (:||, (:comparison, 1, :≤, :d, :≤, :nd), (:call, :throw, (:call, :ArgumentError, (:string, "dimension ", :d, " is not 1 ≤ ", :d, " ≤ ", :nd)))),
+        (:line, 1256, :none),
+        (:(=), :sd, (:call, :size, :A, :d)),
+        (:line, 1257, :none),
+        (:&&, (:call, :(==), :sd, 1), (:return, (:call, :copy, :A))),
+        (:line, 1259, :none),
+        (:(=), :B, (:call, :similar, :A)),
+        (:line, 1261, :none),
+        (:(=), :nnd, 0),
+        (:line, 1262, :none),
+        (:for, (:(=), :i, (:(:), 1, :nd)), (:block,
+            (:line, 1263, :none),
+            (:+=, :nnd, (:call, :Int, (:||, (:call, :(==), (:call, :size, :A, :i), 1), (:call, :(==), :i, :d))))
+          )),
+        (:line, 1265, :none),
+        (:if, (:call, :(==), :nnd, :nd), (:block,
+            (:line, 1267, :none),
+            (:for, (:(=), :i, (:(:), 1, :sd)), (:block,
+                (:line, 1268, :none),
+                (:(=), (:ref, :B, :i), (:ref, :A, (:call, :-, (:call, :+, :sd, 1), :i)))
+              )),
+            (:line, 1270, :none),
+            (:return, :B)
+          )),
+        (:line, 1273, :none),
+        (:(=), :d_in, (:call, :size, :A)),
+        (:line, 1274, :none),
+        (:(=), :leading, (:ref, :d_in, (:(:), 1, (:call, :-, :d, 1)))),
+        (:line, 1275, :none),
+        (:(=), :M, (:call, :prod, :leading)),
+        (:line, 1276, :none),
+        (:(=), :N, (:call, :length, :A)),
+        (:line, 1277, :none),
+        (:(=), :stride, (:call, :*, :M, :sd)),
+        (:line, 1279, :none),
+        (:if, (:call, :(==), :M, 1), (:block,
+            (:line, 1280, :none),
+            (:for, (:(=), :j, (:(:), 0, :stride, (:call, :-, :N, :stride))), (:block,
+                (:line, 1281, :none),
+                (:for, (:(=), :i, (:(:), 1, :sd)), (:block,
+                    (:line, 1282, :none),
+                    (:(=), :ri, (:call, :-, (:call, :+, :sd, 1), :i)),
+                    (:line, 1283, :none),
+                    (:(=), (:ref, :B, (:call, :+, :j, :ri)), (:ref, :A, (:call, :+, :j, :i)))
+                  ))
+              ))
+          ), (:block,
+            (:line, 1287, :none),
+            (:for, (:(=), :i, (:(:), 1, :sd)), (:block,
+                (:line, 1288, :none),
+                (:(=), :ri, (:call, :-, (:call, :+, :sd, 1), :i)),
+                (:line, 1289, :none),
+                (:for, (:(=), :j, (:(:), 0, :stride, (:call, :-, :N, :stride))), (:block,
+                    (:line, 1290, :none),
+                    (:(=), :offs, (:call, :+, :j, 1, (:call, :*, (:call, :-, :i, 1), :M))),
+                    (:line, 1291, :none),
+                    (:(=), :boffs, (:call, :+, :j, 1, (:call, :*, (:call, :-, :ri, 1), :M))),
+                    (:line, 1292, :none),
+                    (:call, :copy_chunks!, (:., :B, (:quote, #QuoteNode
+                          :chunks
+                        )), :boffs, (:., :A, (:quote, #QuoteNode
+                          :chunks
+                        )), :offs, :M)
+                  ))
+              ))
+          )),
+        (:line, 1296, :none),
+        (:return, :B)
+      )),
+    (:line, 1299, :none),
+    (:function, (:call, :reverse_bits, (:(::), :src, :UInt64)), (:block,
+        (:line, 1300, :none),
+        (:(=), :z, :src),
+        (:line, 1301, :none),
+        (:(=), :z, (:call, :|, (:call, :&, (:call, :>>>, :z, 1), 0x5555555555555555), (:call, :&, (:call, :<<, :z, 1), 0xaaaaaaaaaaaaaaaa))),
+        (:line, 1302, :none),
+        (:(=), :z, (:call, :|, (:call, :&, (:call, :>>>, :z, 2), 0x3333333333333333), (:call, :&, (:call, :<<, :z, 2), 0xcccccccccccccccc))),
+        (:line, 1303, :none),
+        (:(=), :z, (:call, :|, (:call, :&, (:call, :>>>, :z, 4), 0x0f0f0f0f0f0f0f0f), (:call, :&, (:call, :<<, :z, 4), 0xf0f0f0f0f0f0f0f0))),
+        (:line, 1304, :none),
+        (:(=), :z, (:call, :|, (:call, :&, (:call, :>>>, :z, 8), 0x00ff00ff00ff00ff), (:call, :&, (:call, :<<, :z, 8), 0xff00ff00ff00ff00))),
+        (:line, 1305, :none),
+        (:(=), :z, (:call, :|, (:call, :&, (:call, :>>>, :z, 16), 0x0000ffff0000ffff), (:call, :&, (:call, :<<, :z, 16), 0xffff0000ffff0000))),
+        (:line, 1306, :none),
+        (:return, (:call, :|, (:call, :&, (:call, :>>>, :z, 32), 0x00000000ffffffff), (:call, :&, (:call, :<<, :z, 32), 0xffffffff00000000)))
+      )),
+    (:line, 1309, :none),
+    (:function, (:call, :reverse!, (:(::), :B, :BitVector)), (:block,
+        (:line, 1324, :none),
+        (:(=), :n, (:call, :length, :B)),
+        (:line, 1325, :none),
+        (:&&, (:call, :(==), :n, 0), (:return, :B)),
+        (:line, 1327, :none),
+        (:(=), :k, (:call, :+, (:call, :_mod64, (:call, :+, :n, 63)), 1)),
+        (:line, 1328, :none),
+        (:(=), :h, (:call, :-, 64, :k)),
+        (:line, 1330, :none),
+        (:(=), (:tuple, :i, :j), (:tuple, 0, (:call, :length, (:., :B, (:quote, #QuoteNode
+                  :chunks
+                ))))),
+        (:line, 1331, :none),
+        (:(=), :u, (:call, :UInt64, 0)),
+        (:line, 1332, :none),
+        (:(=), :v, (:call, :reverse_bits, (:ref, (:., :B, (:quote, #QuoteNode
+                  :chunks
+                )), :j))),
+        (:line, 1333, :none),
+        (:(=), (:ref, (:., :B, (:quote, #QuoteNode
+                :chunks
+              )), :j), 0),
+        (:line, 1334, :none),
+        (:macrocall, Symbol("@inbounds"), (:while, true, (:block,
+              (:line, 1335, :none),
+              (:+=, :i, 1),
+              (:line, 1336, :none),
+              (:if, (:call, :(==), :i, :j), (:block,
+                  (:line, 1337, :none),
+                  (:break,)
+                )),
+              (:line, 1339, :none),
+              (:(=), :u, (:call, :reverse_bits, (:ref, (:., :B, (:quote, #QuoteNode
+                        :chunks
+                      )), :i))),
+              (:line, 1340, :none),
+              (:(=), (:ref, (:., :B, (:quote, #QuoteNode
+                      :chunks
+                    )), :i), 0),
+              (:line, 1341, :none),
+              (:|=, (:ref, (:., :B, (:quote, #QuoteNode
+                      :chunks
+                    )), :j), (:call, :>>>, :u, :h)),
+              (:line, 1342, :none),
+              (:|=, (:ref, (:., :B, (:quote, #QuoteNode
+                      :chunks
+                    )), :i), (:call, :>>>, :v, :h)),
+              (:line, 1344, :none),
+              (:-=, :j, 1),
+              (:line, 1345, :none),
+              (:if, (:call, :(==), :i, :j), (:block,
+                  (:line, 1346, :none),
+                  (:break,)
+                )),
+              (:line, 1348, :none),
+              (:(=), :v, (:call, :reverse_bits, (:ref, (:., :B, (:quote, #QuoteNode
+                        :chunks
+                      )), :j))),
+              (:line, 1349, :none),
+              (:(=), (:ref, (:., :B, (:quote, #QuoteNode
+                      :chunks
+                    )), :j), 0),
+              (:line, 1350, :none),
+              (:|=, (:ref, (:., :B, (:quote, #QuoteNode
+                      :chunks
+                    )), :i), (:call, :<<, :v, :k)),
+              (:line, 1351, :none),
+              (:|=, (:ref, (:., :B, (:quote, #QuoteNode
+                      :chunks
+                    )), :j), (:call, :<<, :u, :k))
+            ))),
+        (:line, 1354, :none),
+        (:if, (:call, :isodd, (:call, :length, (:., :B, (:quote, #QuoteNode
+                  :chunks
+                )))), (:block,
+            (:line, 1355, :none),
+            (:|=, (:ref, (:., :B, (:quote, #QuoteNode
+                    :chunks
+                  )), :i), (:call, :>>>, :v, :h))
+          ), (:block,
+            (:line, 1357, :none),
+            (:|=, (:ref, (:., :B, (:quote, #QuoteNode
+                    :chunks
+                  )), :i), (:call, :<<, :u, :k))
+          )),
+        (:line, 1360, :none),
+        (:return, :B)
+      )),
+    (:line, 1363, :none),
+    (:(=), (:call, :reverse, (:(::), :v, :BitVector)), (:block,
+        (:line, 1363, :none),
+        (:call, :reverse!, (:call, :copy, :v))
+      )),
+    (:line, 1366, :none),
+    (:function, (:call, :<<, (:(::), :B, :BitVector), (:(::), :i, :UInt)), (:block,
+        (:line, 1367, :none),
+        (:(=), :n, (:call, :length, :B)),
+        (:line, 1368, :none),
+        (:&&, (:call, :(==), :i, 0), (:return, (:call, :copy, :B))),
+        (:line, 1369, :none),
+        (:(=), :A, (:call, :falses, :n)),
+        (:line, 1370, :none),
+        (:&&, (:call, :<, :i, :n), (:call, :copy_chunks!, (:., :A, (:quote, #QuoteNode
+                :chunks
+              )), 1, (:., :B, (:quote, #QuoteNode
+                :chunks
+              )), (:call, :+, :i, 1), (:call, :-, :n, :i))),
+        (:line, 1371, :none),
+        (:return, :A)
+      )),
+    (:line, 1374, :none),
+    (:function, (:call, :>>>, (:(::), :B, :BitVector), (:(::), :i, :UInt)), (:block,
+        (:line, 1375, :none),
+        (:(=), :n, (:call, :length, :B)),
+        (:line, 1376, :none),
+        (:&&, (:call, :(==), :i, 0), (:return, (:call, :copy, :B))),
+        (:line, 1377, :none),
+        (:(=), :A, (:call, :falses, :n)),
+        (:line, 1378, :none),
+        (:&&, (:call, :<, :i, :n), (:call, :copy_chunks!, (:., :A, (:quote, #QuoteNode
+                :chunks
+              )), (:call, :+, :i, 1), (:., :B, (:quote, #QuoteNode
+                :chunks
+              )), 1, (:call, :-, :n, :i))),
+        (:line, 1379, :none),
+        (:return, :A)
+      )),
+    (:line, 1382, :none),
+    (:macrocall, :(Core.@doc), "    >>(B::BitVector, n) -> BitVector\n\nRight bit shift operator, `B >> n`. For `n >= 0`, the result is `B`\nwith elements shifted `n` positions forward, filling with `false`\nvalues. If `n < 0`, elements are shifted backwards. Equivalent to\n`B << -n`.\n\n## Example\n\n```jldoctest\njulia> B = BitVector([true, false, true, false, false])\n5-element BitArray{1}:\n  true\n false\n  true\n false\n false\n\njulia> B >> 1\n5-element BitArray{1}:\n false\n  true\n false\n  true\n false\n\njulia> B >> -1\n5-element BitArray{1}:\n false\n  true\n false\n false\n false\n```\n", (:(=), (:call, :>>, (:(::), :B, :BitVector), (:(::), :i, (:curly, :Union, :Int, :UInt))), (:block,
+          (:line, 1418, :none),
+          (:call, :>>>, :B, :i)
+        ))),
+    (:line, 1421, :none),
+    (:macrocall, :(Core.@doc), "    <<(B::BitVector, n) -> BitVector\n\nLeft bit shift operator, `B << n`. For `n >= 0`, the result is `B`\nwith elements shifted `n` positions backwards, filling with `false`\nvalues. If `n < 0`, elements are shifted forwards. Equivalent to\n`B >> -n`.\n\n## Examples\n\n```jldoctest\njulia> B = BitVector([true, false, true, false, false])\n5-element BitArray{1}:\n  true\n false\n  true\n false\n false\n\njulia> B << 1\n5-element BitArray{1}:\n false\n  true\n false\n false\n false\n\njulia> B << -1\n5-element BitArray{1}:\n false\n  true\n false\n  true\n false\n```\n", (:(=), (:call, :<<, (:(::), :B, :BitVector), (:(::), :i, :Int)), (:block,
+          (:line, 1457, :none),
+          (:if, (:call, :(>=), :i, 0), (:call, :<<, :B, (:call, :unsigned, :i)), (:call, :>>, :B, (:call, :unsigned, (:call, :-, :i))))
+        ))),
+    (:line, 1459, :none),
+    (:macrocall, :(Core.@doc), "    >>>(B::BitVector, n) -> BitVector\n\nUnsigned right bitshift operator, `B >>> n`. Equivalent to `B >> n`. See [`>>`](@ref) for\ndetails and examples.\n", (:(=), (:call, :>>>, (:(::), :B, :BitVector), (:(::), :i, :Int)), (:block,
+          (:line, 1465, :none),
+          (:if, (:call, :(>=), :i, 0), (:call, :>>, :B, (:call, :unsigned, :i)), (:call, :<<, :B, (:call, :unsigned, (:call, :-, :i))))
+        ))),
+    (:line, 1467, :none),
+    (:macrocall, :(Core.@doc), "    rol!(dest::BitVector, src::BitVector, i::Integer) -> BitVector\n\nPerforms a left rotation operation on `src` and puts the result into `dest`.\n`i` controls how far to rotate the bits.\n", (:function, (:call, :rol!, (:(::), :dest, :BitVector), (:(::), :src, :BitVector), (:(::), :i, :Integer)), (:block,
+          (:line, 1474, :none),
+          (:||, (:call, :(==), (:call, :length, :dest), (:call, :length, :src)), (:call, :throw, (:call, :ArgumentError, "destination and source should be of same size"))),
+          (:line, 1475, :none),
+          (:(=), :n, (:call, :length, :dest)),
+          (:line, 1476, :none),
+          (:%=, :i, :n),
+          (:line, 1477, :none),
+          (:&&, (:call, :(==), :i, 0), (:return, (:if, (:call, :(===), :src, :dest), :src, (:call, :copy!, :dest, :src)))),
+          (:line, 1478, :none),
+          (:&&, (:call, :<, :i, 0), (:return, (:call, :ror!, :dest, :src, (:call, :-, :i)))),
+          (:line, 1479, :none),
+          (:(=), :Bc, (:if, (:call, :(===), :src, :dest), (:call, :copy, (:., :src, (:quote, #QuoteNode
+                    :chunks
+                  ))), (:., :src, (:quote, #QuoteNode
+                  :chunks
+                )))),
+          (:line, 1480, :none),
+          (:call, :copy_chunks!, (:., :dest, (:quote, #QuoteNode
+                :chunks
+              )), 1, :Bc, (:call, :+, :i, 1), (:call, :-, :n, :i)),
+          (:line, 1481, :none),
+          (:call, :copy_chunks!, (:., :dest, (:quote, #QuoteNode
+                :chunks
+              )), (:call, :+, (:call, :-, :n, :i), 1), :Bc, 1, :i),
+          (:line, 1482, :none),
+          (:return, :dest)
+        ))),
+    (:line, 1485, :none),
+    (:macrocall, :(Core.@doc), "    rol!(B::BitVector, i::Integer) -> BitVector\n\nPerforms a left rotation operation in-place on `B`.\n`i` controls how far to rotate the bits.\n", (:(=), (:call, :rol!, (:(::), :B, :BitVector), (:(::), :i, :Integer)), (:block,
+          (:line, 1491, :none),
+          (:call, :rol!, :B, :B, :i)
+        ))),
+    (:line, 1493, :none),
+    (:macrocall, :(Core.@doc), "    rol(B::BitVector, i::Integer) -> BitVector\n\nPerforms a left rotation operation, returning a new `BitVector`.\n`i` controls how far to rotate the bits.\nSee also [`rol!`](@ref).\n\n```jldoctest\njulia> A = BitArray([true, true, false, false, true])\n5-element BitArray{1}:\n  true\n  true\n false\n false\n  true\n\njulia> rol(A,1)\n5-element BitArray{1}:\n  true\n false\n false\n  true\n  true\n\njulia> rol(A,2)\n5-element BitArray{1}:\n false\n false\n  true\n  true\n  true\n\njulia> rol(A,5)\n5-element BitArray{1}:\n  true\n  true\n false\n false\n  true\n```\n", (:(=), (:call, :rol, (:(::), :B, :BitVector), (:(::), :i, :Integer)), (:block,
+          (:line, 1534, :none),
+          (:call, :rol!, (:call, :similar, :B), :B, :i)
+        ))),
+    (:line, 1536, :none),
+    (:macrocall, :(Core.@doc), "    ror!(dest::BitVector, src::BitVector, i::Integer) -> BitVector\n\nPerforms a right rotation operation on `src` and puts the result into `dest`.\n`i` controls how far to rotate the bits.\n", (:function, (:call, :ror!, (:(::), :dest, :BitVector), (:(::), :src, :BitVector), (:(::), :i, :Integer)), (:block,
+          (:line, 1543, :none),
+          (:||, (:call, :(==), (:call, :length, :dest), (:call, :length, :src)), (:call, :throw, (:call, :ArgumentError, "destination and source should be of same size"))),
+          (:line, 1544, :none),
+          (:(=), :n, (:call, :length, :dest)),
+          (:line, 1545, :none),
+          (:%=, :i, :n),
+          (:line, 1546, :none),
+          (:&&, (:call, :(==), :i, 0), (:return, (:if, (:call, :(===), :src, :dest), :src, (:call, :copy!, :dest, :src)))),
+          (:line, 1547, :none),
+          (:&&, (:call, :<, :i, 0), (:return, (:call, :rol!, :dest, :src, (:call, :-, :i)))),
+          (:line, 1548, :none),
+          (:(=), :Bc, (:if, (:call, :(===), :src, :dest), (:call, :copy, (:., :src, (:quote, #QuoteNode
+                    :chunks
+                  ))), (:., :src, (:quote, #QuoteNode
+                  :chunks
+                )))),
+          (:line, 1549, :none),
+          (:call, :copy_chunks!, (:., :dest, (:quote, #QuoteNode
+                :chunks
+              )), (:call, :+, :i, 1), :Bc, 1, (:call, :-, :n, :i)),
+          (:line, 1550, :none),
+          (:call, :copy_chunks!, (:., :dest, (:quote, #QuoteNode
+                :chunks
+              )), 1, :Bc, (:call, :+, (:call, :-, :n, :i), 1), :i),
+          (:line, 1551, :none),
+          (:return, :dest)
+        ))),
+    (:line, 1554, :none),
+    (:macrocall, :(Core.@doc), "    ror!(B::BitVector, i::Integer) -> BitVector\n\nPerforms a right rotation operation in-place on `B`.\n`i` controls how far to rotate the bits.\n", (:(=), (:call, :ror!, (:(::), :B, :BitVector), (:(::), :i, :Integer)), (:block,
+          (:line, 1560, :none),
+          (:call, :ror!, :B, :B, :i)
+        ))),
+    (:line, 1562, :none),
+    (:macrocall, :(Core.@doc), "    ror(B::BitVector, i::Integer) -> BitVector\n\nPerforms a right rotation operation on `B`, returning a new `BitVector`.\n`i` controls how far to rotate the bits.\nSee also [`ror!`](@ref).\n\n```jldoctest\njulia> A = BitArray([true, true, false, false, true])\n5-element BitArray{1}:\n  true\n  true\n false\n false\n  true\n\njulia> ror(A,1)\n5-element BitArray{1}:\n  true\n  true\n  true\n false\n false\n\njulia> ror(A,2)\n5-element BitArray{1}:\n false\n  true\n  true\n  true\n false\n\njulia> ror(A,5)\n5-element BitArray{1}:\n  true\n  true\n false\n false\n  true\n```\n", (:(=), (:call, :ror, (:(::), :B, :BitVector), (:(::), :i, :Integer)), (:block,
+          (:line, 1603, :none),
+          (:call, :ror!, (:call, :similar, :B), :B, :i)
+        ))),
+    (:line, 1607, :none),
+    (:function, (:call, :countnz, (:(::), :B, :BitArray)), (:block,
+        (:line, 1608, :none),
+        (:(=), :n, 0),
+        (:line, 1609, :none),
+        (:(=), :Bc, (:., :B, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 1610, :none),
+        (:macrocall, Symbol("@inbounds"), (:for, (:(=), :i, (:(:), 1, (:call, :length, :Bc))), (:block,
+              (:line, 1611, :none),
+              (:+=, :n, (:call, :count_ones, (:ref, :Bc, :i)))
+            ))),
+        (:line, 1613, :none),
+        (:return, :n)
+      )),
+    (:line, 1615, :none),
+    (:(=), (:call, :count, (:(::), :B, :BitArray)), (:block,
+        (:line, 1615, :none),
+        (:call, :countnz, :B)
+      )),
+    (:line, 1618, :none),
+    (:function, (:call, :findnext, (:(::), :B, :BitArray), (:(::), :start, :Integer)), (:block,
+        (:line, 1619, :none),
+        (:||, (:call, :>, :start, 0), (:call, :throw, (:call, :BoundsError, :B, :start))),
+        (:line, 1620, :none),
+        (:&&, (:call, :>, :start, (:call, :length, :B)), (:return, 0)),
+        (:line, 1622, :none),
+        (:(=), :Bc, (:., :B, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 1624, :none),
+        (:(=), :chunk_start, (:call, :+, (:call, :_div64, (:call, :-, :start, 1)), 1)),
+        (:line, 1625, :none),
+        (:(=), :within_chunk_start, (:call, :_mod64, (:call, :-, :start, 1))),
+        (:line, 1626, :none),
+        (:(=), :mask, (:call, :<<, :_msk64, :within_chunk_start)),
+        (:line, 1628, :none),
+        (:macrocall, Symbol("@inbounds"), (:block,
+            (:line, 1629, :none),
+            (:if, (:call, :(!=), (:call, :&, (:ref, :Bc, :chunk_start), :mask), 0), (:block,
+                (:line, 1630, :none),
+                (:return, (:call, :+, (:call, :<<, (:call, :-, :chunk_start, 1), 6), (:call, :trailing_zeros, (:call, :&, (:ref, :Bc, :chunk_start), :mask)), 1))
+              )),
+            (:line, 1633, :none),
+            (:for, (:(=), :i, (:(:), (:call, :+, :chunk_start, 1), (:call, :length, :Bc))), (:block,
+                (:line, 1634, :none),
+                (:if, (:call, :(!=), (:ref, :Bc, :i), 0), (:block,
+                    (:line, 1635, :none),
+                    (:return, (:call, :+, (:call, :<<, (:call, :-, :i, 1), 6), (:call, :trailing_zeros, (:ref, :Bc, :i)), 1))
+                  ))
+              ))
+          )),
+        (:line, 1639, :none),
+        (:return, 0)
+      )),
+    (:line, 1644, :none),
+    (:function, (:call, :findnextnot, (:(::), :B, :BitArray), (:(::), :start, :Integer)), (:block,
+        (:line, 1645, :none),
+        (:||, (:call, :>, :start, 0), (:call, :throw, (:call, :BoundsError, :B, :start))),
+        (:line, 1646, :none),
+        (:&&, (:call, :>, :start, (:call, :length, :B)), (:return, 0)),
+        (:line, 1648, :none),
+        (:(=), :Bc, (:., :B, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 1649, :none),
+        (:(=), :l, (:call, :length, :Bc)),
+        (:line, 1650, :none),
+        (:&&, (:call, :(==), :l, 0), (:return, 0)),
+        (:line, 1652, :none),
+        (:(=), :chunk_start, (:call, :+, (:call, :_div64, (:call, :-, :start, 1)), 1)),
+        (:line, 1653, :none),
+        (:(=), :within_chunk_start, (:call, :_mod64, (:call, :-, :start, 1))),
+        (:line, 1654, :none),
+        (:(=), :mask, (:call, :~, (:call, :<<, :_msk64, :within_chunk_start))),
+        (:line, 1656, :none),
+        (:macrocall, Symbol("@inbounds"), (:if, (:call, :<, :chunk_start, :l), (:block,
+              (:line, 1657, :none),
+              (:if, (:call, :(!=), (:call, :|, (:ref, :Bc, :chunk_start), :mask), :_msk64), (:block,
+                  (:line, 1658, :none),
+                  (:return, (:call, :+, (:call, :<<, (:call, :-, :chunk_start, 1), 6), (:call, :trailing_ones, (:call, :|, (:ref, :Bc, :chunk_start), :mask)), 1))
+                )),
+              (:line, 1660, :none),
+              (:for, (:(=), :i, (:(:), (:call, :+, :chunk_start, 1), (:call, :-, :l, 1))), (:block,
+                  (:line, 1661, :none),
+                  (:if, (:call, :(!=), (:ref, :Bc, :i), :_msk64), (:block,
+                      (:line, 1662, :none),
+                      (:return, (:call, :+, (:call, :<<, (:call, :-, :i, 1), 6), (:call, :trailing_ones, (:ref, :Bc, :i)), 1))
+                    ))
+                )),
+              (:line, 1665, :none),
+              (:if, (:call, :(!=), (:ref, :Bc, :l), (:call, :_msk_end, :B)), (:block,
+                  (:line, 1666, :none),
+                  (:return, (:call, :+, (:call, :<<, (:call, :-, :l, 1), 6), (:call, :trailing_ones, (:ref, :Bc, :l)), 1))
+                ))
+            ), (:block,
+              (:line, 1668, :none),
+              (:if, (:call, :(!=), (:call, :|, (:ref, :Bc, :l), :mask), (:call, :_msk_end, :B)), (:block,
+                  (:line, 1669, :none),
+                  (:return, (:call, :+, (:call, :<<, (:call, :-, :l, 1), 6), (:call, :trailing_ones, (:call, :|, (:ref, :Bc, :l), :mask)), 1))
+                ))
+            ))),
+        (:line, 1671, :none),
+        (:return, 0)
+      )),
+    (:line, 1673, :none),
+    (:(=), (:call, :findfirstnot, (:(::), :B, :BitArray)), (:block,
+        (:line, 1673, :none),
+        (:call, :findnextnot, :B, 1)
+      )),
+    (:line, 1676, :none),
+    (:function, (:call, :findnext, (:(::), :B, :BitArray), :v, (:(::), :start, :Integer)), (:block,
+        (:line, 1677, :none),
+        (:&&, (:call, :(==), :v, false), (:return, (:call, :findnextnot, :B, :start))),
+        (:line, 1678, :none),
+        (:&&, (:call, :(==), :v, true), (:return, (:call, :findnext, :B, :start))),
+        (:line, 1679, :none),
+        (:return, 0)
+      )),
+    (:line, 1684, :none),
+    (:function, (:call, :findnext, (:(::), :testf, :Function), (:(::), :B, :BitArray), (:(::), :start, :Integer)), (:block,
+        (:line, 1685, :none),
+        (:(=), (:(::), :f0, :Bool), (:call, :testf, false)),
+        (:line, 1686, :none),
+        (:(=), (:(::), :f1, :Bool), (:call, :testf, true)),
+        (:line, 1687, :none),
+        (:&&, (:call, :!, :f0), (:&&, :f1, (:return, (:call, :findnext, :B, :start)))),
+        (:line, 1688, :none),
+        (:&&, :f0, (:&&, (:call, :!, :f1), (:return, (:call, :findnextnot, :B, :start)))),
+        (:line, 1690, :none),
+        (:||, (:call, :>, :start, 0), (:call, :throw, (:call, :BoundsError, :B, :start))),
+        (:line, 1691, :none),
+        (:&&, (:call, :>, :start, (:call, :length, :B)), (:return, 0)),
+        (:line, 1692, :none),
+        (:&&, :f0, (:&&, :f1, (:return, (:call, :Int, :start)))),
+        (:line, 1693, :none),
+        (:return, 0)
+      )),
+    (:line, 1698, :none),
+    (:function, (:call, :findprev, (:(::), :B, :BitArray), (:(::), :start, :Integer)), (:block,
+        (:line, 1699, :none),
+        (:||, (:call, :>, :start, 0), (:return, 0)),
+        (:line, 1700, :none),
+        (:&&, (:call, :>, :start, (:call, :length, :B)), (:call, :throw, (:call, :BoundsError, :B, :start))),
+        (:line, 1702, :none),
+        (:(=), :Bc, (:., :B, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 1704, :none),
+        (:(=), :chunk_start, (:call, :+, (:call, :_div64, (:call, :-, :start, 1)), 1)),
+        (:line, 1705, :none),
+        (:(=), :mask, (:call, :_msk_end, :start)),
+        (:line, 1707, :none),
+        (:macrocall, Symbol("@inbounds"), (:block,
+            (:line, 1708, :none),
+            (:if, (:call, :(!=), (:call, :&, (:ref, :Bc, :chunk_start), :mask), 0), (:block,
+                (:line, 1709, :none),
+                (:return, (:call, :+, (:call, :<<, (:call, :-, :chunk_start, 1), 6), (:call, :-, 64, (:call, :leading_zeros, (:call, :&, (:ref, :Bc, :chunk_start), :mask)))))
+              )),
+            (:line, 1712, :none),
+            (:for, (:(=), :i, (:(:), (:call, :-, :chunk_start, 1), -1, 1)), (:block,
+                (:line, 1713, :none),
+                (:if, (:call, :(!=), (:ref, :Bc, :i), 0), (:block,
+                    (:line, 1714, :none),
+                    (:return, (:call, :+, (:call, :<<, (:call, :-, :i, 1), 6), (:call, :-, 64, (:call, :leading_zeros, (:ref, :Bc, :i)))))
+                  ))
+              ))
+          )),
+        (:line, 1718, :none),
+        (:return, 0)
+      )),
+    (:line, 1721, :none),
+    (:function, (:call, :findprevnot, (:(::), :B, :BitArray), (:(::), :start, :Integer)), (:block,
+        (:line, 1722, :none),
+        (:||, (:call, :>, :start, 0), (:return, 0)),
+        (:line, 1723, :none),
+        (:&&, (:call, :>, :start, (:call, :length, :B)), (:call, :throw, (:call, :BoundsError, :B, :start))),
+        (:line, 1725, :none),
+        (:(=), :Bc, (:., :B, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 1727, :none),
+        (:(=), :chunk_start, (:call, :+, (:call, :_div64, (:call, :-, :start, 1)), 1)),
+        (:line, 1728, :none),
+        (:(=), :mask, (:call, :~, (:call, :_msk_end, :start))),
+        (:line, 1730, :none),
+        (:macrocall, Symbol("@inbounds"), (:block,
+            (:line, 1731, :none),
+            (:if, (:call, :(!=), (:call, :|, (:ref, :Bc, :chunk_start), :mask), :_msk64), (:block,
+                (:line, 1732, :none),
+                (:return, (:call, :+, (:call, :<<, (:call, :-, :chunk_start, 1), 6), (:call, :-, 64, (:call, :leading_ones, (:call, :|, (:ref, :Bc, :chunk_start), :mask)))))
+              )),
+            (:line, 1735, :none),
+            (:for, (:(=), :i, (:(:), (:call, :-, :chunk_start, 1), -1, 1)), (:block,
+                (:line, 1736, :none),
+                (:if, (:call, :(!=), (:ref, :Bc, :i), :_msk64), (:block,
+                    (:line, 1737, :none),
+                    (:return, (:call, :+, (:call, :<<, (:call, :-, :i, 1), 6), (:call, :-, 64, (:call, :leading_ones, (:ref, :Bc, :i)))))
+                  ))
+              ))
+          )),
+        (:line, 1741, :none),
+        (:return, 0)
+      )),
+    (:line, 1743, :none),
+    (:(=), (:call, :findlastnot, (:(::), :B, :BitArray)), (:block,
+        (:line, 1743, :none),
+        (:call, :findprevnot, :B, (:call, :length, :B))
+      )),
+    (:line, 1746, :none),
+    (:function, (:call, :findprev, (:(::), :B, :BitArray), :v, (:(::), :start, :Integer)), (:block,
+        (:line, 1747, :none),
+        (:&&, (:call, :(==), :v, false), (:return, (:call, :findprevnot, :B, :start))),
+        (:line, 1748, :none),
+        (:&&, (:call, :(==), :v, true), (:return, (:call, :findprev, :B, :start))),
+        (:line, 1749, :none),
+        (:return, 0)
+      )),
+    (:line, 1754, :none),
+    (:function, (:call, :findprev, (:(::), :testf, :Function), (:(::), :B, :BitArray), (:(::), :start, :Integer)), (:block,
+        (:line, 1755, :none),
+        (:(=), (:(::), :f0, :Bool), (:call, :testf, false)),
+        (:line, 1756, :none),
+        (:(=), (:(::), :f1, :Bool), (:call, :testf, true)),
+        (:line, 1757, :none),
+        (:&&, (:call, :!, :f0), (:&&, :f1, (:return, (:call, :findprev, :B, :start)))),
+        (:line, 1758, :none),
+        (:&&, :f0, (:&&, (:call, :!, :f1), (:return, (:call, :findprevnot, :B, :start)))),
+        (:line, 1760, :none),
+        (:||, (:call, :>, :start, 0), (:return, 0)),
+        (:line, 1761, :none),
+        (:&&, (:call, :>, :start, (:call, :length, :B)), (:call, :throw, (:call, :BoundsError, :B, :start))),
+        (:line, 1762, :none),
+        (:&&, :f0, (:&&, :f1, (:return, (:call, :Int, :start)))),
+        (:line, 1763, :none),
+        (:return, 0)
+      )),
+    (:line, 1767, :none),
+    (:function, (:call, :find, (:(::), :B, :BitArray)), (:block,
+        (:line, 1768, :none),
+        (:(=), :l, (:call, :length, :B)),
+        (:line, 1769, :none),
+        (:(=), :nnzB, (:call, :countnz, :B)),
+        (:line, 1770, :none),
+        (:(=), :I, (:call, (:curly, :Vector, :Int), :nnzB)),
+        (:line, 1771, :none),
+        (:&&, (:call, :(==), :nnzB, 0), (:return, :I)),
+        (:line, 1772, :none),
+        (:(=), :Bc, (:., :B, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 1773, :none),
+        (:(=), :Bcount, 1),
+        (:line, 1774, :none),
+        (:(=), :Icount, 1),
+        (:line, 1775, :none),
+        (:for, (:(=), :i, (:(:), 1, (:call, :-, (:call, :length, :Bc), 1))), (:block,
+            (:line, 1776, :none),
+            (:(=), :u, (:call, :UInt64, 1)),
+            (:line, 1777, :none),
+            (:(=), :c, (:ref, :Bc, :i)),
+            (:line, 1778, :none),
+            (:for, (:(=), :j, (:(:), 1, 64)), (:block,
+                (:line, 1779, :none),
+                (:if, (:call, :(!=), (:call, :&, :c, :u), 0), (:block,
+                    (:line, 1780, :none),
+                    (:(=), (:ref, :I, :Icount), :Bcount),
+                    (:line, 1781, :none),
+                    (:+=, :Icount, 1)
+                  )),
+                (:line, 1783, :none),
+                (:+=, :Bcount, 1),
+                (:line, 1784, :none),
+                (:<<=, :u, 1)
+              ))
+          )),
+        (:line, 1787, :none),
+        (:(=), :u, (:call, :UInt64, 1)),
+        (:line, 1788, :none),
+        (:(=), :c, (:ref, :Bc, :end)),
+        (:line, 1789, :none),
+        (:for, (:(=), :j, (:(:), 0, (:call, :_mod64, (:call, :-, :l, 1)))), (:block,
+            (:line, 1790, :none),
+            (:if, (:call, :(!=), (:call, :&, :c, :u), 0), (:block,
+                (:line, 1791, :none),
+                (:(=), (:ref, :I, :Icount), :Bcount),
+                (:line, 1792, :none),
+                (:+=, :Icount, 1)
+              )),
+            (:line, 1794, :none),
+            (:+=, :Bcount, 1),
+            (:line, 1795, :none),
+            (:<<=, :u, 1)
+          )),
+        (:line, 1797, :none),
+        (:return, :I)
+      )),
+    (:line, 1800, :none),
+    (:(=), (:call, :findn, (:(::), :B, :BitVector)), (:block,
+        (:line, 1800, :none),
+        (:call, :find, :B)
+      )),
+    (:line, 1802, :none),
+    (:function, (:call, :findn, (:(::), :B, :BitMatrix)), (:block,
+        (:line, 1803, :none),
+        (:(=), :nnzB, (:call, :countnz, :B)),
+        (:line, 1804, :none),
+        (:(=), :I, (:call, (:curly, :Vector, :Int), :nnzB)),
+        (:line, 1805, :none),
+        (:(=), :J, (:call, (:curly, :Vector, :Int), :nnzB)),
+        (:line, 1806, :none),
+        (:(=), :count, 1),
+        (:line, 1807, :none),
+        (:for, (:block,
+            (:(=), :j, (:(:), 1, (:call, :size, :B, 2))),
+            (:(=), :i, (:(:), 1, (:call, :size, :B, 1)))
+          ), (:block,
+            (:line, 1808, :none),
+            (:if, (:ref, :B, :i, :j), (:block,
+                (:line, 1809, :none),
+                (:(=), (:ref, :I, :count), :i),
+                (:line, 1810, :none),
+                (:(=), (:ref, :J, :count), :j),
+                (:line, 1811, :none),
+                (:+=, :count, 1)
+              ))
+          )),
+        (:line, 1814, :none),
+        (:return, (:tuple, :I, :J))
+      )),
+    (:line, 1817, :none),
+    (:function, (:call, :findnz, (:(::), :B, :BitMatrix)), (:block,
+        (:line, 1818, :none),
+        (:(=), (:tuple, :I, :J), (:call, :findn, :B)),
+        (:line, 1819, :none),
+        (:return, (:tuple, :I, :J, (:call, :trues, (:call, :length, :I))))
+      )),
+    (:line, 1824, :none),
+    (:(=), (:call, :sum, (:(::), :A, :BitArray), :region), (:block,
+        (:line, 1824, :none),
+        (:call, :reducedim, :+, :A, :region)
+      )),
+    (:line, 1825, :none),
+    (:(=), (:call, :sum, (:(::), :B, :BitArray)), (:block,
+        (:line, 1825, :none),
+        (:call, :countnz, :B)
+      )),
+    (:line, 1827, :none),
+    (:function, (:call, :all, (:(::), :B, :BitArray)), (:block,
+        (:line, 1828, :none),
+        (:&&, (:call, :isempty, :B), (:return, true)),
+        (:line, 1829, :none),
+        (:(=), :Bc, (:., :B, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 1830, :none),
+        (:macrocall, Symbol("@inbounds"), (:block,
+            (:line, 1831, :none),
+            (:for, (:(=), :i, (:(:), 1, (:call, :-, (:call, :length, :Bc), 1))), (:block,
+                (:line, 1832, :none),
+                (:||, (:call, :(==), (:ref, :Bc, :i), :_msk64), (:return, false))
+              )),
+            (:line, 1834, :none),
+            (:||, (:call, :(==), (:ref, :Bc, :end), (:call, :_msk_end, :B)), (:return, false))
+          )),
+        (:line, 1836, :none),
+        (:return, true)
+      )),
+    (:line, 1839, :none),
+    (:function, (:call, :any, (:(::), :B, :BitArray)), (:block,
+        (:line, 1840, :none),
+        (:&&, (:call, :isempty, :B), (:return, false)),
+        (:line, 1841, :none),
+        (:(=), :Bc, (:., :B, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 1842, :none),
+        (:macrocall, Symbol("@inbounds"), (:block,
+            (:line, 1843, :none),
+            (:for, (:(=), :i, (:(:), 1, (:call, :length, :Bc))), (:block,
+                (:line, 1844, :none),
+                (:||, (:call, :(==), (:ref, :Bc, :i), 0), (:return, true))
+              ))
+          )),
+        (:line, 1847, :none),
+        (:return, false)
+      )),
+    (:line, 1850, :none),
+    (:(=), (:call, :minimum, (:(::), :B, :BitArray)), (:block,
+        (:line, 1850, :none),
+        (:if, (:call, :isempty, :B), (:call, :throw, (:call, :ArgumentError, "argument must be non-empty")), (:call, :all, :B))
+      )),
+    (:line, 1851, :none),
+    (:(=), (:call, :maximum, (:(::), :B, :BitArray)), (:block,
+        (:line, 1851, :none),
+        (:if, (:call, :isempty, :B), (:call, :throw, (:call, :ArgumentError, "argument must be non-empty")), (:call, :any, :B))
+      )),
+    (:line, 1859, :none),
+    (:(=), (:call, :map, (:(::), (:curly, :Union, (:call, :typeof, :~), (:call, :typeof, :!))), (:(::), :A, :BitArray)), (:block,
+        (:line, 1859, :none),
+        (:call, :bit_map!, :~, (:call, :similar, :A), :A)
+      )),
+    (:line, 1860, :none),
+    (:(=), (:call, :map, (:(::), (:call, :typeof, :zero)), (:(::), :A, :BitArray)), (:block,
+        (:line, 1860, :none),
+        (:call, :fill!, (:call, :similar, :A), false)
+      )),
+    (:line, 1861, :none),
+    (:(=), (:call, :map, (:(::), (:call, :typeof, :one)), (:(::), :A, :BitArray)), (:block,
+        (:line, 1861, :none),
+        (:call, :fill!, (:call, :similar, :A), true)
+      )),
+    (:line, 1862, :none),
+    (:(=), (:call, :map, (:(::), (:call, :typeof, :identity)), (:(::), :A, :BitArray)), (:block,
+        (:line, 1862, :none),
+        (:call, :copy, :A)
+      )),
+    (:line, 1864, :none),
+    (:(=), (:call, :map!, (:(::), (:curly, :Union, (:call, :typeof, :~), (:call, :typeof, :!))), (:(::), :dest, :BitArray), (:(::), :A, :BitArray)), (:block,
+        (:line, 1864, :none),
+        (:call, :bit_map!, :~, :dest, :A)
+      )),
+    (:line, 1865, :none),
+    (:(=), (:call, :map!, (:(::), (:call, :typeof, :zero)), (:(::), :dest, :BitArray), (:(::), :A, :BitArray)), (:block,
+        (:line, 1865, :none),
+        (:call, :fill!, :dest, false)
+      )),
+    (:line, 1866, :none),
+    (:(=), (:call, :map!, (:(::), (:call, :typeof, :one)), (:(::), :dest, :BitArray), (:(::), :A, :BitArray)), (:block,
+        (:line, 1866, :none),
+        (:call, :fill!, :dest, true)
+      )),
+    (:line, 1867, :none),
+    (:(=), (:call, :map!, (:(::), (:call, :typeof, :identity)), (:(::), :dest, :BitArray), (:(::), :A, :BitArray)), (:block,
+        (:line, 1867, :none),
+        (:call, :copy!, :dest, :A)
+      )),
+    (:line, 1869, :none),
+    (:for, (:(=), (:tuple, :T, :f), (:tuple, (:tuple, (:quote, (:curly, :Union, (:call, :typeof, :&), (:call, :typeof, :*), (:call, :typeof, :min))), (:quote, #QuoteNode
+              :&
+            )), (:tuple, (:quote, (:curly, :Union, (:call, :typeof, :|), (:call, :typeof, :max))), (:quote, #QuoteNode
+              :|
+            )), (:tuple, (:quote, (:curly, :Union, (:call, :typeof, :xor), (:call, :typeof, :(!=)))), (:quote, #QuoteNode
+              :xor
+            )), (:tuple, (:quote, (:curly, :Union, (:call, :typeof, :(>=)), (:call, :typeof, :^))), (:quote, (:->, (:tuple, :p, :q), (:block,
+                  (:line, 1872, :none),
+                  (:call, :|, :p, (:call, :~, :q))
+                )))), (:tuple, (:quote, (:call, :typeof, :(<=))), (:quote, (:->, (:tuple, :p, :q), (:block,
+                  (:line, 1873, :none),
+                  (:call, :|, (:call, :~, :p), :q)
+                )))), (:tuple, (:quote, (:call, :typeof, :(==))), (:quote, (:->, (:tuple, :p, :q), (:block,
+                  (:line, 1874, :none),
+                  (:call, :~, (:call, :xor, :p, :q))
+                )))), (:tuple, (:quote, (:call, :typeof, :<)), (:quote, (:->, (:tuple, :p, :q), (:block,
+                  (:line, 1875, :none),
+                  (:call, :&, (:call, :~, :p), :q)
+                )))), (:tuple, (:quote, (:call, :typeof, :>)), (:quote, (:->, (:tuple, :p, :q), (:block,
+                  (:line, 1876, :none),
+                  (:call, :&, :p, (:call, :~, :q))
+                )))))), (:block,
+        (:line, 1877, :none),
+        (:macrocall, Symbol("@eval"), (:(=), (:call, :map, (:(::), (:$, :T)), (:(::), :A, :BitArray), (:(::), :B, :BitArray)), (:block,
+              (:line, 1877, :none),
+              (:call, :bit_map!, (:$, :f), (:call, :similar, :A), :A, :B)
+            ))),
+        (:line, 1878, :none),
+        (:macrocall, Symbol("@eval"), (:(=), (:call, :map!, (:(::), (:$, :T)), (:(::), :dest, :BitArray), (:(::), :A, :BitArray), (:(::), :B, :BitArray)), (:block,
+              (:line, 1878, :none),
+              (:call, :bit_map!, (:$, :f), :dest, :A, :B)
+            )))
+      )),
+    (:line, 1884, :none),
+    (:function, (:call, (:curly, :bit_map!, :F), (:(::), :f, :F), (:(::), :dest, :BitArray), (:(::), :A, :BitArray)), (:block,
+        (:line, 1885, :none),
+        (:||, (:call, :(==), (:call, :size, :A), (:call, :size, :dest)), (:call, :throw, (:call, :DimensionMismatch, "sizes of dest and A must match"))),
+        (:line, 1886, :none),
+        (:&&, (:call, :isempty, :A), (:return, :dest)),
+        (:line, 1887, :none),
+        (:(=), :destc, (:., :dest, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 1888, :none),
+        (:(=), :Ac, (:., :A, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 1889, :none),
+        (:for, (:(=), :i, (:(:), 1, (:call, :-, (:call, :length, :Ac), 1))), (:block,
+            (:line, 1890, :none),
+            (:(=), (:ref, :destc, :i), (:call, :f, (:ref, :Ac, :i)))
+          )),
+        (:line, 1892, :none),
+        (:(=), (:ref, :destc, :end), (:call, :&, (:call, :f, (:ref, :Ac, :end)), (:call, :_msk_end, :A))),
+        (:line, 1893, :none),
+        :dest
+      )),
+    (:line, 1895, :none),
+    (:function, (:call, (:curly, :bit_map!, :F), (:(::), :f, :F), (:(::), :dest, :BitArray), (:(::), :A, :BitArray), (:(::), :B, :BitArray)), (:block,
+        (:line, 1896, :none),
+        (:||, (:comparison, (:call, :size, :A), :(==), (:call, :size, :B), :(==), (:call, :size, :dest)), (:call, :throw, (:call, :DimensionMismatch, "sizes of dest, A, and B must all match"))),
+        (:line, 1897, :none),
+        (:&&, (:call, :isempty, :A), (:return, :dest)),
+        (:line, 1898, :none),
+        (:(=), :destc, (:., :dest, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 1899, :none),
+        (:(=), :Ac, (:., :A, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 1900, :none),
+        (:(=), :Bc, (:., :B, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 1901, :none),
+        (:for, (:(=), :i, (:(:), 1, (:call, :-, (:call, :length, :Ac), 1))), (:block,
+            (:line, 1902, :none),
+            (:(=), (:ref, :destc, :i), (:call, :f, (:ref, :Ac, :i), (:ref, :Bc, :i)))
+          )),
+        (:line, 1904, :none),
+        (:(=), (:ref, :destc, :end), (:call, :&, (:call, :f, (:ref, :Ac, :end), (:ref, :Bc, :end)), (:call, :_msk_end, :A))),
+        (:line, 1905, :none),
+        :dest
+      )),
+    (:line, 1910, :none),
+    (:function, (:call, :filter, :f, (:(::), :Bs, :BitArray)), (:block,
+        (:line, 1911, :none),
+        (:(=), (:(::), :boolmap, (:curly, :Array, :Bool)), (:call, :map, :f, :Bs)),
+        (:line, 1912, :none),
+        (:ref, :Bs, :boolmap)
+      )),
+    (:line, 1918, :none),
+    (:function, (:call, :hcat, (:..., (:(::), :B, :BitVector))), (:block,
+        (:line, 1919, :none),
+        (:(=), :height, (:call, :length, (:ref, :B, 1))),
+        (:line, 1920, :none),
+        (:for, (:(=), :j, (:(:), 2, (:call, :length, :B))), (:block,
+            (:line, 1921, :none),
+            (:||, (:call, :(==), (:call, :length, (:ref, :B, :j)), :height), (:call, :throw, (:call, :DimensionMismatch, "dimensions must match")))
+          )),
+        (:line, 1924, :none),
+        (:(=), :M, (:call, :BitArray, :height, (:call, :length, :B))),
+        (:line, 1925, :none),
+        (:for, (:(=), :j, (:(:), 1, (:call, :length, :B))), (:block,
+            (:line, 1926, :none),
+            (:call, :copy_chunks!, (:., :M, (:quote, #QuoteNode
+                  :chunks
+                )), (:call, :+, (:call, :*, :height, (:call, :-, :j, 1)), 1), (:., (:ref, :B, :j), (:quote, #QuoteNode
+                  :chunks
+                )), 1, :height)
+          )),
+        (:line, 1928, :none),
+        (:return, :M)
+      )),
+    (:line, 1931, :none),
+    (:function, (:call, :vcat, (:..., (:(::), :V, :BitVector))), (:block,
+        (:line, 1932, :none),
+        (:(=), :n, 0),
+        (:line, 1933, :none),
+        (:for, (:(=), :Vk, :V), (:block,
+            (:line, 1934, :none),
+            (:+=, :n, (:call, :length, :Vk))
+          )),
+        (:line, 1936, :none),
+        (:(=), :B, (:call, :BitArray, :n)),
+        (:line, 1937, :none),
+        (:(=), :j, 1),
+        (:line, 1938, :none),
+        (:for, (:(=), :Vk, :V), (:block,
+            (:line, 1939, :none),
+            (:call, :copy_chunks!, (:., :B, (:quote, #QuoteNode
+                  :chunks
+                )), :j, (:., :Vk, (:quote, #QuoteNode
+                  :chunks
+                )), 1, (:call, :length, :Vk)),
+            (:line, 1940, :none),
+            (:+=, :j, (:call, :length, :Vk))
+          )),
+        (:line, 1942, :none),
+        (:return, :B)
+      )),
+    (:line, 1945, :none),
+    (:function, (:call, :hcat, (:..., (:(::), :A, (:curly, :Union, :BitMatrix, :BitVector)))), (:block,
+        (:line, 1946, :none),
+        (:(=), :nargs, (:call, :length, :A)),
+        (:line, 1947, :none),
+        (:(=), :nrows, (:call, :size, (:ref, :A, 1), 1)),
+        (:line, 1948, :none),
+        (:(=), :ncols, 0),
+        (:line, 1949, :none),
+        (:(=), :dense, true),
+        (:line, 1950, :none),
+        (:for, (:(=), :j, (:(:), 1, :nargs)), (:block,
+            (:line, 1951, :none),
+            (:(=), :Aj, (:ref, :A, :j)),
+            (:line, 1952, :none),
+            (:(=), :nd, (:call, :ndims, :Aj)),
+            (:line, 1953, :none),
+            (:+=, :ncols, (:if, (:call, :(==), :nd, 2), (:call, :size, :Aj, 2), 1)),
+            (:line, 1954, :none),
+            (:||, (:call, :(==), (:call, :size, :Aj, 1), :nrows), (:call, :throw, (:call, :DimensionMismatch, "row lengths must match")))
+          )),
+        (:line, 1958, :none),
+        (:(=), :B, (:call, :BitArray, :nrows, :ncols)),
+        (:line, 1960, :none),
+        (:(=), :pos, 1),
+        (:line, 1961, :none),
+        (:for, (:(=), :k, (:(:), 1, :nargs)), (:block,
+            (:line, 1962, :none),
+            (:(=), :Ak, (:ref, :A, :k)),
+            (:line, 1963, :none),
+            (:(=), :n, (:call, :length, :Ak)),
+            (:line, 1964, :none),
+            (:call, :copy_chunks!, (:., :B, (:quote, #QuoteNode
+                  :chunks
+                )), :pos, (:., :Ak, (:quote, #QuoteNode
+                  :chunks
+                )), 1, :n),
+            (:line, 1965, :none),
+            (:+=, :pos, :n)
+          )),
+        (:line, 1967, :none),
+        (:return, :B)
+      )),
+    (:line, 1970, :none),
+    (:function, (:call, :vcat, (:..., (:(::), :A, :BitMatrix))), (:block,
+        (:line, 1971, :none),
+        (:(=), :nargs, (:call, :length, :A)),
+        (:line, 1972, :none),
+        (:(=), :nrows, (:(::), (:call, :sum, (:->, :a, (:block,
+                  (:line, 1972, :none),
+                  (:call, :size, :a, 1)
+                )), :A), :Int)),
+        (:line, 1973, :none),
+        (:(=), :ncols, (:call, :size, (:ref, :A, 1), 2)),
+        (:line, 1974, :none),
+        (:for, (:(=), :j, (:(:), 2, :nargs)), (:block,
+            (:line, 1975, :none),
+            (:||, (:call, :(==), (:call, :size, (:ref, :A, :j), 2), :ncols), (:call, :throw, (:call, :DimensionMismatch, "column lengths must match")))
+          )),
+        (:line, 1978, :none),
+        (:(=), :B, (:call, :BitArray, :nrows, :ncols)),
+        (:line, 1979, :none),
+        (:(=), :Bc, (:., :B, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 1980, :none),
+        (:(=), :nrowsA, (:comprehension, (:generator, (:call, :size, :a, 1), (:(=), :a, :A)))),
+        (:line, 1981, :none),
+        (:(=), :Ac, (:comprehension, (:generator, (:., :a, (:quote, #QuoteNode
+                  :chunks
+                )), (:(=), :a, :A)))),
+        (:line, 1982, :none),
+        (:(=), :pos_d, 1),
+        (:line, 1983, :none),
+        (:(=), :pos_s, (:call, :ones, :Int, :nargs)),
+        (:line, 1984, :none),
+        (:for, (:block,
+            (:(=), :j, (:(:), 1, :ncols)),
+            (:(=), :k, (:(:), 1, :nargs))
+          ), (:block,
+            (:line, 1985, :none),
+            (:call, :copy_chunks!, :Bc, :pos_d, (:ref, :Ac, :k), (:ref, :pos_s, :k), (:ref, :nrowsA, :k)),
+            (:line, 1986, :none),
+            (:+=, (:ref, :pos_s, :k), (:ref, :nrowsA, :k)),
+            (:line, 1987, :none),
+            (:+=, :pos_d, (:ref, :nrowsA, :k))
+          )),
+        (:line, 1989, :none),
+        (:return, :B)
+      )),
+    (:line, 1993, :none),
+    (:function, (:call, :cat, (:(::), :dims, :Integer), (:..., (:(::), :X, (:curly, :Union, :BitArray, :Bool)))), (:block,
+        (:line, 1994, :none),
+        (:(=), :catdims, (:call, :dims2cat, :dims)),
+        (:line, 1995, :none),
+        (:(=), :shape, (:call, :cat_shape, :catdims, (:tuple,), (:..., (:call, :map, :cat_size, :X)))),
+        (:line, 1996, :none),
+        (:(=), :A, (:call, :falses, :shape)),
+        (:line, 1997, :none),
+        (:return, (:call, :_cat, :A, :shape, :catdims, (:..., :X)))
+      )),
+    (:line, 2005, :none),
+    (:(=), (:call, :write, (:(::), :s, :IO), (:(::), :B, :BitArray)), (:block,
+        (:line, 2005, :none),
+        (:call, :write, :s, (:., :B, (:quote, #QuoteNode
+              :chunks
+            )))
+      )),
+    (:line, 2006, :none),
+    (:function, (:call, :read!, (:(::), :s, :IO), (:(::), :B, :BitArray)), (:block,
+        (:line, 2007, :none),
+        (:(=), :n, (:call, :length, :B)),
+        (:line, 2008, :none),
+        (:(=), :Bc, (:., :B, (:quote, #QuoteNode
+              :chunks
+            ))),
+        (:line, 2009, :none),
+        (:(=), :nc, (:call, :length, (:call, :read!, :s, :Bc))),
+        (:line, 2010, :none),
+        (:if, (:&&, (:call, :>, (:call, :length, :Bc), 0), (:call, :≠, (:call, :&, (:ref, :Bc, :end), (:call, :_msk_end, :n)), (:ref, :Bc, :end))), (:block,
+            (:line, 2011, :none),
+            (:&=, (:ref, :Bc, :end), (:call, :_msk_end, :n)),
+            (:line, 2012, :none),
+            (:call, :throw, (:call, :DimensionMismatch, "read mismatch, found non-zero bits after BitArray length"))
+          )),
+        (:line, 2014, :none),
+        (:return, :B)
+      )),
+    (:line, 2017, :none),
+    (:(=), (:call, :sizeof, (:(::), :B, :BitArray)), (:block,
+        (:line, 2017, :none),
+        (:call, :sizeof, (:., :B, (:quote, #QuoteNode
+              :chunks
+            )))
+      ))
+  ))

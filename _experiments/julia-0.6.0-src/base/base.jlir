@@ -1,0 +1,206 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:macrocall, :(Core.@doc), "    SystemError(prefix::AbstractString, [errno::Int32])\n\nA system call failed with an error code (in the `errno` global variable).\n", (:type, true, (:<:, :SystemError, :Exception), (:block,
+          (:line, 9, :none),
+          (:(::), :prefix, :AbstractString),
+          (:line, 10, :none),
+          (:(::), :errnum, :Int32),
+          (:line, 11, :none),
+          :extrainfo,
+          (:line, 12, :none),
+          (:(=), (:call, :SystemError, (:(::), :p, :AbstractString), (:(::), :e, :Integer), :extrainfo), (:block,
+              (:line, 12, :none),
+              (:call, :new, :p, :e, :extrainfo)
+            )),
+          (:line, 13, :none),
+          (:(=), (:call, :SystemError, (:(::), :p, :AbstractString), (:(::), :e, :Integer)), (:block,
+              (:line, 13, :none),
+              (:call, :new, :p, :e, :nothing)
+            )),
+          (:line, 14, :none),
+          (:(=), (:call, :SystemError, (:(::), :p, :AbstractString)), (:block,
+              (:line, 14, :none),
+              (:call, :new, :p, (:call, (:., :Libc, (:quote, #QuoteNode
+                      :errno
+                    ))))
+            ))
+        ))),
+    (:line, 17, :none),
+    (:macrocall, :(Core.@doc), "    ParseError(msg)\n\nThe expression passed to the `parse` function could not be interpreted as a valid Julia\nexpression.\n", (:type, true, (:<:, :ParseError, :Exception), (:block,
+          (:line, 24, :none),
+          (:(::), :msg, :AbstractString)
+        ))),
+    (:line, 27, :none),
+    (:macrocall, :(Core.@doc), "    ArgumentError(msg)\n\nThe parameters to a function call do not match a valid signature. Argument `msg` is a\ndescriptive error string.\n", (:type, true, (:<:, :ArgumentError, :Exception), (:block,
+          (:line, 34, :none),
+          (:(::), :msg, :AbstractString)
+        ))),
+    (:line, 37, :none),
+    (:macrocall, :(Core.@doc), "    KeyError(key)\n\nAn indexing operation into an `Associative` (`Dict`) or `Set` like object tried to access or\ndelete a non-existent element.\n", (:type, true, (:<:, :KeyError, :Exception), (:block,
+          (:line, 44, :none),
+          :key
+        ))),
+    (:line, 47, :none),
+    (:macrocall, :(Core.@doc), "    MethodError(f, args)\n\nA method with the required type signature does not exist in the given generic function.\nAlternatively, there is no unique most-specific method.\n", (:type, true, (:<:, :MethodError, :Exception), (:block,
+          (:line, 54, :none),
+          :f,
+          (:line, 55, :none),
+          :args,
+          (:line, 56, :none),
+          (:(::), :world, :UInt),
+          (:line, 57, :none),
+          (:(=), (:call, :MethodError, (:(::), :f, :ANY), (:(::), :args, :ANY), (:(::), :world, :UInt)), (:block,
+              (:line, 57, :none),
+              (:call, :new, :f, :args, :world)
+            ))
+        ))),
+    (:line, 59, :none),
+    (:(=), (:call, :MethodError, (:(::), :f, :ANY), (:(::), :args, :ANY)), (:block,
+        (:line, 59, :none),
+        (:call, :MethodError, :f, :args, (:call, :typemax, :UInt))
+      )),
+    (:line, 61, :none),
+    (:macrocall, :(Core.@doc), "    EOFError()\n\nNo more data was available to read from a file or stream.\n", (:type, true, (:<:, :EOFError, :Exception), (:block,
+          (:line, 66, :none)
+        ))),
+    (:line, 68, :none),
+    (:macrocall, :(Core.@doc), "    DimensionMismatch([msg])\n\nThe objects called do not have matching dimensionality. Optional argument `msg` is a\ndescriptive error string.\n", (:type, true, (:<:, :DimensionMismatch, :Exception), (:block,
+          (:line, 75, :none),
+          (:(::), :msg, :AbstractString)
+        ))),
+    (:line, 77, :none),
+    (:(=), (:call, :DimensionMismatch), (:block,
+        (:line, 77, :none),
+        (:call, :DimensionMismatch, "")
+      )),
+    (:line, 79, :none),
+    (:macrocall, :(Core.@doc), "    AssertionError([msg])\n\nThe asserted condition did not evaluate to `true`.\nOptional argument `msg` is a descriptive error string.\n", (:type, true, (:<:, :AssertionError, :Exception), (:block,
+          (:line, 86, :none),
+          (:(::), :msg, :AbstractString),
+          (:line, 87, :none),
+          (:(=), (:call, :AssertionError), (:block,
+              (:line, 87, :none),
+              (:call, :new, "")
+            )),
+          (:line, 88, :none),
+          (:(=), (:call, :AssertionError, :msg), (:block,
+              (:line, 88, :none),
+              (:call, :new, :msg)
+            ))
+        ))),
+    (:line, 93, :none),
+    (:abstract, (:<:, :WrappedException, :Exception)),
+    (:line, 95, :none),
+    (:macrocall, :(Core.@doc), "    LoadError(file::AbstractString, line::Int, error)\n\nAn error occurred while `include`ing, `require`ing, or `using` a file. The error specifics\nshould be available in the `.error` field.\n", (:type, true, (:<:, :LoadError, :WrappedException), (:block,
+          (:line, 102, :none),
+          (:(::), :file, :AbstractString),
+          (:line, 103, :none),
+          (:(::), :line, :Int),
+          (:line, 104, :none),
+          :error
+        ))),
+    (:line, 107, :none),
+    (:macrocall, :(Core.@doc), "    InitError(mod::Symbol, error)\n\nAn error occurred when running a module's `__init__` function. The actual error thrown is\navailable in the `.error` field.\n", (:type, true, (:<:, :InitError, :WrappedException), (:block,
+          (:line, 114, :none),
+          (:(::), :mod, :Symbol),
+          (:line, 115, :none),
+          :error
+        ))),
+    (:line, 118, :none),
+    (:call, :ccall, (:quote, #QuoteNode
+        :jl_get_system_hooks
+      ), :Void, (:tuple,)),
+    (:line, 121, :none),
+    (:(=), (:call, :(==), (:(::), :w, :WeakRef), (:(::), :v, :WeakRef)), (:block,
+        (:line, 121, :none),
+        (:call, :isequal, (:., :w, (:quote, #QuoteNode
+              :value
+            )), (:., :v, (:quote, #QuoteNode
+              :value
+            )))
+      )),
+    (:line, 122, :none),
+    (:(=), (:call, :(==), (:(::), :w, :WeakRef), :v), (:block,
+        (:line, 122, :none),
+        (:call, :isequal, (:., :w, (:quote, #QuoteNode
+              :value
+            )), :v)
+      )),
+    (:line, 123, :none),
+    (:(=), (:call, :(==), :w, (:(::), :v, :WeakRef)), (:block,
+        (:line, 123, :none),
+        (:call, :isequal, :w, (:., :v, (:quote, #QuoteNode
+              :value
+            )))
+      )),
+    (:line, 125, :none),
+    (:function, (:call, :finalizer, (:(::), :o, :ANY), (:(::), :f, :ANY)), (:block,
+        (:line, 126, :none),
+        (:if, (:call, :isimmutable, :o), (:block,
+            (:line, 127, :none),
+            (:call, :error, "objects of type ", (:call, :typeof, :o), " cannot be finalized")
+          )),
+        (:line, 129, :none),
+        (:call, :ccall, (:quote, #QuoteNode
+            :jl_gc_add_finalizer_th
+          ), :Void, (:tuple, (:curly, :Ptr, :Void), :Any, :Any), (:call, (:., :Core, (:quote, #QuoteNode
+                :getptls
+              ))), :o, :f)
+      )),
+    (:line, 132, :none),
+    (:function, (:where, (:call, :finalizer, (:(::), :o, :T), (:(::), :f, (:curly, :Ptr, :Void))), :T), (:block,
+        (:line, 133, :none),
+        (:macrocall, Symbol("@_inline_meta")),
+        (:line, 134, :none),
+        (:if, (:call, :isimmutable, :T), (:block,
+            (:line, 135, :none),
+            (:call, :error, "objects of type ", :T, " cannot be finalized")
+          )),
+        (:line, 137, :none),
+        (:call, :ccall, (:quote, #QuoteNode
+            :jl_gc_add_ptr_finalizer
+          ), :Void, (:tuple, (:curly, :Ptr, :Void), :Any, (:curly, :Ptr, :Void)), (:call, (:., :Core, (:quote, #QuoteNode
+                :getptls
+              ))), :o, :f)
+      )),
+    (:line, 141, :none),
+    (:(=), (:call, :finalize, (:(::), :o, :ANY)), (:block,
+        (:line, 141, :none),
+        (:call, :ccall, (:quote, #QuoteNode
+            :jl_finalize_th
+          ), :Void, (:tuple, (:curly, :Ptr, :Void), :Any), (:call, (:., :Core, (:quote, #QuoteNode
+                :getptls
+              ))), :o)
+      )),
+    (:line, 144, :none),
+    (:(=), (:call, :gc, (:kw, (:(::), :full, :Bool), true)), (:block,
+        (:line, 144, :none),
+        (:call, :ccall, (:quote, #QuoteNode
+            :jl_gc_collect
+          ), :Void, (:tuple, :Int32), :full)
+      )),
+    (:line, 145, :none),
+    (:(=), (:call, :gc_enable, (:(::), :on, :Bool)), (:block,
+        (:line, 145, :none),
+        (:call, :(!=), (:call, :ccall, (:quote, #QuoteNode
+              :jl_gc_enable
+            ), :Int32, (:tuple, :Int32), :on), 0)
+      )),
+    (:line, 147, :none),
+    (:type, false, (:curly, :Nullable, :T), (:block,
+        (:line, 148, :none),
+        (:(::), :hasvalue, :Bool),
+        (:line, 149, :none),
+        (:(::), :value, :T),
+        (:line, 151, :none),
+        (:(=), (:where, (:call, (:curly, :Nullable, :T)), :T), (:block,
+            (:line, 151, :none),
+            (:call, :new, false)
+          )),
+        (:line, 152, :none),
+        (:(=), (:where, (:call, (:curly, :Nullable, :T), (:(::), :value, :T), (:kw, (:(::), :hasvalue, :Bool), true)), :T), (:block,
+            (:line, 152, :none),
+            (:call, :new, :hasvalue, :value)
+          ))
+      ))
+  ))

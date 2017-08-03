@@ -1,0 +1,872 @@
+(:quote, (:block,
+    (:line, 5, :none),
+    (:(=), (:call, :lock, (:(::), :IO)), (:block,
+        (:line, 5, :none),
+        :nothing
+      )),
+    (:line, 6, :none),
+    (:(=), (:call, :unlock, (:(::), :IO)), (:block,
+        (:line, 6, :none),
+        :nothing
+      )),
+    (:line, 7, :none),
+    (:(=), (:call, :reseteof, (:(::), :x, :IO)), (:block,
+        (:line, 7, :none),
+        :nothing
+      )),
+    (:line, 9, :none),
+    (:const, (:(=), :SZ_UNBUFFERED_IO, 65536)),
+    (:line, 10, :none),
+    (:(=), (:call, :buffer_writes, (:(::), :x, :IO), (:kw, :bufsize, :SZ_UNBUFFERED_IO)), (:block,
+        (:line, 10, :none),
+        :x
+      )),
+    (:line, 12, :none),
+    (:macrocall, :(Core.@doc), "    isopen(object) -> Bool\n\nDetermine whether an object - such as a stream, timer, or mmap -- is not yet closed. Once an\nobject is closed, it will never produce a new event. However, a closed stream may still have\ndata to read in its buffer, use [`eof`](@ref) to check for the ability to read data.\nUse [`poll_fd`](@ref) to be notified when a stream might be writable or readable.\n", (:function, :isopen)),
+    (:line, 22, :none),
+    (:macrocall, :(Core.@doc), "    close(stream)\n\nClose an I/O stream. Performs a [`flush`](@ref) first.\n", (:function, :close)),
+    (:line, 28, :none),
+    (:function, :flush),
+    (:line, 29, :none),
+    (:function, :wait_connected),
+    (:line, 30, :none),
+    (:function, :wait_readnb),
+    (:line, 31, :none),
+    (:function, :wait_readbyte),
+    (:line, 32, :none),
+    (:function, :wait_close),
+    (:line, 33, :none),
+    (:function, :nb_available),
+    (:line, 34, :none),
+    (:function, :readavailable),
+    (:line, 36, :none),
+    (:macrocall, :(Core.@doc), "    isreadable(io) -> Bool\n\nReturns `true` if the specified IO object is readable (if that can be determined).\n", (:function, :isreadable)),
+    (:line, 43, :none),
+    (:macrocall, :(Core.@doc), "    iswritable(io) -> Bool\n\nReturns `true` if the specified IO object is writable (if that can be determined).\n", (:function, :iswritable)),
+    (:line, 49, :none),
+    (:function, :copy),
+    (:line, 50, :none),
+    (:function, :eof),
+    (:line, 52, :none),
+    (:macrocall, :(Core.@doc), "    write(stream::IO, x)\n    write(filename::AbstractString, x)\n\nWrite the canonical binary representation of a value to the given I/O stream or file.\nReturns the number of bytes written into the stream.\n\nYou can write multiple values with the same `write` call. i.e. the following are equivalent:\n\n    write(stream, x, y...)\n    write(stream, x) + write(stream, y...)\n", (:function, :write)),
+    (:line, 66, :none),
+    (:(=), (:call, :read, (:(::), :s, :IO), (:(::), (:curly, :Type, :UInt8))), (:block,
+        (:line, 66, :none),
+        (:call, :error, (:call, :typeof, :s), " does not support byte I/O")
+      )),
+    (:line, 67, :none),
+    (:(=), (:call, :write, (:(::), :s, :IO), (:(::), :x, :UInt8)), (:block,
+        (:line, 67, :none),
+        (:call, :error, (:call, :typeof, :s), " does not support byte I/O")
+      )),
+    (:line, 69, :none),
+    (:macrocall, :(Core.@doc), "    unsafe_write(io::IO, ref, nbytes::UInt)\n\nCopy `nbytes` from `ref` (converted to a pointer) into the `IO` object.\n\nIt is recommended that subtypes `T<:IO` override the following method signature\nto provide more efficient implementations:\n`unsafe_write(s::T, p::Ptr{UInt8}, n::UInt)`\n", (:function, (:call, :unsafe_write, (:(::), :s, :IO), (:(::), :p, (:curly, :Ptr, :UInt8)), (:(::), :n, :UInt)), (:block,
+          (:line, 79, :none),
+          (:local, (:(=), (:(::), :written, :Int), 0)),
+          (:line, 80, :none),
+          (:for, (:(=), :i, (:(:), 1, :n)), (:block,
+              (:line, 81, :none),
+              (:+=, :written, (:call, :write, :s, (:call, :unsafe_load, :p, :i)))
+            )),
+          (:line, 83, :none),
+          (:return, :written)
+        ))),
+    (:line, 86, :none),
+    (:macrocall, :(Core.@doc), "    unsafe_read(io::IO, ref, nbytes::UInt)\n\nCopy `nbytes` from the `IO` stream object into `ref` (converted to a pointer).\n\nIt is recommended that subtypes `T<:IO` override the following method signature\nto provide more efficient implementations:\n`unsafe_read(s::T, p::Ptr{UInt8}, n::UInt)`\n", (:function, (:call, :unsafe_read, (:(::), :s, :IO), (:(::), :p, (:curly, :Ptr, :UInt8)), (:(::), :n, :UInt)), (:block,
+          (:line, 96, :none),
+          (:for, (:(=), :i, (:(:), 1, :n)), (:block,
+              (:line, 97, :none),
+              (:call, :unsafe_store!, :p, (:(::), (:call, :read, :s, :UInt8), :UInt8), :i)
+            )),
+          (:line, 99, :none),
+          :nothing
+        ))),
+    (:line, 104, :none),
+    (:abstract, (:<:, :AbstractPipe, :IO)),
+    (:line, 105, :none),
+    (:function, :pipe_reader),
+    (:line, 106, :none),
+    (:function, :pipe_writer),
+    (:line, 108, :none),
+    (:(=), (:call, :write, (:(::), :io, :AbstractPipe), (:(::), :byte, :UInt8)), (:block,
+        (:line, 108, :none),
+        (:call, :write, (:call, :pipe_writer, :io), :byte)
+      )),
+    (:line, 109, :none),
+    (:(=), (:call, :unsafe_write, (:(::), :io, :AbstractPipe), (:(::), :p, (:curly, :Ptr, :UInt8)), (:(::), :nb, :UInt)), (:block,
+        (:line, 109, :none),
+        (:call, :unsafe_write, (:call, :pipe_writer, :io), :p, :nb)
+      )),
+    (:line, 110, :none),
+    (:(=), (:call, :buffer_writes, (:(::), :io, :AbstractPipe), (:..., :args)), (:block,
+        (:line, 110, :none),
+        (:call, :buffer_writes, (:call, :pipe_writer, :io), (:..., :args))
+      )),
+    (:line, 111, :none),
+    (:(=), (:call, :flush, (:(::), :io, :AbstractPipe)), (:block,
+        (:line, 111, :none),
+        (:call, :flush, (:call, :pipe_writer, :io))
+      )),
+    (:line, 113, :none),
+    (:(=), (:call, :read, (:(::), :io, :AbstractPipe), (:(::), :byte, (:curly, :Type, :UInt8))), (:block,
+        (:line, 113, :none),
+        (:call, :read, (:call, :pipe_reader, :io), :byte)
+      )),
+    (:line, 114, :none),
+    (:(=), (:call, :unsafe_read, (:(::), :io, :AbstractPipe), (:(::), :p, (:curly, :Ptr, :UInt8)), (:(::), :nb, :UInt)), (:block,
+        (:line, 114, :none),
+        (:call, :unsafe_read, (:call, :pipe_reader, :io), :p, :nb)
+      )),
+    (:line, 115, :none),
+    (:(=), (:call, :read, (:(::), :io, :AbstractPipe)), (:block,
+        (:line, 115, :none),
+        (:call, :read, (:call, :pipe_reader, :io))
+      )),
+    (:line, 116, :none),
+    (:(=), (:call, :readuntil, (:(::), :io, :AbstractPipe), (:(::), :arg, :UInt8)), (:block,
+        (:line, 116, :none),
+        (:call, :readuntil, (:call, :pipe_reader, :io), :arg)
+      )),
+    (:line, 117, :none),
+    (:(=), (:call, :readuntil, (:(::), :io, :AbstractPipe), (:(::), :arg, :Char)), (:block,
+        (:line, 117, :none),
+        (:call, :readuntil, (:call, :pipe_reader, :io), :arg)
+      )),
+    (:line, 118, :none),
+    (:(=), (:call, :readuntil, (:(::), :io, :AbstractPipe), (:(::), :arg, :AbstractString)), (:block,
+        (:line, 118, :none),
+        (:call, :readuntil, (:call, :pipe_reader, :io), :arg)
+      )),
+    (:line, 119, :none),
+    (:(=), (:call, :readuntil, (:(::), :io, :AbstractPipe), :arg), (:block,
+        (:line, 119, :none),
+        (:call, :readuntil, (:call, :pipe_reader, :io), :arg)
+      )),
+    (:line, 120, :none),
+    (:(=), (:call, :readavailable, (:(::), :io, :AbstractPipe)), (:block,
+        (:line, 120, :none),
+        (:call, :readavailable, (:call, :pipe_reader, :io))
+      )),
+    (:line, 122, :none),
+    (:(=), (:call, :isreadable, (:(::), :io, :AbstractPipe)), (:block,
+        (:line, 122, :none),
+        (:call, :isreadable, (:call, :pipe_reader, :io))
+      )),
+    (:line, 123, :none),
+    (:(=), (:call, :iswritable, (:(::), :io, :AbstractPipe)), (:block,
+        (:line, 123, :none),
+        (:call, :iswritable, (:call, :pipe_writer, :io))
+      )),
+    (:line, 124, :none),
+    (:(=), (:call, :isopen, (:(::), :io, :AbstractPipe)), (:block,
+        (:line, 124, :none),
+        (:||, (:call, :isopen, (:call, :pipe_writer, :io)), (:call, :isopen, (:call, :pipe_reader, :io)))
+      )),
+    (:line, 125, :none),
+    (:(=), (:call, :close, (:(::), :io, :AbstractPipe)), (:block,
+        (:line, 125, :none),
+        (:block,
+          (:call, :close, (:call, :pipe_writer, :io)),
+          (:call, :close, (:call, :pipe_reader, :io))
+        )
+      )),
+    (:line, 126, :none),
+    (:(=), (:call, :wait_readnb, (:(::), :io, :AbstractPipe), (:(::), :nb, :Int)), (:block,
+        (:line, 126, :none),
+        (:call, :wait_readnb, (:call, :pipe_reader, :io), :nb)
+      )),
+    (:line, 127, :none),
+    (:(=), (:call, :wait_readbyte, (:(::), :io, :AbstractPipe), (:(::), :byte, :UInt8)), (:block,
+        (:line, 127, :none),
+        (:call, :wait_readbyte, (:call, :pipe_reader, :io), :byte)
+      )),
+    (:line, 128, :none),
+    (:(=), (:call, :wait_close, (:(::), :io, :AbstractPipe)), (:block,
+        (:line, 128, :none),
+        (:block,
+          (:call, :wait_close, (:call, :pipe_writer, :io)),
+          (:call, :wait_close, (:call, :pipe_reader, :io))
+        )
+      )),
+    (:line, 130, :none),
+    (:macrocall, :(Core.@doc), "    nb_available(stream)\n\nReturns the number of bytes available for reading before a read from this stream or buffer will block.\n", (:(=), (:call, :nb_available, (:(::), :io, :AbstractPipe)), (:block,
+          (:line, 135, :none),
+          (:call, :nb_available, (:call, :pipe_reader, :io))
+        ))),
+    (:line, 137, :none),
+    (:macrocall, :(Core.@doc), "    eof(stream) -> Bool\n\nTests whether an I/O stream is at end-of-file. If the stream is not yet exhausted, this\nfunction will block to wait for more data if necessary, and then return `false`. Therefore\nit is always safe to read one byte after seeing `eof` return `false`. `eof` will return\n`false` as long as buffered data is still available, even if the remote end of a connection\nis closed.\n", (:(=), (:call, :eof, (:(::), :io, :AbstractPipe)), (:block,
+          (:line, 146, :none),
+          (:call, :eof, (:call, :pipe_reader, :io))
+        ))),
+    (:line, 147, :none),
+    (:(=), (:call, :reseteof, (:(::), :io, :AbstractPipe)), (:block,
+        (:line, 147, :none),
+        (:call, :reseteof, (:call, :pipe_reader, :io))
+      )),
+    (:line, 152, :none),
+    (:(=), (:call, :write, (:(::), :filename, :AbstractString), (:..., :args)), (:block,
+        (:line, 152, :none),
+        (:call, :open, (:->, :io, (:block,
+              (:line, 152, :none),
+              (:call, :write, :io, (:..., :args))
+            )), :filename, "w")
+      )),
+    (:line, 154, :none),
+    (:macrocall, :(Core.@doc), "    read(filename::AbstractString, args...)\n\nOpen a file and read its contents. `args` is passed to `read`: this is equivalent to\n`open(io->read(io, args...), filename)`.\n", (:(=), (:call, :read, (:(::), :filename, :AbstractString), (:..., :args)), (:block,
+          (:line, 160, :none),
+          (:call, :open, (:->, :io, (:block,
+                (:line, 160, :none),
+                (:call, :read, :io, (:..., :args))
+              )), :filename)
+        ))),
+    (:line, 161, :none),
+    (:(=), (:call, :read!, (:(::), :filename, :AbstractString), :a), (:block,
+        (:line, 161, :none),
+        (:call, :open, (:->, :io, (:block,
+              (:line, 161, :none),
+              (:call, :read!, :io, :a)
+            )), :filename)
+      )),
+    (:line, 163, :none),
+    (:macrocall, :(Core.@doc), "    readuntil(stream::IO, delim)\n    readuntil(filename::AbstractString, delim)\n\nRead a string from an I/O stream or a file, up to and including the given delimiter byte.\nThe text is assumed to be encoded in UTF-8.\n", (:(=), (:call, :readuntil, (:(::), :filename, :AbstractString), (:..., :args)), (:block,
+          (:line, 170, :none),
+          (:call, :open, (:->, :io, (:block,
+                (:line, 170, :none),
+                (:call, :readuntil, :io, (:..., :args))
+              )), :filename)
+        ))),
+    (:line, 172, :none),
+    (:macrocall, :(Core.@doc), "    readline(stream::IO=STDIN; chomp::Bool=true)\n    readline(filename::AbstractString; chomp::Bool=true)\n\nRead a single line of text from the given I/O stream or file (defaults to `STDIN`).\nWhen reading from a file, the text is assumed to be encoded in UTF-8. Lines in the\ninput end with `'\\n'` or `\"\\r\\n\"` or the end of an input stream. When `chomp` is\ntrue (as it is by default), these trailing newline characters are removed from the\nline before it is returned. When `chomp` is false, they are returned as part of the\nline.\n", (:function, (:call, :readline, (:parameters, (:kw, (:(::), :chomp, :Bool), true)), (:(::), :filename, :AbstractString)), (:block,
+          (:line, 184, :none),
+          (:call, :open, (:->, (:tuple, :f), (:block,
+                (:line, 185, :none),
+                (:call, :readline, :f, (:kw, :chomp, :chomp))
+              )), :filename)
+        ))),
+    (:line, 189, :none),
+    (:function, (:call, :readline, (:parameters, (:kw, (:(::), :chomp, :Bool), true)), (:kw, (:(::), :s, :IO), :STDIN)), (:block,
+        (:line, 190, :none),
+        (:(=), :line, (:call, :readuntil, :s, 0x0a)),
+        (:line, 191, :none),
+        (:(=), :i, (:call, :length, :line)),
+        (:line, 192, :none),
+        (:if, (:||, (:call, :!, :chomp), (:||, (:call, :(==), :i, 0), (:call, :(!=), (:ref, :line, :i), 0x0a))), (:block,
+            (:line, 193, :none),
+            (:return, (:call, :String, :line))
+          ), (:block,
+            (:line, 194, :none),
+            (:if, (:||, (:call, :<, :i, 2), (:call, :(!=), (:ref, :line, (:call, :-, :i, 1)), 0x0d)), (:block,
+                (:line, 195, :none),
+                (:return, (:call, :String, (:call, :resize!, :line, (:call, :-, :i, 1))))
+              ), (:block,
+                (:line, 197, :none),
+                (:return, (:call, :String, (:call, :resize!, :line, (:call, :-, :i, 2))))
+              ))
+          ))
+      )),
+    (:line, 201, :none),
+    (:macrocall, :(Core.@doc), "    readlines(stream::IO=STDIN; chomp::Bool=true)\n    readlines(filename::AbstractString; chomp::Bool=true)\n\nRead all lines of an I/O stream or a file as a vector of strings. Behavior is\nequivalent to saving the result of reading `readline` repeatedly with the same\narguments and saving the resulting lines as a vector of strings.\n", (:function, (:call, :readlines, (:parameters, (:kw, (:(::), :chomp, :Bool), true)), (:(::), :filename, :AbstractString)), (:block,
+          (:line, 210, :none),
+          (:call, :open, (:->, (:tuple, :f), (:block,
+                (:line, 211, :none),
+                (:call, :readlines, :f, (:kw, :chomp, :chomp))
+              )), :filename)
+        ))),
+    (:line, 214, :none),
+    (:(=), (:call, :readlines, (:parameters, (:kw, (:(::), :chomp, :Bool), true)), (:kw, :s, :STDIN)), (:block,
+        (:line, 214, :none),
+        (:call, :collect, (:call, :eachline, :s, (:kw, :chomp, :chomp)))
+      )),
+    (:line, 218, :none),
+    (:let, (:block,
+        (:line, 219, :none),
+        (:global, :ntoh, :hton, :ltoh, :htol),
+        (:line, 220, :none),
+        (:if, (:call, :(==), :endian_boms, (:typed_vcat, :UInt8, (:(:), 1, 4))), (:block,
+            (:line, 221, :none),
+            (:(=), (:call, :ntoh, :x), (:block,
+                (:line, 221, :none),
+                :x
+              )),
+            (:line, 222, :none),
+            (:(=), (:call, :hton, :x), (:block,
+                (:line, 222, :none),
+                :x
+              )),
+            (:line, 223, :none),
+            (:(=), (:call, :ltoh, :x), (:block,
+                (:line, 223, :none),
+                (:call, :bswap, :x)
+              )),
+            (:line, 224, :none),
+            (:(=), (:call, :htol, :x), (:block,
+                (:line, 224, :none),
+                (:call, :bswap, :x)
+              )),
+            (:line, 225, :none),
+            (:const, (:global, (:(=), :ENDIAN_BOM, 0x01020304)))
+          ), (:block,
+            (:line, 226, :none),
+            (:if, (:call, :(==), :endian_boms, (:typed_vcat, :UInt8, (:(:), 4, -1, 1))), (:block,
+                (:line, 227, :none),
+                (:(=), (:call, :ntoh, :x), (:block,
+                    (:line, 227, :none),
+                    (:call, :bswap, :x)
+                  )),
+                (:line, 228, :none),
+                (:(=), (:call, :hton, :x), (:block,
+                    (:line, 228, :none),
+                    (:call, :bswap, :x)
+                  )),
+                (:line, 229, :none),
+                (:(=), (:call, :ltoh, :x), (:block,
+                    (:line, 229, :none),
+                    :x
+                  )),
+                (:line, 230, :none),
+                (:(=), (:call, :htol, :x), (:block,
+                    (:line, 230, :none),
+                    :x
+                  )),
+                (:line, 231, :none),
+                (:const, (:global, (:(=), :ENDIAN_BOM, 0x04030201)))
+              ), (:block,
+                (:line, 233, :none),
+                (:call, :error, "seriously? what is this machine?")
+              ))
+          ))
+      ), (:(=), :endian_boms, (:call, :reinterpret, :UInt8, (:ref, :UInt32, 0x01020304)))),
+    (:line, 237, :none),
+    (:macrocall, :(Core.@doc), "    ENDIAN_BOM\n\nThe 32-bit byte-order-mark indicates the native byte order of the host machine.\nLittle-endian machines will contain the value `0x04030201`. Big-endian machines will contain\nthe value `0x01020304`.\n", :ENDIAN_BOM),
+    (:line, 246, :none),
+    (:macrocall, :(Core.@doc), "    ntoh(x)\n\nConverts the endianness of a value from Network byte order (big-endian) to that used by the Host.\n", (:call, :ntoh, :x)),
+    (:line, 253, :none),
+    (:macrocall, :(Core.@doc), "    hton(x)\n\nConverts the endianness of a value from that used by the Host to Network byte order (big-endian).\n", (:call, :hton, :x)),
+    (:line, 260, :none),
+    (:macrocall, :(Core.@doc), "    ltoh(x)\n\nConverts the endianness of a value from Little-endian to that used by the Host.\n", (:call, :ltoh, :x)),
+    (:line, 267, :none),
+    (:macrocall, :(Core.@doc), "    htol(x)\n\nConverts the endianness of a value from that used by the Host to Little-endian.\n", (:call, :htol, :x)),
+    (:line, 275, :none),
+    (:macrocall, :(Core.@doc), "    isreadonly(stream) -> Bool\n\nDetermine whether a stream is read-only.\n", (:(=), (:call, :isreadonly, :s), (:block,
+          (:line, 280, :none),
+          (:&&, (:call, :isreadable, :s), (:call, :!, (:call, :iswritable, :s)))
+        ))),
+    (:line, 284, :none),
+    (:(=), (:call, :write, (:(::), :io, :IO), :x), (:block,
+        (:line, 284, :none),
+        (:call, :throw, (:call, :MethodError, :write, (:tuple, :io, :x)))
+      )),
+    (:line, 285, :none),
+    (:function, (:call, :write, (:(::), :io, :IO), (:..., :xs)), (:block,
+        (:line, 286, :none),
+        (:local, (:(=), (:(::), :written, :Int), 0)),
+        (:line, 287, :none),
+        (:for, (:(=), :x, :xs), (:block,
+            (:line, 288, :none),
+            (:+=, :written, (:call, :write, :io, :x))
+          )),
+        (:line, 290, :none),
+        (:return, :written)
+      )),
+    (:line, 293, :none),
+    (:macrocall, Symbol("@noinline"), (:(=), (:call, (:curly, :unsafe_write, :T), (:(::), :s, :IO), (:(::), :p, (:curly, :Ref, :T)), (:(::), :n, :Integer)), (:block,
+          (:line, 293, :none),
+          (:call, :unsafe_write, :s, (:(::), (:call, :unsafe_convert, (:curly, :Ref, :T), :p), :Ptr), :n)
+        ))),
+    (:line, 294, :none),
+    (:(=), (:call, :unsafe_write, (:(::), :s, :IO), (:(::), :p, :Ptr), (:(::), :n, :Integer)), (:block,
+        (:line, 294, :none),
+        (:call, :unsafe_write, :s, (:call, :convert, (:curly, :Ptr, :UInt8), :p), (:call, :convert, :UInt, :n))
+      )),
+    (:line, 295, :none),
+    (:(=), (:call, (:curly, :write, :T), (:(::), :s, :IO), (:(::), :x, (:curly, :Ref, :T))), (:block,
+        (:line, 295, :none),
+        (:call, :unsafe_write, :s, :x, (:call, (:., :Core, (:quote, #QuoteNode
+                :sizeof
+              )), :T))
+      )),
+    (:line, 296, :none),
+    (:(=), (:call, :write, (:(::), :s, :IO), (:(::), :x, :Int8)), (:block,
+        (:line, 296, :none),
+        (:call, :write, :s, (:call, :reinterpret, :UInt8, :x))
+      )),
+    (:line, 297, :none),
+    (:function, (:call, :write, (:(::), :s, :IO), (:(::), :x, (:curly, :Union, :Int16, :UInt16, :Int32, :UInt32, :Int64, :UInt64, :Int128, :UInt128, :Float16, :Float32, :Float64))), (:block,
+        (:line, 298, :none),
+        (:return, (:call, :write, :s, (:call, :Ref, :x)))
+      )),
+    (:line, 301, :none),
+    (:(=), (:call, :write, (:(::), :s, :IO), (:(::), :x, :Bool)), (:block,
+        (:line, 301, :none),
+        (:call, :write, :s, (:call, :UInt8, :x))
+      )),
+    (:line, 302, :none),
+    (:(=), (:call, :write, (:(::), :to, :IO), (:(::), :p, :Ptr)), (:block,
+        (:line, 302, :none),
+        (:call, :write, :to, (:call, :convert, :UInt, :p))
+      )),
+    (:line, 304, :none),
+    (:function, (:call, :write, (:(::), :s, :IO), (:(::), :A, :AbstractArray)), (:block,
+        (:line, 305, :none),
+        (:(=), :nb, 0),
+        (:line, 306, :none),
+        (:for, (:(=), :a, :A), (:block,
+            (:line, 307, :none),
+            (:+=, :nb, (:call, :write, :s, :a))
+          )),
+        (:line, 309, :none),
+        (:return, :nb)
+      )),
+    (:line, 312, :none),
+    (:macrocall, Symbol("@noinline"), (:function, (:call, :write, (:(::), :s, :IO), (:(::), :a, (:curly, :Array, :UInt8))), (:block,
+          (:line, 313, :none),
+          (:return, (:call, :unsafe_write, :s, (:call, :pointer, :a), (:call, :sizeof, :a)))
+        ))),
+    (:line, 316, :none),
+    (:macrocall, Symbol("@noinline"), (:function, (:call, (:curly, :write, :T), (:(::), :s, :IO), (:(::), :a, (:curly, :Array, :T))), (:block,
+          (:line, 317, :none),
+          (:if, (:call, :isbits, :T), (:block,
+              (:line, 318, :none),
+              (:return, (:call, :unsafe_write, :s, (:call, :pointer, :a), (:call, :sizeof, :a)))
+            ), (:block,
+              (:line, 320, :none),
+              (:(=), :nb, 0),
+              (:line, 321, :none),
+              (:for, (:(=), :b, :a), (:block,
+                  (:line, 322, :none),
+                  (:+=, :nb, (:call, :write, :s, :b))
+                )),
+              (:line, 324, :none),
+              (:return, :nb)
+            ))
+        ))),
+    (:line, 329, :none),
+    (:function, (:call, :write, (:(::), :s, :IO), (:(::), :ch, :Char)), (:block,
+        (:line, 330, :none),
+        (:(=), :c, (:call, :reinterpret, :UInt32, :ch)),
+        (:line, 331, :none),
+        (:if, (:call, :<, :c, 0x80), (:block,
+            (:line, 332, :none),
+            (:return, (:call, :write, :s, (:call, :%, :c, :UInt8)))
+          ), (:block,
+            (:line, 333, :none),
+            (:if, (:call, :<, :c, 0x0800), (:block,
+                (:line, 334, :none),
+                (:return, (:call, :+, (:call, :write, :s, (:call, :%, (:call, :|, (:call, :>>, :c, 6), 0xc0), :UInt8)), (:call, :write, :s, (:call, :%, (:call, :|, (:call, :&, :c, 0x3f), 0x80), :UInt8))))
+              ), (:block,
+                (:line, 336, :none),
+                (:if, (:call, :<, :c, 0x00010000), (:block,
+                    (:line, 337, :none),
+                    (:return, (:call, :+, (:call, :write, :s, (:call, :%, (:call, :|, (:call, :>>, :c, 12), 0xe0), :UInt8)), (:call, :write, :s, (:call, :%, (:call, :|, (:call, :&, (:call, :>>, :c, 6), 0x3f), 0x80), :UInt8)), (:call, :write, :s, (:call, :%, (:call, :|, (:call, :&, :c, 0x3f), 0x80), :UInt8))))
+                  ), (:block,
+                    (:line, 340, :none),
+                    (:if, (:call, :<, :c, 0x00110000), (:block,
+                        (:line, 341, :none),
+                        (:return, (:call, :+, (:call, :write, :s, (:call, :%, (:call, :|, (:call, :>>, :c, 18), 0xf0), :UInt8)), (:call, :write, :s, (:call, :%, (:call, :|, (:call, :&, (:call, :>>, :c, 12), 0x3f), 0x80), :UInt8)), (:call, :write, :s, (:call, :%, (:call, :|, (:call, :&, (:call, :>>, :c, 6), 0x3f), 0x80), :UInt8)), (:call, :write, :s, (:call, :%, (:call, :|, (:call, :&, :c, 0x3f), 0x80), :UInt8))))
+                      ), (:block,
+                        (:line, 346, :none),
+                        (:return, (:call, :write, :s, '�'))
+                      ))
+                  ))
+              ))
+          ))
+      )),
+    (:line, 350, :none),
+    (:function, (:call, :write, (:(::), :io, :IO), (:(::), :s, :Symbol)), (:block,
+        (:line, 351, :none),
+        (:(=), :pname, (:call, :unsafe_convert, (:curly, :Ptr, :UInt8), :s)),
+        (:line, 352, :none),
+        (:return, (:call, :unsafe_write, :io, :pname, (:call, :Int, (:call, :ccall, (:quote, #QuoteNode
+                  :strlen
+                ), :Csize_t, (:tuple, :Cstring), :pname))))
+      )),
+    (:line, 355, :none),
+    (:function, (:call, :write, (:(::), :to, :IO), (:(::), :from, :IO)), (:block,
+        (:line, 356, :none),
+        (:while, (:call, :!, (:call, :eof, :from)), (:block,
+            (:line, 357, :none),
+            (:call, :write, :to, (:call, :readavailable, :from))
+          ))
+      )),
+    (:line, 361, :none),
+    (:macrocall, Symbol("@noinline"), (:(=), (:where, (:call, :unsafe_read, (:(::), :s, :IO), (:(::), :p, (:curly, :Ref, :T)), (:(::), :n, :Integer)), :T), (:block,
+          (:line, 361, :none),
+          (:call, :unsafe_read, :s, (:(::), (:call, :unsafe_convert, (:curly, :Ref, :T), :p), :Ptr), :n)
+        ))),
+    (:line, 362, :none),
+    (:(=), (:call, :unsafe_read, (:(::), :s, :IO), (:(::), :p, :Ptr), (:(::), :n, :Integer)), (:block,
+        (:line, 362, :none),
+        (:call, :unsafe_read, :s, (:call, :convert, (:curly, :Ptr, :UInt8), :p), (:call, :convert, :UInt, :n))
+      )),
+    (:line, 363, :none),
+    (:(=), (:where, (:call, :read, (:(::), :s, :IO), (:(::), :x, (:curly, :Ref, :T))), :T), (:block,
+        (:line, 363, :none),
+        (:block,
+          (:call, :unsafe_read, :s, :x, (:call, (:., :Core, (:quote, #QuoteNode
+                  :sizeof
+                )), :T)),
+          :x
+        )
+      )),
+    (:line, 365, :none),
+    (:(=), (:call, :read, (:(::), :s, :IO), (:(::), (:curly, :Type, :Int8))), (:block,
+        (:line, 365, :none),
+        (:call, :reinterpret, :Int8, (:call, :read, :s, :UInt8))
+      )),
+    (:line, 366, :none),
+    (:function, (:call, :read, (:(::), :s, :IO), (:(::), :T, (:curly, :Union, (:curly, :Type, :Int16), (:curly, :Type, :UInt16), (:curly, :Type, :Int32), (:curly, :Type, :UInt32), (:curly, :Type, :Int64), (:curly, :Type, :UInt64), (:curly, :Type, :Int128), (:curly, :Type, :UInt128), (:curly, :Type, :Float16), (:curly, :Type, :Float32), (:curly, :Type, :Float64)))), (:block,
+        (:line, 367, :none),
+        (:return, (:(::), (:ref, (:call, :read, :s, (:call, (:curly, :Ref, :T), 0))), :T))
+      )),
+    (:line, 370, :none),
+    (:(=), (:call, :read, (:(::), :s, :IO), (:(::), (:curly, :Type, :Bool))), (:block,
+        (:line, 370, :none),
+        (:call, :(!=), (:call, :read, :s, :UInt8), 0)
+      )),
+    (:line, 371, :none),
+    (:(=), (:where, (:call, :read, (:(::), :s, :IO), (:(::), (:curly, :Type, (:curly, :Ptr, :T)))), :T), (:block,
+        (:line, 371, :none),
+        (:call, :convert, (:curly, :Ptr, :T), (:call, :read, :s, :UInt))
+      )),
+    (:line, 373, :none),
+    (:(=), (:where, (:call, :read, (:(::), :s, :IO), (:(::), :t, (:curly, :Type, :T)), (:(::), :d1, :Int), (:..., (:(::), :dims, :Int))), :T), (:block,
+        (:line, 373, :none),
+        (:call, :read, :s, :t, (:call, :tuple, :d1, (:..., :dims)))
+      )),
+    (:line, 374, :none),
+    (:(=), (:where, (:call, :read, (:(::), :s, :IO), (:(::), :t, (:curly, :Type, :T)), (:(::), :d1, :Integer), (:..., (:(::), :dims, :Integer))), :T), (:block,
+        (:line, 374, :none),
+        (:call, :read, :s, :t, (:call, :convert, (:curly, :Tuple, (:curly, :Vararg, :Int)), (:call, :tuple, :d1, (:..., :dims))))
+      )),
+    (:line, 377, :none),
+    (:macrocall, :(Core.@doc), "    read(stream::IO, T, dims)\n\nRead a series of values of type `T` from `stream`, in canonical binary representation.\n`dims` is either a tuple or a series of integer arguments specifying the size of the `Array{T}`\nto return.\n", (:(=), (:where, (:call, :read, (:(::), :s, :IO), (:(::), (:curly, :Type, :T)), (:(::), :dims, :Dims)), :T), (:block,
+          (:line, 384, :none),
+          (:call, :read!, :s, (:call, (:curly, :Array, :T), :dims))
+        ))),
+    (:line, 386, :none),
+    (:macrocall, Symbol("@noinline"), (:function, (:call, :read!, (:(::), :s, :IO), (:(::), :a, (:curly, :Array, :UInt8))), (:block,
+          (:line, 387, :none),
+          (:call, :unsafe_read, :s, (:call, :pointer, :a), (:call, :sizeof, :a)),
+          (:line, 388, :none),
+          (:return, :a)
+        ))),
+    (:line, 391, :none),
+    (:macrocall, Symbol("@noinline"), (:function, (:where, (:call, :read!, (:(::), :s, :IO), (:(::), :a, (:curly, :Array, :T))), :T), (:block,
+          (:line, 392, :none),
+          (:if, (:call, :isbits, :T), (:block,
+              (:line, 393, :none),
+              (:call, :unsafe_read, :s, (:call, :pointer, :a), (:call, :sizeof, :a))
+            ), (:block,
+              (:line, 395, :none),
+              (:for, (:(=), :i, (:call, :eachindex, :a)), (:block,
+                  (:line, 396, :none),
+                  (:(=), (:ref, :a, :i), (:call, :read, :s, :T))
+                ))
+            )),
+          (:line, 399, :none),
+          (:return, :a)
+        ))),
+    (:line, 402, :none),
+    (:function, (:call, :read, (:(::), :s, :IO), (:(::), (:curly, :Type, :Char))), (:block,
+        (:line, 403, :none),
+        (:(=), :ch, (:call, :read, :s, :UInt8)),
+        (:line, 404, :none),
+        (:if, (:call, :<, :ch, 0x80), (:block,
+            (:line, 405, :none),
+            (:return, (:call, :Char, :ch))
+          )),
+        (:line, 409, :none),
+        (:(=), :trailing, (:ref, (:., :Base, (:quote, #QuoteNode
+                :utf8_trailing
+              )), (:call, :+, :ch, 1))),
+        (:line, 410, :none),
+        (:(=), (:(::), :c, :UInt32), 0),
+        (:line, 411, :none),
+        (:for, (:(=), :j, (:(:), 1, :trailing)), (:block,
+            (:line, 412, :none),
+            (:+=, :c, :ch),
+            (:line, 413, :none),
+            (:<<=, :c, 6),
+            (:line, 414, :none),
+            (:(=), :ch, (:call, :read, :s, :UInt8))
+          )),
+        (:line, 416, :none),
+        (:+=, :c, :ch),
+        (:line, 417, :none),
+        (:-=, :c, (:ref, (:., :Base, (:quote, #QuoteNode
+                :utf8_offset
+              )), (:call, :+, :trailing, 1))),
+        (:line, 418, :none),
+        (:return, (:call, :Char, :c))
+      )),
+    (:line, 423, :none),
+    (:(=), (:call, :readuntil_string, (:(::), :s, :IO), (:(::), :delim, :UInt8)), (:block,
+        (:line, 423, :none),
+        (:call, :String, (:call, :readuntil, :s, :delim))
+      )),
+    (:line, 425, :none),
+    (:function, (:call, :readuntil, (:(::), :s, :IO), (:(::), :delim, :Char)), (:block,
+        (:line, 426, :none),
+        (:if, (:call, :<, :delim, (:call, :Char, 0x80)), (:block,
+            (:line, 427, :none),
+            (:return, (:call, :readuntil_string, :s, (:call, :%, :delim, :UInt8)))
+          )),
+        (:line, 429, :none),
+        (:(=), :out, (:call, :IOBuffer)),
+        (:line, 430, :none),
+        (:while, (:call, :!, (:call, :eof, :s)), (:block,
+            (:line, 431, :none),
+            (:(=), :c, (:call, :read, :s, :Char)),
+            (:line, 432, :none),
+            (:call, :write, :out, :c),
+            (:line, 433, :none),
+            (:if, (:call, :(==), :c, :delim), (:block,
+                (:line, 434, :none),
+                (:break,)
+              ))
+          )),
+        (:line, 437, :none),
+        (:return, (:call, :String, (:call, :take!, :out)))
+      )),
+    (:line, 440, :none),
+    (:function, (:call, (:curly, :readuntil, :T), (:(::), :s, :IO), (:(::), :delim, :T)), (:block,
+        (:line, 441, :none),
+        (:(=), :out, (:ref, :T)),
+        (:line, 442, :none),
+        (:while, (:call, :!, (:call, :eof, :s)), (:block,
+            (:line, 443, :none),
+            (:(=), :c, (:call, :read, :s, :T)),
+            (:line, 444, :none),
+            (:call, :push!, :out, :c),
+            (:line, 445, :none),
+            (:if, (:call, :(==), :c, :delim), (:block,
+                (:line, 446, :none),
+                (:break,)
+              ))
+          )),
+        (:line, 449, :none),
+        (:return, :out)
+      )),
+    (:line, 453, :none),
+    (:function, (:call, :readuntil, (:(::), :s, :IO), (:(::), :t, :AbstractString)), (:block,
+        (:line, 454, :none),
+        (:(=), :l, (:call, :length, :t)),
+        (:line, 455, :none),
+        (:if, (:call, :(==), :l, 0), (:block,
+            (:line, 456, :none),
+            (:return, "")
+          )),
+        (:line, 458, :none),
+        (:if, (:call, :>, :l, 40), (:block,
+            (:line, 459, :none),
+            (:call, :warn, "readuntil(IO,AbstractString) will perform poorly with a long string")
+          )),
+        (:line, 461, :none),
+        (:(=), :out, (:call, :IOBuffer)),
+        (:line, 462, :none),
+        (:(=), :m, (:call, (:curly, :Vector, :Char), :l)),
+        (:line, 463, :none),
+        (:(=), :t, (:call, :collect, :t)),
+        (:line, 464, :none),
+        (:(=), :i, 0),
+        (:line, 465, :none),
+        (:while, (:call, :!, (:call, :eof, :s)), (:block,
+            (:line, 466, :none),
+            (:+=, :i, 1),
+            (:line, 467, :none),
+            (:(=), :c, (:call, :read, :s, :Char)),
+            (:line, 468, :none),
+            (:call, :write, :out, :c),
+            (:line, 469, :none),
+            (:if, (:call, :(<=), :i, :l), (:block,
+                (:line, 470, :none),
+                (:(=), (:ref, :m, :i), :c)
+              ), (:block,
+                (:line, 473, :none),
+                (:for, (:(=), :j, (:(:), 2, :l)), (:block,
+                    (:line, 474, :none),
+                    (:(=), (:ref, :m, (:call, :-, :j, 1)), (:ref, :m, :j))
+                  )),
+                (:line, 476, :none),
+                (:(=), (:ref, :m, :l), :c)
+              )),
+            (:line, 478, :none),
+            (:if, (:&&, (:call, :(>=), :i, :l), (:call, :(==), :m, :t)), (:block,
+                (:line, 479, :none),
+                (:break,)
+              ))
+          )),
+        (:line, 482, :none),
+        (:return, (:call, :String, (:call, :take!, :out)))
+      )),
+    (:line, 485, :none),
+    (:macrocall, :(Core.@doc), "    readchomp(x)\n\nRead the entirety of `x` as a string and remove a single trailing newline.\nEquivalent to `chomp!(readstring(x))`.\n", (:(=), (:call, :readchomp, :x), (:block,
+          (:line, 491, :none),
+          (:call, :chomp!, (:call, :readstring, :x))
+        ))),
+    (:line, 495, :none),
+    (:macrocall, :(Core.@doc), "    readbytes!(stream::IO, b::AbstractVector{UInt8}, nb=length(b))\n\nRead at most `nb` bytes from `stream` into `b`, returning the number of bytes read.\nThe size of `b` will be increased if needed (i.e. if `nb` is greater than `length(b)`\nand enough bytes could be read), but it will never be decreased.\n", (:function, (:call, :readbytes!, (:(::), :s, :IO), (:(::), :b, (:curly, :AbstractArray, :UInt8)), (:kw, :nb, (:call, :length, :b))), (:block,
+          (:line, 503, :none),
+          (:(=), :olb, (:(=), :lb, (:call, :length, :b))),
+          (:line, 504, :none),
+          (:(=), :nr, 0),
+          (:line, 505, :none),
+          (:while, (:&&, (:call, :<, :nr, :nb), (:call, :!, (:call, :eof, :s))), (:block,
+              (:line, 506, :none),
+              (:(=), :a, (:call, :read, :s, :UInt8)),
+              (:line, 507, :none),
+              (:+=, :nr, 1),
+              (:line, 508, :none),
+              (:if, (:call, :>, :nr, :lb), (:block,
+                  (:line, 509, :none),
+                  (:(=), :lb, (:call, :*, :nr, 2)),
+                  (:line, 510, :none),
+                  (:call, :resize!, :b, :lb)
+                )),
+              (:line, 512, :none),
+              (:(=), (:ref, :b, :nr), :a)
+            )),
+          (:line, 514, :none),
+          (:if, (:call, :>, :lb, :olb), (:block,
+              (:line, 515, :none),
+              (:call, :resize!, :b, :nr)
+            )),
+          (:line, 517, :none),
+          (:return, :nr)
+        ))),
+    (:line, 520, :none),
+    (:macrocall, :(Core.@doc), "    read(s::IO, nb=typemax(Int))\n\nRead at most `nb` bytes from `s`, returning a `Vector{UInt8}` of the bytes read.\n", (:function, (:call, :read, (:(::), :s, :IO), (:kw, :nb, (:call, :typemax, :Int))), (:block,
+          (:line, 528, :none),
+          (:(=), :b, (:call, (:curly, :Vector, :UInt8), (:if, (:call, :(==), :nb, (:call, :typemax, :Int)), 1024, :nb))),
+          (:line, 529, :none),
+          (:(=), :nr, (:call, :readbytes!, :s, :b, :nb)),
+          (:line, 530, :none),
+          (:return, (:call, :resize!, :b, :nr))
+        ))),
+    (:line, 533, :none),
+    (:macrocall, :(Core.@doc), "    readstring(stream::IO)\n    readstring(filename::AbstractString)\n\nRead the entire contents of an I/O stream or a file as a string.\nThe text is assumed to be encoded in UTF-8.\n", (:(=), (:call, :readstring, (:(::), :s, :IO)), (:block,
+          (:line, 540, :none),
+          (:call, :String, (:call, :read, :s))
+        ))),
+    (:line, 541, :none),
+    (:(=), (:call, :readstring, (:(::), :filename, :AbstractString)), (:block,
+        (:line, 541, :none),
+        (:call, :open, :readstring, :filename)
+      )),
+    (:line, 545, :none),
+    (:type, true, :EachLine, (:block,
+        (:line, 546, :none),
+        (:(::), :stream, :IO),
+        (:line, 547, :none),
+        (:(::), :ondone, :Function),
+        (:line, 548, :none),
+        (:(::), :chomp, :Bool),
+        (:line, 550, :none),
+        (:(=), (:call, :EachLine, (:parameters, (:kw, (:(::), :ondone, :Function), (:->, (:tuple,), (:block,
+                    (:line, 550, :none),
+                    :nothing
+                  ))), (:kw, (:(::), :chomp, :Bool), true)), (:kw, (:(::), :stream, :IO), :STDIN)), (:block,
+            (:line, 550, :none),
+            (:call, :new, :stream, :ondone, :chomp)
+          ))
+      )),
+    (:line, 554, :none),
+    (:macrocall, :(Core.@doc), "    eachline(stream::IO=STDIN; chomp::Bool=true)\n    eachline(filename::AbstractString; chomp::Bool=true)\n\nCreate an iterable `EachLine` object that will yield each line from an I/O stream\nor a file. Iteration calls `readline` on the stream argument repeatedly with\n`chomp` passed through, determining whether trailing end-of-line characters are\nremoved. When called with a file name, the file is opened once at the beginning of\niteration and closed at the end. If iteration is interrupted, the file will be\nclosed when the `EachLine` object is garbage collected.\n", (:(=), (:call, :eachline, (:parameters, (:kw, (:(::), :chomp, :Bool), true)), (:kw, (:(::), :stream, :IO), :STDIN)), (:block,
+          (:line, 565, :none),
+          (:(::), (:call, :EachLine, :stream, (:kw, :chomp, :chomp)), :EachLine)
+        ))),
+    (:line, 567, :none),
+    (:function, (:call, :eachline, (:parameters, (:kw, (:(::), :chomp, :Bool), true)), (:(::), :filename, :AbstractString)), (:block,
+        (:line, 568, :none),
+        (:(=), :s, (:call, :open, :filename)),
+        (:line, 569, :none),
+        (:(::), (:call, :EachLine, :s, (:kw, :ondone, (:->, (:tuple,), (:block,
+                  (:line, 569, :none),
+                  (:call, :close, :s)
+                ))), (:kw, :chomp, :chomp)), :EachLine)
+      )),
+    (:line, 572, :none),
+    (:(=), (:call, :start, (:(::), :itr, :EachLine)), (:block,
+        (:line, 572, :none),
+        :nothing
+      )),
+    (:line, 573, :none),
+    (:function, (:call, :done, (:(::), :itr, :EachLine), (:(::), :Void)), (:block,
+        (:line, 574, :none),
+        (:||, (:call, :eof, (:., :itr, (:quote, #QuoteNode
+                :stream
+              ))), (:return, false)),
+        (:line, 575, :none),
+        (:call, (:., :itr, (:quote, #QuoteNode
+              :ondone
+            ))),
+        (:line, 576, :none),
+        true
+      )),
+    (:line, 578, :none),
+    (:(=), (:call, :next, (:(::), :itr, :EachLine), (:(::), :Void)), (:block,
+        (:line, 578, :none),
+        (:tuple, (:call, :readline, (:., :itr, (:quote, #QuoteNode
+                :stream
+              )), (:kw, :chomp, (:., :itr, (:quote, #QuoteNode
+                  :chomp
+                )))), :nothing)
+      )),
+    (:line, 580, :none),
+    (:(=), (:call, :eltype, (:(::), (:curly, :Type, :EachLine))), (:block,
+        (:line, 580, :none),
+        :String
+      )),
+    (:line, 582, :none),
+    (:(=), (:call, :iteratorsize, (:(::), (:curly, :Type, :EachLine))), (:block,
+        (:line, 582, :none),
+        (:call, :SizeUnknown)
+      )),
+    (:line, 589, :none),
+    (:macrocall, :(Core.@doc), "    mark(s)\n\nAdd a mark at the current position of stream `s`. Returns the marked position.\n\nSee also [`unmark`](@ref), [`reset`](@ref), [`ismarked`](@ref).\n", (:function, (:call, :mark, (:(::), :io, :IO)), (:block,
+          (:line, 597, :none),
+          (:(=), (:., :io, (:quote, #QuoteNode
+                :mark
+              )), (:call, :position, :io))
+        ))),
+    (:line, 600, :none),
+    (:macrocall, :(Core.@doc), "    unmark(s)\n\nRemove a mark from stream `s`. Returns `true` if the stream was marked, `false` otherwise.\n\nSee also [`mark`](@ref), [`reset`](@ref), [`ismarked`](@ref).\n", (:function, (:call, :unmark, (:(::), :io, :IO)), (:block,
+          (:line, 608, :none),
+          (:&&, (:call, :!, (:call, :ismarked, :io)), (:return, false)),
+          (:line, 609, :none),
+          (:(=), (:., :io, (:quote, #QuoteNode
+                :mark
+              )), -1),
+          (:line, 610, :none),
+          (:return, true)
+        ))),
+    (:line, 613, :none),
+    (:macrocall, :(Core.@doc), "    reset(s)\n\nReset a stream `s` to a previously marked position, and remove the mark. Returns the\npreviously marked position. Throws an error if the stream is not marked.\n\nSee also [`mark`](@ref), [`unmark`](@ref), [`ismarked`](@ref).\n", (:function, (:where, (:call, :reset, (:(::), :io, :T)), (:<:, :T, :IO)), (:block,
+          (:line, 622, :none),
+          (:||, (:call, :ismarked, :io), (:call, :throw, (:call, :ArgumentError, (:string, :T, " not marked")))),
+          (:line, 623, :none),
+          (:(=), :m, (:., :io, (:quote, #QuoteNode
+                :mark
+              ))),
+          (:line, 624, :none),
+          (:call, :seek, :io, :m),
+          (:line, 625, :none),
+          (:(=), (:., :io, (:quote, #QuoteNode
+                :mark
+              )), -1),
+          (:line, 626, :none),
+          (:return, :m)
+        ))),
+    (:line, 629, :none),
+    (:macrocall, :(Core.@doc), "    ismarked(s)\n\nReturns `true` if stream `s` is marked.\n\nSee also [`mark`](@ref), [`unmark`](@ref), [`reset`](@ref).\n", (:(=), (:call, :ismarked, (:(::), :io, :IO)), (:block,
+          (:line, 636, :none),
+          (:call, :(>=), (:., :io, (:quote, #QuoteNode
+                :mark
+              )), 0)
+        ))),
+    (:line, 641, :none),
+    (:macrocall, :(Core.@doc), "    flush(stream)\n\nCommit all currently buffered writes to the given stream.\n", (:(=), (:call, :flush, (:(::), :io, :IO)), (:block,
+          (:line, 646, :none),
+          :nothing
+        )))
+  ))

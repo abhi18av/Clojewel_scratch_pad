@@ -1,0 +1,394 @@
+(:quote, (:block,
+    (:line, 5, :none),
+    (:module, true, :Filesystem, (:block,
+        (:line, 5, :none),
+        (:line, 7, :none),
+        (:const, (:(=), :S_IRUSR, 0x0100)),
+        (:line, 8, :none),
+        (:const, (:(=), :S_IWUSR, 0x80)),
+        (:line, 9, :none),
+        (:const, (:(=), :S_IXUSR, 0x40)),
+        (:line, 10, :none),
+        (:const, (:(=), :S_IRWXU, 0x01c0)),
+        (:line, 11, :none),
+        (:const, (:(=), :S_IRGRP, 0x0020)),
+        (:line, 12, :none),
+        (:const, (:(=), :S_IWGRP, 0x0010)),
+        (:line, 13, :none),
+        (:const, (:(=), :S_IXGRP, 0x0008)),
+        (:line, 14, :none),
+        (:const, (:(=), :S_IRWXG, 0x0038)),
+        (:line, 15, :none),
+        (:const, (:(=), :S_IROTH, 0x0004)),
+        (:line, 16, :none),
+        (:const, (:(=), :S_IWOTH, 0x0002)),
+        (:line, 17, :none),
+        (:const, (:(=), :S_IXOTH, 0x0001)),
+        (:line, 18, :none),
+        (:const, (:(=), :S_IRWXO, 0x0007)),
+        (:line, 20, :none),
+        (:export, :File, :StatStruct, :futime, :write, :JL_O_WRONLY, :JL_O_RDONLY, :JL_O_RDWR, :JL_O_APPEND, :JL_O_CREAT, :JL_O_EXCL, :JL_O_TRUNC, :JL_O_TEMPORARY, :JL_O_SHORT_LIVED, :JL_O_SEQUENTIAL, :JL_O_RANDOM, :JL_O_NOCTTY, :S_IRUSR, :S_IWUSR, :S_IXUSR, :S_IRWXU, :S_IRGRP, :S_IWGRP, :S_IXGRP, :S_IRWXG, :S_IROTH, :S_IWOTH, :S_IXOTH, :S_IRWXO),
+        (:line, 41, :none),
+        (:toplevel, (:import, :Base, :UVError), (:import, :Base, :_sizeof_uv_fs), (:import, :Base, :check_open), (:import, :Base, :close), (:import, :Base, :eof), (:import, :Base, :eventloop), (:import, :Base, :fd), (:import, :Base, :isopen), (:import, :Base, :nb_available), (:import, :Base, :position), (:import, :Base, :read), (:import, :Base, :read!), (:import, :Base, :readavailable), (:import, :Base, :seek), (:import, :Base, :seekend), (:import, :Base, :show), (:import, :Base, :skip), (:import, :Base, :stat), (:import, :Base, :unsafe_read), (:import, :Base, :unsafe_write), (:import, :Base, :transcode), (:import, :Base, :uv_error), (:import, :Base, :uvhandle), (:import, :Base, :uvtype), (:import, :Base, :write)),
+        (:line, 47, :none),
+        (:if, (:call, :is_windows), (:block,
+            (:line, 48, :none),
+            (:import, :Base, :cwstring)
+          )),
+        (:line, 51, :none),
+        (:call, :include, "path.jl"),
+        (:line, 52, :none),
+        (:call, :include, "stat.jl"),
+        (:line, 53, :none),
+        (:call, :include, "file.jl"),
+        (:line, 54, :none),
+        (:call, :include, "poll.jl"),
+        (:line, 55, :none),
+        (:call, :include, (:call, :string, (:if, (:call, :(>=), (:call, :length, (:., :Core, (:quote, #QuoteNode
+                      :ARGS
+                    ))), 2), (:ref, (:., :Core, (:quote, #QuoteNode
+                    :ARGS
+                  )), 2), ""), "file_constants.jl")),
+        (:line, 59, :none),
+        (:abstract, (:<:, :AbstractFile, :IO)),
+        (:line, 61, :none),
+        (:type, true, (:<:, :File, :AbstractFile), (:block,
+            (:line, 62, :none),
+            (:(::), :open, :Bool),
+            (:line, 63, :none),
+            (:(::), :handle, :RawFD),
+            (:line, 64, :none),
+            (:(=), (:call, :File, (:(::), :fd, :RawFD)), (:block,
+                (:line, 64, :none),
+                (:call, :new, true, :fd)
+              ))
+          )),
+        (:line, 68, :none),
+        (:(=), (:call, :uvhandle, (:(::), :file, :File)), (:block,
+            (:line, 68, :none),
+            (:call, :convert, (:curly, :Ptr, :Void), (:call, :%, (:call, (:., :Base, (:quote, #QuoteNode
+                      :cconvert
+                    )), :Cint, (:., :file, (:quote, #QuoteNode
+                      :handle
+                    ))), :UInt))
+          )),
+        (:line, 69, :none),
+        (:(=), (:call, :uvtype, (:(::), :File)), (:block,
+            (:line, 69, :none),
+            (:., :Base, (:quote, #QuoteNode
+                :UV_RAW_FD
+              ))
+          )),
+        (:line, 72, :none),
+        (:function, (:call, :open, (:(::), :path, :AbstractString), (:(::), :flags, :Integer), (:kw, (:(::), :mode, :Integer), 0)), (:block,
+            (:line, 73, :none),
+            (:(=), :req, (:call, (:., :Libc, (:quote, #QuoteNode
+                    :malloc
+                  )), :_sizeof_uv_fs)),
+            (:line, 74, :none),
+            (:local, :handle),
+            (:line, 75, :none),
+            (:try, (:block,
+                (:line, 76, :none),
+                (:(=), :ret, (:call, :ccall, (:quote, #QuoteNode
+                      :uv_fs_open
+                    ), :Int32, (:tuple, (:curly, :Ptr, :Void), (:curly, :Ptr, :Void), :Cstring, :Int32, :Int32, (:curly, :Ptr, :Void)), (:call, :eventloop), :req, :path, :flags, :mode, :C_NULL)),
+                (:line, 79, :none),
+                (:(=), :handle, (:call, :ccall, (:quote, #QuoteNode
+                      :jl_uv_fs_result
+                    ), :Int32, (:tuple, (:curly, :Ptr, :Void)), :req)),
+                (:line, 80, :none),
+                (:call, :ccall, (:quote, #QuoteNode
+                    :uv_fs_req_cleanup
+                  ), :Void, (:tuple, (:curly, :Ptr, :Void)), :req),
+                (:line, 81, :none),
+                (:call, :uv_error, "open", :ret)
+              ), false, false, (:block,
+                (:line, 83, :none),
+                (:call, (:., :Libc, (:quote, #QuoteNode
+                      :free
+                    )), :req)
+              )),
+            (:line, 85, :none),
+            (:return, (:call, :File, (:call, :RawFD, :handle)))
+          )),
+        (:line, 88, :none),
+        (:(=), (:call, :isopen, (:(::), :f, :File)), (:block,
+            (:line, 88, :none),
+            (:., :f, (:quote, #QuoteNode
+                :open
+              ))
+          )),
+        (:line, 89, :none),
+        (:function, (:call, :check_open, (:(::), :f, :File)), (:block,
+            (:line, 90, :none),
+            (:if, (:call, :!, (:call, :isopen, :f)), (:block,
+                (:line, 91, :none),
+                (:call, :throw, (:call, :ArgumentError, "file is closed"))
+              ))
+          )),
+        (:line, 95, :none),
+        (:function, (:call, :close, (:(::), :f, :File)), (:block,
+            (:line, 96, :none),
+            (:call, :check_open, :f),
+            (:line, 97, :none),
+            (:(=), :err, (:call, :ccall, (:quote, #QuoteNode
+                  :jl_fs_close
+                ), :Int32, (:tuple, :Int32), (:., :f, (:quote, #QuoteNode
+                    :handle
+                  )))),
+            (:line, 98, :none),
+            (:call, :uv_error, "close", :err),
+            (:line, 99, :none),
+            (:(=), (:., :f, (:quote, #QuoteNode
+                  :handle
+                )), (:call, :RawFD, -1)),
+            (:line, 100, :none),
+            (:(=), (:., :f, (:quote, #QuoteNode
+                  :open
+                )), false),
+            (:line, 101, :none),
+            (:return, :nothing)
+          )),
+        (:line, 105, :none),
+        (:function, (:call, :sendfile, (:(::), :dst, :File), (:(::), :src, :File), (:(::), :src_offset, :Int64), (:(::), :bytes, :Int)), (:block,
+            (:line, 106, :none),
+            (:call, :check_open, :dst),
+            (:line, 107, :none),
+            (:call, :check_open, :src),
+            (:line, 108, :none),
+            (:(=), :err, (:call, :ccall, (:quote, #QuoteNode
+                  :jl_fs_sendfile
+                ), :Int32, (:tuple, :Int32, :Int32, :Int64, :Csize_t), (:., :src, (:quote, #QuoteNode
+                    :handle
+                  )), (:., :dst, (:quote, #QuoteNode
+                    :handle
+                  )), :src_offset, :bytes)),
+            (:line, 110, :none),
+            (:call, :uv_error, "sendfile", :err),
+            (:line, 111, :none),
+            :nothing
+          )),
+        (:line, 114, :none),
+        (:function, (:call, :unsafe_write, (:(::), :f, :File), (:(::), :buf, (:curly, :Ptr, :UInt8)), (:(::), :len, :UInt), (:kw, (:(::), :offset, :Int64), (:call, :Int64, -1))), (:block,
+            (:line, 115, :none),
+            (:call, :check_open, :f),
+            (:line, 116, :none),
+            (:(=), :err, (:call, :ccall, (:quote, #QuoteNode
+                  :jl_fs_write
+                ), :Int32, (:tuple, :Int32, (:curly, :Ptr, :UInt8), :Csize_t, :Int64), (:., :f, (:quote, #QuoteNode
+                    :handle
+                  )), :buf, :len, :offset)),
+            (:line, 118, :none),
+            (:call, :uv_error, "write", :err),
+            (:line, 119, :none),
+            (:return, :len)
+          )),
+        (:line, 122, :none),
+        (:(=), (:call, :write, (:(::), :f, :File), (:(::), :c, :UInt8)), (:block,
+            (:line, 122, :none),
+            (:call, :write, :f, (:call, (:curly, :Ref, :UInt8), :c))
+          )),
+        (:line, 124, :none),
+        (:function, (:call, :truncate, (:(::), :f, :File), (:(::), :n, :Integer)), (:block,
+            (:line, 125, :none),
+            (:call, :check_open, :f),
+            (:line, 126, :none),
+            (:(=), :req, (:call, (:., :Libc, (:quote, #QuoteNode
+                    :malloc
+                  )), :_sizeof_uv_fs)),
+            (:line, 127, :none),
+            (:(=), :err, (:call, :ccall, (:quote, #QuoteNode
+                  :uv_fs_ftruncate
+                ), :Int32, (:tuple, (:curly, :Ptr, :Void), (:curly, :Ptr, :Void), :Int32, :Int64, (:curly, :Ptr, :Void)), (:call, :eventloop), :req, (:., :f, (:quote, #QuoteNode
+                    :handle
+                  )), :n, :C_NULL)),
+            (:line, 130, :none),
+            (:call, (:., :Libc, (:quote, #QuoteNode
+                  :free
+                )), :req),
+            (:line, 131, :none),
+            (:call, :uv_error, "ftruncate", :err),
+            (:line, 132, :none),
+            (:return, :f)
+          )),
+        (:line, 135, :none),
+        (:function, (:call, :futime, (:(::), :f, :File), (:(::), :atime, :Float64), (:(::), :mtime, :Float64)), (:block,
+            (:line, 136, :none),
+            (:call, :check_open, :f),
+            (:line, 137, :none),
+            (:(=), :req, (:call, (:., :Libc, (:quote, #QuoteNode
+                    :malloc
+                  )), :_sizeof_uv_fs)),
+            (:line, 138, :none),
+            (:(=), :err, (:call, :ccall, (:quote, #QuoteNode
+                  :uv_fs_futime
+                ), :Int32, (:tuple, (:curly, :Ptr, :Void), (:curly, :Ptr, :Void), :Int32, :Float64, :Float64, (:curly, :Ptr, :Void)), (:call, :eventloop), :req, (:., :f, (:quote, #QuoteNode
+                    :handle
+                  )), :atime, :mtime, :C_NULL)),
+            (:line, 141, :none),
+            (:call, (:., :Libc, (:quote, #QuoteNode
+                  :free
+                )), :req),
+            (:line, 142, :none),
+            (:call, :uv_error, "futime", :err),
+            (:line, 143, :none),
+            (:return, :f)
+          )),
+        (:line, 146, :none),
+        (:function, (:call, :read, (:(::), :f, :File), (:(::), (:curly, :Type, :UInt8))), (:block,
+            (:line, 147, :none),
+            (:call, :check_open, :f),
+            (:line, 148, :none),
+            (:(=), :ret, (:call, :ccall, (:quote, #QuoteNode
+                  :jl_fs_read_byte
+                ), :Int32, (:tuple, :Int32), (:., :f, (:quote, #QuoteNode
+                    :handle
+                  )))),
+            (:line, 149, :none),
+            (:call, :uv_error, "read", :ret),
+            (:line, 150, :none),
+            (:return, (:call, :%, :ret, :UInt8))
+          )),
+        (:line, 153, :none),
+        (:function, (:call, :unsafe_read, (:(::), :f, :File), (:(::), :p, (:curly, :Ptr, :UInt8)), (:(::), :nel, :UInt)), (:block,
+            (:line, 154, :none),
+            (:call, :check_open, :f),
+            (:line, 155, :none),
+            (:(=), :ret, (:call, :ccall, (:quote, #QuoteNode
+                  :jl_fs_read
+                ), :Int32, (:tuple, :Int32, (:curly, :Ptr, :Void), :Csize_t), (:., :f, (:quote, #QuoteNode
+                    :handle
+                  )), :p, :nel)),
+            (:line, 157, :none),
+            (:call, :uv_error, "read", :ret),
+            (:line, 158, :none),
+            (:||, (:call, :(==), :ret, :nel), (:call, :throw, (:call, :EOFError))),
+            (:line, 159, :none),
+            :nothing
+          )),
+        (:line, 162, :none),
+        (:(=), (:call, :nb_available, (:(::), :f, :File)), (:block,
+            (:line, 162, :none),
+            (:call, :max, 0, (:call, :-, (:call, :filesize, :f), (:call, :position, :f)))
+          )),
+        (:line, 164, :none),
+        (:(=), (:call, :eof, (:(::), :f, :File)), (:block,
+            (:line, 164, :none),
+            (:call, :(==), (:call, :nb_available, :f), 0)
+          )),
+        (:line, 166, :none),
+        (:function, (:call, :readbytes!, (:(::), :f, :File), (:(::), :b, (:curly, :Array, :UInt8)), (:kw, :nb, (:call, :length, :b))), (:block,
+            (:line, 167, :none),
+            (:(=), :nr, (:call, :min, :nb, (:call, :nb_available, :f))),
+            (:line, 168, :none),
+            (:if, (:call, :<, (:call, :length, :b), :nr), (:block,
+                (:line, 169, :none),
+                (:call, :resize!, :b, :nr)
+              )),
+            (:line, 171, :none),
+            (:(=), :ret, (:call, :ccall, (:quote, #QuoteNode
+                  :jl_fs_read
+                ), :Int32, (:tuple, :Int32, (:curly, :Ptr, :Void), :Csize_t), (:., :f, (:quote, #QuoteNode
+                    :handle
+                  )), :b, :nr)),
+            (:line, 173, :none),
+            (:call, :uv_error, "read", :ret),
+            (:line, 174, :none),
+            (:return, :ret)
+          )),
+        (:line, 176, :none),
+        (:(=), (:call, :read, (:(::), :io, :File)), (:block,
+            (:line, 176, :none),
+            (:call, :read!, :io, (:call, (:., :Base, (:quote, #QuoteNode
+                    :StringVector
+                  )), (:call, :nb_available, :io)))
+          )),
+        (:line, 177, :none),
+        (:(=), (:call, :readavailable, (:(::), :io, :File)), (:block,
+            (:line, 177, :none),
+            (:call, :read, :io)
+          )),
+        (:line, 178, :none),
+        (:(=), (:call, :read, (:(::), :io, :File), (:(::), :nb, :Integer)), (:block,
+            (:line, 178, :none),
+            (:call, :read!, :io, (:call, (:., :Base, (:quote, #QuoteNode
+                    :StringVector
+                  )), (:call, :min, :nb, (:call, :nb_available, :io))))
+          )),
+        (:line, 180, :none),
+        (:const, (:(=), :SEEK_SET, (:call, :Int32, 0))),
+        (:line, 181, :none),
+        (:const, (:(=), :SEEK_CUR, (:call, :Int32, 1))),
+        (:line, 182, :none),
+        (:const, (:(=), :SEEK_END, (:call, :Int32, 2))),
+        (:line, 184, :none),
+        (:function, (:call, :seek, (:(::), :f, :File), (:(::), :n, :Integer)), (:block,
+            (:line, 185, :none),
+            (:(=), :ret, (:call, :ccall, (:quote, #QuoteNode
+                  :jl_lseek
+                ), :Int64, (:tuple, :Int32, :Int64, :Int32), (:., :f, (:quote, #QuoteNode
+                    :handle
+                  )), :n, :SEEK_SET)),
+            (:line, 186, :none),
+            (:call, :systemerror, "seek", (:call, :(==), :ret, -1)),
+            (:line, 187, :none),
+            (:return, :f)
+          )),
+        (:line, 190, :none),
+        (:function, (:call, :seekend, (:(::), :f, :File)), (:block,
+            (:line, 191, :none),
+            (:(=), :ret, (:call, :ccall, (:quote, #QuoteNode
+                  :jl_lseek
+                ), :Int64, (:tuple, :Int32, :Int64, :Int32), (:., :f, (:quote, #QuoteNode
+                    :handle
+                  )), 0, :SEEK_END)),
+            (:line, 192, :none),
+            (:call, :systemerror, "seekend", (:call, :(==), :ret, -1)),
+            (:line, 193, :none),
+            (:return, :f)
+          )),
+        (:line, 196, :none),
+        (:function, (:call, :skip, (:(::), :f, :File), (:(::), :n, :Integer)), (:block,
+            (:line, 197, :none),
+            (:(=), :ret, (:call, :ccall, (:quote, #QuoteNode
+                  :jl_lseek
+                ), :Int64, (:tuple, :Int32, :Int64, :Int32), (:., :f, (:quote, #QuoteNode
+                    :handle
+                  )), :n, :SEEK_CUR)),
+            (:line, 198, :none),
+            (:call, :systemerror, "skip", (:call, :(==), :ret, -1)),
+            (:line, 199, :none),
+            (:return, :f)
+          )),
+        (:line, 202, :none),
+        (:function, (:call, :position, (:(::), :f, :File)), (:block,
+            (:line, 203, :none),
+            (:call, :check_open, :f),
+            (:line, 204, :none),
+            (:(=), :ret, (:call, :ccall, (:quote, #QuoteNode
+                  :jl_lseek
+                ), :Int64, (:tuple, :Int32, :Int64, :Int32), (:., :f, (:quote, #QuoteNode
+                    :handle
+                  )), 0, :SEEK_CUR)),
+            (:line, 205, :none),
+            (:call, :systemerror, "lseek", (:call, :(==), :ret, -1)),
+            (:line, 206, :none),
+            (:return, :ret)
+          )),
+        (:line, 209, :none),
+        (:(=), (:call, :fd, (:(::), :f, :File)), (:block,
+            (:line, 209, :none),
+            (:., :f, (:quote, #QuoteNode
+                :handle
+              ))
+          )),
+        (:line, 210, :none),
+        (:(=), (:call, :stat, (:(::), :f, :File)), (:block,
+            (:line, 210, :none),
+            (:call, :stat, (:., :f, (:quote, #QuoteNode
+                  :handle
+                )))
+          ))
+      ))
+  ))

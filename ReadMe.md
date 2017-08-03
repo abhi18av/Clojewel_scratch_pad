@@ -1,6 +1,12 @@
 ## Resources
 https://codebunk.com/b/146151342/
 
+
+- Julia packages
+CSTParser.jl
+Tokenize.jl
+
+
 Clojewel / ClojureJL
 
 

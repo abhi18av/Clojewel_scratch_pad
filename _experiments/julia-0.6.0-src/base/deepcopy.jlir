@@ -1,0 +1,163 @@
+(:quote, (:block,
+    (:line, 8, :none),
+    (:(=), (:call, :deepcopy, :x), (:block,
+        (:line, 8, :none),
+        (:(::), (:call, :deepcopy_internal, :x, (:call, :ObjectIdDict)), (:call, :typeof, :x))
+      )),
+    (:line, 10, :none),
+    (:(=), (:call, :deepcopy_internal, (:(::), :x, (:curly, :Union, :Symbol, (:., :Core, (:quote, #QuoteNode
+                :MethodInstance
+              )), :Method, :GlobalRef, :DataType, :Union, :Task)), (:(::), :stackdict, :ObjectIdDict)), (:block,
+        (:line, 10, :none),
+        :x
+      )),
+    (:line, 12, :none),
+    (:(=), (:call, :deepcopy_internal, (:(::), :x, :Tuple), (:(::), :stackdict, :ObjectIdDict)), (:block,
+        (:line, 12, :none),
+        (:call, :ntuple, (:->, :i, (:block,
+              (:line, 13, :none),
+              (:call, :deepcopy_internal, (:ref, :x, :i), :stackdict)
+            )), (:call, :length, :x))
+      )),
+    (:line, 14, :none),
+    (:(=), (:call, :deepcopy_internal, (:(::), :x, :Module), (:(::), :stackdict, :ObjectIdDict)), (:block,
+        (:line, 14, :none),
+        (:call, :error, "deepcopy of Modules not supported")
+      )),
+    (:line, 16, :none),
+    (:function, (:call, :deepcopy_internal, (:(::), :x, :SimpleVector), (:(::), :stackdict, :ObjectIdDict)), (:block,
+        (:line, 17, :none),
+        (:if, (:call, :haskey, :stackdict, :x), (:block,
+            (:line, 18, :none),
+            (:return, (:ref, :stackdict, :x))
+          )),
+        (:line, 20, :none),
+        (:(=), :y, (:call, (:., :Core, (:quote, #QuoteNode
+                :svec
+              )), (:..., (:typed_comprehension, :Any, (:generator, (:call, :deepcopy_internal, (:ref, :x, :i), :stackdict), (:(=), :i, (:(:), 1, (:call, :length, :x)))))))),
+        (:line, 21, :none),
+        (:(=), (:ref, :stackdict, :x), :y),
+        (:line, 22, :none),
+        (:return, :y)
+      )),
+    (:line, 25, :none),
+    (:function, (:call, :deepcopy_internal, (:(::), :x, :String), (:(::), :stackdict, :ObjectIdDict)), (:block,
+        (:line, 26, :none),
+        (:if, (:call, :haskey, :stackdict, :x), (:block,
+            (:line, 27, :none),
+            (:return, (:ref, :stackdict, :x))
+          )),
+        (:line, 29, :none),
+        (:(=), :y, (:call, :unsafe_string, (:call, :pointer, :x), (:call, :sizeof, :x))),
+        (:line, 30, :none),
+        (:(=), (:ref, :stackdict, :x), :y),
+        (:line, 31, :none),
+        (:return, :y)
+      )),
+    (:line, 34, :none),
+    (:function, (:call, :deepcopy_internal, (:(::), :x, :ANY), (:(::), :stackdict, :ObjectIdDict)), (:block,
+        (:line, 35, :none),
+        (:(=), :T, (:(::), (:call, :typeof, :x), :DataType)),
+        (:line, 36, :none),
+        (:(=), :nf, (:call, :nfields, :T)),
+        (:line, 37, :none),
+        (:&&, (:||, (:call, :isbits, :T), (:call, :(==), :nf, 0)), (:return, :x)),
+        (:line, 38, :none),
+        (:if, (:call, :haskey, :stackdict, :x), (:block,
+            (:line, 39, :none),
+            (:return, (:ref, :stackdict, :x))
+          )),
+        (:line, 41, :none),
+        (:(=), :y, (:call, :ccall, (:quote, #QuoteNode
+              :jl_new_struct_uninit
+            ), :Any, (:tuple, :Any), :T)),
+        (:line, 42, :none),
+        (:if, (:., :T, (:quote, #QuoteNode
+              :mutable
+            )), (:block,
+            (:line, 43, :none),
+            (:(=), (:ref, :stackdict, :x), :y)
+          )),
+        (:line, 45, :none),
+        (:for, (:(=), :i, (:(:), 1, :nf)), (:block,
+            (:line, 46, :none),
+            (:if, (:call, :isdefined, :x, :i), (:block,
+                (:line, 47, :none),
+                (:call, :ccall, (:quote, #QuoteNode
+                    :jl_set_nth_field
+                  ), :Void, (:tuple, :Any, :Csize_t, :Any), :y, (:call, :-, :i, 1), (:call, :deepcopy_internal, (:call, :getfield, :x, :i), :stackdict))
+              ))
+          )),
+        (:line, 51, :none),
+        (:return, (:(::), :y, :T))
+      )),
+    (:line, 54, :none),
+    (:function, (:call, :deepcopy_internal, (:(::), :x, :Array), (:(::), :stackdict, :ObjectIdDict)), (:block,
+        (:line, 55, :none),
+        (:if, (:call, :haskey, :stackdict, :x), (:block,
+            (:line, 56, :none),
+            (:return, (:ref, :stackdict, :x))
+          )),
+        (:line, 58, :none),
+        (:call, :_deepcopy_array_t, :x, (:call, :eltype, :x), :stackdict)
+      )),
+    (:line, 61, :none),
+    (:function, (:call, :_deepcopy_array_t, (:(::), :x, :ANY), :T, (:(::), :stackdict, :ObjectIdDict)), (:block,
+        (:line, 62, :none),
+        (:if, (:call, :isbits, :T), (:block,
+            (:line, 63, :none),
+            (:return, (:(=), (:ref, :stackdict, :x), (:call, :copy, :x)))
+          )),
+        (:line, 65, :none),
+        (:(=), :dest, (:call, :similar, :x)),
+        (:line, 66, :none),
+        (:(=), (:ref, :stackdict, :x), :dest),
+        (:line, 67, :none),
+        (:for, (:(=), :i, (:(:), 1, (:(::), (:call, :length, :x), :Int))), (:block,
+            (:line, 68, :none),
+            (:if, (:call, :(!=), (:call, :ccall, (:quote, #QuoteNode
+                    :jl_array_isassigned
+                  ), :Cint, (:tuple, :Any, :Csize_t), :x, (:call, :-, :i, 1)), 0), (:block,
+                (:line, 69, :none),
+                (:(=), :xi, (:call, :ccall, (:quote, #QuoteNode
+                      :jl_arrayref
+                    ), :Any, (:tuple, :Any, :Csize_t), :x, (:call, :-, :i, 1))),
+                (:line, 70, :none),
+                (:if, (:call, :!, (:call, :isbits, (:call, :typeof, :xi))), (:block,
+                    (:line, 71, :none),
+                    (:(=), :xi, (:call, :deepcopy_internal, :xi, :stackdict))
+                  )),
+                (:line, 73, :none),
+                (:call, :ccall, (:quote, #QuoteNode
+                    :jl_arrayset
+                  ), :Void, (:tuple, :Any, :Any, :Csize_t), :dest, :xi, (:call, :-, :i, 1))
+              ))
+          )),
+        (:line, 76, :none),
+        (:return, :dest)
+      )),
+    (:line, 79, :none),
+    (:function, (:call, :deepcopy_internal, (:(::), :x, :Dict), (:(::), :stackdict, :ObjectIdDict)), (:block,
+        (:line, 80, :none),
+        (:if, (:call, :haskey, :stackdict, :x), (:block,
+            (:line, 81, :none),
+            (:return, (:(::), (:ref, :stackdict, :x), (:call, :typeof, :x)))
+          )),
+        (:line, 84, :none),
+        (:if, (:call, :isbits, (:call, :eltype, :x)), (:block,
+            (:line, 85, :none),
+            (:return, (:(=), (:ref, :stackdict, :x), (:call, :copy, :x)))
+          )),
+        (:line, 88, :none),
+        (:(=), :dest, (:call, :similar, :x)),
+        (:line, 89, :none),
+        (:(=), (:ref, :stackdict, :x), :dest),
+        (:line, 90, :none),
+        (:for, (:(=), (:tuple, :k, :v), :x), (:block,
+            (:line, 91, :none),
+            (:(=), (:ref, :dest, (:call, :deepcopy_internal, :k, :stackdict)), (:call, :deepcopy_internal, :v, :stackdict))
+          )),
+        (:line, 93, :none),
+        :dest
+      ))
+  ))

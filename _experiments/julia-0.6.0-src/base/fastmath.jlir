@@ -1,0 +1,976 @@
+(:quote, (:block,
+    (:line, 22, :none),
+    (:module, true, :FastMath, (:block,
+        (:line, 22, :none),
+        (:line, 24, :none),
+        (:export, Symbol("@fastmath")),
+        (:line, 26, :none),
+        (:toplevel, (:import, :Core, :Intrinsics, :sqrt_llvm_fast), (:import, :Core, :Intrinsics, :neg_float_fast), (:import, :Core, :Intrinsics, :add_float_fast), (:import, :Core, :Intrinsics, :sub_float_fast), (:import, :Core, :Intrinsics, :mul_float_fast), (:import, :Core, :Intrinsics, :div_float_fast), (:import, :Core, :Intrinsics, :rem_float_fast), (:import, :Core, :Intrinsics, :eq_float_fast), (:import, :Core, :Intrinsics, :ne_float_fast), (:import, :Core, :Intrinsics, :lt_float_fast), (:import, :Core, :Intrinsics, :le_float_fast)),
+        (:line, 30, :none),
+        (:const, (:(=), :fast_op, (:call, :Dict, (:call, :(=>), (:quote, #QuoteNode
+                  :+
+                ), (:quote, #QuoteNode
+                  :add_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :-
+                ), (:quote, #QuoteNode
+                  :sub_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :*
+                ), (:quote, #QuoteNode
+                  :mul_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :/
+                ), (:quote, #QuoteNode
+                  :div_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :(==)
+                ), (:quote, #QuoteNode
+                  :eq_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :(!=)
+                ), (:quote, #QuoteNode
+                  :ne_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :<
+                ), (:quote, #QuoteNode
+                  :lt_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :(<=)
+                ), (:quote, #QuoteNode
+                  :le_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :abs
+                ), (:quote, #QuoteNode
+                  :abs_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :abs2
+                ), (:quote, #QuoteNode
+                  :abs2_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :cmp
+                ), (:quote, #QuoteNode
+                  :cmp_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :conj
+                ), (:quote, #QuoteNode
+                  :conj_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :inv
+                ), (:quote, #QuoteNode
+                  :inv_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :rem
+                ), (:quote, #QuoteNode
+                  :rem_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :sign
+                ), (:quote, #QuoteNode
+                  :sign_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :isfinite
+                ), (:quote, #QuoteNode
+                  :isfinite_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :isinf
+                ), (:quote, #QuoteNode
+                  :isinf_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :isnan
+                ), (:quote, #QuoteNode
+                  :isnan_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :issubnormal
+                ), (:quote, #QuoteNode
+                  :issubnormal_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :^
+                ), (:quote, #QuoteNode
+                  :pow_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :acos
+                ), (:quote, #QuoteNode
+                  :acos_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :acosh
+                ), (:quote, #QuoteNode
+                  :acosh_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :angle
+                ), (:quote, #QuoteNode
+                  :angle_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :asin
+                ), (:quote, #QuoteNode
+                  :asin_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :asinh
+                ), (:quote, #QuoteNode
+                  :asinh_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :atan
+                ), (:quote, #QuoteNode
+                  :atan_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :atan2
+                ), (:quote, #QuoteNode
+                  :atan2_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :atanh
+                ), (:quote, #QuoteNode
+                  :atanh_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :cbrt
+                ), (:quote, #QuoteNode
+                  :cbrt_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :cis
+                ), (:quote, #QuoteNode
+                  :cis_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :cos
+                ), (:quote, #QuoteNode
+                  :cos_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :cosh
+                ), (:quote, #QuoteNode
+                  :cosh_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :exp10
+                ), (:quote, #QuoteNode
+                  :exp10_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :exp2
+                ), (:quote, #QuoteNode
+                  :exp2_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :exp
+                ), (:quote, #QuoteNode
+                  :exp_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :expm1
+                ), (:quote, #QuoteNode
+                  :expm1_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :hypot
+                ), (:quote, #QuoteNode
+                  :hypot_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :lgamma
+                ), (:quote, #QuoteNode
+                  :lgamma_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :log10
+                ), (:quote, #QuoteNode
+                  :log10_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :log1p
+                ), (:quote, #QuoteNode
+                  :log1p_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :log2
+                ), (:quote, #QuoteNode
+                  :log2_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :log
+                ), (:quote, #QuoteNode
+                  :log_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :max
+                ), (:quote, #QuoteNode
+                  :max_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :min
+                ), (:quote, #QuoteNode
+                  :min_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :minmax
+                ), (:quote, #QuoteNode
+                  :minmax_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :sin
+                ), (:quote, #QuoteNode
+                  :sin_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :sinh
+                ), (:quote, #QuoteNode
+                  :sinh_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :sqrt
+                ), (:quote, #QuoteNode
+                  :sqrt_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :tan
+                ), (:quote, #QuoteNode
+                  :tan_fast
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :tanh
+                ), (:quote, #QuoteNode
+                  :tanh_fast
+                ))))),
+        (:line, 84, :none),
+        (:const, (:(=), :rewrite_op, (:call, :Dict, (:call, :(=>), (:quote, #QuoteNode
+                  :+=
+                ), (:quote, #QuoteNode
+                  :+
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :-=
+                ), (:quote, #QuoteNode
+                  :-
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :*=
+                ), (:quote, #QuoteNode
+                  :*
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :/=
+                ), (:quote, #QuoteNode
+                  :/
+                )), (:call, :(=>), (:quote, #QuoteNode
+                  :^=
+                ), (:quote, #QuoteNode
+                  :^
+                ))))),
+        (:line, 91, :none),
+        (:function, (:call, :make_fastmath, (:(::), :expr, :Expr)), (:block,
+            (:line, 92, :none),
+            (:if, (:call, :(===), (:., :expr, (:quote, #QuoteNode
+                    :head
+                  )), (:quote, #QuoteNode
+                  :quote
+                )), (:block,
+                (:line, 93, :none),
+                (:return, :expr)
+              )),
+            (:line, 95, :none),
+            (:(=), :op, (:call, :get, :rewrite_op, (:., :expr, (:quote, #QuoteNode
+                    :head
+                  )), (:quote, #QuoteNode
+                  :nothing
+                ))),
+            (:line, 96, :none),
+            (:if, (:call, :(!==), :op, (:quote, #QuoteNode
+                  :nothing
+                )), (:block,
+                (:line, 97, :none),
+                (:(=), :var, (:ref, (:., :expr, (:quote, #QuoteNode
+                        :args
+                      )), 1)),
+                (:line, 98, :none),
+                (:(=), :rhs, (:ref, (:., :expr, (:quote, #QuoteNode
+                        :args
+                      )), 2)),
+                (:line, 99, :none),
+                (:if, (:call, :isa, :var, :Symbol), (:block,
+                    (:line, 101, :none),
+                    (:(=), :expr, (:quote, (:(=), (:$, :var), (:call, (:$, :op), (:$, :var), (:$, :rhs)))))
+                  ), (:block,
+                    (:line, 102, :none),
+                    (:if, (:&&, (:call, :isa, :var, :Expr), (:call, :(===), (:., :var, (:quote, #QuoteNode
+                              :head
+                            )), (:quote, #QuoteNode
+                            :ref
+                          ))), (:block,
+                        (:line, 104, :none),
+                        (:(=), :arr, (:ref, (:., :var, (:quote, #QuoteNode
+                                :args
+                              )), 1)),
+                        (:line, 105, :none),
+                        (:(=), :inds, (:call, :tuple, (:..., (:ref, (:., :var, (:quote, #QuoteNode
+                                    :args
+                                  )), (:(:), 2, :end))))),
+                        (:line, 106, :none),
+                        (:(=), :arrvar, (:call, :gensym)),
+                        (:line, 107, :none),
+                        (:(=), :indvars, (:call, :tuple, (:..., (:comprehension, (:generator, (:call, :gensym), (:(=), :i, :inds)))))),
+                        (:line, 108, :none),
+                        (:(=), :expr, (:quote, (:block,
+                              (:line, 109, :none),
+                              (:$, (:call, :Expr, (:quote, #QuoteNode
+                                    :(=)
+                                  ), :arrvar, :arr)),
+                              (:line, 110, :none),
+                              (:$, (:call, :Expr, (:quote, #QuoteNode
+                                    :(=)
+                                  ), (:call, :Expr, (:quote, #QuoteNode
+                                      :tuple
+                                    ), (:..., :indvars)), (:call, :Expr, (:quote, #QuoteNode
+                                      :tuple
+                                    ), (:..., :inds)))),
+                              (:line, 111, :none),
+                              (:(=), (:ref, (:$, :arrvar), (:$, (:tuple, (:..., :indvars)))), (:call, (:$, :op), (:ref, (:$, :arrvar), (:$, (:tuple, (:..., :indvars)))), (:$, :rhs)))
+                            )))
+                      ))
+                  ))
+              )),
+            (:line, 115, :none),
+            (:call, :Expr, (:call, :make_fastmath, (:., :expr, (:quote, #QuoteNode
+                    :head
+                  ))), (:..., (:call, :map, :make_fastmath, (:., :expr, (:quote, #QuoteNode
+                      :args
+                    )))))
+          )),
+        (:line, 117, :none),
+        (:function, (:call, :make_fastmath, (:(::), :symb, :Symbol)), (:block,
+            (:line, 118, :none),
+            (:(=), :fast_symb, (:call, :get, :fast_op, :symb, (:quote, #QuoteNode
+                  :nothing
+                ))),
+            (:line, 119, :none),
+            (:if, (:call, :(===), :fast_symb, (:quote, #QuoteNode
+                  :nothing
+                )), (:block,
+                (:line, 120, :none),
+                (:return, :symb)
+              )),
+            (:line, 122, :none),
+            (:quote, (:., (:., :Base, (:quote, #QuoteNode
+                    :FastMath
+                  )), (:quote, #QuoteNode
+                  (:$, :fast_symb)
+                )))
+          )),
+        (:line, 124, :none),
+        (:(=), (:call, :make_fastmath, :expr), (:block,
+            (:line, 124, :none),
+            :expr
+          )),
+        (:line, 126, :none),
+        (:macro, (:call, :fastmath, :expr), (:block,
+            (:line, 127, :none),
+            (:call, :make_fastmath, (:call, :esc, :expr))
+          )),
+        (:line, 133, :none),
+        (:(=), :FloatTypes, (:curly, :Union, :Float32, :Float64)),
+        (:line, 135, :none),
+        (:(=), (:call, :sub_fast, (:(::), :x, :FloatTypes)), (:block,
+            (:line, 135, :none),
+            (:call, :neg_float_fast, :x)
+          )),
+        (:line, 137, :none),
+        (:(=), (:where, (:call, :add_fast, (:(::), :x, :T), (:(::), :y, :T)), (:<:, :T, :FloatTypes)), (:block,
+            (:line, 137, :none),
+            (:call, :add_float_fast, :x, :y)
+          )),
+        (:line, 138, :none),
+        (:(=), (:where, (:call, :sub_fast, (:(::), :x, :T), (:(::), :y, :T)), (:<:, :T, :FloatTypes)), (:block,
+            (:line, 138, :none),
+            (:call, :sub_float_fast, :x, :y)
+          )),
+        (:line, 139, :none),
+        (:(=), (:where, (:call, :mul_fast, (:(::), :x, :T), (:(::), :y, :T)), (:<:, :T, :FloatTypes)), (:block,
+            (:line, 139, :none),
+            (:call, :mul_float_fast, :x, :y)
+          )),
+        (:line, 140, :none),
+        (:(=), (:where, (:call, :div_fast, (:(::), :x, :T), (:(::), :y, :T)), (:<:, :T, :FloatTypes)), (:block,
+            (:line, 140, :none),
+            (:call, :div_float_fast, :x, :y)
+          )),
+        (:line, 141, :none),
+        (:(=), (:where, (:call, :rem_fast, (:(::), :x, :T), (:(::), :y, :T)), (:<:, :T, :FloatTypes)), (:block,
+            (:line, 141, :none),
+            (:call, :rem_float_fast, :x, :y)
+          )),
+        (:line, 143, :none),
+        (:(=), (:call, (:curly, :add_fast, (:<:, :T, :FloatTypes)), (:(::), :x, :T), (:(::), :y, :T), (:..., (:(::), :zs, :T))), (:block,
+            (:line, 143, :none),
+            (:call, :add_fast, (:call, :add_fast, :x, :y), (:..., :zs))
+          )),
+        (:line, 145, :none),
+        (:(=), (:call, (:curly, :mul_fast, (:<:, :T, :FloatTypes)), (:(::), :x, :T), (:(::), :y, :T), (:..., (:(::), :zs, :T))), (:block,
+            (:line, 145, :none),
+            (:call, :mul_fast, (:call, :mul_fast, :x, :y), (:..., :zs))
+          )),
+        (:line, 148, :none),
+        (:macrocall, Symbol("@fastmath"), (:block,
+            (:line, 149, :none),
+            (:(=), (:where, (:call, :cmp_fast, (:(::), :x, :T), (:(::), :y, :T)), (:<:, :T, :FloatTypes)), (:block,
+                (:line, 149, :none),
+                (:call, :ifelse, (:call, :(==), :x, :y), 0, (:call, :ifelse, (:call, :<, :x, :y), -1, 1))
+              ))
+          )),
+        (:line, 152, :none),
+        (:(=), (:where, (:call, :eq_fast, (:(::), :x, :T), (:(::), :y, :T)), (:<:, :T, :FloatTypes)), (:block,
+            (:line, 152, :none),
+            (:call, :eq_float_fast, :x, :y)
+          )),
+        (:line, 153, :none),
+        (:(=), (:where, (:call, :ne_fast, (:(::), :x, :T), (:(::), :y, :T)), (:<:, :T, :FloatTypes)), (:block,
+            (:line, 153, :none),
+            (:call, :ne_float_fast, :x, :y)
+          )),
+        (:line, 154, :none),
+        (:(=), (:where, (:call, :lt_fast, (:(::), :x, :T), (:(::), :y, :T)), (:<:, :T, :FloatTypes)), (:block,
+            (:line, 154, :none),
+            (:call, :lt_float_fast, :x, :y)
+          )),
+        (:line, 155, :none),
+        (:(=), (:where, (:call, :le_fast, (:(::), :x, :T), (:(::), :y, :T)), (:<:, :T, :FloatTypes)), (:block,
+            (:line, 155, :none),
+            (:call, :le_float_fast, :x, :y)
+          )),
+        (:line, 157, :none),
+        (:(=), (:call, :isinf_fast, :x), (:block,
+            (:line, 157, :none),
+            false
+          )),
+        (:line, 158, :none),
+        (:(=), (:call, :isfinite_fast, :x), (:block,
+            (:line, 158, :none),
+            true
+          )),
+        (:line, 159, :none),
+        (:(=), (:call, :isnan_fast, :x), (:block,
+            (:line, 159, :none),
+            false
+          )),
+        (:line, 160, :none),
+        (:(=), (:call, :issubnormal_fast, :x), (:block,
+            (:line, 160, :none),
+            false
+          )),
+        (:line, 164, :none),
+        (:(=), :ComplexTypes, (:curly, :Union, :Complex64, :Complex128)),
+        (:line, 166, :none),
+        (:macrocall, Symbol("@fastmath"), (:block,
+            (:line, 167, :none),
+            (:(=), (:call, :abs_fast, (:(::), :x, :ComplexTypes)), (:block,
+                (:line, 167, :none),
+                (:call, :hypot, (:call, :real, :x), (:call, :imag, :x))
+              )),
+            (:line, 168, :none),
+            (:(=), (:call, :abs2_fast, (:(::), :x, :ComplexTypes)), (:block,
+                (:line, 168, :none),
+                (:call, :+, (:call, :*, (:call, :real, :x), (:call, :real, :x)), (:call, :*, (:call, :imag, :x), (:call, :imag, :x)))
+              )),
+            (:line, 169, :none),
+            (:(=), (:where, (:call, :conj_fast, (:(::), :x, :T)), (:<:, :T, :ComplexTypes)), (:block,
+                (:line, 169, :none),
+                (:call, :T, (:call, :real, :x), (:call, :-, (:call, :imag, :x)))
+              )),
+            (:line, 170, :none),
+            (:(=), (:call, :inv_fast, (:(::), :x, :ComplexTypes)), (:block,
+                (:line, 170, :none),
+                (:call, :/, (:call, :conj, :x), (:call, :abs2, :x))
+              )),
+            (:line, 171, :none),
+            (:(=), (:call, :sign_fast, (:(::), :x, :ComplexTypes)), (:block,
+                (:line, 171, :none),
+                (:if, (:call, :(==), :x, 0), (:call, :float, (:call, :zero, :x)), (:call, :/, :x, (:call, :abs, :x)))
+              )),
+            (:line, 173, :none),
+            (:(=), (:where, (:call, :add_fast, (:(::), :x, :T), (:(::), :y, :T)), (:<:, :T, :ComplexTypes)), (:block,
+                (:line, 173, :none),
+                (:call, :T, (:call, :+, (:call, :real, :x), (:call, :real, :y)), (:call, :+, (:call, :imag, :x), (:call, :imag, :y)))
+              )),
+            (:line, 175, :none),
+            (:(=), (:where, (:call, :add_fast, (:(::), :x, (:curly, :Complex, :T)), (:(::), :b, :T)), (:<:, :T, :FloatTypes)), (:block,
+                (:line, 175, :none),
+                (:call, (:curly, :Complex, :T), (:call, :+, (:call, :real, :x), :b), (:call, :imag, :x))
+              )),
+            (:line, 177, :none),
+            (:(=), (:where, (:call, :add_fast, (:(::), :a, :T), (:(::), :y, (:curly, :Complex, :T))), (:<:, :T, :FloatTypes)), (:block,
+                (:line, 177, :none),
+                (:call, (:curly, :Complex, :T), (:call, :+, :a, (:call, :real, :y)), (:call, :imag, :y))
+              )),
+            (:line, 180, :none),
+            (:(=), (:where, (:call, :sub_fast, (:(::), :x, :T), (:(::), :y, :T)), (:<:, :T, :ComplexTypes)), (:block,
+                (:line, 180, :none),
+                (:call, :T, (:call, :-, (:call, :real, :x), (:call, :real, :y)), (:call, :-, (:call, :imag, :x), (:call, :imag, :y)))
+              )),
+            (:line, 182, :none),
+            (:(=), (:where, (:call, :sub_fast, (:(::), :x, (:curly, :Complex, :T)), (:(::), :b, :T)), (:<:, :T, :FloatTypes)), (:block,
+                (:line, 182, :none),
+                (:call, (:curly, :Complex, :T), (:call, :-, (:call, :real, :x), :b), (:call, :imag, :x))
+              )),
+            (:line, 184, :none),
+            (:(=), (:where, (:call, :sub_fast, (:(::), :a, :T), (:(::), :y, (:curly, :Complex, :T))), (:<:, :T, :FloatTypes)), (:block,
+                (:line, 184, :none),
+                (:call, (:curly, :Complex, :T), (:call, :-, :a, (:call, :real, :y)), (:call, :-, (:call, :imag, :y)))
+              )),
+            (:line, 187, :none),
+            (:(=), (:where, (:call, :mul_fast, (:(::), :x, :T), (:(::), :y, :T)), (:<:, :T, :ComplexTypes)), (:block,
+                (:line, 187, :none),
+                (:call, :T, (:call, :-, (:call, :*, (:call, :real, :x), (:call, :real, :y)), (:call, :*, (:call, :imag, :x), (:call, :imag, :y))), (:call, :+, (:call, :*, (:call, :real, :x), (:call, :imag, :y)), (:call, :*, (:call, :imag, :x), (:call, :real, :y))))
+              )),
+            (:line, 190, :none),
+            (:(=), (:where, (:call, :mul_fast, (:(::), :x, (:curly, :Complex, :T)), (:(::), :b, :T)), (:<:, :T, :FloatTypes)), (:block,
+                (:line, 190, :none),
+                (:call, (:curly, :Complex, :T), (:call, :*, (:call, :real, :x), :b), (:call, :*, (:call, :imag, :x), :b))
+              )),
+            (:line, 192, :none),
+            (:(=), (:where, (:call, :mul_fast, (:(::), :a, :T), (:(::), :y, (:curly, :Complex, :T))), (:<:, :T, :FloatTypes)), (:block,
+                (:line, 192, :none),
+                (:call, (:curly, :Complex, :T), (:call, :*, :a, (:call, :real, :y)), (:call, :*, :a, (:call, :imag, :y)))
+              )),
+            (:line, 195, :none),
+            (:macrocall, Symbol("@inline"), (:(=), (:where, (:call, :div_fast, (:(::), :x, :T), (:(::), :y, :T)), (:<:, :T, :ComplexTypes)), (:block,
+                  (:line, 195, :none),
+                  (:call, :/, (:call, :T, (:call, :+, (:call, :*, (:call, :real, :x), (:call, :real, :y)), (:call, :*, (:call, :imag, :x), (:call, :imag, :y))), (:call, :-, (:call, :*, (:call, :imag, :x), (:call, :real, :y)), (:call, :*, (:call, :real, :x), (:call, :imag, :y)))), (:call, :abs2, :y))
+                ))),
+            (:line, 198, :none),
+            (:(=), (:where, (:call, :div_fast, (:(::), :x, (:curly, :Complex, :T)), (:(::), :b, :T)), (:<:, :T, :FloatTypes)), (:block,
+                (:line, 198, :none),
+                (:call, (:curly, :Complex, :T), (:call, :/, (:call, :real, :x), :b), (:call, :/, (:call, :imag, :x), :b))
+              )),
+            (:line, 200, :none),
+            (:(=), (:where, (:call, :div_fast, (:(::), :a, :T), (:(::), :y, (:curly, :Complex, :T))), (:<:, :T, :FloatTypes)), (:block,
+                (:line, 200, :none),
+                (:call, :/, (:call, (:curly, :Complex, :T), (:call, :*, :a, (:call, :real, :y)), (:call, :*, (:call, :-, :a), (:call, :imag, :y))), (:call, :abs2, :y))
+              )),
+            (:line, 203, :none),
+            (:(=), (:where, (:call, :eq_fast, (:(::), :x, :T), (:(::), :y, :T)), (:<:, :T, :ComplexTypes)), (:block,
+                (:line, 203, :none),
+                (:call, :&, (:call, :(==), (:call, :real, :x), (:call, :real, :y)), (:call, :(==), (:call, :imag, :x), (:call, :imag, :y)))
+              )),
+            (:line, 205, :none),
+            (:(=), (:where, (:call, :eq_fast, (:(::), :x, (:curly, :Complex, :T)), (:(::), :b, :T)), (:<:, :T, :FloatTypes)), (:block,
+                (:line, 205, :none),
+                (:call, :&, (:call, :(==), (:call, :real, :x), :b), (:call, :(==), (:call, :imag, :x), (:call, :T, 0)))
+              )),
+            (:line, 207, :none),
+            (:(=), (:where, (:call, :eq_fast, (:(::), :a, :T), (:(::), :y, (:curly, :Complex, :T))), (:<:, :T, :FloatTypes)), (:block,
+                (:line, 207, :none),
+                (:call, :&, (:call, :(==), :a, (:call, :real, :y)), (:call, :(==), (:call, :T, 0), (:call, :imag, :y)))
+              )),
+            (:line, 210, :none),
+            (:(=), (:call, (:curly, :ne_fast, (:<:, :T, :ComplexTypes)), (:(::), :x, :T), (:(::), :y, :T)), (:block,
+                (:line, 210, :none),
+                (:call, :!, (:call, :(==), :x, :y))
+              ))
+          )),
+        (:line, 215, :none),
+        (:for, (:(=), :op, (:tuple, (:quote, #QuoteNode
+                :abs
+              ), (:quote, #QuoteNode
+                :abs2
+              ), (:quote, #QuoteNode
+                :conj
+              ), (:quote, #QuoteNode
+                :inv
+              ), (:quote, #QuoteNode
+                :sign
+              ))), (:block,
+            (:line, 216, :none),
+            (:(=), :op_fast, (:ref, :fast_op, :op)),
+            (:line, 217, :none),
+            (:macrocall, Symbol("@eval"), (:block,
+                (:line, 219, :none),
+                (:(=), (:call, (:$, :op_fast), (:..., :xs)), (:block,
+                    (:line, 219, :none),
+                    (:call, (:$, :op), (:..., :xs))
+                  ))
+              ))
+          )),
+        (:line, 223, :none),
+        (:for, (:(=), :op, (:tuple, (:quote, #QuoteNode
+                :+
+              ), (:quote, #QuoteNode
+                :-
+              ), (:quote, #QuoteNode
+                :*
+              ), (:quote, #QuoteNode
+                :/
+              ), (:quote, #QuoteNode
+                :(==)
+              ), (:quote, #QuoteNode
+                :(!=)
+              ), (:quote, #QuoteNode
+                :<
+              ), (:quote, #QuoteNode
+                :(<=)
+              ), (:quote, #QuoteNode
+                :cmp
+              ), (:quote, #QuoteNode
+                :rem
+              ))), (:block,
+            (:line, 224, :none),
+            (:(=), :op_fast, (:ref, :fast_op, :op)),
+            (:line, 225, :none),
+            (:macrocall, Symbol("@eval"), (:block,
+                (:line, 227, :none),
+                (:(=), (:call, (:$, :op_fast), (:..., :xs)), (:block,
+                    (:line, 227, :none),
+                    (:call, (:$, :op), (:..., :xs))
+                  )),
+                (:line, 229, :none),
+                (:(=), (:call, (:$, :op_fast), (:(::), :x, :Number), (:(::), :y, :Number), (:..., (:(::), :zs, :Number))), (:block,
+                    (:line, 229, :none),
+                    (:call, (:$, :op_fast), (:..., (:call, :promote, :x, :y, (:..., :zs))))
+                  )),
+                (:line, 232, :none),
+                (:(=), (:where, (:call, (:$, :op_fast), (:(::), :x, :T), (:..., (:(::), :ys, :T))), (:<:, :T, :Number)), (:block,
+                    (:line, 232, :none),
+                    (:call, (:$, :op), :x, (:..., :ys))
+                  ))
+              ))
+          )),
+        (:line, 241, :none),
+        (:(=), (:call, :pow_fast, (:(::), :x, :Float32), (:(::), :y, :Integer)), (:block,
+            (:line, 241, :none),
+            (:call, :ccall, "llvm.powi.f32", :llvmcall, :Float32, (:tuple, :Float32, :Int32), :x, :y)
+          )),
+        (:line, 242, :none),
+        (:(=), (:call, :pow_fast, (:(::), :x, :Float64), (:(::), :y, :Integer)), (:block,
+            (:line, 242, :none),
+            (:call, :ccall, "llvm.powi.f64", :llvmcall, :Float64, (:tuple, :Float64, :Int32), :x, :y)
+          )),
+        (:line, 246, :none),
+        (:(=), (:call, :sqrt_fast, (:(::), :x, :FloatTypes)), (:block,
+            (:line, 246, :none),
+            (:call, :sqrt_llvm_fast, :x)
+          )),
+        (:line, 250, :none),
+        (:const, (:(=), :libm, (:., :Base, (:quote, #QuoteNode
+                :libm_name
+              )))),
+        (:line, 252, :none),
+        (:for, (:(=), :f, (:tuple, (:quote, #QuoteNode
+                :acos
+              ), (:quote, #QuoteNode
+                :acosh
+              ), (:quote, #QuoteNode
+                :asin
+              ), (:quote, #QuoteNode
+                :asinh
+              ), (:quote, #QuoteNode
+                :atan
+              ), (:quote, #QuoteNode
+                :atanh
+              ), (:quote, #QuoteNode
+                :cbrt
+              ), (:quote, #QuoteNode
+                :cos
+              ), (:quote, #QuoteNode
+                :cosh
+              ), (:quote, #QuoteNode
+                :exp2
+              ), (:quote, #QuoteNode
+                :expm1
+              ), (:quote, #QuoteNode
+                :lgamma
+              ), (:quote, #QuoteNode
+                :log10
+              ), (:quote, #QuoteNode
+                :log1p
+              ), (:quote, #QuoteNode
+                :log2
+              ), (:quote, #QuoteNode
+                :log
+              ), (:quote, #QuoteNode
+                :sin
+              ), (:quote, #QuoteNode
+                :sinh
+              ), (:quote, #QuoteNode
+                :tan
+              ), (:quote, #QuoteNode
+                :tanh
+              ))), (:block,
+            (:line, 255, :none),
+            (:(=), :f_fast, (:ref, :fast_op, :f)),
+            (:line, 256, :none),
+            (:macrocall, Symbol("@eval"), (:block,
+                (:line, 257, :none),
+                (:(=), (:call, (:$, :f_fast), (:(::), :x, :Float32)), (:block,
+                    (:line, 257, :none),
+                    (:call, :ccall, (:tuple, (:$, (:call, :string, :f, "f")), :libm), :Float32, (:tuple, :Float32), :x)
+                  )),
+                (:line, 259, :none),
+                (:(=), (:call, (:$, :f_fast), (:(::), :x, :Float64)), (:block,
+                    (:line, 259, :none),
+                    (:call, :ccall, (:tuple, (:$, (:call, :string, :f)), :libm), :Float64, (:tuple, :Float64), :x)
+                  ))
+              ))
+          )),
+        (:line, 264, :none),
+        (:(=), (:call, :pow_fast, (:(::), :x, :Float32), (:(::), :y, :Float32)), (:block,
+            (:line, 264, :none),
+            (:call, :ccall, (:tuple, "powf", :libm), :Float32, (:tuple, :Float32, :Float32), :x, :y)
+          )),
+        (:line, 266, :none),
+        (:(=), (:call, :pow_fast, (:(::), :x, :Float64), (:(::), :y, :Float64)), (:block,
+            (:line, 266, :none),
+            (:call, :ccall, (:tuple, "pow", :libm), :Float64, (:tuple, :Float64, :Float64), :x, :y)
+          )),
+        (:line, 269, :none),
+        (:(=), (:call, :atan2_fast, (:(::), :x, :Float32), (:(::), :y, :Float32)), (:block,
+            (:line, 269, :none),
+            (:call, :ccall, (:tuple, "atan2f", :libm), :Float32, (:tuple, :Float32, :Float32), :x, :y)
+          )),
+        (:line, 271, :none),
+        (:(=), (:call, :atan2_fast, (:(::), :x, :Float64), (:(::), :y, :Float64)), (:block,
+            (:line, 271, :none),
+            (:call, :ccall, (:tuple, "atan2", :libm), :Float64, (:tuple, :Float64, :Float64), :x, :y)
+          )),
+        (:line, 276, :none),
+        (:macrocall, Symbol("@fastmath"), (:block,
+            (:line, 277, :none),
+            (:(=), (:where, (:call, :exp10_fast, (:(::), :x, :T)), (:<:, :T, :FloatTypes)), (:block,
+                (:line, 277, :none),
+                (:call, :exp2, (:call, :*, (:call, :log2, (:call, :T, 10)), :x))
+              )),
+            (:line, 278, :none),
+            (:(=), (:call, :exp10_fast, (:(::), :x, :Integer)), (:block,
+                (:line, 278, :none),
+                (:call, :exp10, (:call, :float, :x))
+              )),
+            (:line, 280, :none),
+            (:(=), (:where, (:call, :hypot_fast, (:(::), :x, :T), (:(::), :y, :T)), (:<:, :T, :FloatTypes)), (:block,
+                (:line, 280, :none),
+                (:call, :sqrt, (:call, :+, (:call, :*, :x, :x), (:call, :*, :y, :y)))
+              )),
+            (:line, 284, :none),
+            (:(=), (:where, (:call, :max_fast, (:(::), :x, :T), (:(::), :y, :T)), (:<:, :T, :FloatTypes)), (:block,
+                (:line, 284, :none),
+                (:call, :ifelse, (:call, :>, :y, :x), :y, :x)
+              )),
+            (:line, 285, :none),
+            (:(=), (:where, (:call, :min_fast, (:(::), :x, :T), (:(::), :y, :T)), (:<:, :T, :FloatTypes)), (:block,
+                (:line, 285, :none),
+                (:call, :ifelse, (:call, :>, :y, :x), :x, :y)
+              )),
+            (:line, 286, :none),
+            (:(=), (:where, (:call, :minmax_fast, (:(::), :x, :T), (:(::), :y, :T)), (:<:, :T, :FloatTypes)), (:block,
+                (:line, 286, :none),
+                (:call, :ifelse, (:call, :>, :y, :x), (:tuple, :x, :y), (:tuple, :y, :x))
+              )),
+            (:line, 290, :none),
+            (:(=), (:where, (:call, :cis_fast, (:(::), :x, :T)), (:<:, :T, :FloatTypes)), (:block,
+                (:line, 290, :none),
+                (:call, (:curly, :Complex, :T), (:call, :cos, :x), (:call, :sin, :x))
+              )),
+            (:line, 293, :none),
+            (:(=), (:where, (:call, :pow_fast, (:(::), :x, :T), (:(::), :y, :T)), (:<:, :T, :ComplexTypes)), (:block,
+                (:line, 293, :none),
+                (:call, :exp, (:call, :*, :y, (:call, :log, :x)))
+              )),
+            (:line, 294, :none),
+            (:(=), (:where, (:call, :pow_fast, (:(::), :x, :T), (:(::), :y, (:curly, :Complex, :T))), (:<:, :T, :FloatTypes)), (:block,
+                (:line, 294, :none),
+                (:call, :exp, (:call, :*, :y, (:call, :log, :x)))
+              )),
+            (:line, 295, :none),
+            (:(=), (:where, (:call, :pow_fast, (:(::), :x, (:curly, :Complex, :T)), (:(::), :y, :T)), (:<:, :T, :FloatTypes)), (:block,
+                (:line, 295, :none),
+                (:call, :exp, (:call, :*, :y, (:call, :log, :x)))
+              )),
+            (:line, 296, :none),
+            (:(=), (:where, (:call, :acos_fast, (:(::), :x, :T)), (:<:, :T, :ComplexTypes)), (:block,
+                (:line, 296, :none),
+                (:call, :+, (:call, :/, (:call, :convert, :T, :π), 2), (:call, :*, :im, (:call, :log, (:call, :+, (:call, :*, :im, :x), (:call, :sqrt, (:call, :-, 1, (:call, :*, :x, :x)))))))
+              )),
+            (:line, 298, :none),
+            (:(=), (:call, :acosh_fast, (:(::), :x, :ComplexTypes)), (:block,
+                (:line, 298, :none),
+                (:call, :log, (:call, :+, :x, (:call, :*, (:call, :sqrt, (:call, :+, :x, 1)), (:call, :sqrt, (:call, :-, :x, 1)))))
+              )),
+            (:line, 299, :none),
+            (:(=), (:call, :angle_fast, (:(::), :x, :ComplexTypes)), (:block,
+                (:line, 299, :none),
+                (:call, :atan2, (:call, :imag, :x), (:call, :real, :x))
+              )),
+            (:line, 300, :none),
+            (:(=), (:call, :asin_fast, (:(::), :x, :ComplexTypes)), (:block,
+                (:line, 300, :none),
+                (:call, :*, (:call, :-, :im), (:call, :asinh, (:call, :*, :im, :x)))
+              )),
+            (:line, 301, :none),
+            (:(=), (:call, :asinh_fast, (:(::), :x, :ComplexTypes)), (:block,
+                (:line, 301, :none),
+                (:call, :log, (:call, :+, :x, (:call, :sqrt, (:call, :+, 1, (:call, :*, :x, :x)))))
+              )),
+            (:line, 302, :none),
+            (:(=), (:call, :atan_fast, (:(::), :x, :ComplexTypes)), (:block,
+                (:line, 302, :none),
+                (:call, :*, (:call, :-, :im), (:call, :atanh, (:call, :*, :im, :x)))
+              )),
+            (:line, 303, :none),
+            (:(=), (:where, (:call, :atanh_fast, (:(::), :x, :T)), (:<:, :T, :ComplexTypes)), (:block,
+                (:line, 303, :none),
+                (:call, :*, (:call, :/, (:call, :convert, :T, 1), 2), (:call, :-, (:call, :log, (:call, :+, 1, :x)), (:call, :log, (:call, :-, 1, :x))))
+              )),
+            (:line, 304, :none),
+            (:(=), (:call, :cis_fast, (:(::), :x, :ComplexTypes)), (:block,
+                (:line, 304, :none),
+                (:call, :*, (:call, :exp, (:call, :-, (:call, :imag, :x))), (:call, :cis, (:call, :real, :x)))
+              )),
+            (:line, 305, :none),
+            (:(=), (:call, :cos_fast, (:(::), :x, :ComplexTypes)), (:block,
+                (:line, 305, :none),
+                (:call, :cosh, (:call, :*, :im, :x))
+              )),
+            (:line, 306, :none),
+            (:(=), (:where, (:call, :cosh_fast, (:(::), :x, :T)), (:<:, :T, :ComplexTypes)), (:block,
+                (:line, 306, :none),
+                (:call, :*, (:call, :/, (:call, :convert, :T, 1), 2), (:call, :+, (:call, :exp, :x), (:call, :exp, (:call, :-, :x))))
+              )),
+            (:line, 307, :none),
+            (:(=), (:where, (:call, :exp10_fast, (:(::), :x, :T)), (:<:, :T, :ComplexTypes)), (:block,
+                (:line, 307, :none),
+                (:call, :*, (:call, :exp10, (:call, :real, :x)), (:call, :cis, (:call, :*, (:call, :imag, :x), (:call, :log, (:call, :convert, :T, 10)))))
+              )),
+            (:line, 309, :none),
+            (:(=), (:where, (:call, :exp2_fast, (:(::), :x, :T)), (:<:, :T, :ComplexTypes)), (:block,
+                (:line, 309, :none),
+                (:call, :*, (:call, :exp2, (:call, :real, :x)), (:call, :cis, (:call, :*, (:call, :imag, :x), (:call, :log, (:call, :convert, :T, 2)))))
+              )),
+            (:line, 311, :none),
+            (:(=), (:call, :exp_fast, (:(::), :x, :ComplexTypes)), (:block,
+                (:line, 311, :none),
+                (:call, :*, (:call, :exp, (:call, :real, :x)), (:call, :cis, (:call, :imag, :x)))
+              )),
+            (:line, 312, :none),
+            (:(=), (:call, :expm1_fast, (:(::), :x, :ComplexTypes)), (:block,
+                (:line, 312, :none),
+                (:call, :-, (:call, :exp, :x), 1)
+              )),
+            (:line, 313, :none),
+            (:(=), (:where, (:call, :log10_fast, (:(::), :x, :T)), (:<:, :T, :ComplexTypes)), (:block,
+                (:line, 313, :none),
+                (:call, :/, (:call, :log, :x), (:call, :log, (:call, :convert, :T, 10)))
+              )),
+            (:line, 314, :none),
+            (:(=), (:call, :log1p_fast, (:(::), :x, :ComplexTypes)), (:block,
+                (:line, 314, :none),
+                (:call, :log, (:call, :+, 1, :x))
+              )),
+            (:line, 315, :none),
+            (:(=), (:where, (:call, :log2_fast, (:(::), :x, :T)), (:<:, :T, :ComplexTypes)), (:block,
+                (:line, 315, :none),
+                (:call, :/, (:call, :log, :x), (:call, :log, (:call, :convert, :T, 2)))
+              )),
+            (:line, 316, :none),
+            (:(=), (:where, (:call, :log_fast, (:(::), :x, :T)), (:<:, :T, :ComplexTypes)), (:block,
+                (:line, 316, :none),
+                (:call, :T, (:call, :/, (:call, :log, (:call, :abs2, :x)), 2), (:call, :angle, :x))
+              )),
+            (:line, 317, :none),
+            (:(=), (:call, :sin_fast, (:(::), :x, :ComplexTypes)), (:block,
+                (:line, 317, :none),
+                (:call, :*, (:call, :-, :im), (:call, :sinh, (:call, :*, :im, :x)))
+              )),
+            (:line, 318, :none),
+            (:(=), (:where, (:call, :sinh_fast, (:(::), :x, :T)), (:<:, :T, :ComplexTypes)), (:block,
+                (:line, 318, :none),
+                (:call, :*, (:call, :/, (:call, :convert, :T, 1), 2), (:call, :-, (:call, :exp, :x), (:call, :exp, (:call, :-, :x))))
+              )),
+            (:line, 319, :none),
+            (:(=), (:call, :sqrt_fast, (:(::), :x, :ComplexTypes)), (:block,
+                (:line, 319, :none),
+                (:call, :*, (:call, :sqrt, (:call, :abs, :x)), (:call, :cis, (:call, :/, (:call, :angle, :x), 2)))
+              )),
+            (:line, 320, :none),
+            (:(=), (:call, :tan_fast, (:(::), :x, :ComplexTypes)), (:block,
+                (:line, 320, :none),
+                (:call, :*, (:call, :-, :im), (:call, :tanh, (:call, :*, :im, :x)))
+              )),
+            (:line, 321, :none),
+            (:(=), (:call, :tanh_fast, (:(::), :x, :ComplexTypes)), (:block,
+                (:line, 321, :none),
+                (:block,
+                  (:(=), :a, (:call, :exp, :x)),
+                  (:(=), :b, (:call, :exp, (:call, :-, :x))),
+                  (:call, :/, (:call, :-, :a, :b), (:call, :+, :a, :b))
+                )
+              ))
+          )),
+        (:line, 326, :none),
+        (:for, (:(=), :f, (:tuple, (:quote, #QuoteNode
+                :acos
+              ), (:quote, #QuoteNode
+                :acosh
+              ), (:quote, #QuoteNode
+                :angle
+              ), (:quote, #QuoteNode
+                :asin
+              ), (:quote, #QuoteNode
+                :asinh
+              ), (:quote, #QuoteNode
+                :atan
+              ), (:quote, #QuoteNode
+                :atanh
+              ), (:quote, #QuoteNode
+                :cbrt
+              ), (:quote, #QuoteNode
+                :cis
+              ), (:quote, #QuoteNode
+                :cos
+              ), (:quote, #QuoteNode
+                :cosh
+              ), (:quote, #QuoteNode
+                :exp10
+              ), (:quote, #QuoteNode
+                :exp2
+              ), (:quote, #QuoteNode
+                :exp
+              ), (:quote, #QuoteNode
+                :expm1
+              ), (:quote, #QuoteNode
+                :lgamma
+              ), (:quote, #QuoteNode
+                :log10
+              ), (:quote, #QuoteNode
+                :log1p
+              ), (:quote, #QuoteNode
+                :log2
+              ), (:quote, #QuoteNode
+                :log
+              ), (:quote, #QuoteNode
+                :sin
+              ), (:quote, #QuoteNode
+                :sinh
+              ), (:quote, #QuoteNode
+                :sqrt
+              ), (:quote, #QuoteNode
+                :tan
+              ), (:quote, #QuoteNode
+                :tanh
+              ))), (:block,
+            (:line, 330, :none),
+            (:(=), :f_fast, (:ref, :fast_op, :f)),
+            (:line, 331, :none),
+            (:macrocall, Symbol("@eval"), (:block,
+                (:line, 332, :none),
+                (:(=), (:call, (:$, :f_fast), :x), (:block,
+                    (:line, 332, :none),
+                    (:call, (:$, :f), :x)
+                  ))
+              ))
+          )),
+        (:line, 336, :none),
+        (:for, (:(=), :f, (:tuple, (:quote, #QuoteNode
+                :^
+              ), (:quote, #QuoteNode
+                :atan2
+              ), (:quote, #QuoteNode
+                :hypot
+              ), (:quote, #QuoteNode
+                :max
+              ), (:quote, #QuoteNode
+                :min
+              ), (:quote, #QuoteNode
+                :minmax
+              ))), (:block,
+            (:line, 337, :none),
+            (:(=), :f_fast, (:ref, :fast_op, :f)),
+            (:line, 338, :none),
+            (:macrocall, Symbol("@eval"), (:block,
+                (:line, 340, :none),
+                (:(=), (:call, (:$, :f_fast), :x, :y), (:block,
+                    (:line, 340, :none),
+                    (:call, (:$, :f), :x, :y)
+                  )),
+                (:line, 342, :none),
+                (:(=), (:call, (:$, :f_fast), (:(::), :x, :Number), (:(::), :y, :Number)), (:block,
+                    (:line, 342, :none),
+                    (:call, (:$, :f_fast), (:..., (:call, :promote, :x, :y)))
+                  )),
+                (:line, 344, :none),
+                (:(=), (:where, (:call, (:$, :f_fast), (:(::), :x, :T), (:(::), :y, :T)), (:<:, :T, :Number)), (:block,
+                    (:line, 344, :none),
+                    (:call, (:$, :f), :x, :y)
+                  ))
+              ))
+          ))
+      ))
+  ))
