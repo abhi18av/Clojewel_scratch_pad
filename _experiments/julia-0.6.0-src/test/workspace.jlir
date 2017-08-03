@@ -1,0 +1,30 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:using, :Base, :Test),
+    (:line, 5, :none),
+    (:(=), :script, "# Issue #11948\nf(x) = x+1\nworkspace()\n@assert !isdefined(:f)\nLastMain.f(2)\n\n# PR #12990\nio = IOBuffer()\nshow(io, Pair)\n@assert String(take!(io)) == \"Pair\"\n@assert !Base.inbase(LastMain)\n"),
+    (:line, 18, :none),
+    (:(=), :exename, (:call, (:., :Base, (:quote, #QuoteNode
+            :julia_cmd
+          )))),
+    (:line, 19, :none),
+    (:call, :run, (:macrocall, Symbol("@cmd"), "\$exename --startup-file=no -e \$script")),
+    (:line, 22, :none),
+    (:(=), :script2, "mutable struct Foo end\nworkspace()\nmutable struct Foo end\n@assert Tuple{Type{LastMain.Foo}} !== Tuple{Type{Main.Foo}}\n"),
+    (:line, 28, :none),
+    (:call, :run, (:macrocall, Symbol("@cmd"), "\$exename --startup-file=no -e \$script2")),
+    (:line, 31, :none),
+    (:call, :mktempdir, (:->, (:tuple, :dir), (:block,
+          (:line, 32, :none),
+          (:call, :withenv, (:->, (:tuple,), (:block,
+                (:line, 34, :none),
+                (:call, :write, (:call, :joinpath, :dir, "Test22101.jl"), "    __precompile__()\n    module Test22101\n        export f22101\n        f22101() = collect(1:10)\n        f22101()\n    end\n"),
+                (:line, 42, :none),
+                (:call, :write, (:call, :joinpath, :dir, "testdriver.jl"), (:string, "    insert!(LOAD_PATH, 1, ", (:call, :repr, :dir), ")\n    insert!(Base.LOAD_CACHE_PATH, 1, ", (:call, :repr, :dir), ")\n    try\n        using Test22101\n        f22101()\n        workspace()\n        using Test22101\n    finally\n        splice!(LOAD_PATH, 1)\n        splice!(Base.LOAD_CACHE_PATH, 1)\n    end\n    exit(isdefined(Main, :f22101) ? 0 : 1)\n")),
+                (:line, 57, :none),
+                (:(=), :cmd, (:macrocall, Symbol("@cmd"), "\$(Base.julia_cmd()) --startup-file=no --precompiled=yes --compilecache=yes \$(joinpath(dir, \"testdriver.jl\"))")),
+                (:line, 58, :none),
+                (:macrocall, Symbol("@test"), (:call, :success, (:call, :pipeline, :cmd, (:kw, :stdout, :STDOUT), (:kw, :stderr, :STDERR))))
+              )), (:call, :(=>), "JULIA_DEBUG_LOADING", :nothing))
+        )))
+  ))

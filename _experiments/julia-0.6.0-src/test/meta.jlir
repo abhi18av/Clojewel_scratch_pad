@@ -1,0 +1,366 @@
+(:quote, (:block,
+    (:line, 5, :none),
+    (:const, (:(=), :inlining_on, (:call, :(!=), (:., (:call, (:., :Base, (:quote, #QuoteNode
+                  :JLOptions
+                ))), (:quote, #QuoteNode
+              :can_inline
+            )), 0))),
+    (:line, 7, :none),
+    (:function, (:call, :f, :x), (:block,
+        (:line, 8, :none),
+        (:(=), :y, (:call, :+, :x, 5)),
+        (:line, 9, :none),
+        (:(=), :z, (:call, :*, :y, :y)),
+        (:line, 10, :none),
+        (:(=), :q, (:call, :/, :z, :y)),
+        (:line, 11, :none),
+        (:(=), :m, (:call, :-, :q, 3))
+      )),
+    (:line, 14, :none),
+    (:macrocall, Symbol("@inline"), (:function, (:call, :f_inlined, :x), (:block,
+          (:line, 15, :none),
+          (:(=), :y, (:call, :+, :x, 5)),
+          (:line, 16, :none),
+          (:(=), :z, (:call, :*, :y, :y)),
+          (:line, 17, :none),
+          (:(=), :q, (:call, :/, :z, :y)),
+          (:line, 18, :none),
+          (:(=), :m, (:call, :-, :q, 3))
+        ))),
+    (:line, 21, :none),
+    (:(=), (:call, :g, :x), (:block,
+        (:line, 21, :none),
+        (:call, :f, (:call, :*, 2, :x))
+      )),
+    (:line, 22, :none),
+    (:(=), (:call, :g_inlined, :x), (:block,
+        (:line, 22, :none),
+        (:call, :f_inlined, (:call, :*, 2, :x))
+      )),
+    (:line, 24, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :g, 3), (:call, :g_inlined, 3))),
+    (:line, 25, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :f, 3), (:call, :f_inlined, 3))),
+    (:line, 27, :none),
+    (:(=), (:call, :f), (:block,
+        (:line, 27, :none),
+        (:call, :backtrace)
+      )),
+    (:line, 28, :none),
+    (:macrocall, Symbol("@inline"), (:(=), (:call, :g_inlined), (:block,
+          (:line, 28, :none),
+          (:call, :f)
+        ))),
+    (:line, 29, :none),
+    (:macrocall, Symbol("@noinline"), (:(=), (:call, :g_noinlined), (:block,
+          (:line, 29, :none),
+          (:call, :f)
+        ))),
+    (:line, 30, :none),
+    (:(=), (:call, :h_inlined), (:block,
+        (:line, 30, :none),
+        (:call, :g_inlined)
+      )),
+    (:line, 31, :none),
+    (:(=), (:call, :h_noinlined), (:block,
+        (:line, 31, :none),
+        (:call, :g_noinlined)
+      )),
+    (:line, 33, :none),
+    (:function, (:call, :foundfunc, :bt, :funcname), (:block,
+        (:line, 34, :none),
+        (:for, (:(=), :b, :bt), (:block,
+            (:line, 35, :none),
+            (:for, (:(=), :lkup, (:call, (:., :StackTraces, (:quote, #QuoteNode
+                      :lookup
+                    )), :b)), (:block,
+                (:line, 36, :none),
+                (:if, (:call, :(==), (:., :lkup, (:quote, #QuoteNode
+                        :func
+                      )), :funcname), (:block,
+                    (:line, 37, :none),
+                    (:return, true)
+                  ))
+              ))
+          )),
+        (:line, 41, :none),
+        false
+      )),
+    (:line, 43, :none),
+    (:if, :inlining_on, (:block,
+        (:line, 44, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:call, :foundfunc, (:call, :h_inlined), (:quote, #QuoteNode
+                :g_inlined
+              ))))
+      )),
+    (:line, 46, :none),
+    (:macrocall, Symbol("@test"), (:call, :foundfunc, (:call, :h_noinlined), (:quote, #QuoteNode
+          :g_noinlined
+        ))),
+    (:line, 48, :none),
+    (:toplevel, (:using, :Base, :pushmeta!), (:using, :Base, :popmeta!)),
+    (:line, 50, :none),
+    (:macro, (:call, :attach, :val, :ex), (:block,
+        (:line, 51, :none),
+        (:call, :esc, (:call, :_attach, :val, :ex))
+      )),
+    (:line, 54, :none),
+    (:(=), (:call, :_attach, :val, :ex), (:block,
+        (:line, 54, :none),
+        (:call, :pushmeta!, :ex, (:quote, #QuoteNode
+            :test
+          ), :val)
+      )),
+    (:line, 56, :none),
+    (:macrocall, Symbol("@attach"), 42, (:function, (:call, :dummy), (:block,
+          (:line, 57, :none),
+          false
+        ))),
+    (:line, 60, :none),
+    (:(=), :asts, (:call, :code_lowered, :dummy, (:curly, :Tuple))),
+    (:line, 61, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :asts), 1)),
+    (:line, 62, :none),
+    (:(=), :ast, (:ref, :asts, 1)),
+    (:line, 64, :none),
+    (:(=), :body, (:call, :Expr, (:quote, #QuoteNode
+          :block
+        ))),
+    (:line, 65, :none),
+    (:(=), (:., :body, (:quote, #QuoteNode
+          :args
+        )), (:., :ast, (:quote, #QuoteNode
+          :code
+        ))),
+    (:line, 67, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :popmeta!, :body, (:quote, #QuoteNode
+            :test
+          )), (:tuple, true, (:vect, 42)))),
+    (:line, 68, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :popmeta!, :body, (:quote, #QuoteNode
+            :nonexistent
+          )), (:tuple, false, (:vect,)))),
+    (:line, 71, :none),
+    (:(=), :ex1, (:quote, (:block,
+          (:line, 72, :none),
+          (:$, (:call, :Expr, (:quote, #QuoteNode
+                :meta
+              ), (:quote, #QuoteNode
+                :foo
+              ))),
+          (:line, 73, :none),
+          (:call, :+, (:call, :*, :x, :x), 1)
+        ))),
+    (:line, 75, :none),
+    (:macrocall, Symbol("@test"), (:ref, (:call, :popmeta!, :ex1, (:quote, #QuoteNode
+            :foo
+          )), 1)),
+    (:line, 76, :none),
+    (:macrocall, Symbol("@test"), (:call, :!, (:ref, (:call, :popmeta!, :ex1, (:quote, #QuoteNode
+              :foo
+            )), 1))),
+    (:line, 77, :none),
+    (:macrocall, Symbol("@test"), (:call, :!, (:ref, (:call, :popmeta!, :ex1, (:quote, #QuoteNode
+              :bar
+            )), 1))),
+    (:line, 78, :none),
+    (:macrocall, Symbol("@test"), (:call, :!, (:ref, (:call, :popmeta!, (:quote, (:call, :+, (:call, :*, :x, :x), 1)), (:quote, #QuoteNode
+              :foo
+            )), 1))),
+    (:line, 81, :none),
+    (:(=), :multi_meta, (:quote, (:block,
+          (:line, 82, :none),
+          (:$, (:call, :Expr, (:quote, #QuoteNode
+                :meta
+              ), (:quote, #QuoteNode
+                :foo1
+              ))),
+          (:line, 83, :none),
+          (:(=), :y, :x),
+          (:line, 84, :none),
+          (:$, (:call, :Expr, (:quote, #QuoteNode
+                :meta
+              ), (:quote, #QuoteNode
+                :foo2
+              ), (:quote, #QuoteNode
+                :foo3
+              ))),
+          (:line, 85, :none),
+          (:block,
+            (:line, 86, :none),
+            (:$, (:call, :Expr, (:quote, #QuoteNode
+                  :meta
+                ), (:quote, #QuoteNode
+                  :foo4
+                ), (:call, :Expr, (:quote, #QuoteNode
+                    :foo5
+                  ), 1, 2)))
+          ),
+          (:line, 88, :none),
+          (:call, :+, (:call, :*, :x, :x), 1)
+        ))),
+    (:line, 90, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :popmeta!, (:call, :deepcopy, :multi_meta), (:quote, #QuoteNode
+            :foo1
+          )), (:tuple, true, (:vect,)))),
+    (:line, 91, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :popmeta!, (:call, :deepcopy, :multi_meta), (:quote, #QuoteNode
+            :foo2
+          )), (:tuple, true, (:vect,)))),
+    (:line, 92, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :popmeta!, (:call, :deepcopy, :multi_meta), (:quote, #QuoteNode
+            :foo3
+          )), (:tuple, true, (:vect,)))),
+    (:line, 93, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :popmeta!, (:call, :deepcopy, :multi_meta), (:quote, #QuoteNode
+            :foo4
+          )), (:tuple, true, (:vect,)))),
+    (:line, 94, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :popmeta!, (:call, :deepcopy, :multi_meta), (:quote, #QuoteNode
+            :foo5
+          )), (:tuple, true, (:vect, 1, 2)))),
+    (:line, 95, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :popmeta!, (:call, :deepcopy, :multi_meta), (:quote, #QuoteNode
+            :bar
+          )), (:tuple, false, (:vect,)))),
+    (:line, 98, :none),
+    (:for, (:(=), :m, (:vect, (:quote, #QuoteNode
+            :foo1
+          ), (:quote, #QuoteNode
+            :foo2
+          ), (:quote, #QuoteNode
+            :foo3
+          ), (:quote, #QuoteNode
+            :foo4
+          ), (:quote, #QuoteNode
+            :foo5
+          ))), (:block,
+        (:line, 99, :none),
+        (:macrocall, Symbol("@test"), (:ref, (:call, :popmeta!, :multi_meta, :m), 1))
+      )),
+    (:line, 101, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:ref, (:call, (:., :Base, (:quote, #QuoteNode
+                :findmeta
+              )), (:., :multi_meta, (:quote, #QuoteNode
+                :args
+              ))), 1), 0)),
+    (:line, 106, :none),
+    (:macrocall, Symbol("@attach"), 40, (:macrocall, Symbol("@attach"), 41, (:macrocall, Symbol("@attach"), 42, (:(=), (:call, :dummy_multi), (:block,
+              (:line, 106, :none),
+              (:return, :nothing)
+            ))))),
+    (:line, 108, :none),
+    (:(=), :asts, (:call, :code_lowered, :dummy_multi, (:curly, :Tuple))),
+    (:line, 109, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :asts), 1)),
+    (:line, 110, :none),
+    (:(=), :ast, (:ref, :asts, 1)),
+    (:line, 112, :none),
+    (:(=), :body, (:call, :Expr, (:quote, #QuoteNode
+          :block
+        ))),
+    (:line, 113, :none),
+    (:(=), (:., :body, (:quote, #QuoteNode
+          :args
+        )), (:., :ast, (:quote, #QuoteNode
+          :code
+        ))),
+    (:line, 115, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :popmeta!, :body, (:quote, #QuoteNode
+            :test
+          )), (:tuple, true, (:vect, 40)))),
+    (:line, 116, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :popmeta!, :body, (:quote, #QuoteNode
+            :test
+          )), (:tuple, true, (:vect, 41)))),
+    (:line, 117, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :popmeta!, :body, (:quote, #QuoteNode
+            :test
+          )), (:tuple, true, (:vect, 42)))),
+    (:line, 118, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :popmeta!, :body, (:quote, #QuoteNode
+            :nonexistent
+          )), (:tuple, false, (:vect,)))),
+    (:line, 121, :none),
+    (:using, :Base, :Meta),
+    (:line, 123, :none),
+    (:macrocall, Symbol("@test"), (:call, :isexpr, (:quote, (:call, :+, 1, 1)), (:call, :Set, (:vect, (:quote, #QuoteNode
+              :call
+            ))))),
+    (:line, 124, :none),
+    (:macrocall, Symbol("@test"), (:call, :isexpr, (:quote, (:call, :+, 1, 1)), (:call, :Vector, (:vect, (:quote, #QuoteNode
+              :call
+            ))))),
+    (:line, 125, :none),
+    (:macrocall, Symbol("@test"), (:call, :isexpr, (:quote, (:call, :+, 1, 1)), (:tuple, (:quote, #QuoteNode
+            :call
+          )))),
+    (:line, 126, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :isexpr, 1, (:quote, #QuoteNode
+            :call
+          )), false)),
+    (:line, 127, :none),
+    (:macrocall, Symbol("@test"), (:call, :isexpr, (:quote, (:call, :+, 1, 1)), (:quote, #QuoteNode
+          :call
+        ), 3)),
+    (:line, 128, :none),
+    (:(=), :ioB, (:call, :IOBuffer)),
+    (:line, 129, :none),
+    (:call, :show_sexpr, :ioB, (:quote, (:call, :+, 1, 1))),
+    (:line, 131, :none),
+    (:call, :show_sexpr, :ioB, (:call, :QuoteNode, 1), 1),
+    (:line, 133, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., (:., :Base, (:quote, #QuoteNode
+                :Distributed
+              )), (:quote, #QuoteNode
+              :extract_imports
+            )), (:quote, (:block,
+              (:line, 133, :none),
+              (:toplevel, (:import, :Foo), (:import, :Bar)),
+              (:line, 133, :none),
+              (:let, (:block,
+                  (:line, 133, :none),
+                  (:using, :Baz)
+                ))
+            ))), (:vect, (:quote, #QuoteNode
+            :Foo
+          ), (:quote, #QuoteNode
+            :Bar
+          ), (:quote, #QuoteNode
+            :Baz
+          )))),
+    (:line, 137, :none),
+    (:module, false, :B, (:block,
+        (:line, 137, :none),
+        (:line, 138, :none),
+        (:(=), :eval, 0),
+        (:line, 139, :none),
+        (:(=), :x, 1),
+        (:line, 140, :none),
+        (:module, true, :M, (:block,
+            (:line, 140, :none),
+            (:line, 140, :none),
+            (:(=), :x, 2)
+          )),
+        (:line, 141, :none),
+        (:import, :Base),
+        (:line, 142, :none),
+        (:macrocall, (:., :Base, (:quote, #QuoteNode
+              Symbol("@eval")
+            )), (:(=), :x, 3)),
+        (:line, 143, :none),
+        (:macrocall, (:., :Base, (:quote, #QuoteNode
+              Symbol("@eval")
+            )), :M, (:(=), :x, 4))
+      )),
+    (:line, 145, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:., :B, (:quote, #QuoteNode
+            :x
+          )), 3)),
+    (:line, 146, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:., (:., :B, (:quote, #QuoteNode
+              :M
+            )), (:quote, #QuoteNode
+            :x
+          )), 4))
+  ))

@@ -1,0 +1,263 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:macrocall, Symbol("@doc"), (:->, "\n`tests, net_on = choosetests(choices)` selects a set of tests to be\nrun. `choices` should be a vector of test names; if empty or set to\n`[\"all\"]`, all tests are selected.\n\nThis function also supports \"test collections\": specifically, \"linalg\"\n refers to collections of tests in the correspondingly-named\ndirectories.\n\nUpon return, `tests` is a vector of fully-expanded test names, and\n`net_on` is true if networking is available (required for some tests).\n", (:block,
+          (:line, 15, :none),
+          (:function, (:call, :choosetests, (:kw, :choices, (:vect,))), (:block,
+              (:line, 17, :none),
+              (:(=), :testnames, (:vect, "linalg", "subarray", "core", "inference", "worlds", "keywordargs", "numbers", "subtype", "printf", "char", "strings", "triplequote", "unicode", "intrinsics", "dates", "dict", "hashing", "iobuffer", "staged", "offsetarray", "arrayops", "tuple", "reduce", "reducedim", "random", "abstractarray", "intfuncs", "simdloop", "vecelement", "blas", "sparse", "bitarray", "copy", "math", "fastmath", "functional", "iterators", "operators", "path", "ccall", "parse", "loading", "bigint", "bigfloat", "sorting", "statistics", "spawn", "backtrace", "file", "read", "mmap", "version", "resolve", "pollfd", "mpfr", "broadcast", "complex", "socket", "floatapprox", "datafmt", "reflection", "regex", "float16", "combinatorics", "sysinfo", "env", "rounding", "ranges", "mod2pi", "euler", "show", "lineedit", "replcompletions", "repl", "replutil", "sets", "test", "goto", "llvmcall", "llvmcall2", "grisu", "nullable", "meta", "stacktraces", "profile", "libgit2", "docs", "markdown", "base64", "serialize", "misc", "threads", "enums", "cmdlineargs", "i18n", "workspace", "libdl", "int", "checked", "intset", "floatfuncs", "compile", "distributed", "inline", "boundscheck", "error", "ambiguous", "cartesian", "asmvariant", "osutils", "channels", "iostream", "specificity")),
+              (:line, 40, :none),
+              (:(=), :profile_skipped, false),
+              (:line, 41, :none),
+              (:if, (:call, :startswith, (:call, :string, (:., :Sys, (:quote, #QuoteNode
+                        :ARCH
+                      ))), "arm"), (:block,
+                  (:line, 44, :none),
+                  (:call, :filter!, (:->, :x, (:block,
+                        (:line, 44, :none),
+                        (:call, :(!=), :x, "profile")
+                      )), :testnames),
+                  (:line, 45, :none),
+                  (:(=), :profile_skipped, true)
+                )),
+              (:line, 48, :none),
+              (:if, (:., :Base, (:quote, #QuoteNode
+                    :USE_GPL_LIBS
+                  )), (:block,
+                  (:line, 49, :none),
+                  (:call, :append!, :testnames, (:vect, "fft", "dsp"))
+                )),
+              (:line, 52, :none),
+              (:if, (:call, :isdir, (:call, :joinpath, :JULIA_HOME, (:., :Base, (:quote, #QuoteNode
+                        :DOCDIR
+                      )), "examples")), (:block,
+                  (:line, 53, :none),
+                  (:call, :push!, :testnames, "examples")
+                )),
+              (:line, 56, :none),
+              (:(=), :tests, (:vect,)),
+              (:line, 57, :none),
+              (:(=), :skip_tests, (:vect,)),
+              (:line, 59, :none),
+              (:for, (:(=), (:tuple, :i, :t), (:call, :enumerate, :choices)), (:block,
+                  (:line, 60, :none),
+                  (:if, (:call, :(==), :t, "--skip"), (:block,
+                      (:line, 61, :none),
+                      (:(=), :skip_tests, (:ref, :choices, (:(:), (:call, :+, :i, 1), :end))),
+                      (:line, 62, :none),
+                      (:break,)
+                    ), (:block,
+                      (:line, 64, :none),
+                      (:call, :push!, :tests, :t)
+                    ))
+                )),
+              (:line, 68, :none),
+              (:if, (:||, (:call, :(==), :tests, (:vect, "all")), (:call, :isempty, :tests)), (:block,
+                  (:line, 69, :none),
+                  (:(=), :tests, :testnames),
+                  (:line, 70, :none),
+                  (:if, :profile_skipped, (:block,
+                      (:line, 71, :none),
+                      (:call, :warn, "profile test skipped")
+                    ))
+                )),
+              (:line, 75, :none),
+              (:(=), :datestests, (:vect, "dates/accessors", "dates/adjusters", "dates/query", "dates/periods", "dates/ranges", "dates/rounding", "dates/types", "dates/io", "dates/arithmetic", "dates/conversions")),
+              (:line, 78, :none),
+              (:if, (:call, :in, "dates", :skip_tests), (:block,
+                  (:line, 79, :none),
+                  (:call, :filter!, (:->, :x, (:block,
+                        (:line, 79, :none),
+                        (:&&, (:call, :(!=), :x, "dates"), (:call, :!, (:call, :in, :x, :datestests)))
+                      )), :tests)
+                ), (:block,
+                  (:line, 80, :none),
+                  (:if, (:call, :in, "dates", :tests), (:block,
+                      (:line, 82, :none),
+                      (:call, :filter!, (:->, :x, (:block,
+                            (:line, 82, :none),
+                            (:call, :(!=), :x, "dates")
+                          )), :tests),
+                      (:line, 83, :none),
+                      (:call, :prepend!, :tests, :datestests)
+                    ))
+                )),
+              (:line, 86, :none),
+              (:(=), :unicodetests, (:vect, "unicode/UnicodeError", "unicode/utf8proc", "unicode/utf8")),
+              (:line, 87, :none),
+              (:if, (:call, :in, "unicode", :skip_tests), (:block,
+                  (:line, 88, :none),
+                  (:call, :filter!, (:->, :x, (:block,
+                        (:line, 88, :none),
+                        (:&&, (:call, :(!=), :x, "unicode"), (:call, :!, (:call, :in, :x, :unicodetests)))
+                      )), :tests)
+                ), (:block,
+                  (:line, 89, :none),
+                  (:if, (:call, :in, "unicode", :tests), (:block,
+                      (:line, 91, :none),
+                      (:call, :filter!, (:->, :x, (:block,
+                            (:line, 91, :none),
+                            (:call, :(!=), :x, "unicode")
+                          )), :tests),
+                      (:line, 92, :none),
+                      (:call, :prepend!, :tests, :unicodetests)
+                    ))
+                )),
+              (:line, 95, :none),
+              (:(=), :stringtests, (:vect, "strings/basic", "strings/search", "strings/util", "strings/io", "strings/types")),
+              (:line, 97, :none),
+              (:if, (:call, :in, "strings", :skip_tests), (:block,
+                  (:line, 98, :none),
+                  (:call, :filter!, (:->, :x, (:block,
+                        (:line, 98, :none),
+                        (:&&, (:call, :(!=), :x, "strings"), (:call, :!, (:call, :in, :x, :stringtests)))
+                      )), :tests)
+                ), (:block,
+                  (:line, 99, :none),
+                  (:if, (:call, :in, "strings", :tests), (:block,
+                      (:line, 101, :none),
+                      (:call, :filter!, (:->, :x, (:block,
+                            (:line, 101, :none),
+                            (:call, :(!=), :x, "strings")
+                          )), :tests),
+                      (:line, 102, :none),
+                      (:call, :prepend!, :tests, :stringtests)
+                    ))
+                )),
+              (:line, 106, :none),
+              (:(=), :sparsetests, (:vect, "sparse/sparse", "sparse/sparsevector", "sparse/higherorderfns")),
+              (:line, 107, :none),
+              (:if, (:., :Base, (:quote, #QuoteNode
+                    :USE_GPL_LIBS
+                  )), (:block,
+                  (:line, 108, :none),
+                  (:call, :append!, :sparsetests, (:vect, "sparse/umfpack", "sparse/cholmod", "sparse/spqr"))
+                )),
+              (:line, 110, :none),
+              (:if, (:call, :in, "sparse", :skip_tests), (:block,
+                  (:line, 111, :none),
+                  (:call, :filter!, (:->, :x, (:block,
+                        (:line, 111, :none),
+                        (:&&, (:call, :(!=), :x, "sparse"), (:call, :!, (:call, :in, :x, :sparsetests)))
+                      )), :tests)
+                ), (:block,
+                  (:line, 112, :none),
+                  (:if, (:call, :in, "sparse", :tests), (:block,
+                      (:line, 114, :none),
+                      (:call, :filter!, (:->, :x, (:block,
+                            (:line, 114, :none),
+                            (:call, :(!=), :x, "sparse")
+                          )), :tests),
+                      (:line, 115, :none),
+                      (:call, :prepend!, :tests, :sparsetests)
+                    ))
+                )),
+              (:line, 119, :none),
+              (:if, (:call, :in, "subarray", :skip_tests), (:block,
+                  (:line, 120, :none),
+                  (:call, :filter!, (:->, :x, (:block,
+                        (:line, 120, :none),
+                        (:call, :(!=), :x, "subarray")
+                      )), :tests)
+                ), (:block,
+                  (:line, 121, :none),
+                  (:if, (:call, :in, "subarray", :tests), (:block,
+                      (:line, 122, :none),
+                      (:call, :filter!, (:->, :x, (:block,
+                            (:line, 122, :none),
+                            (:call, :(!=), :x, "subarray")
+                          )), :tests),
+                      (:line, 123, :none),
+                      (:call, :prepend!, :tests, (:vect, "subarray"))
+                    ))
+                )),
+              (:line, 126, :none),
+              (:(=), :linalgtests, (:vect, "linalg/triangular", "linalg/qr", "linalg/dense", "linalg/matmul", "linalg/schur", "linalg/special", "linalg/eigen", "linalg/bunchkaufman", "linalg/svd", "linalg/lapack", "linalg/tridiag", "linalg/bidiag", "linalg/diagonal", "linalg/pinv", "linalg/givens", "linalg/cholesky", "linalg/lu", "linalg/symmetric", "linalg/generic", "linalg/uniformscaling", "linalg/lq", "linalg/hessenberg", "linalg/rowvector", "linalg/conjarray")),
+              (:line, 134, :none),
+              (:if, (:., :Base, (:quote, #QuoteNode
+                    :USE_GPL_LIBS
+                  )), (:block,
+                  (:line, 135, :none),
+                  (:call, :push!, :linalgtests, "linalg/arnoldi")
+                )),
+              (:line, 138, :none),
+              (:if, (:call, :in, "linalg", :skip_tests), (:block,
+                  (:line, 139, :none),
+                  (:call, :filter!, (:->, :x, (:block,
+                        (:line, 139, :none),
+                        (:&&, (:call, :(!=), :x, "linalg"), (:call, :!, (:call, :in, :x, :linalgtests)))
+                      )), :tests)
+                ), (:block,
+                  (:line, 140, :none),
+                  (:if, (:call, :in, "linalg", :tests), (:block,
+                      (:line, 142, :none),
+                      (:call, :filter!, (:->, :x, (:block,
+                            (:line, 142, :none),
+                            (:call, :(!=), :x, "linalg")
+                          )), :tests),
+                      (:line, 143, :none),
+                      (:call, :prepend!, :tests, :linalgtests)
+                    ))
+                )),
+              (:line, 147, :none),
+              (:if, (:call, :in, "ambiguous", :skip_tests), (:block,
+                  (:line, 148, :none),
+                  (:call, :filter!, (:->, :x, (:block,
+                        (:line, 148, :none),
+                        (:call, :(!=), :x, "ambiguous")
+                      )), :tests)
+                ), (:block,
+                  (:line, 149, :none),
+                  (:if, (:call, :in, "ambiguous", :tests), (:block,
+                      (:line, 150, :none),
+                      (:call, :filter!, (:->, :x, (:block,
+                            (:line, 150, :none),
+                            (:call, :(!=), :x, "ambiguous")
+                          )), :tests),
+                      (:line, 151, :none),
+                      (:call, :prepend!, :tests, (:vect, "ambiguous"))
+                    ))
+                )),
+              (:line, 154, :none),
+              (:(=), :net_required_for, (:vect, "socket", "distributed", "libgit2")),
+              (:line, 155, :none),
+              (:(=), :net_on, true),
+              (:line, 156, :none),
+              (:try, (:block,
+                  (:line, 157, :none),
+                  (:(=), :ipa, (:call, :getipaddr))
+                ), false, (:block,
+                  (:line, 159, :none),
+                  (:call, :warn, (:call, :*, "Networking unavailable: Skipping tests [", (:call, :join, :net_required_for, ", "), "]")),
+                  (:line, 160, :none),
+                  (:(=), :net_on, false)
+                )),
+              (:line, 163, :none),
+              (:if, (:&&, (:call, :(!=), (:call, :ccall, (:quote, #QuoteNode
+                        :jl_running_on_valgrind
+                      ), :Cint, (:tuple,)), 0), (:call, :in, "rounding", :tests)), (:block,
+                  (:line, 164, :none),
+                  (:call, :warn, "Running under valgrind: Skipping rounding tests"),
+                  (:line, 165, :none),
+                  (:call, :filter!, (:->, :x, (:block,
+                        (:line, 165, :none),
+                        (:call, :(!=), :x, "rounding")
+                      )), :tests)
+                )),
+              (:line, 168, :none),
+              (:if, (:call, :!, :net_on), (:block,
+                  (:line, 169, :none),
+                  (:call, :filter!, (:->, :x, (:block,
+                        (:line, 169, :none),
+                        (:call, :!, (:call, :in, :x, :net_required_for))
+                      )), :tests)
+                )),
+              (:line, 172, :none),
+              (:call, :filter!, (:->, :x, (:block,
+                    (:line, 172, :none),
+                    (:call, :!, (:call, :in, :x, :skip_tests))
+                  )), :tests),
+              (:line, 174, :none),
+              (:tuple, :tests, :net_on)
+            ))
+        )))
+  ))

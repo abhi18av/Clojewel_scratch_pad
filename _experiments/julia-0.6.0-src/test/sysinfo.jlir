@@ -1,0 +1,26 @@
+(:quote, (:block,
+    (:line, 5, :none),
+    (:macrocall, Symbol("@test"), (:call, :>, (:call, :length, (:call, (:., (:., :Base, (:quote, #QuoteNode
+                  :Sys
+                )), (:quote, #QuoteNode
+                :cpu_info
+              )))), 0)),
+    (:line, 6, :none),
+    (:call, :sprint, (:., (:., :Base, (:quote, #QuoteNode
+            :Sys
+          )), (:quote, #QuoteNode
+          :cpu_summary
+        ))),
+    (:line, 7, :none),
+    (:macrocall, Symbol("@test"), (:call, :>, (:call, (:., (:., :Base, (:quote, #QuoteNode
+                :Sys
+              )), (:quote, #QuoteNode
+              :uptime
+            ))), 0)),
+    (:line, 8, :none),
+    (:call, (:., (:., :Base, (:quote, #QuoteNode
+            :Sys
+          )), (:quote, #QuoteNode
+          :loadavg
+        )))
+  ))

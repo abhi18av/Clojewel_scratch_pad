@@ -1,0 +1,50 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:using, :Base, :Test),
+    (:line, 5, :none),
+    (:(=), :ix86, (:macrocall, Symbol("@r_str"), "i[356]86")),
+    (:line, 7, :none),
+    (:if, (:||, (:call, :(===), (:., :Sys, (:quote, #QuoteNode
+              :ARCH
+            )), (:quote, #QuoteNode
+            :x86_64
+          )), (:call, :ismatch, :ix86, (:call, :string, (:., :Sys, (:quote, #QuoteNode
+                :ARCH
+              ))))), (:block,
+        (:line, 8, :none),
+        (:function, (:call, :linear_foo), (:block,
+            (:line, 9, :none),
+            (:(=), :x, 4),
+            (:line, 10, :none),
+            (:(=), :y, 5)
+          )),
+        (:line, 13, :none),
+        (:(=), :rgx, (:macrocall, Symbol("@r_str"), "%")),
+        (:line, 14, :none),
+        (:(=), :buf, (:call, :IOBuffer)),
+        (:line, 15, :none),
+        (:(=), :output, ""),
+        (:line, 17, :none),
+        (:call, :code_native, :buf, :linear_foo, (:tuple,), (:quote, #QuoteNode
+            :att
+          )),
+        (:line, 18, :none),
+        (:(=), :output, (:call, :String, (:call, :take!, :buf))),
+        (:line, 20, :none),
+        (:macrocall, Symbol("@test"), (:call, :ismatch, :rgx, :output)),
+        (:line, 23, :none),
+        (:call, :code_native, :buf, :linear_foo, (:tuple,), (:quote, #QuoteNode
+            :intel
+          )),
+        (:line, 24, :none),
+        (:(=), :output, (:call, :String, (:call, :take!, :buf))),
+        (:line, 26, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:call, :ismatch, :rgx, :output))),
+        (:line, 28, :none),
+        (:call, :code_native, :buf, :linear_foo, (:tuple,)),
+        (:line, 29, :none),
+        (:(=), :output, (:call, :String, (:call, :take!, :buf))),
+        (:line, 31, :none),
+        (:macrocall, Symbol("@test"), (:call, :ismatch, :rgx, :output))
+      ))
+  ))

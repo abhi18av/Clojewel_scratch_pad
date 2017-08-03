@@ -1,0 +1,62 @@
+(:quote, (:block,
+    (:line, 7, :none),
+    (:call, :mktempdir, (:->, (:tuple, :dir), (:block,
+          (:line, 8, :none),
+          (:(=), :repo_url, "https://github.com/JuliaLang/Example.jl"),
+          (:line, 9, :none),
+          (:macrocall, Symbol("@testset"), "Cloning repository", (:block,
+              (:line, 10, :none),
+              (:macrocall, Symbol("@testset"), "with 'https' protocol", (:block,
+                  (:line, 11, :none),
+                  (:(=), :repo_path, (:call, :joinpath, :dir, "Example1")),
+                  (:line, 12, :none),
+                  (:(=), :repo, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :clone
+                        )), :repo_url, :repo_path)),
+                  (:line, 13, :none),
+                  (:try, (:block,
+                      (:line, 14, :none),
+                      (:macrocall, Symbol("@test"), (:call, :isdir, :repo_path)),
+                      (:line, 15, :none),
+                      (:macrocall, Symbol("@test"), (:call, :isdir, (:call, :joinpath, :repo_path, ".git")))
+                    ), false, false, (:block,
+                      (:line, 17, :none),
+                      (:call, :close, :repo)
+                    ))
+                )),
+              (:line, 21, :none),
+              (:macrocall, Symbol("@testset"), "with incorrect url", (:block,
+                  (:line, 22, :none),
+                  (:try, (:block,
+                      (:line, 23, :none),
+                      (:(=), :repo_path, (:call, :joinpath, :dir, "Example2")),
+                      (:line, 25, :none),
+                      (:(=), :cred, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :UserPasswordCredentials
+                            )), "", "")),
+                      (:line, 26, :none),
+                      (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :clone
+                          )), (:call, :*, :repo_url, (:call, :randstring, 10)), :repo_path, (:kw, :payload, (:call, :Nullable, :cred))),
+                      (:line, 27, :none),
+                      (:call, :error, "unexpected")
+                    ), :ex, (:block,
+                      (:line, 29, :none),
+                      (:macrocall, Symbol("@test"), (:call, :isa, :ex, (:., (:., :LibGit2, (:quote, #QuoteNode
+                                :Error
+                              )), (:quote, #QuoteNode
+                              :GitError
+                            )))),
+                      (:line, 30, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:., :ex, (:quote, #QuoteNode
+                              :code
+                            )), (:., (:., :LibGit2, (:quote, #QuoteNode
+                                :Error
+                              )), (:quote, #QuoteNode
+                              :EAUTH
+                            ))))
+                    ))
+                ))
+            ))
+        )))
+  ))

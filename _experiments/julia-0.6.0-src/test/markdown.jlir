@@ -1,0 +1,1001 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:using, :Base, :Markdown),
+    (:line, 4, :none),
+    (:toplevel, (:import, :Base, :Markdown, :MD), (:import, :Base, :Markdown, :Paragraph), (:import, :Base, :Markdown, :Header), (:import, :Base, :Markdown, :Italic), (:import, :Base, :Markdown, :Bold), (:import, :Base, :Markdown, :LineBreak), (:import, :Base, :Markdown, :plain), (:import, :Base, :Markdown, :term), (:import, :Base, :Markdown, :html), (:import, :Base, :Markdown, :rst), (:import, :Base, :Markdown, :Table), (:import, :Base, :Markdown, :Code), (:import, :Base, :Markdown, :LaTeX), (:import, :Base, :Markdown, :Footnote)),
+    (:line, 5, :none),
+    (:import, :Base, :show),
+    (:line, 11, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@md_str"), "foo"), (:call, :MD, (:call, :Paragraph, "foo")))),
+    (:line, 12, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@md_str"), "foo *bar* baz"), (:call, :MD, (:call, :Paragraph, (:vect, "foo ", (:call, :Italic, "bar"), " baz"))))),
+    (:line, 13, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@md_str"), "foo\nbar"), (:call, :MD, (:call, :Paragraph, (:vect, "foo bar"))))),
+    (:line, 15, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@md_str"), "foo\\\nbar"), (:call, :MD, (:call, :Paragraph, (:vect, "foo", (:call, :LineBreak), "bar"))))),
+    (:line, 18, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@md_str"), "#no title"), (:call, :MD, (:call, :Paragraph, (:vect, "#no title"))))),
+    (:line, 19, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@md_str"), "# title"), (:call, :MD, (:call, (:curly, :Header, 1), "title")))),
+    (:line, 20, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@md_str"), "#\nempty\n"), (:call, :MD, (:call, (:curly, :Header, 1), ""), (:call, :Paragraph, "empty")))),
+    (:line, 24, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@md_str"), "## section"), (:call, :MD, (:call, (:curly, :Header, 2), "section")))),
+    (:line, 25, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@md_str"), "# title *foo* `bar` **baz**"), (:call, :MD, (:call, (:curly, :Header, 1), (:vect, "title ", (:call, :Italic, "foo"), " ", (:call, :Code, "bar"), " ", (:call, :Bold, "baz")))))),
+    (:line, 27, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@md_str"), "h1\n==="), (:macrocall, Symbol("@md_str"), "# h1"))),
+    (:line, 30, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@md_str"), "h2\n   ---"), (:macrocall, Symbol("@md_str"), "## h2"))),
+    (:line, 34, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@md_str"), "**foo *bar* baz**"), (:call, :MD, (:call, :Paragraph, (:call, :Bold, (:vect, "foo ", (:call, :Italic, "bar"), " baz")))))),
+    (:line, 35, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@md_str"), "*foo **bar** baz*"), (:call, :MD, (:call, :Paragraph, (:call, :Italic, (:vect, "foo ", (:call, :Bold, "bar"), " baz")))))),
+    (:line, 37, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@md_str"), "```julia\nfoo\n```\n"), (:call, :MD, (:call, :Code, "julia", "foo")))),
+    (:line, 42, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@md_str"), "foo ``bar`` baz"), (:call, :MD, (:call, :Paragraph, (:vect, "foo ", (:call, :LaTeX, "bar"), " baz"))))),
+    (:line, 44, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@md_str"), "```math\n...\n```\n"), (:call, :MD, (:call, :LaTeX, "...")))),
+    (:line, 50, :none),
+    (:(=), :code_in_code, (:macrocall, Symbol("@md_str"), "````\n```\n````\n")),
+    (:line, 55, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), :code_in_code, (:call, :MD, (:call, :Code, "```")))),
+    (:line, 56, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :plain, :code_in_code), "````\n```\n````\n")),
+    (:line, 58, :none),
+    (:let, (:block,
+        (:line, 60, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :text, (:call, (:., :Markdown, (:quote, #QuoteNode
+                  :plain
+                )), :md)))
+      ), (:(=), :text, "Foo ```bar` ``baz`` ```\n"), (:(=), :md, (:call, (:., :Markdown, (:quote, #QuoteNode
+              :parse
+            )), :text))),
+    (:line, 63, :none),
+    (:macrocall, Symbol("@test"), (:call, :isempty, (:call, (:., :Markdown, (:quote, #QuoteNode
+              :parse
+            )), "\r"))),
+    (:line, 64, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Markdown, (:quote, #QuoteNode
+              :parse
+            )), "hello\r"), (:call, :MD, (:call, :Paragraph, (:vect, "hello"))))),
+    (:line, 65, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Markdown, (:quote, #QuoteNode
+              :parse
+            )), "hello\r*julia*"), (:call, :MD, (:call, :Paragraph, (:ref, :Any, "hello ", (:call, :Italic, (:ref, :Any, "julia"))))))),
+    (:line, 67, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@md_str"), "A footnote [^foo]."), (:call, :MD, (:call, :Paragraph, (:vect, "A footnote ", (:call, :Footnote, "foo", :nothing), "."))))),
+    (:line, 69, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@md_str"), "[^foo]: footnote"), (:call, :MD, (:vect, (:call, :Footnote, "foo", (:ref, :Any, (:call, :Paragraph, (:ref, :Any, "footnote")))))))),
+    (:line, 71, :none),
+    (:let, (:block,
+        (:line, 88, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, (:., :md, (:quote, #QuoteNode
+                  :content
+                ))), 4)),
+        (:line, 89, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, (:ref, (:., :md, (:quote, #QuoteNode
+                  :content
+                )), 1), (:., :Markdown, (:quote, #QuoteNode
+                :Paragraph
+              )))),
+        (:line, 90, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, (:ref, (:., :md, (:quote, #QuoteNode
+                  :content
+                )), 2), (:., :Markdown, (:quote, #QuoteNode
+                :Footnote
+              )))),
+        (:line, 91, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, (:ref, (:., :md, (:quote, #QuoteNode
+                  :content
+                )), 3), (:., :Markdown, (:quote, #QuoteNode
+                :Footnote
+              )))),
+        (:line, 92, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, (:ref, (:., :md, (:quote, #QuoteNode
+                  :content
+                )), 4), (:., :Markdown, (:quote, #QuoteNode
+                :Paragraph
+              )))),
+        (:line, 94, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, (:., :md, (:quote, #QuoteNode
+                    :content
+                  )), 2), (:quote, #QuoteNode
+                :id
+              )), "1")),
+        (:line, 95, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, (:., :md, (:quote, #QuoteNode
+                    :content
+                  )), 3), (:quote, #QuoteNode
+                :id
+              )), "note")),
+        (:line, 97, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, (:., (:ref, (:., :md, (:quote, #QuoteNode
+                      :content
+                    )), 3), (:quote, #QuoteNode
+                  :text
+                ))), 4)),
+        (:line, 99, :none),
+        (:let, (:block,
+            (:line, 119, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Markdown, (:quote, #QuoteNode
+                      :plain
+                    )), :md), :expected))
+          ), (:(=), :expected, "A paragraph with some footnotes,[^1] and another.[^note]\n\n[^1]: Footnote text for the first.\n\n[^note]:\n    A longer footnote:\n\n    Indented paragraphs are part of the footnote.\n\n    ```\n    some.code\n    ```\n\n    And *another* paragraph.\n\n\nThis isn't part of the footnote.\n")),
+        (:line, 121, :none),
+        (:let, (:block,
+            (:line, 141, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Markdown, (:quote, #QuoteNode
+                      :rst
+                    )), :md), :expected))
+          ), (:(=), :expected, "A paragraph with some footnotes,[1]_ and another.[note]_\n\n.. [1] Footnote text for the first.\n\n.. [note]\n   A longer footnote:\n\n   Indented paragraphs are part of the footnote.\n\n   .. code-block:: julia\n\n       some.code\n\n   And *another* paragraph.\n\n\nThis isn't part of the footnote.\n")),
+        (:line, 143, :none),
+        (:let, (:block,
+            (:line, 144, :none),
+            (:macrocall, Symbol("@test"), (:call, :contains, :html, ",<a href=\"#footnote-1\" class=\"footnote\">[1]</a>")),
+            (:line, 145, :none),
+            (:macrocall, Symbol("@test"), (:call, :contains, :html, ".<a href=\"#footnote-note\" class=\"footnote\">[note]</a>")),
+            (:line, 146, :none),
+            (:macrocall, Symbol("@test"), (:call, :contains, :html, "<div class=\"footnote\" id=\"footnote-1\"><p class=\"footnote-title\">1</p>")),
+            (:line, 147, :none),
+            (:macrocall, Symbol("@test"), (:call, :contains, :html, "<div class=\"footnote\" id=\"footnote-note\"><p class=\"footnote-title\">note</p>"))
+          ), (:(=), :html, (:call, (:., :Markdown, (:quote, #QuoteNode
+                  :html
+                )), :md))),
+        (:line, 149, :none),
+        (:let, (:block,
+            (:line, 150, :none),
+            (:macrocall, Symbol("@test"), (:call, :contains, :latex, ",\\footnotemark[1]")),
+            (:line, 151, :none),
+            (:macrocall, Symbol("@test"), (:call, :contains, :latex, ".\\footnotemark[note]")),
+            (:line, 152, :none),
+            (:macrocall, Symbol("@test"), (:call, :contains, :latex, "\n\\footnotetext[1]{Footnote text for")),
+            (:line, 153, :none),
+            (:macrocall, Symbol("@test"), (:call, :contains, :latex, "\n\\footnotetext[note]{A longer footnote:\n"))
+          ), (:(=), :latex, (:call, (:., :Markdown, (:quote, #QuoteNode
+                  :latex
+                )), :md)))
+      ), (:(=), :text, "A paragraph with some footnotes,[^1] and another.[^note]\n\n[^1]: Footnote text for the first.\n\n[^note]: A longer footnote:\n\n    Indented paragraphs are part of the footnote.\n\n        some.code\n\n    And *another* paragraph.\n\nThis isn't part of the footnote.\n"), (:(=), :md, (:call, (:., :Markdown, (:quote, #QuoteNode
+              :parse
+            )), :text))),
+    (:line, 157, :none),
+    (:let, (:block,
+        (:line, 164, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, (:ref, (:., :doc, (:quote, #QuoteNode
+                  :content
+                )), 1), (:., :Markdown, (:quote, #QuoteNode
+                :List
+              )))),
+        (:line, 165, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, (:ref, (:., :doc, (:quote, #QuoteNode
+                  :content
+                )), 2), (:., :Markdown, (:quote, #QuoteNode
+                :List
+              )))),
+        (:line, 166, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:ref, (:., (:ref, (:ref, (:., (:ref, (:., :doc, (:quote, #QuoteNode
+                            :content
+                          )), 1), (:quote, #QuoteNode
+                        :items
+                      )), 1), 1), (:quote, #QuoteNode
+                  :content
+                )), 1), "one")),
+        (:line, 167, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:ref, (:., (:ref, (:ref, (:., (:ref, (:., :doc, (:quote, #QuoteNode
+                            :content
+                          )), 1), (:quote, #QuoteNode
+                        :items
+                      )), 2), 1), (:quote, #QuoteNode
+                  :content
+                )), 1), "two")),
+        (:line, 168, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:ref, (:., (:ref, (:ref, (:., (:ref, (:., :doc, (:quote, #QuoteNode
+                            :content
+                          )), 2), (:quote, #QuoteNode
+                        :items
+                      )), 1), 1), (:quote, #QuoteNode
+                  :content
+                )), 1), "pirate")),
+        (:line, 169, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:ref, (:., (:ref, (:ref, (:., (:ref, (:., :doc, (:quote, #QuoteNode
+                            :content
+                          )), 2), (:quote, #QuoteNode
+                        :items
+                      )), 2), 1), (:quote, #QuoteNode
+                  :content
+                )), 1), "ninja")),
+        (:line, 170, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:ref, (:., (:ref, (:ref, (:., (:ref, (:., :doc, (:quote, #QuoteNode
+                            :content
+                          )), 2), (:quote, #QuoteNode
+                        :items
+                      )), 3), 1), (:quote, #QuoteNode
+                  :content
+                )), 1), "zombie"))
+      ), (:(=), :doc, (:macrocall, Symbol("@md_str"), "* one\n* two\n\n1. pirate\n2. ninja\n3. zombie"))),
+    (:line, 173, :none),
+    (:let, (:block,
+        (:line, 183, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), (:call, :length, (:., :doc, (:quote, #QuoteNode
+                  :content
+                ))), 3)),
+        (:line, 184, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, (:ref, (:., :doc, (:quote, #QuoteNode
+                  :content
+                )), 1), (:., :Markdown, (:quote, #QuoteNode
+                :Paragraph
+              )))),
+        (:line, 185, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, (:ref, (:., :doc, (:quote, #QuoteNode
+                  :content
+                )), 2), (:., :Markdown, (:quote, #QuoteNode
+                :List
+              )))),
+        (:line, 186, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, (:ref, (:., :doc, (:quote, #QuoteNode
+                  :content
+                )), 3), (:., :Markdown, (:quote, #QuoteNode
+                :Paragraph
+              )))),
+        (:line, 188, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), (:call, :length, (:., (:ref, (:., :doc, (:quote, #QuoteNode
+                      :content
+                    )), 2), (:quote, #QuoteNode
+                  :items
+                ))), 2)),
+        (:line, 189, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:ref, (:., (:ref, (:ref, (:., (:ref, (:., :doc, (:quote, #QuoteNode
+                            :content
+                          )), 2), (:quote, #QuoteNode
+                        :items
+                      )), 1), 1), (:quote, #QuoteNode
+                  :content
+                )), 1), "one")),
+        (:line, 190, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, (:ref, (:., (:ref, (:., :doc, (:quote, #QuoteNode
+                        :content
+                      )), 2), (:quote, #QuoteNode
+                    :items
+                  )), 2)), 2)),
+        (:line, 191, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:ref, (:., (:ref, (:ref, (:., (:ref, (:., :doc, (:quote, #QuoteNode
+                            :content
+                          )), 2), (:quote, #QuoteNode
+                        :items
+                      )), 2), 1), (:quote, #QuoteNode
+                  :content
+                )), 1), "two")),
+        (:line, 193, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, (:ref, (:ref, (:., (:ref, (:., :doc, (:quote, #QuoteNode
+                        :content
+                      )), 2), (:quote, #QuoteNode
+                    :items
+                  )), 2), 2), (:., :Markdown, (:quote, #QuoteNode
+                :List
+              )))),
+        (:line, 194, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), (:call, :length, (:., (:ref, (:ref, (:., (:ref, (:., :doc, (:quote, #QuoteNode
+                            :content
+                          )), 2), (:quote, #QuoteNode
+                        :items
+                      )), 2), 2), (:quote, #QuoteNode
+                  :items
+                ))), 2)),
+        (:line, 195, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:ref, (:., (:ref, (:ref, (:., (:ref, (:ref, (:., (:ref, (:., :doc, (:quote, #QuoteNode
+                                  :content
+                                )), 2), (:quote, #QuoteNode
+                              :items
+                            )), 2), 2), (:quote, #QuoteNode
+                        :items
+                      )), 1), 1), (:quote, #QuoteNode
+                  :content
+                )), 1), "three")),
+        (:line, 196, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:ref, (:., (:ref, (:ref, (:., (:ref, (:ref, (:., (:ref, (:., :doc, (:quote, #QuoteNode
+                                  :content
+                                )), 2), (:quote, #QuoteNode
+                              :items
+                            )), 2), 2), (:quote, #QuoteNode
+                        :items
+                      )), 2), 1), (:quote, #QuoteNode
+                  :content
+                )), 1), "four"))
+      ), (:(=), :doc, (:call, (:., :Markdown, (:quote, #QuoteNode
+              :parse
+            )), "A paragraph...\n- one\n- two\n   * three\n   * four\n... another paragraph.\n"))),
+    (:line, 199, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@md_str"), "Foo [bar]"), (:call, :MD, (:call, :Paragraph, "Foo [bar]")))),
+    (:line, 200, :none),
+    (:macrocall, Symbol("@test"), (:call, :(!=), (:macrocall, Symbol("@md_str"), "Foo [bar](baz)"), (:call, :MD, (:call, :Paragraph, "Foo [bar](baz)")))),
+    (:line, 201, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@md_str"), "Foo \\[bar](baz)"), (:call, :MD, (:call, :Paragraph, "Foo [bar](baz)")))),
+    (:line, 204, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :|>, (:macrocall, Symbol("@md_str"), "foo"), :plain), "foo\n")),
+    (:line, 205, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :|>, (:macrocall, Symbol("@md_str"), "foo *bar* baz"), :plain), "foo *bar* baz\n")),
+    (:line, 206, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :|>, (:macrocall, Symbol("@md_str"), "# title"), :plain), "# title\n")),
+    (:line, 207, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :|>, (:macrocall, Symbol("@md_str"), "## section"), :plain), "## section\n")),
+    (:line, 208, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :|>, (:macrocall, Symbol("@md_str"), "## section `foo`"), :plain), "## section `foo`\n")),
+    (:line, 209, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :|>, (:macrocall, Symbol("@md_str"), "Hello\n\n---\nWorld"), :plain), "Hello\n\n---\n\nWorld\n")),
+    (:line, 213, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :|>, (:macrocall, Symbol("@md_str"), "[*a*](b)"), :plain), "[*a*](b)\n")),
+    (:line, 214, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :|>, (:macrocall, Symbol("@md_str"), "> foo\n>\n>   * bar\n>\n> ```\n> baz\n> ```"), :plain), "> foo\n>\n>   * bar\n>\n> ```\n> baz\n> ```\n\n")),
+    (:line, 226, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :sprint, :term, (:macrocall, Symbol("@md_str"), "a  b")), "  a b\n")),
+    (:line, 227, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :sprint, :term, (:macrocall, Symbol("@md_str"), "[x](https://julialang.org)")), "  x\n")),
+    (:line, 228, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :sprint, :term, (:macrocall, Symbol("@md_str"), "![x](https://julialang.org)")), "  (Image: x)\n")),
+    (:line, 231, :none),
+    (:let, (:block,
+        (:line, 237, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, (:call, :sprint, :term, :doc), "1. ")),
+        (:line, 238, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, (:call, :sprint, :term, :doc), "2. ")),
+        (:line, 239, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:call, :contains, (:call, :sprint, :term, :doc), "3. ")))
+      ), (:(=), :doc, (:call, (:., :Markdown, (:quote, #QuoteNode
+              :parse
+            )), "1. a\n3. b\n"))),
+    (:line, 243, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :|>, (:macrocall, Symbol("@md_str"), "foo *bar* baz"), :html), "<p>foo <em>bar</em> baz</p>\n")),
+    (:line, 244, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :|>, (:macrocall, Symbol("@md_str"), "something ***"), :html), "<p>something ***</p>\n")),
+    (:line, 245, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :|>, (:macrocall, Symbol("@md_str"), "# h1## "), :html), "<h1>h1##</h1>\n")),
+    (:line, 246, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :|>, (:macrocall, Symbol("@md_str"), "## h2 ### "), :html), "<h2>h2</h2>\n")),
+    (:line, 247, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :|>, (:macrocall, Symbol("@md_str"), "###### h6"), :html), "<h6>h6</h6>\n")),
+    (:line, 248, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :|>, (:macrocall, Symbol("@md_str"), "####### h7"), :html), "<p>####### h7</p>\n")),
+    (:line, 249, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :|>, (:macrocall, Symbol("@md_str"), "   >"), :html), "<blockquote>\n</blockquote>\n")),
+    (:line, 250, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :|>, (:macrocall, Symbol("@md_str"), "1. Hello"), :html), "<ol>\n<li><p>Hello</p>\n</li>\n</ol>\n")),
+    (:line, 251, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :|>, (:macrocall, Symbol("@md_str"), "* World"), :html), "<ul>\n<li><p>World</p>\n</li>\n</ul>\n")),
+    (:line, 252, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :|>, (:macrocall, Symbol("@md_str"), "# title *blah*"), :html), "<h1>title <em>blah</em></h1>\n")),
+    (:line, 253, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :|>, (:macrocall, Symbol("@md_str"), "## title *blah*"), :html), "<h2>title <em>blah</em></h2>\n")),
+    (:line, 254, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :|>, (:macrocall, Symbol("@md_str"), "<https://julialang.org>"), :html), "<p><a href=\"https://julialang.org\">https://julialang.org</a></p>\n")),
+    (:line, 255, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :|>, (:macrocall, Symbol("@md_str"), "<mailto://a@example.com>"), :html), "<p><a href=\"mailto://a@example.com\">mailto://a@example.com</a></p>\n")),
+    (:line, 256, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :|>, (:macrocall, Symbol("@md_str"), "<https://julialang.org/not a link>"), :html), "<p>&lt;https://julialang.org/not a link&gt;</p>\n")),
+    (:line, 257, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :|>, (:macrocall, Symbol("@md_str"), "<https://julialang.org/nota\nlink>"), :html), "<p>&lt;https://julialang.org/nota link&gt;</p>\n")),
+    (:line, 259, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :|>, (:macrocall, Symbol("@md_str"), "Hello\n\n---\nWorld"), :html), "<p>Hello</p>\n<hr />\n<p>World</p>\n")),
+    (:line, 263, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :|>, (:macrocall, Symbol("@md_str"), "`escape</code>`"), :html), "<p><code>escape&lt;/code&gt;</code></p>\n")),
+    (:line, 265, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :|>, (:macrocall, Symbol("@md_str"), "    code1\n\n    code2\n"), :html), "<pre><code>code1\n\ncode2</code></pre>\n")),
+    (:line, 275, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :|>, (:macrocall, Symbol("@md_str"), "h1\n===\nh2\n---\nnot\n== ="), :html), "<h1>h1</h1>\n<h2>h2</h2>\n<p>not &#61;&#61; &#61;</p>\n")),
+    (:line, 284, :none),
+    (:(=), :book, (:macrocall, Symbol("@md_str"), "# Title\n\nSome discussion\n\n> A quote\n\n## Section *important*\n\nSome **bolded**\n\n- list1\n- list2\n")),
+    (:line, 298, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :latex, :book), "\\section{Title}\nSome discussion\n\n\\begin{quote}\nA quote\n\n\\end{quote}\n\\subsection{Section \\emph{important}}\nSome \\textbf{bolded}\n\n\\begin{itemize}\n\\item list1\n\n\n\\item list2\n\n\\end{itemize}\n")),
+    (:line, 300, :none),
+    (:let, (:block,
+        (:line, 316, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :sprint, :show, "text/plain", :book), :out)),
+        (:line, 317, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :sprint, :show, "text/markdown", :book), :out))
+      ), (:(=), :out, "# Title\n\nSome discussion\n\n> A quote\n\n\n## Section *important*\n\nSome **bolded**\n\n  * list1\n  * list2\n")),
+    (:line, 319, :none),
+    (:let, (:block,
+        (:line, 335, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :sprint, :show, "text/html", :book), :out))
+      ), (:(=), :out, "<div class=\"markdown\"><h1>Title</h1>\n<p>Some discussion</p>\n<blockquote>\n<p>A quote</p>\n</blockquote>\n<h2>Section <em>important</em></h2>\n<p>Some <strong>bolded</strong></p>\n<ul>\n<li><p>list1</p>\n</li>\n<li><p>list2</p>\n</li>\n</ul>\n</div>")),
+    (:line, 337, :none),
+    (:let, (:block,
+        (:line, 357, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :sprint, :show, "text/latex", :book), :out))
+      ), (:(=), :out, "\\section{Title}\nSome discussion\n\n\\begin{quote}\nA quote\n\n\\end{quote}\n\\subsection{Section \\emph{important}}\nSome \\textbf{bolded}\n\n\\begin{itemize}\n\\item list1\n\n\n\\item list2\n\n\\end{itemize}\n")),
+    (:line, 359, :none),
+    (:let, (:block,
+        (:line, 379, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :sprint, :show, "text/rst", :book), :out))
+      ), (:(=), :out, "Title\n*****\n\n\nSome discussion\n\n    A quote\n\n\nSection *important*\n===================\n\n\nSome **bolded**\n\n* list1\n* list2\n")),
+    (:line, 383, :none),
+    (:for, (:(=), (:tuple, :input, :output), (:tuple, (:call, :(=>), (:macrocall, Symbol("@md_str"), "foo *bar* baz"), "foo *bar* baz\n"), (:call, :(=>), (:macrocall, Symbol("@md_str"), "something ***"), "something ***\n"), (:call, :(=>), (:macrocall, Symbol("@md_str"), "# h1## "), "h1##\n****\n\n"), (:call, :(=>), (:macrocall, Symbol("@md_str"), "## h2 ### "), "h2\n==\n\n"), (:call, :(=>), (:macrocall, Symbol("@md_str"), "###### h6"), "h6\n..\n\n"), (:call, :(=>), (:macrocall, Symbol("@md_str"), "####### h7"), "####### h7\n"), (:call, :(=>), (:macrocall, Symbol("@md_str"), "   >"), "    \n\n"), (:call, :(=>), (:macrocall, Symbol("@md_str"), "1. Hello"), "1. Hello\n"), (:call, :(=>), (:macrocall, Symbol("@md_str"), "* World"), "* World\n"), (:call, :(=>), (:macrocall, Symbol("@md_str"), "``x + y``"), ":math:`x + y`\n"), (:call, :(=>), (:macrocall, Symbol("@md_str"), "# title *blah*"), "title *blah*\n************\n\n"), (:call, :(=>), (:macrocall, Symbol("@md_str"), "## title *blah*"), "title *blah*\n============\n\n"), (:call, :(=>), (:macrocall, Symbol("@md_str"), "[`x`](:func:`x`)"), ":func:`x`\n"), (:call, :(=>), (:macrocall, Symbol("@md_str"), "[`x`](:obj:`x`)"), ":obj:`x`\n"), (:call, :(=>), (:macrocall, Symbol("@md_str"), "[`x`](:ref:`x`)"), ":ref:`x`\n"), (:call, :(=>), (:macrocall, Symbol("@md_str"), "[`x`](:exc:`x`)"), ":exc:`x`\n"), (:call, :(=>), (:macrocall, Symbol("@md_str"), "[`x`](:class:`x`)"), ":class:`x`\n"), (:call, :(=>), (:macrocall, Symbol("@md_str"), "[`x`](:const:`x`)"), ":const:`x`\n"), (:call, :(=>), (:macrocall, Symbol("@md_str"), "[`x`](:data:`x`)"), ":data:`x`\n"), (:call, :(=>), (:macrocall, Symbol("@md_str"), "[`x`](:???:`x`)"), "```x`` <:???:`x`>`_\n"), (:call, :(=>), (:macrocall, Symbol("@md_str"), "[x](y)"), "`x <y>`_\n"))), (:block,
+        (:line, 406, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :rst, :input), :output))
+      )),
+    (:line, 410, :none),
+    (:type, true, :Reference, (:block,
+        (:line, 411, :none),
+        :ref
+      )),
+    (:line, 414, :none),
+    (:(=), (:call, :ref, :x), (:block,
+        (:line, 414, :none),
+        (:call, :Reference, :x)
+      )),
+    (:line, 416, :none),
+    (:call, :ref, :mean),
+    (:line, 418, :none),
+    (:(=), (:call, :show, (:(::), :io, :IO), (:(::), :m, (:macrocall, Symbol("@MIME_str"), "text/plain")), (:(::), :r, :Reference)), (:block,
+        (:line, 418, :none),
+        (:call, :print, :io, (:string, (:., :r, (:quote, #QuoteNode
+                :ref
+              )), " (see Julia docs)"))
+      )),
+    (:line, 421, :none),
+    (:(=), :mean_ref, (:macrocall, Symbol("@md_str"), "Behaves like \$(ref(mean))")),
+    (:line, 422, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :plain, :mean_ref), "Behaves like mean (see Julia docs)\n")),
+    (:line, 423, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :html, :mean_ref), "<p>Behaves like mean &#40;see Julia docs&#41;</p>\n")),
+    (:line, 425, :none),
+    (:(=), (:call, :show, (:(::), :io, :IO), (:(::), :m, (:macrocall, Symbol("@MIME_str"), "text/html")), (:(::), :r, :Reference)), (:block,
+        (:line, 425, :none),
+        (:call, (:., :Markdown, (:quote, #QuoteNode
+              :withtag
+            )), (:->, (:tuple,), (:block,
+              (:line, 427, :none),
+              (:call, (:., :Markdown, (:quote, #QuoteNode
+                    :htmlesc
+                  )), :io, (:call, (:., :Markdown, (:quote, #QuoteNode
+                      :plaininline
+                    )), :r))
+            )), :io, (:quote, #QuoteNode
+            :a
+          ), (:call, :(=>), (:quote, #QuoteNode
+              :href
+            ), "test"))
+      )),
+    (:line, 429, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :html, :mean_ref), "<p>Behaves like <a href=\"test\">mean &#40;see Julia docs&#41;</a></p>\n")),
+    (:line, 431, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@md_str"), "````julia\nfoo()\n````"), (:macrocall, Symbol("@md_str"), "```julia\nfoo()\n```"))),
+    (:line, 440, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@md_str"), "a  | b\n---|---\n1  | 2"), (:call, :MD, (:call, :Table, (:ref, :Any, (:vect, "a", "b"), (:vect, "1", "2")), (:vect, (:quote, #QuoteNode
+                :r
+              ), (:quote, #QuoteNode
+                :r
+              )))))),
+    (:line, 446, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@md_str"), "| a  |  b | c |\n| :-- | --: | --- |\n| d`gh`hg | hgh**jhj**ge | f |"), (:call, :MD, (:call, :Table, (:ref, :Any, (:vect, "a", "b", "c"), (:ref, :Any, (:vect, "d", (:call, :Code, "gh"), "hg"), (:vect, "hgh", (:call, :Bold, "jhj"), "ge"), "f")), (:vect, (:quote, #QuoteNode
+                :l
+              ), (:quote, #QuoteNode
+                :r
+              ), (:quote, #QuoteNode
+                :r
+              )))))),
+    (:line, 454, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@md_str"), "no|table\nno error\n"), (:call, :MD, (:vect, (:call, :Paragraph, (:ref, :Any, "no|table no error")))))),
+    (:line, 459, :none),
+    (:let, (:block,
+        (:line, 463, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Markdown, (:quote, #QuoteNode
+                  :parse
+                )), :t), (:call, :MD, (:call, :Table, (:ref, :Any, (:ref, :Any, "a", "b"), (:ref, :Any, "1", "2")), (:vect, (:quote, #QuoteNode
+                    :l
+                  ), (:quote, #QuoteNode
+                    :r
+                  ))))))
+      ), (:(=), :t, "a   |   b\n:-- | --:\n1   |   2\n")),
+    (:line, 466, :none),
+    (:let, (:block,
+        (:line, 473, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :text, (:call, (:., :Markdown, (:quote, #QuoteNode
+                  :plain
+                )), :table)))
+      ), (:(=), :text, "| a   |   b |\n|:--- | ---:|\n| 1   |   2 |\n"), (:(=), :table, (:call, (:., :Markdown, (:quote, #QuoteNode
+              :parse
+            )), :text))),
+    (:line, 475, :none),
+    (:let, (:block,
+        (:line, 483, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :text, (:call, (:., :Markdown, (:quote, #QuoteNode
+                  :plain
+                )), :table)))
+      ), (:(=), :text, "| Markdown | Table |  Test |\n|:-------- |:-----:| -----:|\n| foo      | `bar` | *baz* |\n| `bar`    |  baz  | *foo* |\n"), (:(=), :table, (:call, (:., :Markdown, (:quote, #QuoteNode
+              :parse
+            )), :text))),
+    (:line, 485, :none),
+    (:let, (:block,
+        (:line, 492, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :text, (:call, (:., :Markdown, (:quote, #QuoteNode
+                  :plain
+                )), :table)))
+      ), (:(=), :text, "| a        |   b |\n|:-------- | ---:|\n| `x \\| y` |   2 |\n"), (:(=), :table, (:call, (:., :Markdown, (:quote, #QuoteNode
+              :parse
+            )), :text))),
+    (:line, 496, :none),
+    (:let, (:block,
+        (:line, 550, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :out_plain, (:call, (:., :Markdown, (:quote, #QuoteNode
+                  :plain
+                )), :dollars))),
+        (:line, 551, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :out_plain, (:call, (:., :Markdown, (:quote, #QuoteNode
+                  :plain
+                )), :backticks))),
+        (:line, 553, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :out_rst, (:call, (:., :Markdown, (:quote, #QuoteNode
+                  :rst
+                )), :dollars))),
+        (:line, 554, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :out_rst, (:call, (:., :Markdown, (:quote, #QuoteNode
+                  :rst
+                )), :backticks))),
+        (:line, 556, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :out_latex, (:call, (:., :Markdown, (:quote, #QuoteNode
+                  :latex
+                )), :dollars))),
+        (:line, 557, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :out_latex, (:call, (:., :Markdown, (:quote, #QuoteNode
+                  :latex
+                )), :backticks))),
+        (:line, 559, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :latex_doc, :dollars)),
+        (:line, 560, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :latex_doc, :backticks))
+      ), (:(=), :in_dollars, "We have \$x^2 < x\$ whenever:\n\n\$|x| < 1\$\n\netc.\n"), (:(=), :in_backticks, "We have ``x^2 < x`` whenever:\n\n```math\n|x| < 1\n```\n\netc.\n"), (:(=), :out_plain, "We have \$x^2 < x\$ whenever:\n\n\$\$\n|x| < 1\n\$\$\n\netc.\n"), (:(=), :out_rst, "We have :math:`x^2 < x` whenever:\n\n.. math::\n\n    |x| < 1\n\netc.\n"), (:(=), :out_latex, "We have \$x^2 < x\$ whenever:\n\n\$\$|x| < 1\$\$\netc.\n\n"), (:(=), :dollars, (:call, (:., :Markdown, (:quote, #QuoteNode
+              :parse
+            )), :in_dollars)), (:(=), :backticks, (:call, (:., :Markdown, (:quote, #QuoteNode
+              :parse
+            )), :in_backticks)), (:(=), :latex_doc, (:call, :MD, (:ref, :Any, (:call, :Paragraph, (:ref, :Any, "We have ", (:call, :LaTeX, "x^2 < x"), " whenever:")), (:call, :LaTeX, "|x| < 1"), (:call, :Paragraph, (:ref, :Any, "etc.")))))),
+    (:line, 564, :none),
+    (:let, (:block,
+        (:line, 576, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Markdown, (:quote, #QuoteNode
+                  :parse
+                )), :t_1), (:call, :MD, (:call, :Paragraph, (:vect, (:call, :Code, "code"), " ", (:call, :LaTeX, "math"), " ", (:call, :Code, "code"), " ", (:call, :LaTeX, "math"), " ", (:call, :Code, "code")))))),
+        (:line, 587, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Markdown, (:quote, #QuoteNode
+                  :parse
+                )), :t_2), (:call, :MD, (:call, :Paragraph, (:vect, (:call, :LaTeX, "`math`"), " ", (:call, :Code, "`code` ``code``"), " ", (:call, :LaTeX, "`math` ``math`` ```math```")))))),
+        (:line, 594, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Markdown, (:quote, #QuoteNode
+                  :parse
+                )), :t_3), (:call, :MD, (:call, :Paragraph, (:vect, (:call, :LaTeX, "`"), " ", (:call, :Code, "`` ` `` ` `")))))),
+        (:line, 599, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Markdown, (:quote, #QuoteNode
+                  :parse
+                )), :t_4), (:call, :MD, (:call, :Paragraph, (:vect, (:call, :Code, "code over several lines"), " ", (:call, :LaTeX, "math over several lines"), " ", (:call, :LaTeX, "math with ` some extra ` ` backticks`")))))),
+        (:line, 606, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Markdown, (:quote, #QuoteNode
+                  :parse
+                )), :t_5), (:call, :MD, (:call, :Paragraph, (:vect, "`", (:call, :Code, "code at end of string")))))),
+        (:line, 610, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Markdown, (:quote, #QuoteNode
+                  :parse
+                )), :t_6), (:call, :MD, (:call, :Paragraph, (:vect, "`", (:call, :LaTeX, "math at end of string"))))))
+      ), (:(=), :t_1, "`code` ``math`` ```code``` ````math```` `````code`````"), (:(=), :t_2, "`` `math` `` ``` `code` ``code`` ``` ```` `math` ``math`` ```math``` ````"), (:(=), :t_3, "`` ` `` ``` `` ` `` ` ` ```"), (:(=), :t_4, "`code\nover several\nlines` ``math\nover several\nlines`` ``math with\n` some extra ` ` backticks`\n``"), (:(=), :t_5, "``code at end of string`"), (:(=), :t_6, "```math at end of string``")),
+    (:line, 617, :none),
+    (:let, (:block,
+        (:line, 658, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, (:ref, (:., :m_1, (:quote, #QuoteNode
+                  :content
+                )), 2), (:., :Markdown, (:quote, #QuoteNode
+                :Admonition
+              )))),
+        (:line, 659, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, (:., :m_1, (:quote, #QuoteNode
+                    :content
+                  )), 2), (:quote, #QuoteNode
+                :category
+              )), "note")),
+        (:line, 660, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, (:., :m_1, (:quote, #QuoteNode
+                    :content
+                  )), 2), (:quote, #QuoteNode
+                :title
+              )), "Note")),
+        (:line, 661, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, (:., :m_1, (:quote, #QuoteNode
+                    :content
+                  )), 2), (:quote, #QuoteNode
+                :content
+              )), (:vect,))),
+        (:line, 663, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, (:ref, (:., :m_1, (:quote, #QuoteNode
+                  :content
+                )), 3), (:., :Markdown, (:quote, #QuoteNode
+                :Admonition
+              )))),
+        (:line, 664, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, (:., :m_1, (:quote, #QuoteNode
+                    :content
+                  )), 3), (:quote, #QuoteNode
+                :category
+              )), "warning")),
+        (:line, 665, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, (:., :m_1, (:quote, #QuoteNode
+                    :content
+                  )), 3), (:quote, #QuoteNode
+                :title
+              )), "custom title")),
+        (:line, 666, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, (:., :m_1, (:quote, #QuoteNode
+                    :content
+                  )), 3), (:quote, #QuoteNode
+                :content
+              )), (:vect,))),
+        (:line, 668, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, (:ref, (:., :m_1, (:quote, #QuoteNode
+                  :content
+                )), 5), (:., :Markdown, (:quote, #QuoteNode
+                :Admonition
+              )))),
+        (:line, 669, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, (:., :m_1, (:quote, #QuoteNode
+                    :content
+                  )), 5), (:quote, #QuoteNode
+                :category
+              )), "danger")),
+        (:line, 670, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, (:., :m_1, (:quote, #QuoteNode
+                    :content
+                  )), 5), (:quote, #QuoteNode
+                :title
+              )), "")),
+        (:line, 671, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, (:., :m_1, (:quote, #QuoteNode
+                    :content
+                  )), 5), (:quote, #QuoteNode
+                :content
+              )), (:vect,))),
+        (:line, 673, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, (:ref, (:., :m_1, (:quote, #QuoteNode
+                  :content
+                )), 6), (:., :Markdown, (:quote, #QuoteNode
+                :Paragraph
+              )))),
+        (:line, 675, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, (:ref, (:., :m_2, (:quote, #QuoteNode
+                  :content
+                )), 1), (:., :Markdown, (:quote, #QuoteNode
+                :Admonition
+              )))),
+        (:line, 676, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, (:., :m_2, (:quote, #QuoteNode
+                    :content
+                  )), 1), (:quote, #QuoteNode
+                :category
+              )), "note")),
+        (:line, 677, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, (:., :m_2, (:quote, #QuoteNode
+                    :content
+                  )), 1), (:quote, #QuoteNode
+                :title
+              )), "Note")),
+        (:line, 678, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, (:ref, (:., (:ref, (:., :m_2, (:quote, #QuoteNode
+                      :content
+                    )), 1), (:quote, #QuoteNode
+                  :content
+                )), 1), (:., :Markdown, (:quote, #QuoteNode
+                :Paragraph
+              )))),
+        (:line, 680, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, (:ref, (:., :m_2, (:quote, #QuoteNode
+                  :content
+                )), 2), (:., :Markdown, (:quote, #QuoteNode
+                :Admonition
+              )))),
+        (:line, 681, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, (:., :m_2, (:quote, #QuoteNode
+                    :content
+                  )), 2), (:quote, #QuoteNode
+                :category
+              )), "warning")),
+        (:line, 682, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, (:., :m_2, (:quote, #QuoteNode
+                    :content
+                  )), 2), (:quote, #QuoteNode
+                :title
+              )), "custom title")),
+        (:line, 683, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, (:ref, (:., (:ref, (:., :m_2, (:quote, #QuoteNode
+                      :content
+                    )), 2), (:quote, #QuoteNode
+                  :content
+                )), 1), (:., :Markdown, (:quote, #QuoteNode
+                :List
+              )))),
+        (:line, 684, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, (:ref, (:., (:ref, (:., :m_2, (:quote, #QuoteNode
+                      :content
+                    )), 2), (:quote, #QuoteNode
+                  :content
+                )), 2), (:., :Markdown, (:quote, #QuoteNode
+                :Paragraph
+              )))),
+        (:line, 686, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, (:ref, (:., :m_2, (:quote, #QuoteNode
+                  :content
+                )), 3), (:., :Markdown, (:quote, #QuoteNode
+                :Admonition
+              )))),
+        (:line, 687, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, (:., :m_2, (:quote, #QuoteNode
+                    :content
+                  )), 3), (:quote, #QuoteNode
+                :category
+              )), "danger")),
+        (:line, 688, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, (:., :m_2, (:quote, #QuoteNode
+                    :content
+                  )), 3), (:quote, #QuoteNode
+                :title
+              )), "")),
+        (:line, 689, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, (:ref, (:., (:ref, (:., :m_2, (:quote, #QuoteNode
+                      :content
+                    )), 3), (:quote, #QuoteNode
+                  :content
+                )), 1), (:., :Markdown, (:quote, #QuoteNode
+                :Code
+              )))),
+        (:line, 690, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, (:ref, (:., (:ref, (:., :m_2, (:quote, #QuoteNode
+                      :content
+                    )), 3), (:quote, #QuoteNode
+                  :content
+                )), 2), (:., :Markdown, (:quote, #QuoteNode
+                :Code
+              )))),
+        (:line, 691, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, (:ref, (:., (:ref, (:., :m_2, (:quote, #QuoteNode
+                      :content
+                    )), 3), (:quote, #QuoteNode
+                  :content
+                )), 3), (:curly, (:., :Markdown, (:quote, #QuoteNode
+                  :Header
+                )), 1))),
+        (:line, 694, :none),
+        (:let, (:block,
+            (:line, 709, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), :out, :expected))
+          ), (:(=), :out, (:call, (:., :Markdown, (:quote, #QuoteNode
+                  :plain
+                )), :m_1)), (:(=), :expected, "# Foo\n\n!!! note\n\n\n\n!!! warning \"custom title\"\n\n\n\n## Bar\n\n!!! danger \"\"\n\n\n\n!!!\n")),
+        (:line, 711, :none),
+        (:let, (:block,
+            (:line, 728, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), :out, :expected))
+          ), (:(=), :out, (:call, (:., :Markdown, (:quote, #QuoteNode
+                  :rst
+                )), :m_1)), (:(=), :expected, "Foo\n***\n\n\n.. note::\n\n\n\n.. warning:: custom title\n\n\n\nBar\n===\n\n\n.. danger::\n\n\n\n!!!\n")),
+        (:line, 730, :none),
+        (:let, (:block,
+            (:line, 754, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), :out, :expected))
+          ), (:(=), :out, (:call, (:., :Markdown, (:quote, #QuoteNode
+                  :latex
+                )), :m_1)), (:(=), :expected, "\\section{Foo}\n\\begin{quote}\n\\textbf{note}\n\nNote\n\n\\end{quote}\n\\begin{quote}\n\\textbf{warning}\n\ncustom title\n\n\\end{quote}\n\\subsection{Bar}\n\\begin{quote}\n\\textbf{danger}\n\n\n\n\\end{quote}\n!!!\n\n")),
+        (:line, 756, :none),
+        (:let, (:block,
+            (:line, 766, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), :out, :expected))
+          ), (:(=), :out, (:call, (:., :Markdown, (:quote, #QuoteNode
+                  :html
+                )), :m_1)), (:(=), :expected, "<h1>Foo</h1>\n<div class=\"admonition note\"><p class=\"admonition-title\">Note</p></div>\n<div class=\"admonition warning\"><p class=\"admonition-title\">custom title</p></div>\n<h2>Bar</h2>\n<div class=\"admonition danger\"><p class=\"admonition-title\"></p></div>\n<p>&#33;&#33;&#33;</p>\n")),
+        (:line, 769, :none),
+        (:let, (:block,
+            (:line, 796, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), :out, :expected))
+          ), (:(=), :out, (:call, (:., :Markdown, (:quote, #QuoteNode
+                  :plain
+                )), :m_2)), (:(=), :expected, "!!! note\n    foo bar baz\n\n\n!!! warning \"custom title\"\n      * foo\n      * bar\n      * baz\n\n    foo bar baz\n\n\n!!! danger \"\"\n    ```\n    foo\n    ```\n\n    ```\n    bar\n    ```\n\n    # baz\n\n")),
+        (:line, 798, :none),
+        (:let, (:block,
+            (:line, 826, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), :out, :expected))
+          ), (:(=), :out, (:call, (:., :Markdown, (:quote, #QuoteNode
+                  :rst
+                )), :m_2)), (:(=), :expected, ".. note::\n   foo bar baz\n\n\n.. warning:: custom title\n   * foo\n   * bar\n   * baz\n\n   foo bar baz\n\n\n.. danger::\n   .. code-block:: julia\n\n       foo\n\n   .. code-block:: julia\n\n       bar\n\n   baz\n   ***\n\n"))
+      ), (:(=), :t_1, "# Foo\n\n!!! note\n\n!!! warning \"custom title\"\n\n## Bar\n\n!!! danger \"\"\n\n!!!\n"), (:(=), :t_2, "!!! note\n    foo bar baz\n\n!!! warning \"custom title\"\n    - foo\n    - bar\n    - baz\n\n    foo bar baz\n\n!!! danger \"\"\n\n    ```\n    foo\n    ```\n\n        bar\n\n    # baz\n"), (:(=), :m_1, (:call, (:., :Markdown, (:quote, #QuoteNode
+              :parse
+            )), :t_1)), (:(=), :m_2, (:call, (:., :Markdown, (:quote, #QuoteNode
+              :parse
+            )), :t_2))),
+    (:line, 831, :none),
+    (:let, (:block,
+        (:line, 863, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, (:., :md, (:quote, #QuoteNode
+                  :content
+                ))), 6)),
+        (:line, 864, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, (:., (:ref, (:., :md, (:quote, #QuoteNode
+                      :content
+                    )), 1), (:quote, #QuoteNode
+                  :items
+                ))), 1)),
+        (:line, 865, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, (:ref, (:., (:ref, (:., :md, (:quote, #QuoteNode
+                        :content
+                      )), 1), (:quote, #QuoteNode
+                    :items
+                  )), 1)), 3)),
+        (:line, 866, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, (:ref, (:ref, (:., (:ref, (:., :md, (:quote, #QuoteNode
+                        :content
+                      )), 1), (:quote, #QuoteNode
+                    :items
+                  )), 1), 1), (:., :Markdown, (:quote, #QuoteNode
+                :Paragraph
+              )))),
+        (:line, 867, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, (:ref, (:ref, (:., (:ref, (:., :md, (:quote, #QuoteNode
+                        :content
+                      )), 1), (:quote, #QuoteNode
+                    :items
+                  )), 1), 2), (:., :Markdown, (:quote, #QuoteNode
+                :Code
+              )))),
+        (:line, 868, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, (:ref, (:ref, (:., (:ref, (:., :md, (:quote, #QuoteNode
+                        :content
+                      )), 1), (:quote, #QuoteNode
+                    :items
+                  )), 1), 3), (:., :Markdown, (:quote, #QuoteNode
+                :BlockQuote
+              )))),
+        (:line, 869, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, (:., (:ref, (:., :md, (:quote, #QuoteNode
+                      :content
+                    )), 2), (:quote, #QuoteNode
+                  :items
+                ))), 1)),
+        (:line, 870, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, (:ref, (:ref, (:., (:ref, (:., :md, (:quote, #QuoteNode
+                        :content
+                      )), 2), (:quote, #QuoteNode
+                    :items
+                  )), 1), 1), (:., :Markdown, (:quote, #QuoteNode
+                :Paragraph
+              )))),
+        (:line, 871, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, (:ref, (:., :md, (:quote, #QuoteNode
+                  :content
+                )), 3), (:., :Markdown, (:quote, #QuoteNode
+                :Paragraph
+              )))),
+        (:line, 872, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, (:., (:ref, (:., :md, (:quote, #QuoteNode
+                      :content
+                    )), 4), (:quote, #QuoteNode
+                  :items
+                ))), 1)),
+        (:line, 873, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, (:ref, (:ref, (:., (:ref, (:., :md, (:quote, #QuoteNode
+                        :content
+                      )), 4), (:quote, #QuoteNode
+                    :items
+                  )), 1), 1), :Paragraph)),
+        (:line, 874, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, (:ref, (:ref, (:., (:ref, (:., :md, (:quote, #QuoteNode
+                        :content
+                      )), 4), (:quote, #QuoteNode
+                    :items
+                  )), 1), 2), :Paragraph)),
+        (:line, 875, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, (:., (:ref, (:., :md, (:quote, #QuoteNode
+                      :content
+                    )), 5), (:quote, #QuoteNode
+                  :items
+                ))), 2)),
+        (:line, 876, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, (:ref, (:ref, (:., (:ref, (:., :md, (:quote, #QuoteNode
+                        :content
+                      )), 5), (:quote, #QuoteNode
+                    :items
+                  )), 1), 1), (:., :Markdown, (:quote, #QuoteNode
+                :Paragraph
+              )))),
+        (:line, 877, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, (:ref, (:ref, (:., (:ref, (:., :md, (:quote, #QuoteNode
+                        :content
+                      )), 5), (:quote, #QuoteNode
+                    :items
+                  )), 2), 1), (:., :Markdown, (:quote, #QuoteNode
+                :Code
+              )))),
+        (:line, 878, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, (:., (:ref, (:., :md, (:quote, #QuoteNode
+                      :content
+                    )), 6), (:quote, #QuoteNode
+                  :items
+                ))), 3)),
+        (:line, 879, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:ref, (:., (:ref, (:ref, (:., (:ref, (:., :md, (:quote, #QuoteNode
+                            :content
+                          )), 6), (:quote, #QuoteNode
+                        :items
+                      )), 1), 1), (:quote, #QuoteNode
+                  :content
+                )), 1), "foo")),
+        (:line, 880, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:ref, (:., (:ref, (:ref, (:., (:ref, (:., :md, (:quote, #QuoteNode
+                            :content
+                          )), 6), (:quote, #QuoteNode
+                        :items
+                      )), 2), 1), (:quote, #QuoteNode
+                  :content
+                )), 1), "bar")),
+        (:line, 881, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:ref, (:., (:ref, (:ref, (:., (:ref, (:., :md, (:quote, #QuoteNode
+                            :content
+                          )), 6), (:quote, #QuoteNode
+                        :items
+                      )), 3), 1), (:quote, #QuoteNode
+                  :content
+                )), 1), "baz")),
+        (:line, 884, :none),
+        (:let, (:block,
+            (:line, 911, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), :expected, (:call, (:., :Markdown, (:quote, #QuoteNode
+                      :plain
+                    )), :md)))
+          ), (:(=), :expected, "1. A paragraph with two lines.\n\n    ```\n    indented code\n    ```\n\n    > A block quote.\n\n  * one\n\ntwo\n\n  * one\n\n    two\n\n  * baz\n  * ```\n    foo\n    ```\n\n1. foo\n2. bar\n3. baz\n")),
+        (:line, 914, :none),
+        (:let, (:block,
+            (:line, 949, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), :expected, (:call, (:., :Markdown, (:quote, #QuoteNode
+                      :html
+                    )), :md)))
+          ), (:(=), :expected, "<ol>\n<li><p>A paragraph with two lines.</p>\n<pre><code>indented code</code></pre>\n<blockquote>\n<p>A block quote.</p>\n</blockquote>\n</li>\n</ol>\n<ul>\n<li><p>one</p>\n</li>\n</ul>\n<p>two</p>\n<ul>\n<li><p>one</p>\n<p>two</p>\n</li>\n</ul>\n<ul>\n<li><p>baz</p>\n</li>\n<li><pre><code>foo</code></pre>\n</li>\n</ul>\n<ol>\n<li><p>foo</p>\n</li>\n<li><p>bar</p>\n</li>\n<li><p>baz</p>\n</li>\n</ol>\n")),
+        (:line, 952, :none),
+        (:let, (:block,
+            (:line, 979, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), :expected, (:call, (:., :Markdown, (:quote, #QuoteNode
+                      :rst
+                    )), :md)))
+          ), (:(=), :expected, "1. A paragraph with two lines.\n\n   .. code-block:: julia\n\n       indented code\n\n       A block quote.\n\n* one\n\ntwo\n\n* one\n\n  two\n\n* baz\n* .. code-block:: julia\n\n      foo\n\n1. foo\n2. bar\n3. baz\n"))
+      ), (:(=), :text, "1. A paragraph\n   with two lines.\n\n       indented code\n\n   > A block quote.\n\n- one\n\n two\n\n- one\n\n  two\n\n\n- baz\n\n+ ```\n  foo\n  ```\n\n1. foo\n2. bar\n3. baz\n"), (:(=), :md, (:call, (:., :Markdown, (:quote, #QuoteNode
+              :parse
+            )), :text))),
+    (:line, 984, :none),
+    (:let, (:block,
+        (:line, 999, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, (:., :md, (:quote, #QuoteNode
+                    :content
+                  )), 1), (:quote, #QuoteNode
+                :ordered
+              )), 42)),
+        (:line, 1000, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, (:., :md, (:quote, #QuoteNode
+                    :content
+                  )), 2), (:quote, #QuoteNode
+                :ordered
+              )), 1)),
+        (:line, 1001, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, (:., :md, (:quote, #QuoteNode
+                    :content
+                  )), 3), (:quote, #QuoteNode
+                :ordered
+              )), -1)),
+        (:line, 1003, :none),
+        (:let, (:block,
+            (:line, 1024, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), :expected, (:call, (:., :Markdown, (:quote, #QuoteNode
+                      :html
+                    )), :md)))
+          ), (:(=), :expected, "<ol start=\"42\">\n<li><p>foo</p>\n</li>\n<li><p>bar</p>\n</li>\n</ol>\n<ol>\n<li><p>foo</p>\n</li>\n<li><p>bar</p>\n</li>\n</ol>\n<ul>\n<li><p>foo</p>\n</li>\n<li><p>bar</p>\n</li>\n</ul>\n")),
+        (:line, 1027, :none),
+        (:let, (:block,
+            (:line, 1051, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), :expected, (:call, (:., :Markdown, (:quote, #QuoteNode
+                      :latex
+                    )), :md)))
+          ), (:(=), :expected, "\\begin{itemize}\n\\item[42. ] foo\n\n\n\\item[43. ] bar\n\n\\end{itemize}\n\\begin{itemize}\n\\item[1. ] foo\n\n\n\\item[2. ] bar\n\n\\end{itemize}\n\\begin{itemize}\n\\item foo\n\n\n\\item bar\n\n\\end{itemize}\n"))
+      ), (:(=), :text, "42. foo\n43. bar\n\n\n1. foo\n2. bar\n\n\n- foo\n- bar\n"), (:(=), :md, (:call, (:., :Markdown, (:quote, #QuoteNode
+              :parse
+            )), :text)))
+  ))

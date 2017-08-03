@@ -1,0 +1,154 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:(=), :dir, (:call, :joinpath, :JULIA_HOME, (:., :Base, (:quote, #QuoteNode
+            :DOCDIR
+          )), "examples")),
+    (:line, 5, :none),
+    (:call, :include, (:call, :joinpath, :dir, "bubblesort.jl")),
+    (:line, 6, :none),
+    (:(=), :a, (:call, :rand, (:(:), 1, 100), 100)),
+    (:line, 7, :none),
+    (:macrocall, Symbol("@test"), (:call, :issorted, (:call, :sort!, (:parameters, (:kw, :alg, :BubbleSort)), :a))),
+    (:line, 9, :none),
+    (:call, :include, (:call, :joinpath, :dir, "lru.jl")),
+    (:line, 10, :none),
+    (:call, :include, (:call, :joinpath, :dir, "lru_test.jl")),
+    (:line, 12, :none),
+    (:call, :include, (:call, :joinpath, :dir, "ModInts.jl")),
+    (:line, 13, :none),
+    (:(=), :b, (:call, (:curly, (:., :ModInts, (:quote, #QuoteNode
+              :ModInt
+            )), 10), 2)),
+    (:line, 14, :none),
+    (:(=), :c, (:call, (:curly, (:., :ModInts, (:quote, #QuoteNode
+              :ModInt
+            )), 10), 4)),
+    (:line, 15, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :+, :b, :c), (:call, (:curly, (:., :ModInts, (:quote, #QuoteNode
+                :ModInt
+              )), 10), 6))),
+    (:line, 16, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :-, :c, :b), (:call, (:curly, (:., :ModInts, (:quote, #QuoteNode
+                :ModInt
+              )), 10), 2))),
+    (:line, 17, :none),
+    (:(=), :x, (:call, (:curly, (:., :ModInts, (:quote, #QuoteNode
+              :ModInt
+            )), 256), 13)),
+    (:line, 18, :none),
+    (:(=), :y, (:call, :inv, :x)),
+    (:line, 19, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), :y, (:call, (:curly, (:., :ModInts, (:quote, #QuoteNode
+                :ModInt
+              )), 256), 197))),
+    (:line, 20, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :*, :x, :y), (:call, (:curly, (:., :ModInts, (:quote, #QuoteNode
+                :ModInt
+              )), 256), 1))),
+    (:line, 21, :none),
+    (:macrocall, Symbol("@test_throws"), :DomainError, (:call, :inv, (:call, (:curly, (:., :ModInts, (:quote, #QuoteNode
+                :ModInt
+              )), 8), 4))),
+    (:line, 23, :none),
+    (:call, :include, (:call, :joinpath, :dir, "ndgrid.jl")),
+    (:line, 24, :none),
+    (:(=), :r, (:call, :repmat, (:(:), 1, 10), 1, 10)),
+    (:line, 25, :none),
+    (:(=), (:tuple, :r1, :r2), (:call, :ndgrid, (:(:), 1, 10), (:(:), 1, 10))),
+    (:line, 26, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), :r1, :r)),
+    (:line, 27, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), :r2, (:', :r))),
+    (:line, 28, :none),
+    (:(=), (:tuple, :r3, :r4), (:call, :meshgrid, (:(:), 1, 10), (:(:), 1, 10))),
+    (:line, 29, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), :r3, (:', :r))),
+    (:line, 30, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), :r4, :r)),
+    (:line, 32, :none),
+    (:call, :include, (:call, :joinpath, :dir, "queens.jl")),
+    (:line, 33, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :trysolve, 8, 8, 1), (:tuple, (:call, :Queen, 1, 1)))),
+    (:line, 34, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :trysolve, 8, 8, 7), (:tuple, (:call, :Queen, 1, 1), (:call, :Queen, 2, 3), (:call, :Queen, 3, 5), (:call, :Queen, 4, 2), (:call, :Queen, 5, 8), (:call, :Queen, 7, 4), (:call, :Queen, 8, 7)))),
+    (:line, 40, :none),
+    (:if, (:call, :is_unix), (:block,
+        (:line, 41, :none),
+        (:(=), :script, (:call, :joinpath, :dir, "clustermanager/simple/test_simple.jl")),
+        (:line, 42, :none),
+        (:(=), :cmd, (:macrocall, Symbol("@cmd"), "\$(Base.julia_cmd()) --startup-file=no \$script")),
+        (:line, 43, :none),
+        (:if, (:&&, (:call, :!, (:call, :success, (:call, :pipeline, (:parameters, (:kw, :stdout, :STDOUT), (:kw, :stderr, :STDERR)), :cmd))), (:call, :(==), (:call, :ccall, (:quote, #QuoteNode
+                  :jl_running_on_valgrind
+                ), :Cint, (:tuple,)), 0)), (:block,
+            (:line, 44, :none),
+            (:call, :error, (:string, "UnixDomainCM failed test, cmd : ", :cmd))
+          ))
+      )),
+    (:line, 48, :none),
+    (:(=), :dc_path, (:call, :joinpath, :dir, "dictchannel.jl")),
+    (:line, 51, :none),
+    (:(=), :main_ex, (:quote, (:block,
+          (:line, 52, :none),
+          (:||, (:call, :(==), (:call, :myid), 1), (:call, :include, (:$, :dc_path))),
+          (:line, 53, :none),
+          (:call, :remotecall_fetch, (:->, (:tuple, :f), (:block,
+                (:line, 54, :none),
+                (:call, :include, :f),
+                (:line, 55, :none),
+                :nothing
+              )), 1, (:$, :dc_path)),
+          (:line, 57, :none),
+          (:call, :RemoteChannel, (:->, (:tuple,), (:block,
+                (:line, 57, :none),
+                (:call, :DictChannel)
+              )), 1)
+        ))),
+    (:line, 59, :none),
+    (:(=), :dc, (:call, :eval, :Main, :main_ex)),
+    (:line, 60, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :typeof, :dc), (:curly, :RemoteChannel, (:., :Main, (:quote, #QuoteNode
+              :DictChannel
+            ))))),
+    (:line, 62, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :isready, :dc), false)),
+    (:line, 63, :none),
+    (:call, :put!, :dc, 1, 2),
+    (:line, 64, :none),
+    (:call, :put!, :dc, "Hello", "World"),
+    (:line, 65, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :isready, :dc), true)),
+    (:line, 66, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :isready, :dc, 1), true)),
+    (:line, 67, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :isready, :dc, "Hello"), true)),
+    (:line, 68, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :isready, :dc, 2), false)),
+    (:line, 69, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :fetch, :dc, 1), 2)),
+    (:line, 70, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :fetch, :dc, "Hello"), "World")),
+    (:line, 71, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :take!, :dc, 1), 2)),
+    (:line, 72, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :isready, :dc, 1), false)),
+    (:line, 76, :none),
+    (:call, :include, (:call, :joinpath, :dir, "wordcount.jl")),
+    (:line, 80, :none),
+    (:(=), :zmq_found, true),
+    (:line, 81, :none),
+    (:try, (:block,
+        (:line, 82, :none),
+        (:using, :ZMQ)
+      ), false, (:block,
+        (:line, 84, :none),
+        (:(=), :zmq_found, false)
+      )),
+    (:line, 87, :none),
+    (:if, (:call, :!, :zmq_found), (:block,
+        (:line, 88, :none),
+        (:call, :eval, :Main, (:call, :parse, "module ZMQ end"))
+      )),
+    (:line, 91, :none),
+    (:call, :include, (:call, :joinpath, :dir, "clustermanager/0mq/ZMQCM.jl"))
+  ))

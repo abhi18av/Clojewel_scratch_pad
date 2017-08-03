@@ -1,0 +1,512 @@
+(:quote, (:block,
+    (:line, 7, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :macroexpand, (:quote, (:macrocall, Symbol("@fastmath"), (:call, :+, 1, 2)))), (:quote, (:call, (:., (:., :Base, (:quote, #QuoteNode
+                  :FastMath
+                )), (:quote, #QuoteNode
+                :add_fast
+              )), 1, 2)))),
+    (:line, 8, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :macroexpand, (:quote, (:macrocall, Symbol("@fastmath"), :+))), (:quote, (:., (:., :Base, (:quote, #QuoteNode
+                :FastMath
+              )), (:quote, #QuoteNode
+              :add_fast
+            ))))),
+    (:line, 9, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :macroexpand, (:quote, (:macrocall, Symbol("@fastmath"), (:call, :min, 1)))), (:quote, (:call, (:., (:., :Base, (:quote, #QuoteNode
+                  :FastMath
+                )), (:quote, #QuoteNode
+                :min_fast
+              )), 1)))),
+    (:line, 10, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :macroexpand, (:quote, (:macrocall, Symbol("@fastmath"), :min))), (:quote, (:., (:., :Base, (:quote, #QuoteNode
+                :FastMath
+              )), (:quote, #QuoteNode
+              :min_fast
+            ))))),
+    (:line, 11, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :macroexpand, (:quote, (:macrocall, Symbol("@fastmath"), (:., :x, (:quote, #QuoteNode
+                  :min
+                ))))), (:quote, (:., :x, (:quote, #QuoteNode
+              :min
+            ))))),
+    (:line, 15, :none),
+    (:const, (:(=), :one32, (:call, :one, :Float32))),
+    (:line, 16, :none),
+    (:const, (:(=), :eps32, (:call, :eps, :Float32))),
+    (:line, 17, :none),
+    (:const, (:(=), :eps32_2, (:call, :/, :eps32, 2))),
+    (:line, 19, :none),
+    (:(=), (:call, :fm_ieee_32, :x), (:block,
+        (:line, 19, :none),
+        (:call, :+, :x, :eps32_2, :eps32_2)
+      )),
+    (:line, 20, :none),
+    (:(=), (:call, :fm_fast_32, :x), (:block,
+        (:line, 20, :none),
+        (:macrocall, Symbol("@fastmath"), (:call, :+, :x, :eps32_2, :eps32_2))
+      )),
+    (:line, 21, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :fm_ieee_32, :one32), :one32)),
+    (:line, 22, :none),
+    (:macrocall, Symbol("@test"), (:||, (:call, :(==), (:call, :fm_fast_32, :one32), :one32), (:comparison, (:call, :fm_fast_32, :one32), :(==), (:call, :+, :one32, :eps32), :>, :one32))),
+    (:line, 25, :none),
+    (:const, (:(=), :one64, (:call, :one, :Float64))),
+    (:line, 26, :none),
+    (:const, (:(=), :eps64, (:call, :eps, :Float64))),
+    (:line, 27, :none),
+    (:const, (:(=), :eps64_2, (:call, :/, :eps64, 2))),
+    (:line, 29, :none),
+    (:(=), (:call, :fm_ieee_64, :x), (:block,
+        (:line, 29, :none),
+        (:call, :+, :x, :eps64_2, :eps64_2)
+      )),
+    (:line, 30, :none),
+    (:(=), (:call, :fm_fast_64, :x), (:block,
+        (:line, 30, :none),
+        (:macrocall, Symbol("@fastmath"), (:call, :+, :x, :eps64_2, :eps64_2))
+      )),
+    (:line, 31, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :fm_ieee_64, :one64), :one64)),
+    (:line, 32, :none),
+    (:macrocall, Symbol("@test"), (:||, (:call, :(==), (:call, :fm_fast_64, :one64), :one64), (:comparison, (:call, :fm_fast_64, :one64), :(==), (:call, :+, :one64, :eps64), :>, :one64))),
+    (:line, 35, :none),
+    (:(=), (:call, :fm_ieee_64_upd, :x), (:block,
+        (:line, 35, :none),
+        (:block,
+          (:(=), :r, :x),
+          (:+=, :r, :eps64_2),
+          (:+=, :r, :eps64_2)
+        )
+      )),
+    (:line, 36, :none),
+    (:(=), (:call, :fm_fast_64_upd, :x), (:block,
+        (:line, 36, :none),
+        (:macrocall, Symbol("@fastmath"), (:block,
+            (:(=), :r, :x),
+            (:+=, :r, :eps64_2),
+            (:+=, :r, :eps64_2)
+          ))
+      )),
+    (:line, 37, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :fm_ieee_64_upd, :one64), :one64)),
+    (:line, 38, :none),
+    (:macrocall, Symbol("@test"), (:||, (:call, :(==), (:call, :fm_fast_64_upd, :one64), :one64), (:comparison, (:call, :fm_fast_64_upd, :one64), :(==), (:call, :+, :one64, :eps64), :>, :one64))),
+    (:line, 41, :none),
+    (:let, (:block,
+        (:line, 42, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:call, :-, (:call, :*, :one_epsf, :one_epsf), 1)), (:call, :Float32, (:call, :/, 65537, 1073741824))))
+      ), (:(=), :epsf, (:call, :/, 1.0f0, (:call, :^, 2, 15))), (:(=), :one_epsf, (:call, :+, 1, :epsf))),
+    (:line, 44, :none),
+    (:let, (:block,
+        (:line, 45, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:call, :-, (:call, :*, :one_eps, :one_eps), 1)), (:call, :/, 2147483649, 1152921504606846976)))
+      ), (:(=), :eps, (:call, :/, 1.0, (:call, :^, 2, 30))), (:(=), :one_eps, (:call, :+, 1, :eps))),
+    (:line, 48, :none),
+    (:for, (:(=), :T, (:tuple, :Float32, :Float64, :BigFloat)), (:block,
+        (:line, 49, :none),
+        (:(=), :zero, (:call, :convert, :T, 0)),
+        (:line, 50, :none),
+        (:(=), :one, (:call, :+, (:call, :convert, :T, 1), (:call, :eps, :T))),
+        (:line, 51, :none),
+        (:(=), :two, (:call, :+, (:call, :convert, :T, 2), (:call, ://, 1, 10))),
+        (:line, 52, :none),
+        (:(=), :three, (:call, :+, (:call, :convert, :T, 3), (:call, ://, 1, 100))),
+        (:line, 54, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:call, :+, :two)), (:call, :+, :two))),
+        (:line, 55, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:call, :-, :two)), (:call, :-, :two))),
+        (:line, 56, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:call, :+, :zero, :one, :two)), (:call, :+, :zero, :one, :two))),
+        (:line, 57, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:call, :-, (:call, :-, :zero, :one), :two)), (:call, :-, (:call, :-, :zero, :one), :two))),
+        (:line, 58, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:call, :*, :one, :two, :three)), (:call, :*, :one, :two, :three))),
+        (:line, 59, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:call, :/, (:call, :/, :one, :two), :three)), (:call, :/, (:call, :/, :one, :two), :three))),
+        (:line, 60, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:call, :rem, :two, :three)), (:call, :rem, :two, :three))),
+        (:line, 61, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:call, :mod, :two, :three)), (:call, :mod, :two, :three))),
+        (:line, 62, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@fastmath"), (:call, :cmp, :two, :two)), (:call, :cmp, :two, :two))),
+        (:line, 63, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@fastmath"), (:call, :cmp, :two, :three)), (:call, :cmp, :two, :three))),
+        (:line, 64, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@fastmath"), (:call, :cmp, :three, :two)), (:call, :cmp, :three, :two))),
+        (:line, 65, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@fastmath"), (:call, :/, :one, :zero)), (:call, :convert, :T, :Inf))),
+        (:line, 66, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@fastmath"), (:call, :/, (:call, :-, :one), :zero)), (:call, :-, (:call, :convert, :T, :Inf)))),
+        (:line, 67, :none),
+        (:macrocall, Symbol("@test"), (:call, :isnan, (:macrocall, Symbol("@fastmath"), (:call, :/, :zero, :zero)))),
+        (:line, 69, :none),
+        (:for, (:(=), :x, (:tuple, :zero, :two, (:call, :convert, :T, :Inf), (:call, :convert, :T, :NaN))), (:block,
+            (:line, 70, :none),
+            (:macrocall, Symbol("@test"), (:macrocall, Symbol("@fastmath"), (:call, :isfinite, :x))),
+            (:line, 71, :none),
+            (:macrocall, Symbol("@test"), (:call, :!, (:macrocall, Symbol("@fastmath"), (:call, :isinf, :x)))),
+            (:line, 72, :none),
+            (:macrocall, Symbol("@test"), (:call, :!, (:macrocall, Symbol("@fastmath"), (:call, :isnan, :x)))),
+            (:line, 73, :none),
+            (:macrocall, Symbol("@test"), (:call, :!, (:macrocall, Symbol("@fastmath"), (:call, :issubnormal, :x))))
+          ))
+      )),
+    (:line, 77, :none),
+    (:for, (:(=), :T, (:tuple, :Complex64, :Complex128, (:curly, :Complex, :BigFloat))), (:block,
+        (:line, 78, :none),
+        (:(=), :zero, (:call, :convert, :T, 0)),
+        (:line, 79, :none),
+        (:(=), :one, (:call, :+, (:call, :convert, :T, 1), (:call, :*, :im, (:call, :eps, (:call, :real, (:call, :convert, :T, 1)))))),
+        (:line, 80, :none),
+        (:(=), :two, (:call, :+, (:call, :convert, :T, 2), (:call, ://, :im, 10))),
+        (:line, 81, :none),
+        (:(=), :three, (:call, :+, (:call, :convert, :T, 3), (:call, ://, :im, 100))),
+        (:line, 83, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:call, :+, :two)), (:call, :+, :two))),
+        (:line, 84, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:call, :-, :two)), (:call, :-, :two))),
+        (:line, 85, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:call, :+, :zero, :one, :two)), (:call, :+, :zero, :one, :two))),
+        (:line, 86, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:call, :-, (:call, :-, :zero, :one), :two)), (:call, :-, (:call, :-, :zero, :one), :two))),
+        (:line, 87, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:call, :*, :one, :two, :three)), (:call, :*, :one, :two, :three))),
+        (:line, 88, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:call, :/, (:call, :/, :one, :two), :three)), (:call, :/, (:call, :/, :one, :two), :three))),
+        (:line, 89, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@fastmath"), (:call, :(==), :three, :two)), (:call, :(==), :three, :two))),
+        (:line, 90, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@fastmath"), (:call, :(!=), :three, :two)), (:call, :(!=), :three, :two))),
+        (:line, 91, :none),
+        (:macrocall, Symbol("@test"), (:call, :isnan, (:macrocall, Symbol("@fastmath"), (:call, :/, :one, :zero)))),
+        (:line, 92, :none),
+        (:macrocall, Symbol("@test"), (:call, :isnan, (:macrocall, Symbol("@fastmath"), (:call, :/, (:call, :-, :one), :zero)))),
+        (:line, 93, :none),
+        (:macrocall, Symbol("@test"), (:call, :isnan, (:macrocall, Symbol("@fastmath"), (:call, :/, :zero, :zero)))),
+        (:line, 95, :none),
+        (:for, (:(=), :x, (:tuple, :zero, :two, (:call, :convert, :T, :Inf), (:call, :convert, :T, :NaN))), (:block,
+            (:line, 96, :none),
+            (:macrocall, Symbol("@test"), (:macrocall, Symbol("@fastmath"), (:call, :isfinite, :x))),
+            (:line, 97, :none),
+            (:macrocall, Symbol("@test"), (:call, :!, (:macrocall, Symbol("@fastmath"), (:call, :isinf, :x)))),
+            (:line, 98, :none),
+            (:macrocall, Symbol("@test"), (:call, :!, (:macrocall, Symbol("@fastmath"), (:call, :isnan, :x)))),
+            (:line, 99, :none),
+            (:macrocall, Symbol("@test"), (:call, :!, (:macrocall, Symbol("@fastmath"), (:call, :issubnormal, :x))))
+          ))
+      )),
+    (:line, 107, :none),
+    (:for, (:(=), :T, (:tuple, :Float32, :Float64, :BigFloat)), (:block,
+        (:line, 108, :none),
+        (:(=), :half, (:call, :/, 1, (:call, :convert, :T, 2))),
+        (:line, 109, :none),
+        (:(=), :third, (:call, :/, 1, (:call, :convert, :T, 3))),
+        (:line, 111, :none),
+        (:for, (:(=), :f, (:tuple, (:quote, #QuoteNode
+                :+
+              ), (:quote, #QuoteNode
+                :-
+              ), (:quote, #QuoteNode
+                :abs
+              ), (:quote, #QuoteNode
+                :abs2
+              ), (:quote, #QuoteNode
+                :conj
+              ), (:quote, #QuoteNode
+                :inv
+              ), (:quote, #QuoteNode
+                :sign
+              ), (:quote, #QuoteNode
+                :acos
+              ), (:quote, #QuoteNode
+                :asin
+              ), (:quote, #QuoteNode
+                :asinh
+              ), (:quote, #QuoteNode
+                :atan
+              ), (:quote, #QuoteNode
+                :atanh
+              ), (:quote, #QuoteNode
+                :cbrt
+              ), (:quote, #QuoteNode
+                :cos
+              ), (:quote, #QuoteNode
+                :cosh
+              ), (:quote, #QuoteNode
+                :exp10
+              ), (:quote, #QuoteNode
+                :exp2
+              ), (:quote, #QuoteNode
+                :exp
+              ), (:quote, #QuoteNode
+                :expm1
+              ), (:quote, #QuoteNode
+                :lgamma
+              ), (:quote, #QuoteNode
+                :log10
+              ), (:quote, #QuoteNode
+                :log1p
+              ), (:quote, #QuoteNode
+                :log2
+              ), (:quote, #QuoteNode
+                :log
+              ), (:quote, #QuoteNode
+                :sin
+              ), (:quote, #QuoteNode
+                :sinh
+              ), (:quote, #QuoteNode
+                :sqrt
+              ), (:quote, #QuoteNode
+                :tan
+              ), (:quote, #QuoteNode
+                :tanh
+              ))), (:block,
+            (:line, 115, :none),
+            (:macrocall, Symbol("@eval"), (:block,
+                (:line, 116, :none),
+                (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:call, (:$, :f), (:$, :half))), (:call, (:$, :f), (:$, :half)))),
+                (:line, 117, :none),
+                (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:call, (:$, :f), (:$, :third))), (:call, (:$, :f), (:$, :third))))
+              ))
+          )),
+        (:line, 120, :none),
+        (:for, (:(=), :f, (:tuple, (:quote, #QuoteNode
+                :acosh
+              ))), (:block,
+            (:line, 121, :none),
+            (:macrocall, Symbol("@eval"), (:block,
+                (:line, 122, :none),
+                (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:call, (:$, :f), (:call, :+, 1, (:$, :half)))), (:call, (:$, :f), (:call, :+, 1, (:$, :half))))),
+                (:line, 123, :none),
+                (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:call, (:$, :f), (:call, :+, 1, (:$, :third)))), (:call, (:$, :f), (:call, :+, 1, (:$, :third)))))
+              ))
+          )),
+        (:line, 126, :none),
+        (:for, (:(=), :f, (:tuple, (:quote, #QuoteNode
+                :+
+              ), (:quote, #QuoteNode
+                :-
+              ), (:quote, #QuoteNode
+                :*
+              ), (:quote, #QuoteNode
+                :/
+              ), (:quote, #QuoteNode
+                :%
+              ), (:quote, #QuoteNode
+                :(==)
+              ), (:quote, #QuoteNode
+                :(!=)
+              ), (:quote, #QuoteNode
+                :<
+              ), (:quote, #QuoteNode
+                :(<=)
+              ), (:quote, #QuoteNode
+                :>
+              ), (:quote, #QuoteNode
+                :(>=)
+              ), (:quote, #QuoteNode
+                :^
+              ), (:quote, #QuoteNode
+                :atan2
+              ), (:quote, #QuoteNode
+                :hypot
+              ), (:quote, #QuoteNode
+                :max
+              ), (:quote, #QuoteNode
+                :min
+              ))), (:block,
+            (:line, 128, :none),
+            (:macrocall, Symbol("@eval"), (:block,
+                (:line, 129, :none),
+                (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:call, (:$, :f), (:$, :half), (:$, :third))), (:call, (:$, :f), (:$, :half), (:$, :third)))),
+                (:line, 130, :none),
+                (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:call, (:$, :f), (:$, :third), (:$, :half))), (:call, (:$, :f), (:$, :third), (:$, :half))))
+              ))
+          )),
+        (:line, 133, :none),
+        (:for, (:(=), :f, (:tuple, (:quote, #QuoteNode
+                :minmax
+              ))), (:block,
+            (:line, 134, :none),
+            (:macrocall, Symbol("@eval"), (:block,
+                (:line, 135, :none),
+                (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:ref, (:call, (:$, :f), (:$, :half), (:$, :third)), 1)), (:ref, (:call, (:$, :f), (:$, :half), (:$, :third)), 1))),
+                (:line, 136, :none),
+                (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:ref, (:call, (:$, :f), (:$, :half), (:$, :third)), 2)), (:ref, (:call, (:$, :f), (:$, :half), (:$, :third)), 2))),
+                (:line, 137, :none),
+                (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:ref, (:call, (:$, :f), (:$, :third), (:$, :half)), 1)), (:ref, (:call, (:$, :f), (:$, :third), (:$, :half)), 1))),
+                (:line, 138, :none),
+                (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:ref, (:call, (:$, :f), (:$, :third), (:$, :half)), 2)), (:ref, (:call, (:$, :f), (:$, :third), (:$, :half)), 2)))
+              ))
+          ))
+      )),
+    (:line, 144, :none),
+    (:for, (:(=), :T, (:tuple, :Complex64, :Complex128, (:curly, :Complex, :BigFloat))), (:block,
+        (:line, 145, :none),
+        (:(=), :half, (:call, :/, (:call, :+, 1, (:call, :*, 1, :im)), (:call, :T, 2))),
+        (:line, 146, :none),
+        (:(=), :third, (:call, :/, (:call, :-, 1, (:call, :*, 1, :im)), (:call, :T, 3))),
+        (:line, 150, :none),
+        (:(=), :rtol, (:call, (:., :Base, (:quote, #QuoteNode
+                :rtoldefault
+              )), (:call, :real, :T))),
+        (:line, 152, :none),
+        (:for, (:(=), :f, (:tuple, (:quote, #QuoteNode
+                :+
+              ), (:quote, #QuoteNode
+                :-
+              ), (:quote, #QuoteNode
+                :abs
+              ), (:quote, #QuoteNode
+                :abs2
+              ), (:quote, #QuoteNode
+                :conj
+              ), (:quote, #QuoteNode
+                :inv
+              ), (:quote, #QuoteNode
+                :sign
+              ), (:quote, #QuoteNode
+                :acos
+              ), (:quote, #QuoteNode
+                :acosh
+              ), (:quote, #QuoteNode
+                :asin
+              ), (:quote, #QuoteNode
+                :asinh
+              ), (:quote, #QuoteNode
+                :atan
+              ), (:quote, #QuoteNode
+                :atanh
+              ), (:quote, #QuoteNode
+                :cis
+              ), (:quote, #QuoteNode
+                :cos
+              ), (:quote, #QuoteNode
+                :cosh
+              ), (:quote, #QuoteNode
+                :exp10
+              ), (:quote, #QuoteNode
+                :exp2
+              ), (:quote, #QuoteNode
+                :exp
+              ), (:quote, #QuoteNode
+                :expm1
+              ), (:quote, #QuoteNode
+                :log10
+              ), (:quote, #QuoteNode
+                :log1p
+              ), (:quote, #QuoteNode
+                :log2
+              ), (:quote, #QuoteNode
+                :log
+              ), (:quote, #QuoteNode
+                :sin
+              ), (:quote, #QuoteNode
+                :sinh
+              ), (:quote, #QuoteNode
+                :sqrt
+              ), (:quote, #QuoteNode
+                :tan
+              ), (:quote, #QuoteNode
+                :tanh
+              ))), (:block,
+            (:line, 156, :none),
+            (:macrocall, Symbol("@eval"), (:block,
+                (:line, 157, :none),
+                (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:call, (:$, :f), (:$, :half))), (:call, (:$, :f), (:$, :half))), (:(=), :rtol, (:$, :rtol))),
+                (:line, 158, :none),
+                (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:call, (:$, :f), (:$, :third))), (:call, (:$, :f), (:$, :third))), (:(=), :rtol, (:$, :rtol)))
+              ))
+          )),
+        (:line, 161, :none),
+        (:for, (:(=), :f, (:tuple, (:quote, #QuoteNode
+                :+
+              ), (:quote, #QuoteNode
+                :-
+              ), (:quote, #QuoteNode
+                :*
+              ), (:quote, #QuoteNode
+                :/
+              ), (:quote, #QuoteNode
+                :(==)
+              ), (:quote, #QuoteNode
+                :(!=)
+              ), (:quote, #QuoteNode
+                :^
+              ))), (:block,
+            (:line, 162, :none),
+            (:macrocall, Symbol("@eval"), (:block,
+                (:line, 163, :none),
+                (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:call, (:$, :f), (:$, :half), (:$, :third))), (:call, (:$, :f), (:$, :half), (:$, :third))), (:(=), :rtol, (:$, :rtol))),
+                (:line, 164, :none),
+                (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:call, (:$, :f), (:$, :third), (:$, :half))), (:call, (:$, :f), (:$, :third), (:$, :half))), (:(=), :rtol, (:$, :rtol)))
+              ))
+          ))
+      )),
+    (:line, 170, :none),
+    (:for, (:(=), :T, (:tuple, :Float32, :Float64, :BigFloat)), (:block,
+        (:line, 171, :none),
+        (:(=), :CT, (:curly, :Complex, :T)),
+        (:line, 172, :none),
+        (:(=), :half, (:call, :/, 1, (:call, :T, 2))),
+        (:line, 173, :none),
+        (:(=), :third, (:call, :/, 1, (:call, :T, 3))),
+        (:line, 174, :none),
+        (:(=), :chalf, (:call, :/, (:call, :+, 1, (:call, :*, 1, :im)), (:call, :CT, 2))),
+        (:line, 175, :none),
+        (:(=), :cthird, (:call, :/, (:call, :-, 1, (:call, :*, 1, :im)), (:call, :CT, 3))),
+        (:line, 177, :none),
+        (:for, (:(=), :f, (:tuple, (:quote, #QuoteNode
+                :+
+              ), (:quote, #QuoteNode
+                :-
+              ), (:quote, #QuoteNode
+                :*
+              ), (:quote, #QuoteNode
+                :/
+              ), (:quote, #QuoteNode
+                :(==)
+              ), (:quote, #QuoteNode
+                :(!=)
+              ), (:quote, #QuoteNode
+                :^
+              ))), (:block,
+            (:line, 178, :none),
+            (:macrocall, Symbol("@eval"), (:block,
+                (:line, 179, :none),
+                (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:call, (:$, :f), (:$, :chalf), (:$, :third))), (:call, (:$, :f), (:$, :chalf), (:$, :third)))),
+                (:line, 180, :none),
+                (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:call, (:$, :f), (:$, :half), (:$, :cthird))), (:call, (:$, :f), (:$, :half), (:$, :cthird)))),
+                (:line, 181, :none),
+                (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:call, (:$, :f), (:$, :cthird), (:$, :half))), (:call, (:$, :f), (:$, :cthird), (:$, :half)))),
+                (:line, 182, :none),
+                (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:call, (:$, :f), (:$, :third), (:$, :chalf))), (:call, (:$, :f), (:$, :third), (:$, :chalf))))
+              ))
+          )),
+        (:line, 186, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:call, :^, :third, 3)), (:call, :^, :third, 3))),
+        (:line, 187, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:call, :/, :chalf, :third)), (:call, :/, :chalf, :third))),
+        (:line, 188, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:call, :^, :chalf, 3)), (:call, :^, :chalf, 3))),
+        (:line, 189, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:call, :cis, :third)), (:call, :cis, :third)))
+      )),
+    (:line, 193, :none),
+    (:let, (:block,
+        (:line, 194, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:+=, (:ref, :a, 1), 2.0)), (:+=, (:ref, :b, 1), 2.0))),
+        (:line, 195, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:-=, (:ref, :a, 2), 2.0)), (:-=, (:ref, :b, 2), 2.0))),
+        (:line, 196, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:*=, (:ref, :a, 1, 1), 2.0)), (:*=, (:ref, :b, 1, 1), 2.0))),
+        (:line, 197, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:/=, (:ref, :a, 2, 2), 2.0)), (:/=, (:ref, :b, 2, 2), 2.0))),
+        (:line, 198, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:macrocall, Symbol("@fastmath"), (:^=, (:ref, :a, 1, 2), 2.0)), (:^=, (:ref, :b, 1, 2), 2.0))),
+        (:line, 201, :none),
+        (:local, (:(=), :c, 0)),
+        (:line, 202, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@fastmath"), (:|=, :c, 1)), 1))
+      ), (:(=), :a, (:call, :ones, 2, 2)), (:(=), :b, (:call, :ones, 2, 2)))
+  ))

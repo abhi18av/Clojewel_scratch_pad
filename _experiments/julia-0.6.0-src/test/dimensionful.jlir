@@ -1,0 +1,350 @@
+(:quote, (:block,
+    (:line, 8, :none),
+    (:type, false, (:<:, (:curly, :Furlong, :p, (:<:, :T, :Number)), :Number), (:block,
+        (:line, 9, :none),
+        (:(::), :val, :T),
+        (:line, 10, :none),
+        (:(=), (:where, (:call, (:curly, :Furlong, :p, :T), (:(::), :v, :Number)), :p, :T), (:block,
+            (:line, 10, :none),
+            (:call, :new, :v)
+          )),
+        (:line, 11, :none),
+        (:(=), (:where, (:call, (:curly, :Furlong, :p, :T), (:(::), :x, (:curly, :Furlong, :p))), :p, :T), (:block,
+            (:line, 11, :none),
+            (:call, :new, (:., :x, (:quote, #QuoteNode
+                  :val
+                )))
+          ))
+      )),
+    (:line, 13, :none),
+    (:(=), (:call, (:curly, :Furlong, (:<:, :T, :Number)), (:(::), :x, :T)), (:block,
+        (:line, 13, :none),
+        (:call, (:curly, :Furlong, 1, :T), :x)
+      )),
+    (:line, 14, :none),
+    (:(=), (:call, (:curly, (:(::), (:curly, :Type, :T)), :p, :T), (:(::), :x, (:curly, :Furlong, :p, :T))), (:block,
+        (:line, 14, :none),
+        (:., :x, (:quote, #QuoteNode
+            :val
+          ))
+      )),
+    (:line, 15, :none),
+    (:(=), (:call, (:curly, (:(::), (:curly, :Type, (:curly, :Furlong, :p))), :p), (:(::), :v, :Number)), (:block,
+        (:line, 15, :none),
+        (:call, (:curly, :Furlong, :p, (:call, :typeof, :v)), :v)
+      )),
+    (:line, 16, :none),
+    (:(=), (:call, (:curly, (:., :Base, (:quote, #QuoteNode
+              :convert
+            )), :T, :p, :S), (:(::), (:curly, :Type, (:curly, :Furlong, :p, :T))), (:(::), :x, (:curly, :Furlong, :p, :S))), (:block,
+        (:line, 16, :none),
+        (:call, (:curly, :Furlong, :p, :T), (:call, :convert, :T, (:., :x, (:quote, #QuoteNode
+                :val
+              ))))
+      )),
+    (:line, 17, :none),
+    (:(=), (:call, (:curly, (:., :Base, (:quote, #QuoteNode
+              :convert
+            )), :T), (:(::), (:curly, :Type, (:curly, :Furlong, 0, :T))), (:(::), :x, (:curly, :Furlong, 0))), (:block,
+        (:line, 17, :none),
+        (:call, (:curly, :Furlong, 0, :T), (:call, :convert, :T, (:., :x, (:quote, #QuoteNode
+                :val
+              ))))
+      )),
+    (:line, 18, :none),
+    (:(=), (:call, (:curly, (:., :Base, (:quote, #QuoteNode
+              :convert
+            )), (:<:, :T, :Number)), (:(::), (:curly, :Type, :T)), (:(::), :x, (:curly, :Furlong, 0))), (:block,
+        (:line, 18, :none),
+        (:call, :convert, :T, (:., :x, (:quote, #QuoteNode
+              :val
+            )))
+      )),
+    (:line, 19, :none),
+    (:(=), (:call, (:curly, (:., :Base, (:quote, #QuoteNode
+              :convert
+            )), :T), (:(::), (:curly, :Type, (:curly, :Furlong, 0, :T))), (:(::), :x, :Number)), (:block,
+        (:line, 19, :none),
+        (:call, (:curly, :Furlong, 0, :T), (:call, :convert, :T, :x))
+      )),
+    (:line, 21, :none),
+    (:(=), (:call, (:curly, (:., :Base, (:quote, #QuoteNode
+              :promote_type
+            )), :p, :T, :S), (:(::), (:curly, :Type, (:curly, :Furlong, :p, :T))), (:(::), (:curly, :Type, (:curly, :Furlong, :p, :S)))), (:block,
+        (:line, 21, :none),
+        (:block,
+          (:macrocall, (:., :Base, (:quote, #QuoteNode
+                Symbol("@_pure_meta")
+              ))),
+          (:curly, :Furlong, :p, (:call, :promote_type, :T, :S))
+        )
+      )),
+    (:line, 24, :none),
+    (:(=), (:call, (:curly, (:., :Base, (:quote, #QuoteNode
+              :one
+            )), :p, :T), (:(::), :x, (:curly, :Furlong, :p, :T))), (:block,
+        (:line, 24, :none),
+        (:call, :one, :T)
+      )),
+    (:line, 25, :none),
+    (:(=), (:call, (:curly, (:., :Base, (:quote, #QuoteNode
+              :one
+            )), :p, :T), (:(::), (:curly, :Type, (:curly, :Furlong, :p, :T)))), (:block,
+        (:line, 25, :none),
+        (:call, :one, :T)
+      )),
+    (:line, 26, :none),
+    (:(=), (:call, (:curly, (:., :Base, (:quote, #QuoteNode
+              :zero
+            )), :p, :T), (:(::), :x, (:curly, :Furlong, :p, :T))), (:block,
+        (:line, 26, :none),
+        (:call, (:curly, :Furlong, :p, :T), (:call, :zero, :T))
+      )),
+    (:line, 27, :none),
+    (:(=), (:call, (:curly, (:., :Base, (:quote, #QuoteNode
+              :zero
+            )), :p, :T), (:(::), (:curly, :Type, (:curly, :Furlong, :p, :T)))), (:block,
+        (:line, 27, :none),
+        (:call, (:curly, :Furlong, :p, :T), (:call, :zero, :T))
+      )),
+    (:line, 28, :none),
+    (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+            :iszero
+          )), (:(::), :x, :Furlong)), (:block,
+        (:line, 28, :none),
+        (:call, :iszero, (:., :x, (:quote, #QuoteNode
+              :val
+            )))
+      )),
+    (:line, 33, :none),
+    (:(=), (:call, :canonical_p, :p), (:block,
+        (:line, 33, :none),
+        (:if, (:call, :isinteger, :p), (:call, :Int, :p), (:call, (:curly, :Rational, :Int), :p))
+      )),
+    (:line, 35, :none),
+    (:(=), (:call, (:curly, (:., :Base, (:quote, #QuoteNode
+              :abs
+            )), :p), (:(::), :x, (:curly, :Furlong, :p))), (:block,
+        (:line, 35, :none),
+        (:call, (:curly, :Furlong, :p), (:call, :abs, (:., :x, (:quote, #QuoteNode
+                :val
+              ))))
+      )),
+    (:line, 36, :none),
+    (:macrocall, Symbol("@generated"), (:(=), (:call, (:curly, (:., :Base, (:quote, #QuoteNode
+                :abs2
+              )), :p), (:(::), :x, (:curly, :Furlong, :p))), (:block,
+          (:line, 36, :none),
+          (:quote, (:call, (:curly, :Furlong, (:$, (:call, :canonical_p, (:call, :*, 2, :p)))), (:call, :abs2, (:., :x, (:quote, #QuoteNode
+                    :val
+                  )))))
+        ))),
+    (:line, 37, :none),
+    (:macrocall, Symbol("@generated"), (:(=), (:call, (:curly, (:., :Base, (:quote, #QuoteNode
+                :inv
+              )), :p), (:(::), :x, (:curly, :Furlong, :p))), (:block,
+          (:line, 37, :none),
+          (:quote, (:call, (:curly, :Furlong, (:$, (:call, :canonical_p, (:call, :-, :p)))), (:call, :inv, (:., :x, (:quote, #QuoteNode
+                    :val
+                  )))))
+        ))),
+    (:line, 38, :none),
+    (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+            :sylvester
+          )), (:(::), :a, :Furlong), (:(::), :b, :Furlong), (:(::), :c, :Furlong)), (:block,
+        (:line, 38, :none),
+        (:call, :/, (:call, :-, :c), (:call, :+, :a, :b))
+      )),
+    (:line, 40, :none),
+    (:for, (:(=), :f, (:tuple, (:quote, #QuoteNode
+            :isfinite
+          ), (:quote, #QuoteNode
+            :isnan
+          ), (:quote, #QuoteNode
+            :isreal
+          ))), (:block,
+        (:line, 41, :none),
+        (:macrocall, Symbol("@eval"), (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+                  (:$, :f)
+                )), (:(::), :x, :Furlong)), (:block,
+              (:line, 41, :none),
+              (:call, (:$, :f), (:., :x, (:quote, #QuoteNode
+                    :val
+                  )))
+            )))
+      )),
+    (:line, 43, :none),
+    (:for, (:(=), :f, (:tuple, (:quote, #QuoteNode
+            :real
+          ), (:quote, #QuoteNode
+            :imag
+          ), (:quote, #QuoteNode
+            :complex
+          ), (:quote, #QuoteNode
+            :middle
+          ), (:quote, #QuoteNode
+            :+
+          ), (:quote, #QuoteNode
+            :-
+          ))), (:block,
+        (:line, 44, :none),
+        (:macrocall, Symbol("@eval"), (:(=), (:call, (:curly, (:., :Base, (:quote, #QuoteNode
+                    (:$, :f)
+                  )), :p), (:(::), :x, (:curly, :Furlong, :p))), (:block,
+              (:line, 44, :none),
+              (:call, (:curly, :Furlong, :p), (:call, (:$, :f), (:., :x, (:quote, #QuoteNode
+                      :val
+                    ))))
+            )))
+      )),
+    (:line, 47, :none),
+    (:toplevel, (:import, :Base, :+), (:import, :Base, :-), (:import, :Base, :(==)), (:import, :Base, :(!=)), (:import, :Base, :<), (:import, :Base, :(<=)), (:import, :Base, :isless), (:import, :Base, :isequal), (:import, :Base, :*), (:import, :Base, :/), (:import, :Base, ://), (:import, :Base, :div), (:import, :Base, :rem), (:import, :Base, :mod), (:import, :Base, :^), (:import, :Base, :middle), (:import, :Base, :hypot)),
+    (:line, 49, :none),
+    (:for, (:(=), :op, (:tuple, (:quote, #QuoteNode
+            :+
+          ), (:quote, #QuoteNode
+            :-
+          ), (:quote, #QuoteNode
+            :middle
+          ), (:quote, #QuoteNode
+            :hypot
+          ))), (:block,
+        (:line, 50, :none),
+        (:macrocall, Symbol("@eval"), (:function, (:call, (:curly, (:$, :op), :p), (:(::), :x, (:curly, :Furlong, :p)), (:(::), :y, (:curly, :Furlong, :p))), (:block,
+              (:line, 51, :none),
+              (:(=), :v, (:call, (:$, :op), (:., :x, (:quote, #QuoteNode
+                      :val
+                    )), (:., :y, (:quote, #QuoteNode
+                      :val
+                    )))),
+              (:line, 52, :none),
+              (:call, (:curly, :Furlong, :p), :v)
+            )))
+      )),
+    (:line, 55, :none),
+    (:for, (:(=), :op, (:tuple, (:quote, #QuoteNode
+            :(==)
+          ), (:quote, #QuoteNode
+            :(!=)
+          ), (:quote, #QuoteNode
+            :<
+          ), (:quote, #QuoteNode
+            :(<=)
+          ), (:quote, #QuoteNode
+            :isless
+          ), (:quote, #QuoteNode
+            :isequal
+          ))), (:block,
+        (:line, 56, :none),
+        (:macrocall, Symbol("@eval"), (:(=), (:call, (:curly, (:$, :op), :p), (:(::), :x, (:curly, :Furlong, :p)), (:(::), :y, (:curly, :Furlong, :p))), (:block,
+              (:line, 56, :none),
+              (:call, (:$, :op), (:., :x, (:quote, #QuoteNode
+                    :val
+                  )), (:., :y, (:quote, #QuoteNode
+                    :val
+                  )))
+            )))
+      )),
+    (:line, 59, :none),
+    (:for, (:(=), (:tuple, :f, :op), (:tuple, (:tuple, (:quote, #QuoteNode
+              :_plus
+            ), (:quote, #QuoteNode
+              :+
+            )), (:tuple, (:quote, #QuoteNode
+              :_minus
+            ), (:quote, #QuoteNode
+              :-
+            )), (:tuple, (:quote, #QuoteNode
+              :_times
+            ), (:quote, #QuoteNode
+              :*
+            )), (:tuple, (:quote, #QuoteNode
+              :_div
+            ), (:quote, #QuoteNode
+              ://
+            )))), (:block,
+        (:line, 60, :none),
+        (:macrocall, Symbol("@eval"), (:macrocall, Symbol("@generated"), (:function, (:call, (:curly, (:$, :f), :T, :p, :q), (:(::), :v, :T), (:(::), (:curly, :Furlong, :p)), (:(::), (:curly, :Union, (:curly, :Furlong, :q), (:curly, :Type, (:curly, :Val, :q))))), (:block,
+                (:line, 61, :none),
+                (:(=), :s, (:call, (:$, :op), :p, :q)),
+                (:line, 62, :none),
+                (:quote, (:call, (:curly, :Furlong, (:$, (:call, :canonical_p, :s)), (:$, :T)), :v))
+              ))))
+      )),
+    (:line, 65, :none),
+    (:for, (:(=), (:tuple, :op, :eop), (:tuple, (:tuple, (:quote, #QuoteNode
+              :*
+            ), (:quote, #QuoteNode
+              :_plus
+            )), (:tuple, (:quote, #QuoteNode
+              :/
+            ), (:quote, #QuoteNode
+              :_minus
+            )), (:tuple, (:quote, #QuoteNode
+              ://
+            ), (:quote, #QuoteNode
+              :_minus
+            )), (:tuple, (:quote, #QuoteNode
+              :div
+            ), (:quote, #QuoteNode
+              :_minus
+            )))), (:block,
+        (:line, 66, :none),
+        (:macrocall, Symbol("@eval"), (:block,
+            (:line, 67, :none),
+            (:(=), (:call, (:curly, (:$, :op), :p, :q), (:(::), :x, (:curly, :Furlong, :p)), (:(::), :y, (:curly, :Furlong, :q))), (:block,
+                (:line, 67, :none),
+                (:call, (:$, :eop), (:call, (:$, :op), (:., :x, (:quote, #QuoteNode
+                        :val
+                      )), (:., :y, (:quote, #QuoteNode
+                        :val
+                      ))), :x, :y)
+              )),
+            (:line, 69, :none),
+            (:(=), (:call, (:curly, (:$, :op), :p, (:<:, :S, :Number)), (:(::), :x, (:curly, :Furlong, :p)), (:(::), :y, :S)), (:block,
+                (:line, 69, :none),
+                (:call, (:$, :op), :x, (:call, (:curly, :Furlong, 0, :S), :y))
+              )),
+            (:line, 70, :none),
+            (:(=), (:call, (:curly, (:$, :op), :p, (:<:, :S, :Number)), (:(::), :x, :S), (:(::), :y, (:curly, :Furlong, :p))), (:block,
+                (:line, 70, :none),
+                (:call, (:$, :op), (:call, (:curly, :Furlong, 0, :S), :x), :y)
+              ))
+          ))
+      )),
+    (:line, 73, :none),
+    (:for, (:(=), :op, (:tuple, (:quote, #QuoteNode
+            :rem
+          ), (:quote, #QuoteNode
+            :mod
+          ))), (:block,
+        (:line, 74, :none),
+        (:macrocall, Symbol("@eval"), (:block,
+            (:line, 75, :none),
+            (:(=), (:call, (:curly, (:$, :op), :p), (:(::), :x, (:curly, :Furlong, :p)), (:(::), :y, :Furlong)), (:block,
+                (:line, 75, :none),
+                (:call, (:curly, :Furlong, :p), (:call, (:$, :op), (:., :x, (:quote, #QuoteNode
+                        :val
+                      )), (:., :y, (:quote, #QuoteNode
+                        :val
+                      ))))
+              )),
+            (:line, 76, :none),
+            (:(=), (:call, (:curly, (:$, :op), :p), (:(::), :x, (:curly, :Furlong, :p)), (:(::), :y, :Number)), (:block,
+                (:line, 76, :none),
+                (:call, (:curly, :Furlong, :p), (:call, (:$, :op), (:., :x, (:quote, #QuoteNode
+                        :val
+                      )), :y))
+              ))
+          ))
+      )),
+    (:line, 79, :none),
+    (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+            :sqrt
+          )), (:(::), :x, :Furlong)), (:block,
+        (:line, 79, :none),
+        (:call, :_div, (:call, :sqrt, (:., :x, (:quote, #QuoteNode
+                :val
+              ))), :x, (:curly, :Val, 2))
+      ))
+  ))

@@ -1,0 +1,205 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :ifelse, true, 1, 2), 1)),
+    (:line, 4, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :ifelse, false, 1, 2), 2)),
+    (:line, 6, :none),
+    (:(=), :s, (:call, :Set)),
+    (:line, 7, :none),
+    (:call, :ifelse, true, (:call, :push!, :s, 1), (:call, :push!, :s, 2)),
+    (:line, 8, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), :s, (:call, :Set, (:vect, 1, 2)))),
+    (:line, 10, :none),
+    (:(=), :s, (:call, :Set)),
+    (:line, 11, :none),
+    (:if, true, (:call, :push!, :s, 1), (:call, :push!, :s, 2)),
+    (:line, 12, :none),
+    (:if, false, (:call, :push!, :s, 3), (:call, :push!, :s, 4)),
+    (:line, 13, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), :s, (:call, :Set, (:vect, 1, 4)))),
+    (:line, 15, :none),
+    (:(=), :B, (:hcat, true, true, false)),
+    (:line, 16, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:., :ifelse, (:tuple, :B, 1, 2)), (:hcat, 1, 1, 2))),
+    (:line, 17, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:., :ifelse, (:tuple, :B, 1, (:hcat, 2, 3, 4))), (:hcat, 1, 1, 4))),
+    (:line, 18, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:., :ifelse, (:tuple, :B, (:hcat, 2, 3, 4), 1)), (:hcat, 2, 3, 1))),
+    (:line, 19, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:., :ifelse, (:tuple, :B, (:hcat, 2, 3, 4), (:hcat, 5, 6, 7))), (:hcat, 2, 3, 7))),
+    (:line, 21, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :reverse, (:call, :Pair, 1, 2)), (:call, :Pair, 2, 1))),
+    (:line, 22, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :reverse, (:call, :Pair, "13", "24")), (:call, :Pair, "24", "13"))),
+    (:line, 23, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :typeof, (:call, :reverse, (:call, (:curly, :Pair, :String, :Int64), "a", 1))), (:curly, :Pair, :Int64, :String))),
+    (:line, 24, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :convert, (:curly, :Pair, :Float64, :Float64), (:call, :(=>), 17, 4711)), (:call, :(=>), 17.0, 4711.0))),
+    (:line, 25, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :convert, (:curly, :Pair, :Int, :Float64), (:call, :(=>), 17, 4711)), (:call, :(=>), 17, 4711.0))),
+    (:line, 26, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :convert, (:curly, :Pair, :Float64, :Int), (:call, :(=>), 17, 4711)), (:call, :(=>), 17.0, 4711))),
+    (:line, 27, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :convert, (:curly, :Pair, :Any, :Any), (:call, :(=>), 17, 4711)), (:call, (:curly, :Pair, :Any, :Any), 17, 4711))),
+    (:line, 28, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :convert, (:curly, :Pair, :Number, :Number), (:call, :(=>), 17, 4711)), (:call, (:curly, :Pair, :Number, :Number), 17, 4711))),
+    (:line, 29, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :promote, (:call, :(=>), 1, 1), (:call, :(=>), 2, 2.0)), (:tuple, (:call, :(=>), 1, 1.0), (:call, :(=>), 2, 2.0)))),
+    (:line, 30, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :promote, (:call, :(=>), 1, 1), (:call, :(=>), 2.0, 2)), (:tuple, (:call, :(=>), 1.0, 1), (:call, :(=>), 2.0, 2)))),
+    (:line, 31, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :promote, (:call, :(=>), 1, 1.0), (:call, :(=>), 2.0, 2)), (:tuple, (:call, :(=>), 1.0, 1.0), (:call, :(=>), 2.0, 2.0)))),
+    (:line, 32, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :promote, (:call, :(=>), 1, 1), (:call, :(=>), (:quote, #QuoteNode
+              :b
+            ), 2.0)), (:tuple, (:call, (:curly, :Pair, :Any, :Float64), 1, 1.0), (:call, (:curly, :Pair, :Any, :Float64), (:quote, #QuoteNode
+              :b
+            ), 2.0)))),
+    (:line, 33, :none),
+    (:macrocall, Symbol("@test"), (:call, :isa, (:vect, (:call, :(=>), (:quote, #QuoteNode
+              :a
+            ), 1), (:call, :(=>), (:quote, #QuoteNode
+              :b
+            ), 2)), (:curly, :Vector, (:curly, :Pair, :Symbol, :Int)))),
+    (:line, 34, :none),
+    (:macrocall, Symbol("@test"), (:call, :isa, (:vect, (:call, :(=>), (:quote, #QuoteNode
+              :a
+            ), 1), (:call, :(=>), (:quote, #QuoteNode
+              :b
+            ), 2.0)), (:curly, :Vector, (:curly, :Pair, :Symbol, :Float64)))),
+    (:line, 35, :none),
+    (:macrocall, Symbol("@test"), (:call, :isa, (:vect, (:call, :(=>), "a", 1), (:call, :(=>), (:quote, #QuoteNode
+              :b
+            ), 2.0)), (:curly, :Vector, (:curly, :Pair, :Any, :Float64)))),
+    (:line, 38, :none),
+    (:macrocall, Symbol("@test"), (:call, :isa, 1, :Integer)),
+    (:line, 40, :none),
+    (:(=), :p, (:call, :(=>), 1, (:quote, #QuoteNode
+          :foo
+        ))),
+    (:line, 41, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :first, :p), 1)),
+    (:line, 42, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :last, :p), (:quote, #QuoteNode
+          :foo
+        ))),
+    (:line, 43, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :first, (:call, :reverse, :p)), (:quote, #QuoteNode
+          :foo
+        ))),
+    (:line, 44, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :last, (:call, :reverse, :p)), 1)),
+    (:line, 45, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :endof, :p), 2)),
+    (:line, 46, :none),
+    (:macrocall, Symbol("@test"), (:comparison, (:ref, :p, (:call, :endof, :p)), :(==), (:ref, :p, :end), :(==), (:ref, :p, 2), :(==), (:quote, #QuoteNode
+          :foo
+        ))),
+    (:line, 48, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :|, 2), 2)),
+    (:line, 49, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :xor, 2), 2)),
+    (:line, 50, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :⊻, 2), 2)),
+    (:line, 54, :none),
+    (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, (:., :Base, (:quote, #QuoteNode
+            :scalarmin
+          )), (:vect, 'a', 'b'), (:vect, 'c', 'd'))),
+    (:line, 55, :none),
+    (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, (:., :Base, (:quote, #QuoteNode
+            :scalarmin
+          )), 'a', (:vect, 'c', 'd'))),
+    (:line, 56, :none),
+    (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, (:., :Base, (:quote, #QuoteNode
+            :scalarmin
+          )), (:vect, 'a', 'b'), 'c')),
+    (:line, 57, :none),
+    (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, (:., :Base, (:quote, #QuoteNode
+            :scalarmax
+          )), (:vect, 'a', 'b'), (:vect, 'c', 'd'))),
+    (:line, 58, :none),
+    (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, (:., :Base, (:quote, #QuoteNode
+            :scalarmax
+          )), 'a', (:vect, 'c', 'd'))),
+    (:line, 59, :none),
+    (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, (:., :Base, (:quote, #QuoteNode
+            :scalarmax
+          )), (:vect, 'a', 'b'), 'c')),
+    (:line, 61, :none),
+    (:macrocall, Symbol("@test"), (:call, :lexless, 'a', 'b')),
+    (:line, 63, :none),
+    (:macrocall, Symbol("@test"), (:call, :.!=, 1, 2)),
+    (:line, 64, :none),
+    (:macrocall, Symbol("@test"), (:call, :.==, 1, 1)),
+    (:line, 65, :none),
+    (:macrocall, Symbol("@test"), (:call, :.<, 1, 2)),
+    (:line, 66, :none),
+    (:macrocall, Symbol("@test"), (:call, :.<=, 1, 2)),
+    (:line, 69, :none),
+    (:let, (:block,
+        (:line, 70, :none),
+        (:for, (:(=), :n, (:(:), 2, 10)), (:block,
+            (:line, 71, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:., :max, (:tuple, (:..., (:ref, :xs, (:(:), 1, :n))))), (:vcat, (:(:), :n, (:call, :+, :n, 4)))))
+          ))
+      ), (:(=), :xs, (:comprehension, (:generator, (:vcat, (:(:), :i, (:call, :+, :i, 4))), (:(=), :i, (:(:), 1, 10)))))),
+    (:line, 76, :none),
+    (:type, false, (:<:, :T19714, :Integer), (:block,
+        (:line, 76, :none)
+      )),
+    (:line, 77, :none),
+    (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+            :float
+          )), (:(::), :T19714)), (:block,
+        (:line, 77, :none),
+        19714.0
+      )),
+    (:line, 78, :none),
+    (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+            :/
+          )), (:(::), :T19714), (:(::), :T19714)), (:block,
+        (:line, 78, :none),
+        (:call, :T19714)
+      )),
+    (:line, 79, :none),
+    (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+            :convert
+          )), (:(::), (:curly, :Type, :T19714)), (:(::), :Int)), (:block,
+        (:line, 79, :none),
+        (:call, :T19714)
+      )),
+    (:line, 80, :none),
+    (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+            :promote_rule
+          )), (:(::), (:curly, :Type, :T19714)), (:(::), (:curly, :Type, :Int))), (:block,
+        (:line, 80, :none),
+        :T19714
+      )),
+    (:line, 81, :none),
+    (:macrocall, Symbol("@test"), (:comparison, (:call, :/, (:call, :T19714), 1), :(===), (:call, :/, 1, (:call, :T19714)), :(===), (:call, :T19714))),
+    (:line, 84, :none),
+    (:macrocall, Symbol("@testset"), "function composition", (:block,
+        (:line, 85, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:call, :∘, :uppercase, :hex), 239487), "3A77F"))
+      )),
+    (:line, 87, :none),
+    (:macrocall, Symbol("@testset"), "function negation", (:block,
+        (:line, 88, :none),
+        (:(=), :str, (:call, :randstring, 20)),
+        (:line, 89, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :filter, (:call, :!, :isupper), :str), (:call, :replace, :str, (:macrocall, Symbol("@r_str"), "[A-Z]"), ""))),
+        (:line, 90, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :filter, (:call, :!, :islower), :str), (:call, :replace, :str, (:macrocall, Symbol("@r_str"), "[a-z]"), "")))
+      )),
+    (:line, 94, :none),
+    (:macrocall, Symbol("@testset"), "chained comparison", (:block,
+        (:line, 95, :none),
+        (:(=), :B, (:comparison, 0, :.<, (:hcat, 1, -1, 5), :.<, 3)),
+        (:line, 96, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :B, (:hcat, true, false, false))),
+        (:line, 97, :none),
+        (:(=), :B, (:comparison, 3, :.>, (:hcat, 1, -1, 5), :.>, 0)),
+        (:line, 98, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :B, (:hcat, true, false, false)))
+      ))
+  ))

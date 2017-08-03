@@ -1,0 +1,1437 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:import, :Base, :Pkg, :PkgError),
+    (:line, 5, :none),
+    (:function, (:call, :capture_stdout, (:(::), :f, :Function)), (:block,
+        (:line, 6, :none),
+        (:let, (:block,
+            (:line, 7, :none),
+            (:try, (:block,
+                (:line, 8, :none),
+                (:call, :open, (:->, (:tuple, :fout), (:block,
+                      (:line, 9, :none),
+                      (:call, :redirect_stdout, (:->, (:tuple,), (:block,
+                            (:line, 10, :none),
+                            (:call, :f)
+                          )), :fout)
+                    )), :fname, "w"),
+                (:line, 13, :none),
+                (:return, (:call, :readstring, :fname))
+              ), false, false, (:block,
+                (:line, 15, :none),
+                (:call, :rm, :fname, (:kw, :force, true))
+              ))
+          ), (:(=), :fname, (:call, :tempname)))
+      )),
+    (:line, 21, :none),
+    (:function, (:call, :temp_pkg_dir, (:parameters, (:kw, (:(::), :initialize, :Bool), true)), (:(::), :fn, :Function), (:kw, :tmp_dir, (:call, :joinpath, (:call, :tempdir), (:call, :randstring))), (:kw, (:(::), :remove_tmp_dir, :Bool), true)), (:block,
+        (:line, 25, :none),
+        (:call, :withenv, (:->, (:tuple,), (:block,
+              (:line, 26, :none),
+              (:macrocall, Symbol("@test"), (:call, :!, (:call, :isdir, (:call, (:., :Pkg, (:quote, #QuoteNode
+                          :dir
+                        )))))),
+              (:line, 27, :none),
+              (:try, (:block,
+                  (:line, 28, :none),
+                  (:if, :initialize, (:block,
+                      (:line, 29, :none),
+                      (:call, (:., :Pkg, (:quote, #QuoteNode
+                            :init
+                          ))),
+                      (:line, 30, :none),
+                      (:macrocall, Symbol("@test"), (:call, :isdir, (:call, (:., :Pkg, (:quote, #QuoteNode
+                                :dir
+                              ))))),
+                      (:line, 31, :none),
+                      (:call, (:., :Pkg, (:quote, #QuoteNode
+                            :resolve
+                          )))
+                    ), (:block,
+                      (:line, 33, :none),
+                      (:call, :mkpath, (:call, (:., :Pkg, (:quote, #QuoteNode
+                              :dir
+                            ))))
+                    )),
+                  (:line, 35, :none),
+                  (:call, :fn)
+                ), false, false, (:block,
+                  (:line, 37, :none),
+                  (:&&, :remove_tmp_dir, (:call, :rm, :tmp_dir, (:kw, :recursive, true)))
+                ))
+            )), (:call, :(=>), "JULIA_PKGDIR", :tmp_dir))
+      )),
+    (:line, 44, :none),
+    (:call, :temp_pkg_dir, (:->, (:tuple,), (:block,
+          (:line, 45, :none),
+          (:macrocall, Symbol("@test"), (:call, :isfile, (:call, :joinpath, (:call, (:., :Pkg, (:quote, #QuoteNode
+                      :dir
+                    ))), "REQUIRE"))),
+          (:line, 46, :none),
+          (:macrocall, Symbol("@test"), (:call, :isfile, (:call, :joinpath, (:call, (:., :Pkg, (:quote, #QuoteNode
+                      :dir
+                    ))), "META_BRANCH"))),
+          (:line, 47, :none),
+          (:macrocall, Symbol("@test"), (:call, :isempty, (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :installed
+                  ))))),
+          (:line, 48, :none),
+          (:macrocall, Symbol("@test"), (:call, :(==), (:call, :sprint, (:., :Pkg, (:quote, #QuoteNode
+                    :status
+                  ))), "No packages installed\n")),
+          (:line, 49, :none),
+          (:macrocall, Symbol("@test"), (:call, :!, (:call, :isempty, (:call, (:., :Pkg, (:quote, #QuoteNode
+                      :available
+                    )))))),
+          (:line, 52, :none),
+          (:call, :cd, (:->, (:tuple,), (:block,
+                (:line, 53, :none),
+                (:(=), :avail, (:call, (:., (:., :Pkg, (:quote, #QuoteNode
+                          :Read
+                        )), (:quote, #QuoteNode
+                        :available
+                      )))),
+                (:line, 54, :none),
+                (:(=), :avail_copy, (:call, (:., (:., :Pkg, (:quote, #QuoteNode
+                          :Query
+                        )), (:quote, #QuoteNode
+                        :availcopy
+                      )), :avail)),
+                (:line, 55, :none),
+                (:call, :delete!, (:., (:ref, (:ref, :avail_copy, "Example"), (:macrocall, Symbol("@v_str"), "0.0.1")), (:quote, #QuoteNode
+                      :requires
+                    )), "julia"),
+                (:line, 56, :none),
+                (:macrocall, Symbol("@test"), (:call, :haskey, (:., (:ref, (:ref, :avail, "Example"), (:macrocall, Symbol("@v_str"), "0.0.1")), (:quote, #QuoteNode
+                        :requires
+                      )), "julia"))
+              )), (:call, (:., :Pkg, (:quote, #QuoteNode
+                  :dir
+                )))),
+          (:line, 59, :none),
+          (:macrocall, Symbol("@test_throws"), :PkgError, (:call, (:., :Pkg, (:quote, #QuoteNode
+                  :installed
+                )), "MyFakePackage")),
+          (:line, 60, :none),
+          (:macrocall, Symbol("@test"), (:call, :(===), (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :installed
+                  )), "Example"), :nothing)),
+          (:line, 64, :none),
+          (:(=), :buf, (:call, :PipeBuffer)),
+          (:line, 65, :none),
+          (:call, :versioninfo, :buf, true),
+          (:line, 66, :none),
+          (:(=), :ver, (:call, :readstring, :buf)),
+          (:line, 67, :none),
+          (:macrocall, Symbol("@test"), (:call, :startswith, :ver, (:string, "Julia Version ", :VERSION))),
+          (:line, 68, :none),
+          (:macrocall, Symbol("@test"), (:call, :contains, :ver, "Environment:")),
+          (:line, 71, :none),
+          (:block,
+            (:line, 72, :none),
+            (:try, (:block,
+                (:line, 73, :none),
+                (:call, (:., :Pkg, (:quote, #QuoteNode
+                      :setprotocol!
+                    )), "notarealprotocol"),
+                (:line, 74, :none),
+                (:call, (:., :Pkg, (:quote, #QuoteNode
+                      :add
+                    )), "Example"),
+                (:line, 75, :none),
+                (:call, :error, "unexpected")
+              ), :ex, (:block,
+                (:line, 77, :none),
+                (:if, (:call, :isa, :ex, :CompositeException), (:block,
+                    (:line, 78, :none),
+                    (:(=), :ex, (:ref, (:., :ex, (:quote, #QuoteNode
+                            :exceptions
+                          )), 1)),
+                    (:line, 80, :none),
+                    (:if, (:call, :isa, :ex, :CapturedException), (:block,
+                        (:line, 81, :none),
+                        (:(=), :ex, (:., :ex, (:quote, #QuoteNode
+                              :ex
+                            )))
+                      ))
+                  )),
+                (:line, 84, :none),
+                (:macrocall, Symbol("@test"), (:call, :isa, :ex, (:., :Pkg, (:quote, #QuoteNode
+                        :PkgError
+                      )))),
+                (:line, 85, :none),
+                (:macrocall, Symbol("@test"), (:call, :contains, (:., :ex, (:quote, #QuoteNode
+                        :msg
+                      )), "Cannot clone Example from notarealprotocol://github.com/JuliaLang/Example.jl.git"))
+              ))
+          ),
+          (:line, 89, :none),
+          (:call, (:., :Pkg, (:quote, #QuoteNode
+                :setprotocol!
+              )), ""),
+          (:line, 90, :none),
+          (:macrocall, Symbol("@test"), (:call, :(===), (:., (:., :Pkg, (:quote, #QuoteNode
+                    :Cache
+                  )), (:quote, #QuoteNode
+                  :rewrite_url_to
+                )), :nothing)),
+          (:line, 91, :none),
+          (:call, (:., :Pkg, (:quote, #QuoteNode
+                :setprotocol!
+              )), "https"),
+          (:line, 92, :none),
+          (:call, (:., :Pkg, (:quote, #QuoteNode
+                :add
+              )), "Example"),
+          (:line, 93, :none),
+          (:macrocall, Symbol("@test"), (:call, :(==), (:vect, (:..., (:call, :keys, (:call, (:., :Pkg, (:quote, #QuoteNode
+                          :installed
+                        )))))), (:vect, "Example"))),
+          (:line, 94, :none),
+          (:(=), :iob, (:call, :IOBuffer)),
+          (:line, 95, :none),
+          (:call, (:., :Pkg, (:quote, #QuoteNode
+                :checkout
+              )), "Example"),
+          (:line, 96, :none),
+          (:call, (:., :Pkg, (:quote, #QuoteNode
+                :status
+              )), "Example", :iob),
+          (:line, 97, :none),
+          (:(=), :str, (:call, :chomp, (:call, :String, (:call, :take!, :iob)))),
+          (:line, 98, :none),
+          (:macrocall, Symbol("@test"), (:call, :startswith, :str, " - Example")),
+          (:line, 99, :none),
+          (:macrocall, Symbol("@test"), (:call, :endswith, :str, "master")),
+          (:line, 100, :none),
+          (:call, (:., :Pkg, (:quote, #QuoteNode
+                :free
+              )), "Example"),
+          (:line, 101, :none),
+          (:call, (:., :Pkg, (:quote, #QuoteNode
+                :status
+              )), "Example", :iob),
+          (:line, 102, :none),
+          (:(=), :str, (:call, :chomp, (:call, :String, (:call, :take!, :iob)))),
+          (:line, 103, :none),
+          (:macrocall, Symbol("@test"), (:call, :endswith, :str, (:call, :string, (:call, (:., :Pkg, (:quote, #QuoteNode
+                      :installed
+                    )), "Example")))),
+          (:line, 104, :none),
+          (:call, (:., :Pkg, (:quote, #QuoteNode
+                :checkout
+              )), "Example"),
+          (:line, 105, :none),
+          (:call, (:., :Pkg, (:quote, #QuoteNode
+                :free
+              )), (:tuple, "Example")),
+          (:line, 106, :none),
+          (:call, (:., :Pkg, (:quote, #QuoteNode
+                :status
+              )), "Example", :iob),
+          (:line, 107, :none),
+          (:(=), :str, (:call, :chomp, (:call, :String, (:call, :take!, :iob)))),
+          (:line, 108, :none),
+          (:macrocall, Symbol("@test"), (:call, :endswith, :str, (:call, :string, (:call, (:., :Pkg, (:quote, #QuoteNode
+                      :installed
+                    )), "Example")))),
+          (:line, 109, :none),
+          (:call, (:., :Pkg, (:quote, #QuoteNode
+                :rm
+              )), "Example"),
+          (:line, 110, :none),
+          (:macrocall, Symbol("@test"), (:call, :isempty, (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :installed
+                  ))))),
+          (:line, 111, :none),
+          (:macrocall, Symbol("@test"), (:call, :!, (:call, :isempty, (:call, (:., :Pkg, (:quote, #QuoteNode
+                      :available
+                    )), "Example")))),
+          (:line, 112, :none),
+          (:macrocall, Symbol("@test"), (:call, :!, (:call, :in, "Example", (:call, :keys, (:call, (:., :Pkg, (:quote, #QuoteNode
+                        :installed
+                      ))))))),
+          (:line, 113, :none),
+          (:call, (:., :Pkg, (:quote, #QuoteNode
+                :rm
+              )), "Example"),
+          (:line, 114, :none),
+          (:macrocall, Symbol("@test"), (:call, :isempty, (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :installed
+                  ))))),
+          (:line, 115, :none),
+          (:macrocall, Symbol("@test"), (:call, :!, (:call, :isempty, (:call, (:., :Pkg, (:quote, #QuoteNode
+                      :available
+                    )), "Example")))),
+          (:line, 116, :none),
+          (:macrocall, Symbol("@test"), (:call, :!, (:call, :in, "Example", (:call, :keys, (:call, (:., :Pkg, (:quote, #QuoteNode
+                        :installed
+                      ))))))),
+          (:line, 117, :none),
+          (:call, (:., :Pkg, (:quote, #QuoteNode
+                :clone
+              )), "https://github.com/JuliaLang/Example.jl.git"),
+          (:line, 118, :none),
+          (:macrocall, Symbol("@test"), (:call, :(==), (:vect, (:..., (:call, :keys, (:call, (:., :Pkg, (:quote, #QuoteNode
+                          :installed
+                        )))))), (:vect, "Example"))),
+          (:line, 119, :none),
+          (:call, (:., :Pkg, (:quote, #QuoteNode
+                :status
+              )), "Example", :iob),
+          (:line, 120, :none),
+          (:(=), :str, (:call, :chomp, (:call, :String, (:call, :take!, :iob)))),
+          (:line, 121, :none),
+          (:macrocall, Symbol("@test"), (:call, :startswith, :str, " - Example")),
+          (:line, 122, :none),
+          (:macrocall, Symbol("@test"), (:call, :endswith, :str, "master")),
+          (:line, 123, :none),
+          (:call, (:., :Pkg, (:quote, #QuoteNode
+                :free
+              )), "Example"),
+          (:line, 124, :none),
+          (:call, (:., :Pkg, (:quote, #QuoteNode
+                :status
+              )), "Example", :iob),
+          (:line, 125, :none),
+          (:(=), :str, (:call, :chomp, (:call, :String, (:call, :take!, :iob)))),
+          (:line, 126, :none),
+          (:macrocall, Symbol("@test"), (:call, :endswith, :str, (:call, :string, (:call, (:., :Pkg, (:quote, #QuoteNode
+                      :installed
+                    )), "Example")))),
+          (:line, 127, :none),
+          (:call, (:., :Pkg, (:quote, #QuoteNode
+                :checkout
+              )), "Example"),
+          (:line, 128, :none),
+          (:call, (:., :Pkg, (:quote, #QuoteNode
+                :free
+              )), (:tuple, "Example")),
+          (:line, 129, :none),
+          (:call, (:., :Pkg, (:quote, #QuoteNode
+                :status
+              )), "Example", :iob),
+          (:line, 130, :none),
+          (:(=), :str, (:call, :chomp, (:call, :String, (:call, :take!, :iob)))),
+          (:line, 131, :none),
+          (:macrocall, Symbol("@test"), (:call, :endswith, :str, (:call, :string, (:call, (:., :Pkg, (:quote, #QuoteNode
+                      :installed
+                    )), "Example")))),
+          (:line, 134, :none),
+          (:let, (:block,
+              (:line, 138, :none),
+              (:call, (:., :LibGit2, (:quote, #QuoteNode
+                    :with
+                  )), (:->, (:tuple, :repo), (:block,
+                    (:line, 139, :none),
+                    (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :branch!
+                        )), :repo, :branch_name, :branch_commit, (:kw, :set_head, false))
+                  )), (:., :LibGit2, (:quote, #QuoteNode
+                    :GitRepo
+                  )), (:call, (:., :Pkg, (:quote, #QuoteNode
+                      :dir
+                    )), "Example")),
+              (:line, 142, :none),
+              (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :clone
+                  )), (:call, (:., :Pkg, (:quote, #QuoteNode
+                      :dir
+                    )), "Example"), "Example2"),
+              (:line, 143, :none),
+              (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :clone
+                  )), (:call, (:., :Pkg, (:quote, #QuoteNode
+                      :dir
+                    )), "Example"), "Example3"),
+              (:line, 144, :none),
+              (:call, :open, (:->, (:tuple, :f), (:block,
+                    (:line, 145, :none),
+                    (:call, :println, :f, "overwritten")
+                  )), (:call, (:., :Pkg, (:quote, #QuoteNode
+                      :dir
+                    )), "Example3", "README.md"), "w"),
+              (:line, 147, :none),
+              (:call, (:., :LibGit2, (:quote, #QuoteNode
+                    :with
+                  )), (:->, (:tuple, :repo), (:block,
+                    (:line, 148, :none),
+                    (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :add!
+                        )), :repo, "README.md"),
+                    (:line, 149, :none),
+                    (:(=), :test_sig, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :Signature
+                          )), "TEST", "TEST@TEST.COM", (:call, :round, (:call, :time), 0), 0)),
+                    (:line, 150, :none),
+                    (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :commit
+                        )), (:parameters, (:kw, :author, :test_sig), (:kw, :committer, :test_sig)), :repo, "testmsg")
+                  )), (:., :LibGit2, (:quote, #QuoteNode
+                    :GitRepo
+                  )), (:call, (:., :Pkg, (:quote, #QuoteNode
+                      :dir
+                    )), "Example3")),
+              (:line, 153, :none),
+              (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :checkout
+                  )), "Example2", :branch_name),
+              (:line, 154, :none),
+              (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :checkout
+                  )), "Example3", :branch_name),
+              (:line, 156, :none),
+              (:call, (:., :LibGit2, (:quote, #QuoteNode
+                    :with
+                  )), (:->, (:tuple, :repo), (:block,
+                    (:line, 157, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :head_oid
+                            )), :repo), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :GitHash
+                            )), :branch_commit)))
+                  )), (:., :LibGit2, (:quote, #QuoteNode
+                    :GitRepo
+                  )), (:call, (:., :Pkg, (:quote, #QuoteNode
+                      :dir
+                    )), "Example2")),
+              (:line, 159, :none),
+              (:call, (:., :LibGit2, (:quote, #QuoteNode
+                    :with
+                  )), (:->, (:tuple, :repo), (:block,
+                    (:line, 160, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :head_oid
+                            )), :repo), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :GitHash
+                            )), :branch_commit)))
+                  )), (:., :LibGit2, (:quote, #QuoteNode
+                    :GitRepo
+                  )), (:call, (:., :Pkg, (:quote, #QuoteNode
+                      :dir
+                    )), "Example3"))
+            ), (:(=), :branch_name, "test-branch-1"), (:(=), :branch_commit, "ba3888212e30a7974ac6803a89e64c7098f4865e")),
+          (:line, 165, :none),
+          (:let, (:block,
+              (:line, 169, :none),
+              (:call, (:., :LibGit2, (:quote, #QuoteNode
+                    :with
+                  )), (:->, (:tuple, :repo), (:block,
+                    (:line, 170, :none),
+                    (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :branch!
+                        )), :repo, :branch_name, :branch_commit, (:kw, :set_head, true))
+                  )), (:., :LibGit2, (:quote, #QuoteNode
+                    :GitRepo
+                  )), (:call, (:., :Pkg, (:quote, #QuoteNode
+                      :dir
+                    )), "Example")),
+              (:line, 174, :none),
+              (:call, :open, (:->, (:tuple, :f), (:block,
+                    (:line, 175, :none),
+                    (:call, :println, :f, "overwritten")
+                  )), (:call, (:., :Pkg, (:quote, #QuoteNode
+                      :dir
+                    )), "Example", "README.md"), "w"),
+              (:line, 178, :none),
+              (:(=), :test_commit, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                      :with
+                    )), (:->, (:tuple, :repo), (:block,
+                      (:line, 179, :none),
+                      (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :add!
+                          )), :repo, "README.md"),
+                      (:line, 180, :none),
+                      (:(=), :test_sig, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :Signature
+                            )), "TEST", "TEST@TEST.COM", (:call, :round, (:call, :time), 0), 0)),
+                      (:line, 181, :none),
+                      (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :commit
+                          )), (:parameters, (:kw, :author, :test_sig), (:kw, :committer, :test_sig)), :repo, "testmsg")
+                    )), (:., :LibGit2, (:quote, #QuoteNode
+                      :GitRepo
+                    )), (:call, (:., :Pkg, (:quote, #QuoteNode
+                        :dir
+                      )), "Example"))),
+              (:line, 183, :none),
+              (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :checkout
+                  )), "Example"),
+              (:line, 185, :none),
+              (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :clone
+                  )), (:call, (:., :Pkg, (:quote, #QuoteNode
+                      :dir
+                    )), "Example"), "Example4"),
+              (:line, 186, :none),
+              (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :checkout
+                  )), "Example4", :branch_name),
+              (:line, 188, :none),
+              (:call, (:., :LibGit2, (:quote, #QuoteNode
+                    :with
+                  )), (:->, (:tuple, :repo), (:block,
+                    (:line, 189, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :head_oid
+                            )), :repo), :test_commit))
+                  )), (:., :LibGit2, (:quote, #QuoteNode
+                    :GitRepo
+                  )), (:call, (:., :Pkg, (:quote, #QuoteNode
+                      :dir
+                    )), "Example4"))
+            ), (:(=), :branch_name, "test-branch-2"), (:(=), :branch_commit, "ba3888212e30a7974ac6803a89e64c7098f4865e")),
+          (:line, 194, :none),
+          (:try, (:block,
+              (:line, 195, :none),
+              (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :add
+                  )), "REPL"),
+              (:line, 196, :none),
+              (:call, :error, "unexpected")
+            ), :err, (:block,
+              (:line, 198, :none),
+              (:macrocall, Symbol("@test"), (:call, :isa, (:., (:ref, (:., :err, (:quote, #QuoteNode
+                          :exceptions
+                        )), 1), (:quote, #QuoteNode
+                      :ex
+                    )), :PkgError)),
+              (:line, 199, :none),
+              (:macrocall, Symbol("@test"), (:call, :(==), (:., (:., (:ref, (:., :err, (:quote, #QuoteNode
+                            :exceptions
+                          )), 1), (:quote, #QuoteNode
+                        :ex
+                      )), (:quote, #QuoteNode
+                      :msg
+                    )), (:call, :*, "REPL can't be installed because ", (:string, "it has no versions that support ", :VERSION, " of julia. You may "), "need to update METADATA by running `Pkg.update()`")))
+            )),
+          (:line, 205, :none),
+          (:try, (:block,
+              (:line, 206, :none),
+              (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :add
+                  )), "NonexistentPackage"),
+              (:line, 207, :none),
+              (:call, :error, "unexpected")
+            ), :err, (:block,
+              (:line, 209, :none),
+              (:macrocall, Symbol("@test"), (:call, :isa, (:., (:ref, (:., :err, (:quote, #QuoteNode
+                          :exceptions
+                        )), 1), (:quote, #QuoteNode
+                      :ex
+                    )), :PkgError)),
+              (:line, 210, :none),
+              (:macrocall, Symbol("@test"), (:call, :(==), (:., (:., (:ref, (:., :err, (:quote, #QuoteNode
+                            :exceptions
+                          )), 1), (:quote, #QuoteNode
+                        :ex
+                      )), (:quote, #QuoteNode
+                      :msg
+                    )), "unknown package NonexistentPackage"))
+            )),
+          (:line, 212, :none),
+          (:try, (:block,
+              (:line, 213, :none),
+              (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :available
+                  )), "NonexistentPackage"),
+              (:line, 214, :none),
+              (:call, :error, "unexpected")
+            ), :err, (:block,
+              (:line, 216, :none),
+              (:macrocall, Symbol("@test"), (:call, :isa, :err, :PkgError)),
+              (:line, 217, :none),
+              (:macrocall, Symbol("@test"), (:call, :(==), (:., :err, (:quote, #QuoteNode
+                      :msg
+                    )), "NonexistentPackage is not a package (not registered or installed)"))
+            )),
+          (:line, 219, :none),
+          (:try, (:block,
+              (:line, 220, :none),
+              (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :pin
+                  )), "NonexistentPackage", (:macrocall, Symbol("@v_str"), "1.0.0")),
+              (:line, 221, :none),
+              (:call, :error, "unexpected")
+            ), :err, (:block,
+              (:line, 223, :none),
+              (:macrocall, Symbol("@test"), (:call, :isa, :err, :PkgError)),
+              (:line, 224, :none),
+              (:macrocall, Symbol("@test"), (:call, :(==), (:., :err, (:quote, #QuoteNode
+                      :msg
+                    )), "NonexistentPackage is not a git repo"))
+            )),
+          (:line, 228, :none),
+          (:try, (:block,
+              (:line, 229, :none),
+              (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :pin
+                  )), "METADATA", (:macrocall, Symbol("@v_str"), "1.0.0")),
+              (:line, 230, :none),
+              (:call, :error, "unexpected")
+            ), :err, (:block,
+              (:line, 232, :none),
+              (:macrocall, Symbol("@test"), (:call, :isa, :err, :PkgError)),
+              (:line, 233, :none),
+              (:macrocall, Symbol("@test"), (:call, :(==), (:., :err, (:quote, #QuoteNode
+                      :msg
+                    )), "METADATA cannot be pinned – not an installed package"))
+            )),
+          (:line, 237, :none),
+          (:try, (:block,
+              (:line, 238, :none),
+              (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :pin
+                  )), "Example", (:macrocall, Symbol("@v_str"), "2147483647.0.0")),
+              (:line, 239, :none),
+              (:call, :error, "unexpected")
+            ), :err, (:block,
+              (:line, 241, :none),
+              (:macrocall, Symbol("@test"), (:call, :isa, :err, :PkgError)),
+              (:line, 242, :none),
+              (:macrocall, Symbol("@test"), (:call, :(==), (:., :err, (:quote, #QuoteNode
+                      :msg
+                    )), "Example – 2147483647.0.0 is not a registered version"))
+            )),
+          (:line, 246, :none),
+          (:call, (:., :LibGit2, (:quote, #QuoteNode
+                :with
+              )), (:->, (:tuple, :repo), (:block,
+                (:line, 247, :none),
+                (:call, (:., :LibGit2, (:quote, #QuoteNode
+                      :checkout!
+                    )), :repo, "72f09c7d0099793378c645929a9961155faae6d2")
+              )), (:., :LibGit2, (:quote, #QuoteNode
+                :GitRepo
+              )), (:call, (:., :Pkg, (:quote, #QuoteNode
+                  :dir
+                )), "Example")),
+          (:line, 249, :none),
+          (:macrocall, Symbol("@test"), (:call, :>, (:ref, (:call, (:., :Pkg, (:quote, #QuoteNode
+                      :installed
+                    ))), "Example"), (:macrocall, Symbol("@v_str"), "0.0.0"))),
+          (:line, 252, :none),
+          (:block,
+            (:line, 253, :none),
+            (:try, (:block,
+                (:line, 254, :none),
+                (:call, (:., :Pkg, (:quote, #QuoteNode
+                      :test
+                    )), "IDoNotExist"),
+                (:line, 255, :none),
+                (:call, :error, "unexpected")
+              ), :ex, (:block,
+                (:line, 257, :none),
+                (:macrocall, Symbol("@test"), (:call, :isa, :ex, (:., (:., :Pkg, (:quote, #QuoteNode
+                          :Entry
+                        )), (:quote, #QuoteNode
+                        :PkgTestError
+                      )))),
+                (:line, 258, :none),
+                (:macrocall, Symbol("@test"), (:call, :(==), (:., :ex, (:quote, #QuoteNode
+                        :msg
+                      )), "IDoNotExist is not an installed package"))
+              )),
+            (:line, 261, :none),
+            (:try, (:block,
+                (:line, 262, :none),
+                (:call, (:., :Pkg, (:quote, #QuoteNode
+                      :test
+                    )), "IDoNotExist1", "IDoNotExist2"),
+                (:line, 263, :none),
+                (:call, :error, "unexpected")
+              ), :ex, (:block,
+                (:line, 265, :none),
+                (:macrocall, Symbol("@test"), (:call, :isa, :ex, (:., (:., :Pkg, (:quote, #QuoteNode
+                          :Entry
+                        )), (:quote, #QuoteNode
+                        :PkgTestError
+                      )))),
+                (:line, 266, :none),
+                (:macrocall, Symbol("@test"), (:call, :(==), (:., :ex, (:quote, #QuoteNode
+                        :msg
+                      )), "IDoNotExist1 and IDoNotExist2 are not installed packages"))
+              ))
+          ),
+          (:line, 271, :none),
+          (:macrocall, Symbol("@test"), (:call, :(==), "", (:call, :capture_stdout, (:->, (:tuple,), (:block,
+                    (:line, 272, :none),
+                    (:macrocall, Symbol("@test_warn"), "INFO: Freeing Example", (:call, (:., :Pkg, (:quote, #QuoteNode
+                            :free
+                          )), "Example")),
+                    (:line, 274, :none),
+                    (:macrocall, Symbol("@test_warn"), (:macrocall, Symbol("@r_str"), "^INFO: Creating Example branch pinned\\.[0-9a-f]{8}\\.tmp\$"), (:call, (:., :Pkg, (:quote, #QuoteNode
+                            :pin
+                          )), "Example")),
+                    (:line, 275, :none),
+                    (:(=), :vers, (:call, (:., :Pkg, (:quote, #QuoteNode
+                            :installed
+                          )), "Example")),
+                    (:line, 276, :none),
+                    (:(=), :branch, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :with
+                          )), (:->, (:tuple, :repo), (:block,
+                            (:line, 277, :none),
+                            (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                  :branch
+                                )), :repo)
+                          )), (:., :LibGit2, (:quote, #QuoteNode
+                            :GitRepo
+                          )), (:call, (:., :Pkg, (:quote, #QuoteNode
+                              :dir
+                            )), "Example"))),
+                    (:line, 280, :none),
+                    (:macrocall, Symbol("@test_warn"), "INFO: Freeing Example", (:call, (:., :Pkg, (:quote, #QuoteNode
+                            :free
+                          )), "Example")),
+                    (:line, 282, :none),
+                    (:macrocall, Symbol("@test_warn"), (:tuple, "INFO: Creating Example branch pinned.b1990792.tmp", "INFO: No packages to install, update or remove"), (:call, (:., :Pkg, (:quote, #QuoteNode
+                            :pin
+                          )), "Example", (:macrocall, Symbol("@v_str"), "0.4.0"))),
+                    (:line, 284, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Pkg, (:quote, #QuoteNode
+                              :installed
+                            )), "Example"), (:macrocall, Symbol("@v_str"), "0.4.0"))),
+                    (:line, 286, :none),
+                    (:macrocall, Symbol("@test_warn"), (:macrocall, Symbol("@r_str"), "^INFO: Package Example is already pinned to the selected commit\$"), (:call, (:., :Pkg, (:quote, #QuoteNode
+                            :pin
+                          )), "Example", (:macrocall, Symbol("@v_str"), "0.4.0"))),
+                    (:line, 287, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Pkg, (:quote, #QuoteNode
+                              :installed
+                            )), "Example"), (:macrocall, Symbol("@v_str"), "0.4.0"))),
+                    (:line, 289, :none),
+                    (:macrocall, Symbol("@test_warn"), (:macrocall, Symbol("@r_str"), "^INFO: Package Example is already pinned\$"), (:call, (:., :Pkg, (:quote, #QuoteNode
+                            :pin
+                          )), "Example")),
+                    (:line, 290, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Pkg, (:quote, #QuoteNode
+                              :installed
+                            )), "Example"), (:macrocall, Symbol("@v_str"), "0.4.0"))),
+                    (:line, 292, :none),
+                    (:macrocall, Symbol("@test_warn"), "INFO: Package Example: skipping update (pinned)...", (:call, (:., :Pkg, (:quote, #QuoteNode
+                            :update
+                          )))),
+                    (:line, 293, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Pkg, (:quote, #QuoteNode
+                              :installed
+                            )), "Example"), (:macrocall, Symbol("@v_str"), "0.4.0"))),
+                    (:line, 295, :none),
+                    (:macrocall, Symbol("@test_warn"), (:tuple, "INFO: Creating Example branch pinned.d1ef7b00.tmp", "INFO: No packages to install, update or remove"), (:call, (:., :Pkg, (:quote, #QuoteNode
+                            :pin
+                          )), "Example", (:macrocall, Symbol("@v_str"), "0.3.1"))),
+                    (:line, 297, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Pkg, (:quote, #QuoteNode
+                              :installed
+                            )), "Example"), (:macrocall, Symbol("@v_str"), "0.3.1"))),
+                    (:line, 299, :none),
+                    (:macrocall, Symbol("@test_warn"), (:tuple, "INFO: Package Example: checking out existing branch pinned.b1990792.tmp", "INFO: No packages to install, update or remove"), (:call, (:., :Pkg, (:quote, #QuoteNode
+                            :pin
+                          )), "Example", (:macrocall, Symbol("@v_str"), "0.4.0"))),
+                    (:line, 301, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Pkg, (:quote, #QuoteNode
+                              :installed
+                            )), "Example"), (:macrocall, Symbol("@v_str"), "0.4.0"))),
+                    (:line, 303, :none),
+                    (:macrocall, Symbol("@test_warn"), (:tuple, "INFO: Freeing Example", "INFO: No packages to install, update or remove"), (:call, (:., :Pkg, (:quote, #QuoteNode
+                            :free
+                          )), "Example")),
+                    (:line, 305, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Pkg, (:quote, #QuoteNode
+                              :installed
+                            )), "Example"), :vers)),
+                    (:line, 307, :none),
+                    (:macrocall, Symbol("@test_warn"), (:call, :Regex, (:string, "^INFO: Package Example: checking out existing branch ", :branch, "\$")), (:call, (:., :Pkg, (:quote, #QuoteNode
+                            :pin
+                          )), "Example")),
+                    (:line, 308, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Pkg, (:quote, #QuoteNode
+                              :installed
+                            )), "Example"), :vers)),
+                    (:line, 310, :none),
+                    (:macrocall, Symbol("@test_warn"), "INFO: Freeing Example", (:call, (:., :Pkg, (:quote, #QuoteNode
+                            :free
+                          )), "Example")),
+                    (:line, 311, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Pkg, (:quote, #QuoteNode
+                              :installed
+                            )), "Example"), :vers))
+                  ))))),
+          (:line, 314, :none),
+          (:block,
+            (:line, 316, :none),
+            (:call, :include, (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :dir
+                  )), "Example", "src", "Example.jl")),
+            (:line, 317, :none),
+            (:(=), :meth, (:call, :first, (:call, :methods, (:., :Example, (:quote, #QuoteNode
+                      :domath
+                    ))))),
+            (:line, 318, :none),
+            (:(=), :fname, (:call, :string, (:., :meth, (:quote, #QuoteNode
+                    :file
+                  )))),
+            (:line, 319, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:call, :in, '\\', :fname), (:call, :is_windows))),
+            (:line, 320, :none),
+            (:macrocall, Symbol("@test"), (:call, :startswith, (:call, (:., :Base, (:quote, #QuoteNode
+                      :url
+                    )), :meth), "https://github.com/JuliaLang/Example.jl/tree"))
+          ),
+          (:line, 324, :none),
+          (:block,
+            (:line, 325, :none),
+            (:call, :mkdir, (:call, :joinpath, (:call, (:., :Pkg, (:quote, #QuoteNode
+                      :dir
+                    ))), "NOTGIT")),
+            (:line, 326, :none),
+            (:call, :(==), (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :installed
+                  )), "NOTGIT"), (:call, :typemin, :VersionNumber)),
+            (:line, 327, :none),
+            (:call, :(==), (:ref, (:call, (:., :Pkg, (:quote, #QuoteNode
+                      :installed
+                    ))), "NOTGIT"), (:call, :typemin, :VersionNumber))
+          ),
+          (:line, 330, :none),
+          (:block,
+            (:line, 332, :none),
+            (:(=), :pth, (:call, :joinpath, (:call, (:., :Pkg, (:quote, #QuoteNode
+                      :dir
+                    ))), "BAREGIT")),
+            (:line, 333, :none),
+            (:call, :mkdir, :pth),
+            (:line, 335, :none),
+            (:(=), :repo, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                    :init
+                  )), :pth, true)),
+            (:line, 336, :none),
+            (:macrocall, Symbol("@test"), (:call, :(!=), (:., :repo, (:quote, #QuoteNode
+                    :ptr
+                  )), :C_NULL)),
+            (:line, 337, :none),
+            (:call, :close, :repo),
+            (:line, 338, :none),
+            (:call, (:., :Pkg, (:quote, #QuoteNode
+                  :update
+                )))
+          ),
+          (:line, 342, :none),
+          (:block,
+            (:line, 343, :none),
+            (:try, (:block,
+                (:line, 344, :none),
+                (:call, (:., :Pkg, (:quote, #QuoteNode
+                      :register
+                    )), "IDoNotExist"),
+                (:line, 345, :none),
+                (:call, :error, "unexpected")
+              ), :ex, (:block,
+                (:line, 347, :none),
+                (:macrocall, Symbol("@test"), (:call, :(==), (:., :ex, (:quote, #QuoteNode
+                        :msg
+                      )), "Pkg.register(pkg,[url]) has been moved to the package PkgDev.jl.\nRun Pkg.add(\"PkgDev\") to install PkgDev on Julia v0.5-"))
+              )),
+            (:line, 350, :none),
+            (:try, (:block,
+                (:line, 351, :none),
+                (:call, (:., :Pkg, (:quote, #QuoteNode
+                      :tag
+                    )), "IDoNotExist"),
+                (:line, 352, :none),
+                (:call, :error, "unexpected")
+              ), :ex, (:block,
+                (:line, 354, :none),
+                (:macrocall, Symbol("@test"), (:call, :(==), (:., :ex, (:quote, #QuoteNode
+                        :msg
+                      )), "Pkg.tag(pkg, [ver, [commit]]) has been moved to the package PkgDev.jl.\nRun Pkg.add(\"PkgDev\") to install PkgDev on Julia v0.5-"))
+              )),
+            (:line, 357, :none),
+            (:try, (:block,
+                (:line, 358, :none),
+                (:call, (:., :Pkg, (:quote, #QuoteNode
+                      :generate
+                    )), "IDoNotExist", "MIT"),
+                (:line, 359, :none),
+                (:call, :error, "unexpected")
+              ), :ex, (:block,
+                (:line, 361, :none),
+                (:macrocall, Symbol("@test"), (:call, :(==), (:., :ex, (:quote, #QuoteNode
+                        :msg
+                      )), "Pkg.generate(pkg, license) has been moved to the package PkgDev.jl.\nRun Pkg.add(\"PkgDev\") to install PkgDev on Julia v0.5-"))
+              )),
+            (:line, 364, :none),
+            (:try, (:block,
+                (:line, 365, :none),
+                (:call, (:., :Pkg, (:quote, #QuoteNode
+                      :publish
+                    ))),
+                (:line, 366, :none),
+                (:call, :error, "unexpected")
+              ), :ex, (:block,
+                (:line, 368, :none),
+                (:macrocall, Symbol("@test"), (:call, :(==), (:., :ex, (:quote, #QuoteNode
+                        :msg
+                      )), "Pkg.publish() has been moved to the package PkgDev.jl.\nRun Pkg.add(\"PkgDev\") to install PkgDev on Julia v0.5-"))
+              )),
+            (:line, 371, :none),
+            (:try, (:block,
+                (:line, 372, :none),
+                (:call, (:., :Pkg, (:quote, #QuoteNode
+                      :license
+                    ))),
+                (:line, 373, :none),
+                (:call, :error, "unexpected")
+              ), :ex, (:block,
+                (:line, 375, :none),
+                (:macrocall, Symbol("@test"), (:call, :(==), (:., :ex, (:quote, #QuoteNode
+                        :msg
+                      )), "Pkg.license([lic]) has been moved to the package PkgDev.jl.\nRun Pkg.add(\"PkgDev\") to install PkgDev on Julia v0.5-"))
+              )),
+            (:line, 377, :none),
+            (:try, (:block,
+                (:line, 378, :none),
+                (:call, (:., :Pkg, (:quote, #QuoteNode
+                      :submit
+                    )), "IDoNotExist"),
+                (:line, 379, :none),
+                (:call, :error, "unexpected")
+              ), :ex, (:block,
+                (:line, 381, :none),
+                (:macrocall, Symbol("@test"), (:call, :(==), (:., :ex, (:quote, #QuoteNode
+                        :msg
+                      )), "Pkg.submit(pkg[, commit]) has been moved to the package PkgDev.jl.\nRun Pkg.add(\"PkgDev\") to install PkgDev on Julia v0.5-"))
+              )),
+            (:line, 383, :none),
+            (:try, (:block,
+                (:line, 384, :none),
+                (:call, (:., :Pkg, (:quote, #QuoteNode
+                      :submit
+                    )), "IDoNotExist", "nonexistentcommit"),
+                (:line, 385, :none),
+                (:call, :error, "unexpected")
+              ), :ex, (:block,
+                (:line, 387, :none),
+                (:macrocall, Symbol("@test"), (:call, :(==), (:., :ex, (:quote, #QuoteNode
+                        :msg
+                      )), "Pkg.submit(pkg[, commit]) has been moved to the package PkgDev.jl.\nRun Pkg.add(\"PkgDev\") to install PkgDev on Julia v0.5-"))
+              ))
+          ),
+          (:line, 392, :none),
+          (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., (:., :Pkg, (:quote, #QuoteNode
+                      :Read
+                    )), (:quote, #QuoteNode
+                    :url
+                  )), "Example"), "git://github.com/JuliaLang/Example.jl.git")),
+          (:line, 396, :none),
+          (:block,
+            (:line, 397, :none),
+            (:(=), :pth, (:call, :joinpath, (:call, (:., :Pkg, (:quote, #QuoteNode
+                      :dir
+                    ))), "BuildFail")),
+            (:line, 398, :none),
+            (:call, :mkdir, :pth),
+            (:line, 399, :none),
+            (:(=), :depspath, (:call, :joinpath, :pth, "deps")),
+            (:line, 400, :none),
+            (:call, :mkdir, :depspath),
+            (:line, 401, :none),
+            (:(=), :depsbuild, (:call, :joinpath, :depspath, "build.jl")),
+            (:line, 402, :none),
+            (:call, :touch, :depsbuild),
+            (:line, 405, :none),
+            (:(=), :msg, (:call, :readstring, (:macrocall, Symbol("@cmd"), "\$(Base.julia_cmd()) --startup-file=no -e 'redirect_stderr(STDOUT); Pkg.build(\"BuildFail\")'"))),
+            (:line, 406, :none),
+            (:macrocall, Symbol("@test"), (:call, :contains, :msg, "Building BuildFail")),
+            (:line, 407, :none),
+            (:macrocall, Symbol("@test"), (:call, :!, (:call, :contains, :msg, "ERROR"))),
+            (:line, 408, :none),
+            (:call, :open, (:->, (:tuple, :fd), (:block,
+                  (:line, 409, :none),
+                  (:call, :println, :fd, "error(\"Throw build error\")")
+                )), :depsbuild, "w"),
+            (:line, 411, :none),
+            (:(=), :msg, (:call, :readstring, (:macrocall, Symbol("@cmd"), "\$(Base.julia_cmd()) --startup-file=no -e 'redirect_stderr(STDOUT); Pkg.build(\"BuildFail\")'"))),
+            (:line, 412, :none),
+            (:macrocall, Symbol("@test"), (:call, :contains, :msg, "Building BuildFail")),
+            (:line, 413, :none),
+            (:macrocall, Symbol("@test"), (:call, :contains, :msg, "ERROR")),
+            (:line, 414, :none),
+            (:macrocall, Symbol("@test"), (:call, :contains, :msg, "Pkg.build(\"BuildFail\")")),
+            (:line, 415, :none),
+            (:macrocall, Symbol("@test"), (:call, :contains, :msg, "Throw build error"))
+          ),
+          (:line, 419, :none),
+          (:let, (:block,
+              (:line, 420, :none),
+              (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :rm
+                  )), :package),
+              (:line, 421, :none),
+              (:macrocall, Symbol("@test"), (:call, :(===), (:call, (:., :Pkg, (:quote, #QuoteNode
+                        :installed
+                      )), :package), :nothing)),
+              (:line, 422, :none),
+              (:(=), :msg, (:call, :readstring, (:call, :ignorestatus, (:macrocall, Symbol("@cmd"), "\$(Base.julia_cmd()) --startup-file=no -e \"redirect_stderr(STDOUT); Pkg.build(\\\"\$package\\\")\"")))),
+              (:line, 423, :none),
+              (:macrocall, Symbol("@test"), (:call, :contains, :msg, (:string, :package, " is not an installed package"))),
+              (:line, 424, :none),
+              (:macrocall, Symbol("@test"), (:call, :!, (:call, :contains, :msg, "signal (15)")))
+            ), (:(=), :package, "Example")),
+          (:line, 428, :none),
+          (:call, (:., :Pkg, (:quote, #QuoteNode
+                :cd
+              )), (:->, (:tuple,), (:block,
+                (:line, 429, :none),
+                (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., (:., :Pkg, (:quote, #QuoteNode
+                            :Entry
+                          )), (:quote, #QuoteNode
+                          :url_and_pkg
+                        )), "Example"), (:tuple, "git://github.com/JuliaLang/Example.jl.git", "Example"))),
+                (:line, 430, :none),
+                (:for, (:(=), :url, (:vect, "https://github.com/Org/Nonsense", "git@github.com:Org/Nonsense", "file:///home/user/Nonsense", "/home/user/Nonsense")), (:block,
+                    (:line, 436, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., (:., :Pkg, (:quote, #QuoteNode
+                                :Entry
+                              )), (:quote, #QuoteNode
+                              :url_and_pkg
+                            )), :url), (:tuple, :url, "Nonsense"))),
+                    (:line, 437, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., (:., :Pkg, (:quote, #QuoteNode
+                                :Entry
+                              )), (:quote, #QuoteNode
+                              :url_and_pkg
+                            )), (:string, :url, ".jl")), (:tuple, (:string, :url, ".jl"), "Nonsense"))),
+                    (:line, 438, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., (:., :Pkg, (:quote, #QuoteNode
+                                :Entry
+                              )), (:quote, #QuoteNode
+                              :url_and_pkg
+                            )), (:string, :url, ".git")), (:tuple, (:string, :url, ".git"), "Nonsense"))),
+                    (:line, 439, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., (:., :Pkg, (:quote, #QuoteNode
+                                :Entry
+                              )), (:quote, #QuoteNode
+                              :url_and_pkg
+                            )), (:string, :url, ".jl.git")), (:tuple, (:string, :url, ".jl.git"), "Nonsense")))
+                  )),
+                (:line, 441, :none),
+                (:(=), :pkg, (:call, :randstring, 20)),
+                (:line, 442, :none),
+                (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., (:., :Pkg, (:quote, #QuoteNode
+                            :Entry
+                          )), (:quote, #QuoteNode
+                          :url_and_pkg
+                        )), :pkg), (:tuple, :pkg, :pkg)))
+              ))),
+          (:line, 446, :none),
+          (:macrocall, Symbol("@test"), (:call, :(==), "", (:call, :capture_stdout, (:->, (:tuple,), (:block,
+                    (:line, 447, :none),
+                    (:(=), :nothingtodomsg, "INFO: No packages to install, update or remove"),
+                    (:line, 449, :none),
+                    (:macrocall, Symbol("@test_warn"), "INFO: Installing Example v", (:block,
+                        (:line, 450, :none),
+                        (:call, (:., :Pkg, (:quote, #QuoteNode
+                              :rm
+                            )), "Example"),
+                        (:line, 451, :none),
+                        (:call, (:., :Pkg, (:quote, #QuoteNode
+                              :add
+                            )), "Example")
+                      )),
+                    (:line, 454, :none),
+                    (:macrocall, Symbol("@test_warn"), :nothingtodomsg, (:call, (:., :Pkg, (:quote, #QuoteNode
+                            :update
+                          )), "Example")),
+                    (:line, 456, :none),
+                    (:macrocall, Symbol("@test_warn"), "INFO: Installing Example v0.4.0", (:block,
+                        (:line, 457, :none),
+                        (:call, (:., :Pkg, (:quote, #QuoteNode
+                              :rm
+                            )), "Example"),
+                        (:line, 458, :none),
+                        (:call, (:., :Pkg, (:quote, #QuoteNode
+                              :add
+                            )), "Example", (:macrocall, Symbol("@v_str"), "0"), (:macrocall, Symbol("@v_str"), "0.4.1-"))
+                      )),
+                    (:line, 461, :none),
+                    (:macrocall, Symbol("@test_warn"), (:tuple, (:macrocall, Symbol("@r_str"), "INFO: Package Example was set to version 0\\.4\\.0, but a higher version \\d+\\.\\d+\\.\\d+\\S* exists."), "The update is prevented by explicit requirements constraints. Edit your REQUIRE file to change this.", :nothingtodomsg), (:call, (:., :Pkg, (:quote, #QuoteNode
+                            :update
+                          )), "Example")),
+                    (:line, 465, :none),
+                    (:macrocall, Symbol("@test_warn"), "INFO: Installing Example", (:block,
+                        (:line, 466, :none),
+                        (:call, (:., :Pkg, (:quote, #QuoteNode
+                              :rm
+                            )), "Example"),
+                        (:line, 467, :none),
+                        (:call, (:., :Pkg, (:quote, #QuoteNode
+                              :add
+                            )), "Example"),
+                        (:line, 468, :none),
+                        (:call, (:., :Pkg, (:quote, #QuoteNode
+                              :pin
+                            )), "Example", (:macrocall, Symbol("@v_str"), "0.4.0"))
+                      )),
+                    (:line, 471, :none),
+                    (:macrocall, Symbol("@test_warn"), (:tuple, "INFO: Package Example: skipping update (pinned)...", (:macrocall, Symbol("@r_str"), "INFO: Package Example was set to version 0\\.4\\.0, but a higher version \\d+\\.\\d+\\.\\d+\\S* exists."), "The package is fixed. You can try using `Pkg.free(\"Example\")` to update it.", :nothingtodomsg), (:call, (:., :Pkg, (:quote, #QuoteNode
+                            :update
+                          )), "Example")),
+                    (:line, 476, :none),
+                    (:(=), :metadata_dir, (:call, (:., :Pkg, (:quote, #QuoteNode
+                            :dir
+                          )), "METADATA")),
+                    (:line, 477, :none),
+                    (:const, (:(=), :old_commit, "313bfaafa301e82d40574a778720e893c559a7e2")),
+                    (:line, 483, :none),
+                    (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :with
+                        )), (:->, (:tuple, :repo), (:block,
+                          (:line, 484, :none),
+                          (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :reset!
+                              )), :repo, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                  :GitHash
+                                )), :old_commit), (:., (:., :LibGit2, (:quote, #QuoteNode
+                                  :Consts
+                                )), (:quote, #QuoteNode
+                                :RESET_HARD
+                              )))
+                        )), (:., :LibGit2, (:quote, #QuoteNode
+                          :GitRepo
+                        )), :metadata_dir),
+                    (:line, 489, :none),
+                    (:macrocall, Symbol("@test"), (:call, :isempty, (:call, (:., :Pkg, (:quote, #QuoteNode
+                              :dependents
+                            )), "Example"))),
+                    (:line, 490, :none),
+                    (:macrocall, Symbol("@test"), (:call, :isempty, (:call, (:., :Pkg, (:quote, #QuoteNode
+                              :dependents
+                            )), "Example.jl"))),
+                    (:line, 492, :none),
+                    (:macrocall, Symbol("@test_warn"), (:->, :s, (:block,
+                          (:line, 492, :none),
+                          (:call, :!, (:call, :contains, :s, "updated but were already imported"))
+                        )), (:block,
+                        (:line, 493, :none),
+                        (:call, (:., :Pkg, (:quote, #QuoteNode
+                              :add
+                            )), "Iterators"),
+                        (:line, 494, :none),
+                        (:call, (:., :Pkg, (:quote, #QuoteNode
+                              :update
+                            )), "Iterators")
+                      )),
+                    (:line, 498, :none),
+                    (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :with
+                        )), (:->, (:tuple, :repo), (:block,
+                          (:line, 499, :none),
+                          (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :reset!
+                              )), :repo, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                  :GitHash
+                                )), :old_commit), (:., (:., :LibGit2, (:quote, #QuoteNode
+                                  :Consts
+                                )), (:quote, #QuoteNode
+                                :RESET_HARD
+                              )))
+                        )), (:., :LibGit2, (:quote, #QuoteNode
+                          :GitRepo
+                        )), :metadata_dir),
+                    (:line, 502, :none),
+                    (:macrocall, Symbol("@test_warn"), (:tuple, "INFO: Installing Colors v0.6.4", "INFO: Installing ColorTypes v0.2.2", "INFO: Installing FixedPointNumbers v0.1.3", "INFO: Installing Compat v0.7.18", "INFO: Installing Reexport v0.0.3"), (:call, (:., :Pkg, (:quote, #QuoteNode
+                            :add
+                          )), "Colors")),
+                    (:line, 508, :none),
+                    (:macrocall, Symbol("@test_warn"), (:tuple, (:macrocall, Symbol("@r_str"), "INFO: Upgrading ColorTypes: v0\\.2\\.2 => v\\d+\\.\\d+\\.\\d+"), (:macrocall, Symbol("@r_str"), "INFO: Upgrading Compat: v0\\.7\\.18 => v\\d+\\.\\d+\\.\\d+"), (:->, :s, (:block,
+                            (:line, 510, :none),
+                            (:call, :!, (:call, :contains, :s, "INFO: Upgrading Colors: "))
+                          ))), (:call, (:., :Pkg, (:quote, #QuoteNode
+                            :update
+                          )), "ColorTypes")),
+                    (:line, 511, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Pkg, (:quote, #QuoteNode
+                              :installed
+                            )), "Colors"), (:macrocall, Symbol("@v_str"), "0.6.4"))),
+                    (:line, 513, :none),
+                    (:macrocall, Symbol("@test_warn"), :nothingtodomsg, (:call, (:., :Pkg, (:quote, #QuoteNode
+                            :update
+                          )), "FixedPointNumbers"))
+                  ))))),
+          (:line, 517, :none),
+          (:let, (:block,
+              (:line, 518, :none),
+              (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :free
+                  )), :package),
+              (:line, 519, :none),
+              (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :rm
+                  )), :package),
+              (:line, 521, :none),
+              (:(=), :metadata_dir, (:call, (:., :Pkg, (:quote, #QuoteNode
+                      :dir
+                    )), "METADATA")),
+              (:line, 522, :none),
+              (:const, (:(=), :old_commit, "83ff7116e51fc9cdbd7e67affbd344b9f5c9dbf2")),
+              (:line, 525, :none),
+              (:call, (:., :LibGit2, (:quote, #QuoteNode
+                    :with
+                  )), (:->, (:tuple, :repo), (:block,
+                    (:line, 526, :none),
+                    (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :reset!
+                        )), :repo, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :GitHash
+                          )), :old_commit), (:., (:., :LibGit2, (:quote, #QuoteNode
+                            :Consts
+                          )), (:quote, #QuoteNode
+                          :RESET_HARD
+                        )))
+                  )), (:., :LibGit2, (:quote, #QuoteNode
+                    :GitRepo
+                  )), :metadata_dir),
+              (:line, 529, :none),
+              (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :add
+                  )), :package),
+              (:line, 530, :none),
+              (:(=), :msg, (:call, :readstring, (:call, :ignorestatus, (:macrocall, Symbol("@cmd"), "\$(Base.julia_cmd()) --startup-file=no -e\n            \"redirect_stderr(STDOUT); using Example; Pkg.update(\\\"\$package\\\")\"")))),
+              (:line, 532, :none),
+              (:macrocall, Symbol("@test"), (:call, :contains, :msg, (:string, "- ", :package, "\nRestart Julia to use the updated versions.")))
+            ), (:(=), :package, "Example"))
+        ))),
+    (:line, 536, :none),
+    (:macrocall, Symbol("@testset"), "Pkg functions with .jl extension", (:block,
+        (:line, 537, :none),
+        (:call, :temp_pkg_dir, (:->, (:tuple,), (:block,
+              (:line, 538, :none),
+              (:macrocall, Symbol("@test"), (:call, :(===), (:call, (:., :Pkg, (:quote, #QuoteNode
+                        :installed
+                      )), "Example.jl"), :nothing)),
+              (:line, 539, :none),
+              (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :add
+                  )), "Example.jl"),
+              (:line, 540, :none),
+              (:macrocall, Symbol("@test"), (:call, :(==), (:vect, (:..., (:call, :keys, (:call, (:., :Pkg, (:quote, #QuoteNode
+                              :installed
+                            )))))), (:vect, "Example"))),
+              (:line, 541, :none),
+              (:(=), :iob, (:call, :IOBuffer)),
+              (:line, 542, :none),
+              (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :checkout
+                  )), "Example.jl"),
+              (:line, 543, :none),
+              (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :status
+                  )), "Example.jl", :iob),
+              (:line, 544, :none),
+              (:(=), :str, (:call, :chomp, (:call, :String, (:call, :take!, :iob)))),
+              (:line, 545, :none),
+              (:macrocall, Symbol("@test"), (:call, :startswith, :str, " - Example")),
+              (:line, 546, :none),
+              (:macrocall, Symbol("@test"), (:call, :endswith, :str, "master")),
+              (:line, 547, :none),
+              (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :free
+                  )), "Example.jl"),
+              (:line, 548, :none),
+              (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :status
+                  )), "Example.jl", :iob),
+              (:line, 549, :none),
+              (:(=), :str, (:call, :chomp, (:call, :String, (:call, :take!, :iob)))),
+              (:line, 550, :none),
+              (:macrocall, Symbol("@test"), (:call, :endswith, :str, (:call, :string, (:call, (:., :Pkg, (:quote, #QuoteNode
+                          :installed
+                        )), "Example.jl")))),
+              (:line, 551, :none),
+              (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :checkout
+                  )), "Example.jl"),
+              (:line, 552, :none),
+              (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :free
+                  )), (:tuple, "Example.jl")),
+              (:line, 553, :none),
+              (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :status
+                  )), "Example.jl", :iob),
+              (:line, 554, :none),
+              (:(=), :str, (:call, :chomp, (:call, :String, (:call, :take!, :iob)))),
+              (:line, 555, :none),
+              (:macrocall, Symbol("@test"), (:call, :endswith, :str, (:call, :string, (:call, (:., :Pkg, (:quote, #QuoteNode
+                          :installed
+                        )), "Example.jl")))),
+              (:line, 556, :none),
+              (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :rm
+                  )), "Example.jl"),
+              (:line, 557, :none),
+              (:macrocall, Symbol("@test"), (:call, :isempty, (:call, (:., :Pkg, (:quote, #QuoteNode
+                        :installed
+                      ))))),
+              (:line, 558, :none),
+              (:macrocall, Symbol("@test"), (:call, :!, (:call, :isempty, (:call, (:., :Pkg, (:quote, #QuoteNode
+                          :available
+                        )), "Example.jl")))),
+              (:line, 559, :none),
+              (:macrocall, Symbol("@test"), (:call, :!, (:call, :in, "Example", (:call, :keys, (:call, (:., :Pkg, (:quote, #QuoteNode
+                            :installed
+                          ))))))),
+              (:line, 560, :none),
+              (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :rm
+                  )), "Example.jl"),
+              (:line, 561, :none),
+              (:macrocall, Symbol("@test"), (:call, :isempty, (:call, (:., :Pkg, (:quote, #QuoteNode
+                        :installed
+                      ))))),
+              (:line, 562, :none),
+              (:macrocall, Symbol("@test"), (:call, :!, (:call, :isempty, (:call, (:., :Pkg, (:quote, #QuoteNode
+                          :available
+                        )), "Example.jl")))),
+              (:line, 563, :none),
+              (:macrocall, Symbol("@test"), (:call, :!, (:call, :in, "Example", (:call, :keys, (:call, (:., :Pkg, (:quote, #QuoteNode
+                            :installed
+                          ))))))),
+              (:line, 564, :none),
+              (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :clone
+                  )), "https://github.com/JuliaLang/Example.jl.git"),
+              (:line, 565, :none),
+              (:macrocall, Symbol("@test"), (:call, :(==), (:vect, (:..., (:call, :keys, (:call, (:., :Pkg, (:quote, #QuoteNode
+                              :installed
+                            )))))), (:vect, "Example"))),
+              (:line, 566, :none),
+              (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :status
+                  )), "Example.jl", :iob),
+              (:line, 567, :none),
+              (:(=), :str, (:call, :chomp, (:call, :String, (:call, :take!, :iob)))),
+              (:line, 568, :none),
+              (:macrocall, Symbol("@test"), (:call, :startswith, :str, " - Example")),
+              (:line, 569, :none),
+              (:macrocall, Symbol("@test"), (:call, :endswith, :str, "master")),
+              (:line, 570, :none),
+              (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :free
+                  )), "Example.jl"),
+              (:line, 571, :none),
+              (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :status
+                  )), "Example.jl", :iob),
+              (:line, 572, :none),
+              (:(=), :str, (:call, :chomp, (:call, :String, (:call, :take!, :iob)))),
+              (:line, 573, :none),
+              (:macrocall, Symbol("@test"), (:call, :endswith, :str, (:call, :string, (:call, (:., :Pkg, (:quote, #QuoteNode
+                          :installed
+                        )), "Example.jl")))),
+              (:line, 574, :none),
+              (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :checkout
+                  )), "Example.jl"),
+              (:line, 575, :none),
+              (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :free
+                  )), (:tuple, "Example.jl")),
+              (:line, 576, :none),
+              (:call, (:., :Pkg, (:quote, #QuoteNode
+                    :status
+                  )), "Example.jl", :iob),
+              (:line, 577, :none),
+              (:(=), :str, (:call, :chomp, (:call, :String, (:call, :take!, :iob)))),
+              (:line, 578, :none),
+              (:macrocall, Symbol("@test"), (:call, :endswith, :str, (:call, :string, (:call, (:., :Pkg, (:quote, #QuoteNode
+                          :installed
+                        )), "Example.jl"))))
+            )))
+      )),
+    (:line, 582, :none),
+    (:let, (:block,
+        (:line, 583, :none),
+        (:call, (:., :Base, (:quote, #QuoteNode
+              :showerror
+            )), :io, (:call, (:., (:., (:., :Base, (:quote, #QuoteNode
+                    :Pkg
+                  )), (:quote, #QuoteNode
+                  :Entry
+                )), (:quote, #QuoteNode
+                :PkgTestError
+              )), "ppp"), (:call, :backtrace)),
+        (:line, 584, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:call, :contains, (:call, :String, (:call, :take!, :io)), "backtrace()")))
+      ), (:(=), :io, (:call, :IOBuffer))),
+    (:line, 587, :none),
+    (:macrocall, Symbol("@testset"), "Relative path operations", (:block,
+        (:line, 588, :none),
+        (:call, :cd, (:->, (:tuple,), (:block,
+              (:line, 589, :none),
+              (:call, :temp_pkg_dir, (:->, (:tuple,), (:block,
+                    (:line, 590, :none),
+                    (:call, (:., :Pkg, (:quote, #QuoteNode
+                          :add
+                        )), "Example"),
+                    (:line, 591, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:vect, (:..., (:call, :keys, (:call, (:., :Pkg, (:quote, #QuoteNode
+                                    :installed
+                                  )))))), (:vect, "Example")))
+                  )), (:call, :randstring))
+            )), (:call, :tempdir))
+      )),
+    (:line, 596, :none),
+    (:call, :temp_pkg_dir, (:->, (:tuple,), (:block,
+          (:line, 597, :none),
+          (:function, (:call, :write_build, :pkg, :content), (:block,
+              (:line, 598, :none),
+              (:(=), :build_filename, (:call, (:., :Pkg, (:quote, #QuoteNode
+                      :dir
+                    )), :pkg, "deps", "build.jl")),
+              (:line, 599, :none),
+              (:call, :mkpath, (:call, :dirname, :build_filename)),
+              (:line, 600, :none),
+              (:call, :write, :build_filename, :content)
+            )),
+          (:line, 603, :none),
+          (:call, :write_build, "Normal", ""),
+          (:line, 604, :none),
+          (:call, :write_build, "Error", "error(\"An error has occurred while building a package\")"),
+          (:line, 605, :none),
+          (:call, :write_build, "Exit", "exit()"),
+          (:line, 607, :none),
+          (:call, :cd, (:->, (:tuple,), (:block,
+                (:line, 608, :none),
+                (:(=), :errors, (:call, :Dict)),
+                (:line, 610, :none),
+                (:call, :empty!, :errors),
+                (:line, 611, :none),
+                (:macrocall, Symbol("@test_warn"), (:tuple, "INFO: Building Error", "INFO: Building Normal"), (:call, (:., (:., :Pkg, (:quote, #QuoteNode
+                          :Entry
+                        )), (:quote, #QuoteNode
+                        :build!
+                      )), (:vect, "Error", "Normal"), :errors)),
+                (:line, 614, :none),
+                (:call, :empty!, :errors),
+                (:line, 615, :none),
+                (:macrocall, Symbol("@test_warn"), (:tuple, "INFO: Building Exit", "INFO: Building Normal"), (:call, (:., (:., :Pkg, (:quote, #QuoteNode
+                          :Entry
+                        )), (:quote, #QuoteNode
+                        :build!
+                      )), (:vect, "Exit", "Normal"), :errors)),
+                (:line, 618, :none),
+                (:call, :empty!, :errors),
+                (:line, 619, :none),
+                (:macrocall, Symbol("@test_warn"), (:tuple, "INFO: Building Exit", "INFO: Building Normal", "INFO: Building Exit", "INFO: Building Normal"), (:call, (:., (:., :Pkg, (:quote, #QuoteNode
+                          :Entry
+                        )), (:quote, #QuoteNode
+                        :build!
+                      )), (:vect, "Exit", "Normal", "Exit", "Normal"), :errors))
+              )), (:call, (:., :Pkg, (:quote, #QuoteNode
+                  :dir
+                ))))
+        )), (:kw, :initialize, false))
+  ))

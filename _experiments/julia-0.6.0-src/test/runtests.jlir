@@ -1,0 +1,461 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:using, :Base, :Test),
+    (:line, 4, :none),
+    (:call, :include, "choosetests.jl"),
+    (:line, 5, :none),
+    (:call, :include, "testenv.jl"),
+    (:line, 7, :none),
+    (:(=), (:tuple, :tests, :net_on), (:call, :choosetests, :ARGS)),
+    (:line, 8, :none),
+    (:(=), :tests, (:call, :unique, :tests)),
+    (:line, 10, :none),
+    (:const, (:(=), :max_worker_rss, (:if, (:call, :haskey, :ENV, "JULIA_TEST_MAXRSS_MB"), (:block,
+            (:line, 11, :none),
+            (:call, :*, (:call, :parse, :Int, (:ref, :ENV, "JULIA_TEST_MAXRSS_MB")), (:call, :^, 2, 20))
+          ), (:block,
+            (:line, 13, :none),
+            (:call, :typemax, :Csize_t)
+          )))),
+    (:line, 16, :none),
+    (:const, (:(=), :node1_tests, (:ref, :String))),
+    (:line, 17, :none),
+    (:function, (:call, :move_to_node1, :t), (:block,
+        (:line, 18, :none),
+        (:if, (:call, :in, :t, :tests), (:block,
+            (:line, 19, :none),
+            (:call, :splice!, :tests, (:call, :findfirst, :tests, :t)),
+            (:line, 20, :none),
+            (:call, :push!, :node1_tests, :t)
+          ))
+      )),
+    (:line, 24, :none),
+    (:call, :move_to_node1, "compile"),
+    (:line, 27, :none),
+    (:&&, (:call, :(!=), :max_worker_rss, (:call, :typemax, :Csize_t)), (:call, :move_to_node1, "distributed")),
+    (:line, 29, :none),
+    (:call, :cd, (:->, (:tuple,), (:block,
+          (:line, 30, :none),
+          (:(=), :n, 1),
+          (:line, 31, :none),
+          (:if, :net_on, (:block,
+              (:line, 32, :none),
+              (:(=), :n, (:call, :min, (:., :Sys, (:quote, #QuoteNode
+                      :CPU_CORES
+                    )), (:call, :length, :tests))),
+              (:line, 33, :none),
+              (:&&, (:call, :>, :n, 1), (:call, :addprocs_with_testenv, :n)),
+              (:line, 34, :none),
+              (:call, (:., :BLAS, (:quote, #QuoteNode
+                    :set_num_threads
+                  )), 1)
+            )),
+          (:line, 37, :none),
+          (:macrocall, Symbol("@everywhere"), (:call, :include, "testdefs.jl")),
+          (:line, 40, :none),
+          (:(=), :name_align, (:call, :maximum, (:vcat, (:call, :length, "Test (Worker)"), (:call, :map, (:->, :x, (:block,
+                      (:line, 40, :none),
+                      (:call, :+, (:call, :length, :x), 3, (:call, :ndigits, (:call, :nworkers)))
+                    )), :tests)))),
+          (:line, 41, :none),
+          (:(=), :elapsed_align, (:call, :length, "Time (s)")),
+          (:line, 42, :none),
+          (:(=), :gc_align, (:call, :length, "GC (s)")),
+          (:line, 43, :none),
+          (:(=), :percent_align, (:call, :length, "GC %")),
+          (:line, 44, :none),
+          (:(=), :alloc_align, (:call, :length, "Alloc (MB)")),
+          (:line, 45, :none),
+          (:(=), :rss_align, (:call, :length, "RSS (MB)")),
+          (:line, 46, :none),
+          (:call, :print_with_color, (:quote, #QuoteNode
+              :white
+            ), (:call, :rpad, "Test (Worker)", :name_align, " "), " | "),
+          (:line, 47, :none),
+          (:call, :print_with_color, (:quote, #QuoteNode
+              :white
+            ), "Time (s) | GC (s) | GC % | Alloc (MB) | RSS (MB)\n"),
+          (:line, 48, :none),
+          (:(=), :results, (:vect,)),
+          (:line, 49, :none),
+          (:macrocall, Symbol("@sync"), (:block,
+              (:line, 50, :none),
+              (:for, (:(=), :p, (:call, :workers)), (:block,
+                  (:line, 51, :none),
+                  (:macrocall, Symbol("@async"), (:block,
+                      (:line, 52, :none),
+                      (:while, (:call, :>, (:call, :length, :tests), 0), (:block,
+                          (:line, 53, :none),
+                          (:(=), :test, (:call, :shift!, :tests)),
+                          (:line, 54, :none),
+                          (:local, :resp),
+                          (:line, 55, :none),
+                          (:(=), :wrkr, :p),
+                          (:line, 56, :none),
+                          (:try, (:block,
+                              (:line, 57, :none),
+                              (:(=), :resp, (:call, :remotecall_fetch, :runtests, :wrkr, :test))
+                            ), :e, (:block,
+                              (:line, 59, :none),
+                              (:(=), :resp, (:vect, :e))
+                            )),
+                          (:line, 61, :none),
+                          (:call, :push!, :results, (:tuple, :test, :resp)),
+                          (:line, 62, :none),
+                          (:if, (:||, (:&&, (:call, :isa, (:ref, :resp, :end), :Integer), (:call, :>, (:ref, :resp, :end), :max_worker_rss)), (:call, :isa, :resp, :Exception)), (:block,
+                              (:line, 63, :none),
+                              (:if, (:call, :>, :n, 1), (:block,
+                                  (:line, 64, :none),
+                                  (:call, :rmprocs, :wrkr, (:kw, :waitfor, 30)),
+                                  (:line, 65, :none),
+                                  (:(=), :p, (:ref, (:call, :addprocs_with_testenv, 1), 1)),
+                                  (:line, 66, :none),
+                                  (:call, :remotecall_fetch, :include, :p, "testdefs.jl")
+                                ), (:block,
+                                  (:line, 69, :none),
+                                  (:if, (:call, :isa, :resp, :Exception), (:call, :rethrow, :resp), (:call, :error, (:string, "Halting tests. Memory limit reached : ", :resp, " > ", :max_worker_rss)))
+                                ))
+                            )),
+                          (:line, 72, :none),
+                          (:if, (:call, :!, (:call, :isa, (:ref, :resp, 1), :Exception)), (:block,
+                              (:line, 73, :none),
+                              (:call, :print_with_color, (:quote, #QuoteNode
+                                  :white
+                                ), (:call, :rpad, (:call, :*, :test, (:string, " (", :wrkr, ")")), :name_align, " "), " | "),
+                              (:line, 74, :none),
+                              (:(=), :time_str, (:macrocall, Symbol("@sprintf"), "%7.2f", (:ref, :resp, 2))),
+                              (:line, 75, :none),
+                              (:call, :print_with_color, (:quote, #QuoteNode
+                                  :white
+                                ), (:call, :rpad, :time_str, :elapsed_align, " "), " | "),
+                              (:line, 76, :none),
+                              (:(=), :gc_str, (:macrocall, Symbol("@sprintf"), "%5.2f", (:call, :/, (:., (:ref, :resp, 5), (:quote, #QuoteNode
+                                        :total_time
+                                      )), (:call, :^, 10, 9)))),
+                              (:line, 77, :none),
+                              (:call, :print_with_color, (:quote, #QuoteNode
+                                  :white
+                                ), (:call, :rpad, :gc_str, :gc_align, " "), " | "),
+                              (:line, 81, :none),
+                              (:(=), :percent_str, (:macrocall, Symbol("@sprintf"), "%4.1f", (:call, :/, (:call, :*, 100, (:., (:ref, :resp, 5), (:quote, #QuoteNode
+                                          :total_time
+                                        ))), (:call, :*, (:call, :^, 10, 9), (:ref, :resp, 2))))),
+                              (:line, 82, :none),
+                              (:call, :print_with_color, (:quote, #QuoteNode
+                                  :white
+                                ), (:call, :rpad, :percent_str, :percent_align, " "), " | "),
+                              (:line, 83, :none),
+                              (:(=), :alloc_str, (:macrocall, Symbol("@sprintf"), "%5.2f", (:call, :/, (:ref, :resp, 3), (:call, :^, 2, 20)))),
+                              (:line, 84, :none),
+                              (:call, :print_with_color, (:quote, #QuoteNode
+                                  :white
+                                ), (:call, :rpad, :alloc_str, :alloc_align, " "), " | "),
+                              (:line, 85, :none),
+                              (:(=), :rss_str, (:macrocall, Symbol("@sprintf"), "%5.2f", (:call, :/, (:ref, :resp, 6), (:call, :^, 2, 20)))),
+                              (:line, 86, :none),
+                              (:call, :print_with_color, (:quote, #QuoteNode
+                                  :white
+                                ), (:call, :rpad, :rss_str, :rss_align, " "), "\n")
+                            ))
+                        ))
+                    ))
+                ))
+            )),
+          (:line, 93, :none),
+          (:&&, (:call, :>, :n, 1), (:call, :rmprocs, (:call, :workers), (:kw, :waitfor, 30))),
+          (:line, 94, :none),
+          (:for, (:(=), :t, :node1_tests), (:block,
+              (:line, 100, :none),
+              (:&&, (:call, :>, :n, 1), (:call, :print, "\tFrom worker 1:\t")),
+              (:line, 101, :none),
+              (:local, :resp),
+              (:line, 102, :none),
+              (:try, (:block,
+                  (:line, 103, :none),
+                  (:(=), :resp, (:call, :eval, (:call, :Expr, (:quote, #QuoteNode
+                          :call
+                        ), (:->, (:tuple,), (:block,
+                            (:line, 103, :none),
+                            (:call, :runtests, :t)
+                          )))))
+                ), :e, (:block,
+                  (:line, 105, :none),
+                  (:(=), :resp, (:vect, :e))
+                )),
+              (:line, 107, :none),
+              (:call, :push!, :results, (:tuple, :t, :resp))
+            )),
+          (:line, 131, :none),
+          (:(=), :o_ts, (:call, (:., (:., :Base, (:quote, #QuoteNode
+                    :Test
+                  )), (:quote, #QuoteNode
+                  :DefaultTestSet
+                )), "Overall")),
+          (:line, 132, :none),
+          (:call, (:., (:., :Base, (:quote, #QuoteNode
+                  :Test
+                )), (:quote, #QuoteNode
+                :push_testset
+              )), :o_ts),
+          (:line, 133, :none),
+          (:for, (:(=), :res, :results), (:block,
+              (:line, 134, :none),
+              (:if, (:call, :isa, (:ref, (:ref, :res, 2), 1), (:., (:., :Base, (:quote, #QuoteNode
+                        :Test
+                      )), (:quote, #QuoteNode
+                      :DefaultTestSet
+                    ))), (:block,
+                  (:line, 135, :none),
+                  (:call, (:., (:., :Base, (:quote, #QuoteNode
+                          :Test
+                        )), (:quote, #QuoteNode
+                        :push_testset
+                      )), (:ref, (:ref, :res, 2), 1)),
+                  (:line, 136, :none),
+                  (:call, (:., (:., :Base, (:quote, #QuoteNode
+                          :Test
+                        )), (:quote, #QuoteNode
+                        :record
+                      )), :o_ts, (:ref, (:ref, :res, 2), 1)),
+                  (:line, 137, :none),
+                  (:call, (:., (:., :Base, (:quote, #QuoteNode
+                          :Test
+                        )), (:quote, #QuoteNode
+                        :pop_testset
+                      )))
+                ), (:block,
+                  (:line, 138, :none),
+                  (:if, (:call, :isa, (:ref, (:ref, :res, 2), 1), (:curly, :Tuple, :Int, :Int)), (:block,
+                      (:line, 139, :none),
+                      (:(=), :fake, (:call, (:., (:., :Base, (:quote, #QuoteNode
+                                :Test
+                              )), (:quote, #QuoteNode
+                              :DefaultTestSet
+                            )), (:ref, :res, 1))),
+                      (:line, 140, :none),
+                      (:for, (:(=), :i, (:(:), 1, (:ref, (:ref, (:ref, :res, 2), 1), 1))), (:block,
+                          (:line, 141, :none),
+                          (:call, (:., (:., :Base, (:quote, #QuoteNode
+                                  :Test
+                                )), (:quote, #QuoteNode
+                                :record
+                              )), :fake, (:call, (:., (:., :Base, (:quote, #QuoteNode
+                                    :Test
+                                  )), (:quote, #QuoteNode
+                                  :Pass
+                                )), (:quote, #QuoteNode
+                                :test
+                              ), :nothing, :nothing, :nothing))
+                        )),
+                      (:line, 143, :none),
+                      (:for, (:(=), :i, (:(:), 1, (:ref, (:ref, (:ref, :res, 2), 1), 2))), (:block,
+                          (:line, 144, :none),
+                          (:call, (:., (:., :Base, (:quote, #QuoteNode
+                                  :Test
+                                )), (:quote, #QuoteNode
+                                :record
+                              )), :fake, (:call, (:., (:., :Base, (:quote, #QuoteNode
+                                    :Test
+                                  )), (:quote, #QuoteNode
+                                  :Broken
+                                )), (:quote, #QuoteNode
+                                :test
+                              ), :nothing))
+                        )),
+                      (:line, 146, :none),
+                      (:call, (:., (:., :Base, (:quote, #QuoteNode
+                              :Test
+                            )), (:quote, #QuoteNode
+                            :push_testset
+                          )), :fake),
+                      (:line, 147, :none),
+                      (:call, (:., (:., :Base, (:quote, #QuoteNode
+                              :Test
+                            )), (:quote, #QuoteNode
+                            :record
+                          )), :o_ts, :fake),
+                      (:line, 148, :none),
+                      (:call, (:., (:., :Base, (:quote, #QuoteNode
+                              :Test
+                            )), (:quote, #QuoteNode
+                            :pop_testset
+                          )))
+                    ), (:block,
+                      (:line, 149, :none),
+                      (:if, (:&&, (:call, :isa, (:ref, (:ref, :res, 2), 1), :RemoteException), (:call, :isa, (:., (:., (:ref, (:ref, :res, 2), 1), (:quote, #QuoteNode
+                                  :captured
+                                )), (:quote, #QuoteNode
+                                :ex
+                              )), (:., (:., :Base, (:quote, #QuoteNode
+                                  :Test
+                                )), (:quote, #QuoteNode
+                                :TestSetException
+                              )))), (:block,
+                          (:line, 150, :none),
+                          (:call, :println, (:string, "Worker ", (:., (:ref, (:ref, :res, 2), 1), (:quote, #QuoteNode
+                                  :pid
+                                )), " failed running test ", (:ref, :res, 1), ":")),
+                          (:line, 151, :none),
+                          (:call, (:., :Base, (:quote, #QuoteNode
+                                :showerror
+                              )), :STDOUT, (:., (:ref, (:ref, :res, 2), 1), (:quote, #QuoteNode
+                                :captured
+                              ))),
+                          (:line, 152, :none),
+                          (:(=), :fake, (:call, (:., (:., :Base, (:quote, #QuoteNode
+                                    :Test
+                                  )), (:quote, #QuoteNode
+                                  :DefaultTestSet
+                                )), (:ref, :res, 1))),
+                          (:line, 153, :none),
+                          (:for, (:(=), :i, (:(:), 1, (:., (:., (:., (:ref, (:ref, :res, 2), 1), (:quote, #QuoteNode
+                                        :captured
+                                      )), (:quote, #QuoteNode
+                                      :ex
+                                    )), (:quote, #QuoteNode
+                                    :pass
+                                  )))), (:block,
+                              (:line, 154, :none),
+                              (:call, (:., (:., :Base, (:quote, #QuoteNode
+                                      :Test
+                                    )), (:quote, #QuoteNode
+                                    :record
+                                  )), :fake, (:call, (:., (:., :Base, (:quote, #QuoteNode
+                                        :Test
+                                      )), (:quote, #QuoteNode
+                                      :Pass
+                                    )), (:quote, #QuoteNode
+                                    :test
+                                  ), :nothing, :nothing, :nothing))
+                            )),
+                          (:line, 156, :none),
+                          (:for, (:(=), :i, (:(:), 1, (:., (:., (:., (:ref, (:ref, :res, 2), 1), (:quote, #QuoteNode
+                                        :captured
+                                      )), (:quote, #QuoteNode
+                                      :ex
+                                    )), (:quote, #QuoteNode
+                                    :broken
+                                  )))), (:block,
+                              (:line, 157, :none),
+                              (:call, (:., (:., :Base, (:quote, #QuoteNode
+                                      :Test
+                                    )), (:quote, #QuoteNode
+                                    :record
+                                  )), :fake, (:call, (:., (:., :Base, (:quote, #QuoteNode
+                                        :Test
+                                      )), (:quote, #QuoteNode
+                                      :Broken
+                                    )), (:quote, #QuoteNode
+                                    :test
+                                  ), :nothing))
+                            )),
+                          (:line, 159, :none),
+                          (:for, (:(=), :t, (:., (:., (:., (:ref, (:ref, :res, 2), 1), (:quote, #QuoteNode
+                                      :captured
+                                    )), (:quote, #QuoteNode
+                                    :ex
+                                  )), (:quote, #QuoteNode
+                                  :errors_and_fails
+                                ))), (:block,
+                              (:line, 160, :none),
+                              (:call, (:., (:., :Base, (:quote, #QuoteNode
+                                      :Test
+                                    )), (:quote, #QuoteNode
+                                    :record
+                                  )), :fake, :t)
+                            )),
+                          (:line, 162, :none),
+                          (:call, (:., (:., :Base, (:quote, #QuoteNode
+                                  :Test
+                                )), (:quote, #QuoteNode
+                                :push_testset
+                              )), :fake),
+                          (:line, 163, :none),
+                          (:call, (:., (:., :Base, (:quote, #QuoteNode
+                                  :Test
+                                )), (:quote, #QuoteNode
+                                :record
+                              )), :o_ts, :fake),
+                          (:line, 164, :none),
+                          (:call, (:., (:., :Base, (:quote, #QuoteNode
+                                  :Test
+                                )), (:quote, #QuoteNode
+                                :pop_testset
+                              )))
+                        ), (:block,
+                          (:line, 165, :none),
+                          (:if, (:call, :isa, (:ref, (:ref, :res, 2), 1), :Exception), (:block,
+                              (:line, 170, :none),
+                              (:(=), :fake, (:call, (:., (:., :Base, (:quote, #QuoteNode
+                                        :Test
+                                      )), (:quote, #QuoteNode
+                                      :DefaultTestSet
+                                    )), (:ref, :res, 1))),
+                              (:line, 171, :none),
+                              (:call, (:., (:., :Base, (:quote, #QuoteNode
+                                      :Test
+                                    )), (:quote, #QuoteNode
+                                    :record
+                                  )), :fake, (:call, (:., (:., :Base, (:quote, #QuoteNode
+                                        :Test
+                                      )), (:quote, #QuoteNode
+                                      :Error
+                                    )), (:quote, #QuoteNode
+                                    :test_error
+                                  ), (:ref, :res, 1), (:ref, (:ref, :res, 2), 1), (:vect,))),
+                              (:line, 172, :none),
+                              (:call, (:., (:., :Base, (:quote, #QuoteNode
+                                      :Test
+                                    )), (:quote, #QuoteNode
+                                    :push_testset
+                                  )), :fake),
+                              (:line, 173, :none),
+                              (:call, (:., (:., :Base, (:quote, #QuoteNode
+                                      :Test
+                                    )), (:quote, #QuoteNode
+                                    :record
+                                  )), :o_ts, :fake),
+                              (:line, 174, :none),
+                              (:call, (:., (:., :Base, (:quote, #QuoteNode
+                                      :Test
+                                    )), (:quote, #QuoteNode
+                                    :pop_testset
+                                  )))
+                            ), (:block,
+                              (:line, 176, :none),
+                              (:call, :error, (:call, :string, "Unknown result type : ", (:call, :typeof, :res)))
+                            ))
+                        ))
+                    ))
+                ))
+            )),
+          (:line, 179, :none),
+          (:call, :println),
+          (:line, 180, :none),
+          (:call, (:., (:., :Base, (:quote, #QuoteNode
+                  :Test
+                )), (:quote, #QuoteNode
+                :print_test_results
+              )), :o_ts, 1),
+          (:line, 181, :none),
+          (:if, (:call, :!, (:., :o_ts, (:quote, #QuoteNode
+                  :anynonpass
+                ))), (:block,
+              (:line, 182, :none),
+              (:call, :println, "    \e[32;1mSUCCESS\e[0m")
+            ), (:block,
+              (:line, 184, :none),
+              (:call, :println, "    \e[31;1mFAILURE\e[0m"),
+              (:line, 185, :none),
+              (:call, (:., (:., :Base, (:quote, #QuoteNode
+                      :Test
+                    )), (:quote, #QuoteNode
+                    :print_test_errors
+                  )), :o_ts),
+              (:line, 186, :none),
+              (:call, :throw, (:call, (:., :Test, (:quote, #QuoteNode
+                      :FallbackTestSetException
+                    )), "Test run finished with errors"))
+            ))
+        )), (:call, :dirname, (:macrocall, Symbol("@__FILE__"))))
+  ))

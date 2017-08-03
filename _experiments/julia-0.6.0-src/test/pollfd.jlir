@@ -1,0 +1,262 @@
+(:quote, (:block,
+    (:line, 11, :none),
+    (:(=), :n, 20),
+    (:line, 12, :none),
+    (:(=), :intvls, (:vect, 2, 0.2, 0.1, 0.005)),
+    (:line, 14, :none),
+    (:(=), :pipe_fds, (:call, (:curly, :Vector, :Any), :n)),
+    (:line, 15, :none),
+    (:for, (:(=), :i, (:(:), 1, :n)), (:block,
+        (:line, 16, :none),
+        (:macrocall, Symbol("@static"), (:if, (:call, :is_windows), (:block,
+              (:line, 17, :none),
+              (:(=), (:ref, :pipe_fds, :i), (:call, (:curly, :Array, (:., :Libc, (:quote, #QuoteNode
+                        :WindowsRawSocket
+                      ))), 2)),
+              (:line, 18, :none),
+              (:||, (:call, :(==), 0, (:call, :ccall, (:quote, #QuoteNode
+                      :wsasocketpair
+                    ), :Cint, (:tuple, :Cint, :Cuint, :Cint, (:curly, :Ptr, (:., :Libc, (:quote, #QuoteNode
+                            :WindowsRawSocket
+                          )))), 1, 1, 6, (:ref, :pipe_fds, :i))), (:call, :error, (:call, (:., :Libc, (:quote, #QuoteNode
+                        :FormatMessage
+                      )))))
+            ), (:block,
+              (:line, 20, :none),
+              (:(=), (:ref, :pipe_fds, :i), (:call, (:curly, :Array, :RawFD), 2)),
+              (:line, 21, :none),
+              (:macrocall, Symbol("@test"), (:call, :(==), 0, (:call, :ccall, (:quote, #QuoteNode
+                      :pipe
+                    ), :Cint, (:tuple, (:curly, :Ptr, :RawFD)), (:ref, :pipe_fds, :i))))
+            )))
+      )),
+    (:line, 25, :none),
+    (:function, (:call, :pfd_tst_reads, :idx, :intvl), (:block,
+        (:line, 26, :none),
+        (:global, (:+=, :ready, 1)),
+        (:line, 27, :none),
+        (:call, :wait, :ready_c),
+        (:line, 28, :none),
+        (:call, :tic),
+        (:line, 29, :none),
+        (:(=), :start_evt2, (:call, :Condition)),
+        (:line, 30, :none),
+        (:(=), :evt2, (:macrocall, Symbol("@async"), (:block,
+              (:call, :notify, :start_evt2),
+              (:call, :poll_fd, (:parameters, (:kw, :readable, true), (:kw, :writable, false)), (:ref, (:ref, :pipe_fds, :idx), 1), :intvl)
+            ))),
+        (:line, 31, :none),
+        (:call, :wait, :start_evt2),
+        (:line, 31, :none),
+        (:call, :yield),
+        (:line, 32, :none),
+        (:(=), :evt, (:call, :poll_fd, (:parameters, (:kw, :readable, true), (:kw, :writable, false)), (:ref, (:ref, :pipe_fds, :idx), 1), :intvl)),
+        (:line, 33, :none),
+        (:(=), :t_elapsed, (:call, :toq)),
+        (:line, 34, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:., :evt, (:quote, #QuoteNode
+                :timedout
+              )))),
+        (:line, 35, :none),
+        (:macrocall, Symbol("@test"), (:., :evt, (:quote, #QuoteNode
+              :readable
+            ))),
+        (:line, 36, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:., :evt, (:quote, #QuoteNode
+                :writable
+              )))),
+        (:line, 37, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), :evt, (:call, :wait, :evt2))),
+        (:line, 43, :none),
+        (:(=), :dout, (:call, (:curly, :Array, :UInt8), 1)),
+        (:line, 44, :none),
+        (:macrocall, Symbol("@static"), (:if, (:call, :is_windows), (:block,
+              (:line, 45, :none),
+              (:||, (:call, :(==), 1, (:call, :ccall, (:quote, #QuoteNode
+                      :recv
+                    ), :stdcall, :Cint, (:tuple, (:curly, :Ptr, :Void), (:curly, :Ptr, :UInt8), :Cint, :Cint), (:ref, (:ref, :pipe_fds, :idx), 1), :dout, 1, 0)), (:call, :error, (:call, (:., :Libc, (:quote, #QuoteNode
+                        :FormatMessage
+                      )))))
+            ), (:block,
+              (:line, 47, :none),
+              (:macrocall, Symbol("@test"), (:call, :(==), 1, (:call, :ccall, (:quote, #QuoteNode
+                      :read
+                    ), :Csize_t, (:tuple, :Cint, (:curly, :Ptr, :UInt8), :Csize_t), (:ref, (:ref, :pipe_fds, :idx), 1), :dout, 1)))
+            ))),
+        (:line, 49, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :dout, 1), (:call, :Int8, 'A')))
+      )),
+    (:line, 53, :none),
+    (:function, (:call, :pfd_tst_timeout, :idx, :intvl), (:block,
+        (:line, 54, :none),
+        (:global, (:+=, :ready, 1)),
+        (:line, 55, :none),
+        (:call, :wait, :ready_c),
+        (:line, 56, :none),
+        (:call, :tic),
+        (:line, 57, :none),
+        (:(=), :start_evt2, (:call, :Condition)),
+        (:line, 58, :none),
+        (:(=), :evt2, (:macrocall, Symbol("@async"), (:block,
+              (:call, :notify, :start_evt2),
+              (:call, :poll_fd, (:parameters, (:kw, :readable, true), (:kw, :writable, false)), (:ref, (:ref, :pipe_fds, :idx), 1), :intvl)
+            ))),
+        (:line, 59, :none),
+        (:call, :wait, :start_evt2),
+        (:line, 59, :none),
+        (:call, :yield),
+        (:line, 60, :none),
+        (:(=), :evt, (:call, :poll_fd, (:parameters, (:kw, :readable, true), (:kw, :writable, false)), (:ref, (:ref, :pipe_fds, :idx), 1), :intvl)),
+        (:line, 61, :none),
+        (:macrocall, Symbol("@test"), (:., :evt, (:quote, #QuoteNode
+              :timedout
+            ))),
+        (:line, 62, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:., :evt, (:quote, #QuoteNode
+                :readable
+              )))),
+        (:line, 63, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:., :evt, (:quote, #QuoteNode
+                :writable
+              )))),
+        (:line, 64, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), :evt, (:call, :wait, :evt2))),
+        (:line, 65, :none),
+        (:(=), :t_elapsed, (:call, :toq))
+      )),
+    (:line, 74, :none),
+    (:for, (:(=), (:tuple, :i, :intvl), (:call, :enumerate, :intvls)), (:block,
+        (:line, 75, :none),
+        (:macrocall, Symbol("@sync"), (:block,
+            (:line, 76, :none),
+            (:global, (:(=), :ready, 0)),
+            (:line, 77, :none),
+            (:global, (:(=), :ready_c, (:call, :Condition))),
+            (:line, 78, :none),
+            (:(=), :t, (:call, (:curly, :Vector, :Task), :n)),
+            (:line, 79, :none),
+            (:for, (:(=), :idx, (:(:), 1, :n)), (:block,
+                (:line, 80, :none),
+                (:if, (:call, :isodd, :idx), (:block,
+                    (:line, 81, :none),
+                    (:(=), (:ref, :t, :idx), (:macrocall, Symbol("@async"), (:call, :pfd_tst_reads, :idx, :intvl)))
+                  ), (:block,
+                    (:line, 83, :none),
+                    (:(=), (:ref, :t, :idx), (:macrocall, Symbol("@async"), (:call, :pfd_tst_timeout, :idx, :intvl)))
+                  ))
+              )),
+            (:line, 87, :none),
+            (:while, (:call, :<, :ready, :n), (:block,
+                (:line, 88, :none),
+                (:call, :sleep, 0.1)
+              )),
+            (:line, 90, :none),
+            (:(=), :ready, 0),
+            (:line, 92, :none),
+            (:for, (:(=), :idx, (:(:), 1, :n)), (:block,
+                (:line, 93, :none),
+                (:(=), :event, (:call, :poll_fd, (:parameters, (:kw, :readable, true), (:kw, :writable, true)), (:ref, (:ref, :pipe_fds, :idx), 2), 0.001)),
+                (:line, 94, :none),
+                (:macrocall, Symbol("@test"), (:call, :!, (:., :event, (:quote, #QuoteNode
+                        :timedout
+                      )))),
+                (:line, 95, :none),
+                (:macrocall, Symbol("@test"), (:call, :!, (:., :event, (:quote, #QuoteNode
+                        :readable
+                      )))),
+                (:line, 96, :none),
+                (:macrocall, Symbol("@test"), (:., :event, (:quote, #QuoteNode
+                      :writable
+                    ))),
+                (:line, 98, :none),
+                (:if, (:call, :isodd, :idx), (:block,
+                    (:line, 99, :none),
+                    (:macrocall, Symbol("@static"), (:if, (:call, :is_windows), (:block,
+                          (:line, 100, :none),
+                          (:||, (:call, :(==), 1, (:call, :ccall, (:quote, #QuoteNode
+                                  :send
+                                ), :stdcall, :Cint, (:tuple, (:curly, :Ptr, :Void), (:curly, :Ptr, :UInt8), :Cint, :Cint), (:ref, (:ref, :pipe_fds, :idx), 2), "A", 1, 0)), (:call, :error, (:call, (:., :Libc, (:quote, #QuoteNode
+                                    :FormatMessage
+                                  )))))
+                        ), (:block,
+                          (:line, 102, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), 1, (:call, :ccall, (:quote, #QuoteNode
+                                  :write
+                                ), :Csize_t, (:tuple, :Cint, (:curly, :Ptr, :UInt8), :Csize_t), (:ref, (:ref, :pipe_fds, :idx), 2), "A", 1)))
+                        )))
+                  ))
+              )),
+            (:line, 106, :none),
+            (:call, :notify, :ready_c, (:kw, :all, true)),
+            (:line, 107, :none),
+            (:for, (:(=), :idx, (:(:), 1, :n)), (:block,
+                (:line, 108, :none),
+                (:call, :wait, (:ref, :t, :idx))
+              ))
+          ))
+      )),
+    (:line, 113, :none),
+    (:for, (:(=), :i, (:(:), 1, :n)), (:block,
+        (:line, 114, :none),
+        (:for, (:(=), :j, (:(:), 1, 2)), (:block,
+            (:line, 115, :none),
+            (:macrocall, Symbol("@static"), (:if, (:call, :is_windows), (:block,
+                  (:line, 116, :none),
+                  (:||, (:call, :(==), 0, (:call, :ccall, (:quote, #QuoteNode
+                          :closesocket
+                        ), :stdcall, :Cint, (:tuple, (:curly, :Ptr, :Void)), (:ref, (:ref, :pipe_fds, :i), :j))), (:call, :error, (:call, (:., :Libc, (:quote, #QuoteNode
+                            :FormatMessage
+                          )))))
+                ), (:block,
+                  (:line, 118, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), 0, (:call, :ccall, (:quote, #QuoteNode
+                          :close
+                        ), :Cint, (:tuple, :Cint), (:ref, (:ref, :pipe_fds, :i), :j))))
+                )))
+          ))
+      )),
+    (:line, 125, :none),
+    (:let, (:block,
+        (:line, 126, :none),
+        (:call, :Timer, (:->, :t, (:block,
+              (:line, 126, :none),
+              (:call, :push!, :a, 1)
+            )), 0.01, 0),
+        (:line, 127, :none),
+        (:call, :sleep, 0.2),
+        (:line, 128, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :a, (:vect, 1)))
+      ), (:(=), :a, (:vect,))),
+    (:line, 132, :none),
+    (:macrocall, Symbol("@noinline"), (:function, (:call, :make_unrooted_timer, :a), (:block,
+          (:line, 133, :none),
+          (:(=), :t, (:call, :Timer, 0.0, 0.1)),
+          (:line, 134, :none),
+          (:call, :finalizer, :t, (:->, :t, (:block,
+                (:line, 134, :none),
+                (:+=, (:ref, :a), 1)
+              ))),
+          (:line, 135, :none),
+          (:call, :wait, :t),
+          (:line, 136, :none),
+          (:(=), :e, (:macrocall, Symbol("@elapsed"), (:for, (:(=), :i, (:(:), 1, 5)), (:block,
+                  (:line, 137, :none),
+                  (:call, :wait, :t)
+                )))),
+          (:line, 139, :none),
+          (:macrocall, Symbol("@test"), (:comparison, 1.5, :>, :e, :(>=), 0.4)),
+          (:line, 140, :none),
+          (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :a), 0)),
+          (:line, 141, :none),
+          :nothing
+        ))),
+    (:line, 143, :none),
+    (:let, (:block,
+        (:line, 144, :none),
+        (:call, :make_unrooted_timer, :a),
+        (:line, 145, :none),
+        (:call, :gc),
+        (:line, 146, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :a), 1))
+      ), (:(=), :a, (:call, :Ref, 0)))
+  ))

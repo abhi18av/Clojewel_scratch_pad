@@ -1,0 +1,435 @@
+(:quote, (:block,
+    (:line, 5, :none),
+    (:(=), (:call, :tls_world_age), (:block,
+        (:line, 5, :none),
+        (:call, :ccall, (:quote, #QuoteNode
+            :jl_get_tls_world_age
+          ), :UInt, (:tuple,))
+      )),
+    (:line, 6, :none),
+    (:(=), (:call, :world_counter), (:block,
+        (:line, 6, :none),
+        (:call, :ccall, (:quote, #QuoteNode
+            :jl_get_world_counter
+          ), :UInt, (:tuple,))
+      )),
+    (:line, 7, :none),
+    (:macrocall, Symbol("@test"), (:comparison, (:call, :typemax, :UInt), :>, (:call, :world_counter), :(==), (:call, :tls_world_age), :>, 0)),
+    (:line, 10, :none),
+    (:block,
+      (:line, 11, :none),
+      (:(=), (:call, :g265a), (:block,
+          (:line, 11, :none),
+          (:call, :f265a, 0)
+        )),
+      (:line, 12, :none),
+      (:(=), (:call, :f265a, (:(::), :x, :Any)), (:block,
+          (:line, 12, :none),
+          1
+        )),
+      (:line, 13, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :g265a), 1)),
+      (:line, 14, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+                :return_types
+              )), :g265a, (:tuple,)), (:ref, :Any, :Int))),
+      (:line, 15, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., (:., :Core, (:quote, #QuoteNode
+                  :Inference
+                )), (:quote, #QuoteNode
+                :return_type
+              )), :g265a, (:tuple,)), :Int)),
+      (:line, 17, :none),
+      (:(=), (:call, :f265a, (:(::), :x, :Any)), (:block,
+          (:line, 17, :none),
+          2.0
+        )),
+      (:line, 18, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :g265a), 2.0)),
+      (:line, 20, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+                :return_types
+              )), :g265a, (:tuple,)), (:ref, :Any, :Float64))),
+      (:line, 21, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., (:., :Core, (:quote, #QuoteNode
+                  :Inference
+                )), (:quote, #QuoteNode
+                :return_type
+              )), :g265a, (:tuple,)), :Float64))
+    ),
+    (:line, 25, :none),
+    (:block,
+      (:line, 26, :none),
+      (:(=), (:call, :f265b, (:(::), :x, :Int)), (:block,
+          (:line, 26, :none),
+          1
+        )),
+      (:line, 27, :none),
+      (:let, (:block,
+          (:line, 28, :none),
+          (:global, (:(=), (:call, :g265b, (:(::), :i, :Int)), (:block,
+                (:line, 28, :none),
+                (:call, :f265b, (:ref, :ty, :i))
+              )))
+        ), (:(=), :ty, (:ref, :Any, 1, 2.0))),
+      (:line, 30, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :g265b, 1), 1)),
+      (:line, 31, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+                :return_types
+              )), :g265b, (:tuple, :Int)), (:ref, :Any, :Int))),
+      (:line, 32, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., (:., :Core, (:quote, #QuoteNode
+                  :Inference
+                )), (:quote, #QuoteNode
+                :return_type
+              )), :g265b, (:tuple, :Int)), :Int)),
+      (:line, 34, :none),
+      (:(=), (:call, :f265b, (:(::), :x, :Any)), (:block,
+          (:line, 34, :none),
+          2.0
+        )),
+      (:line, 35, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :g265b, 1), 1)),
+      (:line, 36, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :g265b, 2), 2.0)),
+      (:line, 37, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+                :return_types
+              )), :g265b, (:tuple, :Int)), (:ref, :Any, (:curly, :Union, :Int, :Float64)))),
+      (:line, 38, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., (:., :Core, (:quote, #QuoteNode
+                  :Inference
+                )), (:quote, #QuoteNode
+                :return_type
+              )), :g265b, (:tuple, :Int)), (:curly, :Union, :Int, :Float64)))
+    ),
+    (:line, 42, :none),
+    (:block,
+      (:line, 43, :none),
+      (:(=), (:call, :g265c), (:block,
+          (:line, 43, :none),
+          (:call, :f265c, 0)
+        )),
+      (:line, 44, :none),
+      (:(=), (:call, :f265c, (:(::), :x, :Any)), (:block,
+          (:line, 44, :none),
+          1
+        )),
+      (:line, 45, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :g265c), 1)),
+      (:line, 46, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+                :return_types
+              )), :g265c, (:tuple,)), (:ref, :Any, :Int))),
+      (:line, 47, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., (:., :Core, (:quote, #QuoteNode
+                  :Inference
+                )), (:quote, #QuoteNode
+                :return_type
+              )), :g265c, (:tuple,)), :Int)),
+      (:line, 49, :none),
+      (:(=), (:call, :f265c, (:(::), :x, :Int)), (:block,
+          (:line, 49, :none),
+          2.0
+        )),
+      (:line, 50, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :g265c), 2.0)),
+      (:line, 52, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+                :return_types
+              )), :g265c, (:tuple,)), (:ref, :Any, :Float64))),
+      (:line, 53, :none),
+      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., (:., :Core, (:quote, #QuoteNode
+                  :Inference
+                )), (:quote, #QuoteNode
+                :return_type
+              )), :g265c, (:tuple,)), :Float64))
+    ),
+    (:line, 57, :none),
+    (:type, true, (:curly, :A265, :T), (:block,
+        (:line, 58, :none),
+        (:(::), :field1, :T)
+      )),
+    (:line, 60, :none),
+    (:(=), (:call, :A265_), (:block,
+        (:line, 60, :none),
+        (:call, :A265, 1)
+      )),
+    (:line, 61, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:., (:(::), (:call, :A265_), (:curly, :A265, :Int)), (:quote, #QuoteNode
+            :field1
+          )), 1)),
+    (:line, 62, :none),
+    (:(=), (:call, :A265, (:(::), :fld, :Int)), (:block,
+        (:line, 62, :none),
+        (:call, :A265, (:call, :Float64, :fld))
+      )),
+    (:line, 63, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:., (:(::), (:call, :A265_), (:curly, :A265, :Float64)), (:quote, #QuoteNode
+            :field1
+          )), 1.0)),
+    (:line, 66, :none),
+    (:type, true, (:curly, :B265, :T), (:block,
+        (:line, 67, :none),
+        (:(::), :field1, :T),
+        (:line, 69, :none),
+        (:(=), (:where, (:call, (:curly, :B265, :T), (:(::), :field1, :Any), (:(::), :dummy, :Void)), :T), (:block,
+            (:line, 69, :none),
+            (:call, :new, :field1)
+          ))
+      )),
+    (:line, 72, :none),
+    (:(=), (:call, :B265, (:(::), :x, :Int), (:(::), :dummy, :Void)), (:block,
+        (:line, 72, :none),
+        (:call, (:curly, :B265, :Int), :x, :dummy)
+      )),
+    (:line, 73, :none),
+    (:let, (:block,
+        (:line, 74, :none),
+        (:global, (:(=), (:call, :B265_, (:(::), :i, :Int)), (:block,
+              (:line, 74, :none),
+              (:call, :B265, (:ref, :ty, :i), :nothing)
+            )))
+      ), (:(=), :ty, (:ref, :Any, 1, 2.0, 3.0f0))),
+    (:line, 77, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:., (:(::), (:call, :B265_, 1), (:curly, :B265, :Int)), (:quote, #QuoteNode
+            :field1
+          )), 1)),
+    (:line, 78, :none),
+    (:macrocall, Symbol("@test_throws"), :MethodError, (:call, :B265_, 2)),
+    (:line, 79, :none),
+    (:macrocall, Symbol("@test_throws"), :MethodError, (:call, :B265_, 3)),
+    (:line, 80, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+              :return_types
+            )), :B265_, (:tuple, :Int)), (:ref, :Any, (:curly, :B265, :Int)))),
+    (:line, 81, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., (:., :Core, (:quote, #QuoteNode
+                :Inference
+              )), (:quote, #QuoteNode
+              :return_type
+            )), :B265_, (:tuple, :Int)), (:curly, :B265, :Int))),
+    (:line, 84, :none),
+    (:(=), (:call, :B265, (:(::), :x, :Float64), (:(::), :dummy, :Void)), (:block,
+        (:line, 84, :none),
+        (:call, (:curly, :B265, :Float64), :x, :dummy)
+      )),
+    (:line, 85, :none),
+    (:(=), (:call, :B265, (:(::), :x, :Any), (:(::), :dummy, :Void)), (:block,
+        (:line, 85, :none),
+        (:call, (:curly, :B265, :UInt8), :x, :dummy)
+      )),
+    (:line, 88, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:., (:(::), (:call, :B265_, 1), (:curly, :B265, :Int)), (:quote, #QuoteNode
+            :field1
+          )), 1)),
+    (:line, 89, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:., (:(::), (:call, :B265_, 2), (:curly, :B265, :Float64)), (:quote, #QuoteNode
+            :field1
+          )), 2.0)),
+    (:line, 90, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:., (:(::), (:call, :B265_, 3), (:curly, :B265, :UInt8)), (:quote, #QuoteNode
+            :field1
+          )), 0x03)),
+    (:line, 92, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+              :return_types
+            )), :B265_, (:tuple, :Int)), (:ref, :Any, (:curly, :Union, (:curly, :B265, :Float64), (:curly, :B265, :Int), (:curly, :B265, :UInt8))))),
+    (:line, 93, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., (:., :Core, (:quote, #QuoteNode
+                :Inference
+              )), (:quote, #QuoteNode
+              :return_type
+            )), :B265_, (:tuple, :Int)), (:curly, :Union, (:curly, :B265, :Float64), (:curly, :B265, :Int), (:curly, :B265, :UInt8)))),
+    (:line, 97, :none),
+    (:function, (:call, :wfunc, :c1, :c2), (:block,
+        (:line, 98, :none),
+        (:while, true, (:block,
+            (:line, 99, :none),
+            (:(=), (:tuple, :f, :args), (:call, :take!, :c1)),
+            (:line, 100, :none),
+            (:call, :put!, :c2, (:call, :f, (:..., :args)))
+          ))
+      )),
+    (:line, 103, :none),
+    (:function, (:call, :put_n_take!, (:..., :v)), (:block,
+        (:line, 104, :none),
+        (:call, :put!, (:ref, :chnls, 1), :v),
+        (:line, 105, :none),
+        (:call, :take!, (:ref, :chnls, 2))
+      )),
+    (:line, 108, :none),
+    (:(=), (:call, :g265), (:block,
+        (:line, 108, :none),
+        (:comprehension, (:generator, (:call, :f265, :x), (:(=), :x, (:(:), 1, 3.0))))
+      )),
+    (:line, 109, :none),
+    (:(=), :wc265, (:call, :world_counter)),
+    (:line, 110, :none),
+    (:(=), (:call, :f265, (:(::), :Any)), (:block,
+        (:line, 110, :none),
+        1.0
+      )),
+    (:line, 111, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :+, :wc265, 1), (:call, :world_counter))),
+    (:line, 112, :none),
+    (:(=), (:tuple, :chnls, :tasks), (:call, (:., :Base, (:quote, #QuoteNode
+            :channeled_tasks
+          )), 2, :wfunc)),
+    (:line, 113, :none),
+    (:(=), :t265, (:ref, :tasks, 1)),
+    (:line, 115, :none),
+    (:(=), :wc265, (:call, :world_counter)),
+    (:line, 116, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :put_n_take!, :world_counter, (:tuple,)), :wc265)),
+    (:line, 117, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :put_n_take!, :tls_world_age, (:tuple,)), :wc265)),
+    (:line, 118, :none),
+    (:(=), (:call, :f265, (:(::), :Int)), (:block,
+        (:line, 118, :none),
+        1
+      )),
+    (:line, 119, :none),
+    (:macrocall, Symbol("@test"), (:comparison, (:call, :put_n_take!, :world_counter, (:tuple,)), :(==), (:call, :+, :wc265, 1), :(==), (:call, :world_counter), :(==), (:call, :tls_world_age))),
+    (:line, 120, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :put_n_take!, :tls_world_age, (:tuple,)), :wc265)),
+    (:line, 122, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :g265), (:ref, :Int, 1, 1, 1))),
+    (:line, 123, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., (:., :Core, (:quote, #QuoteNode
+                :Inference
+              )), (:quote, #QuoteNode
+              :return_type
+            )), :f265, (:tuple, :Any)), (:curly, :Union, :Float64, :Int))),
+    (:line, 124, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., (:., :Core, (:quote, #QuoteNode
+                :Inference
+              )), (:quote, #QuoteNode
+              :return_type
+            )), :f265, (:tuple, :Int)), :Int)),
+    (:line, 125, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., (:., :Core, (:quote, #QuoteNode
+                :Inference
+              )), (:quote, #QuoteNode
+              :return_type
+            )), :f265, (:tuple, :Float64)), :Float64)),
+    (:line, 127, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :put_n_take!, :g265, (:tuple,)), (:ref, :Float64, 1.0, 1.0, 1.0))),
+    (:line, 128, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :put_n_take!, (:., (:., :Core, (:quote, #QuoteNode
+                :Inference
+              )), (:quote, #QuoteNode
+              :return_type
+            )), (:tuple, :f265, (:tuple, :Any))), :Float64)),
+    (:line, 129, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :put_n_take!, (:., (:., :Core, (:quote, #QuoteNode
+                :Inference
+              )), (:quote, #QuoteNode
+              :return_type
+            )), (:tuple, :f265, (:tuple, :Int))), :Float64)),
+    (:line, 130, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :put_n_take!, (:., (:., :Core, (:quote, #QuoteNode
+                :Inference
+              )), (:quote, #QuoteNode
+              :return_type
+            )), (:tuple, :f265, (:tuple, :Float64))), :Float64)),
+    (:line, 131, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :put_n_take!, (:., (:., :Core, (:quote, #QuoteNode
+                :Inference
+              )), (:quote, #QuoteNode
+              :return_type
+            )), (:tuple, :f265, (:tuple, :Float64))), :Float64)),
+    (:line, 134, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+              :return_types
+            )), :f265, (:tuple, :Any)), (:ref, :Any, :Int, :Float64))),
+    (:line, 135, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :put_n_take!, (:., :Base, (:quote, #QuoteNode
+              :return_types
+            )), (:tuple, :f265, (:tuple, :Any))), (:ref, :Any, :Int, :Float64))),
+    (:line, 138, :none),
+    (:(=), (:call, :h265), (:block,
+        (:line, 138, :none),
+        true
+      )),
+    (:line, 139, :none),
+    (:(=), :loc_h265, (:string, (:call, (:., :Base, (:quote, #QuoteNode
+              :source_path
+            ))), ":", (:call, :-, 139, 1))),
+    (:line, 140, :none),
+    (:macrocall, Symbol("@test"), (:call, :h265)),
+    (:line, 141, :none),
+    (:macrocall, Symbol("@test_throws"), :MethodError, (:call, :put_n_take!, :h265, (:tuple,))),
+    (:line, 142, :none),
+    (:macrocall, Symbol("@test_throws"), :MethodError, (:call, :wait, :t265)),
+    (:line, 143, :none),
+    (:macrocall, Symbol("@test"), (:call, :istaskdone, :t265)),
+    (:line, 144, :none),
+    (:let, (:block,
+        (:line, 145, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :ex, (:quote, #QuoteNode
+                :f
+              )), :h265)),
+        (:line, 146, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :ex, (:quote, #QuoteNode
+                :args
+              )), (:tuple,))),
+        (:line, 147, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :ex, (:quote, #QuoteNode
+                :world
+              )), :wc265)),
+        (:line, 148, :none),
+        (:(=), :str, (:call, :sprint, :showerror, :ex)),
+        (:line, 149, :none),
+        (:(=), :wc, (:call, :world_counter)),
+        (:line, 150, :none),
+        (:(=), :cmps, (:string, "MethodError: no method matching h265()\nThe applicable method may be too new: running in world age ", :wc265, ", while current world is ", :wc, ".")),
+        (:line, 153, :none),
+        (:macrocall, Symbol("@test"), (:call, :startswith, :str, :cmps)),
+        (:line, 154, :none),
+        (:(=), :cmps, (:string, "\n  h265() at ", :loc_h265, " (method too new to be called from this world context.)")),
+        (:line, 155, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, :str, :cmps))
+      ), (:(=), :ex, (:., :t265, (:quote, #QuoteNode
+            :exception
+          )))),
+    (:line, 160, :none),
+    (:(=), (:call, :f_gen265, :x), (:block,
+        (:line, 160, :none),
+        1
+      )),
+    (:line, 161, :none),
+    (:macrocall, Symbol("@generated"), (:(=), (:call, :g_gen265, :x), (:block,
+          (:line, 161, :none),
+          (:call, :f_gen265, :x)
+        ))),
+    (:line, 162, :none),
+    (:macrocall, Symbol("@generated"), (:(=), (:call, :h_gen265, :x), (:block,
+          (:line, 162, :none),
+          (:quote, (:call, :f_gen265, :x))
+        ))),
+    (:line, 163, :none),
+    (:(=), (:call, :f_gen265, (:(::), :x, :Int)), (:block,
+        (:line, 163, :none),
+        2
+      )),
+    (:line, 164, :none),
+    (:(=), (:call, :f_gen265, (:(::), :x, (:curly, :Type, :Int))), (:block,
+        (:line, 164, :none),
+        3
+      )),
+    (:line, 165, :none),
+    (:macrocall, Symbol("@generated"), (:(=), (:call, :g_gen265b, :x), (:block,
+          (:line, 165, :none),
+          (:call, :f_gen265, :x)
+        ))),
+    (:line, 166, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :h_gen265, 0), 2)),
+    (:line, 167, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :g_gen265, 0), 1)),
+    (:line, 168, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :f_gen265, :Int), 3)),
+    (:line, 169, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :g_gen265b, 0), 3))
+  ))

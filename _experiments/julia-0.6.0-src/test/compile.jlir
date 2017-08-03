@@ -1,0 +1,841 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:using, :Base, :Test),
+    (:line, 5, :none),
+    (:(=), :Foo_module, (:quote, #QuoteNode
+        :Foo4b3a94a1a081a8cb
+      )),
+    (:line, 6, :none),
+    (:(=), :Foo2_module, (:quote, #QuoteNode
+        :F2oo4b3a94a1a081a8cb
+      )),
+    (:line, 7, :none),
+    (:(=), :FooBase_module, (:quote, #QuoteNode
+        :FooBase4b3a94a1a081a8cb
+      )),
+    (:line, 8, :none),
+    (:macrocall, Symbol("@eval"), (:module, true, :ConflictingBindings, (:block,
+          (:line, 8, :none),
+          (:line, 9, :none),
+          (:export, (:$, :Foo_module), (:$, :FooBase_module)),
+          (:line, 10, :none),
+          (:(=), (:$, :Foo_module), 232),
+          (:line, 11, :none),
+          (:(=), (:$, :FooBase_module), 9134)
+        ))),
+    (:line, 13, :none),
+    (:using, :., :ConflictingBindings),
+    (:line, 17, :none),
+    (:call, :withenv, (:->, (:tuple,), (:block,
+          (:line, 19, :none),
+          (:(=), :dir, (:call, :mktempdir)),
+          (:line, 20, :none),
+          (:(=), :dir2, (:call, :mktempdir)),
+          (:line, 21, :none),
+          (:call, :insert!, :LOAD_PATH, 1, :dir),
+          (:line, 22, :none),
+          (:call, :insert!, (:., :Base, (:quote, #QuoteNode
+                :LOAD_CACHE_PATH
+              )), 1, :dir),
+          (:line, 23, :none),
+          (:try, (:block,
+              (:line, 24, :none),
+              (:(=), :Foo_file, (:call, :joinpath, :dir, (:string, :Foo_module, ".jl"))),
+              (:line, 25, :none),
+              (:(=), :Foo2_file, (:call, :joinpath, :dir, (:string, :Foo2_module, ".jl"))),
+              (:line, 26, :none),
+              (:(=), :FooBase_file, (:call, :joinpath, :dir, (:string, :FooBase_module, ".jl"))),
+              (:line, 28, :none),
+              (:call, :write, :FooBase_file, (:string, "__precompile__(true)\n\nmodule ", :FooBase_module, "\n    import Base: hash, >\n    struct fmpz end\n    struct typeA end\n    >(x::fmpz, y::Int) = Base.cmp(x, y) > 0\n    function hash(a::typeA, h::UInt)\n        d = den(a)\n        return h\n    end\nend\n")),
+              (:line, 43, :none),
+              (:call, :write, :Foo2_file, (:string, "__precompile__(true)\n\nmodule ", :Foo2_module, "\n    export override\n    override(x::Integer) = 2\n    override(x::AbstractFloat) = Float64(override(1))\nend\n")),
+              (:line, 53, :none),
+              (:call, :write, :Foo_file, (:string, "__precompile__(true)\n\nmodule ", :Foo_module, "\n    using ", :FooBase_module, ", ", :FooBase_module, ".typeA\n    import ", :Foo2_module, ": ", :Foo2_module, ", override\n    import ", :FooBase_module, ".hash\n\n    struct typeB\n        y::typeA\n    end\n    hash(x::typeB) = hash(x.y)\n\n    # test that docs get reconnected\n    @doc \"foo function\" foo(x) = x + 1\n    include_dependency(\"foo.jl\")\n    include_dependency(\"foo.jl\")\n    module Bar\n        @doc \"bar function\" bar(x) = x + 2\n        include_dependency(\"bar.jl\")\n    end\n\n    # test for creation of some reasonably complicated type\n    struct MyType{T} end\n    const t17809s = Any[\n          Tuple{\n              Type{Ptr{MyType{i}}},\n              Array{Ptr{MyType{MyType{:sym}()}}(0), 0},\n              Val{Complex{Int}(1, 2)},\n              Val{3},\n              Val{nothing}}\n          for i = 0:25]\n\n    # test that types and methods get reconnected correctly\n    # issue 16529 (adding a method to a type with no instances)\n    (::Task)(::UInt8, ::UInt16, ::UInt32) = 2\n\n    # issue 16471 (capturing references to a kwfunc)\n    Base.Test.@test_throws ErrorException Core.kwfunc(Base.nothing)\n    Base.nothing(::UInt8, ::UInt16, ::UInt32; x = 52) = x\n    const nothingkw = Core.kwfunc(Base.nothing)\n\n    # issue 16908 (some complicated types and external method definitions)\n    abstract type CategoricalPool{T, R <: Integer, V} end\n    abstract type CategoricalValue{T, R <: Integer} end\n    struct NominalPool{T, R <: Integer, V} <: CategoricalPool{T, R, V}\n        index::Vector{T}\n        invindex::Dict{T, R}\n        order::Vector{R}\n        ordered::Vector{T}\n        valindex::Vector{V}\n    end\n    struct NominalValue{T, R <: Integer} <: CategoricalValue{T, R}\n        level::R\n        pool::NominalPool{T, R, NominalValue{T, R}}\n    end\n    struct OrdinalValue{T, R <: Integer} <: CategoricalValue{T, R}\n        level::R\n        pool::NominalPool{T, R, NominalValue{T, R}}\n    end\n    (::Union{Type{NominalValue}, Type{OrdinalValue}})() = 1\n    (::Union{Type{NominalValue{T}}, Type{OrdinalValue{T}}}){T}() = 2\n    (::Type{Vector{NominalValue{T, R}}}){T, R}() = 3\n    (::Type{Vector{NominalValue{T, T}}}){T}() = 4\n    (::Type{Vector{NominalValue{Int, Int}}})() = 5\n\n    # more tests for method signature involving a complicated type\n    # issue 18343\n    struct Pool18343{R, V}\n        valindex::Vector{V}\n    end\n    struct Value18343{T, R}\n        pool::Pool18343{R, Value18343{T, R}}\n    end\n    Base.convert{S}(::Type{Nullable{S}}, ::Value18343{Nullable}) = 2\n    Base.convert(::Type{Nullable{Value18343}}, ::Value18343{Nullable}) = 2\n    Base.convert{T}(::Type{Ref}, ::Value18343{T}) = 3\n\n\n    let some_method = @which Base.include(\"string\")\n          # global const some_method // FIXME: support for serializing a direct reference to an external Method not implemented\n        global const some_linfo =\n            ccall(:jl_specializations_get_linfo, Ref{Core.MethodInstance}, (Any, Any, Any, UInt),\n                some_method, Tuple{typeof(Base.include), String}, Core.svec(), typemax(UInt))\n    end\n\n    g() = override(1.0)\n    Base.Test.@test g() === 2.0 # compile this\nend\n")),
+              (:line, 144, :none),
+              (:macrocall, Symbol("@test_throws"), :ErrorException, (:call, (:., :Core, (:quote, #QuoteNode
+                      :kwfunc
+                    )), (:., :Base, (:quote, #QuoteNode
+                      :nothing
+                    )))),
+              (:line, 147, :none),
+              (:macrocall, Symbol("@test"), (:call, :(===), (:call, :__precompile__, true), :nothing)),
+              (:line, 150, :none),
+              (:call, (:., :Base, (:quote, #QuoteNode
+                    :require
+                  )), :Foo2_module),
+              (:line, 151, :none),
+              (:macrocall, Symbol("@eval"), (:let, (:block,
+                    (:line, 153, :none),
+                    (:(=), (:call, (:., :Foo, (:quote, #QuoteNode
+                            :override
+                          )), (:(::), :Int)), (:block,
+                        (:line, 153, :none),
+                        'a'
+                      )),
+                    (:line, 154, :none),
+                    (:(=), (:call, (:., :Foo, (:quote, #QuoteNode
+                            :override
+                          )), (:(::), :Float32)), (:block,
+                        (:line, 154, :none),
+                        'b'
+                      ))
+                  ), (:(=), :Foo2_module, (:$, (:call, :QuoteNode, :Foo2_module))), (:(=), :Foo, (:call, :getfield, :Main, :Foo2_module)))),
+              (:line, 157, :none),
+              (:call, (:., :Base, (:quote, #QuoteNode
+                    :require
+                  )), :Foo_module),
+              (:line, 159, :none),
+              (:macrocall, Symbol("@eval"), (:let, (:block,
+                    (:line, 161, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Foo, (:quote, #QuoteNode
+                              :foo
+                            )), 17), 18)),
+                    (:line, 162, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., (:., :Foo, (:quote, #QuoteNode
+                                :Bar
+                              )), (:quote, #QuoteNode
+                              :bar
+                            )), 17), 19)),
+                    (:line, 165, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(===), (:call, (:., :Foo, (:quote, #QuoteNode
+                              :g
+                            ))), 97.0)),
+                    (:line, 166, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Foo, (:quote, #QuoteNode
+                              :override
+                            )), 1.0), (:call, :Float64, 'a'))),
+                    (:line, 167, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Foo, (:quote, #QuoteNode
+                              :override
+                            )), 1.0f0), 'b')),
+                    (:line, 168, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Foo, (:quote, #QuoteNode
+                              :override
+                            )), (:call, :UInt, 1)), 2))
+                  ), (:(=), :Foo_module, (:$, (:call, :QuoteNode, :Foo_module))), (:(=), :Foo, (:call, :getfield, :Main, :Foo_module)))),
+              (:line, 171, :none),
+              (:(=), :cachefile, (:call, :joinpath, :dir, (:string, :Foo_module, ".ji"))),
+              (:line, 174, :none),
+              (:macrocall, Symbol("@test_warn"), (:string, "WARNING: replacing module ", :Foo_module, "."), (:block,
+                  (:line, 175, :none),
+                  (:macrocall, Symbol("@test"), (:call, :isa, (:call, (:., :Base, (:quote, #QuoteNode
+                            :_require_from_serialized
+                          )), (:call, :myid), :Foo_module, :cachefile, false), (:curly, :Array, :Any, 1)))
+                )),
+              (:line, 178, :none),
+              (:let, (:block,
+                  (:line, 179, :none),
+                  (:macrocall, Symbol("@test_throws"), :MethodError, (:call, (:., :Foo, (:quote, #QuoteNode
+                          :foo
+                        )), 17))
+                ), (:(=), :Foo, (:call, :getfield, :Main, :Foo_module))),
+              (:line, 181, :none),
+              (:macrocall, Symbol("@eval"), (:let, (:block,
+                    (:line, 188, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Foo, (:quote, #QuoteNode
+                              :foo
+                            )), 17), 18)),
+                    (:line, 189, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., (:., :Foo, (:quote, #QuoteNode
+                                :Bar
+                              )), (:quote, #QuoteNode
+                              :bar
+                            )), 17), 19)),
+                    (:line, 192, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(===), (:call, (:., :Foo, (:quote, #QuoteNode
+                              :g
+                            ))), 97.0)),
+                    (:line, 193, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Foo, (:quote, #QuoteNode
+                              :override
+                            )), 1.0), (:call, :Float64, 'a'))),
+                    (:line, 194, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Foo, (:quote, #QuoteNode
+                              :override
+                            )), 1.0f0), 'b')),
+                    (:line, 195, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Foo, (:quote, #QuoteNode
+                              :override
+                            )), (:call, :UInt, 1)), 2)),
+                    (:line, 198, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :stringmime, "text/plain", (:call, (:., (:., :Base, (:quote, #QuoteNode
+                                  :Docs
+                                )), (:quote, #QuoteNode
+                                :doc
+                              )), (:., :Foo, (:quote, #QuoteNode
+                                :foo
+                              )))), "foo function\n")),
+                    (:line, 199, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :stringmime, "text/plain", (:call, (:., (:., :Base, (:quote, #QuoteNode
+                                  :Docs
+                                )), (:quote, #QuoteNode
+                                :doc
+                              )), (:., (:., :Foo, (:quote, #QuoteNode
+                                  :Bar
+                                )), (:quote, #QuoteNode
+                                :bar
+                              )))), "bar function\n")),
+                    (:line, 201, :none),
+                    (:(=), (:tuple, :modules, :deps, :required_modules), (:call, (:., :Base, (:quote, #QuoteNode
+                            :parse_cache_header
+                          )), :cachefile)),
+                    (:line, 202, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), :modules, (:call, :Dict, (:call, :(=>), :Foo_module, (:call, (:., :Base, (:quote, #QuoteNode
+                                  :module_uuid
+                                )), :Foo))))),
+                    (:line, 203, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :map, (:->, :x, (:block,
+                              (:line, 203, :none),
+                              (:ref, :x, 1)
+                            )), (:call, :sort, :deps)), (:vect, :Foo_file, (:call, :joinpath, :dir, "bar.jl"), (:call, :joinpath, :dir, "foo.jl")))),
+                    (:line, 205, :none),
+                    (:(=), (:tuple, :modules, :deps1), (:call, (:., :Base, (:quote, #QuoteNode
+                            :cache_dependencies
+                          )), :cachefile)),
+                    (:line, 206, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), :modules, (:call, :Dict, (:generator, (:call, :(=>), :s, (:call, (:., :Base, (:quote, #QuoteNode
+                                    :module_uuid
+                                  )), (:call, :getfield, :Foo, :s))), (:(=), :s, (:vect, (:quote, #QuoteNode
+                                  :Base
+                                ), (:quote, #QuoteNode
+                                  :Core
+                                ), :Foo2_module, :FooBase_module, (:quote, #QuoteNode
+                                  :Main
+                                ))))))),
+                    (:line, 208, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), :deps, :deps1)),
+                    (:line, 210, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:call, :current_task), 0x01, 0x4000, 0x30031234), 2)),
+                    (:line, 211, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :nothing, 0x01, 0x4000, 0x30031234), 52)),
+                    (:line, 212, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :nothing, (:parameters, (:kw, :x, 9142)), 0x01, 0x4000, 0x30031234), 9142)),
+                    (:line, 213, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(===), (:., :Foo, (:quote, #QuoteNode
+                            :nothingkw
+                          )), (:call, (:., :Core, (:quote, #QuoteNode
+                              :kwfunc
+                            )), (:., :Base, (:quote, #QuoteNode
+                              :nothing
+                            ))))),
+                    (:line, 215, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Foo, (:quote, #QuoteNode
+                              :NominalValue
+                            ))), 1)),
+                    (:line, 216, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Foo, (:quote, #QuoteNode
+                              :OrdinalValue
+                            ))), 1)),
+                    (:line, 217, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:curly, (:., :Foo, (:quote, #QuoteNode
+                                :NominalValue
+                              )), :Int)), 2)),
+                    (:line, 218, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:curly, (:., :Foo, (:quote, #QuoteNode
+                                :OrdinalValue
+                              )), :Int)), 2)),
+                    (:line, 219, :none),
+                    (:let, (:block,
+                        (:line, 220, :none),
+                        (:macrocall, Symbol("@test"), (:call, :isa, (:call, :T), :T))
+                      ), (:(=), :T, (:curly, :Vector, (:curly, (:., :Foo, (:quote, #QuoteNode
+                                :NominalValue
+                              )), :Int)))),
+                    (:line, 222, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:curly, :Vector, (:curly, (:., :Foo, (:quote, #QuoteNode
+                                  :NominalValue
+                                )), :Int32, :Int64))), 3)),
+                    (:line, 223, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:curly, :Vector, (:curly, (:., :Foo, (:quote, #QuoteNode
+                                  :NominalValue
+                                )), :UInt, :UInt))), 4)),
+                    (:line, 224, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:curly, :Vector, (:curly, (:., :Foo, (:quote, #QuoteNode
+                                  :NominalValue
+                                )), :Int, :Int))), 5)),
+                    (:line, 225, :none),
+                    (:macrocall, Symbol("@test"), (:call, :all, (:->, :i, (:block,
+                            (:line, 225, :none),
+                            (:call, :(===), (:ref, (:., :Foo, (:quote, #QuoteNode
+                                    :t17809s
+                                  )), (:call, :+, :i, 1)), (:curly, :Tuple, (:curly, :Type, (:curly, :Ptr, (:curly, (:., :Foo, (:quote, #QuoteNode
+                                          :MyType
+                                        )), :i))), (:curly, :Array, (:call, (:curly, :Ptr, (:curly, (:., :Foo, (:quote, #QuoteNode
+                                            :MyType
+                                          )), (:call, (:curly, (:., :Foo, (:quote, #QuoteNode
+                                                :MyType
+                                              )), (:quote, #QuoteNode
+                                              :sym
+                                            ))))), 0), 0), (:curly, :Val, (:call, (:curly, :Complex, :Int), 1, 2)), (:curly, :Val, 3), (:curly, :Val, :nothing)))
+                          )), (:(:), 0, 25))),
+                    (:line, 233, :none),
+                    (:(=), :some_method, (:macrocall, Symbol("@which"), (:call, (:., :Base, (:quote, #QuoteNode
+                              :include
+                            )), "string"))),
+                    (:line, 234, :none),
+                    (:(=), :some_linfo, (:call, :ccall, (:quote, #QuoteNode
+                          :jl_specializations_get_linfo
+                        ), (:curly, :Ref, (:., :Core, (:quote, #QuoteNode
+                              :MethodInstance
+                            ))), (:tuple, :Any, :Any, :Any, :UInt), :some_method, (:curly, :Tuple, (:call, :typeof, (:., :Base, (:quote, #QuoteNode
+                                :include
+                              ))), :String), (:call, (:., :Core, (:quote, #QuoteNode
+                              :svec
+                            ))), (:call, :typemax, :UInt))),
+                    (:line, 237, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(===), (:(::), (:., :Foo, (:quote, #QuoteNode
+                              :some_linfo
+                            )), (:., :Core, (:quote, #QuoteNode
+                              :MethodInstance
+                            ))), :some_linfo)),
+                    (:line, 239, :none),
+                    (:(=), :PV, (:ref, (:., (:., (:curly, (:., :Foo, (:quote, #QuoteNode
+                                  :Value18343
+                                )), :Nullable), (:quote, #QuoteNode
+                              :body
+                            )), (:quote, #QuoteNode
+                            :types
+                          )), 1)),
+                    (:line, 240, :none),
+                    (:(=), :VR, (:ref, (:., (:ref, (:., :PV, (:quote, #QuoteNode
+                                :types
+                              )), 1), (:quote, #QuoteNode
+                            :parameters
+                          )), 1)),
+                    (:line, 241, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(===), (:ref, (:., :PV, (:quote, #QuoteNode
+                              :types
+                            )), 1), (:curly, :Array, :VR, 1))),
+                    (:line, 242, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :pointer_from_objref, (:ref, (:., :PV, (:quote, #QuoteNode
+                                :types
+                              )), 1)), (:call, :pointer_from_objref, (:ref, (:., (:ref, (:., (:ref, (:., (:ref, (:., :PV, (:quote, #QuoteNode
+                                            :types
+                                          )), 1), (:quote, #QuoteNode
+                                        :parameters
+                                      )), 1), (:quote, #QuoteNode
+                                    :types
+                                  )), 1), (:quote, #QuoteNode
+                                :types
+                              )), 1)))),
+                    (:line, 244, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(===), :PV, (:ref, (:., (:ref, (:., (:ref, (:., :PV, (:quote, #QuoteNode
+                                      :types
+                                    )), 1), (:quote, #QuoteNode
+                                  :parameters
+                                )), 1), (:quote, #QuoteNode
+                              :types
+                            )), 1))),
+                    (:line, 245, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :pointer_from_objref, :PV), (:call, :pointer_from_objref, (:ref, (:., (:ref, (:., (:ref, (:., :PV, (:quote, #QuoteNode
+                                        :types
+                                      )), 1), (:quote, #QuoteNode
+                                    :parameters
+                                  )), 1), (:quote, #QuoteNode
+                                :types
+                              )), 1))))
+                  ), (:(=), :Foo_module, (:$, (:call, :QuoteNode, :Foo_module))), (:(=), :Foo2_module, (:$, (:call, :QuoteNode, :Foo2_module))), (:(=), :FooBase_module, (:$, (:call, :QuoteNode, :FooBase_module))), (:(=), :Foo, (:call, :getfield, :Main, :Foo_module)), (:(=), :dir, (:$, (:call, :QuoteNode, :dir))), (:(=), :cachefile, (:$, (:call, :QuoteNode, :cachefile))), (:(=), :Foo_file, (:$, (:call, :QuoteNode, :Foo_file))))),
+              (:line, 248, :none),
+              (:(=), :Baz_file, (:call, :joinpath, :dir, "Baz.jl")),
+              (:line, 249, :none),
+              (:call, :write, :Baz_file, "__precompile__(false)\nmodule Baz\nend\n"),
+              (:line, 256, :none),
+              (:macrocall, Symbol("@test_warn"), "ERROR: LoadError: Declaring __precompile__(false) is not allowed in files that are being precompiled.\nStacktrace:\n [1] __precompile__", (:try, (:block,
+                    (:line, 257, :none),
+                    (:call, (:., :Base, (:quote, #QuoteNode
+                          :compilecache
+                        )), "Baz"),
+                    (:line, 258, :none),
+                    (:call, :error, "__precompile__ disabled test failed")
+                  ), :exc, (:block,
+                    (:line, 260, :none),
+                    (:||, (:call, :isa, :exc, :ErrorException), (:call, :rethrow, :exc)),
+                    (:line, 261, :none),
+                    (:&&, (:call, :!, (:call, :isempty, (:call, :search, (:., :exc, (:quote, #QuoteNode
+                                :msg
+                              )), "__precompile__(false)"))), (:call, :rethrow, :exc))
+                  ))),
+              (:line, 265, :none),
+              (:(=), :FooBar1_file, (:call, :joinpath, :dir, "FooBar1.jl")),
+              (:line, 266, :none),
+              (:call, :write, :FooBar1_file, "__precompile__(true)\nmodule FooBar1\n    using FooBar\nend\n"),
+              (:line, 273, :none),
+              (:call, :sleep, 2),
+              (:line, 274, :none),
+              (:(=), :FooBar_file, (:call, :joinpath, :dir, "FooBar.jl")),
+              (:line, 275, :none),
+              (:call, :write, :FooBar_file, "__precompile__(true)\nmodule FooBar\nend\n"),
+              (:line, 282, :none),
+              (:call, (:., :Base, (:quote, #QuoteNode
+                    :compilecache
+                  )), "FooBar"),
+              (:line, 283, :none),
+              (:macrocall, Symbol("@test"), (:call, :isfile, (:call, :joinpath, :dir, "FooBar.ji"))),
+              (:line, 284, :none),
+              (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :Base, (:quote, #QuoteNode
+                        :stale_cachefile
+                      )), :FooBar_file, (:call, :joinpath, :dir, "FooBar.ji")))),
+              (:line, 285, :none),
+              (:macrocall, Symbol("@test"), (:call, :!, (:call, :isdefined, :Main, (:quote, #QuoteNode
+                      :FooBar
+                    )))),
+              (:line, 286, :none),
+              (:macrocall, Symbol("@test"), (:call, :!, (:call, :isdefined, :Main, (:quote, #QuoteNode
+                      :FooBar1
+                    )))),
+              (:line, 288, :none),
+              (:(=), :relFooBar_file, (:call, :joinpath, :dir, "subfolder", "..", "FooBar.jl")),
+              (:line, 289, :none),
+              (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+                        :stale_cachefile
+                      )), :relFooBar_file, (:call, :joinpath, :dir, "FooBar.ji")), (:call, :!, (:call, :is_windows)))),
+              (:line, 290, :none),
+              (:call, :mkdir, (:call, :joinpath, :dir, "subfolder")),
+              (:line, 291, :none),
+              (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :Base, (:quote, #QuoteNode
+                        :stale_cachefile
+                      )), :relFooBar_file, (:call, :joinpath, :dir, "FooBar.ji")))),
+              (:line, 293, :none),
+              (:macrocall, Symbol("@eval"), (:using, :FooBar)),
+              (:line, 294, :none),
+              (:(=), :fb_uuid, (:call, (:., :Base, (:quote, #QuoteNode
+                      :module_uuid
+                    )), (:., :Main, (:quote, #QuoteNode
+                      :FooBar
+                    )))),
+              (:line, 295, :none),
+              (:call, :sleep, 2),
+              (:line, 295, :none),
+              (:call, :touch, :FooBar_file),
+              (:line, 296, :none),
+              (:call, :insert!, (:., :Base, (:quote, #QuoteNode
+                    :LOAD_CACHE_PATH
+                  )), 1, :dir2),
+              (:line, 297, :none),
+              (:macrocall, Symbol("@test"), (:call, (:., :Base, (:quote, #QuoteNode
+                      :stale_cachefile
+                    )), :FooBar_file, (:call, :joinpath, :dir, "FooBar.ji"))),
+              (:line, 298, :none),
+              (:macrocall, Symbol("@eval"), (:using, :FooBar1)),
+              (:line, 299, :none),
+              (:macrocall, Symbol("@test"), (:call, :!, (:call, :isfile, (:call, :joinpath, :dir2, "FooBar.ji")))),
+              (:line, 300, :none),
+              (:macrocall, Symbol("@test"), (:call, :!, (:call, :isfile, (:call, :joinpath, :dir, "FooBar1.ji")))),
+              (:line, 301, :none),
+              (:macrocall, Symbol("@test"), (:call, :isfile, (:call, :joinpath, :dir2, "FooBar1.ji"))),
+              (:line, 302, :none),
+              (:macrocall, Symbol("@test"), (:call, (:., :Base, (:quote, #QuoteNode
+                      :stale_cachefile
+                    )), :FooBar_file, (:call, :joinpath, :dir, "FooBar.ji"))),
+              (:line, 303, :none),
+              (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :Base, (:quote, #QuoteNode
+                        :stale_cachefile
+                      )), :FooBar1_file, (:call, :joinpath, :dir2, "FooBar1.ji")))),
+              (:line, 304, :none),
+              (:macrocall, Symbol("@test"), (:call, :(==), :fb_uuid, (:call, (:., :Base, (:quote, #QuoteNode
+                        :module_uuid
+                      )), (:., :Main, (:quote, #QuoteNode
+                        :FooBar
+                      ))))),
+              (:line, 305, :none),
+              (:(=), :fb_uuid1, (:call, (:., :Base, (:quote, #QuoteNode
+                      :module_uuid
+                    )), (:., :Main, (:quote, #QuoteNode
+                      :FooBar1
+                    )))),
+              (:line, 306, :none),
+              (:macrocall, Symbol("@test"), (:call, :(!=), :fb_uuid, :fb_uuid1)),
+              (:line, 308, :none),
+              (:macrocall, Symbol("@test_warn"), "WARNING: replacing module FooBar.", (:call, :reload, "FooBar")),
+              (:line, 309, :none),
+              (:macrocall, Symbol("@test"), (:call, :(!=), :fb_uuid, (:call, (:., :Base, (:quote, #QuoteNode
+                        :module_uuid
+                      )), (:., :Main, (:quote, #QuoteNode
+                        :FooBar
+                      ))))),
+              (:line, 310, :none),
+              (:macrocall, Symbol("@test"), (:call, :(==), :fb_uuid1, (:call, (:., :Base, (:quote, #QuoteNode
+                        :module_uuid
+                      )), (:., :Main, (:quote, #QuoteNode
+                        :FooBar1
+                      ))))),
+              (:line, 311, :none),
+              (:(=), :fb_uuid, (:call, (:., :Base, (:quote, #QuoteNode
+                      :module_uuid
+                    )), (:., :Main, (:quote, #QuoteNode
+                      :FooBar
+                    )))),
+              (:line, 312, :none),
+              (:macrocall, Symbol("@test"), (:call, :isfile, (:call, :joinpath, :dir2, "FooBar.ji"))),
+              (:line, 313, :none),
+              (:macrocall, Symbol("@test"), (:call, (:., :Base, (:quote, #QuoteNode
+                      :stale_cachefile
+                    )), :FooBar_file, (:call, :joinpath, :dir, "FooBar.ji"))),
+              (:line, 314, :none),
+              (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :Base, (:quote, #QuoteNode
+                        :stale_cachefile
+                      )), :FooBar1_file, (:call, :joinpath, :dir2, "FooBar1.ji")))),
+              (:line, 315, :none),
+              (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :Base, (:quote, #QuoteNode
+                        :stale_cachefile
+                      )), :FooBar_file, (:call, :joinpath, :dir2, "FooBar.ji")))),
+              (:line, 317, :none),
+              (:macrocall, Symbol("@test_warn"), "WARNING: replacing module FooBar1.", (:call, :reload, "FooBar1")),
+              (:line, 318, :none),
+              (:macrocall, Symbol("@test"), (:call, :(==), :fb_uuid, (:call, (:., :Base, (:quote, #QuoteNode
+                        :module_uuid
+                      )), (:., :Main, (:quote, #QuoteNode
+                        :FooBar
+                      ))))),
+              (:line, 319, :none),
+              (:macrocall, Symbol("@test"), (:call, :(!=), :fb_uuid1, (:call, (:., :Base, (:quote, #QuoteNode
+                        :module_uuid
+                      )), (:., :Main, (:quote, #QuoteNode
+                        :FooBar1
+                      ))))),
+              (:line, 321, :none),
+              (:macrocall, Symbol("@test"), (:call, :isfile, (:call, :joinpath, :dir2, "FooBar.ji"))),
+              (:line, 322, :none),
+              (:macrocall, Symbol("@test"), (:call, :isfile, (:call, :joinpath, :dir2, "FooBar1.ji"))),
+              (:line, 323, :none),
+              (:macrocall, Symbol("@test"), (:call, (:., :Base, (:quote, #QuoteNode
+                      :stale_cachefile
+                    )), :FooBar_file, (:call, :joinpath, :dir, "FooBar.ji"))),
+              (:line, 324, :none),
+              (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :Base, (:quote, #QuoteNode
+                        :stale_cachefile
+                      )), :FooBar_file, (:call, :joinpath, :dir2, "FooBar.ji")))),
+              (:line, 325, :none),
+              (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :Base, (:quote, #QuoteNode
+                        :stale_cachefile
+                      )), :FooBar1_file, (:call, :joinpath, :dir2, "FooBar1.ji")))),
+              (:line, 328, :none),
+              (:call, :write, :FooBar_file, "__precompile__(true)\nmodule FooBar\nerror(\"break me\")\nend\n"),
+              (:line, 335, :none),
+              (:macrocall, Symbol("@test_warn"), "ERROR: LoadError: break me\nStacktrace:\n [1] error", (:try, (:block,
+                    (:line, 336, :none),
+                    (:call, (:., :Base, (:quote, #QuoteNode
+                          :require
+                        )), (:quote, #QuoteNode
+                        :FooBar
+                      )),
+                    (:line, 337, :none),
+                    (:call, :error, "\"LoadError: break me\" test failed")
+                  ), :exc, (:block,
+                    (:line, 339, :none),
+                    (:||, (:call, :isa, :exc, :ErrorException), (:call, :rethrow, :exc)),
+                    (:line, 340, :none),
+                    (:&&, (:call, :!, (:call, :isempty, (:call, :search, (:., :exc, (:quote, #QuoteNode
+                                :msg
+                              )), "ERROR: LoadError: break me"))), (:call, :rethrow, :exc))
+                  ))),
+              (:line, 344, :none),
+              (:(=), :FooBarT_file, (:call, :joinpath, :dir, "FooBarT.jl")),
+              (:line, 345, :none),
+              (:call, :write, :FooBarT_file, "__precompile__(true)\nmodule FooBarT\nend\n"),
+              (:line, 351, :none),
+              (:(=), :FooBarT1_file, (:call, :joinpath, :dir, "FooBarT1.jl")),
+              (:line, 352, :none),
+              (:call, :write, :FooBarT1_file, "__precompile__(true)\nmodule FooBarT1\n    using FooBarT\nend\n"),
+              (:line, 359, :none),
+              (:(=), :FooBarT2_file, (:call, :joinpath, :dir, "FooBarT2.jl")),
+              (:line, 360, :none),
+              (:call, :write, :FooBarT2_file, "__precompile__(true)\nmodule FooBarT2\n    using FooBarT1\nend\n"),
+              (:line, 367, :none),
+              (:call, (:., :Base, (:quote, #QuoteNode
+                    :compilecache
+                  )), "FooBarT2"),
+              (:line, 368, :none),
+              (:call, :write, :FooBarT1_file, "__precompile__(true)\nmodule FooBarT1\nend\n"),
+              (:line, 374, :none),
+              (:call, :rm, :FooBarT_file),
+              (:line, 375, :none),
+              (:macrocall, Symbol("@test"), (:call, (:., :Base, (:quote, #QuoteNode
+                      :stale_cachefile
+                    )), :FooBarT2_file, (:call, :joinpath, :dir2, "FooBarT2.ji"))),
+              (:line, 376, :none),
+              (:macrocall, Symbol("@test"), (:call, :(===), (:call, (:., :Base, (:quote, #QuoteNode
+                        :require
+                      )), (:quote, #QuoteNode
+                      :FooBarT2
+                    )), :nothing))
+            ), false, false, (:block,
+              (:line, 378, :none),
+              (:call, :splice!, (:., :Base, (:quote, #QuoteNode
+                    :LOAD_CACHE_PATH
+                  )), (:(:), 1, 2)),
+              (:line, 379, :none),
+              (:call, :splice!, :LOAD_PATH, 1),
+              (:line, 380, :none),
+              (:call, :rm, :dir, (:kw, :recursive, true)),
+              (:line, 381, :none),
+              (:call, :rm, :dir2, (:kw, :recursive, true))
+            )),
+          (:line, 385, :none),
+          (:let, (:block,
+              (:line, 388, :none),
+              (:try, (:block,
+                  (:line, 389, :none),
+                  (:call, :write, (:call, :joinpath, :dir, (:string, :Time_module, ".jl")), (:string, "module ", :Time_module, "\n    __precompile__(true)\n    time = Base.time()\nend\n")),
+                  (:line, 397, :none),
+                  (:call, :eval, (:quote, (:block,
+                        (:line, 398, :none),
+                        (:call, :insert!, :LOAD_PATH, 1, (:$, :dir)),
+                        (:line, 399, :none),
+                        (:call, :insert!, (:., :Base, (:quote, #QuoteNode
+                              :LOAD_CACHE_PATH
+                            )), 1, (:$, :dir)),
+                        (:line, 400, :none),
+                        (:call, (:., :Base, (:quote, #QuoteNode
+                              :compilecache
+                            )), (:quote, #QuoteNode
+                            :Time4b3a94a1a081a8cb
+                          ))
+                      ))),
+                  (:line, 403, :none),
+                  (:(=), :exename, (:macrocall, Symbol("@cmd"), "\$(Base.julia_cmd()) --precompiled=yes --startup-file=no")),
+                  (:line, 405, :none),
+                  (:(=), :testcode, (:string, "    insert!(LOAD_PATH, 1, ", (:call, :repr, :dir), ")\n    insert!(Base.LOAD_CACHE_PATH, 1, ", (:call, :repr, :dir), ")\n    using ", :Time_module, "\n    getfield(", :Time_module, ", :time)\n")),
+                  (:line, 412, :none),
+                  (:(=), :t1_yes, (:call, :readchomp, (:macrocall, Symbol("@cmd"), "\$exename --compilecache=yes -E \$(testcode)"))),
+                  (:line, 413, :none),
+                  (:(=), :t2_yes, (:call, :readchomp, (:macrocall, Symbol("@cmd"), "\$exename --compilecache=yes -E \$(testcode)"))),
+                  (:line, 414, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), :t1_yes, :t2_yes)),
+                  (:line, 416, :none),
+                  (:(=), :t1_no, (:call, :readchomp, (:macrocall, Symbol("@cmd"), "\$exename --compilecache=no -E \$(testcode)"))),
+                  (:line, 417, :none),
+                  (:(=), :t2_no, (:call, :readchomp, (:macrocall, Symbol("@cmd"), "\$exename --compilecache=no -E \$(testcode)"))),
+                  (:line, 418, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(!=), :t1_no, :t2_no)),
+                  (:line, 419, :none),
+                  (:macrocall, Symbol("@test"), (:call, :<, (:call, :parse, :Float64, :t1_no), (:call, :parse, :Float64, :t2_no)))
+                ), false, false, (:block,
+                  (:line, 422, :none),
+                  (:call, :splice!, (:., :Base, (:quote, #QuoteNode
+                        :LOAD_CACHE_PATH
+                      )), 1),
+                  (:line, 423, :none),
+                  (:call, :splice!, :LOAD_PATH, 1),
+                  (:line, 424, :none),
+                  (:call, :rm, :dir, (:kw, :recursive, true))
+                ))
+            ), (:(=), :dir, (:call, :mktempdir)), (:(=), :Time_module, (:quote, #QuoteNode
+                :Time4b3a94a1a081a8cb
+              ))),
+          (:line, 429, :none),
+          (:let, (:block,
+              (:line, 430, :none),
+              (:(=), :Test_module, (:quote, #QuoteNode
+                  :Test6c92f26
+                )),
+              (:line, 431, :none),
+              (:try, (:block,
+                  (:line, 432, :none),
+                  (:call, :write, (:call, :joinpath, :dir, "Iterators.jl"), "module Iterators\n     __precompile__(true)\nend\n"),
+                  (:line, 439, :none),
+                  (:call, :write, (:call, :joinpath, :dir, (:string, :Test_module, ".jl")), (:string, "module ", :Test_module, "\n     __precompile__(true)\n     using Iterators\nend\n")),
+                  (:line, 447, :none),
+                  (:(=), :testcode, (:string, "    insert!(LOAD_PATH, 1, ", (:call, :repr, :dir), ")\n    insert!(Base.LOAD_CACHE_PATH, 1, ", (:call, :repr, :dir), ")\n    using ", :Test_module, "\n")),
+                  (:line, 453, :none),
+                  (:(=), :exename, (:macrocall, Symbol("@cmd"), "\$(Base.julia_cmd()) --startup-file=no")),
+                  (:line, 454, :none),
+                  (:let, (:block,
+                      (:line, 455, :none),
+                      (:try, (:block,
+                          (:line, 456, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), (:call, :readchomp, (:call, :pipeline, (:macrocall, Symbol("@cmd"), "\$exename -E \$(testcode)"), (:kw, :stderr, :fname))), "nothing")),
+                          (:line, 457, :none),
+                          (:macrocall, Symbol("@test"), (:call, (:., :Test, (:quote, #QuoteNode
+                                  :ismatch_warn
+                                )), (:string, "WARNING: replacing module ", :Test_module, ".\n"), (:call, :readstring, :fname)))
+                        ), false, false, (:block,
+                          (:line, 459, :none),
+                          (:call, :rm, :fname, (:kw, :force, true))
+                        ))
+                    ), (:(=), :fname, (:call, :tempname))),
+                  (:line, 465, :none),
+                  (:let, (:block,
+                      (:line, 466, :none),
+                      (:try, (:block,
+                          (:line, 467, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), (:call, :readchomp, (:call, :pipeline, (:macrocall, Symbol("@cmd"), "\$exename -E \$(testcode)"), (:kw, :stderr, :fname))), "nothing")),
+                          (:line, 469, :none),
+                          (:macrocall, Symbol("@test"), (:call, (:., :Test, (:quote, #QuoteNode
+                                  :ismatch_warn
+                                )), (:macrocall, Symbol("@r_str"), "^(?!.)", "s"), (:call, :readstring, :fname)))
+                        ), false, false, (:block,
+                          (:line, 471, :none),
+                          (:call, :rm, :fname, (:kw, :force, true))
+                        ))
+                    ), (:(=), :fname, (:call, :tempname)))
+                ), false, false, (:block,
+                  (:line, 475, :none),
+                  (:call, :rm, :dir, (:kw, :recursive, true))
+                ))
+            ), (:(=), :dir, (:call, :mktempdir))),
+          (:line, 479, :none),
+          (:let, (:block,
+              (:line, 480, :none),
+              (:try, (:block,
+                  (:line, 481, :none),
+                  (:call, :insert!, :LOAD_PATH, 1, :dir),
+                  (:line, 482, :none),
+                  (:call, :insert!, (:., :Base, (:quote, #QuoteNode
+                        :LOAD_CACHE_PATH
+                      )), 1, :dir),
+                  (:line, 484, :none),
+                  (:(=), :loaded_modules, (:call, (:curly, :Channel, :Symbol), 32)),
+                  (:line, 485, :none),
+                  (:(=), :callback, (:->, (:(::), :mod, :Symbol), (:block,
+                        (:line, 485, :none),
+                        (:call, :put!, :loaded_modules, :mod)
+                      ))),
+                  (:line, 486, :none),
+                  (:call, :push!, (:., :Base, (:quote, #QuoteNode
+                        :package_callbacks
+                      )), :callback),
+                  (:line, 488, :none),
+                  (:(=), :Test1_module, (:quote, #QuoteNode
+                      :Teste4095a81
+                    )),
+                  (:line, 489, :none),
+                  (:(=), :Test2_module, (:quote, #QuoteNode
+                      :Teste4095a82
+                    )),
+                  (:line, 490, :none),
+                  (:(=), :Test3_module, (:quote, #QuoteNode
+                      :Teste4095a83
+                    )),
+                  (:line, 492, :none),
+                  (:call, :write, (:call, :joinpath, :dir, (:string, :Test1_module, ".jl")), (:string, "module ", :Test1_module, "\n    __precompile__(true)\nend\n")),
+                  (:line, 499, :none),
+                  (:call, (:., :Base, (:quote, #QuoteNode
+                        :compilecache
+                      )), (:string, :Test1_module)),
+                  (:line, 500, :none),
+                  (:call, :write, (:call, :joinpath, :dir, (:string, :Test2_module, ".jl")), (:string, "module ", :Test2_module, "\n    __precompile__(true)\n    using ", :Test1_module, "\nend\n")),
+                  (:line, 507, :none),
+                  (:call, (:., :Base, (:quote, #QuoteNode
+                        :compilecache
+                      )), (:string, :Test2_module)),
+                  (:line, 508, :none),
+                  (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :Base, (:quote, #QuoteNode
+                            :isbindingresolved
+                          )), :Main, :Test2_module))),
+                  (:line, 509, :none),
+                  (:call, (:., :Base, (:quote, #QuoteNode
+                        :require
+                      )), :Test2_module),
+                  (:line, 510, :none),
+                  (:macrocall, Symbol("@test"), (:call, (:., :Base, (:quote, #QuoteNode
+                          :isbindingresolved
+                        )), :Main, :Test2_module)),
+                  (:line, 511, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), (:call, :take!, :loaded_modules), :Test1_module)),
+                  (:line, 512, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), (:call, :take!, :loaded_modules), :Test2_module)),
+                  (:line, 513, :none),
+                  (:call, :write, (:call, :joinpath, :dir, (:string, :Test3_module, ".jl")), (:string, "module ", :Test3_module, "\n    using ", :Test3_module, "\nend\n")),
+                  (:line, 519, :none),
+                  (:call, (:., :Base, (:quote, #QuoteNode
+                        :require
+                      )), :Test3_module),
+                  (:line, 520, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), (:call, :take!, :loaded_modules), :Test3_module))
+                ), false, false, (:block,
+                  (:line, 522, :none),
+                  (:call, :pop!, (:., :Base, (:quote, #QuoteNode
+                        :package_callbacks
+                      ))),
+                  (:line, 523, :none),
+                  (:call, :splice!, (:., :Base, (:quote, #QuoteNode
+                        :LOAD_CACHE_PATH
+                      )), 1),
+                  (:line, 524, :none),
+                  (:call, :splice!, :LOAD_PATH, 1),
+                  (:line, 525, :none),
+                  (:call, :rm, :dir, (:kw, :recursive, true))
+                ))
+            ), (:(=), :dir, (:call, :mktempdir))),
+          (:line, 529, :none),
+          (:let, (:block,
+              (:line, 530, :none),
+              (:call, :insert!, :LOAD_PATH, 1, (:call, :pwd)),
+              (:line, 531, :none),
+              (:(=), :file_name, (:call, :string, :module_name, ".jl")),
+              (:line, 532, :none),
+              (:call, :sleep, 2),
+              (:line, 532, :none),
+              (:call, :touch, :file_name),
+              (:line, 533, :none),
+              (:(=), :code, (:string, "module ", :module_name, "\nend\n")),
+              (:line, 534, :none),
+              (:call, :write, :file_name, :code),
+              (:line, 535, :none),
+              (:call, :reload, :module_name),
+              (:line, 536, :none),
+              (:macrocall, Symbol("@test"), (:call, :isa, (:call, :eval, :Main, (:call, :Symbol, :module_name)), :Module)),
+              (:line, 537, :none),
+              (:call, :deleteat!, :LOAD_PATH, 1),
+              (:line, 538, :none),
+              (:call, :rm, :file_name)
+            ), (:(=), :module_name, (:call, :string, "a", (:call, :randstring)))),
+          (:line, 542, :none),
+          (:let, (:block,
+              (:line, 547, :none),
+              (:(=), :test_workers, (:call, :addprocs, 1)),
+              (:line, 548, :none),
+              (:(=), :temp_path, (:call, :mktempdir)),
+              (:line, 549, :none),
+              (:(=), :save_cwd, (:call, :pwd)),
+              (:line, 550, :none),
+              (:call, :cd, :temp_path),
+              (:line, 551, :none),
+              (:(=), :load_path, (:call, :mktempdir, :temp_path)),
+              (:line, 552, :none),
+              (:(=), :load_cache_path, (:call, :mktempdir, :temp_path)),
+              (:line, 553, :none),
+              (:call, :unshift!, :LOAD_PATH, (:call, :basename, :load_path)),
+              (:line, 554, :none),
+              (:call, :unshift!, (:., :Base, (:quote, #QuoteNode
+                    :LOAD_CACHE_PATH
+                  )), (:call, :basename, :load_cache_path)),
+              (:line, 556, :none),
+              (:(=), :ModuleA, (:quote, #QuoteNode
+                  :Issue19960A
+                )),
+              (:line, 557, :none),
+              (:(=), :ModuleB, (:quote, #QuoteNode
+                  :Issue19960B
+                )),
+              (:line, 559, :none),
+              (:call, :write, (:call, :joinpath, :load_path, (:string, :ModuleA, ".jl")), (:string, "__precompile__(true)\nmodule ", :ModuleA, "\n    export f\n    f() = myid()\nend\n")),
+              (:line, 568, :none),
+              (:call, :write, (:call, :joinpath, :load_path, (:string, :ModuleB, ".jl")), (:string, "__precompile__(true)\nmodule ", :ModuleB, "\n    using ", :ModuleA, "\n    export g\n    g() = f()\nend\n")),
+              (:line, 578, :none),
+              (:try, (:block,
+                  (:line, 579, :none),
+                  (:macrocall, Symbol("@eval"), (:using, (:$, :ModuleB))),
+                  (:line, 580, :none),
+                  (:for, (:(=), :wid, :test_workers), (:block,
+                      (:line, 581, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :remotecall_fetch, :g, :wid), :wid))
+                    ))
+                ), false, false, (:block,
+                  (:line, 584, :none),
+                  (:call, :shift!, :LOAD_PATH),
+                  (:line, 585, :none),
+                  (:call, :shift!, (:., :Base, (:quote, #QuoteNode
+                        :LOAD_CACHE_PATH
+                      ))),
+                  (:line, 586, :none),
+                  (:call, :cd, :save_cwd),
+                  (:line, 587, :none),
+                  (:call, :rm, :temp_path, (:kw, :recursive, true)),
+                  (:line, 588, :none),
+                  (:call, :rmprocs, :test_workers)
+                ))
+            ))
+        )), (:call, :(=>), "JULIA_DEBUG_LOADING", :nothing))
+  ))

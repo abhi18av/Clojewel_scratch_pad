@@ -1,0 +1,3284 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:using, :Base, :Test),
+    (:line, 4, :none),
+    (:call, :include, "testenv.jl"),
+    (:line, 7, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:call, :remote, :myid)), 1)),
+    (:line, 8, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :pmap, :identity, (:(:), 1, 100)), (:vect, (:..., (:(:), 1, 100))))),
+    (:line, 9, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), 100, (:macrocall, Symbol("@parallel"), :+, (:for, (:(=), :i, (:(:), 1, 100)), (:block,
+              (:line, 10, :none),
+              1
+            ))))),
+    (:line, 13, :none),
+    (:call, :addprocs_with_testenv, 4),
+    (:line, 15, :none),
+    (:(=), :id_me, (:call, :myid)),
+    (:line, 16, :none),
+    (:(=), :id_other, (:ref, (:call, :filter, (:->, :x, (:block,
+              (:line, 16, :none),
+              (:call, :(!=), :x, :id_me)
+            )), (:call, :procs)), (:call, :rand, (:(:), 1, (:call, :-, (:call, :nprocs), 1))))),
+    (:line, 19, :none),
+    (:let, (:block,
+        (:line, 20, :none),
+        (:(=), :pool, (:call, (:., :Base, (:quote, #QuoteNode
+                :default_worker_pool
+              )))),
+        (:line, 22, :none),
+        (:(=), :count, 0),
+        (:line, 23, :none),
+        (:(=), :count_condition, (:call, :Condition)),
+        (:line, 25, :none),
+        (:function, (:call, :remote_wait, :c), (:block,
+            (:line, 26, :none),
+            (:macrocall, Symbol("@async"), (:block,
+                (:line, 27, :none),
+                (:+=, :count, 1),
+                (:line, 28, :none),
+                (:call, (:call, :remote, :take!), :c),
+                (:line, 29, :none),
+                (:-=, :count, 1),
+                (:line, 30, :none),
+                (:call, :notify, :count_condition)
+              )),
+            (:line, 32, :none),
+            (:call, :yield)
+          )),
+        (:line, 35, :none),
+        (:(=), :testchannels, (:comprehension, (:generator, (:call, :RemoteChannel), (:(=), :i, (:(:), 1, (:call, :nworkers)))))),
+        (:line, 36, :none),
+        (:(=), :testcount, 0),
+        (:line, 37, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :isready, :pool), true)),
+        (:line, 38, :none),
+        (:for, (:(=), :c, :testchannels), (:block,
+            (:line, 39, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), :count, :testcount)),
+            (:line, 40, :none),
+            (:call, :remote_wait, :c),
+            (:line, 41, :none),
+            (:+=, :testcount, 1)
+          )),
+        (:line, 43, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :count, :testcount)),
+        (:line, 44, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :isready, :pool), false)),
+        (:line, 46, :none),
+        (:for, (:(=), :c, :testchannels), (:block,
+            (:line, 47, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), :count, :testcount)),
+            (:line, 48, :none),
+            (:call, :put!, :c, "foo"),
+            (:line, 49, :none),
+            (:-=, :testcount, 1),
+            (:line, 50, :none),
+            (:call, :wait, :count_condition),
+            (:line, 51, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), :count, :testcount)),
+            (:line, 52, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:call, :isready, :pool), true))
+          )),
+        (:line, 55, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :count, 0)),
+        (:line, 57, :none),
+        (:for, (:(=), :c, :testchannels), (:block,
+            (:line, 58, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), :count, :testcount)),
+            (:line, 59, :none),
+            (:call, :remote_wait, :c),
+            (:line, 60, :none),
+            (:+=, :testcount, 1)
+          )),
+        (:line, 62, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :count, :testcount)),
+        (:line, 63, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :isready, :pool), false)),
+        (:line, 65, :none),
+        (:for, (:(=), :c, (:call, :reverse, :testchannels)), (:block,
+            (:line, 66, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), :count, :testcount)),
+            (:line, 67, :none),
+            (:call, :put!, :c, "foo"),
+            (:line, 68, :none),
+            (:-=, :testcount, 1),
+            (:line, 69, :none),
+            (:call, :wait, :count_condition),
+            (:line, 70, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), :count, :testcount)),
+            (:line, 71, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:call, :isready, :pool), true))
+          )),
+        (:line, 74, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :count, 0))
+      )),
+    (:line, 78, :none),
+    (:function, (:call, :testf, :id), (:block,
+        (:line, 79, :none),
+        (:(=), :f, (:call, :Future, :id)),
+        (:line, 80, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :isready, :f), false)),
+        (:line, 81, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :isnull, (:., :f, (:quote, #QuoteNode
+                  :v
+                ))), true)),
+        (:line, 82, :none),
+        (:call, :put!, :f, (:quote, #QuoteNode
+            :OK
+          )),
+        (:line, 83, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :isready, :f), true)),
+        (:line, 84, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :isnull, (:., :f, (:quote, #QuoteNode
+                  :v
+                ))), false)),
+        (:line, 86, :none),
+        (:macrocall, Symbol("@test_throws"), :ErrorException, (:call, :put!, :f, (:quote, #QuoteNode
+              :OK
+            ))),
+        (:line, 87, :none),
+        (:macrocall, Symbol("@test_throws"), :MethodError, (:call, :take!, :f)),
+        (:line, 89, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :fetch, :f), (:quote, #QuoteNode
+              :OK
+            )))
+      )),
+    (:line, 92, :none),
+    (:call, :testf, :id_me),
+    (:line, 93, :none),
+    (:call, :testf, :id_other),
+    (:line, 96, :none),
+    (:function, (:call, :test_futures_dgc, :id), (:block,
+        (:line, 97, :none),
+        (:(=), :f, (:call, :remotecall, :myid, :id)),
+        (:line, 98, :none),
+        (:(=), :fid, (:call, (:., :Base, (:quote, #QuoteNode
+                :remoteref_id
+              )), :f)),
+        (:line, 101, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :remotecall_fetch, (:->, :k, (:block,
+                  (:line, 101, :none),
+                  (:block,
+                    (:call, :yield),
+                    (:call, :haskey, (:., (:., (:., :Base, (:quote, #QuoteNode
+                              :Distributed
+                            )), (:quote, #QuoteNode
+                            :PGRP
+                          )), (:quote, #QuoteNode
+                          :refs
+                        )), :k)
+                  )
+                )), :id, :fid), true)),
+        (:line, 102, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :isnull, (:., :f, (:quote, #QuoteNode
+                  :v
+                ))), true)),
+        (:line, 103, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :fetch, :f), :id)),
+        (:line, 104, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :isnull, (:., :f, (:quote, #QuoteNode
+                  :v
+                ))), false)),
+        (:line, 105, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :remotecall_fetch, (:->, :k, (:block,
+                  (:line, 105, :none),
+                  (:block,
+                    (:call, :yield),
+                    (:call, :haskey, (:., (:., (:., :Base, (:quote, #QuoteNode
+                              :Distributed
+                            )), (:quote, #QuoteNode
+                            :PGRP
+                          )), (:quote, #QuoteNode
+                          :refs
+                        )), :k)
+                  )
+                )), :id, :fid), false)),
+        (:line, 109, :none),
+        (:(=), :f, (:call, :remotecall, :myid, :id)),
+        (:line, 110, :none),
+        (:(=), :fid, (:call, (:., :Base, (:quote, #QuoteNode
+                :remoteref_id
+              )), :f)),
+        (:line, 111, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :remotecall_fetch, (:->, :k, (:block,
+                  (:line, 111, :none),
+                  (:block,
+                    (:call, :yield),
+                    (:call, :haskey, (:., (:., (:., :Base, (:quote, #QuoteNode
+                              :Distributed
+                            )), (:quote, #QuoteNode
+                            :PGRP
+                          )), (:quote, #QuoteNode
+                          :refs
+                        )), :k)
+                  )
+                )), :id, :fid), true)),
+        (:line, 112, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :isnull, (:., :f, (:quote, #QuoteNode
+                  :v
+                ))), true)),
+        (:line, 113, :none),
+        (:call, :finalize, :f),
+        (:line, 114, :none),
+        (:call, (:., (:., :Base, (:quote, #QuoteNode
+                :Distributed
+              )), (:quote, #QuoteNode
+              :flush_gc_msgs
+            ))),
+        (:line, 115, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :remotecall_fetch, (:->, :k, (:block,
+                  (:line, 115, :none),
+                  (:block,
+                    (:call, :yield),
+                    (:call, :haskey, (:., (:., (:., :Base, (:quote, #QuoteNode
+                              :Distributed
+                            )), (:quote, #QuoteNode
+                            :PGRP
+                          )), (:quote, #QuoteNode
+                          :refs
+                        )), :k)
+                  )
+                )), :id, :fid), false))
+      )),
+    (:line, 118, :none),
+    (:call, :test_futures_dgc, :id_me),
+    (:line, 119, :none),
+    (:call, :test_futures_dgc, :id_other),
+    (:line, 122, :none),
+    (:(=), :wid1, (:ref, (:call, :workers), 1)),
+    (:line, 123, :none),
+    (:(=), :wid2, (:ref, (:call, :workers), 2)),
+    (:line, 124, :none),
+    (:(=), :f, (:call, :remotecall, :myid, :wid1)),
+    (:line, 125, :none),
+    (:(=), :fid, (:call, (:., :Base, (:quote, #QuoteNode
+            :remoteref_id
+          )), :f)),
+    (:line, 127, :none),
+    (:(=), :fstore, (:call, :RemoteChannel, :wid2)),
+    (:line, 128, :none),
+    (:call, :put!, :fstore, :f),
+    (:line, 130, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :fetch, :f), :wid1)),
+    (:line, 131, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :remotecall_fetch, (:->, :k, (:block,
+              (:line, 131, :none),
+              (:call, :haskey, (:., (:., (:., :Base, (:quote, #QuoteNode
+                        :Distributed
+                      )), (:quote, #QuoteNode
+                      :PGRP
+                    )), (:quote, #QuoteNode
+                    :refs
+                  )), :k)
+            )), :wid1, :fid), true)),
+    (:line, 132, :none),
+    (:call, :remotecall_fetch, (:->, :r, (:block,
+          (:line, 132, :none),
+          (:call, :fetch, (:call, :fetch, :r))
+        )), :wid2, :fstore),
+    (:line, 133, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :remotecall_fetch, (:->, :k, (:block,
+              (:line, 133, :none),
+              (:call, :haskey, (:., (:., (:., :Base, (:quote, #QuoteNode
+                        :Distributed
+                      )), (:quote, #QuoteNode
+                      :PGRP
+                    )), (:quote, #QuoteNode
+                    :refs
+                  )), :k)
+            )), :wid1, :fid), false)),
+    (:line, 136, :none),
+    (:(=), :f, (:call, :Future, :wid1)),
+    (:line, 137, :none),
+    (:(=), :fid, (:call, (:., :Base, (:quote, #QuoteNode
+            :remoteref_id
+          )), :f)),
+    (:line, 140, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :remotecall_fetch, (:->, :k, (:block,
+              (:line, 140, :none),
+              (:call, :haskey, (:., (:., (:., :Base, (:quote, #QuoteNode
+                        :Distributed
+                      )), (:quote, #QuoteNode
+                      :PGRP
+                    )), (:quote, #QuoteNode
+                    :refs
+                  )), :k)
+            )), :wid1, :fid), false)),
+    (:line, 142, :none),
+    (:call, :isready, :f),
+    (:line, 144, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :remotecall_fetch, (:->, :k, (:block,
+              (:line, 144, :none),
+              (:call, :haskey, (:., (:., (:., :Base, (:quote, #QuoteNode
+                        :Distributed
+                      )), (:quote, #QuoteNode
+                      :PGRP
+                    )), (:quote, #QuoteNode
+                    :refs
+                  )), :k)
+            )), :wid1, :fid), true)),
+    (:line, 145, :none),
+    (:call, :put!, :f, (:quote, #QuoteNode
+        :OK
+      )),
+    (:line, 146, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :remotecall_fetch, (:->, :k, (:block,
+              (:line, 146, :none),
+              (:call, :haskey, (:., (:., (:., :Base, (:quote, #QuoteNode
+                        :Distributed
+                      )), (:quote, #QuoteNode
+                      :PGRP
+                    )), (:quote, #QuoteNode
+                    :refs
+                  )), :k)
+            )), :wid1, :fid), false)),
+    (:line, 147, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :fetch, :f), (:quote, #QuoteNode
+          :OK
+        ))),
+    (:line, 150, :none),
+    (:(=), :f, (:call, :Future, :wid1)),
+    (:line, 151, :none),
+    (:(=), :fid, (:call, (:., :Base, (:quote, #QuoteNode
+            :remoteref_id
+          )), :f)),
+    (:line, 153, :none),
+    (:(=), :fstore, (:call, :RemoteChannel, :wid2)),
+    (:line, 154, :none),
+    (:call, :put!, :fstore, :f),
+    (:line, 155, :none),
+    (:call, :put!, :f, (:quote, #QuoteNode
+        :OK
+      )),
+    (:line, 157, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :remotecall_fetch, (:->, :k, (:block,
+              (:line, 157, :none),
+              (:call, :haskey, (:., (:., (:., :Base, (:quote, #QuoteNode
+                        :Distributed
+                      )), (:quote, #QuoteNode
+                      :PGRP
+                    )), (:quote, #QuoteNode
+                    :refs
+                  )), :k)
+            )), :wid1, :fid), true)),
+    (:line, 159, :none),
+    (:(=), :testval, (:call, :remotecall_fetch, (:->, (:tuple, :x), (:block,
+            (:line, 160, :none),
+            (:try, (:block,
+                (:line, 161, :none),
+                (:call, :put!, (:call, :fetch, :x), (:quote, #QuoteNode
+                    :OK
+                  )),
+                (:line, 162, :none),
+                (:return, 0)
+              ), :e, (:block,
+                (:line, 164, :none),
+                (:if, (:call, :isa, :e, :RemoteException), (:block,
+                    (:line, 165, :none),
+                    (:return, 1)
+                  ), (:block,
+                    (:line, 167, :none),
+                    (:return, 2)
+                  ))
+              ))
+          )), :wid2, :fstore)),
+    (:line, 171, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), :testval, 1)),
+    (:line, 174, :none),
+    (:function, (:call, :test_remoteref_dgc, :id), (:block,
+        (:line, 175, :none),
+        (:(=), :rr, (:call, :RemoteChannel, :id)),
+        (:line, 176, :none),
+        (:call, :put!, :rr, (:quote, #QuoteNode
+            :OK
+          )),
+        (:line, 177, :none),
+        (:(=), :rrid, (:call, (:., :Base, (:quote, #QuoteNode
+                :remoteref_id
+              )), :rr)),
+        (:line, 180, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :remotecall_fetch, (:->, :k, (:block,
+                  (:line, 180, :none),
+                  (:block,
+                    (:call, :yield),
+                    (:call, :haskey, (:., (:., (:., :Base, (:quote, #QuoteNode
+                              :Distributed
+                            )), (:quote, #QuoteNode
+                            :PGRP
+                          )), (:quote, #QuoteNode
+                          :refs
+                        )), :k)
+                  )
+                )), :id, :rrid), true)),
+        (:line, 181, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :fetch, :rr), (:quote, #QuoteNode
+              :OK
+            ))),
+        (:line, 182, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :remotecall_fetch, (:->, :k, (:block,
+                  (:line, 182, :none),
+                  (:block,
+                    (:call, :yield),
+                    (:call, :haskey, (:., (:., (:., :Base, (:quote, #QuoteNode
+                              :Distributed
+                            )), (:quote, #QuoteNode
+                            :PGRP
+                          )), (:quote, #QuoteNode
+                          :refs
+                        )), :k)
+                  )
+                )), :id, :rrid), true)),
+        (:line, 183, :none),
+        (:call, :finalize, :rr),
+        (:line, 184, :none),
+        (:call, (:., (:., :Base, (:quote, #QuoteNode
+                :Distributed
+              )), (:quote, #QuoteNode
+              :flush_gc_msgs
+            ))),
+        (:line, 185, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :remotecall_fetch, (:->, :k, (:block,
+                  (:line, 185, :none),
+                  (:block,
+                    (:call, :yield),
+                    (:call, :haskey, (:., (:., (:., :Base, (:quote, #QuoteNode
+                              :Distributed
+                            )), (:quote, #QuoteNode
+                            :PGRP
+                          )), (:quote, #QuoteNode
+                          :refs
+                        )), :k)
+                  )
+                )), :id, :rrid), false))
+      )),
+    (:line, 187, :none),
+    (:call, :test_remoteref_dgc, :id_me),
+    (:line, 188, :none),
+    (:call, :test_remoteref_dgc, :id_other),
+    (:line, 191, :none),
+    (:(=), :wid1, (:ref, (:call, :workers), 1)),
+    (:line, 192, :none),
+    (:(=), :wid2, (:ref, (:call, :workers), 2)),
+    (:line, 193, :none),
+    (:(=), :rr, (:call, :RemoteChannel, :wid1)),
+    (:line, 194, :none),
+    (:(=), :rrid, (:call, (:., :Base, (:quote, #QuoteNode
+            :remoteref_id
+          )), :rr)),
+    (:line, 196, :none),
+    (:(=), :fstore, (:call, :RemoteChannel, :wid2)),
+    (:line, 197, :none),
+    (:call, :put!, :fstore, :rr),
+    (:line, 199, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :remotecall_fetch, (:->, :k, (:block,
+              (:line, 199, :none),
+              (:call, :haskey, (:., (:., (:., :Base, (:quote, #QuoteNode
+                        :Distributed
+                      )), (:quote, #QuoteNode
+                      :PGRP
+                    )), (:quote, #QuoteNode
+                    :refs
+                  )), :k)
+            )), :wid1, :rrid), true)),
+    (:line, 200, :none),
+    (:call, :finalize, :rr),
+    (:line, 200, :none),
+    (:call, (:., (:., :Base, (:quote, #QuoteNode
+            :Distributed
+          )), (:quote, #QuoteNode
+          :flush_gc_msgs
+        ))),
+    (:line, 201, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :remotecall_fetch, (:->, :k, (:block,
+              (:line, 201, :none),
+              (:call, :haskey, (:., (:., (:., :Base, (:quote, #QuoteNode
+                        :Distributed
+                      )), (:quote, #QuoteNode
+                      :PGRP
+                    )), (:quote, #QuoteNode
+                    :refs
+                  )), :k)
+            )), :wid1, :rrid), true)),
+    (:line, 202, :none),
+    (:call, :remotecall_fetch, (:->, :r, (:block,
+          (:line, 202, :none),
+          (:block,
+            (:call, :finalize, (:call, :take!, :r)),
+            (:call, (:., (:., :Base, (:quote, #QuoteNode
+                    :Distributed
+                  )), (:quote, #QuoteNode
+                  :flush_gc_msgs
+                ))),
+            :nothing
+          )
+        )), :wid2, :fstore),
+    (:line, 203, :none),
+    (:call, :sleep, 0.5),
+    (:line, 204, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :remotecall_fetch, (:->, :k, (:block,
+              (:line, 204, :none),
+              (:call, :haskey, (:., (:., (:., :Base, (:quote, #QuoteNode
+                        :Distributed
+                      )), (:quote, #QuoteNode
+                      :PGRP
+                    )), (:quote, #QuoteNode
+                    :refs
+                  )), :k)
+            )), :wid1, :rrid), false)),
+    (:line, 206, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :fetch, (:macrocall, Symbol("@spawnat"), :id_other, (:call, :myid))), :id_other)),
+    (:line, 207, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@fetchfrom"), :id_other, (:call, :myid)), :id_other)),
+    (:line, 209, :none),
+    (:(=), :pids, (:vect,)),
+    (:line, 210, :none),
+    (:for, (:(=), :i, (:(:), 1, (:call, :nworkers))), (:block,
+        (:line, 211, :none),
+        (:call, :push!, :pids, (:macrocall, Symbol("@fetch"), (:call, :myid)))
+      )),
+    (:line, 213, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :sort, :pids), (:call, :sort, (:call, :workers)))),
+    (:line, 217, :none),
+    (:function, (:call, :test_indexing, :rr), (:block,
+        (:line, 218, :none),
+        (:(=), :a, (:call, :rand, 5, 5)),
+        (:line, 219, :none),
+        (:call, :put!, :rr, :a),
+        (:line, 220, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :rr, 2, 3), (:ref, :a, 2, 3))),
+        (:line, 221, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :rr), :a))
+      )),
+    (:line, 224, :none),
+    (:call, :test_indexing, (:call, :Future)),
+    (:line, 225, :none),
+    (:call, :test_indexing, (:call, :Future, :id_other)),
+    (:line, 226, :none),
+    (:call, :test_indexing, (:call, :RemoteChannel)),
+    (:line, 227, :none),
+    (:call, :test_indexing, (:call, :RemoteChannel, :id_other)),
+    (:line, 229, :none),
+    (:(=), :dims, (:tuple, 20, 20, 20)),
+    (:line, 231, :none),
+    (:if, (:call, :is_linux), (:block,
+        (:line, 232, :none),
+        (:(=), :S, (:call, (:curly, :SharedArray, :Int64, 3), :dims)),
+        (:line, 233, :none),
+        (:macrocall, Symbol("@test"), (:call, :startswith, (:., :S, (:quote, #QuoteNode
+                :segname
+              )), "/jl")),
+        (:line, 234, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:call, :ispath, (:call, :*, "/dev/shm", (:., :S, (:quote, #QuoteNode
+                    :segname
+                  )))))),
+        (:line, 236, :none),
+        (:(=), :S, (:call, (:curly, :SharedArray, :Int64, 3), (:parameters, (:kw, :pids, (:vect, :id_other))), :dims)),
+        (:line, 237, :none),
+        (:macrocall, Symbol("@test"), (:call, :startswith, (:., :S, (:quote, #QuoteNode
+                :segname
+              )), "/jl")),
+        (:line, 238, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:call, :ispath, (:call, :*, "/dev/shm", (:., :S, (:quote, #QuoteNode
+                    :segname
+                  ))))))
+      )),
+    (:line, 245, :none),
+    (:function, (:call, :check_pids_all, (:(::), :S, :SharedArray)), (:block,
+        (:line, 246, :none),
+        (:(=), :pidtested, (:call, :falses, (:call, :size, :S))),
+        (:line, 247, :none),
+        (:for, (:(=), :p, (:call, :procs, :S)), (:block,
+            (:line, 248, :none),
+            (:(=), :idxes_in_p, (:call, :remotecall_fetch, (:->, (:tuple, :D), (:block,
+                    (:line, 249, :none),
+                    (:ref, (:call, :parentindexes, (:., :D, (:quote, #QuoteNode
+                            :loc_subarr_1d
+                          ))), 1)
+                  )), :p, :S)),
+            (:line, 251, :none),
+            (:macrocall, Symbol("@test"), (:call, :all, (:call, :.==, (:ref, (:call, :sdata, :S), :idxes_in_p), :p))),
+            (:line, 252, :none),
+            (:(=), (:ref, :pidtested, :idxes_in_p), true)
+          )),
+        (:line, 254, :none),
+        (:macrocall, Symbol("@test"), (:call, :all, :pidtested))
+      )),
+    (:line, 257, :none),
+    (:(=), :d, (:call, (:., :Base, (:quote, #QuoteNode
+            :shmem_rand
+          )), (:(:), 1, 100), :dims)),
+    (:line, 258, :none),
+    (:(=), :a, (:call, :convert, :Array, :d)),
+    (:line, 260, :none),
+    (:(=), :partsums, (:call, (:curly, :Array, :Int), (:call, :length, (:call, :procs, :d)))),
+    (:line, 261, :none),
+    (:macrocall, Symbol("@sync"), (:block,
+        (:line, 262, :none),
+        (:for, (:(=), (:tuple, :i, :p), (:call, :enumerate, (:call, :procs, :d))), (:block,
+            (:line, 263, :none),
+            (:macrocall, Symbol("@async"), (:(=), (:ref, :partsums, :i), (:call, :remotecall_fetch, (:->, (:tuple, :D), (:block,
+                      (:line, 264, :none),
+                      (:call, :sum, (:., :D, (:quote, #QuoteNode
+                            :loc_subarr_1d
+                          )))
+                    )), :p, :d)))
+          ))
+      )),
+    (:line, 268, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :sum, :a), (:call, :sum, :partsums))),
+    (:line, 270, :none),
+    (:(=), :d, (:call, (:., :Base, (:quote, #QuoteNode
+            :shmem_rand
+          )), :dims)),
+    (:line, 271, :none),
+    (:for, (:(=), :p, (:call, :procs, :d)), (:block,
+        (:line, 272, :none),
+        (:(=), :idxes_in_p, (:call, :remotecall_fetch, (:->, (:tuple, :D), (:block,
+                (:line, 273, :none),
+                (:ref, (:call, :parentindexes, (:., :D, (:quote, #QuoteNode
+                        :loc_subarr_1d
+                      ))), 1)
+              )), :p, :d)),
+        (:line, 275, :none),
+        (:(=), :idxf, (:call, :first, :idxes_in_p)),
+        (:line, 276, :none),
+        (:(=), :idxl, (:call, :last, :idxes_in_p)),
+        (:line, 277, :none),
+        (:(=), (:ref, :d, :idxf), (:call, :Float64, :idxf)),
+        (:line, 278, :none),
+        (:(=), :rv, (:call, :remotecall_fetch, (:->, (:tuple, :D, :idxf, :idxl), (:block,
+                (:line, 279, :none),
+                (:call, :assert, (:call, :(==), (:ref, :D, :idxf), (:call, :Float64, :idxf))),
+                (:line, 280, :none),
+                (:(=), (:ref, :D, :idxl), (:call, :Float64, :idxl)),
+                (:line, 281, :none),
+                (:ref, :D, :idxl)
+              )), :p, :d, :idxf, :idxl)),
+        (:line, 283, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :d, :idxl), :rv))
+      )),
+    (:line, 286, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :ones, 10, 10, 10), (:call, (:., :Base, (:quote, #QuoteNode
+              :shmem_fill
+            )), 1.0, (:tuple, 10, 10, 10)))),
+    (:line, 287, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :zeros, :Int32, 10, 10, 10), (:call, (:., :Base, (:quote, #QuoteNode
+              :shmem_fill
+            )), 0, (:tuple, 10, 10, 10)))),
+    (:line, 289, :none),
+    (:(=), :d, (:call, (:., :Base, (:quote, #QuoteNode
+            :shmem_rand
+          )), :dims)),
+    (:line, 290, :none),
+    (:(=), :s, (:call, (:., :Base, (:quote, #QuoteNode
+            :shmem_rand
+          )), :dims)),
+    (:line, 291, :none),
+    (:call, :copy!, :s, :d),
+    (:line, 292, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), :s, :d)),
+    (:line, 293, :none),
+    (:(=), :s, (:call, (:., :Base, (:quote, #QuoteNode
+            :shmem_rand
+          )), :dims)),
+    (:line, 294, :none),
+    (:call, :copy!, :s, (:call, :sdata, :d)),
+    (:line, 295, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), :s, :d)),
+    (:line, 296, :none),
+    (:(=), :a, (:call, :rand, :dims)),
+    (:line, 297, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :sdata, :a), :a)),
+    (:line, 299, :none),
+    (:(=), :d, (:call, (:curly, :SharedArray, :Int), :dims, (:kw, :init, (:->, :D, (:block,
+              (:line, 299, :none),
+              (:call, :fill!, (:., :D, (:quote, #QuoteNode
+                    :loc_subarr_1d
+                  )), (:call, :myid))
+            ))))),
+    (:line, 300, :none),
+    (:for, (:(=), :p, (:call, :procs, :d)), (:block,
+        (:line, 301, :none),
+        (:(=), :idxes_in_p, (:call, :remotecall_fetch, (:->, (:tuple, :D), (:block,
+                (:line, 302, :none),
+                (:ref, (:call, :parentindexes, (:., :D, (:quote, #QuoteNode
+                        :loc_subarr_1d
+                      ))), 1)
+              )), :p, :d)),
+        (:line, 304, :none),
+        (:(=), :idxf, (:call, :first, :idxes_in_p)),
+        (:line, 305, :none),
+        (:(=), :idxl, (:call, :last, :idxes_in_p)),
+        (:line, 306, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :d, :idxf), :p)),
+        (:line, 307, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :d, :idxl), :p))
+      )),
+    (:line, 310, :none),
+    (:(=), :d, (:macrocall, Symbol("@inferred"), (:call, (:curly, :SharedArray, :Float64, 2), (:tuple, 2, 3)))),
+    (:line, 311, :none),
+    (:macrocall, Symbol("@test"), (:call, :isa, (:ref, :d, :(:), 2), (:curly, :Vector, :Float64))),
+    (:line, 316, :none),
+    (:(=), :fn, (:call, :tempname)),
+    (:line, 317, :none),
+    (:call, :write, :fn, (:(:), 1, 30)),
+    (:line, 318, :none),
+    (:(=), :sz, (:tuple, 6, 5)),
+    (:line, 319, :none),
+    (:(=), :Atrue, (:call, :reshape, (:(:), 1, 30), :sz)),
+    (:line, 321, :none),
+    (:(=), :S, (:macrocall, Symbol("@inferred"), (:call, (:curly, :SharedArray, :Int, 2), :fn, :sz))),
+    (:line, 322, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), :S, :Atrue)),
+    (:line, 323, :none),
+    (:macrocall, Symbol("@test"), (:call, :>, (:call, :length, (:call, :procs, :S)), 1)),
+    (:line, 324, :none),
+    (:macrocall, Symbol("@sync"), (:block,
+        (:line, 325, :none),
+        (:for, (:(=), :p, (:call, :procs, :S)), (:block,
+            (:line, 326, :none),
+            (:macrocall, Symbol("@async"), (:call, :remotecall_wait, (:->, (:tuple, :D), (:block,
+                    (:line, 327, :none),
+                    (:call, :fill!, (:., :D, (:quote, #QuoteNode
+                          :loc_subarr_1d
+                        )), (:call, :myid))
+                  )), :p, :S))
+          ))
+      )),
+    (:line, 331, :none),
+    (:call, :check_pids_all, :S),
+    (:line, 333, :none),
+    (:(=), :filedata, (:call, :similar, :Atrue)),
+    (:line, 334, :none),
+    (:call, :read!, :fn, :filedata),
+    (:line, 335, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), :filedata, (:call, :sdata, :S))),
+    (:line, 336, :none),
+    (:call, :finalize, :S),
+    (:line, 339, :none),
+    (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, (:curly, :SharedArray, :Int, 2), :fn, :sz, (:kw, :mode, "w"))),
+    (:line, 342, :none),
+    (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, (:curly, :SharedArray, :Int, 2), (:call, :joinpath, (:call, :tempdir), (:call, :randstring)), :sz, (:kw, :mode, "r"))),
+    (:line, 345, :none),
+    (:(=), :fn2, (:call, :tempname)),
+    (:line, 346, :none),
+    (:(=), :S, (:call, (:curly, :SharedArray, :Int, 2), :fn2, :sz, (:kw, :init, (:->, :D, (:block,
+              (:line, 346, :none),
+              (:(=), (:ref, :D, (:call, :localindexes, :D)), (:call, :myid))
+            ))))),
+    (:line, 347, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), :S, :filedata)),
+    (:line, 348, :none),
+    (:(=), :filedata2, (:call, :similar, :Atrue)),
+    (:line, 349, :none),
+    (:call, :read!, :fn2, :filedata2),
+    (:line, 350, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), :filedata, :filedata2)),
+    (:line, 351, :none),
+    (:call, :finalize, :S),
+    (:line, 354, :none),
+    (:(=), :fn3, (:call, :tempname)),
+    (:line, 355, :none),
+    (:call, :write, :fn3, (:call, :ones, :UInt8, 4)),
+    (:line, 356, :none),
+    (:(=), :S, (:call, (:curly, :SharedArray, :UInt8), :fn3, :sz, 4, (:kw, :mode, "a+"), (:kw, :init, (:->, :D, (:block,
+              (:line, 356, :none),
+              (:(=), (:ref, :D, (:call, :localindexes, :D)), 0x02)
+            ))))),
+    (:line, 357, :none),
+    (:(=), :len, (:call, :+, (:call, :prod, :sz), 4)),
+    (:line, 358, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :filesize, :fn3), :len)),
+    (:line, 359, :none),
+    (:(=), :filedata, (:call, (:curly, :Array, :UInt8), :len)),
+    (:line, 360, :none),
+    (:call, :read!, :fn3, :filedata),
+    (:line, 361, :none),
+    (:macrocall, Symbol("@test"), (:call, :all, (:call, :.==, (:ref, :filedata, (:(:), 1, 4)), 0x01))),
+    (:line, 362, :none),
+    (:macrocall, Symbol("@test"), (:call, :all, (:call, :.==, (:ref, :filedata, (:(:), 5, :end)), 0x02))),
+    (:line, 363, :none),
+    (:call, :finalize, :S),
+    (:line, 366, :none),
+    (:(=), :S, :nothing),
+    (:line, 367, :none),
+    (:macrocall, Symbol("@everywhere"), (:call, :gc)),
+    (:line, 368, :none),
+    (:macrocall, Symbol("@everywhere"), (:call, :gc)),
+    (:line, 369, :none),
+    (:macrocall, Symbol("@everywhere"), (:call, :gc)),
+    (:line, 370, :none),
+    (:call, :rm, :fn),
+    (:line, 370, :none),
+    (:call, :rm, :fn2),
+    (:line, 370, :none),
+    (:call, :rm, :fn3),
+    (:line, 375, :none),
+    (:(=), :S, (:macrocall, Symbol("@inferred"), (:call, (:curly, :SharedArray, :Int), (:tuple, 1, 2, 3)))),
+    (:line, 376, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :size, :S), (:tuple, 1, 2, 3))),
+    (:line, 377, :none),
+    (:macrocall, Symbol("@test"), (:<:, (:call, :typeof, :S), (:curly, :SharedArray, :Int))),
+    (:line, 378, :none),
+    (:(=), :S, (:macrocall, Symbol("@inferred"), (:call, (:curly, :SharedArray, :Int), 2))),
+    (:line, 379, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :size, :S), (:tuple, 2))),
+    (:line, 380, :none),
+    (:macrocall, Symbol("@test"), (:<:, (:call, :typeof, :S), (:curly, :SharedArray, :Int))),
+    (:line, 381, :none),
+    (:(=), :S, (:macrocall, Symbol("@inferred"), (:call, (:curly, :SharedArray, :Int), 1, 2))),
+    (:line, 382, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :size, :S), (:tuple, 1, 2))),
+    (:line, 383, :none),
+    (:macrocall, Symbol("@test"), (:<:, (:call, :typeof, :S), (:curly, :SharedArray, :Int))),
+    (:line, 384, :none),
+    (:(=), :S, (:macrocall, Symbol("@inferred"), (:call, (:curly, :SharedArray, :Int), 1, 2, 3))),
+    (:line, 385, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :size, :S), (:tuple, 1, 2, 3))),
+    (:line, 386, :none),
+    (:macrocall, Symbol("@test"), (:<:, (:call, :typeof, :S), (:curly, :SharedArray, :Int))),
+    (:line, 390, :none),
+    (:(=), :d, (:call, (:., :Base, (:quote, #QuoteNode
+            :shmem_fill
+          )), 1.0, (:tuple, 10, 10, 10))),
+    (:line, 391, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :ones, 100, 10), (:call, :reshape, :d, (:tuple, 100, 10)))),
+    (:line, 392, :none),
+    (:(=), :d, (:call, (:., :Base, (:quote, #QuoteNode
+            :shmem_fill
+          )), 1.0, (:tuple, 10, 10, 10))),
+    (:line, 393, :none),
+    (:macrocall, Symbol("@test_throws"), :DimensionMismatch, (:call, :reshape, :d, (:tuple, 50))),
+    (:line, 396, :none),
+    (:(=), :d, (:call, (:., :Base, (:quote, #QuoteNode
+            :shmem_rand
+          )), :dims)),
+    (:line, 397, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :size, (:call, :rand!, :d)), :dims)),
+    (:line, 398, :none),
+    (:(=), :d, (:call, (:., :Base, (:quote, #QuoteNode
+            :shmem_fill
+          )), 1.0, :dims)),
+    (:line, 399, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :size, (:call, :randn!, :d)), :dims)),
+    (:line, 402, :none),
+    (:(=), :d, (:call, (:., :Base, (:quote, #QuoteNode
+            :shmem_rand
+          )), :dims)),
+    (:line, 403, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :size, (:call, :similar, :d, :Complex128)), :dims)),
+    (:line, 404, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :size, (:call, :similar, :d, :dims)), :dims)),
+    (:line, 407, :none),
+    (:(=), :d, (:call, (:., :Base, (:quote, #QuoteNode
+            :shmem_rand
+          )), :dims)),
+    (:line, 408, :none),
+    (:(=), :s, (:call, :copy, (:call, :sdata, :d))),
+    (:line, 409, :none),
+    (:(=), :ds, (:call, :deepcopy, :d)),
+    (:line, 410, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), :ds, :d)),
+    (:line, 411, :none),
+    (:(=), :pids_d, (:call, :procs, :d)),
+    (:line, 412, :none),
+    (:call, :remotecall_fetch, :setindex!, (:ref, :pids_d, (:call, :findfirst, (:->, :id, (:block,
+              (:line, 412, :none),
+              (:call, :(!=), :id, (:call, :myid))
+            )), :pids_d)), :d, 1.0, (:(:), 1, 10)),
+    (:line, 413, :none),
+    (:macrocall, Symbol("@test"), (:call, :(!=), :ds, :d)),
+    (:line, 414, :none),
+    (:macrocall, Symbol("@test"), (:call, :(!=), :s, :d)),
+    (:line, 415, :none),
+    (:call, :copy!, :d, :s),
+    (:line, 416, :none),
+    (:macrocall, Symbol("@everywhere"), (:(=), (:call, :setid!, :A), (:block,
+          (:line, 416, :none),
+          (:(=), (:ref, :A, (:call, :localindexes, :A)), (:call, :myid))
+        ))),
+    (:line, 417, :none),
+    (:macrocall, Symbol("@sync"), (:for, (:(=), :p, (:call, :procs, :ds)), (:block,
+          (:line, 418, :none),
+          (:macrocall, Symbol("@async"), (:call, :remotecall_wait, :setid!, :p, :ds))
+        ))),
+    (:line, 420, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), :d, :s)),
+    (:line, 421, :none),
+    (:macrocall, Symbol("@test"), (:call, :(!=), :ds, :s)),
+    (:line, 422, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :first, :ds), (:call, :first, (:call, :procs, :ds)))),
+    (:line, 423, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :last, :ds), (:call, :last, (:call, :procs, :ds)))),
+    (:line, 428, :none),
+    (:(=), :a, (:ref, :d, (:(:), 1, 5))),
+    (:line, 429, :none),
+    (:macrocall, Symbol("@test_throws"), :BoundsError, (:ref, :d, (:(:), -1, 5))),
+    (:line, 430, :none),
+    (:(=), :a, (:ref, :d, 1, 1, (:(:), 1, 3, :end))),
+    (:line, 431, :none),
+    (:(=), (:ref, :d, (:(:), 2, 4)), 7),
+    (:line, 432, :none),
+    (:(=), (:ref, :d, 5, (:(:), 1, 2, 4), 8), 19),
+    (:line, 434, :none),
+    (:(=), :AA, (:call, :rand, 4, 2)),
+    (:line, 435, :none),
+    (:(=), :A, (:macrocall, Symbol("@inferred"), (:call, :convert, :SharedArray, :AA))),
+    (:line, 436, :none),
+    (:(=), :B, (:macrocall, Symbol("@inferred"), (:call, :convert, :SharedArray, (:', :AA)))),
+    (:line, 437, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :*, :B, :A), (:call, :*, (:call, :ctranspose, :AA), :AA))),
+    (:line, 439, :none),
+    (:(=), :d, (:call, (:curly, :SharedArray, :Int64, 2), (:parameters, (:kw, :init, (:->, :D, (:block,
+                (:line, 439, :none),
+                (:call, :fill!, (:., :D, (:quote, #QuoteNode
+                      :loc_subarr_1d
+                    )), (:call, :myid))
+              ))), (:kw, :pids, (:vect, :id_me, :id_other))), (:tuple, 10, 10))),
+    (:line, 440, :none),
+    (:(=), :d2, (:call, :map, (:->, :x, (:block,
+            (:line, 440, :none),
+            1
+          )), :d)),
+    (:line, 441, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :reduce, :+, :d2), 100)),
+    (:line, 443, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :reduce, :+, :d), (:call, :+, (:call, :*, 50, :id_me), (:call, :*, 50, :id_other)))),
+    (:line, 444, :none),
+    (:call, :map!, (:->, :x, (:block,
+          (:line, 444, :none),
+          1
+        )), :d, :d),
+    (:line, 445, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :reduce, :+, :d), 100)),
+    (:line, 447, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :fill!, :d, 1), (:call, :ones, 10, 10))),
+    (:line, 448, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :fill!, :d, 2.0), (:call, :fill, 2, 10, 10))),
+    (:line, 449, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :d, :(:)), (:call, :fill, 2, 100))),
+    (:line, 450, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :d, :(:), 1), (:call, :fill, 2, 10))),
+    (:line, 451, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :d, 1, :(:)), (:call, :fill, 2, 10))),
+    (:line, 454, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), 2.0, (:call, :remotecall_fetch, (:->, :D, (:block,
+              (:line, 454, :none),
+              (:ref, :D, 2)
+            )), :id_other, (:call, (:., :Base, (:quote, #QuoteNode
+                :shmem_fill
+              )), (:parameters, (:kw, :pids, (:vect, :id_me, :id_other))), 2.0, 2)))),
+    (:line, 455, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), 3.0, (:call, :remotecall_fetch, (:->, :D, (:block,
+              (:line, 455, :none),
+              (:ref, :D, 1)
+            )), :id_other, (:call, (:., :Base, (:quote, #QuoteNode
+                :shmem_fill
+              )), (:parameters, (:kw, :pids, (:vect, :id_me, :id_other))), 3.0, 1)))),
+    (:line, 458, :none),
+    (:macrocall, Symbol("@everywhere"), (:type, false, :ShmemFoo, (:block,
+          (:line, 458, :none)
+        ))),
+    (:line, 459, :none),
+    (:for, (:(=), :T, (:vect, :Void, :ShmemFoo)), (:block,
+        (:line, 460, :none),
+        (:(=), :s, (:macrocall, Symbol("@inferred"), (:call, (:curly, :SharedArray, :T), 10))),
+        (:line, 461, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), (:call, :T), (:call, :remotecall_fetch, (:->, :x, (:block,
+                  (:line, 461, :none),
+                  (:ref, :x, 3)
+                )), (:ref, (:call, :workers), 1), :s)))
+      )),
+    (:line, 465, :none),
+    (:(=), :d, (:call, (:curly, :SharedArray, :Int), 10)),
+    (:line, 466, :none),
+    (:macrocall, Symbol("@sync"), (:macrocall, Symbol("@parallel"), (:for, (:(=), :i, (:(:), 1, 10)), (:block,
+            (:line, 467, :none),
+            (:(=), (:ref, :d, :i), :i)
+          )))),
+    (:line, 470, :none),
+    (:for, (:(=), (:tuple, :x, :i), (:call, :enumerate, :d)), (:block,
+        (:line, 471, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :x, :i))
+      )),
+    (:line, 475, :none),
+    (:(=), :sd, (:call, (:curly, :SharedArray, :Int), 10)),
+    (:line, 476, :none),
+    (:(=), :se, (:call, (:curly, :SharedArray, :Int), 10)),
+    (:line, 477, :none),
+    (:macrocall, Symbol("@sync"), (:macrocall, Symbol("@parallel"), (:for, (:(=), :i, (:(:), 1, 10)), (:block,
+            (:line, 478, :none),
+            (:(=), (:ref, :sd, :i), :i),
+            (:line, 479, :none),
+            (:(=), (:ref, :se, :i), :i)
+          )))),
+    (:line, 481, :none),
+    (:(=), :sc, (:call, :convert, :SharedArray, (:., :complex, (:tuple, :sd, :se)))),
+    (:line, 482, :none),
+    (:for, (:(=), (:tuple, :x, :i), (:call, :enumerate, :sc)), (:block,
+        (:line, 483, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :i, (:call, :complex, :x, :x)))
+      )),
+    (:line, 487, :none),
+    (:function, (:call, :finalize_and_test, :r), (:block,
+        (:line, 488, :none),
+        (:call, :finalize, :r),
+        (:line, 489, :none),
+        (:macrocall, Symbol("@test_throws"), :ErrorException, (:call, :fetch, :r))
+      )),
+    (:line, 492, :none),
+    (:for, (:(=), :id, (:vect, :id_me, :id_other)), (:block,
+        (:line, 493, :none),
+        (:call, :finalize_and_test, (:call, :Future, :id)),
+        (:line, 494, :none),
+        (:call, :finalize_and_test, (:block,
+            (:(=), :r, (:call, :Future, :id)),
+            (:call, :put!, :r, 1),
+            :r
+          )),
+        (:line, 495, :none),
+        (:call, :finalize_and_test, (:call, :RemoteChannel, :id)),
+        (:line, 496, :none),
+        (:call, :finalize_and_test, (:block,
+            (:(=), :r, (:call, :RemoteChannel, :id)),
+            (:call, :put!, :r, 1),
+            :r
+          ))
+      )),
+    (:line, 499, :none),
+    (:(=), :d, (:call, (:curly, :SharedArray, :Int), 10)),
+    (:line, 500, :none),
+    (:call, :finalize, :d),
+    (:line, 501, :none),
+    (:macrocall, Symbol("@test_throws"), :BoundsError, (:ref, :d, 1)),
+    (:line, 504, :none),
+    (:(=), :aorig, (:(=), :a1, (:call, (:curly, :SharedArray, :Float64), (:tuple, 3, 3)))),
+    (:line, 505, :none),
+    (:(=), :a1, (:call, :remotecall_fetch, :fill!, :id_other, :a1, 1.0)),
+    (:line, 506, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :object_id, :aorig), (:call, :object_id, :a1))),
+    (:line, 507, :none),
+    (:(=), :id, (:., :a1, (:quote, #QuoteNode
+          :id
+        ))),
+    (:line, 508, :none),
+    (:(=), :aorig, :nothing),
+    (:line, 509, :none),
+    (:(=), :a1, (:call, :remotecall_fetch, :fill!, :id_other, :a1, 1.0)),
+    (:line, 510, :none),
+    (:call, :gc),
+    (:line, 510, :none),
+    (:call, :gc),
+    (:line, 511, :none),
+    (:(=), :a1, (:call, :remotecall_fetch, :fill!, :id_other, :a1, 1.0)),
+    (:line, 512, :none),
+    (:macrocall, Symbol("@test"), (:call, :haskey, (:., :Base, (:quote, #QuoteNode
+            :sa_refs
+          )), :id)),
+    (:line, 513, :none),
+    (:call, :finalize, :a1),
+    (:line, 514, :none),
+    (:macrocall, Symbol("@test"), (:call, :!, (:call, :haskey, (:., :Base, (:quote, #QuoteNode
+              :sa_refs
+            )), :id))),
+    (:line, 518, :none),
+    (:(=), :ids, (:macrocall, Symbol("@parallel"), (:->, (:tuple, :a, :b), (:block,
+            (:line, 518, :none),
+            (:vcat, :a, :b)
+          )), (:for, (:(=), :i, (:(:), 1, 7)), (:block,
+            (:line, 518, :none),
+            (:call, :myid)
+          )))),
+    (:line, 519, :none),
+    (:(=), :workloads, (:typed_comprehension, :Int, (:generator, (:call, :sum, (:call, :.==, :ids, :i)), (:(=), :i, (:(:), 2, (:call, :nprocs)))))),
+    (:line, 520, :none),
+    (:macrocall, Symbol("@test"), (:call, :(<=), (:call, :-, (:call, :maximum, :workloads), (:call, :minimum, :workloads)), 1)),
+    (:line, 523, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@parallel"), :+, (:for, (:(=), :i, (:(:), 1, 2)), (:block,
+              (:line, 523, :none),
+              :i
+            ))), 3)),
+    (:line, 525, :none),
+    (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, :sleep, -1)),
+    (:line, 526, :none),
+    (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, :timedwait, (:->, (:tuple,), (:block,
+            (:line, 526, :none),
+            false
+          )), 0.1, (:kw, :pollint, -0.5))),
+    (:line, 529, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :sort, (:ref, (:call, :workers), (:(:), 1, 2))), (:call, :sort, (:call, :unique, (:call, :pmap, (:call, :WorkerPool, (:ref, (:call, :workers), (:(:), 1, 2))), (:->, :x, (:block,
+                  (:line, 529, :none),
+                  (:block,
+                    (:call, :sleep, 0.1),
+                    (:call, :myid)
+                  )
+                )), (:(:), 1, 10)))))),
+    (:line, 533, :none),
+    (:(=), :a, (:call, :ones, (:call, :^, 10, 6))),
+    (:line, 534, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), :a, (:call, :remotecall_fetch, (:->, :x, (:block,
+              (:line, 534, :none),
+              :x
+            )), :id_other, :a))),
+    (:line, 537, :none),
+    (:(=), :s, (:comprehension, (:generator, (:call, :randstring), (:(=), :x, (:(:), 1, (:call, :^, 10, 5)))))),
+    (:line, 538, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), :s, (:call, :remotecall_fetch, (:->, :x, (:block,
+              (:line, 538, :none),
+              :x
+            )), :id_other, :s))),
+    (:line, 541, :none),
+    (:(=), :num_small_requests, 10000),
+    (:line, 542, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :fill, :id_other, :num_small_requests), (:comprehension, (:generator, (:call, :remotecall_fetch, :myid, :id_other), (:(=), :i, (:(:), 1, :num_small_requests)))))),
+    (:line, 545, :none),
+    (:(=), :ntasks, 10),
+    (:line, 546, :none),
+    (:(=), :rr_list, (:comprehension, (:generator, (:call, :Channel, 1), (:(=), :x, (:(:), 1, :ntasks))))),
+    (:line, 548, :none),
+    (:for, (:(=), :rr, :rr_list), (:block,
+        (:line, 549, :none),
+        (:let, (:block,
+            (:line, 550, :none),
+            (:macrocall, Symbol("@async"), (:try, (:block,
+                  (:line, 551, :none),
+                  (:for, (:(=), :i, (:(:), 1, 10)), (:block,
+                      (:line, 552, :none),
+                      (:(=), :a, (:call, :rand, (:call, :*, 2, (:call, :^, 10, 5)))),
+                      (:line, 553, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), :a, (:call, :remotecall_fetch, (:->, :x, (:block,
+                                (:line, 553, :none),
+                                :x
+                              )), :id_other, :a))),
+                      (:line, 554, :none),
+                      (:call, :yield)
+                    )),
+                  (:line, 556, :none),
+                  (:call, :put!, :rr, (:quote, #QuoteNode
+                      :OK
+                    ))
+                ), false, (:block,
+                  (:line, 558, :none),
+                  (:call, :put!, :rr, (:quote, #QuoteNode
+                      :ERROR
+                    ))
+                )))
+          ), (:(=), :rr, :rr))
+      )),
+    (:line, 563, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:comprehension, (:generator, (:call, :fetch, :rr), (:(=), :rr, :rr_list))), (:comprehension, (:generator, (:quote, #QuoteNode
+              :OK
+            ), (:(=), :x, (:(:), 1, :ntasks)))))),
+    (:line, 565, :none),
+    (:function, (:call, :test_channel, :c), (:block,
+        (:line, 566, :none),
+        (:call, :put!, :c, 1),
+        (:line, 567, :none),
+        (:call, :put!, :c, "Hello"),
+        (:line, 568, :none),
+        (:call, :put!, :c, 5.0),
+        (:line, 570, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :isready, :c), true)),
+        (:line, 571, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :fetch, :c), 1)),
+        (:line, 572, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :fetch, :c), 1)),
+        (:line, 573, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :take!, :c), 1)),
+        (:line, 574, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :take!, :c), "Hello")),
+        (:line, 575, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :fetch, :c), 5.0)),
+        (:line, 576, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :take!, :c), 5.0)),
+        (:line, 577, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :isready, :c), false)),
+        (:line, 578, :none),
+        (:call, :close, :c)
+      )),
+    (:line, 581, :none),
+    (:call, :test_channel, (:call, :Channel, 10)),
+    (:line, 582, :none),
+    (:call, :test_channel, (:call, :RemoteChannel, (:->, (:tuple,), (:block,
+            (:line, 582, :none),
+            (:call, :Channel, 10)
+          )))),
+    (:line, 584, :none),
+    (:(=), :c, (:call, (:curly, :Channel, :Int), 1)),
+    (:line, 585, :none),
+    (:macrocall, Symbol("@test_throws"), :MethodError, (:call, :put!, :c, "Hello")),
+    (:line, 588, :none),
+    (:function, (:call, :test_iteration, :in_c, :out_c), (:block,
+        (:line, 589, :none),
+        (:(=), :t, (:macrocall, Symbol("@schedule"), (:for, (:(=), :v, :in_c), (:block,
+                (:line, 590, :none),
+                (:call, :put!, :out_c, :v)
+              )))),
+        (:line, 593, :none),
+        (:&&, (:call, :isa, :in_c, :Channel), (:macrocall, Symbol("@test"), (:call, :(==), (:call, :isopen, :in_c), true))),
+        (:line, 594, :none),
+        (:call, :put!, :in_c, 1),
+        (:line, 595, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :take!, :out_c), 1)),
+        (:line, 596, :none),
+        (:call, :put!, :in_c, "Hello"),
+        (:line, 597, :none),
+        (:call, :close, :in_c),
+        (:line, 598, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :take!, :out_c), "Hello")),
+        (:line, 599, :none),
+        (:&&, (:call, :isa, :in_c, :Channel), (:macrocall, Symbol("@test"), (:call, :(==), (:call, :isopen, :in_c), false))),
+        (:line, 600, :none),
+        (:macrocall, Symbol("@test_throws"), :InvalidStateException, (:call, :put!, :in_c, (:quote, #QuoteNode
+              :foo
+            ))),
+        (:line, 601, :none),
+        (:call, :yield),
+        (:line, 602, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :istaskdone, :t), true))
+      )),
+    (:line, 605, :none),
+    (:call, :test_iteration, (:call, :Channel, 10), (:call, :Channel, 10)),
+    (:line, 607, :none),
+    (:macrocall, Symbol("@test_throws"), :CompositeException, (:macrocall, Symbol("@sync"), (:macrocall, Symbol("@async"), (:call, :error, "oops")))),
+    (:line, 608, :none),
+    (:try, (:block,
+        (:line, 609, :none),
+        (:macrocall, Symbol("@sync"), (:block,
+            (:line, 610, :none),
+            (:for, (:(=), :i, (:(:), 1, 5)), (:block,
+                (:line, 611, :none),
+                (:macrocall, Symbol("@async"), (:call, :error, :i))
+              ))
+          )),
+        (:line, 614, :none),
+        (:call, :error, "unexpected")
+      ), :ex, (:block,
+        (:line, 616, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :typeof, :ex), :CompositeException)),
+        (:line, 617, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :ex), 5)),
+        (:line, 618, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :typeof, (:ref, (:., :ex, (:quote, #QuoteNode
+                    :exceptions
+                  )), 1)), :CapturedException)),
+        (:line, 619, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :typeof, (:., (:ref, (:., :ex, (:quote, #QuoteNode
+                      :exceptions
+                    )), 1), (:quote, #QuoteNode
+                  :ex
+                ))), :ErrorException)),
+        (:line, 620, :none),
+        (:(=), :errors, (:call, :map, (:->, :x, (:block,
+                (:line, 620, :none),
+                (:., (:., :x, (:quote, #QuoteNode
+                      :ex
+                    )), (:quote, #QuoteNode
+                    :msg
+                  ))
+              )), (:., :ex, (:quote, #QuoteNode
+                :exceptions
+              )))),
+        (:line, 621, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :collect, (:(:), 1, 5)), (:call, :sort, (:call, :map, (:->, :x, (:block,
+                    (:line, 621, :none),
+                    (:call, :parse, :Int, :x)
+                  )), :errors))))
+      )),
+    (:line, 624, :none),
+    (:function, (:call, :test_remoteexception_thrown, :expr), (:block,
+        (:line, 625, :none),
+        (:try, (:block,
+            (:line, 626, :none),
+            (:call, :expr),
+            (:line, 627, :none),
+            (:call, :error, "unexpected")
+          ), :ex, (:block,
+            (:line, 629, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:call, :typeof, :ex), :RemoteException)),
+            (:line, 630, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:call, :typeof, (:., :ex, (:quote, #QuoteNode
+                      :captured
+                    ))), :CapturedException)),
+            (:line, 631, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:call, :typeof, (:., (:., :ex, (:quote, #QuoteNode
+                        :captured
+                      )), (:quote, #QuoteNode
+                      :ex
+                    ))), :ErrorException)),
+            (:line, 632, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:., (:., (:., :ex, (:quote, #QuoteNode
+                        :captured
+                      )), (:quote, #QuoteNode
+                      :ex
+                    )), (:quote, #QuoteNode
+                    :msg
+                  )), "foobar"))
+          ))
+      )),
+    (:line, 636, :none),
+    (:for, (:(=), :id, (:vect, :id_other, :id_me)), (:block,
+        (:line, 637, :none),
+        (:call, :test_remoteexception_thrown, (:->, (:tuple,), (:block,
+              (:line, 638, :none),
+              (:call, :remotecall_fetch, (:->, (:tuple,), (:block,
+                    (:line, 639, :none),
+                    (:call, :throw, (:call, :ErrorException, "foobar"))
+                  )), :id)
+            ))),
+        (:line, 642, :none),
+        (:call, :test_remoteexception_thrown, (:->, (:tuple,), (:block,
+              (:line, 643, :none),
+              (:call, :remotecall_wait, (:->, (:tuple,), (:block,
+                    (:line, 644, :none),
+                    (:call, :throw, (:call, :ErrorException, "foobar"))
+                  )), :id)
+            ))),
+        (:line, 647, :none),
+        (:call, :test_remoteexception_thrown, (:->, (:tuple,), (:block,
+              (:line, 648, :none),
+              (:call, :wait, (:call, :remotecall, (:->, (:tuple,), (:block,
+                      (:line, 649, :none),
+                      (:call, :throw, (:call, :ErrorException, "foobar"))
+                    )), :id))
+            )))
+      )),
+    (:line, 655, :none),
+    (:let, (:block,
+        (:line, 656, :none),
+        (:try, (:block,
+            (:line, 657, :none),
+            (:call, :remotecall_fetch, (:->, (:tuple,), (:block,
+                  (:line, 658, :none),
+                  (:macrocall, Symbol("@eval"), (:module, true, :AModuleLocalToOther, (:block,
+                        (:line, 658, :none),
+                        (:line, 659, :none),
+                        (:(=), (:call, :foo), (:block,
+                            (:line, 659, :none),
+                            (:call, :throw, (:call, :ErrorException, "A.error"))
+                          )),
+                        (:line, 660, :none),
+                        (:call, :foo)
+                      )))
+                )), :id_other)
+          ), :ex, (:block,
+            (:line, 664, :none)
+          )),
+        (:line, 665, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., (:(::), :ex, :RemoteException), (:quote, #QuoteNode
+                :pid
+              )), :id_other)),
+        (:line, 666, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., (:(::), (:., (:(::), (:., :ex, (:quote, #QuoteNode
+                        :captured
+                      )), :CapturedException), (:quote, #QuoteNode
+                    :ex
+                  )), :ErrorException), (:quote, #QuoteNode
+                :msg
+              )), "A.error")),
+        (:line, 667, :none),
+        (:(=), :bt, (:(::), (:., (:., :ex, (:quote, #QuoteNode
+                  :captured
+                )), (:quote, #QuoteNode
+                :processed_bt
+              )), (:curly, :Array, :Any, 1))),
+        (:line, 668, :none),
+        (:macrocall, Symbol("@test"), (:call, :>, (:call, :length, :bt), 1)),
+        (:line, 669, :none),
+        (:(=), (:tuple, :frame, :repeated), (:(::), (:ref, :bt, 1), (:curly, :Tuple, :StackFrame, :Int))),
+        (:line, 670, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :frame, (:quote, #QuoteNode
+                :func
+              )), (:quote, #QuoteNode
+              :foo
+            ))),
+        (:line, 671, :none),
+        (:macrocall, Symbol("@test"), (:call, :isnull, (:., :frame, (:quote, #QuoteNode
+                :linfo
+              )))),
+        (:line, 672, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :repeated, 1))
+      ), :ex),
+    (:line, 679, :none),
+    (:(=), :pmap_args, (:vect, (:tuple, (:quote, #QuoteNode
+            :distributed
+          ), (:vect, (:quote, #QuoteNode
+              :default
+            ), false)), (:tuple, (:quote, #QuoteNode
+            :batch_size
+          ), (:vect, (:quote, #QuoteNode
+              :default
+            ), 2)), (:tuple, (:quote, #QuoteNode
+            :on_error
+          ), (:vect, (:quote, #QuoteNode
+              :default
+            ), (:->, :e, (:block,
+                (:line, 682, :none),
+                (:if, (:call, :(==), (:., :e, (:quote, #QuoteNode
+                        :msg
+                      )), "foobar"), true, (:call, :rethrow, :e))
+              )))), (:tuple, (:quote, #QuoteNode
+            :retry_delays
+          ), (:vect, (:quote, #QuoteNode
+              :default
+            ), (:call, :fill, 0.001, 1000))), (:tuple, (:quote, #QuoteNode
+            :retry_check
+          ), (:vect, (:quote, #QuoteNode
+              :default
+            ), (:->, (:tuple, :s, :e), (:block,
+                (:line, 684, :none),
+                (:tuple, :s, (:call, :endswith, (:., :e, (:quote, #QuoteNode
+                        :msg
+                      )), "foobar"))
+              )))))),
+    (:line, 687, :none),
+    (:(=), :kwdict, (:call, :Dict)),
+    (:line, 688, :none),
+    (:function, (:call, :walk_args, :i), (:block,
+        (:line, 689, :none),
+        (:if, (:call, :>, :i, (:call, :length, :pmap_args)), (:block,
+            (:line, 690, :none),
+            (:(=), :kwargs, (:vect,)),
+            (:line, 691, :none),
+            (:for, (:(=), (:tuple, :k, :v), :kwdict), (:block,
+                (:line, 692, :none),
+                (:if, (:call, :(!==), :v, (:quote, #QuoteNode
+                      :default
+                    )), (:block,
+                    (:line, 693, :none),
+                    (:call, :push!, :kwargs, (:tuple, :k, :v))
+                  ))
+              )),
+            (:line, 697, :none),
+            (:(=), :data, (:(:), 1, 100)),
+            (:line, 699, :none),
+            (:(=), :testw, (:if, (:call, :(===), (:ref, :kwdict, (:quote, #QuoteNode
+                      :distributed
+                    )), false), (:vect, 1), (:call, :workers))),
+            (:line, 701, :none),
+            (:if, (:call, :(!==), (:ref, :kwdict, (:quote, #QuoteNode
+                    :retry_delays
+                  )), (:quote, #QuoteNode
+                  :default
+                )), (:block,
+                (:line, 702, :none),
+                (:(=), :mapf, (:->, :x, (:block,
+                      (:line, 702, :none),
+                      (:if, (:call, :iseven, (:call, :myid)), (:call, :error, "notfoobar"), (:tuple, (:call, :*, :x, 2), (:call, :myid)))
+                    ))),
+                (:line, 703, :none),
+                (:(=), :results_test, (:->, :pmap_res, (:block,
+                      (:line, 703, :none),
+                      (:block,
+                        (:line, 704, :none),
+                        (:(=), :results, (:comprehension, (:generator, (:ref, :x, 1), (:(=), :x, :pmap_res)))),
+                        (:line, 705, :none),
+                        (:(=), :pids, (:comprehension, (:generator, (:ref, :x, 2), (:(=), :x, :pmap_res)))),
+                        (:line, 706, :none),
+                        (:macrocall, Symbol("@test"), (:call, :(==), :results, (:vect, (:..., (:(:), 2, 2, 200))))),
+                        (:line, 707, :none),
+                        (:for, (:(=), :p, :testw), (:block,
+                            (:line, 708, :none),
+                            (:if, (:call, :isodd, :p), (:block,
+                                (:line, 709, :none),
+                                (:macrocall, Symbol("@test"), (:call, :in, :p, :pids))
+                              ), (:block,
+                                (:line, 711, :none),
+                                (:macrocall, Symbol("@test"), (:call, :!, (:call, :in, :p, :pids)))
+                              ))
+                          ))
+                      )
+                    )))
+              ), (:block,
+                (:line, 715, :none),
+                (:if, (:call, :(===), (:ref, :kwdict, (:quote, #QuoteNode
+                        :on_error
+                      )), (:quote, #QuoteNode
+                      :default
+                    )), (:block,
+                    (:line, 716, :none),
+                    (:(=), :mapf, (:->, :x, (:block,
+                          (:line, 716, :none),
+                          (:tuple, (:call, :*, :x, 2), (:call, :myid))
+                        ))),
+                    (:line, 717, :none),
+                    (:(=), :results_test, (:->, :pmap_res, (:block,
+                          (:line, 717, :none),
+                          (:block,
+                            (:line, 718, :none),
+                            (:(=), :results, (:comprehension, (:generator, (:ref, :x, 1), (:(=), :x, :pmap_res)))),
+                            (:line, 719, :none),
+                            (:(=), :pids, (:comprehension, (:generator, (:ref, :x, 2), (:(=), :x, :pmap_res)))),
+                            (:line, 720, :none),
+                            (:macrocall, Symbol("@test"), (:call, :(==), :results, (:vect, (:..., (:(:), 2, 2, 200))))),
+                            (:line, 721, :none),
+                            (:for, (:(=), :p, :testw), (:block,
+                                (:line, 722, :none),
+                                (:macrocall, Symbol("@test"), (:call, :in, :p, :pids))
+                              ))
+                          )
+                        )))
+                  ), (:block,
+                    (:line, 726, :none),
+                    (:(=), :mapf, (:->, :x, (:block,
+                          (:line, 726, :none),
+                          (:if, (:call, :iseven, :x), (:call, :error, "foobar"), (:tuple, (:call, :*, :x, 2), (:call, :myid)))
+                        ))),
+                    (:line, 727, :none),
+                    (:(=), :results_test, (:->, :pmap_res, (:block,
+                          (:line, 727, :none),
+                          (:block,
+                            (:line, 728, :none),
+                            (:(=), :w, :testw),
+                            (:line, 729, :none),
+                            (:for, (:(=), (:tuple, :idx, :x), (:call, :enumerate, :data)), (:block,
+                                (:line, 730, :none),
+                                (:if, (:call, :iseven, :x), (:block,
+                                    (:line, 731, :none),
+                                    (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :pmap_res, :idx), true))
+                                  ), (:block,
+                                    (:line, 733, :none),
+                                    (:macrocall, Symbol("@test"), (:call, :(==), (:ref, (:ref, :pmap_res, :idx), 1), (:call, :*, :x, 2))),
+                                    (:line, 734, :none),
+                                    (:macrocall, Symbol("@test"), (:call, :in, (:ref, (:ref, :pmap_res, :idx), 2), :w))
+                                  ))
+                              ))
+                          )
+                        )))
+                  ))
+              )),
+            (:line, 740, :none),
+            (:try, (:block,
+                (:line, 741, :none),
+                (:call, :results_test, (:call, :pmap, (:parameters, (:..., :kwargs)), :mapf, :data))
+              ), :e, (:block,
+                (:line, 743, :none),
+                (:call, :println, "pmap executing with args : ", :kwargs),
+                (:line, 744, :none),
+                (:call, :rethrow, :e)
+              )),
+            (:line, 747, :none),
+            (:return, nothing)
+          )),
+        (:line, 750, :none),
+        (:(=), (:ref, :kwdict, (:ref, (:ref, :pmap_args, :i), 1)), (:ref, (:ref, (:ref, :pmap_args, :i), 2), 1)),
+        (:line, 751, :none),
+        (:call, :walk_args, (:call, :+, :i, 1)),
+        (:line, 753, :none),
+        (:(=), (:ref, :kwdict, (:ref, (:ref, :pmap_args, :i), 1)), (:ref, (:ref, (:ref, :pmap_args, :i), 2), 2)),
+        (:line, 754, :none),
+        (:call, :walk_args, (:call, :+, :i, 1))
+      )),
+    (:line, 758, :none),
+    (:call, :walk_args, 1),
+    (:line, 761, :none),
+    (:(=), :error_thrown, false),
+    (:line, 762, :none),
+    (:try, (:block,
+        (:line, 763, :none),
+        (:call, :pmap, (:->, :x, (:block,
+              (:line, 763, :none),
+              (:if, (:call, :(==), :x, 50), (:call, :error, "foobar"), :x)
+            )), (:(:), 1, 100))
+      ), :e, (:block,
+        (:line, 765, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., (:., (:., :e, (:quote, #QuoteNode
+                    :captured
+                  )), (:quote, #QuoteNode
+                  :ex
+                )), (:quote, #QuoteNode
+                :msg
+              )), "foobar")),
+        (:line, 766, :none),
+        (:(=), :error_thrown, true)
+      )),
+    (:line, 768, :none),
+    (:macrocall, Symbol("@test"), :error_thrown),
+    (:line, 771, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:vect, (:..., (:(:), 1, 100))), (:call, :pmap, (:->, :x, (:block,
+              (:line, 771, :none),
+              :x
+            )), (:call, (:., :Base, (:quote, #QuoteNode
+                :Generator
+              )), (:->, :x, (:block,
+                (:line, 771, :none),
+                (:block,
+                  (:call, :sleep, 0.0001),
+                  :x
+                )
+              )), (:(:), 1, 100))))),
+    (:line, 774, :none),
+    (:(=), :n, 10),
+    (:line, 775, :none),
+    (:(=), :as, (:comprehension, (:generator, (:call, :rand, 4, 4), (:(=), :i, (:(:), 1, :n))))),
+    (:line, 776, :none),
+    (:(=), :bs, (:call, :deepcopy, :as)),
+    (:line, 777, :none),
+    (:(=), :cs, (:call, :collect, (:call, (:., (:., :Base, (:quote, #QuoteNode
+                :Distributed
+              )), (:quote, #QuoteNode
+              :pgenerate
+            )), (:->, :x, (:block,
+              (:line, 777, :none),
+              (:block,
+                (:call, :sleep, (:call, :*, (:call, :rand), 0.1)),
+                (:call, :svdfact, :x)
+              )
+            )), :bs))),
+    (:line, 778, :none),
+    (:(=), :svdas, (:call, :map, :svdfact, :as)),
+    (:line, 779, :none),
+    (:for, (:(=), :i, (:(:), 1, :n)), (:block,
+        (:line, 780, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:ref, (:ref, :cs, :i), (:quote, #QuoteNode
+                :U
+              )), (:ref, (:ref, :svdas, :i), (:quote, #QuoteNode
+                :U
+              )))),
+        (:line, 781, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:ref, (:ref, :cs, :i), (:quote, #QuoteNode
+                :S
+              )), (:ref, (:ref, :svdas, :i), (:quote, #QuoteNode
+                :S
+              )))),
+        (:line, 782, :none),
+        (:macrocall, Symbol("@test"), (:call, :≈, (:ref, (:ref, :cs, :i), (:quote, #QuoteNode
+                :V
+              )), (:ref, (:ref, :svdas, :i), (:quote, #QuoteNode
+                :V
+              ))))
+      )),
+    (:line, 786, :none),
+    (:macrocall, Symbol("@test"), (:call, :allunique, (:call, :asyncmap, (:->, :x, (:block,
+              (:line, 786, :none),
+              (:block,
+                (:call, :sleep, 1.0),
+                (:call, :object_id, (:call, :current_task))
+              )
+            )), (:(:), 1, 10)))),
+    (:line, 789, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, (:call, :unique, (:call, :asyncmap, (:parameters, (:kw, :ntasks, 5)), (:->, :x, (:block,
+                  (:line, 789, :none),
+                  (:block,
+                    (:call, :yield),
+                    (:call, :object_id, (:call, :current_task))
+                  )
+                )), (:(:), 1, 20)))), 5)),
+    (:line, 792, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, (:call, :unique, (:call, :asyncmap, (:->, :x, (:block,
+                  (:line, 792, :none),
+                  (:block,
+                    (:call, :yield),
+                    (:call, :object_id, (:call, :current_task))
+                  )
+                )), (:(:), 1, 200)))), 100)),
+    (:line, 795, :none),
+    (:let, (:block,
+        (:line, 796, :none),
+        (:global, :nt_func),
+        (:line, 797, :none),
+        (:(=), (:call, :nt_func), (:block,
+            (:line, 797, :none),
+            (:block,
+              (:(=), :v, (:call, :div, :nt, 25)),
+              (:+=, :nt, 1),
+              :v
+            )
+          ))
+      ), (:(=), :nt, 0)),
+    (:line, 801, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, (:call, :unique, (:call, :asyncmap, (:parameters, (:kw, :ntasks, :nt_func)), (:->, :x, (:block,
+                  (:line, 801, :none),
+                  (:block,
+                    (:call, :yield),
+                    (:call, :object_id, (:call, :current_task))
+                  )
+                )), (:(:), 1, 200)))), 7)),
+    (:line, 804, :none),
+    (:let, (:block,
+        (:line, 805, :none),
+        (:global, :next_ctr),
+        (:line, 806, :none),
+        (:(=), (:call, :next_ctr), (:block,
+            (:line, 806, :none),
+            (:block,
+              (:+=, :ctr, 1),
+              :ctr
+            )
+          ))
+      ), (:(=), :ctr, 0)),
+    (:line, 808, :none),
+    (:(=), :resp, (:call, :asyncmap, (:parameters, (:kw, :ntasks, 5), (:kw, :batch_size, 5)), (:->, :x, (:block,
+            (:line, 808, :none),
+            (:block,
+              (:(=), :v, (:call, :next_ctr)),
+              (:call, :map, (:->, :_, (:block,
+                    (:line, 808, :none),
+                    :v
+                  )), :x)
+            )
+          )), (:(:), 1, 22))),
+    (:line, 809, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :resp), 22)),
+    (:line, 810, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, (:call, :unique, :resp)), 5)),
+    (:line, 812, :none),
+    (:(=), :input, (:call, :rand, (:(:), 1, 1000), 100)),
+    (:line, 813, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :asyncmap, (:parameters, (:kw, :ntasks, 5), (:kw, :batch_size, 5)), (:->, :x, (:block,
+              (:line, 813, :none),
+              (:call, :map, (:->, :args, (:block,
+                    (:line, 813, :none),
+                    (:call, :identity, (:..., :args))
+                  )), :x)
+            )), :input), :input)),
+    (:line, 816, :none),
+    (:(=), :a, (:call, :rand, 2, 2)),
+    (:line, 817, :none),
+    (:(=), :b, (:call, :asyncmap, :identity, :a)),
+    (:line, 818, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), :a, :b)),
+    (:line, 819, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :size, :a), (:call, :size, :b))),
+    (:line, 822, :none),
+    (:(=), :c, (:call, :Channel, 32)),
+    (:line, 822, :none),
+    (:call, :foreach, (:->, :i, (:block,
+          (:line, 822, :none),
+          (:call, :put!, :c, :i)
+        )), (:(:), 1, 10)),
+    (:line, 822, :none),
+    (:call, :close, :c),
+    (:line, 823, :none),
+    (:(=), :b, (:call, :asyncmap, :identity, :c)),
+    (:line, 824, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :Int, (:..., (:(:), 1, 10))), :b)),
+    (:line, 825, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :size, :b), (:tuple, 10))),
+    (:line, 828, :none),
+    (:(=), :len_only_iterable, (:tuple, 1, 2, 3, 4, 5)),
+    (:line, 829, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+              :iteratorsize
+            )), :len_only_iterable), (:call, (:., :Base, (:quote, #QuoteNode
+              :HasLength
+            ))))),
+    (:line, 830, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :asyncmap, :identity, :len_only_iterable), (:call, :map, :identity, :len_only_iterable))),
+    (:line, 833, :none),
+    (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, :asyncmap, (:parameters, (:kw, :batch_size, 0)), :identity, (:(:), 1, 10))),
+    (:line, 834, :none),
+    (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, :asyncmap, (:parameters, (:kw, :batch_size, "10")), :identity, (:(:), 1, 10))),
+    (:line, 835, :none),
+    (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, :asyncmap, (:parameters, (:kw, :ntasks, "10")), :identity, (:(:), 1, 10))),
+    (:line, 838, :none),
+    (:function, (:call, :testmap_equivalence, :f, (:..., :c)), (:block,
+        (:line, 839, :none),
+        (:(=), :x1, (:call, :asyncmap, :f, (:..., :c))),
+        (:line, 840, :none),
+        (:(=), :x2, (:call, :pmap, :f, (:..., :c))),
+        (:line, 841, :none),
+        (:(=), :x3, (:call, :map, :f, (:..., :c))),
+        (:line, 843, :none),
+        (:if, (:call, :(==), (:., :Base, (:quote, #QuoteNode
+                :iteratorsize
+              )), (:call, (:., :Base, (:quote, #QuoteNode
+                  :HasShape
+                )))), (:block,
+            (:line, 844, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:call, :size, :x1), (:call, :size, :x3))),
+            (:line, 845, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:call, :size, :x2), (:call, :size, :x3)))
+          ), (:block,
+            (:line, 847, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :x1), (:call, :length, :x3))),
+            (:line, 848, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :x2), (:call, :length, :x3)))
+          )),
+        (:line, 851, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :eltype, :x1), (:call, :eltype, :x3))),
+        (:line, 852, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :eltype, :x2), (:call, :eltype, :x3))),
+        (:line, 854, :none),
+        (:for, (:(=), (:tuple, :v1, :v2), (:call, :zip, :x1, :x3)), (:block,
+            (:line, 855, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), :v1, :v2))
+          )),
+        (:line, 857, :none),
+        (:for, (:(=), (:tuple, :v1, :v2), (:call, :zip, :x2, :x3)), (:block,
+            (:line, 858, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), :v1, :v2))
+          ))
+      )),
+    (:line, 862, :none),
+    (:call, :testmap_equivalence, :identity, (:tuple, 1, 2, 3, 4)),
+    (:line, 863, :none),
+    (:call, :testmap_equivalence, (:->, :x, (:block,
+          (:line, 863, :none),
+          (:if, (:call, :>, :x, 0), 1.0, 0.0)
+        )), (:call, :sparse, (:call, :eye, 5))),
+    (:line, 864, :none),
+    (:call, :testmap_equivalence, (:->, (:tuple, :x, :y, :z), (:block,
+          (:line, 864, :none),
+          (:call, :+, :x, :y, :z)
+        )), 1, 2, 3),
+    (:line, 865, :none),
+    (:call, :testmap_equivalence, (:->, :x, (:block,
+          (:line, 865, :none),
+          (:if, :x, false, true)
+        )), (:call, :BitArray, 10, 10)),
+    (:line, 866, :none),
+    (:call, :testmap_equivalence, (:->, :x, (:block,
+          (:line, 866, :none),
+          "foobar"
+        )), (:call, :BitArray, 10, 10)),
+    (:line, 867, :none),
+    (:call, :testmap_equivalence, (:->, (:tuple, :x, :y, :z), (:block,
+          (:line, 867, :none),
+          (:call, :string, :x, :y, :z)
+        )), (:call, :BitArray, 10), (:call, :ones, 10), "1234567890"),
+    (:line, 869, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :asyncmap, :uppercase, "Hello World!"), (:call, :map, :uppercase, "Hello World!"))),
+    (:line, 870, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :pmap, :uppercase, "Hello World!"), (:call, :map, :uppercase, "Hello World!"))),
+    (:line, 874, :none),
+    (:call, :pmap, (:->, :_, (:block,
+          (:line, 874, :none),
+          (:call, :myid)
+        )), (:(:), 1, (:call, :nworkers))),
+    (:line, 875, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :nworkers), (:call, :length, (:call, :unique, (:call, :pmap, (:->, :_, (:block,
+                  (:line, 875, :none),
+                  (:call, :myid)
+                )), (:(:), 1, 100)))))),
+    (:line, 878, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :nworkers), (:call, :length, (:call, :unique, (:call, :remotecall_fetch, (:->, (:tuple,), (:block,
+                  (:line, 878, :none),
+                  (:call, :pmap, (:->, :_, (:block,
+                        (:line, 878, :none),
+                        (:call, :myid)
+                      )), (:(:), 1, 100))
+                )), :id_other))))),
+    (:line, 881, :none),
+    (:(=), :wp, (:call, :WorkerPool, (:call, :workers))),
+    (:line, 882, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :nworkers), (:call, :length, (:call, :unique, (:call, :pmap, :wp, (:->, :_, (:block,
+                  (:line, 882, :none),
+                  (:call, :myid)
+                )), (:(:), 1, 100)))))),
+    (:line, 883, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :nworkers), (:call, :length, (:call, :unique, (:call, :remotecall_fetch, (:->, :wp, (:block,
+                  (:line, 883, :none),
+                  (:call, :pmap, :wp, (:->, :_, (:block,
+                        (:line, 883, :none),
+                        (:call, :myid)
+                      )), (:(:), 1, 100))
+                )), :id_other, :wp))))),
+    (:line, 887, :none),
+    (:(=), :wp, (:call, :CachingPool, (:call, :workers))),
+    (:line, 888, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:vect, (:..., (:(:), 1, 100))), (:call, :pmap, :wp, (:->, :x, (:block,
+              (:line, 888, :none),
+              :x
+            )), (:(:), 1, 100)))),
+    (:line, 890, :none),
+    (:call, :clear!, :wp),
+    (:line, 891, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, (:., :wp, (:quote, #QuoteNode
+              :map_obj2ref
+            ))), 0)),
+    (:line, 899, :none),
+    (:(=), :DoFullTest, (:call, :Bool, (:call, :parse, :Int, (:call, :get, :ENV, "JULIA_TESTFULL", "0")))),
+    (:line, 901, :none),
+    (:if, :DoFullTest, (:block,
+        (:line, 902, :none),
+        (:call, :println, "Testing exception printing on remote worker from a `remote_do` call"),
+        (:line, 903, :none),
+        (:call, :println, "Please ensure the remote error and backtrace is displayed on screen"),
+        (:line, 905, :none),
+        (:call, :remote_do, (:->, (:tuple,), (:block,
+              (:line, 906, :none),
+              (:call, :throw, (:call, :ErrorException, "TESTING EXCEPTION ON REMOTE DO. PLEASE IGNORE"))
+            )), :id_other),
+        (:line, 908, :none),
+        (:call, :sleep, 0.5),
+        (:line, 910, :none),
+        (:call, :println, "\n\nThe following 'invalid connection credentials' error messages are to be ignored."),
+        (:line, 911, :none),
+        (:(=), :all_w, (:call, :workers)),
+        (:line, 914, :none),
+        (:for, (:(=), :w, (:., (:., (:., :Base, (:quote, #QuoteNode
+                    :Distributed
+                  )), (:quote, #QuoteNode
+                  :PGRP
+                )), (:quote, #QuoteNode
+                :workers
+              ))), (:block,
+            (:line, 915, :none),
+            (:if, (:call, :isa, :w, (:., (:., :Base, (:quote, #QuoteNode
+                      :Distributed
+                    )), (:quote, #QuoteNode
+                    :Worker
+                  ))), (:block,
+                (:line, 916, :none),
+                (:(=), :s, (:call, :connect, (:call, :get, (:., (:., :w, (:quote, #QuoteNode
+                            :config
+                          )), (:quote, #QuoteNode
+                          :host
+                        ))), (:call, :get, (:., (:., :w, (:quote, #QuoteNode
+                            :config
+                          )), (:quote, #QuoteNode
+                          :port
+                        ))))),
+                (:line, 917, :none),
+                (:call, :write, :s, (:call, :randstring, 32))
+              ))
+          )),
+        (:line, 920, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :workers), :all_w)),
+        (:line, 921, :none),
+        (:macrocall, Symbol("@test"), (:call, :all, (:comprehension, (:generator, (:call, :(==), :p, (:call, :remotecall_fetch, :myid, :p)), (:(=), :p, :all_w))))),
+        (:line, 923, :none),
+        (:if, (:call, :is_unix), (:block,
+            (:line, 924, :none),
+            (:function, (:call, :test_n_remove_pids, :new_pids), (:block,
+                (:line, 925, :none),
+                (:for, (:(=), :p, :new_pids), (:block,
+                    (:line, 926, :none),
+                    (:(=), :w_in_remote, (:call, :sort, (:call, :remotecall_fetch, :workers, :p))),
+                    (:line, 927, :none),
+                    (:try, (:block,
+                        (:line, 928, :none),
+                        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :intersect, :new_pids, :w_in_remote), :new_pids))
+                      ), :e, (:block,
+                        (:line, 930, :none),
+                        (:call, :print, (:string, "p       :     ", :p, "\n")),
+                        (:line, 931, :none),
+                        (:call, :print, (:string, "newpids :     ", :new_pids, "\n")),
+                        (:line, 932, :none),
+                        (:call, :print, (:string, "w_in_remote : ", :w_in_remote, "\n")),
+                        (:line, 933, :none),
+                        (:call, :print, (:string, "intersect   : ", (:call, :intersect, :new_pids, :w_in_remote), "\n\n\n")),
+                        (:line, 934, :none),
+                        (:call, :rethrow, :e)
+                      ))
+                  )),
+                (:line, 938, :none),
+                (:call, :remotecall_fetch, (:->, :plst, (:block,
+                      (:line, 938, :none),
+                      (:call, :rmprocs, (:parameters, (:kw, :waitfor, 5.0)), :plst)
+                    )), 1, :new_pids)
+              )),
+            (:line, 941, :none),
+            (:call, :print, "\n\nTesting SSHManager. A minimum of 4GB of RAM is recommended.\n"),
+            (:line, 942, :none),
+            (:call, :print, "Please ensure: \n"),
+            (:line, 943, :none),
+            (:call, :print, "1) sshd is running locally with passwordless login enabled.\n"),
+            (:line, 944, :none),
+            (:call, :print, "2) Env variable USER is defined and is the ssh user.\n"),
+            (:line, 945, :none),
+            (:call, :print, "3) Port 9300 is not in use.\n"),
+            (:line, 947, :none),
+            (:(=), :sshflags, (:macrocall, Symbol("@cmd"), "-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=ERROR ")),
+            (:line, 949, :none),
+            (:(=), :hosts, (:vect,)),
+            (:line, 950, :none),
+            (:(=), :localhost_aliases, (:vect, "localhost", (:call, :string, (:call, :getipaddr)), "127.0.0.1")),
+            (:line, 951, :none),
+            (:(=), :num_workers, (:call, :parse, :Int, (:call, :get, :ENV, "JULIA_ADDPROCS_NUM", "9"))),
+            (:line, 953, :none),
+            (:for, (:(=), :i, (:(:), 1, (:call, :/, :num_workers, (:call, :length, :localhost_aliases)))), (:block,
+                (:line, 954, :none),
+                (:call, :append!, :hosts, :localhost_aliases)
+              )),
+            (:line, 957, :none),
+            (:call, :print, (:string, "\nTesting SSH addprocs with ", (:call, :length, :hosts), " workers...\n")),
+            (:line, 958, :none),
+            (:(=), :new_pids, (:call, :addprocs_with_testenv, (:parameters, (:kw, :sshflags, :sshflags)), :hosts)),
+            (:line, 959, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :new_pids), (:call, :length, :hosts))),
+            (:line, 960, :none),
+            (:call, :test_n_remove_pids, :new_pids),
+            (:line, 962, :none),
+            (:call, :print, "\nMixed ssh addprocs with :auto\n"),
+            (:line, 963, :none),
+            (:(=), :new_pids, (:call, :addprocs_with_testenv, (:parameters, (:kw, :sshflags, :sshflags)), (:vect, "localhost", (:tuple, "127.0.0.1", (:quote, #QuoteNode
+                      :auto
+                    )), "localhost"))),
+            (:line, 964, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :new_pids), (:call, :+, 2, (:., :Sys, (:quote, #QuoteNode
+                      :CPU_CORES
+                    ))))),
+            (:line, 965, :none),
+            (:call, :test_n_remove_pids, :new_pids),
+            (:line, 967, :none),
+            (:call, :print, "\nMixed ssh addprocs with numeric counts\n"),
+            (:line, 968, :none),
+            (:(=), :new_pids, (:call, :addprocs_with_testenv, (:parameters, (:kw, :sshflags, :sshflags)), (:vect, (:tuple, "localhost", 2), (:tuple, "127.0.0.1", 2), "localhost"))),
+            (:line, 969, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :new_pids), 5)),
+            (:line, 970, :none),
+            (:call, :test_n_remove_pids, :new_pids),
+            (:line, 972, :none),
+            (:call, :print, "\nssh addprocs with tunnel\n"),
+            (:line, 973, :none),
+            (:(=), :new_pids, (:call, :addprocs_with_testenv, (:parameters, (:kw, :tunnel, true), (:kw, :sshflags, :sshflags)), (:vect, (:tuple, "localhost", :num_workers)))),
+            (:line, 974, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :new_pids), :num_workers)),
+            (:line, 975, :none),
+            (:call, :test_n_remove_pids, :new_pids),
+            (:line, 977, :none),
+            (:call, :print, "\nAll supported formats for hostname\n"),
+            (:line, 978, :none),
+            (:(=), :h1, "localhost"),
+            (:line, 979, :none),
+            (:(=), :user, (:ref, :ENV, "USER")),
+            (:line, 980, :none),
+            (:(=), :h2, (:string, :user, "@", :h1)),
+            (:line, 981, :none),
+            (:(=), :h3, (:string, :h2, ":22")),
+            (:line, 982, :none),
+            (:(=), :h4, (:string, :h3, " ", (:call, :string, (:call, :getipaddr)))),
+            (:line, 983, :none),
+            (:(=), :h5, (:string, :h4, ":9300")),
+            (:line, 985, :none),
+            (:(=), :new_pids, (:call, :addprocs_with_testenv, (:parameters, (:kw, :sshflags, :sshflags)), (:vect, :h1, :h2, :h3, :h4, :h5))),
+            (:line, 986, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :new_pids), 5)),
+            (:line, 987, :none),
+            (:call, :test_n_remove_pids, :new_pids),
+            (:line, 989, :none),
+            (:call, :print, "\nkeyword arg exename\n"),
+            (:line, 990, :none),
+            (:for, (:(=), :exename, (:vect, (:macrocall, Symbol("@cmd"), "\$(joinpath(JULIA_HOME, Base.julia_exename()))"), (:string, (:call, :joinpath, :JULIA_HOME, (:call, (:., :Base, (:quote, #QuoteNode
+                            :julia_exename
+                          ))))))), (:block,
+                (:line, 991, :none),
+                (:for, (:(=), :addp_func, (:vect, (:->, (:tuple,), (:block,
+                          (:line, 991, :none),
+                          (:call, :addprocs_with_testenv, (:parameters, (:kw, :exename, :exename), (:kw, :exeflags, :test_exeflags), (:kw, :sshflags, :sshflags)), (:vect, "localhost"))
+                        )), (:->, (:tuple,), (:block,
+                          (:line, 992, :none),
+                          (:call, :addprocs_with_testenv, (:parameters, (:kw, :exename, :exename), (:kw, :exeflags, :test_exeflags)), 1)
+                        )))), (:block,
+                    (:line, 994, :none),
+                    (:(=), :new_pids, (:call, :addp_func)),
+                    (:line, 995, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :new_pids), 1)),
+                    (:line, 996, :none),
+                    (:call, :test_n_remove_pids, :new_pids)
+                  ))
+              ))
+          ))
+      )),
+    (:line, 1003, :none),
+    (:let, (:block,
+        (:line, 1004, :none),
+        (:call, :schedule, :t, (:call, :ErrorException, ""), (:kw, :error, true)),
+        (:line, 1005, :none),
+        (:macrocall, Symbol("@test_throws"), :ErrorException, (:call, :wait, :t))
+      ), (:(=), :t, (:macrocall, Symbol("@task"), 42))),
+    (:line, 1009, :none),
+    (:let, (:block,
+        (:line, 1010, :none),
+        (:macrocall, Symbol("@parallel"), :+, (:for, (:(=), :i, (:block,
+                (:call, :push!, :A, 1),
+                (:(:), 1, 2)
+              )), (:block,
+              (:line, 1011, :none),
+              :i
+            ))),
+        (:line, 1013, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :A), 1))
+      ), (:(=), :A, (:ref, :Any))),
+    (:line, 1017, :none),
+    (:function, (:call, :f13168, :n), (:block,
+        (:line, 1018, :none),
+        (:(=), :val, 0),
+        (:line, 1019, :none),
+        (:for, (:(=), :i, (:(:), 1, :n)), (:block,
+            (:line, 1019, :none),
+            (:+=, :val, (:call, :sum, (:call, :^, (:call, :rand, :n, :n), 2)))
+          )),
+        (:line, 1020, :none),
+        :val
+      )),
+    (:line, 1022, :none),
+    (:let, (:block,
+        (:line, 1023, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :t, (:quote, #QuoteNode
+                :state
+              )), (:quote, #QuoteNode
+              :queued
+            ))),
+        (:line, 1024, :none),
+        (:macrocall, Symbol("@test_throws"), :ErrorException, (:call, :schedule, :t)),
+        (:line, 1025, :none),
+        (:call, :yield),
+        (:line, 1026, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :t, (:quote, #QuoteNode
+                :state
+              )), (:quote, #QuoteNode
+              :done
+            ))),
+        (:line, 1027, :none),
+        (:macrocall, Symbol("@test_throws"), :ErrorException, (:call, :schedule, :t)),
+        (:line, 1028, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, (:call, :wait, :t), :Float64))
+      ), (:(=), :t, (:call, :schedule, (:macrocall, Symbol("@task"), (:call, :f13168, 100))))),
+    (:line, 1032, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :remotecall_fetch, :identity, (:ref, (:call, :workers), 1), :C_NULL), :C_NULL)),
+    (:line, 1035, :none),
+    (:function, (:call, :t11062), (:block,
+        (:line, 1036, :none),
+        (:macrocall, Symbol("@async"), (:(=), :v11062, 1)),
+        (:line, 1037, :none),
+        (:(=), :v11062, 2)
+      )),
+    (:line, 1040, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :t11062), 2)),
+    (:line, 1043, :none),
+    (:(=), :v15406, (:call, :remotecall_wait, (:->, (:tuple,), (:block,
+            (:line, 1043, :none),
+            1
+          )), :id_other)),
+    (:line, 1044, :none),
+    (:call, :fetch, :v15406),
+    (:line, 1045, :none),
+    (:call, :remotecall_wait, :fetch, :id_other, :v15406),
+    (:line, 1049, :none),
+    (:macrocall, Symbol("@everywhere"), (:(=), (:call, :f_args, (:parameters, (:kw, :kw1, 0), (:kw, :kw2, 0)), :v1, (:kw, :v2, 0)), (:block,
+          (:line, 1049, :none),
+          (:call, :+, :v1, :v2, :kw1, :kw2)
+        ))),
+    (:line, 1051, :none),
+    (:function, (:call, :test_f_args, (:parameters, (:..., :kwargs)), :result, (:..., :args)), (:block,
+        (:line, 1052, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :fetch, (:call, :remotecall, (:parameters, (:..., :kwargs)), (:..., :args))), :result)),
+        (:line, 1053, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :fetch, (:call, :remotecall_wait, (:parameters, (:..., :kwargs)), (:..., :args))), :result)),
+        (:line, 1054, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :remotecall_fetch, (:parameters, (:..., :kwargs)), (:..., :args)), :result)),
+        (:line, 1057, :none),
+        (:call, :remote_do, (:parameters, (:..., :kwargs)), (:..., :args))
+      )),
+    (:line, 1060, :none),
+    (:for, (:(=), :tid, (:vect, :id_other, :id_me, (:call, (:., :Base, (:quote, #QuoteNode
+                :default_worker_pool
+              ))))), (:block,
+        (:line, 1061, :none),
+        (:call, :test_f_args, 1, :f_args, :tid, 1),
+        (:line, 1062, :none),
+        (:call, :test_f_args, 3, :f_args, :tid, 1, 2),
+        (:line, 1063, :none),
+        (:call, :test_f_args, (:parameters, (:kw, :kw1, 4)), 5, :f_args, :tid, 1),
+        (:line, 1064, :none),
+        (:call, :test_f_args, (:parameters, (:kw, :kw1, 4), (:kw, :kw2, 8)), 13, :f_args, :tid, 1),
+        (:line, 1065, :none),
+        (:call, :test_f_args, (:parameters, (:kw, :kw1, 4), (:kw, :kw2, 8)), 15, :f_args, :tid, 1, 2)
+      )),
+    (:line, 1069, :none),
+    (:(=), :f, (:call, :Future, :id_me)),
+    (:line, 1070, :none),
+    (:call, :remote_do, (:->, :fut, (:block,
+          (:line, 1070, :none),
+          (:call, :put!, :fut, (:call, :myid))
+        )), :id_me, :f),
+    (:line, 1071, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :fetch, :f), :id_me)),
+    (:line, 1073, :none),
+    (:(=), :f, (:call, :Future, :id_other)),
+    (:line, 1074, :none),
+    (:call, :remote_do, (:->, :fut, (:block,
+          (:line, 1074, :none),
+          (:call, :put!, :fut, (:call, :myid))
+        )), :id_other, :f),
+    (:line, 1075, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :fetch, :f), :id_other)),
+    (:line, 1078, :none),
+    (:(=), :n, (:if, :DoFullTest, 6, 5)),
+    (:line, 1079, :none),
+    (:for, (:(=), :i, (:(:), 1, (:call, :^, 10, :n))), (:block,
+        (:line, 1080, :none),
+        (:call, :fetch, (:macrocall, Symbol("@spawnat"), (:call, :myid), (:call, :myid)))
+      )),
+    (:line, 1084, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :remotecall_fetch, (:->, :x, (:block,
+              (:line, 1084, :none),
+              (:call, :+, (:call, (:->, :y, (:block,
+                      (:line, 1084, :none),
+                      (:call, :*, 2, :y)
+                    )), :x), 1)
+            )), (:ref, (:call, :workers), 1), 3), 7)),
+    (:line, 1087, :none),
+    (:type, true, :T16091, (:block,
+        (:line, 1087, :none)
+      )),
+    (:line, 1088, :none),
+    (:(=), :wid, (:ref, (:call, :workers), 1)),
+    (:line, 1089, :none),
+    (:macrocall, Symbol("@test"), (:try, (:block,
+          (:line, 1090, :none),
+          (:call, :remotecall_fetch, (:->, (:tuple,), (:block,
+                (:line, 1090, :none),
+                :T16091
+              )), :wid),
+          (:line, 1091, :none),
+          false
+        ), :ex, (:block,
+          (:line, 1093, :none),
+          (:call, :(===), (:., (:(::), (:., (:(::), :ex, :RemoteException), (:quote, #QuoteNode
+                    :captured
+                  )), :CapturedException), (:quote, #QuoteNode
+                :ex
+              )), (:call, :UndefVarError, (:quote, #QuoteNode
+                :T16091
+              )))
+        ))),
+    (:line, 1095, :none),
+    (:macrocall, Symbol("@test"), (:try, (:block,
+          (:line, 1096, :none),
+          (:call, :remotecall_fetch, :identity, :wid, :T16091),
+          (:line, 1097, :none),
+          false
+        ), :ex, (:block,
+          (:line, 1099, :none),
+          (:call, :(===), (:., (:(::), (:., (:(::), :ex, :RemoteException), (:quote, #QuoteNode
+                    :captured
+                  )), :CapturedException), (:quote, #QuoteNode
+                :ex
+              )), (:call, :UndefVarError, (:quote, #QuoteNode
+                :T16091
+              )))
+        ))),
+    (:line, 1102, :none),
+    (:(=), (:call, :f16091a), (:block,
+        (:line, 1102, :none),
+        1
+      )),
+    (:line, 1103, :none),
+    (:call, :remotecall_fetch, (:->, (:tuple,), (:block,
+          (:line, 1103, :none),
+          (:call, :eval, (:quote, (:(=), (:call, :f16091a), (:block,
+                  (:line, 1103, :none),
+                  2
+                ))))
+        )), :wid),
+    (:line, 1104, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :remotecall_fetch, :f16091a, :wid), 2)),
+    (:line, 1105, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :remotecall_fetch, (:->, :myid, (:block,
+              (:line, 1105, :none),
+              (:call, :remotecall_fetch, :f16091a, :myid)
+            )), :wid, (:call, :myid)), 1)),
+    (:line, 1108, :none),
+    (:(=), :f16091b, (:->, (:tuple,), (:block,
+          (:line, 1108, :none),
+          1
+        ))),
+    (:line, 1109, :none),
+    (:call, :remotecall_fetch, (:->, (:tuple,), (:block,
+          (:line, 1109, :none),
+          (:call, :eval, (:quote, (:(=), :f16091b, (:->, (:tuple,), (:block,
+                    (:line, 1109, :none),
+                    2
+                  )))))
+        )), :wid),
+    (:line, 1110, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :remotecall_fetch, :f16091b, 2), 1)),
+    (:line, 1112, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :remotecall_fetch, (:->, :myid, (:block,
+              (:line, 1112, :none),
+              (:call, :remotecall_fetch, :f16091b, :myid)
+            )), :wid, (:call, :myid)), 1)),
+    (:line, 1115, :none),
+    (:let, (:block,
+        (:line, 1116, :none),
+        (:(=), :f16091c, (:->, (:tuple,), (:block,
+              (:line, 1116, :none),
+              1
+            ))),
+        (:line, 1117, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), (:call, :remotecall_fetch, :f16091c, 2), 1)),
+        (:line, 1118, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), (:call, :remotecall_fetch, (:->, :myid, (:block,
+                  (:line, 1119, :none),
+                  (:block,
+                    (:line, 1120, :none),
+                    (:let, (:block,
+                        (:line, 1121, :none),
+                        (:(=), :f16091c, (:->, (:tuple,), (:block,
+                              (:line, 1121, :none),
+                              2
+                            ))),
+                        (:line, 1122, :none),
+                        (:call, :remotecall_fetch, :f16091c, :myid)
+                      ))
+                  )
+                )), :wid, (:call, :myid)), 2))
+      )),
+    (:line, 1128, :none),
+    (:(=), :rng, (:call, :RandomDevice)),
+    (:line, 1129, :none),
+    (:(=), :retval, (:macrocall, Symbol("@parallel"), :+, (:for, (:(=), :_, (:(:), 1, 10)), (:block,
+            (:line, 1130, :none),
+            (:call, :rand, :rng)
+          )))),
+    (:line, 1132, :none),
+    (:macrocall, Symbol("@test"), (:&&, (:call, :>, :retval, 0.0), (:call, :<, :retval, 10.0))),
+    (:line, 1134, :none),
+    (:call, :rand, :rng),
+    (:line, 1135, :none),
+    (:(=), :retval, (:macrocall, Symbol("@parallel"), :+, (:for, (:(=), :_, (:(:), 1, 10)), (:block,
+            (:line, 1136, :none),
+            (:call, :rand, :rng)
+          )))),
+    (:line, 1138, :none),
+    (:macrocall, Symbol("@test"), (:&&, (:call, :>, :retval, 0.0), (:call, :<, :retval, 10.0))),
+    (:line, 1141, :none),
+    (:(=), :wrkr1, (:ref, (:call, :workers), 1)),
+    (:line, 1142, :none),
+    (:(=), :wrkr2, (:ref, (:call, :workers), :end)),
+    (:line, 1144, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :remotecall_fetch, (:->, :p, (:block,
+              (:line, 1144, :none),
+              (:call, :remotecall_fetch, :myid, :p)
+            )), :wrkr1, :wrkr2), :wrkr2)),
+    (:line, 1147, :none),
+    (:(=), :f_myid, (:->, (:tuple,), (:block,
+          (:line, 1147, :none),
+          (:call, :myid)
+        ))),
+    (:line, 1148, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), :wrkr1, (:call, :remotecall_fetch, :f_myid, :wrkr1))),
+    (:line, 1149, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), :wrkr2, (:call, :remotecall_fetch, :f_myid, :wrkr2))),
+    (:line, 1150, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), :wrkr2, (:call, :remotecall_fetch, (:->, (:tuple, :f, :p), (:block,
+              (:line, 1150, :none),
+              (:call, :remotecall_fetch, :f, :p)
+            )), :wrkr1, :f_myid, :wrkr2))),
+    (:line, 1154, :none),
+    (:module, true, :LocalFoo, (:block,
+        (:line, 1154, :none),
+        (:line, 1155, :none),
+        (:global, (:(=), :foo, 1))
+      )),
+    (:line, 1158, :none),
+    (:let, (:block,
+        (:line, 1159, :none),
+        (:macrocall, Symbol("@test_throws"), :RemoteException, (:call, :remotecall_fetch, (:->, (:tuple,), (:block,
+                (:line, 1159, :none),
+                (:., :LocalFoo, (:quote, #QuoteNode
+                    :foo
+                  ))
+              )), 2)),
+        (:line, 1161, :none),
+        (:(=), :bad_thunk, (:->, (:tuple,), (:block,
+              (:line, 1161, :none),
+              (:call, (:., :NonexistantModule, (:quote, #QuoteNode
+                    :f
+                  )))
+            ))),
+        (:line, 1162, :none),
+        (:macrocall, Symbol("@test_throws"), :RemoteException, (:call, :remotecall_fetch, :bad_thunk, 2)),
+        (:line, 1165, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :remotecall_fetch, (:->, (:tuple,), (:block,
+                  (:line, 1165, :none),
+                  (:quote, #QuoteNode
+                    :test
+                  )
+                )), 2), (:quote, #QuoteNode
+              :test
+            ))),
+        (:line, 1166, :none),
+        (:(=), :ref, (:call, :remotecall, :bad_thunk, 2)),
+        (:line, 1167, :none),
+        (:macrocall, Symbol("@test_throws"), :RemoteException, (:call, :fetch, :ref))
+      )),
+    (:line, 1171, :none),
+    (:module, true, :LocalBar, (:block,
+        (:line, 1171, :none),
+        (:line, 1172, :none),
+        (:(=), (:call, :bar), (:block,
+            (:line, 1172, :none),
+            (:macrocall, Symbol("@everywhere"), (:(=), (:call, :new_bar), (:block,
+                  (:line, 1172, :none),
+                  (:call, :myid)
+                )))
+          ))
+      )),
+    (:line, 1174, :none),
+    (:call, (:., :LocalBar, (:quote, #QuoteNode
+          :bar
+        ))),
+    (:line, 1175, :none),
+    (:for, (:(=), :p, (:call, :procs)), (:block,
+        (:line, 1176, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :p, (:call, :remotecall_fetch, :new_bar, :p)))
+      )),
+    (:line, 1181, :none),
+    (:const, (:(=), :get_num_threads, (:function, (:tuple,), (:block,
+            (:line, 1182, :none),
+            (:(=), :blas, (:call, (:., :BLAS, (:quote, #QuoteNode
+                    :vendor
+                  )))),
+            (:line, 1184, :none),
+            (:try, (:block,
+                (:line, 1185, :none),
+                (:if, (:call, :(==), :blas, (:quote, #QuoteNode
+                      :openblas
+                    )), (:block,
+                    (:line, 1186, :none),
+                    (:return, (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                            :openblas_get_num_threads
+                          ), (:., :Base, (:quote, #QuoteNode
+                              :libblas_name
+                            ))), :Cint, (:tuple,)))
+                  ), (:block,
+                    (:line, 1187, :none),
+                    (:if, (:call, :(==), :blas, (:quote, #QuoteNode
+                          :openblas64
+                        )), (:block,
+                        (:line, 1188, :none),
+                        (:return, (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                                :openblas_get_num_threads64_
+                              ), (:., :Base, (:quote, #QuoteNode
+                                  :libblas_name
+                                ))), :Cint, (:tuple,)))
+                      ), (:block,
+                        (:line, 1189, :none),
+                        (:if, (:call, :(==), :blas, (:quote, #QuoteNode
+                              :mkl
+                            )), (:block,
+                            (:line, 1190, :none),
+                            (:return, (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                                    :MKL_Get_Max_Num_Threads
+                                  ), (:., :Base, (:quote, #QuoteNode
+                                      :libblas_name
+                                    ))), :Cint, (:tuple,)))
+                          ))
+                      ))
+                  )),
+                (:line, 1194, :none),
+                (:if, (:call, :is_apple), (:block,
+                    (:line, 1195, :none),
+                    (:return, (:ref, :ENV, "VECLIB_MAXIMUM_THREADS"))
+                  ))
+              ), false, (:block,)),
+            (:line, 1199, :none),
+            (:return, :nothing)
+          )))),
+    (:line, 1202, :none),
+    (:function, (:call, :get_remote_num_threads, :processes_added), (:block,
+        (:line, 1203, :none),
+        (:return, (:comprehension, (:generator, (:call, :remotecall_fetch, :get_num_threads, :proc_id), (:(=), :proc_id, :processes_added))))
+      )),
+    (:line, 1206, :none),
+    (:function, (:call, :test_blas_config, :pid, :expected), (:block,
+        (:line, 1207, :none),
+        (:for, (:(=), :worker, (:., (:., (:., :Base, (:quote, #QuoteNode
+                    :Distributed
+                  )), (:quote, #QuoteNode
+                  :PGRP
+                )), (:quote, #QuoteNode
+                :workers
+              ))), (:block,
+            (:line, 1208, :none),
+            (:if, (:call, :(==), (:., :worker, (:quote, #QuoteNode
+                    :id
+                  )), :pid), (:block,
+                (:line, 1209, :none),
+                (:macrocall, Symbol("@test"), (:call, :(==), (:call, :get, (:., (:., :worker, (:quote, #QuoteNode
+                            :config
+                          )), (:quote, #QuoteNode
+                          :enable_threaded_blas
+                        ))), :expected)),
+                (:line, 1210, :none),
+                (:return, nothing)
+              ))
+          ))
+      )),
+    (:line, 1215, :none),
+    (:function, (:call, :test_add_procs_threaded_blas), (:block,
+        (:line, 1216, :none),
+        (:if, (:call, :(===), (:call, :get_num_threads), :nothing), (:block,
+            (:line, 1217, :none),
+            (:call, :warn, "Skipping blas num threads tests due to unsupported blas version"),
+            (:line, 1218, :none),
+            (:return, nothing)
+          )),
+        (:line, 1220, :none),
+        (:(=), :master_blas_thread_count, (:call, :get_num_threads)),
+        (:line, 1223, :none),
+        (:(=), :processes_added, (:call, :addprocs_with_testenv, 2)),
+        (:line, 1224, :none),
+        (:for, (:(=), :proc_id, :processes_added), (:block,
+            (:line, 1225, :none),
+            (:call, :test_blas_config, :proc_id, false)
+          )),
+        (:line, 1229, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :get_num_threads), :master_blas_thread_count)),
+        (:line, 1232, :none),
+        (:(=), :thread_counts_by_process, (:call, :get_remote_num_threads, :processes_added)),
+        (:line, 1233, :none),
+        (:for, (:(=), :thread_count, :thread_counts_by_process), (:block,
+            (:line, 1234, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), :thread_count, 1))
+          )),
+        (:line, 1236, :none),
+        (:call, :rmprocs, :processes_added),
+        (:line, 1238, :none),
+        (:(=), :processes_added, (:call, :addprocs_with_testenv, 2, (:kw, :enable_threaded_blas, true))),
+        (:line, 1239, :none),
+        (:for, (:(=), :proc_id, :processes_added), (:block,
+            (:line, 1240, :none),
+            (:call, :test_blas_config, :proc_id, true)
+          )),
+        (:line, 1243, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :get_num_threads), :master_blas_thread_count)),
+        (:line, 1248, :none),
+        (:(=), :thread_counts_by_process, (:call, :get_remote_num_threads, :processes_added)),
+        (:line, 1249, :none),
+        (:for, (:(=), :thread_count, :thread_counts_by_process), (:block,
+            (:line, 1250, :none),
+            (:macrocall, Symbol("@test"), (:call, :(>=), :thread_count, 1))
+          )),
+        (:line, 1252, :none),
+        (:call, :rmprocs, :processes_added)
+      )),
+    (:line, 1254, :none),
+    (:call, :test_add_procs_threaded_blas),
+    (:line, 1258, :none),
+    (:for, (:(=), :i, (:(:), 1, 5)), (:block,
+        (:line, 1259, :none),
+        (:(=), :p, (:ref, (:call, :addprocs_with_testenv, 1), 1)),
+        (:line, 1260, :none),
+        (:macrocall, Symbol("@spawnat"), :p, (:call, :sleep, 5)),
+        (:line, 1261, :none),
+        (:call, :rmprocs, (:parameters, (:kw, :waitfor, 0)), :p)
+      )),
+    (:line, 1266, :none),
+    (:for, (:(=), :i, (:(:), 1, 5)), (:block,
+        (:line, 1267, :none),
+        (:(=), :p, (:ref, (:call, :addprocs_with_testenv, 1), 1)),
+        (:line, 1268, :none),
+        (:(=), :np, (:call, :nprocs)),
+        (:line, 1269, :none),
+        (:macrocall, Symbol("@spawnat"), :p, (:call, :sleep, 5)),
+        (:line, 1270, :none),
+        (:call, :wait, (:call, :rmprocs, (:parameters, (:kw, :waitfor, 0)), :p)),
+        (:line, 1271, :none),
+        (:for, (:(=), :pid, (:call, :procs)), (:block,
+            (:line, 1272, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), :pid, (:call, :remotecall_fetch, :myid, :pid)))
+          )),
+        (:line, 1274, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :nprocs), (:call, :-, :np, 1)))
+      )),
+    (:line, 1278, :none),
+    (:if, :DoFullTest, (:block,
+        (:line, 1279, :none),
+        (:(=), :pids, (:call, :addprocs_with_testenv, 4)),
+        (:line, 1280, :none),
+        (:macrocall, Symbol("@test_throws"), :ErrorException, (:call, :rmprocs, (:parameters, (:kw, :waitfor, 0.001)), :pids)),
+        (:line, 1282, :none),
+        (:while, (:call, :any, (:->, :x, (:block,
+                (:line, 1282, :none),
+                (:call, :in, :x, (:call, :procs))
+              )), :pids), (:block,
+            (:line, 1283, :none),
+            (:call, :sleep, 0.1)
+          ))
+      )),
+    (:line, 1288, :none),
+    (:for, (:(=), :f, (:vect, (:->, (:tuple,), (:block,
+              (:line, 1288, :none),
+              (:call, :addprocs, (:parameters, (:kw, :exeflags, :test_exeflags)), 1)
+            )), (:->, (:tuple,), (:block,
+              (:line, 1288, :none),
+              (:call, :rmprocs, (:call, :workers))
+            )))), (:block,
+        (:line, 1289, :none),
+        (:try, (:block,
+            (:line, 1290, :none),
+            (:call, :remotecall_fetch, :f, :id_other),
+            (:line, 1291, :none),
+            (:call, :error, "Unexpected")
+          ), :ex, (:block,
+            (:line, 1293, :none),
+            (:macrocall, Symbol("@test"), (:call, :isa, :ex, :RemoteException)),
+            (:line, 1294, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:., (:., (:., :ex, (:quote, #QuoteNode
+                        :captured
+                      )), (:quote, #QuoteNode
+                      :ex
+                    )), (:quote, #QuoteNode
+                    :msg
+                  )), "Only process 1 can add and remove workers"))
+          ))
+      )),
+    (:line, 1304, :none),
+    (:type, false, (:<:, :ErrorSimulator, :ClusterManager), (:block,
+        (:line, 1305, :none),
+        :mode
+      )),
+    (:line, 1308, :none),
+    (:function, (:call, (:., :Base, (:quote, #QuoteNode
+            :launch
+          )), (:(::), :manager, :ErrorSimulator), (:(::), :params, :Dict), (:(::), :launched, :Array), (:(::), :c, :Condition)), (:block,
+        (:line, 1309, :none),
+        (:(=), :exename, (:ref, :params, (:quote, #QuoteNode
+              :exename
+            ))),
+        (:line, 1310, :none),
+        (:(=), :dir, (:ref, :params, (:quote, #QuoteNode
+              :dir
+            ))),
+        (:line, 1312, :none),
+        (:(=), :cmd, (:macrocall, Symbol("@cmd"), "\$(Base.julia_cmd(exename)) --startup-file=no")),
+        (:line, 1313, :none),
+        (:if, (:call, :(==), (:., :manager, (:quote, #QuoteNode
+                :mode
+              )), (:quote, #QuoteNode
+              :timeout
+            )), (:block,
+            (:line, 1314, :none),
+            (:(=), :cmd, (:macrocall, Symbol("@cmd"), "\$cmd -e \"sleep(10)\""))
+          ), (:block,
+            (:line, 1315, :none),
+            (:if, (:call, :(==), (:., :manager, (:quote, #QuoteNode
+                    :mode
+                  )), (:quote, #QuoteNode
+                  :ntries
+                )), (:block,
+                (:line, 1316, :none),
+                (:(=), :cmd, (:macrocall, Symbol("@cmd"), "\$cmd -e \"[println(x) for x in 1:1001]\""))
+              ), (:block,
+                (:line, 1317, :none),
+                (:if, (:call, :(==), (:., :manager, (:quote, #QuoteNode
+                        :mode
+                      )), (:quote, #QuoteNode
+                      :exit
+                    )), (:block,
+                    (:line, 1318, :none),
+                    (:(=), :cmd, (:macrocall, Symbol("@cmd"), "\$cmd -e \"exit(-1)\""))
+                  ), (:block,
+                    (:line, 1320, :none),
+                    (:call, :error, "Unknown mode")
+                  ))
+              ))
+          )),
+        (:line, 1322, :none),
+        (:(=), (:tuple, :io, :pobj), (:call, :open, (:call, :pipeline, (:parameters, (:kw, :stderr, :STDERR)), (:call, :detach, (:call, :setenv, :cmd, (:kw, :dir, :dir)))), "r")),
+        (:line, 1324, :none),
+        (:(=), :wconfig, (:call, :WorkerConfig)),
+        (:line, 1325, :none),
+        (:(=), (:., :wconfig, (:quote, #QuoteNode
+              :process
+            )), :pobj),
+        (:line, 1326, :none),
+        (:(=), (:., :wconfig, (:quote, #QuoteNode
+              :io
+            )), :io),
+        (:line, 1327, :none),
+        (:call, :push!, :launched, :wconfig),
+        (:line, 1328, :none),
+        (:call, :notify, :c)
+      )),
+    (:line, 1331, :none),
+    (:(=), :testruns, (:ref, :Any)),
+    (:line, 1333, :none),
+    (:if, :DoFullTest, (:block,
+        (:line, 1334, :none),
+        (:call, :append!, :testruns, (:vect, (:tuple, (:->, (:tuple,), (:block,
+                  (:line, 1334, :none),
+                  (:call, :addprocs_with_testenv, (:vect, "errorhost20372"))
+                )), "Unable to read host:port string from worker. Launch command exited with error?", (:tuple,))))
+      )),
+    (:line, 1337, :none),
+    (:call, :append!, :testruns, (:vect, (:tuple, (:->, (:tuple,), (:block,
+              (:line, 1338, :none),
+              (:call, :addprocs_with_testenv, (:call, :ErrorSimulator, (:quote, #QuoteNode
+                    :exit
+                  )))
+            )), "Unable to read host:port string from worker. Launch command exited with error?", (:tuple,)), (:tuple, (:->, (:tuple,), (:block,
+              (:line, 1339, :none),
+              (:call, :addprocs_with_testenv, (:call, :ErrorSimulator, (:quote, #QuoteNode
+                    :ntries
+                  )))
+            )), "Unexpected output from worker launch command. Host:port string not found.", (:tuple,)), (:tuple, (:->, (:tuple,), (:block,
+              (:line, 1340, :none),
+              (:call, :addprocs_with_testenv, (:call, :ErrorSimulator, (:quote, #QuoteNode
+                    :timeout
+                  )))
+            )), "Timed out waiting to read host:port string from worker.", (:tuple, (:call, :(=>), "JULIA_WORKER_TIMEOUT", "1"))))),
+    (:line, 1343, :none),
+    (:for, (:(=), (:tuple, :addp_testf, :expected_errstr, :env), :testruns), (:block,
+        (:line, 1344, :none),
+        (:try, (:block,
+            (:line, 1345, :none),
+            (:call, :withenv, (:->, (:tuple,), (:block,
+                  (:line, 1346, :none),
+                  (:call, :addp_testf)
+                )), (:..., :env)),
+            (:line, 1348, :none),
+            (:call, :error, "Unexpected")
+          ), :ex, (:block,
+            (:line, 1350, :none),
+            (:macrocall, Symbol("@test"), (:call, :isa, :ex, :CompositeException)),
+            (:line, 1351, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:., (:., (:ref, (:., :ex, (:quote, #QuoteNode
+                          :exceptions
+                        )), 1), (:quote, #QuoteNode
+                      :ex
+                    )), (:quote, #QuoteNode
+                    :msg
+                  )), :expected_errstr))
+          ))
+      )),
+    (:line, 1358, :none),
+    (:global, (:(=), :v1, 1)),
+    (:line, 1359, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :remotecall_fetch, (:->, (:tuple,), (:block,
+              (:line, 1359, :none),
+              :v1
+            )), :id_other), :v1)),
+    (:line, 1360, :none),
+    (:macrocall, Symbol("@test"), (:call, :remotecall_fetch, (:->, (:tuple,), (:block,
+            (:line, 1360, :none),
+            (:call, :isdefined, :Main, (:quote, #QuoteNode
+                :v1
+              ))
+          )), :id_other)),
+    (:line, 1361, :none),
+    (:for, (:(=), :i, (:(:), 2, 5)), (:block,
+        (:line, 1362, :none),
+        (:global, (:(=), :v1, :i)),
+        (:line, 1363, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :remotecall_fetch, (:->, (:tuple,), (:block,
+                  (:line, 1363, :none),
+                  :v1
+                )), :id_other), :i))
+      )),
+    (:line, 1367, :none),
+    (:global, (:(=), :v2, (:call, :zeros, 10))),
+    (:line, 1368, :none),
+    (:for, (:(=), :i, (:(:), 1, 5)), (:block,
+        (:line, 1369, :none),
+        (:(=), (:ref, :v2, :i), :i),
+        (:line, 1370, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :remotecall_fetch, (:->, (:tuple,), (:block,
+                  (:line, 1370, :none),
+                  :v2
+                )), :id_other), :v2))
+      )),
+    (:line, 1374, :none),
+    (:global, (:(=), :v3, (:call, :ones, 10))),
+    (:line, 1375, :none),
+    (:global, (:(=), :v4, :v3)),
+    (:line, 1376, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :remotecall_fetch, (:->, (:tuple,), (:block,
+              (:line, 1376, :none),
+              :v3
+            )), :id_other), (:call, :remotecall_fetch, (:->, (:tuple,), (:block,
+              (:line, 1376, :none),
+              :v4
+            )), :id_other))),
+    (:line, 1377, :none),
+    (:macrocall, Symbol("@test"), (:call, :remotecall_fetch, (:->, (:tuple,), (:block,
+            (:line, 1377, :none),
+            (:call, :isdefined, :Main, (:quote, #QuoteNode
+                :v3
+              ))
+          )), :id_other)),
+    (:line, 1378, :none),
+    (:macrocall, Symbol("@test"), (:call, :remotecall_fetch, (:->, (:tuple,), (:block,
+            (:line, 1378, :none),
+            (:call, :isdefined, :Main, (:quote, #QuoteNode
+                :v4
+              ))
+          )), :id_other)),
+    (:line, 1381, :none),
+    (:global, (:(=), :v5, :Int)),
+    (:line, 1382, :none),
+    (:global, (:(=), :v6, (:., :Base, (:quote, #QuoteNode
+            :Distributed
+          )))),
+    (:line, 1383, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :remotecall_fetch, (:->, (:tuple,), (:block,
+              (:line, 1383, :none),
+              :v5
+            )), :id_other), :Int)),
+    (:line, 1384, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :remotecall_fetch, (:->, (:tuple,), (:block,
+              (:line, 1384, :none),
+              :v6
+            )), :id_other), (:., :Base, (:quote, #QuoteNode
+            :Distributed
+          )))),
+    (:line, 1386, :none),
+    (:type, false, :FooStructLocal, (:block,
+        (:line, 1386, :none)
+      )),
+    (:line, 1387, :none),
+    (:module, true, :FooModLocal, (:block,
+        (:line, 1387, :none),
+        (:line, 1387, :none)
+      )),
+    (:line, 1388, :none),
+    (:(=), :v5, :FooStructLocal),
+    (:line, 1389, :none),
+    (:(=), :v6, :FooModLocal),
+    (:line, 1390, :none),
+    (:macrocall, Symbol("@test_throws"), :RemoteException, (:call, :remotecall_fetch, (:->, (:tuple,), (:block,
+            (:line, 1390, :none),
+            :v5
+          )), :id_other)),
+    (:line, 1391, :none),
+    (:macrocall, Symbol("@test_throws"), :RemoteException, (:call, :remotecall_fetch, (:->, (:tuple,), (:block,
+            (:line, 1391, :none),
+            :v6
+          )), :id_other)),
+    (:line, 1393, :none),
+    (:macrocall, Symbol("@everywhere"), (:type, false, :FooStructEverywhere, (:block,
+          (:line, 1393, :none)
+        ))),
+    (:line, 1394, :none),
+    (:macrocall, Symbol("@everywhere"), (:module, true, :FooModEverywhere, (:block,
+          (:line, 1394, :none),
+          (:line, 1394, :none)
+        ))),
+    (:line, 1395, :none),
+    (:(=), :v5, :FooStructEverywhere),
+    (:line, 1396, :none),
+    (:(=), :v6, :FooModEverywhere),
+    (:line, 1397, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :remotecall_fetch, (:->, (:tuple,), (:block,
+              (:line, 1397, :none),
+              :v5
+            )), :id_other), :FooStructEverywhere)),
+    (:line, 1398, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :remotecall_fetch, (:->, (:tuple,), (:block,
+              (:line, 1398, :none),
+              :v6
+            )), :id_other), :FooModEverywhere)),
+    (:line, 1405, :none),
+    (:macrocall, Symbol("@everywhere"), (:block,
+        (:line, 1406, :none),
+        (:global, (:(=), :testsercnt_d, (:call, :Dict))),
+        (:line, 1407, :none),
+        (:type, true, :TestSerCnt, (:block,
+            (:line, 1408, :none),
+            :v
+          )),
+        (:line, 1410, :none),
+        (:toplevel, (:import, :Base, :hash), (:import, :Base, :(==))),
+        (:line, 1411, :none),
+        (:(=), (:call, :hash, (:(::), :x, :TestSerCnt), (:(::), :h, :UInt)), (:block,
+            (:line, 1411, :none),
+            (:call, :hash, (:call, :hash, (:., :x, (:quote, #QuoteNode
+                    :v
+                  ))), :h)
+          )),
+        (:line, 1412, :none),
+        (:(=), (:call, :(==), (:(::), :x1, :TestSerCnt), (:(::), :x2, :TestSerCnt)), (:block,
+            (:line, 1412, :none),
+            (:call, :(==), (:., :x1, (:quote, #QuoteNode
+                  :v
+                )), (:., :x2, (:quote, #QuoteNode
+                  :v
+                )))
+          )),
+        (:line, 1414, :none),
+        (:function, (:call, (:., :Base, (:quote, #QuoteNode
+                :serialize
+              )), (:(::), :s, :AbstractSerializer), (:(::), :t, :TestSerCnt)), (:block,
+            (:line, 1415, :none),
+            (:call, (:., (:., :Base, (:quote, #QuoteNode
+                    :Serializer
+                  )), (:quote, #QuoteNode
+                  :serialize_type
+                )), :s, :TestSerCnt),
+            (:line, 1416, :none),
+            (:call, :serialize, :s, (:., :t, (:quote, #QuoteNode
+                  :v
+                ))),
+            (:line, 1417, :none),
+            (:global, :testsercnt_d),
+            (:line, 1418, :none),
+            (:(=), :cnt, (:call, :get!, :testsercnt_d, (:call, :object_id, :t), 0)),
+            (:line, 1419, :none),
+            (:(=), (:ref, :testsercnt_d, (:call, :object_id, :t)), (:call, :+, :cnt, 1))
+          )),
+        (:line, 1422, :none),
+        (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+                :deserialize
+              )), (:(::), :s, :AbstractSerializer), (:(::), (:curly, :Type, :TestSerCnt))), (:block,
+            (:line, 1422, :none),
+            (:call, :TestSerCnt, (:call, :deserialize, :s))
+          ))
+      )),
+    (:line, 1426, :none),
+    (:global, (:(=), :tsc, (:call, :TestSerCnt, (:call, :zeros, 10)))),
+    (:line, 1427, :none),
+    (:for, (:(=), :i, (:(:), 1, 5)), (:block,
+        (:line, 1428, :none),
+        (:call, :remotecall_fetch, (:->, (:tuple,), (:block,
+              (:line, 1428, :none),
+              :tsc
+            )), :id_other)
+      )),
+    (:line, 1431, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :testsercnt_d, (:call, :object_id, :tsc)), 1)),
+    (:line, 1434, :none),
+    (:(=), :n, 5),
+    (:line, 1435, :none),
+    (:(=), (:ref, :testsercnt_d, (:call, :object_id, :tsc)), 0),
+    (:line, 1436, :none),
+    (:for, (:(=), :i, (:(:), 1, :n)), (:block,
+        (:line, 1437, :none),
+        (:(=), (:ref, (:., :tsc, (:quote, #QuoteNode
+                :v
+              )), :i), :i),
+        (:line, 1438, :none),
+        (:call, :remotecall_fetch, (:->, (:tuple,), (:block,
+              (:line, 1438, :none),
+              :tsc
+            )), :id_other)
+      )),
+    (:line, 1441, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :testsercnt_d, (:call, :object_id, :tsc)), :n)),
+    (:line, 1444, :none),
+    (:global, (:(=), :mrefs, (:call, :TestSerCnt, (:call, :ones, 10)))),
+    (:line, 1445, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :remotecall_fetch, (:->, (:tuple,), (:block,
+              (:line, 1445, :none),
+              (:tuple, (:., :mrefs, (:quote, #QuoteNode
+                    :v
+                  )), (:call, :*, 2, (:., :mrefs, (:quote, #QuoteNode
+                      :v
+                    ))), (:call, :*, 3, (:., :mrefs, (:quote, #QuoteNode
+                      :v
+                    ))))
+            )), :id_other), (:tuple, (:call, :ones, 10), (:call, :*, 2, (:call, :ones, 10)), (:call, :*, 3, (:call, :ones, 10))))),
+    (:line, 1446, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :testsercnt_d, (:call, :object_id, :mrefs)), 1)),
+    (:line, 1450, :none),
+    (:global, (:(=), :f1, (:->, :x, (:block,
+            (:line, 1450, :none),
+            :x
+          )))),
+    (:line, 1451, :none),
+    (:global, (:(=), :f2, (:->, :x, (:block,
+            (:line, 1451, :none),
+            (:call, :f1, :x)
+          )))),
+    (:line, 1452, :none),
+    (:(=), :v, (:call, :rand)),
+    (:line, 1453, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :remotecall_fetch, :f2, :id_other, :v), :v)),
+    (:line, 1454, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :remotecall_fetch, (:->, :x, (:block,
+              (:line, 1454, :none),
+              (:call, :f2, :x)
+            )), :id_other, :v), :v)),
+    (:line, 1457, :none),
+    (:const, (:(=), :c1, (:call, :ones, 10))),
+    (:line, 1458, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :remotecall_fetch, (:->, (:tuple,), (:block,
+              (:line, 1458, :none),
+              :c1
+            )), :id_other), :c1)),
+    (:line, 1459, :none),
+    (:macrocall, Symbol("@test"), (:call, :remotecall_fetch, (:->, (:tuple,), (:block,
+            (:line, 1459, :none),
+            (:call, :isconst, :Main, (:quote, #QuoteNode
+                :c1
+              ))
+          )), :id_other)),
+    (:line, 1462, :none),
+    (:function, (:call, :wrapped_var_ser_tests), (:block,
+        (:line, 1464, :none),
+        (:local, (:(=), :lv1, 1)),
+        (:line, 1465, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :remotecall_fetch, (:->, (:tuple,), (:block,
+                  (:line, 1465, :none),
+                  :lv1
+                )), :id_other), :lv1)),
+        (:line, 1466, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:call, :remotecall_fetch, (:->, (:tuple,), (:block,
+                  (:line, 1466, :none),
+                  (:call, :isdefined, :Main, (:quote, #QuoteNode
+                      :lv1
+                    ))
+                )), :id_other))),
+        (:line, 1467, :none),
+        (:for, (:(=), :i, (:(:), 2, 5)), (:block,
+            (:line, 1468, :none),
+            (:(=), :lv1, :i),
+            (:line, 1469, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:call, :remotecall_fetch, (:->, (:tuple,), (:block,
+                      (:line, 1469, :none),
+                      :lv1
+                    )), :id_other), :i))
+          )),
+        (:line, 1473, :none),
+        (:local, (:(=), :lv2, (:call, :zeros, 10))),
+        (:line, 1474, :none),
+        (:for, (:(=), :i, (:(:), 1, 5)), (:block,
+            (:line, 1475, :none),
+            (:(=), (:ref, :lv2, :i), :i),
+            (:line, 1476, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:call, :remotecall_fetch, (:->, (:tuple,), (:block,
+                      (:line, 1476, :none),
+                      :lv2
+                    )), :id_other), :lv2))
+          )),
+        (:line, 1480, :none),
+        (:local, (:(=), :lf1, (:->, :x, (:block,
+                (:line, 1480, :none),
+                :x
+              )))),
+        (:line, 1481, :none),
+        (:local, (:(=), :lf2, (:->, :x, (:block,
+                (:line, 1481, :none),
+                (:call, :lf1, :x)
+              )))),
+        (:line, 1482, :none),
+        (:(=), :v, (:call, :rand)),
+        (:line, 1483, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :remotecall_fetch, :lf2, :id_other, :v), :v)),
+        (:line, 1484, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :remotecall_fetch, (:->, :x, (:block,
+                  (:line, 1484, :none),
+                  (:call, :lf2, :x)
+                )), :id_other, :v), :v))
+      )),
+    (:line, 1487, :none),
+    (:call, :wrapped_var_ser_tests),
+    (:line, 1490, :none),
+    (:global, (:(=), :ids_cleanup, (:call, :ones, 6))),
+    (:line, 1491, :none),
+    (:global, (:(=), :ids_func, (:->, (:tuple,), (:block,
+            (:line, 1491, :none),
+            :ids_cleanup
+          )))),
+    (:line, 1493, :none),
+    (:(=), :clust_ser, (:., (:call, (:., (:., :Base, (:quote, #QuoteNode
+                :Distributed
+              )), (:quote, #QuoteNode
+              :worker_from_id
+            )), :id_other), (:quote, #QuoteNode
+          :w_serializer
+        ))),
+    (:line, 1494, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :remotecall_fetch, :ids_func, :id_other), :ids_cleanup)),
+    (:line, 1496, :none),
+    (:macrocall, Symbol("@test"), (:call, :haskey, (:., :clust_ser, (:quote, #QuoteNode
+            :glbs_sent
+          )), (:call, :object_id, :ids_cleanup))),
+    (:line, 1497, :none),
+    (:call, :finalize, :ids_cleanup),
+    (:line, 1498, :none),
+    (:macrocall, Symbol("@test"), (:call, :!, (:call, :haskey, (:., :clust_ser, (:quote, #QuoteNode
+              :glbs_sent
+            )), (:call, :object_id, :ids_cleanup)))),
+    (:line, 1504, :none),
+    (:(=), :v2669, 10),
+    (:line, 1505, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :fetch, (:macrocall, Symbol("@spawn"), (:call, :+, 1, :v2669))), 11)),
+    (:line, 1508, :none),
+    (:(=), :refs, (:vect,)),
+    (:line, 1509, :none),
+    (:if, true, (:block,
+        (:line, 1510, :none),
+        (:(=), :n, 10),
+        (:line, 1511, :none),
+        (:for, (:(=), :p, (:call, :procs)), (:block,
+            (:line, 1512, :none),
+            (:call, :push!, :refs, (:macrocall, Symbol("@spawnat"), :p, (:block,
+                  (:line, 1513, :none),
+                  (:macrocall, Symbol("@sync"), (:for, (:(=), :i, (:(:), 1, :n)), (:block,
+                        (:line, 1514, :none),
+                        :nothing
+                      )))
+                )))
+          ))
+      )),
+    (:line, 1519, :none),
+    (:call, :foreach, :wait, :refs),
+    (:line, 1522, :none),
+    (:(=), :s, (:call, :convert, :SharedArray, (:vect, 1, 2, 3, 4))),
+    (:line, 1523, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :pmap, (:->, :i, (:block,
+              (:line, 1523, :none),
+              (:call, :length, :s)
+            )), (:(:), 1, 2)), (:vect, 4, 4))),
+    (:line, 1526, :none),
+    (:if, true, (:block,
+        (:line, 1527, :none),
+        (:(=), :a, 2),
+        (:line, 1528, :none),
+        (:(=), :x, (:macrocall, Symbol("@parallel"), :vcat, (:for, (:(=), :k, (:(:), 1, 2)), (:block,
+                (:line, 1529, :none),
+                (:call, :sin, :a)
+              ))))
+      )),
+    (:line, 1532, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), :x, (:call, :map, (:->, :_, (:block,
+              (:line, 1532, :none),
+              (:call, :sin, 2)
+            )), (:(:), 1, 2)))),
+    (:line, 1534, :none),
+    (:let, (:block,
+        (:line, 1535, :none),
+        (:try, (:block,
+            (:line, 1536, :none),
+            (:call, :remotecall_fetch, :sqrt, 2, -1)
+          ), :e, (:block,
+            (:line, 1538, :none),
+            (:(=), :thrown, true),
+            (:line, 1539, :none),
+            (:(=), :b, (:call, :IOBuffer)),
+            (:line, 1540, :none),
+            (:call, :showerror, :b, :e),
+            (:line, 1541, :none),
+            (:macrocall, Symbol("@test"), (:call, :contains, (:call, :String, (:call, :take!, :b)), "sqrt will only return"))
+          )),
+        (:line, 1543, :none),
+        (:macrocall, Symbol("@test"), :thrown)
+      ), (:(=), :thrown, false)),
+    (:line, 1547, :none),
+    (:function, (:call, :setup_syms, :n, :pids), (:block,
+        (:line, 1548, :none),
+        (:(=), :syms, (:vect,)),
+        (:line, 1549, :none),
+        (:for, (:(=), :i, (:(:), 1, :n)), (:block,
+            (:line, 1550, :none),
+            (:(=), :symstr, (:call, :string, "clrtest", (:call, :randstring))),
+            (:line, 1551, :none),
+            (:(=), :sym, (:call, :Symbol, :symstr)),
+            (:line, 1552, :none),
+            (:call, :eval, (:quote, (:global, (:(=), (:$, :sym), (:call, :rand))))),
+            (:line, 1553, :none),
+            (:for, (:(=), :p, :pids), (:block,
+                (:line, 1554, :none),
+                (:call, :eval, (:quote, (:macrocall, Symbol("@test"), (:call, :(==), (:$, :sym), (:call, :remotecall_fetch, (:->, (:tuple,), (:block,
+                              (:line, 1554, :none),
+                              (:$, :sym)
+                            )), (:$, :p)))))),
+                (:line, 1555, :none),
+                (:call, :eval, (:quote, (:macrocall, Symbol("@test"), (:call, :remotecall_fetch, :isdefined, (:$, :p), (:call, :Symbol, (:$, :symstr))))))
+              )),
+            (:line, 1557, :none),
+            (:call, :push!, :syms, :sym)
+          )),
+        (:line, 1559, :none),
+        :syms
+      )),
+    (:line, 1562, :none),
+    (:function, (:call, :test_clear, :syms, :pids), (:block,
+        (:line, 1563, :none),
+        (:for, (:(=), :p, :pids), (:block,
+            (:line, 1564, :none),
+            (:for, (:(=), :sym, :syms), (:block,
+                (:line, 1565, :none),
+                (:(=), :remote_val, (:call, :remotecall_fetch, (:->, (:tuple,), (:block,
+                        (:line, 1565, :none),
+                        (:call, :getfield, :Main, :sym)
+                      )), :p)),
+                (:line, 1566, :none),
+                (:macrocall, Symbol("@test"), (:call, :(===), :remote_val, :nothing)),
+                (:line, 1567, :none),
+                (:macrocall, Symbol("@test"), (:call, :(!=), :remote_val, (:call, :getfield, :Main, :sym)))
+              ))
+          ))
+      )),
+    (:line, 1572, :none),
+    (:(=), :syms, (:call, :setup_syms, 1, (:vect, :id_other))),
+    (:line, 1573, :none),
+    (:call, :clear!, (:ref, :syms, 1), :id_other),
+    (:line, 1574, :none),
+    (:call, :test_clear, :syms, (:vect, :id_other)),
+    (:line, 1576, :none),
+    (:(=), :syms, (:call, :setup_syms, 1, (:call, :workers))),
+    (:line, 1577, :none),
+    (:call, :clear!, (:ref, :syms, 1), (:call, :workers)),
+    (:line, 1578, :none),
+    (:call, :test_clear, :syms, (:call, :workers)),
+    (:line, 1580, :none),
+    (:(=), :syms, (:call, :setup_syms, 3, (:vect, :id_other))),
+    (:line, 1581, :none),
+    (:call, :clear!, :syms, :id_other),
+    (:line, 1582, :none),
+    (:call, :test_clear, :syms, (:vect, :id_other)),
+    (:line, 1584, :none),
+    (:(=), :syms, (:call, :setup_syms, 3, (:call, :workers))),
+    (:line, 1585, :none),
+    (:call, :clear!, :syms, (:call, :workers)),
+    (:line, 1586, :none),
+    (:call, :test_clear, :syms, (:call, :workers)),
+    (:line, 1589, :none),
+    (:try, (:block,
+        (:line, 1590, :none),
+        (:(=), :expr, (:quote, (:block,
+              (:line, 1591, :none),
+              (:type, true, :DontExistOn1, (:block,
+                  (:line, 1592, :none),
+                  :x
+                )),
+              (:line, 1594, :none),
+              (:call, :throw, (:call, :BoundsError, (:call, :DontExistOn1, 1), 1))
+            ))),
+        (:line, 1597, :none),
+        (:call, :remotecall_fetch, (:->, (:tuple,), (:block,
+              (:line, 1597, :none),
+              (:call, :eval, :expr)
+            )), :id_other),
+        (:line, 1598, :none),
+        (:call, :error, "unexpected")
+      ), :ex, (:block,
+        (:line, 1600, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, (:., (:ref, (:., (:., (:., :ex, (:quote, #QuoteNode
+                        :captured
+                      )), (:quote, #QuoteNode
+                      :ex
+                    )), (:quote, #QuoteNode
+                    :exceptions
+                  )), 1), (:quote, #QuoteNode
+                :ex
+              )), :ErrorException)),
+        (:line, 1601, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, (:., (:., (:ref, (:., (:., (:., :ex, (:quote, #QuoteNode
+                          :captured
+                        )), (:quote, #QuoteNode
+                        :ex
+                      )), (:quote, #QuoteNode
+                      :exceptions
+                    )), 1), (:quote, #QuoteNode
+                  :ex
+                )), (:quote, #QuoteNode
+                :msg
+              )), "BoundsError")),
+        (:line, 1602, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, (:., (:., (:., :ex, (:quote, #QuoteNode
+                        :captured
+                      )), (:quote, #QuoteNode
+                      :ex
+                    )), (:quote, #QuoteNode
+                    :exceptions
+                  )), 2), (:quote, #QuoteNode
+                :ex
+              )), (:call, :UndefVarError, (:quote, #QuoteNode
+                :DontExistOn1
+              ))))
+      )),
+    (:line, 1607, :none),
+    (:call, :rmprocs, (:call, :workers)),
+    (:line, 1608, :none),
+    (:call, :include, "topology.jl")
+  ))

@@ -1,0 +1,204 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:(=), (:call, (:curly, :make_value, (:<:, :T, :Integer)), (:(::), (:curly, :Type, :T)), (:(::), :i, :Integer)), (:block,
+        (:line, 3, :none),
+        (:call, :%, (:call, :*, 3, :i), :T)
+      )),
+    (:line, 4, :none),
+    (:(=), (:call, (:curly, :make_value, (:<:, :T, :AbstractFloat)), (:(::), (:curly, :Type, :T)), (:(::), :i, :Integer)), (:block,
+        (:line, 4, :none),
+        (:call, :T, (:call, :*, 3, :i))
+      )),
+    (:line, 6, :none),
+    (:(=), (:curly, :Vec, :N, :T), (:curly, :NTuple, :N, (:curly, (:., :Base, (:quote, #QuoteNode
+              :VecElement
+            )), :T))),
+    (:line, 9, :none),
+    (:macrocall, Symbol("@generated"), (:function, (:call, (:curly, :thrice_iota, :N, :T), (:(::), (:curly, :Type, (:curly, :Vec, :N, :T)))), (:block,
+          (:line, 10, :none),
+          (:quote, (:call, :tuple, (:$, (:tuple, (:..., (:comprehension, (:generator, (:quote, (:call, (:., :Base, (:quote, #QuoteNode
+                                :VecElement
+                              )), (:call, :make_value, (:$, :T), (:$, :i)))), (:(=), :i, (:(:), 1, :N)))))))))
+        ))),
+    (:line, 13, :none),
+    (:function, (:call, :call_iota, (:(::), :n, :Integer), (:(::), :t, :DataType)), (:block,
+        (:line, 14, :none),
+        (:(=), :x, (:call, :thrice_iota, (:curly, :Vec, :n, :t))),
+        (:line, 15, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), (:., (:ref, :x, 1), (:quote, #QuoteNode
+                :value
+              )), (:call, :make_value, :t, 1))),
+        (:line, 16, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), (:., (:ref, :x, :n), (:quote, #QuoteNode
+                :value
+              )), (:call, :make_value, :t, :n)))
+      )),
+    (:line, 20, :none),
+    (:for, (:(=), :i, (:(:), 1, 20)), (:block,
+        (:line, 21, :none),
+        (:for, (:(=), :t, (:vect, :Bool, :Int8, :Int16, :Int32, :Int64, :Float32, :Float64)), (:block,
+            (:line, 22, :none),
+            (:call, :call_iota, :i, :t)
+          ))
+      )),
+    (:line, 27, :none),
+    (:for, (:(=), :i, (:tuple, 34, 36, 48, 64, 72, 80, 96)), (:block,
+        (:line, 28, :none),
+        (:for, (:(=), :t, (:vect, :Bool, :Int8, :Int16, :Int32, :Int64, :Float32, :Float64)), (:block,
+            (:line, 29, :none),
+            (:call, :call_iota, :i, :t)
+          ))
+      )),
+    (:line, 34, :none),
+    (:type, false, (:curly, :Bunch, :N, :T), (:block,
+        (:line, 35, :none),
+        (:(::), :elts, (:curly, :NTuple, :N, (:curly, (:., :Base, (:quote, #QuoteNode
+                  :VecElement
+                )), :T)))
+      )),
+    (:line, 38, :none),
+    (:(=), (:call, :unpeel, :x), (:block,
+        (:line, 38, :none),
+        (:., (:ref, (:., :x, (:quote, #QuoteNode
+                :elts
+              )), 1), (:quote, #QuoteNode
+            :value
+          ))
+      )),
+    (:line, 40, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :unpeel, (:call, (:curly, :Bunch, 2, :Float64), (:tuple, (:call, (:., :Base, (:quote, #QuoteNode
+                    :VecElement
+                  )), 5.0), (:call, (:., :Base, (:quote, #QuoteNode
+                    :VecElement
+                  )), 4.0)))), 5.0)),
+    (:line, 43, :none),
+    (:(=), (:call, :rewrap, :x), (:block,
+        (:line, 43, :none),
+        (:call, :VecElement, (:call, :+, (:., (:ref, (:., :x, (:quote, #QuoteNode
+                    :elts
+                  )), 1), (:quote, #QuoteNode
+                :value
+              )), 0))
+      )),
+    (:line, 44, :none),
+    (:(=), :b, (:call, :Bunch, (:tuple, (:call, :VecElement, 1.0), (:call, :VecElement, 2.0)))),
+    (:line, 46, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :rewrap, :b), (:call, :VecElement, 1.0))),
+    (:line, 48, :none),
+    (:type, false, (:curly, :Herd, :N, :T), (:block,
+        (:line, 49, :none),
+        (:(::), :elts, (:curly, :NTuple, :N, (:curly, (:., :Base, (:quote, #QuoteNode
+                  :VecElement
+                )), :T))),
+        (:line, 50, :none),
+        (:(=), (:where, (:call, (:curly, :Herd, :N, :T), (:(::), :elts, (:curly, :NTuple, :N, :T))), :N, :T), (:block,
+            (:line, 50, :none),
+            (:call, :new, (:call, :ntuple, (:->, :i, (:block,
+                    (:line, 50, :none),
+                    (:call, (:curly, (:., :Base, (:quote, #QuoteNode
+                            :VecElement
+                          )), :T), (:ref, :elts, :i))
+                  )), :N))
+          ))
+      )),
+    (:line, 53, :none),
+    (:function, (:call, (:curly, :check, :N, :T), (:(::), :x, (:curly, :Herd, :N, :T))), (:block,
+        (:line, 54, :none),
+        (:for, (:(=), :i, (:(:), 1, :N)), (:block,
+            (:line, 55, :none),
+            (:macrocall, Symbol("@test"), (:call, :(===), (:., (:ref, (:., :x, (:quote, #QuoteNode
+                        :elts
+                      )), :i), (:quote, #QuoteNode
+                    :value
+                  )), (:call, :-, (:call, :+, (:call, :*, :N, :N), :i), 1)))
+          ))
+      )),
+    (:line, 59, :none),
+    (:call, :check, (:call, (:curly, :Herd, 1, :Int), (:tuple, 1))),
+    (:line, 60, :none),
+    (:call, :check, (:call, (:curly, :Herd, 2, :Int), (:tuple, 4, 5))),
+    (:line, 61, :none),
+    (:call, :check, (:call, (:curly, :Herd, 4, :Int), (:tuple, 16, 17, 18, 19))),
+    (:line, 63, :none),
+    (:type, false, (:curly, :Gr, :N, :T), (:block,
+        (:line, 64, :none),
+        (:(::), :u, :T),
+        (:line, 65, :none),
+        (:(::), :v, (:curly, :Bunch, :N, :T)),
+        (:line, 66, :none),
+        (:(::), :w, :T)
+      )),
+    (:line, 69, :none),
+    (:(=), :a, (:call, (:curly, :Vector, (:curly, :Gr, 2, :Float64)), 2)),
+    (:line, 70, :none),
+    (:(=), (:ref, :a, 2), (:call, :Gr, 1.0, (:call, :Bunch, (:tuple, (:call, :VecElement, 2.0), (:call, :VecElement, 3.0))), 4.0)),
+    (:line, 71, :none),
+    (:(=), (:ref, :a, 1), (:call, :Gr, 5.0, (:call, :Bunch, (:tuple, (:call, :VecElement, 6.0), (:call, :VecElement, 7.0))), 8.0)),
+    (:line, 72, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :a, 2), (:call, :Gr, 1.0, (:call, :Bunch, (:tuple, (:call, :VecElement, 2.0), (:call, :VecElement, 3.0))), 4.0))),
+    (:line, 74, :none),
+    (:macrocall, Symbol("@test"), (:call, :isa, (:call, :VecElement, (:tuple, 1, 2)), (:curly, :VecElement, (:curly, :Tuple, :Int, :Int)))),
+    (:line, 77, :none),
+    (:const, (:(=), :_llvmtypes, (:call, (:curly, :Dict, :DataType, :String), (:call, :(=>), :Float64, "double"), (:call, :(=>), :Float32, "float"), (:call, :(=>), :Int32, "i32"), (:call, :(=>), :Int64, "i64")))),
+    (:line, 84, :none),
+    (:macrocall, Symbol("@generated"), (:function, (:where, (:call, :vecadd, (:(::), :x, (:curly, :Vec, :N, :T)), (:(::), :y, (:curly, :Vec, :N, :T))), :N, :T), (:block,
+          (:line, 85, :none),
+          (:(=), :llvmT, (:ref, :_llvmtypes, :T)),
+          (:line, 86, :none),
+          (:(=), :func, (:if, (:<:, :T, :AbstractFloat), "fadd", "add")),
+          (:line, 87, :none),
+          (:(=), :exp, (:string, "%3 = ", :func, " <", :N, " x ", :llvmT, "> %0, %1\nret <", :N, " x ", :llvmT, "> %3\n")),
+          (:line, 91, :none),
+          (:return, (:quote, (:block,
+                (:line, 92, :none),
+                (:macrocall, (:., :Base, (:quote, #QuoteNode
+                      Symbol("@_inline_meta")
+                    ))),
+                (:line, 93, :none),
+                (:call, (:., :Base, (:quote, #QuoteNode
+                      :llvmcall
+                    )), (:$, :exp), (:curly, :Vec, (:$, :N), (:$, :T)), (:curly, :Tuple, (:curly, :Vec, (:$, :N), (:$, :T)), (:curly, :Vec, (:$, :N), (:$, :T))), :x, :y)
+              )))
+        ))),
+    (:line, 97, :none),
+    (:function, (:where, (:call, :f20961, (:(::), :x, (:curly, :Vector, (:curly, :Vec, :N, :T))), (:(::), :y, (:curly, :Vector, (:curly, :Vec, :N, :T)))), :N, :T), (:block,
+        (:line, 98, :none),
+        (:macrocall, Symbol("@inbounds"), (:block,
+            (:line, 99, :none),
+            (:(=), :a, (:ref, :x, 1)),
+            (:line, 100, :none),
+            (:(=), :b, (:ref, :y, 1)),
+            (:line, 101, :none),
+            (:return, (:call, :vecadd, :a, :b))
+          ))
+      )),
+    (:line, 106, :none),
+    (:for, (:(=), :T, (:tuple, :Float64, :Float32, :Int64, :Int32)), (:block,
+        (:line, 107, :none),
+        (:for, (:(=), :N, (:(:), 1, 36)), (:block,
+            (:line, 109, :none),
+            (:if, (:||, (:call, :(==), (:call, :%, :N, 7), 0), (:||, (:call, :(==), (:call, :%, :N, 11), 0), (:||, (:call, :(==), (:call, :%, :N, 13), 0), (:||, (:call, :(==), (:call, :%, :N, 15), 0), (:||, (:call, :(==), (:call, :%, :N, 19), 0), (:||, (:call, :(==), (:call, :%, :N, 23), 0), (:||, (:call, :(==), (:call, :%, :N, 25), 0), (:||, (:call, :(==), (:call, :%, :N, 27), 0), (:||, (:call, :(==), (:call, :%, :N, 29), 0), (:call, :(==), (:call, :%, :N, 31), 0)))))))))), (:block,
+                (:line, 112, :none),
+                (:continue,)
+              )),
+            (:line, 114, :none),
+            (:(=), :a, (:call, :ntuple, (:->, :i, (:block,
+                    (:line, 114, :none),
+                    (:call, :VecElement, (:call, :T, :i))
+                  )), :N)),
+            (:line, 115, :none),
+            (:(=), :result, (:call, :ntuple, (:->, :i, (:block,
+                    (:line, 115, :none),
+                    (:call, :VecElement, (:call, :T, (:call, :+, :i, :i)))
+                  )), :N)),
+            (:line, 116, :none),
+            (:(=), :b, (:call, :vecadd, :a, :a)),
+            (:line, 117, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), :b, :result)),
+            (:line, 118, :none),
+            (:(=), :b, (:call, :f20961, (:vect, :a), (:vect, :a))),
+            (:line, 119, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), :b, :result))
+          ))
+      ))
+  ))

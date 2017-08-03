@@ -1,0 +1,557 @@
+(:quote, (:block,
+    (:line, 4, :none),
+    (:(=), (:call, :kwf1, (:parameters, (:kw, :tens, 0), (:kw, :hundreds, 0)), :ones), (:block,
+        (:line, 4, :none),
+        (:call, :+, :ones, (:call, :*, 10, :tens), (:call, :*, 100, :hundreds))
+      )),
+    (:line, 5, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :kwf1, 2), 2)),
+    (:line, 6, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :kwf1, 2, (:kw, :hundreds, 6)), 602)),
+    (:line, 7, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :kwf1, 2, (:kw, :tens, 6)), 62)),
+    (:line, 8, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :kwf1, 1, (:kw, :hundreds, 2), (:kw, :tens, 7)), 271)),
+    (:line, 9, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :kwf1, 3, (:kw, :tens, 7), (:kw, :hundreds, 2)), 273)),
+    (:line, 11, :none),
+    (:macrocall, Symbol("@test_throws"), :MethodError, (:call, :kwf1)),
+    (:line, 12, :none),
+    (:macrocall, Symbol("@test_throws"), :MethodError, (:call, :kwf1, 1, (:kw, :z, 0))),
+    (:line, 13, :none),
+    (:macrocall, Symbol("@test_throws"), :MethodError, (:call, :kwf1, 1, 2)),
+    (:line, 16, :none),
+    (:(=), (:call, :kwf2, (:parameters, (:kw, :y, 1)), :x, (:..., :rest)), (:block,
+        (:line, 16, :none),
+        (:tuple, :x, :y, :rest)
+      )),
+    (:line, 17, :none),
+    (:macrocall, Symbol("@test"), (:call, :isequal, (:call, :kwf2, 0), (:tuple, 0, 1, (:tuple,)))),
+    (:line, 18, :none),
+    (:macrocall, Symbol("@test"), (:call, :isequal, (:call, :kwf2, 0, 1, 2), (:tuple, 0, 1, (:tuple, 1, 2)))),
+    (:line, 19, :none),
+    (:macrocall, Symbol("@test"), (:call, :isequal, (:call, :kwf2, 0, 1, 2, (:kw, :y, 88)), (:tuple, 0, 88, (:tuple, 1, 2)))),
+    (:line, 20, :none),
+    (:macrocall, Symbol("@test"), (:call, :isequal, (:call, :kwf2, 0, (:kw, :y, 88), 1, 2), (:tuple, 0, 88, (:tuple, 1, 2)))),
+    (:line, 21, :none),
+    (:macrocall, Symbol("@test_throws"), :MethodError, (:call, :kwf2, 0, (:kw, :z, 1))),
+    (:line, 22, :none),
+    (:macrocall, Symbol("@test_throws"), :MethodError, (:call, :kwf2, (:kw, :y, 1))),
+    (:line, 25, :none),
+    (:(=), (:call, :test13919, (:parameters, (:kw, :key, 100)), (:(::), :x, (:curly, :Vararg, :Int))), (:block,
+        (:line, 25, :none),
+        (:tuple, :x, :key)
+      )),
+    (:line, 26, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:ref, (:call, :test13919, 1, 1), 1), (:tuple, 1, 1))),
+    (:line, 27, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:ref, (:call, :test13919, 1, 1), 2), 100)),
+    (:line, 28, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:ref, (:call, :test13919, 1, 1, (:kw, :key, 10)), 1), (:tuple, 1, 1))),
+    (:line, 29, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:ref, (:call, :test13919, 1, 1, (:kw, :key, 10)), 2), 10)),
+    (:line, 32, :none),
+    (:(=), (:call, :kwf3, (:parameters, (:kw, (:(::), :y, :Float64), 1.0)), :x), (:block,
+        (:line, 32, :none),
+        (:call, :+, :x, :y)
+      )),
+    (:line, 33, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :kwf3, 2), 3.0)),
+    (:line, 34, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :kwf3, 2, (:kw, :y, 3.0)), 5.0)),
+    (:line, 35, :none),
+    (:macrocall, Symbol("@test_throws"), :TypeError, (:call, :kwf3, 2, (:kw, :y, 3))),
+    (:line, 38, :none),
+    (:(=), (:call, :kwf4, (:parameters, (:kw, :a, 1), (:kw, :b, 2))), (:block,
+        (:line, 38, :none),
+        (:tuple, :a, :b)
+      )),
+    (:line, 39, :none),
+    (:macrocall, Symbol("@test"), (:call, :isequal, (:call, :kwf4), (:tuple, 1, 2))),
+    (:line, 40, :none),
+    (:macrocall, Symbol("@test"), (:call, :isequal, (:call, :kwf4, (:kw, :b, 10)), (:tuple, 1, 10))),
+    (:line, 43, :none),
+    (:(=), (:call, :kwf9, (:parameters, (:kw, :read, true), (:kw, :write, (:call, :!, :read)))), (:block,
+        (:line, 43, :none),
+        (:tuple, :read, :write)
+      )),
+    (:line, 44, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :kwf9), (:tuple, true, false))),
+    (:line, 45, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :kwf9, (:kw, :read, false)), (:tuple, false, true))),
+    (:line, 46, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :kwf9, (:kw, :write, true)), (:tuple, true, true))),
+    (:line, 49, :none),
+    (:(=), (:call, :kwdelegator, (:parameters, (:..., :kw)), :ones), (:block,
+        (:line, 49, :none),
+        (:call, :kwf1, (:parameters, (:..., :kw)), :ones)
+      )),
+    (:line, 50, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :kwdelegator, 4, (:kw, :hundreds, 8)), 804)),
+    (:line, 53, :none),
+    (:(=), (:call, :opaf1, :a, (:kw, :b, 1), (:kw, :c, 2), (:kw, :d, 3)), (:block,
+        (:line, 53, :none),
+        (:tuple, :a, :b, :c, :d)
+      )),
+    (:line, 54, :none),
+    (:macrocall, Symbol("@test"), (:call, :isequal, (:call, :opaf1, 0), (:tuple, 0, 1, 2, 3))),
+    (:line, 55, :none),
+    (:macrocall, Symbol("@test"), (:call, :isequal, (:call, :opaf1, 0, 2), (:tuple, 0, 2, 2, 3))),
+    (:line, 56, :none),
+    (:macrocall, Symbol("@test"), (:call, :isequal, (:call, :opaf1, 0, 2, 4), (:tuple, 0, 2, 4, 3))),
+    (:line, 57, :none),
+    (:macrocall, Symbol("@test"), (:call, :isequal, (:call, :opaf1, 0, 2, 4, 6), (:tuple, 0, 2, 4, 6))),
+    (:line, 58, :none),
+    (:macrocall, Symbol("@test_throws"), :MethodError, (:call, :opaf1)),
+    (:line, 59, :none),
+    (:macrocall, Symbol("@test_throws"), :MethodError, (:call, :opaf1, 0, 1, 2, 3, 4)),
+    (:line, 62, :none),
+    (:(=), (:call, :opaf2, (:kw, :a, 1), (:..., :rest)), (:block,
+        (:line, 62, :none),
+        (:tuple, :a, :rest)
+      )),
+    (:line, 63, :none),
+    (:macrocall, Symbol("@test"), (:call, :isequal, (:call, :opaf2), (:tuple, 1, (:tuple,)))),
+    (:line, 64, :none),
+    (:macrocall, Symbol("@test"), (:call, :isequal, (:call, :opaf2, 2), (:tuple, 2, (:tuple,)))),
+    (:line, 65, :none),
+    (:macrocall, Symbol("@test"), (:call, :isequal, (:call, :opaf2, 2, 3), (:tuple, 2, (:tuple, 3)))),
+    (:line, 68, :none),
+    (:(=), (:call, :opkwf1, (:parameters, (:kw, :k, 2)), (:kw, :a, 0), (:kw, :b, 1)), (:block,
+        (:line, 68, :none),
+        (:tuple, :a, :b, :k)
+      )),
+    (:line, 69, :none),
+    (:macrocall, Symbol("@test"), (:call, :isequal, (:call, :opkwf1), (:tuple, 0, 1, 2))),
+    (:line, 70, :none),
+    (:macrocall, Symbol("@test"), (:call, :isequal, (:call, :opkwf1, 10), (:tuple, 10, 1, 2))),
+    (:line, 71, :none),
+    (:macrocall, Symbol("@test"), (:call, :isequal, (:call, :opkwf1, 10, 20), (:tuple, 10, 20, 2))),
+    (:line, 72, :none),
+    (:macrocall, Symbol("@test_throws"), :MethodError, (:call, :opkwf1, 10, 20, 30)),
+    (:line, 73, :none),
+    (:macrocall, Symbol("@test"), (:call, :isequal, (:call, :opkwf1, 10, 20, (:kw, :k, 8)), (:tuple, 10, 20, 8))),
+    (:line, 74, :none),
+    (:macrocall, Symbol("@test"), (:call, :isequal, (:call, :opkwf1, (:parameters, (:kw, :k, 8)), 11), (:tuple, 11, 1, 8))),
+    (:line, 75, :none),
+    (:macrocall, Symbol("@test"), (:call, :isequal, (:call, :opkwf1, (:kw, :k, 8)), (:tuple, 0, 1, 8))),
+    (:line, 78, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :kwf1, (:parameters, (:..., (:call, :Dict, (:call, :(=>), (:quote, #QuoteNode
+                    :hundreds
+                  ), 9), (:call, :(=>), (:quote, #QuoteNode
+                    :tens
+                  ), 5)))), 4), 954)),
+    (:line, 81, :none),
+    (:let, (:block,
+        (:line, 82, :none),
+        (:function, (:call, :kwf_maker), (:block,
+            (:line, 83, :none),
+            (:(=), (:call, :f, (:parameters, (:kw, :k, 0))), (:block,
+                (:line, 83, :none),
+                (:call, :+, (:call, :*, 2, :k), 1)
+              ))
+          )),
+        (:line, 85, :none),
+        (:(=), :kwf5, (:call, :kwf_maker)),
+        (:line, 86, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :kwf5), 1)),
+        (:line, 87, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :kwf5, (:kw, :k, 2)), 5)),
+        (:line, 88, :none),
+        (:macrocall, Symbol("@test_throws"), :MethodError, (:call, :kwf5, 1))
+      )),
+    (:line, 92, :none),
+    (:(=), (:call, :extravagant_args, (:parameters, (:kw, :color, "blue"), (:..., :kw)), :x, (:kw, :y, 0), (:..., :rest)), (:block,
+        (:line, 92, :none),
+        (:tuple, :x, :y, :rest, :color, (:call, :kwf1, (:parameters, (:kw, :tens, 8), (:..., :kw)), 6))
+      )),
+    (:line, 95, :none),
+    (:macrocall, Symbol("@test"), (:call, :isequal, (:call, :extravagant_args, 1), (:tuple, 1, 0, (:tuple,), "blue", 86))),
+    (:line, 96, :none),
+    (:macrocall, Symbol("@test"), (:call, :isequal, (:call, :extravagant_args, (:parameters, (:kw, :hundreds, 7)), 1), (:tuple, 1, 0, (:tuple,), "blue", 786))),
+    (:line, 97, :none),
+    (:macrocall, Symbol("@test"), (:call, :isequal, (:call, :extravagant_args, (:parameters, (:..., (:call, :Dict, (:call, :(=>), (:quote, #QuoteNode
+                    :color
+                  ), "red"), (:call, :(=>), (:quote, #QuoteNode
+                    :hundreds
+                  ), 3)))), 1, 2, 3), (:tuple, 1, 2, (:tuple, 3), "red", 386))),
+    (:line, 101, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :sin, 1.0), (:call, :sin, (:parameters, (:..., (:call, :Dict))), 1.0))),
+    (:line, 103, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@eval"), (:call, :sin, (:parameters, (:$, (:tuple, (:..., (:vect,))))), 1.0)), (:call, :sin, 1.0))),
+    (:line, 104, :none),
+    (:(=), (:call, :f18845), (:block,
+        (:line, 104, :none),
+        2
+      )),
+    (:line, 105, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :f18845), 2)),
+    (:line, 106, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :f18845, (:parameters, (:..., (:vect,)))), 2)),
+    (:line, 107, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@eval"), (:call, :f18845, (:parameters, (:$, (:tuple, (:..., (:vect,))))))), 2)),
+    (:line, 110, :none),
+    (:macrocall, Symbol("@test_throws"), :BoundsError, (:call, :extravagant_args, (:parameters, (:..., (:ref, :Any, (:vect,)))), 1)),
+    (:line, 113, :none),
+    (:(=), (:call, (:curly, :kwf6, :T), (:parameters, (:kw, (:(::), :k, :T), 1)), :x), (:block,
+        (:line, 113, :none),
+        :T
+      )),
+    (:line, 114, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :kwf6, 1), :Int)),
+    (:line, 115, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :kwf6, (:parameters, (:kw, :k, 2.5)), 1), :Float64)),
+    (:line, 117, :none),
+    (:(=), (:call, (:curly, :kwf7, :T), (:parameters, (:kw, (:(::), :k, :T), 1)), (:(::), :x, :T)), (:block,
+        (:line, 117, :none),
+        :T
+      )),
+    (:line, 118, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :kwf7, 2), :Int)),
+    (:line, 119, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :kwf7, (:parameters, (:kw, :k, 2.5)), 1.5), :Float64)),
+    (:line, 120, :none),
+    (:macrocall, Symbol("@test_throws"), :MethodError, (:call, :kwf7, 1.5)),
+    (:line, 121, :none),
+    (:macrocall, Symbol("@test_throws"), :TypeError, (:call, :kwf7, (:parameters, (:kw, :k, 2)), 1.5)),
+    (:line, 124, :none),
+    (:(=), (:call, (:curly, :kwf8, :T), (:parameters, (:kw, (:(::), :k, :T), 0)), (:(::), :x, (:curly, :MIME, (:quote, #QuoteNode
+              :T
+            )))), (:block,
+        (:line, 124, :none),
+        0
+      )),
+    (:line, 125, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :kwf8, (:call, (:curly, :MIME, (:quote, #QuoteNode
+                :T
+              )))), 0)),
+    (:line, 128, :none),
+    (:macro, (:call, :TEST4538), (:block,
+        (:line, 129, :none),
+        (:quote, (:block,
+            (:line, 130, :none),
+            (:function, (:call, (:$, (:call, :esc, (:quote, #QuoteNode
+                      :test4538
+                    ))), (:kw, :x, 1)), (:block,
+                (:line, 131, :none),
+                (:return, :x)
+              ))
+          ))
+      )),
+    (:line, 135, :none),
+    (:macrocall, Symbol("@TEST4538")),
+    (:line, 136, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :test4538), 1)),
+    (:line, 137, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :test4538, 2), 2)),
+    (:line, 139, :none),
+    (:macro, (:call, :TEST4538_2), (:block,
+        (:line, 140, :none),
+        (:quote, (:block,
+            (:line, 141, :none),
+            (:function, (:call, (:$, (:call, :esc, (:quote, #QuoteNode
+                      :test4538_2
+                    ))), (:parameters, (:kw, :x, 1))), (:block,
+                (:line, 142, :none),
+                (:return, :x)
+              ))
+          ))
+      )),
+    (:line, 146, :none),
+    (:macrocall, Symbol("@TEST4538_2")),
+    (:line, 147, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :test4538_2), 1)),
+    (:line, 148, :none),
+    (:macrocall, Symbol("@test_throws"), :MethodError, (:call, :test4538_2, 2)),
+    (:line, 149, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :test4538_2, (:kw, :x, 2)), 2)),
+    (:line, 152, :none),
+    (:module, true, :Foo4538, (:block,
+        (:line, 152, :none),
+        (:line, 153, :none),
+        (:macro, (:call, :TEST), (:block,
+            (:line, 154, :none),
+            (:quote, (:block,
+                (:line, 155, :none),
+                (:function, (:call, (:$, (:call, :esc, (:quote, #QuoteNode
+                          :test4538_foo_2
+                        ))), (:parameters, (:kw, :x, 1))), (:block,
+                    (:line, 156, :none),
+                    (:return, :x)
+                  ))
+              ))
+          ))
+      )),
+    (:line, 161, :none),
+    (:macrocall, (:., :Foo4538, (:quote, #QuoteNode
+          Symbol("@TEST")
+        ))),
+    (:line, 162, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :test4538_foo_2), 1)),
+    (:line, 163, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :test4538_foo_2, (:kw, :x, 2)), 2)),
+    (:line, 165, :none),
+    (:(=), (:call, :f4538_3, (:parameters, (:kw, :x, 1))), (:block,
+        (:line, 165, :none),
+        :x
+      )),
+    (:line, 166, :none),
+    (:macro, (:call, :TEST4538_3), (:block,
+        (:line, 167, :none),
+        (:quote, (:block,
+            (:line, 168, :none),
+            (:(=), :x, 2),
+            (:line, 169, :none),
+            (:call, :f4538_3, (:kw, :x, 3))
+          ))
+      )),
+    (:line, 172, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@TEST4538_3")), 3)),
+    (:line, 175, :none),
+    (:type, true, (:curly, :T4801, :X), (:block,
+        (:line, 176, :none),
+        (:(=), (:where, (:call, (:curly, :T4801, :X), (:parameters, (:kw, :k, 0))), :X), (:block,
+            (:line, 176, :none),
+            (:call, :new)
+          ))
+      )),
+    (:line, 178, :none),
+    (:macrocall, Symbol("@test"), (:call, :isa, (:call, (:curly, :T4801, :Any), (:kw, :k, 0)), (:curly, :T4801, :Any))),
+    (:line, 181, :none),
+    (:function, (:call, :Foo4974, (:parameters, (:..., :kwargs)), :f), (:block,
+        (:line, 182, :none),
+        (:tuple, (:call, :f), :kwargs)
+      )),
+    (:line, 185, :none),
+    (:function, (:call, :test4974, (:parameters, (:..., :kwargs))), (:block,
+        (:line, 186, :none),
+        (:call, :Foo4974, (:parameters, (:..., :kwargs)), (:->, (:tuple,), (:block,
+              (:line, 187, :none),
+              2
+            )))
+      )),
+    (:line, 191, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :test4974, (:kw, :a, 1)), (:tuple, 2, (:vect, (:tuple, (:quote, #QuoteNode
+                :a
+              ), 1))))),
+    (:line, 194, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :kwf1, (:parameters, (:tuple, (:quote, #QuoteNode
+                :tens
+              ), 2)), 1), 21)),
+    (:line, 195, :none),
+    (:let, (:block,
+        (:line, 196, :none),
+        (:(=), :p, (:tuple, (:quote, #QuoteNode
+              :hundreds
+            ), 3)),
+        (:line, 197, :none),
+        (:(=), :q, (:tuple, (:quote, #QuoteNode
+              :tens
+            ), 1)),
+        (:line, 198, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :kwf1, (:parameters, :p, :q), 0), 310)),
+        (:line, 199, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :kwf1, (:parameters, :q, (:kw, :hundreds, 4)), 0), 410))
+      )),
+    (:line, 203, :none),
+    (:let, (:block,
+        (:line, 204, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), (:call, :f, 0), (:tuple, 0, 1, 2))),
+        (:line, 205, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), (:call, :f, 1, (:kw, :a, 10), (:kw, :b, 20)), (:tuple, 1, 10, 20))),
+        (:line, 206, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), (:call, :f, 0, (:kw, :b, 88)), (:tuple, 0, 1, 88))),
+        (:line, 207, :none),
+        (:macrocall, Symbol("@test_throws"), :MethodError, (:call, :f, 0, (:kw, :z, 1)))
+      ), (:(=), :f, (:->, (:tuple, (:parameters, (:kw, :a, 1), (:kw, :b, 2)), :x), (:block,
+            (:line, 203, :none),
+            (:tuple, :x, :a, :b)
+          )))),
+    (:line, 209, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:->, (:(=), :a, 2), (:block,
+              (:line, 209, :none),
+              (:call, :*, 10, :a)
+            )), 3), 30)),
+    (:line, 210, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:->, (:(=), :a, 2), (:block,
+              (:line, 210, :none),
+              (:call, :*, 10, :a)
+            ))), 20)),
+    (:line, 211, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:->, (:tuple, (:(=), :a, 1), (:(=), :b, 2)), (:block,
+              (:line, 211, :none),
+              (:tuple, :a, :b)
+            ))), (:tuple, 1, 2))),
+    (:line, 212, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:->, (:tuple, (:(=), :a, 1), (:(=), :b, 2)), (:block,
+              (:line, 212, :none),
+              (:tuple, :a, :b)
+            )), 5), (:tuple, 5, 2))),
+    (:line, 213, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:->, (:tuple, (:(=), :a, 1), (:(=), :b, 2)), (:block,
+              (:line, 213, :none),
+              (:tuple, :a, :b)
+            )), 5, 6), (:tuple, 5, 6))),
+    (:line, 216, :none),
+    (:(=), (:tuple, :f9948, :getx9948), (:let, (:block,
+          (:line, 217, :none),
+          (:(=), :x, 3),
+          (:line, 218, :none),
+          (:(=), (:call, :h, (:parameters, (:kw, :x, :x))), (:block,
+              (:line, 218, :none),
+              :x
+            )),
+          (:line, 219, :none),
+          (:(=), (:call, :getx), (:block,
+              (:line, 219, :none),
+              :x
+            )),
+          (:line, 220, :none),
+          (:tuple, :h, :getx)
+        ))),
+    (:line, 222, :none),
+    (:macrocall, Symbol("@test_throws"), :UndefVarError, (:call, :f9948)),
+    (:line, 223, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :getx9948), 3)),
+    (:line, 224, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :f9948, (:kw, :x, 5)), 5)),
+    (:line, 225, :none),
+    (:macrocall, Symbol("@test_throws"), :UndefVarError, (:call, :f9948)),
+    (:line, 226, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :getx9948), 3)),
+    (:line, 229, :none),
+    (:(=), (:call, :g17785, (:parameters, (:kw, :a, 1), (:kw, :b, 2))), (:block,
+        (:line, 229, :none),
+        (:tuple, :a, :b)
+      )),
+    (:line, 230, :none),
+    (:let, (:block,
+        (:line, 231, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :g17785, (:parameters, (:kw, :a, 5), (:..., :opts))), (:tuple, 3, 4))),
+        (:line, 232, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :g17785, (:parameters, (:..., :opts), (:kw, :a, 5))), (:tuple, 5, 4))),
+        (:line, 233, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :g17785, (:parameters, (:..., :opts), (:kw, :a, 5), (:kw, :b, 6))), (:tuple, 5, 6))),
+        (:line, 234, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :g17785, (:parameters, (:kw, :b, 0), (:..., :opts), (:kw, :a, 5))), (:tuple, 5, 4)))
+      ), (:(=), :opts, (:tuple, (:call, :(=>), (:quote, #QuoteNode
+              :a
+            ), 3), (:call, :(=>), (:quote, #QuoteNode
+              :b
+            ), 4)))),
+    (:line, 238, :none),
+    (:macrocall, Symbol("@eval"), (:., :Core, (:quote, #QuoteNode
+          :Inference
+        )), (:block,
+        (:line, 239, :none),
+        (:(=), (:call, :f18396, (:parameters, (:..., :kwargs))), (:block,
+            (:line, 239, :none),
+            (:call, :g18396, (:parameters, (:..., :kwargs)))
+          )),
+        (:line, 240, :none),
+        (:(=), (:call, :g18396, (:parameters, (:kw, :x, 1), (:kw, :y, 2))), (:block,
+            (:line, 240, :none),
+            (:call, :+, :x, :y)
+          ))
+      )),
+    (:line, 242, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., (:., :Core, (:quote, #QuoteNode
+                :Inference
+              )), (:quote, #QuoteNode
+              :f18396
+            ))), 3)),
+    (:line, 245, :none),
+    (:(=), (:call, :f7045, (:parameters, (:kw, :y, true)), (:(::), :x, :Float64)), (:block,
+        (:line, 245, :none),
+        (:if, :y, 1, (:call, :invoke, :f7045, (:curly, :Tuple, :Real), :x, (:kw, :y, :y)))
+      )),
+    (:line, 246, :none),
+    (:(=), (:call, :f7045, (:parameters, (:kw, :y, true)), (:(::), :x, :Real)), (:block,
+        (:line, 246, :none),
+        (:if, :y, 2, 3)
+      )),
+    (:line, 247, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :f7045, 1), 2)),
+    (:line, 248, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :f7045, 1.0), 1)),
+    (:line, 249, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :f7045, 1, (:kw, :y, false)), 3)),
+    (:line, 250, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :f7045, 1.0, (:kw, :y, false)), 3)),
+    (:line, 253, :none),
+    (:type, false, (:curly, :T20804, :T), (:block,
+        (:line, 254, :none),
+        (:(::), :y, :T)
+      )),
+    (:line, 256, :none),
+    (:(=), (:call, (:(::), :f, :T20804), (:parameters, (:kw, :x, 10))), (:block,
+        (:line, 256, :none),
+        (:call, :+, (:., :f, (:quote, #QuoteNode
+              :y
+            )), :x)
+      )),
+    (:line, 257, :none),
+    (:let, (:block,
+        (:line, 258, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :x), 14)),
+        (:line, 259, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :x, (:kw, :x, 8)), 12))
+      ), (:(=), :x, (:call, :T20804, 4))),
+    (:line, 263, :none),
+    (:function, (:where, (:call, :f21147, (:parameters, (:..., :kwargs)), (:(::), :f, (:curly, :Tuple, :A))), :B, (:<:, :A, (:curly, :Tuple, :B))), (:block,
+        (:line, 264, :none),
+        (:return, :B)
+      )),
+    (:line, 266, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :f21147, (:tuple, (:tuple, 1))), :Int)),
+    (:line, 267, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :f21147, (:tuple, (:tuple, 1)), (:kw, :k, 2)), :Int)),
+    (:line, 268, :none),
+    (:function, (:where, (:call, :g21147, (:(::), :f, (:curly, :Tuple, :A)), (:kw, :k, 2)), :B, (:<:, :A, (:curly, :Tuple, :B))), (:block,
+        (:line, 269, :none),
+        (:return, :B)
+      )),
+    (:line, 271, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :g21147, (:tuple, (:tuple, 1))), :Int)),
+    (:line, 272, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:call, :g21147, (:tuple, (:tuple, 1)), 2), :Int)),
+    (:line, 275, :none),
+    (:(=), (:call, :f21510, (:parameters, (:kw, (:(::), :a, :ANY), 2))), (:block,
+        (:line, 275, :none),
+        :a
+      )),
+    (:line, 276, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :f21510, (:kw, :a, (:quote, #QuoteNode
+              :b
+            ))), (:quote, #QuoteNode
+          :b
+        ))),
+    (:line, 277, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :f21510), 2)),
+    (:line, 280, :none),
+    (:let, (:block,
+        (:line, 281, :none),
+        (:(=), (:call, :f21518, (:parameters, (:kw, :kw, :nothing))), (:block,
+            (:line, 281, :none),
+            :kw
+          )),
+        (:line, 282, :none),
+        (:(=), (:call, :g21518), (:block,
+            (:line, 282, :none),
+            (:block,
+              (:+=, :a, 1),
+              :f21518
+            )
+          )),
+        (:line, 283, :none),
+        (:call, (:call, :g21518), (:kw, :kw, 1)),
+        (:line, 284, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :a, 1)),
+        (:line, 285, :none),
+        (:call, (:call, :g21518), (:parameters, (:call, :(=>), (:quote, #QuoteNode
+                :kw
+              ), 1))),
+        (:line, 286, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :a, 2))
+      ), (:(=), :a, 0))
+  ))

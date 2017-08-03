@@ -1,0 +1,168 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:(=), :pids, (:call, :addprocs_with_testenv, (:parameters, (:kw, :topology, "master_slave")), 4)),
+    (:line, 4, :none),
+    (:(=), :p1, (:ref, :pids, 1)),
+    (:line, 5, :none),
+    (:(=), :p2, (:ref, :pids, 2)),
+    (:line, 7, :none),
+    (:macrocall, Symbol("@test_throws"), :RemoteException, (:call, :remotecall_fetch, (:->, (:tuple,), (:block,
+            (:line, 7, :none),
+            (:call, :remotecall_fetch, :myid, :p2)
+          )), :p1)),
+    (:line, 9, :none),
+    (:function, (:call, :test_worker_counts), (:block,
+        (:line, 11, :none),
+        (:(=), :np, (:call, :nprocs)),
+        (:line, 12, :none),
+        (:(=), :nw, (:call, :nworkers)),
+        (:line, 13, :none),
+        (:(=), :ws, (:call, :sort, (:call, :workers))),
+        (:line, 15, :none),
+        (:for, (:(=), :p, (:call, :workers)), (:block,
+            (:line, 16, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:tuple, true, true, true), (:call, :remotecall_fetch, (:->, (:tuple, :x, :y, :z), (:block,
+                      (:line, 17, :none),
+                      (:tuple, (:call, :(==), :x, (:call, :nprocs)), (:call, :(==), :y, (:call, :nworkers)), (:call, :(==), :z, (:call, :sort, (:call, :workers))))
+                    )), :p, :np, :nw, :ws)))
+          ))
+      )),
+    (:line, 22, :none),
+    (:function, (:call, :remove_workers_and_test), (:block,
+        (:line, 23, :none),
+        (:while, (:call, :>, (:call, :nworkers), 0), (:block,
+            (:line, 24, :none),
+            (:call, :rmprocs, (:parameters, (:kw, :waitfor, 2.0)), (:ref, (:call, :workers), 1)),
+            (:line, 25, :none),
+            (:call, :test_worker_counts),
+            (:line, 26, :none),
+            (:if, (:call, :(==), (:call, :nworkers), (:call, :nprocs)), (:block,
+                (:line, 27, :none),
+                (:break,)
+              ))
+          ))
+      )),
+    (:line, 32, :none),
+    (:call, :remove_workers_and_test),
+    (:line, 35, :none),
+    (:type, true, (:<:, :TopoTestManager, :ClusterManager), (:block,
+        (:line, 36, :none),
+        (:(::), :np, :Integer)
+      )),
+    (:line, 39, :none),
+    (:function, (:call, (:., :Base, (:quote, #QuoteNode
+            :launch
+          )), (:(::), :manager, :TopoTestManager), (:(::), :params, :Dict), (:(::), :launched, :Array), (:(::), :c, :Condition)), (:block,
+        (:line, 40, :none),
+        (:(=), :dir, (:ref, :params, (:quote, #QuoteNode
+              :dir
+            ))),
+        (:line, 41, :none),
+        (:(=), :exename, (:ref, :params, (:quote, #QuoteNode
+              :exename
+            ))),
+        (:line, 42, :none),
+        (:(=), :exeflags, (:ref, :params, (:quote, #QuoteNode
+              :exeflags
+            ))),
+        (:line, 44, :none),
+        (:for, (:(=), :i, (:(:), 1, (:., :manager, (:quote, #QuoteNode
+                  :np
+                )))), (:block,
+            (:line, 45, :none),
+            (:(=), (:tuple, :io, :pobj), (:call, :open, (:call, :pipeline, (:parameters, (:kw, :stderr, :STDERR)), (:call, :detach, (:call, :setenv, (:macrocall, Symbol("@cmd"), "\$exename \$exeflags --bind-to \$(Base.Distributed.LPROC.bind_addr) --worker \$(Base.cluster_cookie())"), (:kw, :dir, :dir)))), "r")),
+            (:line, 47, :none),
+            (:(=), :wconfig, (:call, :WorkerConfig)),
+            (:line, 48, :none),
+            (:(=), (:., :wconfig, (:quote, #QuoteNode
+                  :process
+                )), :pobj),
+            (:line, 49, :none),
+            (:(=), (:., :wconfig, (:quote, #QuoteNode
+                  :io
+                )), :io),
+            (:line, 50, :none),
+            (:(=), (:., :wconfig, (:quote, #QuoteNode
+                  :ident
+                )), :i),
+            (:line, 51, :none),
+            (:(=), (:., :wconfig, (:quote, #QuoteNode
+                  :connect_idents
+                )), (:call, :collect, (:(:), (:call, :+, :i, 2), 2, (:., :manager, (:quote, #QuoteNode
+                      :np
+                    ))))),
+            (:line, 52, :none),
+            (:call, :push!, :launched, :wconfig)
+          )),
+        (:line, 55, :none),
+        (:call, :notify, :c)
+      )),
+    (:line, 58, :none),
+    (:const, (:(=), :map_pid_ident, (:call, :Dict))),
+    (:line, 59, :none),
+    (:function, (:call, (:., :Base, (:quote, #QuoteNode
+            :manage
+          )), (:(::), :manager, :TopoTestManager), (:(::), :id, :Integer), (:(::), :config, :WorkerConfig), (:(::), :op, :Symbol)), (:block,
+        (:line, 60, :none),
+        (:if, (:call, :(==), :op, (:quote, #QuoteNode
+              :register
+            )), (:block,
+            (:line, 61, :none),
+            (:(=), (:ref, :map_pid_ident, :id), (:call, :get, (:., :config, (:quote, #QuoteNode
+                    :ident
+                  ))))
+          ), (:block,
+            (:line, 62, :none),
+            (:if, (:call, :(==), :op, (:quote, #QuoteNode
+                  :interrupt
+                )), (:block,
+                (:line, 63, :none),
+                (:call, :kill, (:call, :get, (:., :config, (:quote, #QuoteNode
+                        :process
+                      ))), 2)
+              ))
+          ))
+      )),
+    (:line, 67, :none),
+    (:call, :addprocs_with_testenv, (:parameters, (:kw, :topology, "custom")), (:call, :TopoTestManager, 8)),
+    (:line, 69, :none),
+    (:while, true, (:block,
+        (:line, 70, :none),
+        (:if, (:call, :any, (:->, :x, (:block,
+                (:line, 70, :none),
+                (:call, :(==), (:call, :get, :map_pid_ident, :x, 0), 0)
+              )), (:call, :workers)), (:block,
+            (:line, 71, :none),
+            (:call, :yield)
+          ), (:block,
+            (:line, 73, :none),
+            (:break,)
+          ))
+      )),
+    (:line, 77, :none),
+    (:for, (:(=), :p1, (:call, :workers)), (:block,
+        (:line, 78, :none),
+        (:for, (:(=), :p2, (:call, :workers)), (:block,
+            (:line, 79, :none),
+            (:(=), :i1, (:ref, :map_pid_ident, :p1)),
+            (:line, 80, :none),
+            (:(=), :i2, (:ref, :map_pid_ident, :p2)),
+            (:line, 81, :none),
+            (:if, (:||, (:&&, (:call, :iseven, :i1), (:call, :iseven, :i2)), (:&&, (:call, :isodd, :i1), (:call, :isodd, :i2))), (:block,
+                (:line, 82, :none),
+                (:macrocall, Symbol("@test"), (:call, :(==), :p2, (:call, :remotecall_fetch, (:->, :p, (:block,
+                          (:line, 82, :none),
+                          (:call, :remotecall_fetch, :myid, :p)
+                        )), :p1, :p2)))
+              ), (:block,
+                (:line, 84, :none),
+                (:macrocall, Symbol("@test_throws"), :RemoteException, (:call, :remotecall_fetch, (:->, :p, (:block,
+                        (:line, 84, :none),
+                        (:call, :remotecall_fetch, :myid, :p)
+                      )), :p1, :p2))
+              ))
+          ))
+      )),
+    (:line, 89, :none),
+    (:call, :remove_workers_and_test)
+  ))

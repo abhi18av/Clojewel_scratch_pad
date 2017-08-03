@@ -1,0 +1,1250 @@
+(:quote, (:block,
+    (:line, 4, :none),
+    (:(=), :p, (:call, :Pair, 10, 20)),
+    (:line, 5, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), :p, (:call, :(=>), 10, 20))),
+    (:line, 6, :none),
+    (:macrocall, Symbol("@test"), (:call, :isequal, :p, (:call, :(=>), 10, 20))),
+    (:line, 7, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :start, :p), 1)),
+    (:line, 8, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :next, :p, 1), (:tuple, 10, 2))),
+    (:line, 9, :none),
+    (:macrocall, Symbol("@test"), (:call, :!, (:call, :done, :p, 1))),
+    (:line, 10, :none),
+    (:macrocall, Symbol("@test"), (:call, :!, (:call, :done, :p, 2))),
+    (:line, 11, :none),
+    (:macrocall, Symbol("@test"), (:call, :done, :p, 3)),
+    (:line, 12, :none),
+    (:macrocall, Symbol("@test"), (:call, :!, (:call, :done, :p, 0))),
+    (:line, 13, :none),
+    (:macrocall, Symbol("@test"), (:comparison, (:call, :endof, :p), :(==), (:call, :length, :p), :(==), 2)),
+    (:line, 14, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+              :indexed_next
+            )), :p, 1, (:tuple, 1, 2)), (:tuple, 10, 2))),
+    (:line, 15, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+              :indexed_next
+            )), :p, 2, (:tuple, 1, 2)), (:tuple, 20, 3))),
+    (:line, 16, :none),
+    (:macrocall, Symbol("@test"), (:call, :<, (:call, :(=>), 1, 2), (:call, :(=>), 2, 3))),
+    (:line, 17, :none),
+    (:macrocall, Symbol("@test"), (:call, :<, (:call, :(=>), 2, 2), (:call, :(=>), 2, 3))),
+    (:line, 18, :none),
+    (:macrocall, Symbol("@test"), (:call, :!, (:call, :<, (:call, :(=>), 2, 3), (:call, :(=>), 2, 3)))),
+    (:line, 19, :none),
+    (:macrocall, Symbol("@test"), (:call, :<, (:call, :(=>), 2, 3), (:call, :(=>), 4, 3))),
+    (:line, 20, :none),
+    (:macrocall, Symbol("@test"), (:call, :<, (:call, :(=>), 1, 100), (:call, :(=>), 4, 1))),
+    (:line, 21, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :p, 1), 10)),
+    (:line, 22, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :p, 2), 20)),
+    (:line, 23, :none),
+    (:macrocall, Symbol("@test_throws"), :BoundsError, (:ref, :p, 3)),
+    (:line, 24, :none),
+    (:macrocall, Symbol("@test_throws"), :BoundsError, (:ref, :p, false)),
+    (:line, 25, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :p, true), 10)),
+    (:line, 26, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :p, 2.0), 20)),
+    (:line, 27, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :p, 0x01), 10)),
+    (:line, 28, :none),
+    (:macrocall, Symbol("@test_throws"), :InexactError, (:ref, :p, 2.3)),
+    (:line, 29, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :first, :p), 10)),
+    (:line, 30, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :last, :p), 20)),
+    (:line, 31, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :eltype, :p), :Int)),
+    (:line, 32, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :eltype, (:call, :(=>), 4, 5.6)), (:curly, :Union, :Int, :Float64))),
+    (:line, 35, :none),
+    (:(=), :h, (:call, :Dict)),
+    (:line, 36, :none),
+    (:for, (:(=), :i, (:(:), 1, 10000)), (:block,
+        (:line, 37, :none),
+        (:(=), (:ref, :h, :i), (:call, :+, :i, 1))
+      )),
+    (:line, 39, :none),
+    (:for, (:(=), :i, (:(:), 1, 10000)), (:block,
+        (:line, 40, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :h, :i), (:call, :+, :i, 1)))
+      )),
+    (:line, 42, :none),
+    (:for, (:(=), :i, (:(:), 1, 2, 10000)), (:block,
+        (:line, 43, :none),
+        (:call, :delete!, :h, :i)
+      )),
+    (:line, 45, :none),
+    (:for, (:(=), :i, (:(:), 1, 2, 10000)), (:block,
+        (:line, 46, :none),
+        (:(=), (:ref, :h, :i), (:call, :+, :i, 1))
+      )),
+    (:line, 48, :none),
+    (:for, (:(=), :i, (:(:), 1, 10000)), (:block,
+        (:line, 49, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :h, :i), (:call, :+, :i, 1)))
+      )),
+    (:line, 51, :none),
+    (:for, (:(=), :i, (:(:), 1, 10000)), (:block,
+        (:line, 52, :none),
+        (:call, :delete!, :h, :i)
+      )),
+    (:line, 54, :none),
+    (:macrocall, Symbol("@test"), (:call, :isempty, :h)),
+    (:line, 55, :none),
+    (:(=), (:ref, :h, 77), 100),
+    (:line, 56, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :h, 77), 100)),
+    (:line, 57, :none),
+    (:for, (:(=), :i, (:(:), 1, 10000)), (:block,
+        (:line, 58, :none),
+        (:(=), (:ref, :h, :i), (:call, :+, :i, 1))
+      )),
+    (:line, 60, :none),
+    (:for, (:(=), :i, (:(:), 1, 2, 10000)), (:block,
+        (:line, 61, :none),
+        (:call, :delete!, :h, :i)
+      )),
+    (:line, 63, :none),
+    (:for, (:(=), :i, (:(:), 10001, 20000)), (:block,
+        (:line, 64, :none),
+        (:(=), (:ref, :h, :i), (:call, :+, :i, 1))
+      )),
+    (:line, 66, :none),
+    (:for, (:(=), :i, (:(:), 2, 2, 10000)), (:block,
+        (:line, 67, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :h, :i), (:call, :+, :i, 1)))
+      )),
+    (:line, 69, :none),
+    (:for, (:(=), :i, (:(:), 10000, 20000)), (:block,
+        (:line, 70, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :h, :i), (:call, :+, :i, 1)))
+      )),
+    (:line, 72, :none),
+    (:(=), :h, (:call, (:curly, :Dict, :Any, :Any), (:call, :(=>), "a", 3))),
+    (:line, 73, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :h, "a"), 3)),
+    (:line, 74, :none),
+    (:(=), (:ref, :h, "a", "b"), 4),
+    (:line, 75, :none),
+    (:macrocall, Symbol("@test"), (:comparison, (:ref, :h, "a", "b"), :(==), (:ref, :h, (:tuple, "a", "b")), :(==), 4)),
+    (:line, 76, :none),
+    (:(=), (:ref, :h, "a", "b", "c"), 4),
+    (:line, 77, :none),
+    (:macrocall, Symbol("@test"), (:comparison, (:ref, :h, "a", "b", "c"), :(==), (:ref, :h, (:tuple, "a", "b", "c")), :(==), 4)),
+    (:line, 80, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :eltype, :h), (:curly, :Pair, :Any, :Any))),
+    (:line, 81, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :keytype, :h), :Any)),
+    (:line, 82, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :valtype, :h), :Any)),
+    (:line, 84, :none),
+    (:let, (:block,
+        (:line, 85, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :eltype, :td), (:curly, :Pair, :AbstractString, :Float64))),
+        (:line, 86, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :keytype, :td), :AbstractString)),
+        (:line, 87, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :valtype, :td), :Float64)),
+        (:line, 88, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), (:call, :keytype, (:curly, :Dict, :AbstractString, :Float64)), :AbstractString)),
+        (:line, 89, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), (:call, :valtype, (:curly, :Dict, :AbstractString, :Float64)), :Float64))
+      ), (:(=), :td, (:call, (:curly, :Dict, :AbstractString, :Float64)))),
+    (:line, 92, :none),
+    (:let, (:block,
+        (:line, 93, :none),
+        (:(=), :get_KeyError, false),
+        (:line, 94, :none),
+        (:try, (:block,
+            (:line, 95, :none),
+            (:ref, :z, "a")
+          ), :_e123_, (:block,
+            (:line, 97, :none),
+            (:(=), :get_KeyError, (:call, :isa, :_e123_, :KeyError))
+          )),
+        (:line, 99, :none),
+        (:macrocall, Symbol("@test"), :get_KeyError)
+      ), (:(=), :z, (:call, :Dict))),
+    (:line, 102, :none),
+    (:(=), :_d, (:call, :Dict, (:call, :(=>), "a", 0))),
+    (:line, 103, :none),
+    (:macrocall, Symbol("@test"), (:call, :isa, (:comprehension, (:generator, :k, (:(=), :k, (:call, :filter, (:->, :x, (:block,
+                    (:line, 103, :none),
+                    (:call, :(==), (:call, :length, :x), 1)
+                  )), (:call, :collect, (:call, :keys, :_d)))))), (:curly, :Vector, :String))),
+    (:line, 105, :none),
+    (:let, (:block,
+        (:line, 106, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), (:ref, :d, 1), 2)),
+        (:line, 107, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), (:ref, :d, 3), 4)),
+        (:line, 108, :none),
+        (:(=), :d2, (:call, :Dict, (:call, :(=>), 1, 2), (:call, :(=>), 3, 4))),
+        (:line, 109, :none),
+        (:(=), :d3, (:call, :Dict, (:tuple, (:call, :(=>), 1, 2), (:call, :(=>), 3, 4)))),
+        (:line, 110, :none),
+        (:macrocall, Symbol("@test"), (:comparison, :d, :(==), :d2, :(==), :d3)),
+        (:line, 111, :none),
+        (:macrocall, Symbol("@test"), (:comparison, (:call, :typeof, :d), :(==), (:call, :typeof, :d2), :(==), (:call, :typeof, :d3), :(==), (:curly, :Dict, :Int, :Int))),
+        (:line, 113, :none),
+        (:(=), :d, (:call, :Dict, (:tuple, (:tuple, 1, 2), (:tuple, 3, "b")))),
+        (:line, 114, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), (:ref, :d, 1), 2)),
+        (:line, 115, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :d, 3), "b")),
+        (:line, 116, :none),
+        (:(=), :d2, (:call, :Dict, (:call, :(=>), 1, 2), (:call, :(=>), 3, "b"))),
+        (:line, 117, :none),
+        (:(=), :d3, (:call, :Dict, (:tuple, (:call, :(=>), 1, 2), (:call, :(=>), 3, "b")))),
+        (:line, 118, :none),
+        (:macrocall, Symbol("@test"), (:comparison, :d, :(==), :d2, :(==), :d3)),
+        (:line, 119, :none),
+        (:macrocall, Symbol("@test"), (:comparison, (:call, :typeof, :d), :(==), (:call, :typeof, :d2), :(==), (:call, :typeof, :d3), :(==), (:curly, :Dict, :Int, :Any))),
+        (:line, 121, :none),
+        (:(=), :d, (:call, :Dict, (:tuple, (:tuple, 1, 2), (:tuple, "a", 4)))),
+        (:line, 122, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), (:ref, :d, 1), 2)),
+        (:line, 123, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), (:ref, :d, "a"), 4)),
+        (:line, 124, :none),
+        (:(=), :d2, (:call, :Dict, (:call, :(=>), 1, 2), (:call, :(=>), "a", 4))),
+        (:line, 125, :none),
+        (:(=), :d3, (:call, :Dict, (:tuple, (:call, :(=>), 1, 2), (:call, :(=>), "a", 4)))),
+        (:line, 126, :none),
+        (:macrocall, Symbol("@test"), (:comparison, :d, :(==), :d2, :(==), :d3)),
+        (:line, 127, :none),
+        (:macrocall, Symbol("@test"), (:comparison, (:call, :typeof, :d), :(==), (:call, :typeof, :d2), :(==), (:call, :typeof, :d3), :(==), (:curly, :Dict, :Any, :Int))),
+        (:line, 129, :none),
+        (:(=), :d, (:call, :Dict, (:tuple, (:tuple, 1, 2), (:tuple, "a", "b")))),
+        (:line, 130, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), (:ref, :d, 1), 2)),
+        (:line, 131, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :d, "a"), "b")),
+        (:line, 132, :none),
+        (:(=), :d2, (:call, :Dict, (:call, :(=>), 1, 2), (:call, :(=>), "a", "b"))),
+        (:line, 133, :none),
+        (:(=), :d3, (:call, :Dict, (:tuple, (:call, :(=>), 1, 2), (:call, :(=>), "a", "b")))),
+        (:line, 134, :none),
+        (:macrocall, Symbol("@test"), (:comparison, :d, :(==), :d2, :(==), :d3)),
+        (:line, 135, :none),
+        (:macrocall, Symbol("@test"), (:comparison, (:call, :typeof, :d), :(==), (:call, :typeof, :d2), :(==), (:call, :typeof, :d3), :(==), (:curly, :Dict, :Any, :Any)))
+      ), (:(=), :d, (:call, :Dict, (:tuple, (:tuple, 1, 2), (:tuple, 3, 4))))),
+    (:line, 138, :none),
+    (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, :first, (:call, :Dict))),
+    (:line, 139, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :first, (:call, :Dict, (:call, :(=>), (:quote, #QuoteNode
+                :f
+              ), 2))), (:call, :(=>), (:quote, #QuoteNode
+            :f
+          ), 2))),
+    (:line, 142, :none),
+    (:let, (:block,
+        (:line, 143, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, :d, (:curly, :Dict, :Int, :Int))),
+        (:line, 144, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :d, (:call, :Dict, (:call, :(=>), 1, 1), (:call, :(=>), 2, 2), (:call, :(=>), 3, 3))))
+      ), (:(=), :d, (:macrocall, Symbol("@inferred"), (:call, :Dict, (:generator, (:call, :(=>), :i, :i), (:(=), :i, (:(:), 1, 3))))))),
+    (:line, 146, :none),
+    (:let, (:block,
+        (:line, 147, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, :d, (:curly, :Dict, :Real, :Real))),
+        (:line, 148, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :d, (:call, (:curly, :Dict, :Real, :Real), (:call, :(=>), 2.0, 3.0), (:call, :(=>), 1, 2))))
+      ), (:(=), :d, (:call, :Dict, (:generator, (:if, (:call, :(==), :i, 1), (:call, :(=>), 1, 2), (:call, :(=>), 2.0, 3.0)), (:(=), :i, (:(:), 1, 2)))))),
+    (:line, 151, :none),
+    (:macrocall, Symbol("@test_throws"), :KeyError, (:ref, (:call, :Dict, (:call, :(=>), "a", 2)), (:., :Base, (:quote, #QuoteNode
+            :secret_table_token
+          )))),
+    (:line, 154, :none),
+    (:let, (:block,
+        (:line, 155, :none),
+        (:(=), (:ref, :d, "a"), (:vect, 1, 2)),
+        (:line, 156, :none),
+        (:macrocall, Symbol("@test_throws"), :MethodError, (:(=), (:ref, :d, "b"), 1)),
+        (:line, 157, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, (:call, :repr, :d), :AbstractString))
+      ), (:(=), :d, (:call, (:curly, :Dict, :String, (:curly, :Vector, :Int))))),
+    (:line, 161, :none),
+    (:let, (:block,
+        (:line, 162, :none),
+        (:local, :bar),
+        (:line, 163, :none),
+        (:(=), (:call, :bestkey, :d, :key), (:block,
+            (:line, 163, :none),
+            :key
+          )),
+        (:line, 164, :none),
+        (:(=), (:call, (:curly, :bestkey, (:<:, :K, :AbstractString), :V), (:(::), :d, (:curly, :Associative, :K, :V)), :key), (:block,
+            (:line, 164, :none),
+            (:call, :string, :key)
+          )),
+        (:line, 165, :none),
+        (:(=), (:call, :bar, :x), (:block,
+            (:line, 165, :none),
+            (:call, :bestkey, :x, (:quote, #QuoteNode
+                :y
+              ))
+          )),
+        (:line, 166, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :bar, (:call, :Dict, (:call, :(=>), (:quote, #QuoteNode
+                    :x
+                  ), (:vect, 1, 2, 5)))), (:quote, #QuoteNode
+              :y
+            ))),
+        (:line, 167, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :bar, (:call, :Dict, (:call, :(=>), "x", (:vect, 1, 2, 5)))), "y"))
+      )),
+    (:line, 171, :none),
+    (:type, true, :I1438T, (:block,
+        (:line, 172, :none),
+        :id
+      )),
+    (:line, 174, :none),
+    (:import, :Base, :hash),
+    (:line, 175, :none),
+    (:(=), (:call, :hash, (:(::), :x, :I1438T), (:(::), :h, :UInt)), (:block,
+        (:line, 175, :none),
+        (:call, :hash, (:., :x, (:quote, #QuoteNode
+              :id
+            )), :h)
+      )),
+    (:line, 177, :none),
+    (:let, (:block,
+        (:line, 178, :none),
+        (:local, :seq, :xs, :s),
+        (:line, 179, :none),
+        (:(=), :seq, (:vect, 26, 28, 29, 30, 31, 32, 33, 34, 35, 36, -32, -35, -34, -28, 37, 38, 39, 40, -30, -31, 41, 42, 43, 44, -33, -36, 45, 46, 47, 48, -37, -38, 49, 50, 51, 52, -46, -50, 53)),
+        (:line, 181, :none),
+        (:(=), :xs, (:comprehension, (:generator, (:call, :I1438T, :id), (:(=), :id, (:(:), 1, 53))))),
+        (:line, 182, :none),
+        (:(=), :s, (:call, :Set)),
+        (:line, 183, :none),
+        (:for, (:(=), :id, :seq), (:block,
+            (:line, 184, :none),
+            (:if, (:call, :>, :id, 0), (:block,
+                (:line, 185, :none),
+                (:(=), :x, (:ref, :xs, :id)),
+                (:line, 186, :none),
+                (:call, :push!, :s, :x),
+                (:line, 187, :none),
+                (:macrocall, Symbol("@test"), (:call, :in, :x, :s))
+              ), (:block,
+                (:line, 189, :none),
+                (:call, :delete!, :s, (:ref, :xs, (:call, :-, :id)))
+              ))
+          ))
+      )),
+    (:line, 194, :none),
+    (:macrocall, Symbol("@test"), (:call, :isequal, (:call, :Dict), (:call, :Dict))),
+    (:line, 195, :none),
+    (:macrocall, Symbol("@test"), (:call, :isequal, (:call, :Dict, (:call, :(=>), 1, 1)), (:call, :Dict, (:call, :(=>), 1, 1)))),
+    (:line, 196, :none),
+    (:macrocall, Symbol("@test"), (:call, :!, (:call, :isequal, (:call, :Dict, (:call, :(=>), 1, 1)), (:call, :Dict)))),
+    (:line, 197, :none),
+    (:macrocall, Symbol("@test"), (:call, :!, (:call, :isequal, (:call, :Dict, (:call, :(=>), 1, 1)), (:call, :Dict, (:call, :(=>), 1, 2))))),
+    (:line, 198, :none),
+    (:macrocall, Symbol("@test"), (:call, :!, (:call, :isequal, (:call, :Dict, (:call, :(=>), 1, 1)), (:call, :Dict, (:call, :(=>), 2, 1))))),
+    (:line, 201, :none),
+    (:(=), :data_in, (:comprehension, (:generator, (:tuple, (:call, :rand, (:(:), 1, 1000)), (:call, :randstring, 2)), (:(=), :_, (:(:), 1, 1001))))),
+    (:line, 204, :none),
+    (:(=), :d1, (:call, (:curly, :Dict, :Int, :AbstractString))),
+    (:line, 205, :none),
+    (:for, (:(=), (:tuple, :k, :v), :data_in), (:block,
+        (:line, 206, :none),
+        (:(=), (:ref, :d1, :k), :v)
+      )),
+    (:line, 208, :none),
+    (:(=), :data_in, (:call, :collect, :d1)),
+    (:line, 210, :none),
+    (:for, (:(=), :i, (:(:), 1, (:call, :length, :data_in))), (:block,
+        (:line, 211, :none),
+        (:(=), :j, (:call, :rand, (:(:), 1, (:call, :length, :data_in)))),
+        (:line, 212, :none),
+        (:(=), (:tuple, (:ref, :data_in, :i), (:ref, :data_in, :j)), (:tuple, (:ref, :data_in, :j), (:ref, :data_in, :i)))
+      )),
+    (:line, 216, :none),
+    (:(=), :d2, (:call, (:curly, :Dict, :Int, :AbstractString))),
+    (:line, 217, :none),
+    (:for, (:(=), (:tuple, :k, :v), :data_in), (:block,
+        (:line, 218, :none),
+        (:(=), (:ref, :d2, :k), :v)
+      )),
+    (:line, 221, :none),
+    (:macrocall, Symbol("@test"), (:call, :isequal, :d1, :d2)),
+    (:line, 222, :none),
+    (:(=), :d3, (:call, :copy, :d2)),
+    (:line, 223, :none),
+    (:(=), :d4, (:call, :copy, :d2)),
+    (:line, 225, :none),
+    (:call, :delete!, :d1, (:ref, (:ref, :data_in, (:call, :rand, (:(:), 1, (:call, :length, :data_in)))), 1)),
+    (:line, 226, :none),
+    (:macrocall, Symbol("@test"), (:call, :!, (:call, :isequal, :d1, :d2))),
+    (:line, 228, :none),
+    (:(=), (:ref, :d3, (:ref, (:ref, :data_in, (:call, :rand, (:(:), 1, (:call, :length, :data_in)))), 1)), (:call, :randstring, 3)),
+    (:line, 229, :none),
+    (:call, :!, (:call, :isequal, :d1, :d3)),
+    (:line, 231, :none),
+    (:(=), (:ref, :d4, 1001), (:call, :randstring, 3)),
+    (:line, 232, :none),
+    (:macrocall, Symbol("@test"), (:call, :!, (:call, :isequal, :d1, :d4))),
+    (:line, 234, :none),
+    (:macrocall, Symbol("@test"), (:call, :isequal, (:call, :Dict), (:call, :sizehint!, (:call, :Dict), 96))),
+    (:line, 239, :none),
+    (:macrocall, Symbol("@test"), (:call, :!, (:call, :isequal, (:call, :Dict, (:call, :(=>), 1, 2)), (:call, :Dict, (:call, :(=>), "dog", "bone"))))),
+    (:line, 240, :none),
+    (:macrocall, Symbol("@test"), (:call, :isequal, (:call, (:curly, :Dict, :Int, :Int)), (:call, (:curly, :Dict, :AbstractString, :AbstractString)))),
+    (:line, 243, :none),
+    (:let, (:block,
+        (:line, 244, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :get!, :d, 8, 5), 19)),
+        (:line, 245, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :get!, :d, 19, 2), 2)),
+        (:line, 247, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :get!, (:->, (:tuple,), (:block,
+                  (:line, 248, :none),
+                  (:call, :f, 2)
+                )), :d, 42), 4)),
+        (:line, 251, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :get!, (:->, (:tuple,), (:block,
+                  (:line, 252, :none),
+                  (:call, :f, 200)
+                )), :d, 42), 4)),
+        (:line, 255, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :get, (:->, (:tuple,), (:block,
+                  (:line, 256, :none),
+                  (:call, :f, 4)
+                )), :d, 13), 16)),
+        (:line, 259, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :d, (:call, :Dict, (:call, :(=>), 8, 19), (:call, :(=>), 19, 2), (:call, :(=>), 42, 4))))
+      ), (:(=), (:call, :f, :x), (:block,
+          (:line, 243, :none),
+          (:call, :^, :x, 2)
+        )), (:(=), :d, (:call, :Dict, (:call, :(=>), 8, 19)))),
+    (:line, 263, :none),
+    (:for, (:(=), :d, (:tuple, (:call, :Dict, (:call, :(=>), "\n", "\n"), (:call, :(=>), "1", "\n"), (:call, :(=>), "\n", "2")), (:call, :Dict, (:generator, (:call, :(=>), (:call, :string, :i), :i), (:(=), :i, (:(:), 1, 30)))), (:call, :Dict, (:generator, (:call, :(=>), (:call, :reshape, (:(:), 1, (:call, :^, :i, 2)), :i, :i), (:call, :reshape, (:(:), 1, (:call, :^, :i, 2)), :i, :i)), (:(=), :i, (:(:), 1, 24)))), (:call, :Dict, (:generator, (:call, :(=>), (:call, :String, (:typed_vcat, :Char, (:(:), 'α', (:call, :+, 'α', :i)))), (:call, :String, (:typed_vcat, :Char, (:(:), 'α', (:call, :+, 'α', :i))))), (:(=), :i, (:call, :*, (:(:), 1, 10), 10)))), (:call, :Dict, (:call, :(=>), "key", (:call, :zeros, 0, 0))))), (:block,
+        (:line, 268, :none),
+        (:for, (:block,
+            (:(=), :cols, (:tuple, 12, 40, 80)),
+            (:(=), :rows, (:tuple, 2, 10, 24))
+          ), (:block,
+            (:line, 270, :none),
+            (:(=), :s, (:call, :IOBuffer)),
+            (:line, 271, :none),
+            (:(=), :io, (:call, (:., :Base, (:quote, #QuoteNode
+                    :IOContext
+                  )), (:call, (:., :Base, (:quote, #QuoteNode
+                      :IOContext
+                    )), :s, (:call, :(=>), (:quote, #QuoteNode
+                      :limit
+                    ), true)), (:call, :(=>), (:quote, #QuoteNode
+                    :displaysize
+                  ), (:tuple, :rows, :cols)))),
+            (:line, 272, :none),
+            (:call, (:., :Base, (:quote, #QuoteNode
+                  :show
+                )), :io, (:call, :MIME, "text/plain"), :d),
+            (:line, 273, :none),
+            (:(=), :out, (:call, :split, (:call, :String, (:call, :take!, :s)), '\n')),
+            (:line, 274, :none),
+            (:for, (:(=), :line, (:ref, :out, (:(:), 2, :end))), (:block,
+                (:line, 275, :none),
+                (:macrocall, Symbol("@test"), (:call, :(<=), (:call, :strwidth, :line), :cols))
+              )),
+            (:line, 277, :none),
+            (:macrocall, Symbol("@test"), (:call, :(<=), (:call, :length, :out), :rows)),
+            (:line, 279, :none),
+            (:for, (:(=), :f, (:tuple, :keys, :values)), (:block,
+                (:line, 280, :none),
+                (:(=), :s, (:call, :IOBuffer)),
+                (:line, 281, :none),
+                (:(=), :io, (:call, (:., :Base, (:quote, #QuoteNode
+                        :IOContext
+                      )), (:call, (:., :Base, (:quote, #QuoteNode
+                          :IOContext
+                        )), :s, (:call, :(=>), (:quote, #QuoteNode
+                          :limit
+                        ), true)), (:call, :(=>), (:quote, #QuoteNode
+                        :displaysize
+                      ), (:tuple, :rows, :cols)))),
+                (:line, 282, :none),
+                (:call, (:., :Base, (:quote, #QuoteNode
+                      :show
+                    )), :io, (:call, :MIME, "text/plain"), (:call, :f, :d)),
+                (:line, 283, :none),
+                (:(=), :out, (:call, :split, (:call, :String, (:call, :take!, :s)), '\n')),
+                (:line, 284, :none),
+                (:for, (:(=), :line, (:ref, :out, (:(:), 2, :end))), (:block,
+                    (:line, 285, :none),
+                    (:macrocall, Symbol("@test"), (:call, :(<=), (:call, :strwidth, :line), :cols))
+                  )),
+                (:line, 287, :none),
+                (:macrocall, Symbol("@test"), (:call, :(<=), (:call, :length, :out), :rows))
+              ))
+          )),
+        (:line, 291, :none),
+        (:call, (:., :Base, (:quote, #QuoteNode
+              :show
+            )), (:call, :IOBuffer), :d),
+        (:line, 292, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:call, :isempty, (:call, :summary, :d)))),
+        (:line, 293, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:call, :isempty, (:call, :summary, (:call, :keys, :d))))),
+        (:line, 294, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:call, :isempty, (:call, :summary, (:call, :values, :d)))))
+      )),
+    (:line, 298, :none),
+    (:let, (:block,
+        (:line, 299, :none),
+        (:(=), :buf, (:call, :IOBuffer)),
+        (:line, 300, :none),
+        (:call, :showcompact, :buf, :d),
+        (:line, 304, :none),
+        (:(=), :result, (:call, :String, :buf)),
+        (:line, 305, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, :result, "Dict")),
+        (:line, 306, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, :result, "(1=>2)=>(3=>45)")),
+        (:line, 307, :none),
+        (:macrocall, Symbol("@test"), (:call, :contains, :result, "(3=>10)=>(10=>11)"))
+      ), (:(=), :d, (:call, :Dict, (:call, :(=>), (:call, :(=>), 1, 2), (:call, :(=>), 3, 45)), (:call, :(=>), (:call, :(=>), 3, 10), (:call, :(=>), 10, 11))))),
+    (:line, 311, :none),
+    (:type, true, :Alpha, (:block,
+        (:line, 311, :none)
+      )),
+    (:line, 312, :none),
+    (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+            :show
+          )), (:(::), :io, :IO), (:(::), :Alpha)), (:block,
+        (:line, 312, :none),
+        (:call, :print, :io, "α")
+      )),
+    (:line, 313, :none),
+    (:let, (:block,
+        (:line, 316, :none),
+        (:call, (:., :Base, (:quote, #QuoteNode
+              :show
+            )), :io, (:call, :MIME, "text/plain"), (:call, :Dict, (:call, :(=>), (:call, :Alpha), 1))),
+        (:line, 317, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:call, :contains, (:call, :String, :sbuff), "…"))),
+        (:line, 318, :none),
+        (:macrocall, Symbol("@test"), (:call, :endswith, (:call, :String, :sbuff), "α => 1"))
+      ), (:(=), :sbuff, (:call, :IOBuffer)), (:(=), :io, (:call, (:., :Base, (:quote, #QuoteNode
+              :IOContext
+            )), (:call, (:., :Base, (:quote, #QuoteNode
+                :IOContext
+              )), :sbuff, (:call, :(=>), (:quote, #QuoteNode
+                :limit
+              ), true)), (:call, :(=>), (:quote, #QuoteNode
+              :displaysize
+            ), (:tuple, 10, 20))))),
+    (:line, 322, :none),
+    (:let, (:block,
+        (:line, 323, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :d, (:call, :Dict, (:call, :(=>), 'a', 1), (:call, :(=>), 'b', 1), (:call, :(=>), 'c', 1))))
+      ), (:(=), :d, (:call, (:curly, :Dict, :Any, :Any), (:call, :Dict, (:generator, (:call, :(=>), :x, 1), (:(=), :x, (:vect, 'a', 'b', 'c'))))))),
+    (:line, 327, :none),
+    (:let, (:block,
+        (:line, 328, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :d, (:call, :Dict, (:call, :(=>), "a", "foo"), (:call, :(=>), "b", "foo"), (:call, :(=>), "c", "foo"))))
+      ), (:(=), :d, (:call, (:curly, :Dict, :AbstractString, :AbstractString), (:call, :Dict, (:generator, (:call, :(=>), :a, "foo"), (:(=), :a, (:vect, "a", "b", "c"))))))),
+    (:line, 332, :none),
+    (:(=), :d5886, (:call, :Dict)),
+    (:line, 333, :none),
+    (:for, (:(=), :k5886, (:(:), 1, 11)), (:block,
+        (:line, 334, :none),
+        (:(=), (:ref, :d5886, :k5886), 1)
+      )),
+    (:line, 336, :none),
+    (:for, (:(=), :k5886, (:call, :keys, :d5886)), (:block,
+        (:line, 338, :none),
+        (:+=, (:ref, :d5886, :k5886), 1)
+      )),
+    (:line, 342, :none),
+    (:let, (:block,
+        (:line, 344, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), (:call, :typeof, (:call, :merge, :a, :b)), (:curly, :Dict, :String, :Float64)))
+      ), (:(=), :a, (:call, :Dict, (:call, :(=>), "foo", 0.0), (:call, :(=>), "bar", 42.0))), (:(=), :b, (:call, :Dict, (:call, :(=>), "フー", 17), (:call, :(=>), "バー", 4711)))),
+    (:line, 348, :none),
+    (:let, (:block,
+        (:line, 349, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), (:call, :push!, :d, (:call, :(=>), 'a', 1)), :d)),
+        (:line, 350, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :d, 'a'), 1)),
+        (:line, 351, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), (:call, :push!, :d, (:call, :(=>), 'b', 2), (:call, :(=>), 'c', 3)), :d)),
+        (:line, 352, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :d, 'b'), 2)),
+        (:line, 353, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :d, 'c'), 3)),
+        (:line, 354, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), (:call, :push!, :d, (:call, :(=>), 'd', 4), (:call, :(=>), 'e', 5), (:call, :(=>), 'f', 6)), :d)),
+        (:line, 355, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :d, 'd'), 4)),
+        (:line, 356, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :d, 'e'), 5)),
+        (:line, 357, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :d, 'f'), 6)),
+        (:line, 358, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :d), 6))
+      ), (:(=), :d, (:call, :Dict))),
+    (:line, 362, :none),
+    (:type, true, (:curly, :T10647, :T), (:block,
+        (:line, 362, :none),
+        (:(::), :x, :T)
+      )),
+    (:line, 363, :none),
+    (:let, (:block,
+        (:line, 364, :none),
+        (:(=), (:ref, :a, 1), :a),
+        (:line, 365, :none),
+        (:(=), (:ref, :a, :a), 2),
+        (:line, 366, :none),
+        (:(=), (:ref, :a, 3), (:call, :T10647, :a)),
+        (:line, 367, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :a, :a)),
+        (:line, 368, :none),
+        (:call, :show, (:call, :IOBuffer), :a),
+        (:line, 369, :none),
+        (:call, (:., :Base, (:quote, #QuoteNode
+              :show
+            )), (:call, (:., :Base, (:quote, #QuoteNode
+                :IOContext
+              )), (:call, :IOBuffer), (:call, :(=>), (:quote, #QuoteNode
+                :limit
+              ), true)), :a),
+        (:line, 370, :none),
+        (:call, (:., :Base, (:quote, #QuoteNode
+              :show
+            )), (:call, :IOBuffer), :a),
+        (:line, 371, :none),
+        (:call, (:., :Base, (:quote, #QuoteNode
+              :show
+            )), (:call, (:., :Base, (:quote, #QuoteNode
+                :IOContext
+              )), (:call, :IOBuffer), (:call, :(=>), (:quote, #QuoteNode
+                :limit
+              ), true)), :a)
+      ), (:(=), :a, (:call, :ObjectIdDict))),
+    (:line, 374, :none),
+    (:let, (:block,
+        (:line, 375, :none),
+        (:(=), :a, (:call, :ObjectIdDict)),
+        (:line, 376, :none),
+        (:(=), (:ref, :a, 1), :a),
+        (:line, 377, :none),
+        (:(=), (:ref, :a, :a), 2),
+        (:line, 379, :none),
+        (:(=), :sa, (:call, :similar, :a)),
+        (:line, 380, :none),
+        (:macrocall, Symbol("@test"), (:call, :isempty, :sa)),
+        (:line, 381, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, :sa, :ObjectIdDict)),
+        (:line, 383, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :a), 2)),
+        (:line, 384, :none),
+        (:macrocall, Symbol("@test"), (:call, :in, 1, (:call, :keys, :a))),
+        (:line, 385, :none),
+        (:macrocall, Symbol("@test"), (:call, :in, :a, (:call, :keys, :a))),
+        (:line, 386, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), (:ref, :a, 1), :a)),
+        (:line, 387, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), (:ref, :a, :a), 2)),
+        (:line, 389, :none),
+        (:(=), :ca, (:call, :copy, :a)),
+        (:line, 390, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :ca), (:call, :length, :a))),
+        (:line, 391, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :ca, :a)),
+        (:line, 392, :none),
+        (:macrocall, Symbol("@test"), (:call, :(!==), :ca, :a)),
+        (:line, 394, :none),
+        (:(=), :ca, (:call, :empty!, :ca)),
+        (:line, 395, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :ca), 0)),
+        (:line, 396, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :a), 2)),
+        (:line, 398, :none),
+        (:(=), :d, (:call, :Dict, (:call, :(=>), 'a', 1), (:call, :(=>), 'b', 1), (:call, :(=>), 'c', 3))),
+        (:line, 399, :none),
+        (:macrocall, Symbol("@test"), (:call, :(!=), :a, :d))
+      )),
+    (:line, 402, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, (:call, :ObjectIdDict, (:call, :(=>), 1, 2), (:call, :(=>), 1.0, 3))), 2)),
+    (:line, 403, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, (:call, :Dict, (:call, :(=>), 1, 2), (:call, :(=>), 1.0, 3))), 1)),
+    (:line, 405, :none),
+    (:let, (:block,
+        (:line, 406, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, :d, :ObjectIdDict)),
+        (:line, 407, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :d, (:call, :ObjectIdDict, (:call, :(=>), 1, 1), (:call, :(=>), 2, 2), (:call, :(=>), 3, 3))))
+      ), (:(=), :d, (:macrocall, Symbol("@inferred"), (:call, :ObjectIdDict, (:generator, (:call, :(=>), :i, :i), (:(=), :i, (:(:), 1, 3))))))),
+    (:line, 410, :none),
+    (:let, (:block,
+        (:line, 411, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, :d, :ObjectIdDict)),
+        (:line, 412, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :d, (:call, :ObjectIdDict, (:call, :(=>), 1, 1), (:call, :(=>), 2, 2), (:call, :(=>), 3, 3)))),
+        (:line, 413, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :eltype, :d), (:curly, :Pair, :Any, :Any)))
+      ), (:(=), :d, (:macrocall, Symbol("@inferred"), (:call, :ObjectIdDict, (:call, :Pair, 1, 1), (:call, :Pair, 2, 2), (:call, :Pair, 3, 3))))),
+    (:line, 417, :none),
+    (:let, (:block,
+        (:line, 418, :none),
+        (:call, :get!, (:->, (:tuple,), (:block,
+              (:line, 419, :none),
+              (:(=), (:ref, :d, 0), 1)
+            )), :d, 0),
+        (:line, 421, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :d), 1))
+      ), (:(=), :d, (:call, (:curly, :Dict, :Int, :Int)))),
+    (:line, 425, :none),
+    (:(=), :d, (:call, :Dict, (:call, :(=>), 'a', 1), (:call, :(=>), 'b', 1), (:call, :(=>), 'c', 3))),
+    (:line, 426, :none),
+    (:macrocall, Symbol("@test"), (:comparison, (:comprehension, (:generator, (:ref, :d, :k), (:(=), :k, (:call, :keys, :d)))), :(==), (:comprehension, (:generator, (:ref, :d, :k), (:(=), :k, (:call, :eachindex, :d)))), :(==), (:comprehension, (:generator, :v, (:(=), (:tuple, :k, :v), :d))), :(==), (:comprehension, (:generator, (:ref, :d, (:ref, :x, 1)), (:(=), (:tuple, :i, :x), (:call, :enumerate, :d)))))),
+    (:line, 430, :none),
+    (:(=), :d, (:call, :Dict, (:call, :(=>), (:quote, #QuoteNode
+            :a
+          ), "a"))),
+    (:line, 431, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@inferred"), (:call, :map, :identity, :d)), :d)),
+    (:line, 432, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@inferred"), (:call, :map, (:->, :p, (:block,
+                (:line, 432, :none),
+                (:call, :(=>), (:., :p, (:quote, #QuoteNode
+                      :first
+                    )), (:ref, (:., :p, (:quote, #QuoteNode
+                        :second
+                      )), 1))
+              )), :d)), (:call, :Dict, (:call, :(=>), (:quote, #QuoteNode
+              :a
+            ), 'a')))),
+    (:line, 433, :none),
+    (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, :map, (:->, :p, (:block,
+            (:line, 433, :none),
+            (:., :p, (:quote, #QuoteNode
+                :second
+              ))
+          )), :d)),
+    (:line, 436, :none),
+    (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, :Dict, 0)),
+    (:line, 437, :none),
+    (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, :Dict, (:vect, 1))),
+    (:line, 438, :none),
+    (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, :Dict, (:vect, (:tuple, 1, 2), 0))),
+    (:line, 442, :none),
+    (:macrocall, Symbol("@test_throws"), :InexactError, (:call, :Dict, (:generator, (:call, :convert, :Int, 1.5), (:(=), :i, (:(:), 1, 1))))),
+    (:line, 443, :none),
+    (:macrocall, Symbol("@test_throws"), :InexactError, (:call, :WeakKeyDict, (:generator, (:call, :convert, :Int, 1.5), (:(=), :i, (:(:), 1, 1))))),
+    (:line, 446, :none),
+    (:import, :Base, :ImmutableDict),
+    (:line, 447, :none),
+    (:let, (:block,
+        (:line, 459, :none),
+        (:macrocall, Symbol("@test"), (:call, :isempty, (:call, :collect, :d))),
+        (:line, 460, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:call, :isempty, (:call, :collect, :d1)))),
+        (:line, 461, :none),
+        (:macrocall, Symbol("@test"), (:call, :isempty, :d)),
+        (:line, 462, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:call, :isempty, :d1))),
+        (:line, 463, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :d), 0)),
+        (:line, 464, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :d1), 1)),
+        (:line, 465, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :d2), 2)),
+        (:line, 466, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :d3), 3)),
+        (:line, 467, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :d4), 4)),
+        (:line, 468, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:call, :in, :k1, (:call, :keys, :d)))),
+        (:line, 469, :none),
+        (:macrocall, Symbol("@test"), (:call, :in, :k1, (:call, :keys, :d1))),
+        (:line, 470, :none),
+        (:macrocall, Symbol("@test"), (:call, :in, :k1, (:call, :keys, :d2))),
+        (:line, 471, :none),
+        (:macrocall, Symbol("@test"), (:call, :in, :k1, (:call, :keys, :d3))),
+        (:line, 472, :none),
+        (:macrocall, Symbol("@test"), (:call, :in, :k1, (:call, :keys, :d4))),
+        (:line, 474, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:call, :haskey, :d, :k1))),
+        (:line, 475, :none),
+        (:macrocall, Symbol("@test"), (:call, :haskey, :d1, :k1)),
+        (:line, 476, :none),
+        (:macrocall, Symbol("@test"), (:call, :haskey, :d2, :k1)),
+        (:line, 477, :none),
+        (:macrocall, Symbol("@test"), (:call, :haskey, :d3, :k1)),
+        (:line, 478, :none),
+        (:macrocall, Symbol("@test"), (:call, :haskey, :d4, :k1)),
+        (:line, 479, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:call, :in, :k2, (:call, :keys, :d1)))),
+        (:line, 480, :none),
+        (:macrocall, Symbol("@test"), (:call, :in, :k2, (:call, :keys, :d2))),
+        (:line, 481, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:call, :in, :k1, (:call, :values, :d4)))),
+        (:line, 482, :none),
+        (:macrocall, Symbol("@test"), (:call, :in, :v1, (:call, :values, :d4))),
+        (:line, 483, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :collect, :d1), (:vect, (:call, :Pair, :k1, :v1)))),
+        (:line, 484, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :collect, :d4), (:call, :reverse, (:vect, (:call, :Pair, :k1, :v1), (:call, :Pair, :k2, :v2), (:call, :Pair, :k1, :v2), (:call, :Pair, :k2, :v1))))),
+        (:line, 485, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :d1, (:call, :ImmutableDict, :d, (:call, :(=>), :k1, :v1)))),
+        (:line, 486, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:call, :in, (:call, :(=>), :k1, :v2), :d2))),
+        (:line, 487, :none),
+        (:macrocall, Symbol("@test"), (:call, :in, (:call, :(=>), :k1, :v2), :d3)),
+        (:line, 488, :none),
+        (:macrocall, Symbol("@test"), (:call, :in, (:call, :(=>), :k1, :v1), :d4)),
+        (:line, 489, :none),
+        (:macrocall, Symbol("@test"), (:call, :in, (:call, :(=>), :k1, :v2), :d4)),
+        (:line, 490, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:call, :in, (:call, :(=>), :k2, "value2"), :d4, :(===)))),
+        (:line, 491, :none),
+        (:macrocall, Symbol("@test"), (:call, :in, (:call, :(=>), :k2, :v2), :d4, :(===))),
+        (:line, 492, :none),
+        (:macrocall, Symbol("@test"), (:call, :in, (:call, :(=>), :k2, :NaN), :dnan, :isequal)),
+        (:line, 493, :none),
+        (:macrocall, Symbol("@test"), (:call, :in, (:call, :(=>), :k2, :NaN), :dnan, :(===))),
+        (:line, 494, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:call, :in, (:call, :(=>), :k2, :NaN), :dnan, :(==)))),
+        (:line, 495, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:call, :in, (:call, :(=>), :k2, 1), :dnum, :(===)))),
+        (:line, 496, :none),
+        (:macrocall, Symbol("@test"), (:call, :in, (:call, :(=>), :k2, 1.0), :dnum, :(===))),
+        (:line, 497, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:call, :in, (:call, :(=>), :k2, 1), :dnum, :<))),
+        (:line, 498, :none),
+        (:macrocall, Symbol("@test"), (:call, :in, (:call, :(=>), :k2, 0), :dnum, :<)),
+        (:line, 499, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), (:call, :get, :d1, "key1", (:quote, #QuoteNode
+                :default
+              )), :v1)),
+        (:line, 500, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), (:call, :get, :d4, "key1", (:quote, #QuoteNode
+                :default
+              )), :v2)),
+        (:line, 501, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), (:call, :get, :d4, "foo", (:quote, #QuoteNode
+                :default
+              )), (:quote, #QuoteNode
+              :default
+            ))),
+        (:line, 502, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), (:call, :get, :d, :k1, (:quote, #QuoteNode
+                :default
+              )), (:quote, #QuoteNode
+              :default
+            ))),
+        (:line, 503, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), (:ref, :d1, "key1"), :v1)),
+        (:line, 504, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), (:ref, :d4, "key1"), :v2)),
+        (:line, 505, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), (:call, :similar, :d3), :d)),
+        (:line, 506, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), (:call, :similar, :d), :d)),
+        (:line, 508, :none),
+        (:macrocall, Symbol("@test_throws"), :KeyError, (:ref, :d, :k1)),
+        (:line, 509, :none),
+        (:macrocall, Symbol("@test_throws"), :KeyError, (:ref, :d1, "key2"))
+      ), (:(=), :d, (:call, (:curly, :ImmutableDict, :String, :String))), (:(=), :k1, "key1"), (:(=), :k2, "key2"), (:(=), :v1, "value1"), (:(=), :v2, "value2"), (:(=), :d1, (:call, :ImmutableDict, :d, (:call, :(=>), :k1, :v1))), (:(=), :d2, (:call, :ImmutableDict, :d1, (:call, :(=>), :k2, :v2))), (:(=), :d3, (:call, :ImmutableDict, :d2, (:call, :(=>), :k1, :v2))), (:(=), :d4, (:call, :ImmutableDict, :d3, (:call, :(=>), :k2, :v1))), (:(=), :dnan, (:call, (:curly, :ImmutableDict, :String, :Float64), :k2, :NaN)), (:(=), :dnum, (:call, :ImmutableDict, :dnan, (:call, :(=>), :k2, 1)))),
+    (:line, 513, :none),
+    (:let, (:block,
+        (:line, 514, :none),
+        (:macrocall, Symbol("@test"), (:comparison, (:call, :filter, :f, :d), :(==), (:call, :filter!, :f, (:call, :copy, :d)), :(==), (:call, :invoke, :filter!, (:curly, :Tuple, :Function, :Associative), :f, (:call, :copy, :d)), :(==), (:call, :Dict, (:call, :zip, (:(:), 2, 2, 1000), (:(:), 2, 2, 1000)))))
+      ), (:(=), :d, (:call, :Dict, (:call, :zip, (:(:), 1, 1000), (:(:), 1, 1000)))), (:(=), :f, (:->, (:tuple, :k, :v), (:block,
+            (:line, 513, :none),
+            (:call, :iseven, :k)
+          )))),
+    (:line, 520, :none),
+    (:type, false, (:<:, :MyString, :AbstractString), (:block,
+        (:line, 521, :none),
+        (:(::), :str, :String)
+      )),
+    (:line, 523, :none),
+    (:import, :Base, :(==)),
+    (:line, 525, :none),
+    (:const, (:global, (:(=), :hashoffset, (:vect, (:call, :UInt, 190))))),
+    (:line, 527, :none),
+    (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+            :hash
+          )), (:(::), :s, :MyString)), (:block,
+        (:line, 527, :none),
+        (:call, :+, (:call, :hash, (:., :s, (:quote, #QuoteNode
+                :str
+              ))), (:ref, :hashoffset))
+      )),
+    (:line, 528, :none),
+    (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+            :endof
+          )), (:(::), :s, :MyString)), (:block,
+        (:line, 528, :none),
+        (:call, :endof, (:., :s, (:quote, #QuoteNode
+              :str
+            )))
+      )),
+    (:line, 529, :none),
+    (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+            :next
+          )), (:(::), :s, :MyString), (:(::), :v, :Int)), (:block,
+        (:line, 529, :none),
+        (:call, :next, (:., :s, (:quote, #QuoteNode
+              :str
+            )), :v)
+      )),
+    (:line, 530, :none),
+    (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+            :isequal
+          )), (:(::), :a, :MyString), (:(::), :b, :MyString)), (:block,
+        (:line, 530, :none),
+        (:call, :isequal, (:., :a, (:quote, #QuoteNode
+              :str
+            )), (:., :b, (:quote, #QuoteNode
+              :str
+            )))
+      )),
+    (:line, 531, :none),
+    (:(=), (:call, :(==), (:(::), :a, :MyString), (:(::), :b, :MyString)), (:block,
+        (:line, 531, :none),
+        (:call, :(==), (:., :a, (:quote, #QuoteNode
+              :str
+            )), (:., :b, (:quote, #QuoteNode
+              :str
+            )))
+      )),
+    (:line, 533, :none),
+    (:let, (:block,
+        (:line, 548, :none),
+        (:(=), :d, (:call, (:curly, :Dict, :AbstractString, :Int))),
+        (:line, 549, :none),
+        (:for, (:(=), :i, (:(:), 1, (:call, :length, :badKeys))), (:block,
+            (:line, 550, :none),
+            (:(=), (:ref, :d, (:ref, :badKeys, :i)), :i)
+          )),
+        (:line, 553, :none),
+        (:for, (:(=), :i, (:(:), 1, (:call, :length, :badKeys))), (:block,
+            (:line, 554, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :d, (:ref, :badKeys, :i)), :i))
+          )),
+        (:line, 558, :none),
+        (:for, (:(=), :offset, (:(:), 0, 1023)), (:block,
+            (:line, 559, :none),
+            (:(=), :d2, (:call, (:curly, :Dict, :MyString, :Int))),
+            (:line, 560, :none),
+            (:(=), (:ref, :hashoffset), :offset),
+            (:line, 561, :none),
+            (:for, (:(=), :i, (:(:), 1, (:call, :length, :badKeys))), (:block,
+                (:line, 562, :none),
+                (:(=), (:ref, :d2, (:call, :MyString, (:ref, :badKeys, :i))), :i)
+              )),
+            (:line, 565, :none),
+            (:for, (:(=), :i, (:(:), 1, (:call, :length, :badKeys))), (:block,
+                (:line, 566, :none),
+                (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :d2, (:call, :MyString, (:ref, :badKeys, :i))), :i))
+              ))
+          ))
+      ), (:(=), :badKeys, (:vect, "FINO_emv5.0", "FINO_ema0.1", "RATE_ema1.0", "NIBPM_ema1.0", "SAO2_emv5.0", "O2FLOW_ema5.0", "preop_Neuro/Psych_", "gender_", "FIO2_ema0.1", "PEAK_ema5.0", "preop_Reproductive_denies", "O2FLOW_ema0.1", "preop_Endocrine_denies", "preop_Respiratory_", "NIBPM_ema0.1", "PROPOFOL_MCG/KG/MIN_decay5.0", "NIBPD_ema1.0", "NIBPS_ema5.0", "anesthesiaStartTime", "NIBPS_ema1.0", "RESPRATE_ema1.0", "PEAK_ema0.1", "preop_GU_denies", "preop_Cardiovascular_", "PIP_ema5.0", "preop_ENT_denies", "preop_Skin_denies", "preop_Renal_denies", "asaCode_IIIE", "N2OFLOW_emv5.0", "NIBPD_emv5.0", "NIBPM_ema5.0", "preop_Respiratory_complete", "ETCO2_ema5.0", "RESPRATE_ema0.1", "preop_Functional Status_<2", "preop_Renal_symptoms", "ECGRATE_ema5.0", "FIO2_emv5.0", "RESPRATE_emv5.0", "7wu3ty0a4fs", "BVO", "4UrCWXUsaT"))),
+    (:line, 571, :none),
+    (:type, false, (:<:, :MyInt, :Integer), (:block,
+        (:line, 572, :none),
+        (:(::), :val, :UInt)
+      )),
+    (:line, 575, :none),
+    (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+            :hash
+          )), (:(::), :v, :MyInt)), (:block,
+        (:line, 575, :none),
+        (:call, :+, (:., :v, (:quote, #QuoteNode
+              :val
+            )), (:ref, :hashoffset))
+      )),
+    (:line, 576, :none),
+    (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+            :endof
+          )), (:(::), :v, :MyInt)), (:block,
+        (:line, 576, :none),
+        (:call, :endof, (:., :v, (:quote, #QuoteNode
+              :val
+            )))
+      )),
+    (:line, 577, :none),
+    (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+            :next
+          )), (:(::), :v, :MyInt), (:(::), :i, :Int)), (:block,
+        (:line, 577, :none),
+        (:call, :next, (:., :v, (:quote, #QuoteNode
+              :val
+            )), :i)
+      )),
+    (:line, 578, :none),
+    (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+            :isequal
+          )), (:(::), :a, :MyInt), (:(::), :b, :MyInt)), (:block,
+        (:line, 578, :none),
+        (:call, :isequal, (:., :a, (:quote, #QuoteNode
+              :val
+            )), (:., :b, (:quote, #QuoteNode
+              :val
+            )))
+      )),
+    (:line, 579, :none),
+    (:(=), (:call, :(==), (:(::), :a, :MyInt), (:(::), :b, :MyInt)), (:block,
+        (:line, 579, :none),
+        (:call, :(==), (:., :a, (:quote, #QuoteNode
+              :val
+            )), (:., :b, (:quote, #QuoteNode
+              :val
+            )))
+      )),
+    (:line, 581, :none),
+    (:let, (:block,
+        (:line, 587, :none),
+        (:for, (:(=), :offset, (:(:), 0, 1023)), (:block,
+            (:line, 588, :none),
+            (:(=), :d2, (:call, (:curly, :Dict, :MyInt, :Int))),
+            (:line, 589, :none),
+            (:(=), (:ref, :hashoffset), :offset),
+            (:line, 590, :none),
+            (:for, (:(=), :i, (:(:), 1, (:call, :length, :badKeys))), (:block,
+                (:line, 591, :none),
+                (:(=), (:ref, :d2, (:call, :MyInt, (:ref, :badKeys, :i))), :i)
+              )),
+            (:line, 594, :none),
+            (:for, (:(=), :i, (:(:), 1, (:call, :length, :badKeys))), (:block,
+                (:line, 595, :none),
+                (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :d2, (:call, :MyInt, (:ref, :badKeys, :i))), :i))
+              ))
+          ))
+      ), (:(=), :badKeys, (:ref, :UInt16, 0xb800, 0xa501, 0xcdff, 0x6303, 0xe40a, 0xcf0e, 0xf3df, 0xae99, 0x9913, 0x741c, 0xd01f, 0xc822, 0x9723, 0xb7a0, 0xea25, 0x7423, 0x6029, 0x202a, 0x822b, 0x492c, 0xd02c, 0x862d, 0x8f34, 0xe529, 0xf938, 0x4f39, 0xd03a, 0x473b, 0x1e3b, 0x1d3a, 0xcc39, 0x7339, 0xcf40, 0x8740, 0x813d, 0xe640, 0xc443, 0x6344, 0x3744, 0x2c3d, 0x8c48, 0xdf49, 0x5743))),
+    (:line, 601, :none),
+    (:call, :Dict, (:call, :(=>), 1, (:call, :rand, 2, 3)), (:call, :(=>), 'c', "asdf")),
+    (:line, 603, :none),
+    (:macrocall, Symbol("@testset"), "WeakKeyDict", (:block,
+        (:line, 604, :none),
+        (:(=), :A, (:vect, 1)),
+        (:line, 605, :none),
+        (:(=), :B, (:vect, 2)),
+        (:line, 606, :none),
+        (:(=), :C, (:vect, 3)),
+        (:line, 607, :none),
+        (:local, (:(=), :x, 0)),
+        (:line, 608, :none),
+        (:local, (:(=), :y, 0)),
+        (:line, 609, :none),
+        (:local, (:(=), :z, 0)),
+        (:line, 610, :none),
+        (:call, :finalizer, :A, (:->, :a, (:block,
+              (:line, 610, :none),
+              (:+=, :x, 1)
+            ))),
+        (:line, 611, :none),
+        (:call, :finalizer, :B, (:->, :b, (:block,
+              (:line, 611, :none),
+              (:+=, :y, 1)
+            ))),
+        (:line, 612, :none),
+        (:call, :finalizer, :C, (:->, :c, (:block,
+              (:line, 612, :none),
+              (:+=, :z, 1)
+            ))),
+        (:line, 615, :none),
+        (:(=), :wkd, (:call, :WeakKeyDict)),
+        (:line, 616, :none),
+        (:(=), (:ref, :wkd, :A), 2),
+        (:line, 617, :none),
+        (:(=), (:ref, :wkd, :B), 3),
+        (:line, 618, :none),
+        (:(=), (:ref, :wkd, :C), 4),
+        (:line, 619, :none),
+        (:(=), :dd, (:call, :convert, (:curly, :Dict, :Any, :Any), :wkd)),
+        (:line, 620, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :WeakKeyDict, :dd), :wkd)),
+        (:line, 621, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, (:call, :WeakKeyDict, :dd), (:curly, :WeakKeyDict, :Any, :Any))),
+        (:line, 622, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :WeakKeyDict, (:call, :(=>), :A, 2), (:call, :(=>), :B, 3), (:call, :(=>), :C, 4)), :wkd)),
+        (:line, 623, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, (:call, :WeakKeyDict, (:call, :(=>), :A, 2), (:call, :(=>), :B, 3), (:call, :(=>), :C, 4)), (:curly, :WeakKeyDict, (:curly, :Array, :Int, 1), :Int))),
+        (:line, 624, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :WeakKeyDict, (:generator, (:call, :(=>), :a, (:call, :+, :i, 1)), (:(=), (:tuple, :i, :a), (:call, :enumerate, (:vect, :A, :B, :C))))), :wkd)),
+        (:line, 625, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :WeakKeyDict, (:vect, (:tuple, :A, 2), (:tuple, :B, 3), (:tuple, :C, 4))), :wkd)),
+        (:line, 626, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :copy, :wkd), :wkd)),
+        (:line, 628, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :wkd), 3)),
+        (:line, 629, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:call, :isempty, :wkd))),
+        (:line, 630, :none),
+        (:(=), :res, (:call, :pop!, :wkd, :C)),
+        (:line, 631, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :res, 4)),
+        (:line, 632, :none),
+        (:macrocall, Symbol("@test"), (:call, :∉, :C, (:call, :keys, :wkd))),
+        (:line, 633, :none),
+        (:macrocall, Symbol("@test"), (:call, :∉, 4, (:call, :values, :wkd))),
+        (:line, 634, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :wkd), 2)),
+        (:line, 635, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:call, :isempty, :wkd))),
+        (:line, 636, :none),
+        (:(=), :wkd, (:call, :filter!, (:->, (:tuple, :k, :v), (:block,
+                (:line, 636, :none),
+                (:call, :(!=), :k, :B)
+              )), :wkd)),
+        (:line, 637, :none),
+        (:macrocall, Symbol("@test"), (:call, :∉, :B, (:call, :keys, :wkd))),
+        (:line, 638, :none),
+        (:macrocall, Symbol("@test"), (:call, :∉, 3, (:call, :values, :wkd))),
+        (:line, 639, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :wkd), 1)),
+        (:line, 640, :none),
+        (:macrocall, Symbol("@test"), (:call, :!, (:call, :isempty, :wkd))),
+        (:line, 642, :none),
+        (:(=), :wkd, (:call, :empty!, :wkd)),
+        (:line, 643, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :wkd, (:call, :similar, :wkd))),
+        (:line, 644, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :typeof, :wkd), (:call, :typeof, (:call, :similar, :wkd)))),
+        (:line, 645, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :wkd), 0)),
+        (:line, 646, :none),
+        (:macrocall, Symbol("@test"), (:call, :isempty, :wkd)),
+        (:line, 647, :none),
+        (:macrocall, Symbol("@test"), (:call, :isa, :wkd, :WeakKeyDict))
+      )),
+    (:line, 650, :none),
+    (:macrocall, Symbol("@testset"), "issue #19995, hash of dicts", (:block,
+        (:line, 651, :none),
+        (:macrocall, Symbol("@test"), (:call, :(!=), (:call, :hash, (:call, :Dict, (:call, :(=>), (:call, :Dict, (:call, :(=>), 1, 2)), 3), (:call, :(=>), (:call, :Dict, (:call, :(=>), 4, 5)), 6))), (:call, :hash, (:call, :Dict, (:call, :(=>), (:call, :Dict, (:call, :(=>), 4, 5)), 3), (:call, :(=>), (:call, :Dict, (:call, :(=>), 1, 2)), 6))))),
+        (:line, 652, :none),
+        (:(=), :a, (:call, :Dict, (:call, :(=>), (:call, :Dict, (:call, :(=>), 3, 4), (:call, :(=>), 2, 3)), 2), (:call, :(=>), (:call, :Dict, (:call, :(=>), 1, 2), (:call, :(=>), 5, 6)), 1))),
+        (:line, 653, :none),
+        (:(=), :b, (:call, :Dict, (:call, :(=>), (:call, :Dict, (:call, :(=>), 1, 2), (:call, :(=>), 2, 3), (:call, :(=>), 5, 6)), 1), (:call, :(=>), (:call, :Dict, (:call, :(=>), 3, 4)), 2))),
+        (:line, 654, :none),
+        (:macrocall, Symbol("@test"), (:call, :(!=), (:call, :hash, :a), (:call, :hash, :b)))
+      )),
+    (:line, 657, :none),
+    (:type, true, :Foo_15776, (:block,
+        (:line, 658, :none),
+        (:(::), :x, (:curly, :Vector, (:curly, :Pair, (:curly, :Tuple, :Function, (:curly, :Vararg, :Int)), :Int)))
+      )),
+    (:line, 660, :none),
+    (:macrocall, Symbol("@testset"), "issue #15776, convert for pair", (:block,
+        (:line, 661, :none),
+        (:(=), :z, (:vect, (:call, :Pair, (:tuple, :+, 1, 5, 7), 3), (:call, :Pair, (:tuple, :-, 6, 5, 3, 5, 8), 1))),
+        (:line, 662, :none),
+        (:(=), :f, (:call, :Foo_15776, :z)),
+        (:line, 663, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, (:., :f, (:quote, #QuoteNode
+                    :x
+                  )), 1), (:quote, #QuoteNode
+                :first
+              )), (:tuple, :+, 1, 5, 7))),
+        (:line, 664, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, (:., :f, (:quote, #QuoteNode
+                    :x
+                  )), 1), (:quote, #QuoteNode
+                :second
+              )), 3)),
+        (:line, 665, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, (:., :f, (:quote, #QuoteNode
+                    :x
+                  )), 2), (:quote, #QuoteNode
+                :first
+              )), (:tuple, :-, 6, 5, 3, 5, 8))),
+        (:line, 666, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, (:., :f, (:quote, #QuoteNode
+                    :x
+                  )), 2), (:quote, #QuoteNode
+                :second
+              )), 1))
+      )),
+    (:line, 669, :none),
+    (:macrocall, Symbol("@testset"), "issue #18708 error type for dict constructor", (:block,
+        (:line, 670, :none),
+        (:macrocall, Symbol("@test_throws"), :UndefVarError, (:call, :Dict, (:generator, (:call, :(=>), :x, :y), (:(=), :x, (:(:), 1, 10)))))
+      )),
+    (:line, 673, :none),
+    (:type, true, (:<:, :Error19179, :Exception), (:block,
+        (:line, 674, :none)
+      )),
+    (:line, 676, :none),
+    (:macrocall, Symbol("@testset"), "issue #19179 throwing error in dict constructor", (:block,
+        (:line, 677, :none),
+        (:macrocall, Symbol("@test_throws"), :Error19179, (:call, :Dict, (:generator, (:call, :(=>), :i, (:call, :throw, (:call, :Error19179))), (:(=), :i, (:(:), 1, 10)))))
+      )),
+    (:line, 681, :none),
+    (:let, (:block,
+        (:line, 682, :none),
+        (:(=), :d, (:call, :Dict, (:generator, (:call, :(=>), :i, (:call, :^, :i, 2)), (:(=), :i, (:(:), 1, 10000))))),
+        (:line, 683, :none),
+        (:(=), :z, (:call, :zip, (:call, :keys, :d), (:call, :values, :d))),
+        (:line, 684, :none),
+        (:for, (:(=), (:tuple, :pair, :tupl), (:call, :zip, :d, :z)), (:block,
+            (:line, 685, :none),
+            (:macrocall, Symbol("@test"), (:&&, (:call, :(==), (:ref, :pair, 1), (:ref, :tupl, 1)), (:call, :(==), (:ref, :pair, 2), (:ref, :tupl, 2))))
+          ))
+      )),
+    (:line, 689, :none),
+    (:macrocall, Symbol("@testset"), "Dict merge", (:block,
+        (:line, 690, :none),
+        (:(=), :d1, (:call, :Dict, (:call, :(=>), "A", 1), (:call, :(=>), "B", 2))),
+        (:line, 691, :none),
+        (:(=), :d2, (:call, :Dict, (:call, :(=>), "B", 3.0), (:call, :(=>), "C", 4.0))),
+        (:line, 692, :none),
+        (:macrocall, Symbol("@test"), (:macrocall, Symbol("@inferred"), (:call, :(==), (:call, :merge, :d1, :d2), (:call, :Dict, (:call, :(=>), "A", 1), (:call, :(=>), "B", 3), (:call, :(=>), "C", 4))))),
+        (:line, 694, :none),
+        (:macrocall, Symbol("@test"), (:macrocall, Symbol("@inferred"), (:call, :(==), (:call, :merge, :+, :d1, :d2), (:call, :Dict, (:call, :(=>), "A", 1), (:call, :(=>), "B", 5), (:call, :(=>), "C", 4))))),
+        (:line, 695, :none),
+        (:macrocall, Symbol("@test"), (:macrocall, Symbol("@inferred"), (:call, :(==), (:call, :merge, :*, :d1, :d2), (:call, :Dict, (:call, :(=>), "A", 1), (:call, :(=>), "B", 6), (:call, :(=>), "C", 4))))),
+        (:line, 696, :none),
+        (:macrocall, Symbol("@test"), (:macrocall, Symbol("@inferred"), (:call, :(==), (:call, :merge, :-, :d1, :d2), (:call, :Dict, (:call, :(=>), "A", 1), (:call, :(=>), "B", -1), (:call, :(=>), "C", 4)))))
+      )),
+    (:line, 699, :none),
+    (:macrocall, Symbol("@testset"), "Dict merge!", (:block,
+        (:line, 700, :none),
+        (:(=), :d1, (:call, :Dict, (:call, :(=>), "A", 1), (:call, :(=>), "B", 2))),
+        (:line, 701, :none),
+        (:(=), :d2, (:call, :Dict, (:call, :(=>), "B", 3), (:call, :(=>), "C", 4))),
+        (:line, 702, :none),
+        (:macrocall, Symbol("@inferred"), (:call, :merge!, :d1, :d2)),
+        (:line, 703, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :d1, (:call, :Dict, (:call, :(=>), "A", 1), (:call, :(=>), "B", 3), (:call, :(=>), "C", 4)))),
+        (:line, 705, :none),
+        (:macrocall, Symbol("@inferred"), (:call, :merge!, :+, :d1, :d2)),
+        (:line, 706, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :d1, (:call, :Dict, (:call, :(=>), "A", 1), (:call, :(=>), "B", 6), (:call, :(=>), "C", 8)))),
+        (:line, 707, :none),
+        (:macrocall, Symbol("@inferred"), (:call, :merge!, :*, :d1, :d2)),
+        (:line, 708, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :d1, (:call, :Dict, (:call, :(=>), "A", 1), (:call, :(=>), "B", 18), (:call, :(=>), "C", 32)))),
+        (:line, 709, :none),
+        (:macrocall, Symbol("@inferred"), (:call, :merge!, :-, :d1, :d2)),
+        (:line, 710, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :d1, (:call, :Dict, (:call, :(=>), "A", 1), (:call, :(=>), "B", 15), (:call, :(=>), "C", 28))))
+      )),
+    (:line, 713, :none),
+    (:macrocall, Symbol("@testset"), "misc error/io", (:block,
+        (:line, 714, :none),
+        (:(=), :d, (:call, :Dict, (:call, :(=>), 'a', 1), (:call, :(=>), 'b', 1), (:call, :(=>), 'c', 3))),
+        (:line, 715, :none),
+        (:macrocall, Symbol("@test_throws"), :ErrorException, (:call, :in, 'a', :d)),
+        (:line, 716, :none),
+        (:(=), :key_str, (:call, :sprint, :show, (:call, :keys, :d))),
+        (:line, 717, :none),
+        (:macrocall, Symbol("@test"), (:call, :∈, 'a', :key_str)),
+        (:line, 718, :none),
+        (:macrocall, Symbol("@test"), (:call, :∈, 'b', :key_str)),
+        (:line, 719, :none),
+        (:macrocall, Symbol("@test"), (:call, :∈, 'c', :key_str))
+      ))
+  ))

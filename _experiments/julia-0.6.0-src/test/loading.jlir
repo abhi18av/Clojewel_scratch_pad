@@ -1,0 +1,141 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:using, :Base, :Test),
+    (:line, 5, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), 5, 5)),
+    (:line, 7, :none),
+    (:call, :include, "test_sourcepath.jl"),
+    (:line, 8, :none),
+    (:(=), :thefname, "the fname!//\\&\x01*"),
+    (:line, 9, :none),
+    (:(=), :include_string_test_func, (:call, :include_string, "include_string_test() = @__FILE__", :thefname)),
+    (:line, 10, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :include_string_test_func), (:call, (:., :Base, (:quote, #QuoteNode
+              :source_path
+            ))))),
+    (:line, 11, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :include_string, "Base.source_path()", :thefname), (:call, (:., :Base, (:quote, #QuoteNode
+              :source_path
+            ))))),
+    (:line, 12, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, :basename, (:macrocall, Symbol("@__FILE__"))), "loading.jl")),
+    (:line, 13, :none),
+    (:macrocall, Symbol("@test"), (:call, :isabspath, (:macrocall, Symbol("@__FILE__")))),
+    (:line, 15, :none),
+    (:macrocall, Symbol("@test"), (:call, :isdir, (:macrocall, Symbol("@__DIR__")))),
+    (:line, 16, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:macrocall, Symbol("@__DIR__")), (:call, :dirname, (:macrocall, Symbol("@__FILE__"))))),
+    (:line, 19, :none),
+    (:call, :mktempdir, (:->, (:tuple, :dir), (:block,
+          (:line, 20, :none),
+          (:call, :cd, (:->, (:tuple,), (:block,
+                (:line, 21, :none),
+                (:let, (:block,
+                    (:line, 22, :none),
+                    (:call, :touch, :true_filename),
+                    (:line, 23, :none),
+                    (:macrocall, Symbol("@test"), (:call, (:., :Base, (:quote, #QuoteNode
+                            :isfile_casesensitive
+                          )), :true_filename)),
+                    (:line, 24, :none),
+                    (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :Base, (:quote, #QuoteNode
+                              :isfile_casesensitive
+                            )), :lowered_filename))),
+                    (:line, 27, :none),
+                    (:if, (:call, :isfile, :lowered_filename), (:block,
+                        (:line, 28, :none),
+                        (:call, :mkdir, "cAsEtEsT"),
+                        (:line, 29, :none),
+                        (:call, :touch, (:call, :joinpath, "cAsEtEsT", :true_filename)),
+                        (:line, 30, :none),
+                        (:macrocall, Symbol("@test"), (:call, (:., :Base, (:quote, #QuoteNode
+                                :isfile_casesensitive
+                              )), (:call, :joinpath, "casetest", :true_filename))),
+                        (:line, 31, :none),
+                        (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :Base, (:quote, #QuoteNode
+                                  :isfile_casesensitive
+                                )), (:call, :joinpath, "casetest", :lowered_filename))))
+                      ))
+                  ), (:(=), :true_filename, "cAsEtEsT.jl"), (:(=), :lowered_filename, "casetest.jl")),
+                (:line, 36, :none),
+                (:let, (:block,
+                    (:line, 37, :none),
+                    (:call, :touch, :nfc_name),
+                    (:line, 38, :none),
+                    (:macrocall, Symbol("@test"), (:call, (:., :Base, (:quote, #QuoteNode
+                            :isfile_casesensitive
+                          )), :nfc_name))
+                  ), (:(=), :nfc_name, "ô.jl"))
+              )), :dir)
+        ))),
+    (:line, 43, :none),
+    (:(=), :SAVED_LOAD_PATH, (:call, :copy, :LOAD_PATH)),
+    (:line, 44, :none),
+    (:call, :empty!, :LOAD_PATH),
+    (:line, 45, :none),
+    (:(=), :dir, (:call, :abspath, (:macrocall, Symbol("@__DIR__")))),
+    (:line, 46, :none),
+    (:call, :push!, :LOAD_PATH, :dir),
+    (:line, 48, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+              :find_in_path
+            )), "test_sourcepath"), (:call, :joinpath, :dir, "test_sourcepath.jl"))),
+    (:line, 49, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+              :find_in_path
+            )), (:call, :GenericString, "test_sourcepath")), (:call, :joinpath, :dir, "test_sourcepath.jl"))),
+    (:line, 50, :none),
+    (:(=), (:ref, :LOAD_PATH, :end), (:call, :GenericString, (:ref, :LOAD_PATH, :end))),
+    (:line, 51, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+              :find_in_path
+            )), "test_sourcepath"), (:call, :joinpath, :dir, "test_sourcepath.jl"))),
+    (:line, 53, :none),
+    (:type, false, :CustomLoader, (:block,
+        (:line, 54, :none),
+        (:(::), :path, :String)
+      )),
+    (:line, 56, :none),
+    (:call, :push!, :LOAD_PATH, (:call, :CustomLoader, "abc")),
+    (:line, 57, :none),
+    (:let, (:block,
+        (:line, 58, :none),
+        (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, (:., :Base, (:quote, #QuoteNode
+                :find_in_path
+              )), :name, :nothing)),
+        (:line, 59, :none),
+        (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+                :load_hook
+              )), (:(::), :prefix, :CustomLoader), (:(::), :name, :String), :found), (:block,
+            (:line, 59, :none),
+            (:call, :joinpath, (:., :prefix, (:quote, #QuoteNode
+                  :path
+                )), :name)
+          )),
+        (:line, 60, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+                  :find_in_path
+                )), :name, :nothing), (:call, :joinpath, "abc", :name)))
+      ), (:(=), :name, (:call, :randstring, 20))),
+    (:line, 62, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+              :find_in_path
+            )), "test_sourcepath", :nothing), (:call, :joinpath, "abc", "test_sourcepath"))),
+    (:line, 63, :none),
+    (:(=), (:call, (:., :Base, (:quote, #QuoteNode
+            :load_hook
+          )), (:(::), :prefix, :CustomLoader), (:(::), :name, :String), (:(::), :found, :String)), (:block,
+        (:line, 63, :none),
+        :found
+      )),
+    (:line, 64, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :Base, (:quote, #QuoteNode
+              :find_in_path
+            )), "test_sourcepath", :nothing), (:call, :joinpath, :dir, "test_sourcepath.jl"))),
+    (:line, 66, :none),
+    (:call, :empty!, :LOAD_PATH),
+    (:line, 67, :none),
+    (:call, :append!, :LOAD_PATH, :SAVED_LOAD_PATH),
+    (:line, 68, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), :LOAD_PATH, :SAVED_LOAD_PATH))
+  ))

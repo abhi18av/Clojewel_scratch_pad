@@ -1,0 +1,65 @@
+(:quote, (:block,
+    (:line, 8, :none),
+    (:if, (:call, :!, (:call, :isdefined, (:quote, #QuoteNode
+            :testenv_defined
+          ))), (:block,
+        (:line, 9, :none),
+        (:const, (:(=), :testenv_defined, true)),
+        (:line, 10, :none),
+        (:if, (:call, :haskey, :ENV, "JULIA_TEST_EXEFLAGS"), (:block,
+            (:line, 11, :none),
+            (:const, (:(=), :test_exeflags, (:macrocall, Symbol("@cmd"), "\$(Base.shell_split(ENV[\"JULIA_TEST_EXEFLAGS\"]))")))
+          ), (:block,
+            (:line, 13, :none),
+            (:(=), :inline_flag, (:if, (:call, :(==), (:., (:call, (:., :Base, (:quote, #QuoteNode
+                          :JLOptions
+                        ))), (:quote, #QuoteNode
+                      :can_inline
+                    )), 1), (:macrocall, Symbol("@cmd"), ""), (:macrocall, Symbol("@cmd"), "--inline=no"))),
+            (:line, 14, :none),
+            (:(=), :cov_flag, (:macrocall, Symbol("@cmd"), "")),
+            (:line, 15, :none),
+            (:if, (:call, :(==), (:., (:call, (:., :Base, (:quote, #QuoteNode
+                        :JLOptions
+                      ))), (:quote, #QuoteNode
+                    :code_coverage
+                  )), 1), (:block,
+                (:line, 16, :none),
+                (:(=), :cov_flag, (:macrocall, Symbol("@cmd"), "--code-coverage=user"))
+              ), (:block,
+                (:line, 17, :none),
+                (:if, (:call, :(==), (:., (:call, (:., :Base, (:quote, #QuoteNode
+                            :JLOptions
+                          ))), (:quote, #QuoteNode
+                        :code_coverage
+                      )), 2), (:block,
+                    (:line, 18, :none),
+                    (:(=), :cov_flag, (:macrocall, Symbol("@cmd"), "--code-coverage=all"))
+                  ))
+              )),
+            (:line, 20, :none),
+            (:const, (:(=), :test_exeflags, (:macrocall, Symbol("@cmd"), "\$cov_flag \$inline_flag --check-bounds=yes --startup-file=no --depwarn=error")))
+          )),
+        (:line, 23, :none),
+        (:if, (:call, :haskey, :ENV, "JULIA_TEST_EXENAME"), (:block,
+            (:line, 24, :none),
+            (:const, (:(=), :test_exename, (:macrocall, Symbol("@cmd"), "\$(Base.shell_split(ENV[\"JULIA_TEST_EXENAME\"]))")))
+          ), (:block,
+            (:line, 26, :none),
+            (:const, (:(=), :test_exename, (:macrocall, Symbol("@cmd"), "\$(joinpath(JULIA_HOME, Base.julia_exename()))")))
+          )),
+        (:line, 29, :none),
+        (:(=), (:call, :addprocs_with_testenv, (:parameters, (:..., :kwargs)), :X), (:block,
+            (:line, 29, :none),
+            (:call, :addprocs, (:parameters, (:kw, :exename, :test_exename), (:kw, :exeflags, :test_exeflags), (:..., :kwargs)), :X)
+          )),
+        (:line, 31, :none),
+        (:const, (:(=), :curmod, (:call, :current_module))),
+        (:line, 32, :none),
+        (:const, (:(=), :curmod_name, (:call, :fullname, :curmod))),
+        (:line, 33, :none),
+        (:const, (:(=), :curmod_str, (:if, (:call, :(===), :curmod, :Main), "Main", (:call, :join, :curmod_name, ".")))),
+        (:line, 34, :none),
+        (:const, (:(=), :curmod_prefix, (:string, (:..., (:comprehension, (:generator, (:string, :m, "."), (:(=), :m, :curmod_name)))))))
+      ))
+  ))

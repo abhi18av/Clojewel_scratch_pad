@@ -1,0 +1,108 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :Base, (:quote, #QuoteNode
+              :is_unix
+            )), (:quote, #QuoteNode
+            :Windows
+          )))),
+    (:line, 4, :none),
+    (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :Base, (:quote, #QuoteNode
+              :is_linux
+            )), (:quote, #QuoteNode
+            :Windows
+          )))),
+    (:line, 5, :none),
+    (:macrocall, Symbol("@test"), (:call, (:., :Base, (:quote, #QuoteNode
+            :is_linux
+          )), (:quote, #QuoteNode
+          :Linux
+        ))),
+    (:line, 6, :none),
+    (:macrocall, Symbol("@test"), (:call, (:., :Base, (:quote, #QuoteNode
+            :is_windows
+          )), (:quote, #QuoteNode
+          :Windows
+        ))),
+    (:line, 7, :none),
+    (:macrocall, Symbol("@test"), (:call, (:., :Base, (:quote, #QuoteNode
+            :is_windows
+          )), (:quote, #QuoteNode
+          :NT
+        ))),
+    (:line, 8, :none),
+    (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :Base, (:quote, #QuoteNode
+              :is_windows
+            )), (:quote, #QuoteNode
+            :Darwin
+          )))),
+    (:line, 9, :none),
+    (:macrocall, Symbol("@test"), (:call, (:., :Base, (:quote, #QuoteNode
+            :is_apple
+          )), (:quote, #QuoteNode
+          :Darwin
+        ))),
+    (:line, 10, :none),
+    (:macrocall, Symbol("@test"), (:call, (:., :Base, (:quote, #QuoteNode
+            :is_apple
+          )), (:quote, #QuoteNode
+          :Apple
+        ))),
+    (:line, 11, :none),
+    (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :Base, (:quote, #QuoteNode
+              :is_apple
+            )), (:quote, #QuoteNode
+            :Windows
+          )))),
+    (:line, 12, :none),
+    (:macrocall, Symbol("@test"), (:call, (:., :Base, (:quote, #QuoteNode
+            :is_unix
+          )), (:quote, #QuoteNode
+          :Darwin
+        ))),
+    (:line, 13, :none),
+    (:macrocall, Symbol("@test"), (:call, (:., :Base, (:quote, #QuoteNode
+            :is_unix
+          )), (:quote, #QuoteNode
+          :FreeBSD
+        ))),
+    (:line, 14, :none),
+    (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, (:., :Base, (:quote, #QuoteNode
+            :is_unix
+          )), (:quote, #QuoteNode
+          :BeOS
+        ))),
+    (:line, 15, :none),
+    (:if, (:call, :!, (:call, :is_windows)), (:block,
+        (:line, 16, :none),
+        (:macrocall, Symbol("@test"), (:call, :(===), (:call, (:., :Sys, (:quote, #QuoteNode
+                  :windows_version
+                ))), (:tuple, 0, 0)))
+      ), (:block,
+        (:line, 18, :none),
+        (:macrocall, Symbol("@test"), (:call, :>, (:ref, (:(::), (:call, (:., :Sys, (:quote, #QuoteNode
+                      :windows_version
+                    ))), (:curly, :Tuple, :Int, :Int)), 1), 0))
+      )),
+    (:line, 21, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:macrocall, Symbol("@static"), (:if, true, 1, 2)), 1)),
+    (:line, 22, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:macrocall, Symbol("@static"), (:if, false, 1, 2)), 2)),
+    (:line, 23, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:macrocall, Symbol("@static"), (:if, true, (:block,
+              (:line, 23, :none),
+              1
+            ))), 1)),
+    (:line, 24, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:macrocall, Symbol("@static"), (:if, false, (:block,
+              (:line, 24, :none),
+              1
+            ))), :nothing)),
+    (:line, 25, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:macrocall, Symbol("@static"), (:&&, true, 1)), 1)),
+    (:line, 26, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:macrocall, Symbol("@static"), (:&&, false, 1)), false)),
+    (:line, 27, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:macrocall, Symbol("@static"), (:||, true, 1)), true)),
+    (:line, 28, :none),
+    (:macrocall, Symbol("@test"), (:call, :(===), (:macrocall, Symbol("@static"), (:||, false, 1)), 1))
+  ))

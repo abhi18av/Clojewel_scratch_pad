@@ -1,0 +1,77 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:toplevel, (:import, :Base, :LibGit2, :AbstractCredentials), (:import, :Base, :LibGit2, :UserPasswordCredentials), (:import, :Base, :LibGit2, :SSHCredentials), (:import, :Base, :LibGit2, :CachedCredentials)),
+    (:line, 5, :none),
+    (:macrocall, :(Core.@doc), "Emulates the LibGit2 credential loop to allows testing of the credential_callback function\nwithout having to authenticate against a real server.\n", (:function, (:call, :credential_loop, (:(::), :valid_credential, :AbstractCredentials), (:(::), :url, :AbstractString), (:(::), :user, :AbstractString), (:(::), :allowed_types, :UInt32), (:kw, (:(::), :cache, :CachedCredentials), (:call, :CachedCredentials))), (:block,
+          (:line, 15, :none),
+          (:(=), :cb, (:call, (:., (:., :Base, (:quote, #QuoteNode
+                    :LibGit2
+                  )), (:quote, #QuoteNode
+                  :credentials_cb
+                )))),
+          (:line, 16, :none),
+          (:(=), :libgitcred_ptr_ptr, (:call, (:curly, :Ref, (:curly, :Ptr, :Void)), :C_NULL)),
+          (:line, 17, :none),
+          (:(=), :payload_ptr, (:call, :Ref, (:call, (:curly, :Nullable, :AbstractCredentials), :cache))),
+          (:line, 21, :none),
+          (:(=), :num_authentications, 0),
+          (:line, 25, :none),
+          (:(=), :err, (:call, :Cint, 0)),
+          (:line, 26, :none),
+          (:while, (:call, :(==), :err, 0), (:block,
+              (:line, 27, :none),
+              (:(=), :err, (:call, :ccall, :cb, :Cint, (:tuple, (:curly, :Ptr, (:curly, :Ptr, :Void)), :Cstring, :Cstring, :Cuint, (:curly, :Ptr, :Void)), :libgitcred_ptr_ptr, :url, (:if, (:call, :isempty, :user), :C_NULL, :user), :allowed_types, (:call, :pointer_from_objref, :payload_ptr))),
+              (:line, 29, :none),
+              (:+=, :num_authentications, 1),
+              (:line, 32, :none),
+              (:if, (:&&, (:call, :(==), (:call, :length, (:., :cache, (:quote, #QuoteNode
+                          :cred
+                        ))), 1), (:call, :(==), (:call, :first, (:call, :values, (:., :cache, (:quote, #QuoteNode
+                            :cred
+                          )))), :valid_credential)), (:block,
+                  (:line, 33, :none),
+                  (:break,)
+                )),
+              (:line, 36, :none),
+              (:if, (:call, :>, :num_authentications, 50), (:block,
+                  (:line, 37, :none),
+                  (:call, :error, "Credential callback seems to be caught in an infinite loop")
+                ))
+            )),
+          (:line, 41, :none),
+          (:return, (:tuple, :err, :num_authentications))
+        ))),
+    (:line, 44, :none),
+    (:function, (:call, :credential_loop, (:(::), :valid_credential, :UserPasswordCredentials), (:(::), :url, :AbstractString), (:kw, (:(::), :user, :AbstractString), "")), (:block,
+        (:line, 48, :none),
+        (:call, :credential_loop, :valid_credential, :url, :user, 0x00000001)
+      )),
+    (:line, 51, :none),
+    (:function, (:call, :credential_loop, (:parameters, (:kw, (:(::), :use_ssh_agent, :Bool), false)), (:(::), :valid_credential, :SSHCredentials), (:(::), :url, :AbstractString), (:kw, (:(::), :user, :AbstractString), "")), (:block,
+        (:line, 56, :none),
+        (:(=), :cache, (:call, :CachedCredentials)),
+        (:line, 58, :none),
+        (:if, (:call, :!, :use_ssh_agent), (:block,
+            (:line, 59, :none),
+            (:(=), :m, (:call, :match, (:., :LibGit2, (:quote, #QuoteNode
+                    :URL_REGEX
+                  )), :url)),
+            (:line, 60, :none),
+            (:(=), :default_cred, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                    :reset!
+                  )), (:call, :SSHCredentials, true), -1)),
+            (:line, 61, :none),
+            (:(=), (:., :default_cred, (:quote, #QuoteNode
+                  :usesshagent
+                )), "N"),
+            (:line, 62, :none),
+            (:call, (:., :LibGit2, (:quote, #QuoteNode
+                  :get_creds!
+                )), :cache, (:string, "ssh://", (:ref, :m, (:quote, #QuoteNode
+                    :host
+                  ))), :default_cred)
+          )),
+        (:line, 65, :none),
+        (:call, :credential_loop, :valid_credential, :url, :user, 0x00000046, :cache)
+      ))
+  ))

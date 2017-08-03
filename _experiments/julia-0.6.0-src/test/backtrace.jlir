@@ -1,0 +1,361 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:(=), :bt, (:call, :backtrace)),
+    (:line, 4, :none),
+    (:(=), :have_backtrace, false),
+    (:line, 5, :none),
+    (:for, (:(=), :l, :bt), (:block,
+        (:line, 6, :none),
+        (:(=), :lkup, (:call, :ccall, (:quote, #QuoteNode
+              :jl_lookup_code_address
+            ), :Any, (:tuple, (:curly, :Ptr, :Void), :Cint), :l, true)),
+        (:line, 7, :none),
+        (:if, (:call, :(==), (:ref, (:ref, :lkup, 1), 1), (:quote, #QuoteNode
+              :backtrace
+            )), (:block,
+            (:line, 8, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:ref, (:ref, :lkup, 1), 5), false)),
+            (:line, 9, :none),
+            (:(=), :have_backtrace, true),
+            (:line, 10, :none),
+            (:break,)
+          ))
+      )),
+    (:line, 14, :none),
+    (:macrocall, Symbol("@test"), :have_backtrace),
+    (:line, 17, :none),
+    (:module, true, :test_inline_bt, (:block,
+        (:line, 17, :none),
+        (:line, 18, :none),
+        (:using, :Base, :Test),
+        (:line, 20, :none),
+        (:function, (:call, :get_bt_frames, :functionname, :bt), (:block,
+            (:line, 21, :none),
+            (:for, (:(=), :i, (:(:), 1, (:call, :length, :bt))), (:block,
+                (:line, 22, :none),
+                (:(=), :lkup, (:call, (:., (:., :Base, (:quote, #QuoteNode
+                          :StackTraces
+                        )), (:quote, #QuoteNode
+                        :lookup
+                      )), (:ref, :bt, :i))),
+                (:line, 23, :none),
+                (:&&, (:call, :(==), (:., (:ref, :lkup, :end), (:quote, #QuoteNode
+                        :func
+                      )), :functionname), (:return, :lkup))
+              ))
+          )),
+        (:line, 28, :none),
+        (:call, :eval, (:call, :Expr, (:quote, #QuoteNode
+              :function
+            ), (:call, :Expr, (:quote, #QuoteNode
+                :call
+              ), (:quote, #QuoteNode
+                :test_inline_1
+              )), (:call, :Expr, (:quote, #QuoteNode
+                :block
+              ), (:call, :Expr, (:quote, #QuoteNode
+                  :line
+                ), 99, (:call, :Symbol, "backtrace.jl")), (:call, :Expr, (:quote, #QuoteNode
+                  :block
+                ), (:call, :Expr, (:quote, #QuoteNode
+                    :line
+                  ), 42), (:call, :Expr, (:quote, #QuoteNode
+                    :meta
+                  ), (:quote, #QuoteNode
+                    :push_loc
+                  ), (:call, :Symbol, "backtrace.jl"), (:quote, #QuoteNode
+                    :inlfunc
+                  )), (:call, :Expr, (:quote, #QuoteNode
+                    :line
+                  ), 37), (:call, :Expr, (:quote, #QuoteNode
+                    :call
+                  ), (:quote, #QuoteNode
+                    :throw
+                  ), "foo"), (:call, :Expr, (:quote, #QuoteNode
+                    :meta
+                  ), (:quote, #QuoteNode
+                    :pop_loc
+                  )), (:call, :Expr, (:quote, #QuoteNode
+                    :line
+                  ), 99))))),
+        (:line, 37, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :functionloc, :test_inline_1), (:tuple, "backtrace.jl", 99))),
+        (:line, 38, :none),
+        (:try, (:block,
+            (:line, 39, :none),
+            (:call, :test_inline_1),
+            (:line, 40, :none),
+            (:call, :error, "unexpected")
+          ), :err, (:block,
+            (:line, 42, :none),
+            (:(=), :lkup, (:call, :get_bt_frames, (:quote, #QuoteNode
+                  :test_inline_1
+                ), (:call, :catch_backtrace))),
+            (:line, 43, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :lkup), 2)),
+            (:line, 44, :none),
+            (:macrocall, Symbol("@test"), (:call, :endswith, (:call, :string, (:., (:ref, :lkup, 2), (:quote, #QuoteNode
+                      :file
+                    ))), "backtrace.jl")),
+            (:line, 45, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, :lkup, 2), (:quote, #QuoteNode
+                    :line
+                  )), 42)),
+            (:line, 46, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, :lkup, 1), (:quote, #QuoteNode
+                    :func
+                  )), (:quote, #QuoteNode
+                  :inlfunc
+                ))),
+            (:line, 47, :none),
+            (:macrocall, Symbol("@test"), (:call, :endswith, (:call, :string, (:., (:ref, :lkup, 1), (:quote, #QuoteNode
+                      :file
+                    ))), "backtrace.jl")),
+            (:line, 48, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, :lkup, 1), (:quote, #QuoteNode
+                    :line
+                  )), 37))
+          )),
+        (:line, 52, :none),
+        (:const, (:(=), :absfilepath, (:if, (:call, :is_windows), "C:\\foo\\bar\\baz.jl", "/foo/bar/baz.jl"))),
+        (:line, 53, :none),
+        (:call, :eval, (:call, :Expr, (:quote, #QuoteNode
+              :function
+            ), (:call, :Expr, (:quote, #QuoteNode
+                :call
+              ), (:quote, #QuoteNode
+                :test_inline_2
+              )), (:call, :Expr, (:quote, #QuoteNode
+                :block
+              ), (:call, :Expr, (:quote, #QuoteNode
+                  :line
+                ), 81, (:call, :Symbol, "backtrace.jl")), (:call, :Expr, (:quote, #QuoteNode
+                  :block
+                ), (:call, :Expr, (:quote, #QuoteNode
+                    :meta
+                  ), (:quote, #QuoteNode
+                    :push_loc
+                  ), (:call, :Symbol, :absfilepath)), (:call, :Expr, (:quote, #QuoteNode
+                    :line
+                  ), 111), (:call, :Expr, (:quote, #QuoteNode
+                    :call
+                  ), (:quote, #QuoteNode
+                    :throw
+                  ), "foo"), (:call, :Expr, (:quote, #QuoteNode
+                    :meta
+                  ), (:quote, #QuoteNode
+                    :pop_loc
+                  )), (:call, :Expr, (:quote, #QuoteNode
+                    :line
+                  ), 99))))),
+        (:line, 61, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :functionloc, :test_inline_2), (:tuple, "backtrace.jl", 81))),
+        (:line, 62, :none),
+        (:try, (:block,
+            (:line, 63, :none),
+            (:call, :test_inline_2),
+            (:line, 64, :none),
+            (:call, :error, "unexpected")
+          ), :err, (:block,
+            (:line, 66, :none),
+            (:(=), :lkup, (:call, :get_bt_frames, (:quote, #QuoteNode
+                  :test_inline_2
+                ), (:call, :catch_backtrace))),
+            (:line, 67, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :lkup), 2)),
+            (:line, 68, :none),
+            (:macrocall, Symbol("@test"), (:call, :endswith, (:call, :string, (:., (:ref, :lkup, 2), (:quote, #QuoteNode
+                      :file
+                    ))), "backtrace.jl")),
+            (:line, 69, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, :lkup, 2), (:quote, #QuoteNode
+                    :line
+                  )), 81)),
+            (:line, 70, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:call, :string, (:., (:ref, :lkup, 1), (:quote, #QuoteNode
+                      :file
+                    ))), :absfilepath)),
+            (:line, 71, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, :lkup, 1), (:quote, #QuoteNode
+                    :line
+                  )), 111))
+          ))
+      )),
+    (:line, 77, :none),
+    (:(=), :linenum, 77),
+    (:line, 77, :none),
+    (:(=), (:call, :f12977, (:parameters, (:..., :args))), (:block,
+        (:line, 77, :none),
+        (:tuple,)
+      )),
+    (:line, 78, :none),
+    (:(=), :loc, (:call, :functionloc, :f12977)),
+    (:line, 79, :none),
+    (:macrocall, Symbol("@test"), (:call, :endswith, (:ref, :loc, 1), "backtrace.jl")),
+    (:line, 80, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :loc, 2), :linenum)),
+    (:line, 82, :none),
+    (:macrocall, Symbol("@noinline"), (:function, (:call, :test_throw_commoning, :x), (:block,
+          (:line, 83, :none),
+          (:if, (:call, :(==), :x, 1), (:block,
+              (:line, 83, :none),
+              (:call, :throw, (:call, :AssertionError))
+            )),
+          (:line, 84, :none),
+          (:if, (:call, :(==), :x, 2), (:block,
+              (:line, 84, :none),
+              (:call, :throw, (:call, :AssertionError))
+            ))
+        ))),
+    (:line, 87, :none),
+    (:let, (:block,
+        (:line, 88, :none),
+        (:local, :b1, :b2),
+        (:line, 89, :none),
+        (:try, (:block,
+            (:line, 90, :none),
+            (:call, :test_throw_commoning, 1)
+          ), false, (:block,
+            (:line, 92, :none),
+            (:(=), :b1, (:call, :stacktrace, (:call, :catch_backtrace)))
+          )),
+        (:line, 94, :none),
+        (:try, (:block,
+            (:line, 95, :none),
+            (:call, :test_throw_commoning, 2)
+          ), false, (:block,
+            (:line, 97, :none),
+            (:(=), :b2, (:call, :stacktrace, (:call, :catch_backtrace)))
+          )),
+        (:line, 99, :none),
+        (:(=), :i1, (:call, :findfirst, (:->, :frame, (:block,
+                (:line, 99, :none),
+                (:call, :(===), (:., :frame, (:quote, #QuoteNode
+                      :func
+                    )), (:quote, #QuoteNode
+                    :test_throw_commoning
+                  ))
+              )), :b1)),
+        (:line, 100, :none),
+        (:(=), :i2, (:call, :findfirst, (:->, :frame, (:block,
+                (:line, 100, :none),
+                (:call, :(===), (:., :frame, (:quote, #QuoteNode
+                      :func
+                    )), (:quote, #QuoteNode
+                    :test_throw_commoning
+                  ))
+              )), :b2)),
+        (:line, 101, :none),
+        (:macrocall, Symbol("@test"), (:&&, (:call, :>, :i1, 0), (:call, :>, :i2, 0))),
+        (:line, 102, :none),
+        (:macrocall, Symbol("@test"), (:call, :(!=), (:., (:ref, :b1, :i1), (:quote, #QuoteNode
+                :line
+              )), (:., (:ref, :b2, :i2), (:quote, #QuoteNode
+                :line
+              ))))
+      )),
+    (:line, 105, :none),
+    (:module, true, :BackTraceTesting, (:block,
+        (:line, 105, :none),
+        (:line, 107, :none),
+        (:using, :Base, :Test),
+        (:line, 109, :none),
+        (:macrocall, Symbol("@inline"), (:(=), (:call, :bt2), (:block,
+              (:line, 109, :none),
+              (:call, :backtrace)
+            ))),
+        (:line, 110, :none),
+        (:macrocall, Symbol("@inline"), (:(=), (:call, :bt1), (:block,
+              (:line, 110, :none),
+              (:call, :bt2)
+            ))),
+        (:line, 111, :none),
+        (:(=), (:call, :bt), (:block,
+            (:line, 111, :none),
+            (:call, :bt1)
+          )),
+        (:line, 113, :none),
+        (:(=), :lkup, (:call, :map, (:., :StackTraces, (:quote, #QuoteNode
+                :lookup
+              )), (:call, :bt))),
+        (:line, 114, :none),
+        (:(=), :hasbt, (:(=), :hasbt2, false)),
+        (:line, 115, :none),
+        (:for, (:(=), :sfs, :lkup), (:block,
+            (:line, 116, :none),
+            (:for, (:(=), :sf, :sfs), (:block,
+                (:line, 117, :none),
+                (:if, (:call, :(==), (:., :sf, (:quote, #QuoteNode
+                        :func
+                      )), (:quote, #QuoteNode
+                      :bt
+                    )), (:block,
+                    (:line, 118, :none),
+                    (:(=), :hasbt, true)
+                  )),
+                (:line, 120, :none),
+                (:if, (:call, :(==), (:., :sf, (:quote, #QuoteNode
+                        :func
+                      )), (:quote, #QuoteNode
+                      :bt2
+                    )), (:block,
+                    (:line, 121, :none),
+                    (:(=), :hasbt2, true)
+                  ))
+              ))
+          )),
+        (:line, 125, :none),
+        (:macrocall, Symbol("@test"), :hasbt),
+        (:line, 126, :none),
+        (:if, (:call, :(!=), (:., (:call, (:., :Base, (:quote, #QuoteNode
+                    :JLOptions
+                  ))), (:quote, #QuoteNode
+                :can_inline
+              )), 0), (:block,
+            (:line, 127, :none),
+            (:macrocall, Symbol("@test_broken"), :hasbt2)
+          ), (:block,
+            (:line, 129, :none),
+            (:macrocall, Symbol("@test"), :hasbt2)
+          )),
+        (:line, 132, :none),
+        (:function, (:call, :btmacro), (:block,
+            (:line, 133, :none),
+            (:(=), :ret, (:macrocall, Symbol("@timed"), (:call, :backtrace))),
+            (:line, 134, :none),
+            (:ref, :ret, 1)
+          )),
+        (:line, 136, :none),
+        (:(=), :lkup, (:call, :map, (:., :StackTraces, (:quote, #QuoteNode
+                :lookup
+              )), (:call, :btmacro))),
+        (:line, 137, :none),
+        (:(=), :hasme, (:(=), :hasbtmacro, false)),
+        (:line, 138, :none),
+        (:for, (:(=), :sfs, :lkup), (:block,
+            (:line, 139, :none),
+            (:for, (:(=), :sf, :sfs), (:block,
+                (:line, 140, :none),
+                (:if, (:call, :(==), (:., :sf, (:quote, #QuoteNode
+                        :func
+                      )), (:call, :Symbol, "macro expansion")), (:block,
+                    (:line, 141, :none),
+                    (:(=), :hasme, true)
+                  )),
+                (:line, 143, :none),
+                (:if, (:call, :(==), (:., :sf, (:quote, #QuoteNode
+                        :func
+                      )), (:quote, #QuoteNode
+                      :btmacro
+                    )), (:block,
+                    (:line, 144, :none),
+                    (:(=), :hasbtmacro, true)
+                  ))
+              ))
+          )),
+        (:line, 148, :none),
+        (:macrocall, Symbol("@test"), :hasme),
+        (:line, 149, :none),
+        (:macrocall, Symbol("@test"), :hasbtmacro)
+      ))
+  ))

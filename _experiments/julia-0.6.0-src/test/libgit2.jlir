@@ -1,0 +1,3559 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:||, (:call, :isdefined, :Main, (:quote, #QuoteNode
+          :TestHelpers
+        )), (:macrocall, Symbol("@eval"), :Main, (:call, :include, (:call, :joinpath, (:call, :dirname, (:macrocall, Symbol("@__FILE__"))), "TestHelpers.jl")))),
+    (:line, 4, :none),
+    (:import, :TestHelpers, :challenge_prompt),
+    (:line, 6, :none),
+    (:const, (:(=), :LIBGIT2_MIN_VER, (:macrocall, Symbol("@v_str"), "0.23.0"))),
+    (:line, 7, :none),
+    (:const, (:(=), :LIBGIT2_HELPER_PATH, (:call, :joinpath, (:call, :dirname, (:macrocall, Symbol("@__FILE__"))), "libgit2-helpers.jl"))),
+    (:line, 9, :none),
+    (:function, (:call, :get_global_dir), (:block,
+        (:line, 10, :none),
+        (:(=), :buf, (:call, :Ref, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                  :Buffer
+                ))))),
+        (:line, 11, :none),
+        (:macrocall, (:., :LibGit2, (:quote, #QuoteNode
+              Symbol("@check")
+            )), (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                :git_libgit2_opts
+              ), (:quote, #QuoteNode
+                :libgit2
+              )), :Cint, (:tuple, :Cint, :Cint, (:curly, :Ptr, (:., :LibGit2, (:quote, #QuoteNode
+                    :Buffer
+                  )))), (:., (:., :LibGit2, (:quote, #QuoteNode
+                  :Consts
+                )), (:quote, #QuoteNode
+                :GET_SEARCH_PATH
+              )), (:., (:., :LibGit2, (:quote, #QuoteNode
+                  :Consts
+                )), (:quote, #QuoteNode
+                :CONFIG_LEVEL_GLOBAL
+              )), :buf)),
+        (:line, 14, :none),
+        (:(=), :path, (:call, :unsafe_string, (:., (:ref, :buf), (:quote, #QuoteNode
+                :ptr
+              )))),
+        (:line, 15, :none),
+        (:call, (:., :LibGit2, (:quote, #QuoteNode
+              :free
+            )), :buf),
+        (:line, 16, :none),
+        (:return, :path)
+      )),
+    (:line, 19, :none),
+    (:function, (:call, :set_global_dir, :dir), (:block,
+        (:line, 20, :none),
+        (:macrocall, (:., :LibGit2, (:quote, #QuoteNode
+              Symbol("@check")
+            )), (:call, :ccall, (:tuple, (:quote, #QuoteNode
+                :git_libgit2_opts
+              ), (:quote, #QuoteNode
+                :libgit2
+              )), :Cint, (:tuple, :Cint, :Cint, :Cstring), (:., (:., :LibGit2, (:quote, #QuoteNode
+                  :Consts
+                )), (:quote, #QuoteNode
+                :SET_SEARCH_PATH
+              )), (:., (:., :LibGit2, (:quote, #QuoteNode
+                  :Consts
+                )), (:quote, #QuoteNode
+                :CONFIG_LEVEL_GLOBAL
+              )), :dir)),
+        (:line, 23, :none),
+        (:return, nothing)
+      )),
+    (:line, 26, :none),
+    (:function, (:call, :with_libgit2_temp_home, :f), (:block,
+        (:line, 27, :none),
+        (:call, :mktempdir, (:->, (:tuple, :tmphome), (:block,
+              (:line, 28, :none),
+              (:(=), :oldpath, (:call, :get_global_dir)),
+              (:line, 29, :none),
+              (:call, :set_global_dir, :tmphome),
+              (:line, 30, :none),
+              (:try, (:block,
+                  (:line, 31, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), (:call, :get_global_dir), :tmphome)),
+                  (:line, 32, :none),
+                  (:call, :f, :tmphome)
+                ), false, false, (:block,
+                  (:line, 34, :none),
+                  (:call, :set_global_dir, :oldpath)
+                )),
+              (:line, 36, :none),
+              (:return, nothing)
+            )))
+      )),
+    (:line, 44, :none),
+    (:macrocall, Symbol("@testset"), "Check library version", (:block,
+        (:line, 45, :none),
+        (:(=), :v, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                :version
+              )))),
+        (:line, 46, :none),
+        (:macrocall, Symbol("@test"), (:&&, (:call, :(==), (:., :v, (:quote, #QuoteNode
+                  :major
+                )), (:., :LIBGIT2_MIN_VER, (:quote, #QuoteNode
+                  :major
+                ))), (:call, :(>=), (:., :v, (:quote, #QuoteNode
+                  :minor
+                )), (:., :LIBGIT2_MIN_VER, (:quote, #QuoteNode
+                  :minor
+                )))))
+      )),
+    (:line, 49, :none),
+    (:macrocall, Symbol("@testset"), "Check library features", (:block,
+        (:line, 50, :none),
+        (:(=), :f, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                :features
+              )))),
+        (:line, 51, :none),
+        (:macrocall, Symbol("@test"), (:call, :>, (:call, :findfirst, :f, (:., (:., :LibGit2, (:quote, #QuoteNode
+                    :Consts
+                  )), (:quote, #QuoteNode
+                  :FEATURE_SSH
+                ))), 0)),
+        (:line, 52, :none),
+        (:macrocall, Symbol("@test"), (:call, :>, (:call, :findfirst, :f, (:., (:., :LibGit2, (:quote, #QuoteNode
+                    :Consts
+                  )), (:quote, #QuoteNode
+                  :FEATURE_HTTPS
+                ))), 0))
+      )),
+    (:line, 55, :none),
+    (:macrocall, Symbol("@testset"), "OID", (:block,
+        (:line, 56, :none),
+        (:(=), :z, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                :GitHash
+              )))),
+        (:line, 57, :none),
+        (:macrocall, Symbol("@test"), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                :iszero
+              )), :z)),
+        (:line, 58, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :z, (:call, :zero, (:., :LibGit2, (:quote, #QuoteNode
+                  :GitHash
+                ))))),
+        (:line, 59, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :z, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                  :GitHash
+                )), :z))),
+        (:line, 60, :none),
+        (:(=), :rs, (:call, :string, :z)),
+        (:line, 61, :none),
+        (:(=), :rr, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                :raw
+              )), :z)),
+        (:line, 62, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :z, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                  :GitHash
+                )), :rr))),
+        (:line, 63, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :z, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                  :GitHash
+                )), :rs))),
+        (:line, 64, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :z, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                  :GitHash
+                )), (:call, :pointer, :rr)))),
+        (:line, 66, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                  :GitShortHash
+                )), :z, 20), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                  :GitShortHash
+                )), (:ref, :rs, (:(:), 1, 20))))),
+        (:line, 67, :none),
+        (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                :GitHash
+              )), (:call, (:curly, :Ptr, :UInt8), :C_NULL))),
+        (:line, 68, :none),
+        (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                :GitHash
+              )), (:call, :rand, :UInt8, (:call, :*, 2, (:., :LibGit2, (:quote, #QuoteNode
+                    :OID_RAWSZ
+                  )))))),
+        (:line, 69, :none),
+        (:macrocall, Symbol("@test_throws"), :ArgumentError, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                :GitHash
+              )), "a"))
+      )),
+    (:line, 72, :none),
+    (:macrocall, Symbol("@testset"), "StrArrayStruct", (:block,
+        (:line, 73, :none),
+        (:(=), :p, (:vect, "XXX", "YYY")),
+        (:line, 74, :none),
+        (:(=), :a, (:call, (:., :Base, (:quote, #QuoteNode
+                :cconvert
+              )), (:curly, :Ptr, (:., :LibGit2, (:quote, #QuoteNode
+                  :StrArrayStruct
+                ))), :p)),
+        (:line, 75, :none),
+        (:(=), :b, (:call, (:., :Base, (:quote, #QuoteNode
+                :unsafe_convert
+              )), (:curly, :Ptr, (:., :LibGit2, (:quote, #QuoteNode
+                  :StrArrayStruct
+                ))), :a)),
+        (:line, 76, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), :p, (:call, :convert, (:curly, :Vector, :String), (:call, :unsafe_load, :b))))
+      )),
+    (:line, 79, :none),
+    (:macrocall, Symbol("@testset"), "Signature", (:block,
+        (:line, 80, :none),
+        (:(=), :sig, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                :Signature
+              )), "AAA", "AAA@BBB.COM", (:call, :round, (:call, :time), 0), 0)),
+        (:line, 81, :none),
+        (:(=), :git_sig, (:call, :convert, (:., :LibGit2, (:quote, #QuoteNode
+                :GitSignature
+              )), :sig)),
+        (:line, 82, :none),
+        (:(=), :sig2, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                :Signature
+              )), :git_sig)),
+        (:line, 83, :none),
+        (:call, :close, :git_sig),
+        (:line, 84, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :sig, (:quote, #QuoteNode
+                :name
+              )), (:., :sig2, (:quote, #QuoteNode
+                :name
+              )))),
+        (:line, 85, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :sig, (:quote, #QuoteNode
+                :email
+              )), (:., :sig2, (:quote, #QuoteNode
+                :email
+              )))),
+        (:line, 86, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :sig, (:quote, #QuoteNode
+                :time
+              )), (:., :sig2, (:quote, #QuoteNode
+                :time
+              )))),
+        (:line, 87, :none),
+        (:(=), :sig3, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                :Signature
+              )), "AAA", "AAA@BBB.COM")),
+        (:line, 88, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :sig3, (:quote, #QuoteNode
+                :name
+              )), (:., :sig, (:quote, #QuoteNode
+                :name
+              )))),
+        (:line, 89, :none),
+        (:macrocall, Symbol("@test"), (:call, :(==), (:., :sig3, (:quote, #QuoteNode
+                :email
+              )), (:., :sig, (:quote, #QuoteNode
+                :email
+              ))))
+      )),
+    (:line, 92, :none),
+    (:macrocall, Symbol("@testset"), "Default config", (:block,
+        (:line, 93, :none),
+        (:call, :with_libgit2_temp_home, (:->, (:tuple, :tmphome), (:block,
+              (:line, 94, :none),
+              (:(=), :cfg, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                      :GitConfig
+                    )))),
+              (:line, 95, :none),
+              (:macrocall, Symbol("@test"), (:call, :isa, :cfg, (:., :LibGit2, (:quote, #QuoteNode
+                      :GitConfig
+                    )))),
+              (:line, 96, :none),
+              (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :getconfig
+                      )), "fake.property", ""), "")),
+              (:line, 97, :none),
+              (:call, (:., :LibGit2, (:quote, #QuoteNode
+                    :set!
+                  )), :cfg, "fake.property", "AAAA"),
+              (:line, 98, :none),
+              (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :getconfig
+                      )), "fake.property", ""), "AAAA"))
+            )))
+      )),
+    (:line, 103, :none),
+    (:&&, (:call, :(>=), (:call, (:., :LibGit2, (:quote, #QuoteNode
+              :version
+            ))), (:macrocall, Symbol("@v_str"), "0.26.0")), (:&&, (:call, :is_unix), (:macrocall, Symbol("@testset"), "Default config with symlink", (:block,
+            (:line, 104, :none),
+            (:call, :with_libgit2_temp_home, (:->, (:tuple, :tmphome), (:block,
+                  (:line, 105, :none),
+                  (:call, :write, (:call, :joinpath, :tmphome, "real_gitconfig"), "[fake]\n\tproperty = BBB"),
+                  (:line, 106, :none),
+                  (:call, :symlink, (:call, :joinpath, :tmphome, "real_gitconfig"), (:call, :joinpath, :tmphome, ".gitconfig")),
+                  (:line, 108, :none),
+                  (:(=), :cfg, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :GitConfig
+                        )))),
+                  (:line, 109, :none),
+                  (:macrocall, Symbol("@test"), (:call, :isa, :cfg, (:., :LibGit2, (:quote, #QuoteNode
+                          :GitConfig
+                        )))),
+                  (:line, 110, :none),
+                  (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :getconfig
+                        )), "fake.property", ""), "BBB"),
+                  (:line, 111, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :set!
+                      )), :cfg, "fake.property", "AAAA"),
+                  (:line, 112, :none),
+                  (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :getconfig
+                        )), "fake.property", ""), "AAAA")
+                )))
+          )))),
+    (:line, 116, :none),
+    (:macrocall, Symbol("@testset"), "Git URL parsing", (:block,
+        (:line, 117, :none),
+        (:macrocall, Symbol("@testset"), "HTTPS URL", (:block,
+            (:line, 118, :none),
+            (:(=), :m, (:call, :match, (:., :LibGit2, (:quote, #QuoteNode
+                    :URL_REGEX
+                  )), "https://user:pass@server.com:80/org/project.git")),
+            (:line, 119, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :m, (:quote, #QuoteNode
+                    :scheme
+                  )), "https")),
+            (:line, 120, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :m, (:quote, #QuoteNode
+                    :user
+                  )), "user")),
+            (:line, 121, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :m, (:quote, #QuoteNode
+                    :password
+                  )), "pass")),
+            (:line, 122, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :m, (:quote, #QuoteNode
+                    :host
+                  )), "server.com")),
+            (:line, 123, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :m, (:quote, #QuoteNode
+                    :port
+                  )), "80")),
+            (:line, 124, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :m, (:quote, #QuoteNode
+                    :path
+                  )), "/org/project.git"))
+          )),
+        (:line, 127, :none),
+        (:macrocall, Symbol("@testset"), "SSH URL", (:block,
+            (:line, 128, :none),
+            (:(=), :m, (:call, :match, (:., :LibGit2, (:quote, #QuoteNode
+                    :URL_REGEX
+                  )), "ssh://user:pass@server:22/project.git")),
+            (:line, 129, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :m, (:quote, #QuoteNode
+                    :scheme
+                  )), "ssh")),
+            (:line, 130, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :m, (:quote, #QuoteNode
+                    :user
+                  )), "user")),
+            (:line, 131, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :m, (:quote, #QuoteNode
+                    :password
+                  )), "pass")),
+            (:line, 132, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :m, (:quote, #QuoteNode
+                    :host
+                  )), "server")),
+            (:line, 133, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :m, (:quote, #QuoteNode
+                    :port
+                  )), "22")),
+            (:line, 134, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :m, (:quote, #QuoteNode
+                    :path
+                  )), "/project.git"))
+          )),
+        (:line, 137, :none),
+        (:macrocall, Symbol("@testset"), "SSH URL, scp-like syntax", (:block,
+            (:line, 138, :none),
+            (:(=), :m, (:call, :match, (:., :LibGit2, (:quote, #QuoteNode
+                    :URL_REGEX
+                  )), "user@server:project.git")),
+            (:line, 139, :none),
+            (:macrocall, Symbol("@test"), (:call, :(===), (:ref, :m, (:quote, #QuoteNode
+                    :scheme
+                  )), :nothing)),
+            (:line, 140, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :m, (:quote, #QuoteNode
+                    :user
+                  )), "user")),
+            (:line, 141, :none),
+            (:macrocall, Symbol("@test"), (:call, :(===), (:ref, :m, (:quote, #QuoteNode
+                    :password
+                  )), :nothing)),
+            (:line, 142, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :m, (:quote, #QuoteNode
+                    :host
+                  )), "server")),
+            (:line, 143, :none),
+            (:macrocall, Symbol("@test"), (:call, :(===), (:ref, :m, (:quote, #QuoteNode
+                    :port
+                  )), :nothing)),
+            (:line, 144, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :m, (:quote, #QuoteNode
+                    :path
+                  )), "project.git"))
+          )),
+        (:line, 149, :none),
+        (:macrocall, Symbol("@testset"), "scp-like syntax, no port", (:block,
+            (:line, 150, :none),
+            (:(=), :m, (:call, :match, (:., :LibGit2, (:quote, #QuoteNode
+                    :URL_REGEX
+                  )), "server:1234/repo")),
+            (:line, 151, :none),
+            (:macrocall, Symbol("@test"), (:call, :(===), (:ref, :m, (:quote, #QuoteNode
+                    :scheme
+                  )), :nothing)),
+            (:line, 152, :none),
+            (:macrocall, Symbol("@test"), (:call, :(===), (:ref, :m, (:quote, #QuoteNode
+                    :user
+                  )), :nothing)),
+            (:line, 153, :none),
+            (:macrocall, Symbol("@test"), (:call, :(===), (:ref, :m, (:quote, #QuoteNode
+                    :password
+                  )), :nothing)),
+            (:line, 154, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :m, (:quote, #QuoteNode
+                    :host
+                  )), "server")),
+            (:line, 155, :none),
+            (:macrocall, Symbol("@test"), (:call, :(===), (:ref, :m, (:quote, #QuoteNode
+                    :port
+                  )), :nothing)),
+            (:line, 156, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :m, (:quote, #QuoteNode
+                    :path
+                  )), "1234/repo"))
+          )),
+        (:line, 159, :none),
+        (:macrocall, Symbol("@testset"), "HTTPS URL, realistic", (:block,
+            (:line, 160, :none),
+            (:(=), :m, (:call, :match, (:., :LibGit2, (:quote, #QuoteNode
+                    :URL_REGEX
+                  )), "https://github.com/JuliaLang/Example.jl.git")),
+            (:line, 161, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :m, (:quote, #QuoteNode
+                    :scheme
+                  )), "https")),
+            (:line, 162, :none),
+            (:macrocall, Symbol("@test"), (:call, :(===), (:ref, :m, (:quote, #QuoteNode
+                    :user
+                  )), :nothing)),
+            (:line, 163, :none),
+            (:macrocall, Symbol("@test"), (:call, :(===), (:ref, :m, (:quote, #QuoteNode
+                    :password
+                  )), :nothing)),
+            (:line, 164, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :m, (:quote, #QuoteNode
+                    :host
+                  )), "github.com")),
+            (:line, 165, :none),
+            (:macrocall, Symbol("@test"), (:call, :(===), (:ref, :m, (:quote, #QuoteNode
+                    :port
+                  )), :nothing)),
+            (:line, 166, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :m, (:quote, #QuoteNode
+                    :path
+                  )), "/JuliaLang/Example.jl.git"))
+          )),
+        (:line, 169, :none),
+        (:macrocall, Symbol("@testset"), "SSH URL, realistic", (:block,
+            (:line, 170, :none),
+            (:(=), :m, (:call, :match, (:., :LibGit2, (:quote, #QuoteNode
+                    :URL_REGEX
+                  )), "git@github.com:JuliaLang/Example.jl.git")),
+            (:line, 171, :none),
+            (:macrocall, Symbol("@test"), (:call, :(===), (:ref, :m, (:quote, #QuoteNode
+                    :scheme
+                  )), :nothing)),
+            (:line, 172, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :m, (:quote, #QuoteNode
+                    :user
+                  )), "git")),
+            (:line, 173, :none),
+            (:macrocall, Symbol("@test"), (:call, :(===), (:ref, :m, (:quote, #QuoteNode
+                    :password
+                  )), :nothing)),
+            (:line, 174, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :m, (:quote, #QuoteNode
+                    :host
+                  )), "github.com")),
+            (:line, 175, :none),
+            (:macrocall, Symbol("@test"), (:call, :(===), (:ref, :m, (:quote, #QuoteNode
+                    :port
+                  )), :nothing)),
+            (:line, 176, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :m, (:quote, #QuoteNode
+                    :path
+                  )), "JuliaLang/Example.jl.git"))
+          )),
+        (:line, 179, :none),
+        (:macrocall, Symbol("@testset"), "usernames with special characters", (:block,
+            (:line, 180, :none),
+            (:(=), :m, (:call, :match, (:., :LibGit2, (:quote, #QuoteNode
+                    :URL_REGEX
+                  )), "user-name@hostname.com")),
+            (:line, 181, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :m, (:quote, #QuoteNode
+                    :user
+                  )), "user-name"))
+          )),
+        (:line, 184, :none),
+        (:macrocall, Symbol("@testset"), "HTTPS URL, no path", (:block,
+            (:line, 185, :none),
+            (:(=), :m, (:call, :match, (:., :LibGit2, (:quote, #QuoteNode
+                    :URL_REGEX
+                  )), "https://user:pass@server.com:80")),
+            (:line, 186, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :m, (:quote, #QuoteNode
+                    :path
+                  )), ""))
+          )),
+        (:line, 189, :none),
+        (:macrocall, Symbol("@testset"), "scp-like syntax, no path", (:block,
+            (:line, 190, :none),
+            (:(=), :m, (:call, :match, (:., :LibGit2, (:quote, #QuoteNode
+                    :URL_REGEX
+                  )), "user@server:")),
+            (:line, 191, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :m, (:quote, #QuoteNode
+                    :path
+                  )), "")),
+            (:line, 193, :none),
+            (:(=), :m, (:call, :match, (:., :LibGit2, (:quote, #QuoteNode
+                    :URL_REGEX
+                  )), "user@server")),
+            (:line, 194, :none),
+            (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :m, (:quote, #QuoteNode
+                    :path
+                  )), ""))
+          ))
+      )),
+    (:line, 198, :none),
+    (:call, :mktempdir, (:->, (:tuple, :dir), (:block,
+          (:line, 200, :none),
+          (:(=), :repo_url, "https://github.com/JuliaLang/Example.jl"),
+          (:line, 201, :none),
+          (:(=), :cache_repo, (:call, :joinpath, :dir, "Example")),
+          (:line, 202, :none),
+          (:(=), :test_repo, (:call, :joinpath, :dir, "Example.Test")),
+          (:line, 203, :none),
+          (:(=), :test_sig, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                  :Signature
+                )), "TEST", "TEST@TEST.COM", (:call, :round, (:call, :time), 0), 0)),
+          (:line, 204, :none),
+          (:(=), :test_file, "testfile"),
+          (:line, 205, :none),
+          (:(=), :config_file, "testconfig"),
+          (:line, 206, :none),
+          (:(=), :commit_msg1, (:call, :randstring, 10)),
+          (:line, 207, :none),
+          (:(=), :commit_msg2, (:call, :randstring, 10)),
+          (:line, 208, :none),
+          (:(=), :commit_oid1, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                  :GitHash
+                )))),
+          (:line, 209, :none),
+          (:(=), :commit_oid2, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                  :GitHash
+                )))),
+          (:line, 210, :none),
+          (:(=), :commit_oid3, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                  :GitHash
+                )))),
+          (:line, 211, :none),
+          (:(=), :master_branch, "master"),
+          (:line, 212, :none),
+          (:(=), :test_branch, "test_branch"),
+          (:line, 213, :none),
+          (:(=), :test_branch2, "test_branch_two"),
+          (:line, 214, :none),
+          (:(=), :tag1, "tag1"),
+          (:line, 215, :none),
+          (:(=), :tag2, "tag2"),
+          (:line, 217, :none),
+          (:macrocall, Symbol("@testset"), "Configuration", (:block,
+              (:line, 218, :none),
+              (:(=), :cfg, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                      :GitConfig
+                    )), (:call, :joinpath, :dir, :config_file), (:., (:., :LibGit2, (:quote, #QuoteNode
+                        :Consts
+                      )), (:quote, #QuoteNode
+                      :CONFIG_LEVEL_APP
+                    )))),
+              (:line, 219, :none),
+              (:try, (:block,
+                  (:line, 220, :none),
+                  (:macrocall, Symbol("@test_throws"), (:., (:., :LibGit2, (:quote, #QuoteNode
+                          :Error
+                        )), (:quote, #QuoteNode
+                        :GitError
+                      )), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :get
+                        )), :AbstractString, :cfg, "tmp.str")),
+                  (:line, 221, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), (:call, :isempty, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :get
+                            )), :cfg, "tmp.str", "")), true)),
+                  (:line, 223, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :set!
+                      )), :cfg, "tmp.str", "AAAA"),
+                  (:line, 224, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :set!
+                      )), :cfg, "tmp.int32", (:call, :Int32, 1)),
+                  (:line, 225, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :set!
+                      )), :cfg, "tmp.int64", (:call, :Int64, 1)),
+                  (:line, 226, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :set!
+                      )), :cfg, "tmp.bool", true),
+                  (:line, 228, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :get
+                          )), :cfg, "tmp.str", ""), "AAAA")),
+                  (:line, 229, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :get
+                          )), :cfg, "tmp.int32", (:call, :Int32, 0)), (:call, :Int32, 1))),
+                  (:line, 230, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :get
+                          )), :cfg, "tmp.int64", (:call, :Int64, 0)), (:call, :Int64, 1))),
+                  (:line, 231, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :get
+                          )), :cfg, "tmp.bool", false), true))
+                ), false, false, (:block,
+                  (:line, 233, :none),
+                  (:call, :close, :cfg)
+                ))
+            )),
+          (:line, 237, :none),
+          (:macrocall, Symbol("@testset"), "Initializing repository", (:block,
+              (:line, 238, :none),
+              (:macrocall, Symbol("@testset"), "with remote branch", (:block,
+                  (:line, 239, :none),
+                  (:(=), :repo, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :init
+                        )), :cache_repo)),
+                  (:line, 240, :none),
+                  (:try, (:block,
+                      (:line, 241, :none),
+                      (:macrocall, Symbol("@test"), (:call, :isdir, :cache_repo)),
+                      (:line, 242, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :path
+                              )), :repo), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :posixpath
+                              )), (:call, :realpath, :cache_repo)))),
+                      (:line, 243, :none),
+                      (:macrocall, Symbol("@test"), (:call, :isdir, (:call, :joinpath, :cache_repo, ".git"))),
+                      (:line, 246, :none),
+                      (:(=), :branch, "upstream"),
+                      (:line, 247, :none),
+                      (:call, :|>, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :GitRemote
+                            )), :repo, :branch, :repo_url), :close),
+                      (:line, 249, :none),
+                      (:(=), :config, (:call, :joinpath, :cache_repo, ".git", "config")),
+                      (:line, 250, :none),
+                      (:(=), :lines, (:call, :split, (:call, :open, :readstring, :config, "r"), "\n")),
+                      (:line, 251, :none),
+                      (:macrocall, Symbol("@test"), (:call, :any, (:call, :map, (:->, :x, (:block,
+                                (:line, 251, :none),
+                                (:call, :(==), :x, "[remote \"upstream\"]")
+                              )), :lines))),
+                      (:line, 253, :none),
+                      (:(=), :remote, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :get
+                            )), (:., :LibGit2, (:quote, #QuoteNode
+                              :GitRemote
+                            )), :repo, :branch)),
+                      (:line, 254, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :url
+                              )), :remote), :repo_url)),
+                      (:line, 255, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :push_url
+                              )), :remote), "")),
+                      (:line, 256, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :name
+                              )), :remote), "upstream")),
+                      (:line, 257, :none),
+                      (:macrocall, Symbol("@test"), (:call, :isa, :remote, (:., :LibGit2, (:quote, #QuoteNode
+                              :GitRemote
+                            )))),
+                      (:line, 258, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :sprint, :show, :remote), (:string, "GitRemote:\nRemote name: upstream url: ", :repo_url))),
+                      (:line, 259, :none),
+                      (:macrocall, Symbol("@test"), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :isattached
+                            )), :repo)),
+                      (:line, 260, :none),
+                      (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :set_remote_url
+                          )), :repo, "", (:kw, :remote, "upstream")),
+                      (:line, 261, :none),
+                      (:(=), :remote, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :get
+                            )), (:., :LibGit2, (:quote, #QuoteNode
+                              :GitRemote
+                            )), :repo, :branch)),
+                      (:line, 262, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :url
+                              )), :remote), "")),
+                      (:line, 263, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :push_url
+                              )), :remote), "")),
+                      (:line, 264, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :sprint, :show, :remote), "GitRemote:\nRemote name: upstream url: ")),
+                      (:line, 265, :none),
+                      (:call, :close, :remote),
+                      (:line, 266, :none),
+                      (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :set_remote_url
+                          )), :cache_repo, :repo_url, (:kw, :remote, "upstream")),
+                      (:line, 267, :none),
+                      (:(=), :remote, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :get
+                            )), (:., :LibGit2, (:quote, #QuoteNode
+                              :GitRemote
+                            )), :repo, :branch)),
+                      (:line, 268, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :url
+                              )), :remote), :repo_url)),
+                      (:line, 269, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :push_url
+                              )), :remote), :repo_url)),
+                      (:line, 270, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :sprint, :show, :remote), (:string, "GitRemote:\nRemote name: upstream url: ", :repo_url))),
+                      (:line, 271, :none),
+                      (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :add_fetch!
+                          )), :repo, :remote, "upstream"),
+                      (:line, 272, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :fetch_refspecs
+                              )), :remote), (:ref, :String, "+refs/heads/*:refs/remotes/upstream/*"))),
+                      (:line, 273, :none),
+                      (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :add_push!
+                          )), :repo, :remote, "refs/heads/master"),
+                      (:line, 274, :none),
+                      (:call, :close, :remote),
+                      (:line, 275, :none),
+                      (:(=), :remote, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :get
+                            )), (:., :LibGit2, (:quote, #QuoteNode
+                              :GitRemote
+                            )), :repo, :branch)),
+                      (:line, 276, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :push_refspecs
+                              )), :remote), (:ref, :String, "refs/heads/master"))),
+                      (:line, 277, :none),
+                      (:call, :close, :remote),
+                      (:line, 279, :none),
+                      (:(=), :remote, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :GitRemote
+                            )), :repo, "upstream2", :repo_url, "upstream")),
+                      (:line, 280, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :sprint, :show, :remote), (:string, "GitRemote:\nRemote name: upstream2 url: ", :repo_url))),
+                      (:line, 281, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :fetch_refspecs
+                              )), :remote), (:ref, :String, "upstream"))),
+                      (:line, 282, :none),
+                      (:call, :close, :remote),
+                      (:line, 284, :none),
+                      (:(=), :remote, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :GitRemoteAnon
+                            )), :repo, :repo_url)),
+                      (:line, 285, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :url
+                              )), :remote), :repo_url)),
+                      (:line, 286, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :push_url
+                              )), :remote), "")),
+                      (:line, 287, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :name
+                              )), :remote), "")),
+                      (:line, 288, :none),
+                      (:macrocall, Symbol("@test"), (:call, :isa, :remote, (:., :LibGit2, (:quote, #QuoteNode
+                              :GitRemote
+                            )))),
+                      (:line, 289, :none),
+                      (:call, :close, :remote)
+                    ), false, false, (:block,
+                      (:line, 291, :none),
+                      (:call, :close, :repo)
+                    ))
+                )),
+              (:line, 295, :none),
+              (:macrocall, Symbol("@testset"), "bare", (:block,
+                  (:line, 296, :none),
+                  (:(=), :path, (:call, :joinpath, :dir, "Example.Bare")),
+                  (:line, 297, :none),
+                  (:(=), :repo, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :init
+                        )), :path, true)),
+                  (:line, 298, :none),
+                  (:try, (:block,
+                      (:line, 299, :none),
+                      (:macrocall, Symbol("@test"), (:call, :isdir, :path)),
+                      (:line, 300, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :path
+                              )), :repo), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :posixpath
+                              )), (:call, :realpath, :path)))),
+                      (:line, 301, :none),
+                      (:macrocall, Symbol("@test"), (:call, :isfile, (:call, :joinpath, :path, (:., (:., :LibGit2, (:quote, #QuoteNode
+                                  :Consts
+                                )), (:quote, #QuoteNode
+                                :HEAD_FILE
+                              ))))),
+                      (:line, 302, :none),
+                      (:macrocall, Symbol("@test"), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :isattached
+                            )), :repo))
+                    ), false, false, (:block,
+                      (:line, 304, :none),
+                      (:call, :close, :repo)
+                    )),
+                  (:line, 307, :none),
+                  (:(=), :path, (:call, :joinpath, "garbagefakery", "Example.Bare")),
+                  (:line, 308, :none),
+                  (:try, (:block,
+                      (:line, 309, :none),
+                      (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :GitRepo
+                          )), :path),
+                      (:line, 310, :none),
+                      (:call, :error, "unexpected")
+                    ), :e, (:block,
+                      (:line, 312, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :typeof, :e), (:., :LibGit2, (:quote, #QuoteNode
+                              :GitError
+                            )))),
+                      (:line, 313, :none),
+                      (:macrocall, Symbol("@test"), (:call, :startswith, (:call, :sprint, :show, :e), "GitError(Code:ENOTFOUND, Class:OS, Failed to resolve path"))
+                    )),
+                  (:line, 315, :none),
+                  (:(=), :path, (:call, :joinpath, :dir, "Example.BareTwo")),
+                  (:line, 316, :none),
+                  (:(=), :repo, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :init
+                        )), :path, true)),
+                  (:line, 317, :none),
+                  (:try, (:block,
+                      (:line, 319, :none),
+                      (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :cleanup
+                          )), :repo)
+                    ), false, false, (:block,
+                      (:line, 321, :none),
+                      (:call, :close, :repo)
+                    ))
+                ))
+            )),
+          (:line, 326, :none),
+          (:macrocall, Symbol("@testset"), "Cloning repository", (:block,
+              (:line, 328, :none),
+              (:macrocall, Symbol("@testset"), "bare", (:block,
+                  (:line, 329, :none),
+                  (:(=), :repo_path, (:call, :joinpath, :dir, "Example.Bare1")),
+                  (:line, 330, :none),
+                  (:(=), :repo, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :clone
+                        )), :cache_repo, :repo_path, (:kw, :isbare, true))),
+                  (:line, 331, :none),
+                  (:try, (:block,
+                      (:line, 332, :none),
+                      (:macrocall, Symbol("@test"), (:call, :isdir, :repo_path)),
+                      (:line, 333, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :path
+                              )), :repo), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :posixpath
+                              )), (:call, :realpath, :repo_path)))),
+                      (:line, 334, :none),
+                      (:macrocall, Symbol("@test"), (:call, :isfile, (:call, :joinpath, :repo_path, (:., (:., :LibGit2, (:quote, #QuoteNode
+                                  :Consts
+                                )), (:quote, #QuoteNode
+                                :HEAD_FILE
+                              ))))),
+                      (:line, 335, :none),
+                      (:macrocall, Symbol("@test"), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :isattached
+                            )), :repo)),
+                      (:line, 336, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :remotes
+                              )), :repo), (:vect, "origin")))
+                    ), false, false, (:block,
+                      (:line, 338, :none),
+                      (:call, :close, :repo)
+                    ))
+                )),
+              (:line, 341, :none),
+              (:macrocall, Symbol("@testset"), "bare with remote callback", (:block,
+                  (:line, 342, :none),
+                  (:(=), :repo_path, (:call, :joinpath, :dir, "Example.Bare2")),
+                  (:line, 343, :none),
+                  (:(=), :repo, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :clone
+                        )), :cache_repo, :repo_path, (:kw, :isbare, true), (:kw, :remote_cb, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :mirror_cb
+                            )))))),
+                  (:line, 344, :none),
+                  (:try, (:block,
+                      (:line, 345, :none),
+                      (:macrocall, Symbol("@test"), (:call, :isdir, :repo_path)),
+                      (:line, 346, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :path
+                              )), :repo), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :posixpath
+                              )), (:call, :realpath, :repo_path)))),
+                      (:line, 347, :none),
+                      (:macrocall, Symbol("@test"), (:call, :isfile, (:call, :joinpath, :repo_path, (:., (:., :LibGit2, (:quote, #QuoteNode
+                                  :Consts
+                                )), (:quote, #QuoteNode
+                                :HEAD_FILE
+                              ))))),
+                      (:line, 348, :none),
+                      (:(=), :rmt, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :get
+                            )), (:., :LibGit2, (:quote, #QuoteNode
+                              :GitRemote
+                            )), :repo, "origin")),
+                      (:line, 349, :none),
+                      (:try, (:block,
+                          (:line, 350, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), (:ref, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                      :fetch_refspecs
+                                    )), :rmt), 1), "+refs/*:refs/*")),
+                          (:line, 351, :none),
+                          (:macrocall, Symbol("@test"), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                  :isattached
+                                )), :repo)),
+                          (:line, 352, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                    :remotes
+                                  )), :repo), (:vect, "origin")))
+                        ), false, false, (:block,
+                          (:line, 354, :none),
+                          (:call, :close, :rmt)
+                        ))
+                    ), false, false, (:block,
+                      (:line, 357, :none),
+                      (:call, :close, :repo)
+                    ))
+                )),
+              (:line, 360, :none),
+              (:macrocall, Symbol("@testset"), "normal", (:block,
+                  (:line, 361, :none),
+                  (:(=), :repo, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :clone
+                        )), :cache_repo, :test_repo)),
+                  (:line, 362, :none),
+                  (:try, (:block,
+                      (:line, 363, :none),
+                      (:macrocall, Symbol("@test"), (:call, :isdir, :test_repo)),
+                      (:line, 364, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :path
+                              )), :repo), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :posixpath
+                              )), (:call, :realpath, :test_repo)))),
+                      (:line, 365, :none),
+                      (:macrocall, Symbol("@test"), (:call, :isdir, (:call, :joinpath, :test_repo, ".git"))),
+                      (:line, 366, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :workdir
+                              )), :repo), (:call, :*, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                  :path
+                                )), :repo), "/"))),
+                      (:line, 367, :none),
+                      (:macrocall, Symbol("@test"), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :isattached
+                            )), :repo)),
+                      (:line, 368, :none),
+                      (:macrocall, Symbol("@test"), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :isorphan
+                            )), :repo)),
+                      (:line, 369, :none),
+                      (:(=), :repo_str, (:call, :sprint, :show, :repo)),
+                      (:line, 370, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), :repo_str, (:string, "LibGit2.GitRepo(", (:call, :sprint, :show, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                    :path
+                                  )), :repo)), ")")))
+                    ), false, false, (:block,
+                      (:line, 372, :none),
+                      (:call, :close, :repo)
+                    ))
+                ))
+            )),
+          (:line, 377, :none),
+          (:macrocall, Symbol("@testset"), "Update cache repository", (:block,
+              (:line, 379, :none),
+              (:macrocall, Symbol("@testset"), "with commits", (:block,
+                  (:line, 380, :none),
+                  (:(=), :repo, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :GitRepo
+                        )), :cache_repo)),
+                  (:line, 381, :none),
+                  (:(=), :repo_file, (:call, :open, (:call, :joinpath, :cache_repo, :test_file), "a")),
+                  (:line, 382, :none),
+                  (:try, (:block,
+                      (:line, 384, :none),
+                      (:call, :println, :repo_file, :commit_msg1),
+                      (:line, 385, :none),
+                      (:call, :flush, :repo_file),
+                      (:line, 386, :none),
+                      (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :add!
+                          )), :repo, :test_file),
+                      (:line, 387, :none),
+                      (:macrocall, Symbol("@test"), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :iszero
+                            )), :commit_oid1)),
+                      (:line, 388, :none),
+                      (:(=), :commit_oid1, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :commit
+                            )), (:parameters, (:kw, :author, :test_sig), (:kw, :committer, :test_sig)), :repo, :commit_msg1)),
+                      (:line, 389, :none),
+                      (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :iszero
+                              )), :commit_oid1))),
+                      (:line, 391, :none),
+                      (:call, :println, :repo_file, (:call, :randstring, 10)),
+                      (:line, 392, :none),
+                      (:call, :flush, :repo_file),
+                      (:line, 393, :none),
+                      (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :add!
+                          )), :repo, :test_file),
+                      (:line, 394, :none),
+                      (:(=), :commit_oid3, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :commit
+                            )), (:parameters, (:kw, :author, :test_sig), (:kw, :committer, :test_sig)), :repo, (:call, :randstring, 10))),
+                      (:line, 396, :none),
+                      (:call, :println, :repo_file, :commit_msg2),
+                      (:line, 397, :none),
+                      (:call, :flush, :repo_file),
+                      (:line, 398, :none),
+                      (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :add!
+                          )), :repo, :test_file),
+                      (:line, 399, :none),
+                      (:macrocall, Symbol("@test"), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :iszero
+                            )), :commit_oid2)),
+                      (:line, 400, :none),
+                      (:(=), :commit_oid2, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :commit
+                            )), (:parameters, (:kw, :author, :test_sig), (:kw, :committer, :test_sig)), :repo, :commit_msg2)),
+                      (:line, 401, :none),
+                      (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :iszero
+                              )), :commit_oid2))),
+                      (:line, 402, :none),
+                      (:(=), :auths, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :authors
+                            )), :repo)),
+                      (:line, 403, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :auths), 3)),
+                      (:line, 404, :none),
+                      (:for, (:(=), :auth, :auths), (:block,
+                          (:line, 405, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), (:., :auth, (:quote, #QuoteNode
+                                  :name
+                                )), (:., :test_sig, (:quote, #QuoteNode
+                                  :name
+                                )))),
+                          (:line, 406, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), (:., :auth, (:quote, #QuoteNode
+                                  :time
+                                )), (:., :test_sig, (:quote, #QuoteNode
+                                  :time
+                                )))),
+                          (:line, 407, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), (:., :auth, (:quote, #QuoteNode
+                                  :email
+                                )), (:., :test_sig, (:quote, #QuoteNode
+                                  :email
+                                ))))
+                        )),
+                      (:line, 409, :none),
+                      (:macrocall, Symbol("@test"), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :is_ancestor_of
+                            )), (:call, :string, :commit_oid1), (:call, :string, :commit_oid2), :repo)),
+                      (:line, 410, :none),
+                      (:macrocall, Symbol("@test"), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :iscommit
+                            )), (:call, :string, :commit_oid1), :repo)),
+                      (:line, 411, :none),
+                      (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :iscommit
+                              )), (:call, :*, (:call, :string, :commit_oid1), "fake"), :repo))),
+                      (:line, 412, :none),
+                      (:macrocall, Symbol("@test"), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :iscommit
+                            )), (:call, :string, :commit_oid2), :repo)),
+                      (:line, 415, :none),
+                      (:(=), :cmt, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :GitCommit
+                            )), :repo, :commit_oid1)),
+                      (:line, 416, :none),
+                      (:try, (:block,
+                          (:line, 417, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., (:., :LibGit2, (:quote, #QuoteNode
+                                      :Consts
+                                    )), (:quote, #QuoteNode
+                                    :OBJECT
+                                  )), (:call, :typeof, :cmt)), (:., (:., :LibGit2, (:quote, #QuoteNode
+                                    :Consts
+                                  )), (:quote, #QuoteNode
+                                  :OBJ_COMMIT
+                                )))),
+                          (:line, 418, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), :commit_oid1, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                    :GitHash
+                                  )), :cmt))),
+                          (:line, 419, :none),
+                          (:(=), :short_oid1, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                  :GitShortHash
+                                )), (:call, :string, :commit_oid1))),
+                          (:line, 420, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), (:call, :hex, :commit_oid1), (:call, :hex, :short_oid1))),
+                          (:line, 421, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), (:call, :cmp, :commit_oid1, :short_oid1), 0)),
+                          (:line, 422, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), (:call, :cmp, :short_oid1, :commit_oid1), 0)),
+                          (:line, 423, :none),
+                          (:macrocall, Symbol("@test"), (:call, :!, (:call, :<, :short_oid1, :commit_oid1))),
+                          (:line, 424, :none),
+                          (:(=), :short_str, (:call, :sprint, :show, :short_oid1)),
+                          (:line, 425, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), :short_str, (:string, "GitShortHash(\"", (:call, :string, :short_oid1), "\")"))),
+                          (:line, 426, :none),
+                          (:(=), :auth, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                  :author
+                                )), :cmt)),
+                          (:line, 427, :none),
+                          (:macrocall, Symbol("@test"), (:call, :isa, :auth, (:., :LibGit2, (:quote, #QuoteNode
+                                  :Signature
+                                )))),
+                          (:line, 428, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), (:., :auth, (:quote, #QuoteNode
+                                  :name
+                                )), (:., :test_sig, (:quote, #QuoteNode
+                                  :name
+                                )))),
+                          (:line, 429, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), (:., :auth, (:quote, #QuoteNode
+                                  :time
+                                )), (:., :test_sig, (:quote, #QuoteNode
+                                  :time
+                                )))),
+                          (:line, 430, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), (:., :auth, (:quote, #QuoteNode
+                                  :email
+                                )), (:., :test_sig, (:quote, #QuoteNode
+                                  :email
+                                )))),
+                          (:line, 431, :none),
+                          (:(=), :short_auth, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                  :author
+                                )), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                    :GitCommit
+                                  )), :repo, :short_oid1))),
+                          (:line, 432, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), (:., :short_auth, (:quote, #QuoteNode
+                                  :name
+                                )), (:., :test_sig, (:quote, #QuoteNode
+                                  :name
+                                )))),
+                          (:line, 433, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), (:., :short_auth, (:quote, #QuoteNode
+                                  :time
+                                )), (:., :test_sig, (:quote, #QuoteNode
+                                  :time
+                                )))),
+                          (:line, 434, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), (:., :short_auth, (:quote, #QuoteNode
+                                  :email
+                                )), (:., :test_sig, (:quote, #QuoteNode
+                                  :email
+                                )))),
+                          (:line, 435, :none),
+                          (:(=), :cmtr, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                  :committer
+                                )), :cmt)),
+                          (:line, 436, :none),
+                          (:macrocall, Symbol("@test"), (:call, :isa, :cmtr, (:., :LibGit2, (:quote, #QuoteNode
+                                  :Signature
+                                )))),
+                          (:line, 437, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), (:., :cmtr, (:quote, #QuoteNode
+                                  :name
+                                )), (:., :test_sig, (:quote, #QuoteNode
+                                  :name
+                                )))),
+                          (:line, 438, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), (:., :cmtr, (:quote, #QuoteNode
+                                  :time
+                                )), (:., :test_sig, (:quote, #QuoteNode
+                                  :time
+                                )))),
+                          (:line, 439, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), (:., :cmtr, (:quote, #QuoteNode
+                                  :email
+                                )), (:., :test_sig, (:quote, #QuoteNode
+                                  :email
+                                )))),
+                          (:line, 440, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                    :message
+                                  )), :cmt), :commit_msg1)),
+                          (:line, 441, :none),
+                          (:(=), :showstr, (:call, :split, (:call, :sprint, :show, :cmt), "\n")),
+                          (:line, 443, :none),
+                          (:macrocall, Symbol("@test"), (:call, :contains, (:ref, :showstr, 1), "Git Commit:")),
+                          (:line, 444, :none),
+                          (:macrocall, Symbol("@test"), (:call, :contains, (:ref, :showstr, 2), "Commit Author: Name: TEST, Email: TEST@TEST.COM, Time:")),
+                          (:line, 445, :none),
+                          (:macrocall, Symbol("@test"), (:call, :contains, (:ref, :showstr, 3), "Committer: Name: TEST, Email: TEST@TEST.COM, Time:")),
+                          (:line, 446, :none),
+                          (:macrocall, Symbol("@test"), (:call, :contains, (:ref, :showstr, 4), "SHA:")),
+                          (:line, 447, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :showstr, 5), "Message:")),
+                          (:line, 448, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :showstr, 6), :commit_msg1)),
+                          (:line, 450, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                    :revcount
+                                  )), :repo, (:call, :string, :commit_oid1), (:call, :string, :commit_oid3)), (:tuple, -1, 0)))
+                        ), false, false, (:block,
+                          (:line, 452, :none),
+                          (:call, :close, :cmt)
+                        ))
+                    ), false, false, (:block,
+                      (:line, 455, :none),
+                      (:call, :close, :repo),
+                      (:line, 456, :none),
+                      (:call, :close, :repo_file)
+                    ))
+                )),
+              (:line, 460, :none),
+              (:macrocall, Symbol("@testset"), "with branch", (:block,
+                  (:line, 461, :none),
+                  (:(=), :repo, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :GitRepo
+                        )), :cache_repo)),
+                  (:line, 462, :none),
+                  (:try, (:block,
+                      (:line, 463, :none),
+                      (:(=), :brnch, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :branch
+                            )), :repo)),
+                      (:line, 464, :none),
+                      (:(=), :brref, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :head
+                            )), :repo)),
+                      (:line, 465, :none),
+                      (:try, (:block,
+                          (:line, 466, :none),
+                          (:macrocall, Symbol("@test"), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                  :isbranch
+                                )), :brref)),
+                          (:line, 467, :none),
+                          (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                    :isremote
+                                  )), :brref))),
+                          (:line, 468, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                    :name
+                                  )), :brref), "refs/heads/master")),
+                          (:line, 469, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                    :shortname
+                                  )), :brref), :master_branch)),
+                          (:line, 470, :none),
+                          (:macrocall, Symbol("@test"), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                  :ishead
+                                )), :brref)),
+                          (:line, 471, :none),
+                          (:macrocall, Symbol("@test"), (:call, :isnull, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                    :upstream
+                                  )), :brref))),
+                          (:line, 472, :none),
+                          (:(=), :show_strs, (:call, :split, (:call, :sprint, :show, :brref), "\n")),
+                          (:line, 473, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :show_strs, 1), "GitReference:")),
+                          (:line, 474, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :show_strs, 2), "Branch with name refs/heads/master")),
+                          (:line, 475, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :show_strs, 3), "Branch is HEAD.")),
+                          (:line, 476, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), (:., :repo, (:quote, #QuoteNode
+                                  :ptr
+                                )), (:., (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                      :repository
+                                    )), :brref), (:quote, #QuoteNode
+                                  :ptr
+                                )))),
+                          (:line, 477, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), :brnch, :master_branch)),
+                          (:line, 478, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                    :headname
+                                  )), :repo), :master_branch)),
+                          (:line, 479, :none),
+                          (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :branch!
+                              )), :repo, :test_branch, (:call, :string, :commit_oid1), (:kw, :set_head, false)),
+                          (:line, 481, :none),
+                          (:macrocall, Symbol("@test"), (:call, :isnull, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                    :lookup_branch
+                                  )), :repo, :test_branch, true))),
+                          (:line, 482, :none),
+                          (:(=), :tbref, (:call, (:., :Base, (:quote, #QuoteNode
+                                  :get
+                                )), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                    :lookup_branch
+                                  )), :repo, :test_branch, false))),
+                          (:line, 483, :none),
+                          (:try, (:block,
+                              (:line, 484, :none),
+                              (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                        :shortname
+                                      )), :tbref), :test_branch)),
+                              (:line, 485, :none),
+                              (:macrocall, Symbol("@test"), (:call, :isnull, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                        :upstream
+                                      )), :tbref)))
+                            ), false, false, (:block,
+                              (:line, 487, :none),
+                              (:call, :close, :tbref)
+                            )),
+                          (:line, 489, :none),
+                          (:macrocall, Symbol("@test"), (:call, :isnull, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                    :lookup_branch
+                                  )), :repo, :test_branch2, true))),
+                          (:line, 490, :none),
+                          (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :branch!
+                              )), (:parameters, (:kw, :set_head, false)), :repo, :test_branch2),
+                          (:line, 491, :none),
+                          (:(=), :tbref, (:call, (:., :Base, (:quote, #QuoteNode
+                                  :get
+                                )), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                    :lookup_branch
+                                  )), :repo, :test_branch2, false))),
+                          (:line, 492, :none),
+                          (:try, (:block,
+                              (:line, 493, :none),
+                              (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                        :shortname
+                                      )), :tbref), :test_branch2)),
+                              (:line, 494, :none),
+                              (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                    :delete_branch
+                                  )), :tbref),
+                              (:line, 495, :none),
+                              (:macrocall, Symbol("@test"), (:call, :isnull, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                        :lookup_branch
+                                      )), :repo, :test_branch2, true)))
+                            ), false, false, (:block,
+                              (:line, 497, :none),
+                              (:call, :close, :tbref)
+                            ))
+                        ), false, false, (:block,
+                          (:line, 500, :none),
+                          (:call, :close, :brref)
+                        )),
+                      (:line, 503, :none),
+                      (:(=), :branches, (:call, :map, (:->, :b, (:block,
+                              (:line, 503, :none),
+                              (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                    :shortname
+                                  )), (:ref, :b, 1))
+                            )), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :GitBranchIter
+                              )), :repo))),
+                      (:line, 504, :none),
+                      (:macrocall, Symbol("@test"), (:call, :in, :master_branch, :branches)),
+                      (:line, 505, :none),
+                      (:macrocall, Symbol("@test"), (:call, :in, :test_branch, :branches))
+                    ), false, false, (:block,
+                      (:line, 507, :none),
+                      (:call, :close, :repo)
+                    ))
+                )),
+              (:line, 511, :none),
+              (:macrocall, Symbol("@testset"), "with default configuration", (:block,
+                  (:line, 512, :none),
+                  (:(=), :repo, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :GitRepo
+                        )), :cache_repo)),
+                  (:line, 513, :none),
+                  (:try, (:block,
+                      (:line, 514, :none),
+                      (:try, (:block,
+                          (:line, 515, :none),
+                          (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :Signature
+                              )), :repo)
+                        ), :ex, (:block,
+                          (:line, 519, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), (:call, :isa, :ex, (:., (:., :LibGit2, (:quote, #QuoteNode
+                                      :Error
+                                    )), (:quote, #QuoteNode
+                                    :GitError
+                                  ))), true)),
+                          (:line, 521, :none),
+                          (:(=), :cfg, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                  :GitConfig
+                                )), :repo)),
+                          (:line, 522, :none),
+                          (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :set!
+                              )), :cfg, "user.name", "AAAA"),
+                          (:line, 523, :none),
+                          (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :set!
+                              )), :cfg, "user.email", "BBBB@BBBB.COM"),
+                          (:line, 524, :none),
+                          (:(=), :sig, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                  :Signature
+                                )), :repo)),
+                          (:line, 525, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), (:., :sig, (:quote, #QuoteNode
+                                  :name
+                                )), "AAAA")),
+                          (:line, 526, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), (:., :sig, (:quote, #QuoteNode
+                                  :email
+                                )), "BBBB@BBBB.COM")),
+                          (:line, 527, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                    :getconfig
+                                  )), :repo, "user.name", ""), "AAAA")),
+                          (:line, 528, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                    :getconfig
+                                  )), :cache_repo, "user.name", ""), "AAAA"))
+                        ))
+                    ), false, false, (:block,
+                      (:line, 531, :none),
+                      (:call, :close, :repo)
+                    ))
+                )),
+              (:line, 535, :none),
+              (:macrocall, Symbol("@testset"), "with tags", (:block,
+                  (:line, 536, :none),
+                  (:(=), :repo, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :GitRepo
+                        )), :cache_repo)),
+                  (:line, 537, :none),
+                  (:try, (:block,
+                      (:line, 538, :none),
+                      (:(=), :tags, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :tag_list
+                            )), :repo)),
+                      (:line, 539, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :tags), 0)),
+                      (:line, 541, :none),
+                      (:(=), :tag_oid1, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :tag_create
+                            )), :repo, :tag1, :commit_oid1, (:kw, :sig, :test_sig))),
+                      (:line, 542, :none),
+                      (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :iszero
+                              )), :tag_oid1))),
+                      (:line, 543, :none),
+                      (:(=), :tags, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :tag_list
+                            )), :repo)),
+                      (:line, 544, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :tags), 1)),
+                      (:line, 545, :none),
+                      (:macrocall, Symbol("@test"), (:call, :in, :tag1, :tags)),
+                      (:line, 546, :none),
+                      (:(=), :tag1ref, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :GitReference
+                            )), :repo, (:string, "refs/tags/", :tag1))),
+                      (:line, 547, :none),
+                      (:macrocall, Symbol("@test"), (:call, :isempty, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :fullname
+                              )), :tag1ref))),
+                      (:line, 548, :none),
+                      (:(=), :show_strs, (:call, :split, (:call, :sprint, :show, :tag1ref), "\n")),
+                      (:line, 549, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :show_strs, 1), "GitReference:")),
+                      (:line, 550, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :show_strs, 2), (:string, "Tag with name refs/tags/", :tag1))),
+                      (:line, 551, :none),
+                      (:(=), :tag1tag, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :peel
+                            )), (:., :LibGit2, (:quote, #QuoteNode
+                              :GitTag
+                            )), :tag1ref)),
+                      (:line, 552, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :name
+                              )), :tag1tag), :tag1)),
+                      (:line, 553, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :target
+                              )), :tag1tag), :commit_oid1)),
+                      (:line, 554, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :sprint, :show, :tag1tag), (:string, "GitTag:\nTag name: ", :tag1, " target: ", :commit_oid1))),
+                      (:line, 555, :none),
+                      (:(=), :tag_oid2, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :tag_create
+                            )), :repo, :tag2, :commit_oid2)),
+                      (:line, 556, :none),
+                      (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :iszero
+                              )), :tag_oid2))),
+                      (:line, 557, :none),
+                      (:(=), :tags, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :tag_list
+                            )), :repo)),
+                      (:line, 558, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :tags), 2)),
+                      (:line, 559, :none),
+                      (:macrocall, Symbol("@test"), (:call, :in, :tag2, :tags)),
+                      (:line, 561, :none),
+                      (:(=), :refs, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :ref_list
+                            )), :repo)),
+                      (:line, 562, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), :refs, (:vect, "refs/heads/master", "refs/heads/test_branch", "refs/tags/tag1", "refs/tags/tag2"))),
+                      (:line, 564, :none),
+                      (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :tag_delete
+                          )), :repo, :tag1),
+                      (:line, 565, :none),
+                      (:(=), :tags, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :tag_list
+                            )), :repo)),
+                      (:line, 566, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :tags), 1)),
+                      (:line, 567, :none),
+                      (:macrocall, Symbol("@test"), (:call, :∈, :tag2, :tags)),
+                      (:line, 568, :none),
+                      (:macrocall, Symbol("@test"), (:call, :∉, :tag1, :tags))
+                    ), false, false, (:block,
+                      (:line, 570, :none),
+                      (:call, :close, :repo)
+                    ))
+                )),
+              (:line, 574, :none),
+              (:macrocall, Symbol("@testset"), "status", (:block,
+                  (:line, 575, :none),
+                  (:(=), :repo, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :GitRepo
+                        )), :cache_repo)),
+                  (:line, 576, :none),
+                  (:try, (:block,
+                      (:line, 577, :none),
+                      (:(=), :status, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :GitStatus
+                            )), :repo)),
+                      (:line, 578, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :status), 0)),
+                      (:line, 579, :none),
+                      (:macrocall, Symbol("@test_throws"), :BoundsError, (:ref, :status, 1)),
+                      (:line, 580, :none),
+                      (:(=), :repo_file, (:call, :open, (:call, :joinpath, :cache_repo, "statusfile"), "a")),
+                      (:line, 583, :none),
+                      (:call, :println, :repo_file, :commit_msg1),
+                      (:line, 584, :none),
+                      (:call, :flush, :repo_file),
+                      (:line, 585, :none),
+                      (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :add!
+                          )), :repo, :test_file),
+                      (:line, 586, :none),
+                      (:(=), :status, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :GitStatus
+                            )), :repo)),
+                      (:line, 587, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(!=), (:call, :length, :status), 0)),
+                      (:line, 588, :none),
+                      (:macrocall, Symbol("@test_throws"), :BoundsError, (:ref, :status, 0)),
+                      (:line, 589, :none),
+                      (:macrocall, Symbol("@test_throws"), :BoundsError, (:ref, :status, (:call, :+, (:call, :length, :status), 1))),
+                      (:line, 591, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, :status, 1), (:quote, #QuoteNode
+                              :status
+                            )), (:., (:., :LibGit2, (:quote, #QuoteNode
+                                :Consts
+                              )), (:quote, #QuoteNode
+                              :STATUS_WT_NEW
+                            )))),
+                      (:line, 592, :none),
+                      (:call, :close, :repo_file)
+                    ), false, false, (:block,
+                      (:line, 594, :none),
+                      (:call, :close, :repo)
+                    ))
+                )),
+              (:line, 598, :none),
+              (:macrocall, Symbol("@testset"), "blobs", (:block,
+                  (:line, 599, :none),
+                  (:(=), :repo, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :GitRepo
+                        )), :cache_repo)),
+                  (:line, 600, :none),
+                  (:try, (:block,
+                      (:line, 603, :none),
+                      (:(=), :hash_string, (:call, :hex, :commit_oid1)),
+                      (:line, 604, :none),
+                      (:(=), :blob_file, (:call, :joinpath, :cache_repo, ".git/objects", (:ref, :hash_string, (:(:), 1, 2)), (:ref, :hash_string, (:(:), 3, :end)))),
+                      (:line, 606, :none),
+                      (:(=), :id, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :addblob!
+                            )), :repo, :blob_file)),
+                      (:line, 607, :none),
+                      (:(=), :blob, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :GitBlob
+                            )), :repo, :id)),
+                      (:line, 608, :none),
+                      (:macrocall, Symbol("@test"), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :isbinary
+                            )), :blob)),
+                      (:line, 609, :none),
+                      (:(=), :len1, (:call, :length, :blob)),
+                      (:line, 610, :none),
+                      (:(=), :blob_show_strs, (:call, :split, (:call, :sprint, :show, :blob), "\n")),
+                      (:line, 611, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :blob_show_strs, 1), "GitBlob:")),
+                      (:line, 612, :none),
+                      (:macrocall, Symbol("@test"), (:call, :contains, (:ref, :blob_show_strs, 2), "Blob id:")),
+                      (:line, 613, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :blob_show_strs, 3), "Contents are binary.")),
+                      (:line, 615, :none),
+                      (:(=), :blob2, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :GitBlob
+                            )), :repo, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :GitHash
+                              )), :blob))),
+                      (:line, 616, :none),
+                      (:macrocall, Symbol("@test"), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :isbinary
+                            )), :blob2)),
+                      (:line, 617, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :blob2), :len1))
+                    ), false, false, (:block,
+                      (:line, 619, :none),
+                      (:call, :close, :repo)
+                    ))
+                )),
+              (:line, 622, :none),
+              (:macrocall, Symbol("@testset"), "trees", (:block,
+                  (:line, 623, :none),
+                  (:(=), :repo, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :GitRepo
+                        )), :cache_repo)),
+                  (:line, 624, :none),
+                  (:try, (:block,
+                      (:line, 625, :none),
+                      (:macrocall, Symbol("@test_throws"), (:., (:., :LibGit2, (:quote, #QuoteNode
+                              :Error
+                            )), (:quote, #QuoteNode
+                            :GitError
+                          )), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :GitTree
+                            )), :repo, "HEAD")),
+                      (:line, 626, :none),
+                      (:(=), :tree, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :GitTree
+                            )), :repo, "HEAD^{tree}")),
+                      (:line, 627, :none),
+                      (:macrocall, Symbol("@test"), (:call, :isa, :tree, (:., :LibGit2, (:quote, #QuoteNode
+                              :GitTree
+                            )))),
+                      (:line, 628, :none),
+                      (:macrocall, Symbol("@test"), (:call, :isa, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :GitObject
+                              )), :repo, "HEAD^{tree}"), (:., :LibGit2, (:quote, #QuoteNode
+                              :GitTree
+                            )))),
+                      (:line, 629, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., (:., :LibGit2, (:quote, #QuoteNode
+                                  :Consts
+                                )), (:quote, #QuoteNode
+                                :OBJECT
+                              )), (:call, :typeof, :tree)), (:., (:., :LibGit2, (:quote, #QuoteNode
+                                :Consts
+                              )), (:quote, #QuoteNode
+                              :OBJ_TREE
+                            )))),
+                      (:line, 630, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :count, :tree), 1)),
+                      (:line, 631, :none),
+                      (:(=), :tree_str, (:call, :sprint, :show, :tree)),
+                      (:line, 632, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), :tree_str, (:string, "GitTree:\nOwner: ", (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                  :repository
+                                )), :tree), "\nNumber of entries: 1\n"))),
+                      (:line, 633, :none),
+                      (:macrocall, Symbol("@test_throws"), :BoundsError, (:ref, :tree, 0)),
+                      (:line, 634, :none),
+                      (:macrocall, Symbol("@test_throws"), :BoundsError, (:ref, :tree, 2)),
+                      (:line, 635, :none),
+                      (:(=), :tree_entry, (:ref, :tree, 1)),
+                      (:line, 636, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :filemode
+                              )), :tree_entry), 33188)),
+                      (:line, 637, :none),
+                      (:(=), :te_str, (:call, :sprint, :show, :tree_entry)),
+                      (:line, 638, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), :te_str, (:string, "GitTreeEntry:\nEntry name: testfile\nEntry type: Base.LibGit2.GitBlob\nEntry OID: ", (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                  :entryid
+                                )), :tree_entry), "\n"))),
+                      (:line, 639, :none),
+                      (:(=), :blob, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :GitBlob
+                            )), :tree_entry)),
+                      (:line, 640, :none),
+                      (:(=), :blob_str, (:call, :sprint, :show, :blob)),
+                      (:line, 641, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), :blob_str, (:string, "GitBlob:\nBlob id: ", (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                  :GitHash
+                                )), :blob), "\nContents:\n", (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                  :content
+                                )), :blob), "\n")))
+                    ), false, false, (:block,
+                      (:line, 643, :none),
+                      (:call, :close, :repo)
+                    ))
+                )),
+              (:line, 647, :none),
+              (:macrocall, Symbol("@testset"), "diff", (:block,
+                  (:line, 648, :none),
+                  (:(=), :repo, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :GitRepo
+                        )), :cache_repo)),
+                  (:line, 649, :none),
+                  (:try, (:block,
+                      (:line, 650, :none),
+                      (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :isdirty
+                              )), :repo))),
+                      (:line, 651, :none),
+                      (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :isdirty
+                              )), :repo, :test_file))),
+                      (:line, 652, :none),
+                      (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :isdirty
+                              )), :repo, "nonexistent"))),
+                      (:line, 653, :none),
+                      (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :isdiff
+                              )), :repo, "HEAD"))),
+                      (:line, 654, :none),
+                      (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :isdirty
+                              )), :repo, (:kw, :cached, true)))),
+                      (:line, 655, :none),
+                      (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :isdirty
+                              )), :repo, :test_file, (:kw, :cached, true)))),
+                      (:line, 656, :none),
+                      (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :isdirty
+                              )), :repo, "nonexistent", (:kw, :cached, true)))),
+                      (:line, 657, :none),
+                      (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :isdiff
+                              )), :repo, "HEAD", (:kw, :cached, true)))),
+                      (:line, 658, :none),
+                      (:call, :open, (:->, (:tuple, :f), (:block,
+                            (:line, 659, :none),
+                            (:call, :println, :f, "zzzz")
+                          )), (:call, :joinpath, :cache_repo, :test_file), "a"),
+                      (:line, 661, :none),
+                      (:macrocall, Symbol("@test"), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :isdirty
+                            )), :repo)),
+                      (:line, 662, :none),
+                      (:macrocall, Symbol("@test"), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :isdirty
+                            )), :repo, :test_file)),
+                      (:line, 663, :none),
+                      (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :isdirty
+                              )), :repo, "nonexistent"))),
+                      (:line, 664, :none),
+                      (:macrocall, Symbol("@test"), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :isdiff
+                            )), :repo, "HEAD")),
+                      (:line, 665, :none),
+                      (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :isdirty
+                              )), :repo, (:kw, :cached, true)))),
+                      (:line, 666, :none),
+                      (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :isdiff
+                              )), :repo, "HEAD", (:kw, :cached, true)))),
+                      (:line, 667, :none),
+                      (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :add!
+                          )), :repo, :test_file),
+                      (:line, 668, :none),
+                      (:macrocall, Symbol("@test"), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :isdirty
+                            )), :repo)),
+                      (:line, 669, :none),
+                      (:macrocall, Symbol("@test"), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :isdiff
+                            )), :repo, "HEAD")),
+                      (:line, 670, :none),
+                      (:macrocall, Symbol("@test"), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :isdirty
+                            )), :repo, (:kw, :cached, true))),
+                      (:line, 671, :none),
+                      (:macrocall, Symbol("@test"), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :isdiff
+                            )), :repo, "HEAD", (:kw, :cached, true))),
+                      (:line, 672, :none),
+                      (:(=), :tree, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :GitTree
+                            )), :repo, "HEAD^{tree}")),
+                      (:line, 673, :none),
+                      (:(=), :diff, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :diff_tree
+                            )), :repo, :tree, "", (:kw, :cached, true))),
+                      (:line, 674, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :count, :diff), 1)),
+                      (:line, 675, :none),
+                      (:macrocall, Symbol("@test_throws"), :BoundsError, (:ref, :diff, 0)),
+                      (:line, 676, :none),
+                      (:macrocall, Symbol("@test_throws"), :BoundsError, (:ref, :diff, 2)),
+                      (:line, 677, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., (:., :LibGit2, (:quote, #QuoteNode
+                                  :Consts
+                                )), (:quote, #QuoteNode
+                                :DELTA_STATUS
+                              )), (:., (:ref, :diff, 1), (:quote, #QuoteNode
+                                :status
+                              ))), (:., (:., :LibGit2, (:quote, #QuoteNode
+                                :Consts
+                              )), (:quote, #QuoteNode
+                              :DELTA_MODIFIED
+                            )))),
+                      (:line, 678, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, :diff, 1), (:quote, #QuoteNode
+                              :nfiles
+                            )), 2)),
+                      (:line, 679, :none),
+                      (:(=), :diff_strs, (:call, :split, (:call, :sprint, :show, (:ref, :diff, 1)), '\n')),
+                      (:line, 680, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :diff_strs, 1), "DiffDelta:")),
+                      (:line, 681, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :diff_strs, 2), "Status: DELTA_MODIFIED")),
+                      (:line, 682, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :diff_strs, 3), "Number of files: 2")),
+                      (:line, 683, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :diff_strs, 4), "Old file:")),
+                      (:line, 684, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :diff_strs, 5), "DiffFile:")),
+                      (:line, 685, :none),
+                      (:macrocall, Symbol("@test"), (:call, :contains, (:ref, :diff_strs, 6), "Oid:")),
+                      (:line, 686, :none),
+                      (:macrocall, Symbol("@test"), (:call, :contains, (:ref, :diff_strs, 7), "Path:")),
+                      (:line, 687, :none),
+                      (:macrocall, Symbol("@test"), (:call, :contains, (:ref, :diff_strs, 8), "Size:")),
+                      (:line, 688, :none),
+                      (:macrocall, Symbol("@test"), (:call, :isempty, (:ref, :diff_strs, 9))),
+                      (:line, 689, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :diff_strs, 10), "New file:")),
+                      (:line, 690, :none),
+                      (:(=), :diff_strs, (:call, :split, (:call, :sprint, :show, :diff), '\n')),
+                      (:line, 691, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :diff_strs, 1), "GitDiff:")),
+                      (:line, 692, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :diff_strs, 2), "Number of deltas: 1")),
+                      (:line, 693, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :diff_strs, 3), "GitDiffStats:")),
+                      (:line, 694, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :diff_strs, 4), "Files changed: 1")),
+                      (:line, 695, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :diff_strs, 5), "Insertions: 1")),
+                      (:line, 696, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :diff_strs, 6), "Deletions: 0")),
+                      (:line, 697, :none),
+                      (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :commit
+                          )), :repo, "zzz"),
+                      (:line, 698, :none),
+                      (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :isdirty
+                              )), :repo))),
+                      (:line, 699, :none),
+                      (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :isdiff
+                              )), :repo, "HEAD"))),
+                      (:line, 700, :none),
+                      (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :isdirty
+                              )), :repo, (:kw, :cached, true)))),
+                      (:line, 701, :none),
+                      (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :isdiff
+                              )), :repo, "HEAD", (:kw, :cached, true))))
+                    ), false, false, (:block,
+                      (:line, 703, :none),
+                      (:call, :close, :repo)
+                    ))
+                ))
+            )),
+          (:line, 710, :none),
+          (:macrocall, Symbol("@testset"), "Fastforward merges", (:block,
+              (:line, 711, :none),
+              (:(=), :path, (:call, :joinpath, :dir, "Example.FF")),
+              (:line, 712, :none),
+              (:(=), :repo, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                      :clone
+                    )), :cache_repo, :path)),
+              (:line, 714, :none),
+              (:(=), :cfg, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                      :GitConfig
+                    )), :repo)),
+              (:line, 715, :none),
+              (:call, (:., :LibGit2, (:quote, #QuoteNode
+                    :set!
+                  )), :cfg, "user.name", "AAAA"),
+              (:line, 716, :none),
+              (:call, (:., :LibGit2, (:quote, #QuoteNode
+                    :set!
+                  )), :cfg, "user.email", "BBBB@BBBB.COM"),
+              (:line, 717, :none),
+              (:try, (:block,
+                  (:line, 718, :none),
+                  (:(=), :oldhead, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :head_oid
+                        )), :repo)),
+                  (:line, 719, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :branch!
+                      )), :repo, "branch/ff_a"),
+                  (:line, 720, :none),
+                  (:call, :open, (:->, (:tuple, :f), (:block,
+                        (:line, 721, :none),
+                        (:call, :write, :f, "111\n")
+                      )), (:call, :joinpath, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :path
+                          )), :repo), "ff_file1"), "w"),
+                  (:line, 723, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :add!
+                      )), :repo, "ff_file1"),
+                  (:line, 724, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :commit
+                      )), :repo, "add ff_file1"),
+                  (:line, 726, :none),
+                  (:call, :open, (:->, (:tuple, :f), (:block,
+                        (:line, 727, :none),
+                        (:call, :write, :f, "222\n")
+                      )), (:call, :joinpath, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :path
+                          )), :repo), "ff_file2"), "w"),
+                  (:line, 729, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :add!
+                      )), :repo, "ff_file2"),
+                  (:line, 730, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :commit
+                      )), :repo, "add ff_file2"),
+                  (:line, 731, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :branch!
+                      )), :repo, "master"),
+                  (:line, 735, :none),
+                  (:(=), :upst_ann, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :GitAnnotated
+                        )), :repo, "branch/ff_a")),
+                  (:line, 736, :none),
+                  (:(=), :head_ann, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :GitAnnotated
+                        )), :repo, "master")),
+                  (:line, 739, :none),
+                  (:macrocall, Symbol("@test"), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :merge!
+                        )), :repo, (:vect, :upst_ann), true)),
+                  (:line, 740, :none),
+                  (:macrocall, Symbol("@test"), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :is_ancestor_of
+                        )), (:call, :string, :oldhead), (:call, :string, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :head_oid
+                            )), :repo)), :repo)),
+                  (:line, 742, :none),
+                  (:(=), :oldhead, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :head_oid
+                        )), :repo)),
+                  (:line, 743, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :branch!
+                      )), :repo, "branch/ff_b"),
+                  (:line, 744, :none),
+                  (:call, :open, (:->, (:tuple, :f), (:block,
+                        (:line, 745, :none),
+                        (:call, :write, :f, "333\n")
+                      )), (:call, :joinpath, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :path
+                          )), :repo), "ff_file3"), "w"),
+                  (:line, 747, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :add!
+                      )), :repo, "ff_file3"),
+                  (:line, 748, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :commit
+                      )), :repo, "add ff_file3"),
+                  (:line, 750, :none),
+                  (:call, :open, (:->, (:tuple, :f), (:block,
+                        (:line, 751, :none),
+                        (:call, :write, :f, "444\n")
+                      )), (:call, :joinpath, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :path
+                          )), :repo), "ff_file4"), "w"),
+                  (:line, 753, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :add!
+                      )), :repo, "ff_file4"),
+                  (:line, 754, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :commit
+                      )), :repo, "add ff_file4"),
+                  (:line, 755, :none),
+                  (:(=), :branchhead, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :head_oid
+                        )), :repo)),
+                  (:line, 756, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :branch!
+                      )), :repo, "master"),
+                  (:line, 759, :none),
+                  (:macrocall, Symbol("@test"), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :merge!
+                        )), :repo, (:kw, :committish, (:call, :string, :branchhead)))),
+                  (:line, 760, :none),
+                  (:macrocall, Symbol("@test"), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :is_ancestor_of
+                        )), (:call, :string, :oldhead), (:call, :string, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :head_oid
+                            )), :repo)), :repo)),
+                  (:line, 762, :none),
+                  (:(=), :oldhead, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :head_oid
+                        )), :repo)),
+                  (:line, 763, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :branch!
+                      )), :repo, "branch/ff_c"),
+                  (:line, 764, :none),
+                  (:call, :open, (:->, (:tuple, :f), (:block,
+                        (:line, 765, :none),
+                        (:call, :write, :f, "555\n")
+                      )), (:call, :joinpath, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :path
+                          )), :repo), "ff_file5"), "w"),
+                  (:line, 767, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :add!
+                      )), :repo, "ff_file5"),
+                  (:line, 768, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :commit
+                      )), :repo, "add ff_file5"),
+                  (:line, 770, :none),
+                  (:call, :open, (:->, (:tuple, :f), (:block,
+                        (:line, 771, :none),
+                        (:call, :write, :f, "666\n")
+                      )), (:call, :joinpath, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :path
+                          )), :repo), "ff_file6"), "w"),
+                  (:line, 773, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :add!
+                      )), :repo, "ff_file6"),
+                  (:line, 774, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :commit
+                      )), :repo, "add ff_file6"),
+                  (:line, 775, :none),
+                  (:(=), :branchhead, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :head_oid
+                        )), :repo)),
+                  (:line, 776, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :branch!
+                      )), :repo, "master"),
+                  (:line, 779, :none),
+                  (:macrocall, Symbol("@test"), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :merge!
+                        )), :repo, (:kw, :branch, "refs/heads/branch/ff_c"))),
+                  (:line, 780, :none),
+                  (:macrocall, Symbol("@test"), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :is_ancestor_of
+                        )), (:call, :string, :oldhead), (:call, :string, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :head_oid
+                            )), :repo)), :repo))
+                ), false, false, (:block,
+                  (:line, 782, :none),
+                  (:call, :close, :repo)
+                ))
+            )),
+          (:line, 786, :none),
+          (:macrocall, Symbol("@testset"), "Merges", (:block,
+              (:line, 787, :none),
+              (:(=), :path, (:call, :joinpath, :dir, "Example.Merge")),
+              (:line, 788, :none),
+              (:(=), :repo, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                      :clone
+                    )), :cache_repo, :path)),
+              (:line, 790, :none),
+              (:(=), :cfg, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                      :GitConfig
+                    )), :repo)),
+              (:line, 791, :none),
+              (:call, (:., :LibGit2, (:quote, #QuoteNode
+                    :set!
+                  )), :cfg, "user.name", "AAAA"),
+              (:line, 792, :none),
+              (:call, (:., :LibGit2, (:quote, #QuoteNode
+                    :set!
+                  )), :cfg, "user.email", "BBBB@BBBB.COM"),
+              (:line, 793, :none),
+              (:try, (:block,
+                  (:line, 794, :none),
+                  (:(=), :oldhead, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :head_oid
+                        )), :repo)),
+                  (:line, 795, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :branch!
+                      )), :repo, "branch/merge_a"),
+                  (:line, 796, :none),
+                  (:call, :open, (:->, (:tuple, :f), (:block,
+                        (:line, 797, :none),
+                        (:call, :write, :f, "111\n")
+                      )), (:call, :joinpath, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :path
+                          )), :repo), "file1"), "w"),
+                  (:line, 799, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :add!
+                      )), :repo, "file1"),
+                  (:line, 800, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :commit
+                      )), :repo, "add file1"),
+                  (:line, 804, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :branch!
+                      )), :repo, "master"),
+                  (:line, 807, :none),
+                  (:(=), :brref, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :GitReference
+                        )), :repo, "refs/heads/branch/merge_a")),
+                  (:line, 808, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :name
+                          )), :brref), "refs/heads/branch/merge_a")),
+                  (:line, 809, :none),
+                  (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :ishead
+                          )), :brref))),
+                  (:line, 810, :none),
+                  (:(=), :show_strs, (:call, :split, (:call, :sprint, :show, :brref), "\n")),
+                  (:line, 811, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :show_strs, 1), "GitReference:")),
+                  (:line, 812, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :show_strs, 2), "Branch with name refs/heads/branch/merge_a")),
+                  (:line, 813, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :show_strs, 3), "Branch is not HEAD.")),
+                  (:line, 815, :none),
+                  (:call, :open, (:->, (:tuple, :f), (:block,
+                        (:line, 816, :none),
+                        (:call, :write, :f, "222\n")
+                      )), (:call, :joinpath, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :path
+                          )), :repo), "file2"), "w"),
+                  (:line, 818, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :add!
+                      )), :repo, "file2"),
+                  (:line, 819, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :commit
+                      )), :repo, "add file2"),
+                  (:line, 821, :none),
+                  (:(=), :upst_ann, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :GitAnnotated
+                        )), :repo, "branch/merge_a")),
+                  (:line, 822, :none),
+                  (:(=), :head_ann, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :GitAnnotated
+                        )), :repo, "master")),
+                  (:line, 825, :none),
+                  (:macrocall, Symbol("@test_warn"), "WARNING: Cannot perform fast-forward merge.", (:call, :!, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :merge!
+                          )), :repo, (:vect, :upst_ann), true))),
+                  (:line, 827, :none),
+                  (:macrocall, Symbol("@test_warn"), "INFO: Review and commit merged changes.", (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :merge!
+                        )), :repo, (:vect, :upst_ann), false)),
+                  (:line, 828, :none),
+                  (:macrocall, Symbol("@test"), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :is_ancestor_of
+                        )), (:call, :string, :oldhead), (:call, :string, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :head_oid
+                            )), :repo)), :repo)),
+                  (:line, 831, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :branch!
+                      )), :repo, "branch/merge_b"),
+                  (:line, 832, :none),
+                  (:call, :mv, (:call, :joinpath, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :path
+                          )), :repo), "file1"), (:call, :joinpath, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :path
+                          )), :repo), "mvfile1")),
+                  (:line, 833, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :add!
+                      )), :repo, "mvfile1"),
+                  (:line, 834, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :commit
+                      )), :repo, "move file1"),
+                  (:line, 835, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :branch!
+                      )), :repo, "master"),
+                  (:line, 836, :none),
+                  (:(=), :upst_ann, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :GitAnnotated
+                        )), :repo, "branch/merge_b")),
+                  (:line, 837, :none),
+                  (:(=), :rename_flag, 0),
+                  (:line, 838, :none),
+                  (:(=), :rename_flag, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :toggle
+                        )), :rename_flag, 0)),
+                  (:line, 839, :none),
+                  (:(=), :mos, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :MergeOptions
+                        )), (:kw, :flags, :rename_flag))),
+                  (:line, 840, :none),
+                  (:macrocall, Symbol("@test_warn"), "INFO: Review and commit merged changes.", (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :merge!
+                        )), :repo, (:vect, :upst_ann), (:kw, :merge_opts, :mos)))
+                ), false, false, (:block,
+                  (:line, 842, :none),
+                  (:call, :close, :repo)
+                ))
+            )),
+          (:line, 846, :none),
+          (:macrocall, Symbol("@testset"), "push", (:block,
+              (:line, 847, :none),
+              (:(=), :up_path, (:call, :joinpath, :dir, "Example.PushUp")),
+              (:line, 848, :none),
+              (:(=), :up_repo, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                      :clone
+                    )), :cache_repo, :up_path)),
+              (:line, 849, :none),
+              (:(=), :our_path, (:call, :joinpath, :dir, "Example.Push")),
+              (:line, 850, :none),
+              (:(=), :our_repo, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                      :clone
+                    )), :cache_repo, :our_path)),
+              (:line, 852, :none),
+              (:(=), :our_cfg, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                      :GitConfig
+                    )), :our_repo)),
+              (:line, 853, :none),
+              (:call, (:., :LibGit2, (:quote, #QuoteNode
+                    :set!
+                  )), :our_cfg, "user.name", "AAAA"),
+              (:line, 854, :none),
+              (:call, (:., :LibGit2, (:quote, #QuoteNode
+                    :set!
+                  )), :our_cfg, "user.email", "BBBB@BBBB.COM"),
+              (:line, 855, :none),
+              (:(=), :up_cfg, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                      :GitConfig
+                    )), :up_repo)),
+              (:line, 856, :none),
+              (:call, (:., :LibGit2, (:quote, #QuoteNode
+                    :set!
+                  )), :up_cfg, "user.name", "AAAA"),
+              (:line, 857, :none),
+              (:call, (:., :LibGit2, (:quote, #QuoteNode
+                    :set!
+                  )), :up_cfg, "user.email", "BBBB@BBBB.COM"),
+              (:line, 858, :none),
+              (:try, (:block,
+                  (:line, 859, :none),
+                  (:call, :open, (:->, (:tuple, :f), (:block,
+                        (:line, 860, :none),
+                        (:call, :write, :f, "111\n")
+                      )), (:call, :joinpath, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :path
+                          )), :our_repo), "file1"), "w"),
+                  (:line, 862, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :add!
+                      )), :our_repo, "file1"),
+                  (:line, 863, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :commit
+                      )), :our_repo, "add file1"),
+                  (:line, 864, :none),
+                  (:if, (:call, :(>=), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :version
+                          ))), (:macrocall, Symbol("@v_str"), "0.26.0")), (:block,
+                      (:line, 866, :none),
+                      (:macrocall, Symbol("@test_throws"), (:., :LibGit2, (:quote, #QuoteNode
+                            :GitError
+                          )), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :push
+                            )), :our_repo, (:kw, :remoteurl, :up_path)))
+                    ))
+                ), false, false, (:block,
+                  (:line, 869, :none),
+                  (:call, :close, :our_repo),
+                  (:line, 870, :none),
+                  (:call, :close, :up_repo)
+                ))
+            )),
+          (:line, 874, :none),
+          (:macrocall, Symbol("@testset"), "Fetch from cache repository", (:block,
+              (:line, 875, :none),
+              (:(=), :repo, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                      :GitRepo
+                    )), :test_repo)),
+              (:line, 876, :none),
+              (:try, (:block,
+                  (:line, 878, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :fetch
+                          )), :repo), 0)),
+                  (:line, 879, :none),
+                  (:macrocall, Symbol("@test"), (:call, :!, (:call, :isfile, (:call, :joinpath, :test_repo, :test_file)))),
+                  (:line, 882, :none),
+                  (:macrocall, Symbol("@test"), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :merge!
+                        )), :repo, (:kw, :fastforward, true))),
+                  (:line, 885, :none),
+                  (:(=), :head_oid, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :head_oid
+                        )), :repo)),
+                  (:line, 886, :none),
+                  (:(=), :new_head, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :reset!
+                        )), :repo, :head_oid, (:., (:., :LibGit2, (:quote, #QuoteNode
+                            :Consts
+                          )), (:quote, #QuoteNode
+                          :RESET_HARD
+                        )))),
+                  (:line, 887, :none),
+                  (:macrocall, Symbol("@test"), (:call, :isfile, (:call, :joinpath, :test_repo, :test_file))),
+                  (:line, 888, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), :new_head, :head_oid)),
+                  (:line, 891, :none),
+                  (:(=), :fh_ann, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :GitAnnotated
+                        )), :repo, (:., (:., :LibGit2, (:quote, #QuoteNode
+                            :Consts
+                          )), (:quote, #QuoteNode
+                          :FETCH_HEAD
+                        )))),
+                  (:line, 892, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :GitHash
+                          )), :fh_ann), :head_oid)),
+                  (:line, 895, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :checkout!
+                      )), :repo, (:call, :string, :commit_oid3)),
+                  (:line, 896, :none),
+                  (:macrocall, Symbol("@test_throws"), (:., (:., :LibGit2, (:quote, #QuoteNode
+                          :Error
+                        )), (:quote, #QuoteNode
+                        :GitError
+                      )), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :merge!
+                        )), :repo, (:kw, :fastforward, true))),
+                  (:line, 899, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :branch!
+                      )), :repo, :test_branch),
+                  (:line, 900, :none),
+                  (:macrocall, Symbol("@test_throws"), (:., (:., :LibGit2, (:quote, #QuoteNode
+                          :Error
+                        )), (:quote, #QuoteNode
+                        :GitError
+                      )), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :merge!
+                        )), :repo, (:kw, :fastforward, true))),
+                  (:line, 903, :none),
+                  (:(=), :cfg, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :GitConfig
+                        )), :repo)),
+                  (:line, 904, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :set!
+                      )), :cfg, "user.name", "AAAA"),
+                  (:line, 905, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :set!
+                      )), :cfg, "user.email", "BBBB@BBBB.COM"),
+                  (:line, 910, :none),
+                  (:macrocall, Symbol("@test_throws"), (:., :LibGit2, (:quote, #QuoteNode
+                        :GitError
+                      )), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :rebase!
+                        )), :repo)),
+                  (:line, 912, :none),
+                  (:(=), :newhead, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :rebase!
+                        )), :repo, :master_branch)),
+                  (:line, 913, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), :newhead, :head_oid)),
+                  (:line, 916, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :branch!
+                      )), :repo, :master_branch),
+                  (:line, 918, :none),
+                  (:(=), :fetch_heads, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :fetchheads
+                        )), :repo)),
+                  (:line, 919, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, :fetch_heads, 1), (:quote, #QuoteNode
+                          :name
+                        )), "refs/heads/master")),
+                  (:line, 920, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, :fetch_heads, 1), (:quote, #QuoteNode
+                          :ismerge
+                        )), true)),
+                  (:line, 921, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, :fetch_heads, 2), (:quote, #QuoteNode
+                          :name
+                        )), "refs/heads/test_branch")),
+                  (:line, 922, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, :fetch_heads, 2), (:quote, #QuoteNode
+                          :ismerge
+                        )), false)),
+                  (:line, 923, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, :fetch_heads, 3), (:quote, #QuoteNode
+                          :name
+                        )), "refs/tags/tag2")),
+                  (:line, 924, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), (:., (:ref, :fetch_heads, 3), (:quote, #QuoteNode
+                          :ismerge
+                        )), false)),
+                  (:line, 925, :none),
+                  (:for, (:(=), :fh, :fetch_heads), (:block,
+                      (:line, 926, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:., :fh, (:quote, #QuoteNode
+                              :url
+                            )), :cache_repo)),
+                      (:line, 927, :none),
+                      (:(=), :fh_strs, (:call, :split, (:call, :sprint, :show, :fh), '\n')),
+                      (:line, 928, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :fh_strs, 1), "FetchHead:")),
+                      (:line, 929, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :fh_strs, 2), (:string, "Name: ", (:., :fh, (:quote, #QuoteNode
+                                :name
+                              ))))),
+                      (:line, 930, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :fh_strs, 3), (:string, "URL: ", (:., :fh, (:quote, #QuoteNode
+                                :url
+                              ))))),
+                      (:line, 931, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :fh_strs, 5), (:string, "Merged: ", (:., :fh, (:quote, #QuoteNode
+                                :ismerge
+                              )))))
+                    ))
+                ), false, false, (:block,
+                  (:line, 934, :none),
+                  (:call, :close, :repo)
+                ))
+            )),
+          (:line, 938, :none),
+          (:macrocall, Symbol("@testset"), "Examine test repository", (:block,
+              (:line, 939, :none),
+              (:macrocall, Symbol("@testset"), "files", (:block,
+                  (:line, 940, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), (:call, :readstring, (:call, :joinpath, :test_repo, :test_file)), (:call, :readstring, (:call, :joinpath, :cache_repo, :test_file))))
+                )),
+              (:line, 943, :none),
+              (:macrocall, Symbol("@testset"), "tags & branches", (:block,
+                  (:line, 944, :none),
+                  (:(=), :repo, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :GitRepo
+                        )), :test_repo)),
+                  (:line, 945, :none),
+                  (:try, (:block,
+                      (:line, 947, :none),
+                      (:(=), :tags, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :tag_list
+                            )), :repo)),
+                      (:line, 948, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :tags), 1)),
+                      (:line, 949, :none),
+                      (:macrocall, Symbol("@test"), (:call, :in, :tag2, :tags)),
+                      (:line, 952, :none),
+                      (:(=), :branches, (:call, :map, (:->, :b, (:block,
+                              (:line, 952, :none),
+                              (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                    :shortname
+                                  )), (:ref, :b, 1))
+                            )), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :GitBranchIter
+                              )), :repo))),
+                      (:line, 953, :none),
+                      (:macrocall, Symbol("@test"), (:call, :in, :master_branch, :branches)),
+                      (:line, 954, :none),
+                      (:macrocall, Symbol("@test"), (:call, :in, :test_branch, :branches)),
+                      (:line, 957, :none),
+                      (:(=), :tag2ref, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :GitReference
+                            )), :repo, (:string, "refs/tags/", :tag2))),
+                      (:line, 958, :none),
+                      (:try, (:block,
+                          (:line, 959, :none),
+                          (:macrocall, Symbol("@test_throws"), (:., (:., :LibGit2, (:quote, #QuoteNode
+                                  :Error
+                                )), (:quote, #QuoteNode
+                                :GitError
+                              )), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                  :upstream
+                                )), :tag2ref))
+                        ), false, false, (:block,
+                          (:line, 961, :none),
+                          (:call, :close, :tag2ref)
+                        ))
+                    ), false, false, (:block,
+                      (:line, 965, :none),
+                      (:call, :close, :repo)
+                    ))
+                )),
+              (:line, 969, :none),
+              (:macrocall, Symbol("@testset"), "commits with revwalk", (:block,
+                  (:line, 970, :none),
+                  (:(=), :repo, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :GitRepo
+                        )), :test_repo)),
+                  (:line, 971, :none),
+                  (:(=), :cache, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :GitRepo
+                        )), :cache_repo)),
+                  (:line, 972, :none),
+                  (:try, (:block,
+                      (:line, 973, :none),
+                      (:(=), :oids, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :with
+                            )), (:->, (:tuple, :walker), (:block,
+                              (:line, 974, :none),
+                              (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                    :map
+                                  )), (:->, (:tuple, :oid, :repo), (:block,
+                                    (:line, 974, :none),
+                                    (:tuple, :oid, :repo)
+                                  )), :walker, (:kw, :oid, :commit_oid1), (:kw, :by, (:., (:., :LibGit2, (:quote, #QuoteNode
+                                        :Consts
+                                      )), (:quote, #QuoteNode
+                                      :SORT_TIME
+                                    ))))
+                            )), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :GitRevWalker
+                              )), :repo))),
+                      (:line, 976, :none),
+                      (:macrocall, Symbol("@test"), (:call, :(==), (:call, :length, :oids), 1)),
+                      (:line, 978, :none),
+                      (:(=), :test_oids, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :with
+                            )), (:->, (:tuple, :walker), (:block,
+                              (:line, 979, :none),
+                              (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                    :map
+                                  )), (:->, (:tuple, :oid, :repo), (:block,
+                                    (:line, 979, :none),
+                                    (:call, :string, :oid)
+                                  )), :walker, (:kw, :by, (:., (:., :LibGit2, (:quote, #QuoteNode
+                                        :Consts
+                                      )), (:quote, #QuoteNode
+                                      :SORT_TIME
+                                    ))))
+                            )), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :GitRevWalker
+                              )), :repo))),
+                      (:line, 981, :none),
+                      (:(=), :cache_oids, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :with
+                            )), (:->, (:tuple, :walker), (:block,
+                              (:line, 982, :none),
+                              (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                    :map
+                                  )), (:->, (:tuple, :oid, :repo), (:block,
+                                    (:line, 982, :none),
+                                    (:call, :string, :oid)
+                                  )), :walker, (:kw, :by, (:., (:., :LibGit2, (:quote, #QuoteNode
+                                        :Consts
+                                      )), (:quote, #QuoteNode
+                                      :SORT_TIME
+                                    ))))
+                            )), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :GitRevWalker
+                              )), :cache))),
+                      (:line, 984, :none),
+                      (:for, (:(=), :i, (:call, :eachindex, :oids)), (:block,
+                          (:line, 985, :none),
+                          (:macrocall, Symbol("@test"), (:call, :(==), (:ref, :cache_oids, :i), (:ref, :test_oids, :i)))
+                        )),
+                      (:line, 987, :none),
+                      (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :with
+                          )), (:->, (:tuple, :walker), (:block,
+                            (:line, 988, :none),
+                            (:macrocall, Symbol("@test"), (:call, :(==), (:call, :count, (:->, (:tuple, :oid, :repo), (:block,
+                                      (:line, 988, :none),
+                                      (:call, :(==), :oid, :commit_oid1)
+                                    )), :walker, (:kw, :oid, :commit_oid1), (:kw, :by, (:., (:., :LibGit2, (:quote, #QuoteNode
+                                          :Consts
+                                        )), (:quote, #QuoteNode
+                                        :SORT_TIME
+                                      )))), 1))
+                          )), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :GitRevWalker
+                            )), :repo))
+                    ), false, false, (:block,
+                      (:line, 991, :none),
+                      (:call, :close, :repo),
+                      (:line, 992, :none),
+                      (:call, :close, :cache)
+                    ))
+                ))
+            )),
+          (:line, 997, :none),
+          (:macrocall, Symbol("@testset"), "Modify and reset repository", (:block,
+              (:line, 998, :none),
+              (:(=), :repo, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                      :GitRepo
+                    )), :test_repo)),
+              (:line, 999, :none),
+              (:try, (:block,
+                  (:line, 1001, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :with
+                      )), (:->, (:tuple, :idx), (:block,
+                        (:line, 1002, :none),
+                        (:(=), :i, (:call, :find, :test_file, :idx)),
+                        (:line, 1003, :none),
+                        (:macrocall, Symbol("@test"), (:call, :!, (:call, :isnull, :i))),
+                        (:line, 1004, :none),
+                        (:(=), :idx_entry, (:ref, :idx, (:call, :get, :i))),
+                        (:line, 1005, :none),
+                        (:macrocall, Symbol("@test"), (:call, :(!==), :idx_entry, :nothing)),
+                        (:line, 1006, :none),
+                        (:(=), :idx_entry_str, (:call, :sprint, :show, :idx_entry)),
+                        (:line, 1007, :none),
+                        (:macrocall, Symbol("@test"), (:call, :(==), :idx_entry_str, (:string, "IndexEntry(", (:call, :string, (:., :idx_entry, (:quote, #QuoteNode
+                                    :id
+                                  ))), ")"))),
+                        (:line, 1008, :none),
+                        (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                  :stage
+                                )), :idx_entry), 0)),
+                        (:line, 1010, :none),
+                        (:(=), :i, (:call, :find, "zzz", :idx)),
+                        (:line, 1011, :none),
+                        (:macrocall, Symbol("@test"), (:call, :isnull, :i)),
+                        (:line, 1012, :none),
+                        (:(=), :idx_str, (:call, :sprint, :show, :idx)),
+                        (:line, 1013, :none),
+                        (:macrocall, Symbol("@test"), (:call, :(==), :idx_str, (:string, "GitIndex:\nRepository: ", (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                    :repository
+                                  )), :idx), "\nNumber of elements: 1\n"))),
+                        (:line, 1015, :none),
+                        (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :remove!
+                            )), :repo, :test_file),
+                        (:line, 1016, :none),
+                        (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :read!
+                            )), :repo),
+                        (:line, 1017, :none),
+                        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :count, :idx), 0)),
+                        (:line, 1018, :none),
+                        (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :add!
+                            )), :repo, :test_file),
+                        (:line, 1019, :none),
+                        (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :update!
+                            )), :repo, :test_file),
+                        (:line, 1020, :none),
+                        (:macrocall, Symbol("@test"), (:call, :(==), (:call, :count, :idx), 1))
+                      )), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :GitIndex
+                        )), :repo)),
+                  (:line, 1024, :none),
+                  (:(=), :st, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :status
+                        )), :repo, "XYZ")),
+                  (:line, 1025, :none),
+                  (:macrocall, Symbol("@test"), (:call, :isnull, :st)),
+                  (:line, 1028, :none),
+                  (:(=), :st, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :status
+                        )), :repo, :test_file)),
+                  (:line, 1029, :none),
+                  (:macrocall, Symbol("@test"), (:call, :!, (:call, :isnull, :st))),
+                  (:line, 1030, :none),
+                  (:macrocall, Symbol("@test"), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :isset
+                        )), (:call, :get, :st), (:., (:., :LibGit2, (:quote, #QuoteNode
+                            :Consts
+                          )), (:quote, #QuoteNode
+                          :STATUS_CURRENT
+                        )))),
+                  (:line, 1033, :none),
+                  (:call, :open, (:->, (:tuple, :io), (:block,
+                        (:line, 1034, :none),
+                        (:call, :write, :io, 0x41)
+                      )), (:call, :joinpath, :test_repo, :test_file), "a"),
+                  (:line, 1038, :none),
+                  (:(=), :st_mod, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :status
+                        )), :repo, :test_file)),
+                  (:line, 1039, :none),
+                  (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :isset
+                          )), (:call, :get, :st_mod), (:., (:., :LibGit2, (:quote, #QuoteNode
+                              :Consts
+                            )), (:quote, #QuoteNode
+                            :STATUS_INDEX_MODIFIED
+                          ))))),
+                  (:line, 1040, :none),
+                  (:macrocall, Symbol("@test"), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :isset
+                        )), (:call, :get, :st_mod), (:., (:., :LibGit2, (:quote, #QuoteNode
+                            :Consts
+                          )), (:quote, #QuoteNode
+                          :STATUS_WT_MODIFIED
+                        )))),
+                  (:line, 1043, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :add!
+                      )), :repo, :test_file),
+                  (:line, 1046, :none),
+                  (:(=), :st_stg, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :status
+                        )), :repo, :test_file)),
+                  (:line, 1047, :none),
+                  (:macrocall, Symbol("@test"), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :isset
+                        )), (:call, :get, :st_stg), (:., (:., :LibGit2, (:quote, #QuoteNode
+                            :Consts
+                          )), (:quote, #QuoteNode
+                          :STATUS_INDEX_MODIFIED
+                        )))),
+                  (:line, 1048, :none),
+                  (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :isset
+                          )), (:call, :get, :st_stg), (:., (:., :LibGit2, (:quote, #QuoteNode
+                              :Consts
+                            )), (:quote, #QuoteNode
+                            :STATUS_WT_MODIFIED
+                          ))))),
+                  (:line, 1051, :none),
+                  (:macrocall, Symbol("@test_throws"), (:., (:., :LibGit2, (:quote, #QuoteNode
+                          :Error
+                        )), (:quote, #QuoteNode
+                        :GitError
+                      )), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :reset!
+                        )), :repo, "XYZ", :test_file)),
+                  (:line, 1054, :none),
+                  (:(=), :st_new, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :status
+                        )), :repo, :test_file)),
+                  (:line, 1055, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), (:call, :get, :st_new), (:call, :get, :st_stg))),
+                  (:line, 1058, :none),
+                  (:(=), :new_head, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :reset!
+                        )), :repo, (:., (:., :LibGit2, (:quote, #QuoteNode
+                            :Consts
+                          )), (:quote, #QuoteNode
+                          :HEAD_FILE
+                        )), :test_file)),
+                  (:line, 1059, :none),
+                  (:(=), :st_uns, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :status
+                        )), :repo, :test_file)),
+                  (:line, 1060, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), (:call, :get, :st_uns), (:call, :get, :st_mod))),
+                  (:line, 1063, :none),
+                  (:macrocall, Symbol("@test_throws"), (:., (:., :LibGit2, (:quote, #QuoteNode
+                          :Error
+                        )), (:quote, #QuoteNode
+                        :GitError
+                      )), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :reset!
+                        )), :repo, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :GitHash
+                          ))), (:., (:., :LibGit2, (:quote, #QuoteNode
+                            :Consts
+                          )), (:quote, #QuoteNode
+                          :RESET_HARD
+                        )))),
+                  (:line, 1065, :none),
+                  (:(=), :new_head, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :reset!
+                        )), :repo, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :head_oid
+                          )), :repo), (:., (:., :LibGit2, (:quote, #QuoteNode
+                            :Consts
+                          )), (:quote, #QuoteNode
+                          :RESET_HARD
+                        )))),
+                  (:line, 1066, :none),
+                  (:call, :open, (:->, (:tuple, :io), (:block,
+                        (:line, 1067, :none),
+                        (:macrocall, Symbol("@test"), (:call, :(!=), (:ref, (:call, :read, :io), :end), 0x41))
+                      )), (:call, :joinpath, :test_repo, :test_file), "r")
+                ), false, false, (:block,
+                  (:line, 1070, :none),
+                  (:call, :close, :repo)
+                ))
+            )),
+          (:line, 1074, :none),
+          (:macrocall, Symbol("@testset"), "rebase", (:block,
+              (:line, 1075, :none),
+              (:(=), :repo, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                      :GitRepo
+                    )), :test_repo)),
+              (:line, 1076, :none),
+              (:try, (:block,
+                  (:line, 1077, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :branch!
+                      )), :repo, "branch/a"),
+                  (:line, 1079, :none),
+                  (:(=), :oldhead, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :head_oid
+                        )), :repo)),
+                  (:line, 1080, :none),
+                  (:call, :open, (:->, (:tuple, :f), (:block,
+                        (:line, 1081, :none),
+                        (:call, :write, :f, "111\n")
+                      )), (:call, :joinpath, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :path
+                          )), :repo), "file1"), "w"),
+                  (:line, 1083, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :add!
+                      )), :repo, "file1"),
+                  (:line, 1084, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :commit
+                      )), :repo, "add file1"),
+                  (:line, 1086, :none),
+                  (:call, :open, (:->, (:tuple, :f), (:block,
+                        (:line, 1087, :none),
+                        (:call, :write, :f, "222\n")
+                      )), (:call, :joinpath, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :path
+                          )), :repo), "file2"), "w"),
+                  (:line, 1089, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :add!
+                      )), :repo, "file2"),
+                  (:line, 1090, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :commit
+                      )), :repo, "add file2"),
+                  (:line, 1092, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :branch!
+                      )), :repo, "branch/b"),
+                  (:line, 1095, :none),
+                  (:(=), :new_head, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :reset!
+                        )), :repo, :oldhead, (:., (:., :LibGit2, (:quote, #QuoteNode
+                            :Consts
+                          )), (:quote, #QuoteNode
+                          :RESET_SOFT
+                        )))),
+                  (:line, 1096, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), :new_head, :oldhead)),
+                  (:line, 1097, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :commit
+                      )), :repo, "squash file1 and file2"),
+                  (:line, 1100, :none),
+                  (:call, :open, (:->, (:tuple, :f), (:block,
+                        (:line, 1101, :none),
+                        (:call, :write, :f, "333\n")
+                      )), (:call, :joinpath, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :path
+                          )), :repo), "file3"), "w"),
+                  (:line, 1103, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :add!
+                      )), :repo, "file3"),
+                  (:line, 1104, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :commit
+                      )), :repo, "add file3"),
+                  (:line, 1106, :none),
+                  (:(=), :newhead, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :head_oid
+                        )), :repo)),
+                  (:line, 1108, :none),
+                  (:(=), :files, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :diff_files
+                        )), :repo, "branch/a", "branch/b", (:kw, :filter, (:call, :Set, (:vect, (:., (:., :LibGit2, (:quote, #QuoteNode
+                                  :Consts
+                                )), (:quote, #QuoteNode
+                                :DELTA_ADDED
+                              ))))))),
+                  (:line, 1109, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), :files, (:vect, "file3"))),
+                  (:line, 1110, :none),
+                  (:(=), :files, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :diff_files
+                        )), :repo, "branch/a", "branch/b", (:kw, :filter, (:call, :Set, (:vect, (:., (:., :LibGit2, (:quote, #QuoteNode
+                                  :Consts
+                                )), (:quote, #QuoteNode
+                                :DELTA_MODIFIED
+                              ))))))),
+                  (:line, 1111, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), :files, (:vect,))),
+                  (:line, 1113, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :branch!
+                      )), :repo, "branch/a"),
+                  (:line, 1114, :none),
+                  (:(=), :newnewhead, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :rebase!
+                        )), :repo, "branch/b")),
+                  (:line, 1117, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), :newnewhead, :newhead)),
+                  (:line, 1120, :none),
+                  (:call, :open, (:->, (:tuple, :f), (:block,
+                        (:line, 1121, :none),
+                        (:call, :write, :f, "444\n")
+                      )), (:call, :joinpath, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :path
+                          )), :repo), "file4"), "w"),
+                  (:line, 1123, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :add!
+                      )), :repo, "file4"),
+                  (:line, 1124, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :commit
+                      )), :repo, "add file4"),
+                  (:line, 1127, :none),
+                  (:(=), :newhead, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :rebase!
+                        )), :repo, "branch/a", "master")),
+                  (:line, 1129, :none),
+                  (:(=), :newerhead, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :head_oid
+                        )), :repo)),
+                  (:line, 1130, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), :newerhead, :newhead)),
+                  (:line, 1133, :none),
+                  (:call, :open, (:->, (:tuple, :f), (:block,
+                        (:line, 1134, :none),
+                        (:call, :write, :f, "555\n")
+                      )), (:call, :joinpath, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :path
+                          )), :repo), "file5"), "w"),
+                  (:line, 1136, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :add!
+                      )), :repo, "file5"),
+                  (:line, 1137, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :commit
+                      )), :repo, "add file5"),
+                  (:line, 1138, :none),
+                  (:call, :open, (:->, (:tuple, :f), (:block,
+                        (:line, 1139, :none),
+                        (:call, :write, :f, "666\n")
+                      )), (:call, :joinpath, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :path
+                          )), :repo), "file6"), "w"),
+                  (:line, 1141, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :add!
+                      )), :repo, "file6"),
+                  (:line, 1142, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :commit
+                      )), :repo, "add file6"),
+                  (:line, 1144, :none),
+                  (:(=), :pre_abort_head, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :head_oid
+                        )), :repo)),
+                  (:line, 1146, :none),
+                  (:(=), :head_ann, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :GitAnnotated
+                        )), :repo, "branch/a")),
+                  (:line, 1147, :none),
+                  (:(=), :upst_ann, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :GitAnnotated
+                        )), :repo, "master")),
+                  (:line, 1148, :none),
+                  (:(=), :rb, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :GitRebase
+                        )), :repo, :head_ann, :upst_ann)),
+                  (:line, 1149, :none),
+                  (:macrocall, Symbol("@test_throws"), :BoundsError, (:ref, :rb, 3)),
+                  (:line, 1150, :none),
+                  (:macrocall, Symbol("@test_throws"), :BoundsError, (:ref, :rb, 0)),
+                  (:line, 1151, :none),
+                  (:(=), :rbo, (:call, :next, :rb)),
+                  (:line, 1152, :none),
+                  (:(=), :rbo_str, (:call, :sprint, :show, :rbo)),
+                  (:line, 1153, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), :rbo_str, (:string, "RebaseOperation(", (:call, :string, (:., :rbo, (:quote, #QuoteNode
+                              :id
+                            ))), ")\nOperation type: REBASE_OPERATION_PICK\n"))),
+                  (:line, 1154, :none),
+                  (:(=), :rb_str, (:call, :sprint, :show, :rb)),
+                  (:line, 1155, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), :rb_str, "GitRebase:\nNumber: 2\nCurrently performing operation: 1\n")),
+                  (:line, 1156, :none),
+                  (:(=), :rbo, (:ref, :rb, 2)),
+                  (:line, 1157, :none),
+                  (:(=), :rbo_str, (:call, :sprint, :show, :rbo)),
+                  (:line, 1158, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), :rbo_str, (:string, "RebaseOperation(", (:call, :string, (:., :rbo, (:quote, #QuoteNode
+                              :id
+                            ))), ")\nOperation type: REBASE_OPERATION_PICK\n"))),
+                  (:line, 1161, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :abort
+                      )), :rb),
+                  (:line, 1162, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :head_oid
+                          )), :repo), :pre_abort_head))
+                ), false, false, (:block,
+                  (:line, 1164, :none),
+                  (:call, :close, :repo)
+                ))
+            )),
+          (:line, 1168, :none),
+          (:macrocall, Symbol("@testset"), "merge", (:block,
+              (:line, 1169, :none),
+              (:(=), :path, (:call, :joinpath, :dir, "Example.simple_merge")),
+              (:line, 1170, :none),
+              (:(=), :repo, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                      :clone
+                    )), :cache_repo, :path)),
+              (:line, 1171, :none),
+              (:(=), :cfg, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                      :GitConfig
+                    )), :repo)),
+              (:line, 1172, :none),
+              (:call, (:., :LibGit2, (:quote, #QuoteNode
+                    :set!
+                  )), :cfg, "user.name", "AAAA"),
+              (:line, 1173, :none),
+              (:call, (:., :LibGit2, (:quote, #QuoteNode
+                    :set!
+                  )), :cfg, "user.email", "BBBB@BBBB.COM"),
+              (:line, 1174, :none),
+              (:try, (:block,
+                  (:line, 1175, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :branch!
+                      )), :repo, "branch/merge_a"),
+                  (:line, 1177, :none),
+                  (:(=), :a_head, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :head_oid
+                        )), :repo)),
+                  (:line, 1178, :none),
+                  (:call, :open, (:->, (:tuple, :f), (:block,
+                        (:line, 1179, :none),
+                        (:call, :write, :f, "111\n")
+                      )), (:call, :joinpath, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :path
+                          )), :repo), "merge_file1"), "w"),
+                  (:line, 1181, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :add!
+                      )), :repo, "merge_file1"),
+                  (:line, 1182, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :commit
+                      )), :repo, "add merge_file1"),
+                  (:line, 1183, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :branch!
+                      )), :repo, "master"),
+                  (:line, 1184, :none),
+                  (:(=), :a_head_ann, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :GitAnnotated
+                        )), :repo, "branch/merge_a")),
+                  (:line, 1185, :none),
+                  (:macrocall, Symbol("@test_warn"), "INFO: Review and commit merged changes.", (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :merge!
+                        )), :repo, (:vect, :a_head_ann)))
+                ), false, false, (:block,
+                  (:line, 1187, :none),
+                  (:call, :close, :repo)
+                ))
+            )),
+          (:line, 1191, :none),
+          (:macrocall, Symbol("@testset"), "Transact test repository", (:block,
+              (:line, 1192, :none),
+              (:(=), :repo, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                      :GitRepo
+                    )), :test_repo)),
+              (:line, 1193, :none),
+              (:try, (:block,
+                  (:line, 1194, :none),
+                  (:call, :cp, (:call, :joinpath, :test_repo, :test_file), (:call, :joinpath, :test_repo, "CCC")),
+                  (:line, 1195, :none),
+                  (:call, :cp, (:call, :joinpath, :test_repo, :test_file), (:call, :joinpath, :test_repo, "AAA")),
+                  (:line, 1196, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :add!
+                      )), :repo, "AAA"),
+                  (:line, 1197, :none),
+                  (:macrocall, Symbol("@test_throws"), :ErrorException, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :transact
+                        )), (:->, (:tuple, :trepo), (:block,
+                          (:line, 1198, :none),
+                          (:call, :mv, (:call, :joinpath, :test_repo, :test_file), (:call, :joinpath, :test_repo, "BBB")),
+                          (:line, 1199, :none),
+                          (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :add!
+                              )), :trepo, "BBB"),
+                          (:line, 1200, :none),
+                          (:(=), :oid, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                  :commit
+                                )), (:parameters, (:kw, :author, :test_sig), (:kw, :committer, :test_sig)), :trepo, "test commit")),
+                          (:line, 1201, :none),
+                          (:call, :error, "Force recovery")
+                        )), :repo)),
+                  (:line, 1203, :none),
+                  (:macrocall, Symbol("@test"), (:call, :isfile, (:call, :joinpath, :test_repo, "AAA"))),
+                  (:line, 1204, :none),
+                  (:macrocall, Symbol("@test"), (:call, :isfile, (:call, :joinpath, :test_repo, "CCC"))),
+                  (:line, 1205, :none),
+                  (:macrocall, Symbol("@test"), (:call, :!, (:call, :isfile, (:call, :joinpath, :test_repo, "BBB")))),
+                  (:line, 1206, :none),
+                  (:macrocall, Symbol("@test"), (:call, :isfile, (:call, :joinpath, :test_repo, :test_file)))
+                ), false, false, (:block,
+                  (:line, 1208, :none),
+                  (:call, :close, :repo)
+                ))
+            )),
+          (:line, 1212, :none),
+          (:macrocall, Symbol("@testset"), "checkout/headname", (:block,
+              (:line, 1213, :none),
+              (:(=), :repo, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                      :GitRepo
+                    )), :cache_repo)),
+              (:line, 1214, :none),
+              (:try, (:block,
+                  (:line, 1215, :none),
+                  (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :checkout!
+                      )), :repo, (:call, :string, :commit_oid1)),
+                  (:line, 1216, :none),
+                  (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :isattached
+                          )), :repo))),
+                  (:line, 1217, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :headname
+                          )), :repo), (:string, "(detached from ", (:ref, (:call, :string, :commit_oid1), (:(:), 1, 7)), ")")))
+                ), false, false, (:block,
+                  (:line, 1219, :none),
+                  (:call, :close, :repo)
+                ))
+            )),
+          (:line, 1224, :none),
+          (:if, (:call, :is_unix), (:block,
+              (:line, 1225, :none),
+              (:macrocall, Symbol("@testset"), "checkout/proptest", (:block,
+                  (:line, 1226, :none),
+                  (:(=), :repo, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                          :GitRepo
+                        )), :test_repo)),
+                  (:line, 1227, :none),
+                  (:try, (:block,
+                      (:line, 1228, :none),
+                      (:call, :cp, (:call, :joinpath, :test_repo, :test_file), (:call, :joinpath, :test_repo, "proptest")),
+                      (:line, 1229, :none),
+                      (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :add!
+                          )), :repo, "proptest"),
+                      (:line, 1230, :none),
+                      (:(=), :id1, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :commit
+                            )), :repo, "test property change 1")),
+                      (:line, 1232, :none),
+                      (:call, :chmod, (:call, :joinpath, :test_repo, "proptest"), 0x01e4),
+                      (:line, 1233, :none),
+                      (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :add!
+                          )), :repo, "proptest"),
+                      (:line, 1234, :none),
+                      (:(=), :id2, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :commit
+                            )), :repo, "test property change 2")),
+                      (:line, 1235, :none),
+                      (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :checkout!
+                          )), :repo, (:call, :string, :id1)),
+                      (:line, 1236, :none),
+                      (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :isdirty
+                              )), :repo))),
+                      (:line, 1238, :none),
+                      (:call, :mv, (:call, :joinpath, :test_repo, "proptest"), (:call, :joinpath, :test_repo, "proptest2")),
+                      (:line, 1239, :none),
+                      (:call, :symlink, (:call, :joinpath, :test_repo, "proptest2"), (:call, :joinpath, :test_repo, "proptest")),
+                      (:line, 1240, :none),
+                      (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :add!
+                          )), :repo, "proptest", "proptest2"),
+                      (:line, 1241, :none),
+                      (:(=), :id3, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                              :commit
+                            )), :repo, "test symlink change")),
+                      (:line, 1242, :none),
+                      (:call, (:., :LibGit2, (:quote, #QuoteNode
+                            :checkout!
+                          )), :repo, (:call, :string, :id1)),
+                      (:line, 1243, :none),
+                      (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                                :isdirty
+                              )), :repo)))
+                    ), false, false, (:block,
+                      (:line, 1245, :none),
+                      (:call, :close, :repo)
+                    ))
+                ))
+            )),
+          (:line, 1251, :none),
+          (:macrocall, Symbol("@testset"), "Credentials", (:block,
+              (:line, 1252, :none),
+              (:(=), :creds_user, "USER"),
+              (:line, 1253, :none),
+              (:(=), :creds_pass, "PASS"),
+              (:line, 1254, :none),
+              (:(=), :creds, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                      :UserPasswordCredentials
+                    )), :creds_user, :creds_pass)),
+              (:line, 1255, :none),
+              (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :checkused!
+                      )), :creds))),
+              (:line, 1256, :none),
+              (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :checkused!
+                      )), :creds))),
+              (:line, 1257, :none),
+              (:macrocall, Symbol("@test"), (:call, :!, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                        :checkused!
+                      )), :creds))),
+              (:line, 1258, :none),
+              (:macrocall, Symbol("@test"), (:call, (:., :LibGit2, (:quote, #QuoteNode
+                      :checkused!
+                    )), :creds)),
+              (:line, 1259, :none),
+              (:macrocall, Symbol("@test"), (:call, :(==), (:., :creds, (:quote, #QuoteNode
+                      :user
+                    )), :creds_user)),
+              (:line, 1260, :none),
+              (:macrocall, Symbol("@test"), (:call, :(==), (:., :creds, (:quote, #QuoteNode
+                      :pass
+                    )), :creds_pass)),
+              (:line, 1261, :none),
+              (:(=), :sshcreds, (:call, (:., :LibGit2, (:quote, #QuoteNode
+                      :SSHCredentials
+                    )), :creds_user, :creds_pass)),
+              (:line, 1262, :none),
+              (:macrocall, Symbol("@test"), (:call, :(==), (:., :sshcreds, (:quote, #QuoteNode
+                      :user
+                    )), :creds_user)),
+              (:line, 1263, :none),
+              (:macrocall, Symbol("@test"), (:call, :(==), (:., :sshcreds, (:quote, #QuoteNode
+                      :pass
+                    )), :creds_pass)),
+              (:line, 1264, :none),
+              (:macrocall, Symbol("@test"), (:call, :isempty, (:., :sshcreds, (:quote, #QuoteNode
+                      :prvkey
+                    )))),
+              (:line, 1265, :none),
+              (:macrocall, Symbol("@test"), (:call, :isempty, (:., :sshcreds, (:quote, #QuoteNode
+                      :pubkey
+                    ))))
+            )),
+          (:line, 1271, :none),
+          (:if, (:call, :is_unix), (:block,
+              (:line, 1272, :none),
+              (:macrocall, Symbol("@testset"), "SSH credential prompt", (:block,
+                  (:line, 1273, :none),
+                  (:(=), :url, "git@github.com/test/package.jl"),
+                  (:line, 1275, :none),
+                  (:(=), :key_dir, (:call, :joinpath, (:call, :dirname, (:macrocall, Symbol("@__FILE__"))), "libgit2")),
+                  (:line, 1276, :none),
+                  (:(=), :valid_key, (:call, :joinpath, :key_dir, "valid")),
+                  (:line, 1277, :none),
+                  (:(=), :invalid_key, (:call, :joinpath, :key_dir, "invalid")),
+                  (:line, 1278, :none),
+                  (:(=), :valid_p_key, (:call, :joinpath, :key_dir, "valid-passphrase")),
+                  (:line, 1279, :none),
+                  (:(=), :passphrase, "secret"),
+                  (:line, 1281, :none),
+                  (:(=), :ssh_cmd, (:string, "include(\"", :LIBGIT2_HELPER_PATH, "\")\nvalid_cred = LibGit2.SSHCredentials(\"git\", \"\", \"", :valid_key, "\", \"", :valid_key, ".pub\")\nerr, auth_attempts = credential_loop(valid_cred, \"", :url, "\", \"git\")\n(err < 0 ? LibGit2.GitError(err) : err, auth_attempts)\n")),
+                  (:line, 1288, :none),
+                  (:(=), :ssh_p_cmd, (:string, "include(\"", :LIBGIT2_HELPER_PATH, "\")\nvalid_cred = LibGit2.SSHCredentials(\"git\", \"", :passphrase, "\", \"", :valid_p_key, "\", \"", :valid_p_key, ".pub\")\nerr, auth_attempts = credential_loop(valid_cred, \"", :url, "\", \"git\")\n(err < 0 ? LibGit2.GitError(err) : err, auth_attempts)\n")),
+                  (:line, 1300, :none),
+                  (:call, :withenv, (:->, (:tuple,), (:block,
+                        (:line, 1301, :none),
+                        (:(=), (:tuple, :err, :auth_attempts), (:call, :challenge_prompt, :ssh_cmd, (:vect,))),
+                        (:line, 1302, :none),
+                        (:macrocall, Symbol("@test"), (:call, :(==), :err, 0)),
+                        (:line, 1303, :none),
+                        (:macrocall, Symbol("@test"), (:call, :(==), :auth_attempts, 1))
+                      )), (:call, :(=>), "SSH_KEY_PATH", :valid_key)),
+                  (:line, 1307, :none),
+                  (:call, :withenv, (:->, (:tuple,), (:block,
+                        (:line, 1308, :none),
+                        (:(=), :challenges, (:vect, (:call, :(=>), (:string, "Passphrase for ", :valid_p_key, ":"), (:string, :passphrase, "\n")))),
+                        (:line, 1311, :none),
+                        (:(=), (:tuple, :err, :auth_attempts), (:call, :challenge_prompt, :ssh_p_cmd, :challenges)),
+                        (:line, 1312, :none),
+                        (:macrocall, Symbol("@test"), (:call, :(==), :err, 0)),
+                        (:line, 1313, :none),
+                        (:macrocall, Symbol("@test"), (:call, :(==), :auth_attempts, 1)),
+                        (:line, 1319, :none),
+                        (:(=), :challenges, (:vect, (:call, :(=>), (:string, "Passphrase for ", :valid_p_key, ":"), "foo\n"), (:call, :(=>), (:string, "Passphrase for ", :valid_p_key, ":"), (:string, :passphrase, "\n")))),
+                        (:line, 1324, :none),
+                        (:(=), (:tuple, :err, :auth_attempts), (:call, :challenge_prompt, :ssh_p_cmd, :challenges)),
+                        (:line, 1325, :none),
+                        (:macrocall, Symbol("@test"), (:call, :(==), :err, 0)),
+                        (:line, 1326, :none),
+                        (:macrocall, Symbol("@test"), (:call, :(==), :auth_attempts, 5))
+                      )), (:call, :(=>), "SSH_KEY_PATH", :valid_p_key)),
+                  (:line, 1329, :none),
+                  (:call, :withenv, (:->, (:tuple,), (:block,
+                        (:line, 1330, :none),
+                        (:(=), (:tuple, :err, :auth_attempts), (:call, :challenge_prompt, :ssh_p_cmd, (:vect,))),
+                        (:line, 1331, :none),
+                        (:macrocall, Symbol("@test"), (:call, :(==), :err, 0)),
+                        (:line, 1332, :none),
+                        (:macrocall, Symbol("@test"), (:call, :(==), :auth_attempts, 1))
+                      )), (:call, :(=>), "SSH_KEY_PATH", :valid_p_key), (:call, :(=>), "SSH_KEY_PASS", :passphrase))
+                )),
+              (:line, 1393, :none),
+              (:macrocall, Symbol("@testset"), "HTTPS credential prompt", (:block,
+                  (:line, 1394, :none),
+                  (:(=), :url, "https://github.com/test/package.jl"),
+                  (:line, 1396, :none),
+                  (:(=), :valid_username, "julia"),
+                  (:line, 1397, :none),
+                  (:(=), :valid_password, (:call, :randstring, 16)),
+                  (:line, 1399, :none),
+                  (:(=), :https_cmd, (:string, "include(\"", :LIBGIT2_HELPER_PATH, "\")\nvalid_cred = LibGit2.UserPasswordCredentials(\"", :valid_username, "\", \"", :valid_password, "\")\nerr, auth_attempts = credential_loop(valid_cred, \"", :url, "\")\n(err < 0 ? LibGit2.GitError(err) : err, auth_attempts)\n")),
+                  (:line, 1407, :none),
+                  (:(=), :challenges, (:vect, (:call, :(=>), "Username for 'https://github.com':", (:string, :valid_username, "\n")), (:call, :(=>), (:string, "Password for 'https://", :valid_username, "@github.com':"), (:string, :valid_password, "\n")))),
+                  (:line, 1411, :none),
+                  (:(=), (:tuple, :err, :auth_attempts), (:call, :challenge_prompt, :https_cmd, :challenges)),
+                  (:line, 1412, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), :err, 0)),
+                  (:line, 1413, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), :auth_attempts, 1)),
+                  (:line, 1417, :none),
+                  (:(=), :challenges, (:vect, (:call, :(=>), "Username for 'https://github.com':", "foo\n"), (:call, :(=>), "Password for 'https://foo@github.com':", "bar\n"), (:call, :(=>), "Username for 'https://github.com' [foo]:", (:string, :valid_username, "\n")), (:call, :(=>), (:string, "Password for 'https://", :valid_username, "@github.com':"), (:string, :valid_password, "\n")))),
+                  (:line, 1423, :none),
+                  (:(=), (:tuple, :err, :auth_attempts), (:call, :challenge_prompt, :https_cmd, :challenges)),
+                  (:line, 1424, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), :err, 0)),
+                  (:line, 1425, :none),
+                  (:macrocall, Symbol("@test"), (:call, :(==), :auth_attempts, 5))
+                ))
+            )),
+          (:line, 1606, :none),
+          (:macrocall, Symbol("@testset"), "Hostname verification", (:block,
+              (:line, 1607, :none),
+              (:(=), :openssl_installed, false),
+              (:line, 1608, :none),
+              (:(=), :common_name, ""),
+              (:line, 1609, :none),
+              (:if, (:call, :is_linux), (:block,
+                  (:line, 1610, :none),
+                  (:try, (:block,
+                      (:line, 1612, :none),
+                      (:(=), :openssl_installed, (:call, :!, (:call, :isempty, (:call, :readstring, (:macrocall, Symbol("@cmd"), "openssl version")))))
+                    ), false, (:block,
+                      (:line, 1614, :none),
+                      (:call, :warn, "Skipping hostname verification tests. Is `openssl` on the path?")
+                    )),
+                  (:line, 1618, :none),
+                  (:(=), :hostnames, (:vect, "localhost")),
+                  (:line, 1621, :none),
+                  (:try, (:block,
+                      (:line, 1624, :none),
+                      (:call, :unshift!, :hostnames, (:call, :replace, (:call, :gethostname), (:macrocall, Symbol("@r_str"), "\\..*\$"), ""))
+                    ), false, (:block,)),
+                  (:line, 1627, :none),
+                  (:(=), :loopback, (:macrocall, Symbol("@ip_str"), "127.0.0.1")),
+                  (:line, 1628, :none),
+                  (:for, (:(=), :hostname, :hostnames), (:block,
+                      (:line, 1629, :none),
+                      (:local, :addr),
+                      (:line, 1630, :none),
+                      (:try, (:block,
+                          (:line, 1631, :none),
+                          (:(=), :addr, (:call, :getaddrinfo, :hostname))
+                        ), false, (:block,
+                          (:line, 1633, :none),
+                          (:continue,)
+                        )),
+                      (:line, 1636, :none),
+                      (:if, (:call, :(==), :addr, :loopback), (:block,
+                          (:line, 1637, :none),
+                          (:(=), :common_name, :hostname),
+                          (:line, 1638, :none),
+                          (:break,)
+                        ))
+                    )),
+                  (:line, 1642, :none),
+                  (:if, (:call, :isempty, :common_name), (:block,
+                      (:line, 1643, :none),
+                      (:call, :warn, "Skipping hostname verification tests. Unable to determine a hostname which maps to the loopback address")
+                    ))
+                )),
+              (:line, 1646, :none),
+              (:if, (:&&, :openssl_installed, (:call, :!, (:call, :isempty, :common_name))), (:block,
+                  (:line, 1647, :none),
+                  (:call, :mktempdir, (:->, (:tuple, :root), (:block,
+                        (:line, 1648, :none),
+                        (:(=), :key, (:call, :joinpath, :root, (:call, :*, :common_name, ".key"))),
+                        (:line, 1649, :none),
+                        (:(=), :cert, (:call, :joinpath, :root, (:call, :*, :common_name, ".crt"))),
+                        (:line, 1650, :none),
+                        (:(=), :pem, (:call, :joinpath, :root, (:call, :*, :common_name, ".pem"))),
+                        (:line, 1653, :none),
+                        (:call, :run, (:call, :pipeline, (:macrocall, Symbol("@cmd"), "openssl req -new -x509 -newkey rsa:2048 -nodes -keyout \$key -out \$cert -days 1 -subj \"/CN=\$common_name\""), (:kw, :stderr, :DevNull))),
+                        (:line, 1654, :none),
+                        (:call, :run, (:macrocall, Symbol("@cmd"), "openssl x509 -in \$cert -out \$pem -outform PEM")),
+                        (:line, 1658, :none),
+                        (:call, :mkdir, (:call, :joinpath, :root, "Example.jl")),
+                        (:line, 1659, :none),
+                        (:(=), :pobj, (:call, :cd, (:->, (:tuple,), (:block,
+                                (:line, 1660, :none),
+                                (:call, :spawn, (:macrocall, Symbol("@cmd"), "openssl s_server -key \$key -cert \$cert -WWW"))
+                              )), :root)),
+                        (:line, 1663, :none),
+                        (:(=), :errfile, (:call, :joinpath, :root, "error")),
+                        (:line, 1664, :none),
+                        (:(=), :repo_url, (:string, "https://", :common_name, ":4433/Example.jl")),
+                        (:line, 1665, :none),
+                        (:(=), :repo_dir, (:call, :joinpath, :root, "dest")),
+                        (:line, 1666, :none),
+                        (:(=), :code, (:string, "    dest_dir = \"", :repo_dir, "\"\n    open(\"", :errfile, "\", \"w+\") do f\n        try\n            repo = LibGit2.clone(\"", :repo_url, "\", dest_dir)\n        catch err\n            serialize(f, err)\n        finally\n            isdir(dest_dir) && rm(dest_dir, recursive=true)\n        end\n    end\n")),
+                        (:line, 1678, :none),
+                        (:(=), :cmd, (:macrocall, Symbol("@cmd"), "\$(Base.julia_cmd()) --startup-file=no -e \$code")),
+                        (:line, 1680, :none),
+                        (:try, (:block,
+                            (:line, 1682, :none),
+                            (:call, :run, :cmd),
+                            (:line, 1683, :none),
+                            (:(=), :err, (:call, :open, (:->, (:tuple, :f), (:block,
+                                    (:line, 1684, :none),
+                                    (:call, :deserialize, :f)
+                                  )), :errfile, "r")),
+                            (:line, 1686, :none),
+                            (:macrocall, Symbol("@test"), (:call, :(==), (:., :err, (:quote, #QuoteNode
+                                    :code
+                                  )), (:., (:., :LibGit2, (:quote, #QuoteNode
+                                      :Error
+                                    )), (:quote, #QuoteNode
+                                    :ECERTIFICATE
+                                  )))),
+                            (:line, 1688, :none),
+                            (:call, :rm, :errfile),
+                            (:line, 1692, :none),
+                            (:call, :withenv, (:->, (:tuple,), (:block,
+                                  (:line, 1693, :none),
+                                  (:call, :run, :cmd),
+                                  (:line, 1694, :none),
+                                  (:(=), :err, (:call, :open, (:->, (:tuple, :f), (:block,
+                                          (:line, 1695, :none),
+                                          (:call, :deserialize, :f)
+                                        )), :errfile, "r")),
+                                  (:line, 1697, :none),
+                                  (:macrocall, Symbol("@test"), (:call, :(==), (:., :err, (:quote, #QuoteNode
+                                          :code
+                                        )), (:., (:., :LibGit2, (:quote, #QuoteNode
+                                            :Error
+                                          )), (:quote, #QuoteNode
+                                          :ERROR
+                                        )))),
+                                  (:line, 1698, :none),
+                                  (:macrocall, Symbol("@test"), (:call, :(==), (:., :err, (:quote, #QuoteNode
+                                          :msg
+                                        )), "Invalid Content-Type: text/plain"))
+                                )), (:call, :(=>), "SSL_CERT_FILE", :pem))
+                          ), false, false, (:block,
+                            (:line, 1701, :none),
+                            (:call, :kill, :pobj)
+                          ))
+                      )))
+                ))
+            ))
+        )))
+  ))

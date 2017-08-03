@@ -1,0 +1,6 @@
+(:quote, (:block,
+    (:line, 3, :none),
+    (:using, :Base, :Test),
+    (:line, 5, :none),
+    (:macrocall, Symbol("@test"), (:call, :(==), 1, 2))
+  ))
