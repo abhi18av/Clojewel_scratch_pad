@@ -1,3 +1,4 @@
 *.gz
 *.zip
 project-1/src/project_1/.\#*
+/_experiments/.nrepl-history
