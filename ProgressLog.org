@@ -1,2 +1,6 @@
 * 1 August
 - Implement a clojure library which communicated with a julia repl via network and passes symbolically created jlir to it.
+
+* 6 August
+- Over the past few days, I've learnt so much about julia and clojure - I'm truly in love with both!
+- We have now integrated the julia jl-jlir mechanism within the clojewel project.
