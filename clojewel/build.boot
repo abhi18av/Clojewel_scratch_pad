@@ -4,7 +4,8 @@
 (set-env! :resource-paths #{"resources" "src"}
           :source-paths   #{"test"}
           :dependencies   '[[org.clojure/clojure "RELEASE"]
-                            [adzerk/boot-test "RELEASE" :scope "test"]])
+                            [adzerk/boot-test "RELEASE" :scope "test"]
+                              [me.raynes/conch "0.8.0"]])
 
 (task-options!
  aot {:namespace   #{'clojewel.core}}
