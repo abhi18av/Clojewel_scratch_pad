@@ -12,8 +12,10 @@
 (defn init-shell-functions []
   (do
     (sh/programs cat)
+    (sh/programs echo)
     (sh/programs julia)
-    (julia "--version" {:seq true})))
+;    (julia "--version" {:seq true})
+    (sh/programs ls)))
 
 (init-shell-functions)
 
@@ -34,8 +36,7 @@
 
 (def scratch-jl "./src/clojewel/scratch.jl")
 (def scratch-jlir "./src/clojewel/scratch.jlir")
-(def file-to-jlir "./src/clojewel/file_to_jlir.jl" )
-
+(def file-to-jlir "./src/clojewel/file_to_jlir.jl")
 
 (defn jl-save-string-to-scratch [julia-expression]
   (spit scratch-jl julia-expression))
@@ -60,24 +61,23 @@
 
 (jl-eval-scratch)
 
+; TODO How to execute ` julia file_to_jlir.jl scratch.jl > scratch.jlir`
+(julia {:in [file-to-jlir scratch-jl] :out scratch-jlir :verbose false})
 
+; (sh-ll/proc "julia")
 
+(julia file-to-jlir scratch-jl)
 
-(julia file-to-jlir scratch-jl {:verbose true})
+(sh/programs echo)
+(echo "foo" {:out (java.io.File. "conch")})
 
-
-                                        ;(sh-ll/proc "juli")
-
+(slurp "conch")
 
 (defn jl-scratch-jlir []
 ; (julia {:in (str "./src/clojewel/file_to_jlir.jl" " " scratch-jl ) :seq true :verbose true}))
   (julia {:in scratch-jl :out scratch-jlir :seq true :verbose false}))
 
 (jl-scratch-jlir)
-
-
-
-
 
 (defn -main
   "I don't do a whole lot ... yet."
