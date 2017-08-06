@@ -1,4 +1,4 @@
-;; TODO : Need to understand how to get the classpath right.
+;; DONE : Need to understand how to get the classpath right.
 
 (ns clojewel.core
   (:gen-class))
@@ -10,9 +10,13 @@
 
 ;; Import and Check the julia version
 
-(do
+(defn init-shell-functions []
+  (do
+  (sh/programs cat )
   (sh/programs julia)
-  (julia "--version" {:seq true}))
+  (julia "--version" {:seq true})))
+
+(init-shell-functions)
 
 ; Clearly this can be converted into a Julia expression symbolically.
 
@@ -24,8 +28,8 @@
   (julia "-e" julia-expression))
 
 
-(sh-julia-eval-string "println(1+1)")
-(sh-julia-eval-string "eval(Expr(:call, :print, Expr(:call, :+, 1, 1)))")
+;(sh-julia-eval-string "println(1+1)")
+;(sh-julia-eval-string "eval(Expr(:call, :print, Expr(:call, :+, 1, 1)))")
 
 
 ;; Create a function that dumps the julia-string-expression into a julia_file and runs it with julia
@@ -35,18 +39,30 @@
 (defn jl-save-string-to-scratch [julia-expression]
   (spit scratch julia-expression))
 
-(jl-save-string-to-scratch  "println(1+1)" )
+;(jl-save-string-to-scratch  "println(1+1)" )
+
+;(def expr "eval(Expr(:call, :print, Expr(:call, :+, 1, 1)))")
+;(jl-save-string-to-scratch expr)
+
+
+(defn sh-scratch-content []
+  (cat scratch))
+
+(sh-scratch-content)
 
 
 
 (defn jl-eval-scratch []
-  (julia scratch {:seq true}))
+  (julia scratch {:seq false}))
 
-; TODO How to eval a julia source file from within clojure using the sh functionality
+; DONE How to eval a julia source file from within clojure using the sh functionality
 ;(julia {:in scratch :seq true :verbose true})
 ;(julia scratch {:seq true})
 
 (jl-eval-scratch )
+
+
+
 
 
 
