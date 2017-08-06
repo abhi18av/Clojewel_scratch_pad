@@ -2,12 +2,10 @@
 
 (ns clojewel.core
   (:gen-class))
-
-(require '[clojewel.pseudo_repl :as pseudo])
-;(require '[me.raynes.conch :refer [programs with-programs let-programs] :as sh]))
+;  (require '[me.raynes.conch :refer [programs with-programs let-programs] :as sh]))
 
 
-;(use '[me.raynes.conch :refer [programs with-programs let-programs] :as sh])
+(use '[me.raynes.conch :refer [programs with-programs let-programs] :as sh])
 ;(use '[me.raynes.conch.low-level :as sh-ll])
 
 
@@ -18,31 +16,27 @@
 
 ;; Import and Check the julia version
 
-;(defn init-shell-functions []
-;  (do
-;    (sh/programs cat)
-;    (sh/programs echo)
-;    (sh/programs subl)
-;    (sh/programs julia)
+(defn init-shell-functions []
+  (do
+    (sh/programs cat)
+    (sh/programs echo)
+    (sh/programs subl)
+    (sh/programs julia)
 ;    (julia "--version" {:seq true})
-;    (sh/programs ls)))
+    (sh/programs ls)))
 
-;(init-shell-functions)
+(init-shell-functions)
 
-(pseudo/init-shell-functions)
-
-                                        ;
-
-;;Clearly this can be converted into a Julia expression symbolically.
+; Clearly this can be converted into a Julia expression symbolically.
 
 ;;  (julia "-e" "println(1+1)")
 ;;  (def expr "eval(Expr(:call, :print, Expr(:call, :+, 1, 1)))")
 ;;  (julia "-e" expr)
 
 (defn sh-julia-eval-string [julia-expression]
-  (pseudo/julia "-e" julia-expression))
+  (julia "-e" julia-expression))
 
-(sh-julia-eval-string "println(1+1)")
+;(sh-julia-eval-string "println(1+1)")
 ;(sh-julia-eval-string "eval(Expr(:call, :print, Expr(:call, :+, 1, 1)))")
 
 
@@ -96,7 +90,7 @@
   (julia eval-expr expr ))
 
 (jl-eval-expr "Expr(:call, :+, 1, 1)")
-(jl-eval-expr "function add9( x) x + 9 end ")
+(jl-eval-expr "function add9( x) x + 9 end ; add9(9)")
 
 ;(jl-show-s-expr jl-source-file-content)
 
@@ -105,6 +99,9 @@
   (julia jl-expr-from-s-expr expr))
 
 (jl-from-s-expr "(:call, :+, 1, 1)")
+
+;(jl-expr-from-s-expr "(:call, :(==), /"1 + 2 = 3/", Expr(:string, /"1 + 2 = /", Expr(:call, :+, 1, 2)))" )
+
 
 
 (defn sh-file-content [file]
