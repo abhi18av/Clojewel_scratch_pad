@@ -34,10 +34,12 @@
 
 ;; Create a function that dumps the julia-string-expression into a julia_file and runs it with julia
 
-(def scratch "./src/clojewel/scratch.jl")
+(def scratch-jl "./src/clojewel/scratch.jl")
+(def scratch-jlir "./src/clojewel/scratch.jlir")
+
 
 (defn jl-save-string-to-scratch [julia-expression]
-  (spit scratch julia-expression))
+  (spit scratch-jl julia-expression))
 
 ;(jl-save-string-to-scratch  "println(1+1)" )
 
@@ -46,14 +48,14 @@
 
 
 (defn sh-scratch-content []
-  (cat scratch))
+  (cat scratch-jl))
 
 (sh-scratch-content)
 
 
 
 (defn jl-eval-scratch []
-  (julia scratch {:seq false}))
+  (julia scratch-jl {:seq false}))
 
 ; DONE How to eval a julia source file from within clojure using the sh functionality
 ;(julia {:in scratch :seq true :verbose true})
@@ -62,7 +64,8 @@
 (jl-eval-scratch )
 
 
-
+(defn jl-scratch-jlir []
+  (julia scratch-jlir))
 
 
 
