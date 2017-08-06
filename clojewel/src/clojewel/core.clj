@@ -6,7 +6,7 @@
 
 
 (use '[me.raynes.conch :refer [programs with-programs let-programs] :as sh])
-
+(use '[me.raynes.conch.low-level :as sh-ll])
 ;; Import and Check the julia version
 
 (defn init-shell-functions []
@@ -34,6 +34,8 @@
 
 (def scratch-jl "./src/clojewel/scratch.jl")
 (def scratch-jlir "./src/clojewel/scratch.jlir")
+(def file-to-jlir "./src/clojewel/file_to_jlir.jl" )
+
 
 (defn jl-save-string-to-scratch [julia-expression]
   (spit scratch-jl julia-expression))
@@ -57,6 +59,15 @@
 ;(julia scratch {:seq true})
 
 (jl-eval-scratch)
+
+
+
+
+(julia file-to-jlir scratch-jl {:verbose true})
+
+
+                                        ;(sh-ll/proc "juli")
+
 
 (defn jl-scratch-jlir []
 ; (julia {:in (str "./src/clojewel/file_to_jlir.jl" " " scratch-jl ) :seq true :verbose true}))
