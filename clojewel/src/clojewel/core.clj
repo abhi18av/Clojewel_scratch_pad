@@ -66,6 +66,14 @@
 (jl-save-string-to-scratch jl-source-file-content)
 
 
+
+(defn jl-show-parsed-expr [expr]
+  (julia "-e" ))
+
+
+
+
+
 (defn sh-file-content [file]
   (cat file))
 

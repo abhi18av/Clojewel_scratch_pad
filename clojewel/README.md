@@ -1,5 +1,9 @@
 # clojewel
 
+### ToDo
+- [ ] The next step is to clearly make a proper repl experience for Clojewel
+- [ ] The repl implementation is based on the ClojureScript nodejs repl
+
 FIXME: description
 
 ## Installation
