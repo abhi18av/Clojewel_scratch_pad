@@ -11,7 +11,7 @@
 
 
 ;; Use this to actually move to the file's namespace
-(ns clojewel.core)
+;  (ns clojewel.core)
 
 
 ;; Import and Check the julia version
@@ -40,23 +40,27 @@
 ;(sh-julia-eval-string "eval(Expr(:call, :print, Expr(:call, :+, 1, 1)))")
 
 
-;; Read julia source file as a string
 
 
-(def jl-source-file "./src/clojewel/learnJuliaTest.jl")
 
-(def jl-source-file-content (slurp jl-source-file) )
 
 
 
 ;; Create a function that dumps the julia-string-expression into a julia_file and runs it with julia
 
+(do
+(def jl-source-file "./src/clojewel/learnJuliaTest.jl")
 (def scratch-jl "./src/clojewel/scratch.jl")
 (def scratch-jlir "./src/clojewel/scratch.jlir")
 (def file-to-jlir-script "./src/clojewel/file_to_jlir.jl")
 (def show-s-expr "./src/clojewel/show_s_expr.jl")
 (def eval-expr "./src/clojewel/eval_expr.jl")
-(def jl-expr-from-s-expr "./src/clojewel/jl_expr_from_s_expr.jl")
+(def jl-expr-from-s-expr "./src/clojewel/jl_expr_from_s_expr.jl"))
+
+
+
+;; Read julia source file as a string
+(def jl-source-file-content (slurp jl-source-file) )
 
 
 (defn jl-save-string-to-scratch [julia-expression]
@@ -67,16 +71,18 @@
 ;(def expr "eval(Expr(:call, :print, Expr(:call, :+, 1, 1)))")
 ;(jl-save-string-to-scratch expr)
 
-(jl-save-string-to-scratch jl-source-file-content)
+;(jl-save-string-to-scratch jl-source-file-content)
 
 
 
 (defn jl-show-s-expr [expr]
   (julia show-s-expr expr ))
 
-(jl-show-s-expr "max(1,2,3)")
-
 (jl-show-s-expr "function add9( x) x + 9 end ")
+
+;; TODO This doesn't work - why ?
+;(jl-show-s-expr jl-source-file-content)
+
 ;(jl-eval-string "print(max(1,2,3))")
 
 
@@ -85,6 +91,9 @@
 
 (jl-eval-expr "Expr(:call, :+, 1, 1)")
 (jl-eval-expr "function add9( x) x + 9 end ")
+
+;(jl-show-s-expr jl-source-file-content)
+
 
 (defn jl-from-s-expr [expr]
   (julia jl-expr-from-s-expr expr))
