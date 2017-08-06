@@ -7,6 +7,9 @@
 
 (use '[me.raynes.conch :refer [programs with-programs let-programs] :as sh])
 (use '[me.raynes.conch.low-level :as sh-ll])
+
+
+
 ;; Import and Check the julia version
 
 (defn init-shell-functions []
@@ -47,10 +50,11 @@
 ;(jl-save-string-to-scratch expr)
 
 
-(defn sh-scratch-content []
-  (cat scratch-jl))
+(defn sh-file-content [file]
+  (cat file))
 
-(sh-scratch-content)
+(sh-file-content scratch-jl)
+
 
 (defn jl-eval-scratch []
   (julia scratch-jl {:seq false}))
@@ -61,23 +65,29 @@
 
 (jl-eval-scratch)
 
-; TODO How to execute ` julia file_to_jlir.jl scratch.jl > scratch.jlir`
-(julia {:in [file-to-jlir scratch-jl] :out scratch-jlir :verbose false})
+; DONE How to execute ` julia file_to_jlir.jl scratch.jl > scratch.jlir`
+(julia {:in [file-to-jlir scratch-jl] :out (java.io.File. scratch-jlir) :verbose false})
+
+
+
+
 
 ; (sh-ll/proc "julia")
 
-(julia file-to-jlir scratch-jl)
+(julia file-to-jlir scratch-jl {:out (java.io.File. scratch-jlir)})
 
-(sh/programs echo)
-(echo "foo" {:out (java.io.File. "conch")})
+;(echo "foo" {:out (java.io.File. "conch")})
 
-(slurp "conch")
 
 (defn jl-scratch-jlir []
 ; (julia {:in (str "./src/clojewel/file_to_jlir.jl" " " scratch-jl ) :seq true :verbose true}))
-  (julia {:in scratch-jl :out scratch-jlir :seq true :verbose false}))
+  (julia file-to-jlir scratch-jl {:out (java.io.File. scratch-jlir)}))
+
 
 (jl-scratch-jlir)
+
+(sh-file-content scratch-jlir)
+
 
 (defn -main
   "I don't do a whole lot ... yet."
