@@ -8,6 +8,7 @@
 (use '[me.raynes.conch :refer [programs with-programs let-programs] :as sh])
 (use '[me.raynes.conch.low-level :as sh-ll])
 
+(ns clojewel.core)
 
 
 ;; Import and Check the julia version
@@ -39,11 +40,9 @@
 ;; Read julia source file as a string
 
 
-(def jl-source-file)
+(def jl-source-file "./src/clojewel/learnJuliaTest.jl")
 
-(defn jl-source-file [file])
-
-(def jl-source-file-content (jl-source-file ) )
+(def jl-source-file-content (slurp jl-source-file) )
 
 
 
@@ -51,7 +50,7 @@
 
 (def scratch-jl "./src/clojewel/scratch.jl")
 (def scratch-jlir "./src/clojewel/scratch.jlir")
-(def file-to-jlir "./src/clojewel/file_to_jlir.jl")
+(def file-to-jlir-script "./src/clojewel/file_to_jlir.jl")
 
 (defn jl-save-string-to-scratch [julia-expression]
   (spit scratch-jl julia-expression))
@@ -60,6 +59,8 @@
 
 ;(def expr "eval(Expr(:call, :print, Expr(:call, :+, 1, 1)))")
 ;(jl-save-string-to-scratch expr)
+
+(jl-save-string-to-scratch jl-source-file-content)
 
 
 (defn sh-file-content [file]
@@ -75,6 +76,8 @@
 ;(julia {:in scratch :seq true :verbose true})
 ;(julia scratch {:seq true})
 
+
+;; Need to wait for sometime before it's done
 (jl-eval-scratch)
 
 ; DONE How to execute ` julia file_to_jlir.jl scratch.jl > scratch.jlir`
@@ -88,7 +91,7 @@
 
 (defn jl-scratch-jlir []
 ; (julia {:in (str "./src/clojewel/file_to_jlir.jl" " " scratch-jl ) :seq true :verbose true}))
-  (julia file-to-jlir scratch-jl {:out (java.io.File. scratch-jlir)}))
+  (julia file-to-jlir-script scratch-jl {:out (java.io.File. scratch-jlir)}))
 
 
 (jl-scratch-jlir)
