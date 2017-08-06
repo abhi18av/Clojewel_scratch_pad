@@ -3,7 +3,9 @@
 (ns clojewel.core
   (:gen-class))
 ;  (require '[me.raynes.conch :refer [programs with-programs let-programs] :as sh]))
-;(use '[me.raynes.conch :refer [programs with-programs let-programs] :as sh])
+
+
+(use '[me.raynes.conch :refer [programs with-programs let-programs] :as sh])
 
 
 ;; Import and Check the julia version
@@ -20,25 +22,29 @@
 
 (defn sh-julia-eval-string [julia-expression]
   (julia "-e" julia-expression))
+
+
 (sh-julia-eval-string "println(1+1)")
 (sh-julia-eval-string "eval(Expr(:call, :print, Expr(:call, :+, 1, 1)))")
 
 
 ;; Create a function that dumps the julia-string-expression into a julia_file and runs it with julia
 
-(defn jl-save-string-to-scratch [julia-expression]
-  (spit "./src/clojewel/scratch.jl" julia-expression))
+(def scratch "./src/clojewel/scratch.jl")
 
-(jl-save-string-to-scratch  "println(1+1)")
+(defn jl-save-string-to-scratch [julia-expression]
+  (spit scratch julia-expression))
+
+(jl-save-string-to-scratch  "println(1+1)" )
 
 
 
 (defn jl-eval-scratch []
-  (julia "scratch.jl" {:seq true}))
+  (julia scratch {:seq true}))
 
 ; TODO How to eval a julia source file from within clojure using the sh functionality
-(julia {:in " scratch.jl" :seq true})
-
+;(julia {:in scratch :seq true :verbose true})
+;(julia scratch {:seq true})
 
 (jl-eval-scratch )
 
