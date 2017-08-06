@@ -37,7 +37,7 @@
   (julia "scratch.jl" {:seq true}))
 
 ; TODO How to eval a julia source file from within clojure using the sh functionality
-(julia " scratch.jl" )
+(julia {:in " scratch.jl" :seq true})
 
 
 (jl-eval-scratch )
