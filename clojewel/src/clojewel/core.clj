@@ -33,7 +33,7 @@
 ;;  (def expr "eval(Expr(:call, :print, Expr(:call, :+, 1, 1)))")
 ;;  (julia "-e" expr)
 
-(defn sh-julia-eval-string [julia-expression]
+(defn jl-eval-string [julia-expression]
   (julia "-e" julia-expression))
 
 ;(sh-julia-eval-string "println(1+1)")
@@ -54,6 +54,8 @@
 (def scratch-jl "./src/clojewel/scratch.jl")
 (def scratch-jlir "./src/clojewel/scratch.jlir")
 (def file-to-jlir-script "./src/clojewel/file_to_jlir.jl")
+(def show-s-expr "./src/clojewel/show_s_expr.jl")
+(def eval-expr "./src/clojewel/eval_expr.jl")
 
 (defn jl-save-string-to-scratch [julia-expression]
   (spit scratch-jl julia-expression))
@@ -67,9 +69,18 @@
 
 
 
-(defn jl-show-parsed-expr [expr]
-  (julia "-e" ))
+(defn jl-show-s-expr [expr]
+  (julia show-s-expr expr ))
 
+(jl-show-s-expr "max(1,2,3)")
+
+;(jl-eval-string "print(max(1,2,3))")
+
+
+(defn jl-eval-expr [expr]
+  (julia eval-expr expr ))
+
+(jl-eval-expr "min(1,2,3)")
 
 
 
