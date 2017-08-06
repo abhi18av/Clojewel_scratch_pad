@@ -36,6 +36,17 @@
 ;(sh-julia-eval-string "eval(Expr(:call, :print, Expr(:call, :+, 1, 1)))")
 
 
+;; Read julia source file as a string
+
+
+(def jl-source-file)
+
+(defn jl-source-file [file])
+
+(def jl-source-file-content (jl-source-file ) )
+
+
+
 ;; Create a function that dumps the julia-string-expression into a julia_file and runs it with julia
 
 (def scratch-jl "./src/clojewel/scratch.jl")
@@ -45,7 +56,7 @@
 (defn jl-save-string-to-scratch [julia-expression]
   (spit scratch-jl julia-expression))
 
-(jl-save-string-to-scratch  "println(1+1)" )
+;(jl-save-string-to-scratch  "println(1+1)" )
 
 ;(def expr "eval(Expr(:call, :print, Expr(:call, :+, 1, 1)))")
 ;(jl-save-string-to-scratch expr)
