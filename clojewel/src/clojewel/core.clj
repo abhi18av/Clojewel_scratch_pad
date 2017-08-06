@@ -56,6 +56,8 @@
 (def file-to-jlir-script "./src/clojewel/file_to_jlir.jl")
 (def show-s-expr "./src/clojewel/show_s_expr.jl")
 (def eval-expr "./src/clojewel/eval_expr.jl")
+(def jl-expr-from-s-expr "./src/clojewel/jl_expr_from_s_expr.jl")
+
 
 (defn jl-save-string-to-scratch [julia-expression]
   (spit scratch-jl julia-expression))
@@ -74,15 +76,20 @@
 
 (jl-show-s-expr "max(1,2,3)")
 
+(jl-show-s-expr "function add9( x) x + 9 end ")
 ;(jl-eval-string "print(max(1,2,3))")
 
 
 (defn jl-eval-expr [expr]
   (julia eval-expr expr ))
 
-(jl-eval-expr "min(1,2,3)")
+(jl-eval-expr "Expr(:call, :+, 1, 1)")
+(jl-eval-expr "function add9( x) x + 9 end ")
 
+(defn jl-from-s-expr [expr]
+  (julia jl-expr-from-s-expr expr))
 
+(jl-from-s-expr "(:call, :+, 1, 1)")
 
 
 (defn sh-file-content [file]
