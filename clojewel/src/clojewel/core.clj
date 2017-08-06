@@ -1,12 +1,7 @@
-(ns project-2.core
+(ns clojewel.core
   (:gen-class))
-
-
-
-
-
 
 (defn -main
   "I don't do a whole lot ... yet."
   [& args]
-  (println "Hello, Clojewel!"))
+  (println "Hello, World!"))
