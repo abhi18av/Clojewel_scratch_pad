@@ -3,7 +3,7 @@
 (ns clojewel.core
   (:gen-class))
 
-(require '[clojewel.pseudo_repl :as pseudo)
+(require '[clojewel.pseudo_repl :as pseudo])
 ;(require '[me.raynes.conch :refer [programs with-programs let-programs] :as sh]))
 
 
@@ -29,7 +29,7 @@
 
 ;(init-shell-functions)
 
-(init-shell-functions)
+(pseudo/init-shell-functions)
 
                                         ;
 
@@ -39,10 +39,10 @@
 ;;  (def expr "eval(Expr(:call, :print, Expr(:call, :+, 1, 1)))")
 ;;  (julia "-e" expr)
 
-(defn jl-eval-string [julia-expression]
-  (julia "-e" julia-expression))
+(defn sh-julia-eval-string [julia-expression]
+  (pseudo/julia "-e" julia-expression))
 
-;(sh-julia-eval-string "println(1+1)")
+(sh-julia-eval-string "println(1+1)")
 ;(sh-julia-eval-string "eval(Expr(:call, :print, Expr(:call, :+, 1, 1)))")
 
 
