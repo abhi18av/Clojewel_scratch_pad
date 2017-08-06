@@ -87,12 +87,12 @@
 
 ;(subl "--version")
 
-(defn sh-open-in-sublime []
+(defn sh-open-scratch-files-in-sublime []
   (subl scratch-jlir scratch-jl))
 
 
 
-(sh-open-in-sublime)
+(sh-open-scratch-files-in-sublime)
 
 
 
