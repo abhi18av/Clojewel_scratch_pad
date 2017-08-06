@@ -27,6 +27,9 @@
 ;; Create a function that dumps the julia-string-expression into a julia_file and runs it with julia
 
 
+(spit "./src/clojewel/scratch.jl" "Hello, Julia")
+
+
 
 (defn -main
   "I don't do a whole lot ... yet."
