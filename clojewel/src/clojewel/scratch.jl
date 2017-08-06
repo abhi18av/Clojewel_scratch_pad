@@ -1,1 +1,1 @@
-eval(Expr(:call, :print, Expr(:call, :+, 1, 1)))
+println(1+1)

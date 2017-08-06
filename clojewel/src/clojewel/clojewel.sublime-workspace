@@ -1,0 +1,1160 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"SEx",
+				"SExprStr"
+			],
+			[
+				"parse",
+				"parse_expr"
+			],
+			[
+				"sho",
+				"show_sexpr"
+			],
+			[
+				"sE",
+				"SExprStr"
+			],
+			[
+				"strin",
+				"string_expression1"
+			],
+			[
+				"add",
+				"add9_2"
+			],
+			[
+				"jl_",
+				"jl_expr"
+			],
+			[
+				"ch",
+				"characterList"
+			],
+			[
+				"cont",
+				"content1"
+			],
+			[
+				"update",
+				"update-in"
+			],
+			[
+				"jso",
+				"jsonContent"
+			],
+			[
+				"senten",
+				"sentenceS"
+			],
+			[
+				"end_in",
+				"end_indices"
+			],
+			[
+				"start",
+				"start_indices"
+			],
+			[
+				"end",
+				"end_index"
+			],
+			[
+				"pass",
+				"pass_1"
+			],
+			[
+				"pas",
+				"pass_2"
+			],
+			[
+				"file",
+				"file_2"
+			],
+			[
+				"？",
+				"？"
+			],
+			[
+				"dpi",
+				"dpi_value"
+			],
+			[
+				"new",
+				"newHash"
+			],
+			[
+				"lo",
+				"love_ARE"
+			],
+			[
+				"entit",
+				"entities"
+			],
+			[
+				"lang",
+				"lang_nameS"
+			],
+			[
+				"non",
+				"nonterminal_meta_to_ntspec"
+			],
+			[
+				"nonte",
+				"nonterminal_metaQ"
+			],
+			[
+				"love",
+				"love-MN_1"
+			],
+			[
+				"len",
+				"lengthCases"
+			],
+			[
+				"vals",
+				"valsHash"
+			],
+			[
+				"sente",
+				"sentence"
+			],
+			[
+				"key",
+				"keyValuesGl"
+			],
+			[
+				"con",
+				"contentHashGlSet"
+			],
+			[
+				"sub",
+				"subFolder"
+			],
+			[
+				"fileID",
+				"fileIDAndSentences"
+			],
+			[
+				"A",
+				"allHash"
+			],
+			[
+				"sen",
+				"sentenceComponents"
+			],
+			[
+				"x",
+				"x"
+			],
+			[
+				"astr",
+				"a_str"
+			],
+			[
+				"day",
+				"dayAndID"
+			],
+			[
+				"json",
+				"jsonHash"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "scratch.jl",
+			"settings":
+			{
+				"buffer_size": 12,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "scratch.jlir",
+			"settings":
+			{
+				"buffer_size": 86,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 39.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"cloj",
+				"Set Syntax: Clojure"
+			],
+			[
+				"lisp",
+				"Set Syntax: Lisp"
+			],
+			[
+				"racket",
+				"Set Syntax: Racket"
+			],
+			[
+				"package",
+				"Package Control: Install Package"
+			],
+			[
+				"va",
+				"Pretty JSON: Validate"
+			],
+			[
+				"prett",
+				"Pretty JSON: Format (Pretty Print) JSON"
+			],
+			[
+				"bash",
+				"Set Syntax: Shell Script (Bash)"
+			],
+			[
+				"pure",
+				"Set Syntax: PureScript"
+			],
+			[
+				"pa ins",
+				"Package Control: Install Package"
+			],
+			[
+				"utf",
+				"ConvertToUTF8: Reload with Encoding"
+			],
+			[
+				"val",
+				"Pretty JSON: Validate"
+			],
+			[
+				"valid",
+				"Pretty JSON: Validate"
+			],
+			[
+				"swif",
+				"Set Syntax: Swift"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"rust",
+				"Set Syntax: Rust"
+			],
+			[
+				"pa",
+				"Package Control: Install Package"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"csv ",
+				"CSV: Compact columns"
+			],
+			[
+				"csv",
+				"Set Syntax: Advanced CSV"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"install pack",
+				"Package Control: Install Package"
+			],
+			[
+				"packain",
+				"Package Control: Install Package"
+			],
+			[
+				"in",
+				"Package Control: Install Package"
+			],
+			[
+				"install ",
+				"Package Control: Install Package"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"pretty js",
+				"Pretty JSON: Format and Sort JSON"
+			],
+			[
+				"inde",
+				"Indent JSON"
+			],
+			[
+				"ruby",
+				"Set Syntax: Ruby"
+			],
+			[
+				"prety js",
+				"Pretty JSON: Format (Pretty Print) JSON"
+			],
+			[
+				"idris",
+				"Set Syntax: Idris"
+			],
+			[
+				"i",
+				"Package Control: Install Local Dependency"
+			],
+			[
+				"add re",
+				"Package Control: Add Repository"
+			],
+			[
+				"package add",
+				"Package Control: Add Repository"
+			],
+			[
+				"linte",
+				"SublimeLinter: Toggle Linter"
+			],
+			[
+				"rub",
+				"Set Syntax: Ruby"
+			],
+			[
+				"insa",
+				"Package Control: Install Package"
+			],
+			[
+				"json va",
+				"Pretty JSON: Validate"
+			],
+			[
+				"inden",
+				"Indent XML"
+			],
+			[
+				"pretty",
+				"Pretty JSON: Format (Pretty Print) JSON"
+			],
+			[
+				"indent",
+				"Indent XML"
+			],
+			[
+				"xml",
+				"Indent XML"
+			],
+			[
+				"insall",
+				"Package Control: Install Package"
+			],
+			[
+				"package ins",
+				"Package Control: Install Package"
+			],
+			[
+				"xml ",
+				"Set Syntax: XML"
+			],
+			[
+				"json ",
+				"Pretty JSON: JSON 2 XML"
+			],
+			[
+				"valida",
+				"Pretty JSON: Validate"
+			],
+			[
+				"prettypr",
+				"Pretty JSON: Format (Pretty Print) JSON"
+			],
+			[
+				"elisp",
+				"Set Syntax: Lisp"
+			],
+			[
+				"json",
+				"Set Syntax: JSON"
+			],
+			[
+				"package insta",
+				"Package Control: Install Package"
+			],
+			[
+				"m",
+				"Material Theme: Configuration"
+			],
+			[
+				"mate",
+				"Material Theme: Configuration"
+			],
+			[
+				"mat",
+				"Material Theme: Configuration"
+			],
+			[
+				"package ",
+				"Package Control: Remove Package"
+			],
+			[
+				"package r",
+				"Package Control: Remove Channel"
+			],
+			[
+				"keyb",
+				"Preferences: Key Bindings"
+			],
+			[
+				"actualvim",
+				"ActualVim: Enable (Global)"
+			],
+			[
+				"pretty json",
+				"Pretty JSON: Format (Pretty Print) JSON"
+			],
+			[
+				"pre",
+				"Pretty JSON: Validate"
+			],
+			[
+				"utf8",
+				"ConvertToUTF8: Reload with Encoding"
+			],
+			[
+				"package rem",
+				"Package Control: Remove Package"
+			],
+			[
+				"ke",
+				"Preferences: Key Bindings"
+			]
+		],
+		"width": 521.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+			"enter()",
+			"enter)(",
+			"ener",
+			"import urllib.request,os,hashlib; h = 'df21e130d211cfc94d9b0905775a7c0f' + '1e3d39e33b79698005270310898eea76'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/clojewel/src/clojewel/scratch.jlir",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/clojewel/src/clojewel/scratch.jl",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/clojewel/src/clojewel/out.txt",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/clojewel/src/clojewel/file_to_jlir.jl",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/project-2/src/project_2/tcp_server_and_listener.jl",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/project-2/src/project_2/network_repl.jl",
+		"/Users/eklavya/Projects/bitworld/RUST/rEmacs/remacs-master/leim/SKK-DIC/SKK-JISYO.L",
+		"/Users/eklavya/Projects/ProjectEklavya/BlueCollar/ias-lang/gu/validation.php",
+		"/Users/eklavya/Projects/ProjectEklavya/BlueCollar/ias-lang/gu/passwords.php",
+		"/Users/eklavya/Projects/ProjectEklavya/BlueCollar/ias-lang/gu/flashmessage.php",
+		"/Users/eklavya/Projects/ProjectEklavya/BlueCollar/lang/ma/app.php",
+		"/Users/eklavya/Projects/ProjectEklavya/BlueCollar/lang/ma/auth.php",
+		"/Users/eklavya/Projects/ProjectEklavya/BlueCollar/lang/ma/contactus.php",
+		"/Users/eklavya/Projects/ProjectEklavya/BlueCollar/lang/ma/flashmessage.php",
+		"/Users/eklavya/Projects/ProjectEklavya/BlueCollar/lang/ma/getappbuild.php",
+		"/Users/eklavya/Projects/ProjectEklavya/BlueCollar/lang/ma/home.php",
+		"/Users/eklavya/Projects/ProjectEklavya/BlueCollar/lang/ma/logIn.php",
+		"/Users/eklavya/Projects/ProjectEklavya/BlueCollar/lang/ma/myaccount.php",
+		"/Users/eklavya/Projects/ProjectEklavya/BlueCollar/lang/ma/pagination.php",
+		"/Users/eklavya/Projects/ProjectEklavya/BlueCollar/lang/ma/passwords.php",
+		"/Users/eklavya/Projects/ProjectEklavya/BlueCollar/lang/ma/policy.php",
+		"/Users/eklavya/Projects/ProjectEklavya/BlueCollar/lang/ma/signup.php",
+		"/Users/eklavya/Projects/ProjectEklavya/BlueCollar/lang/ma/validation.php",
+		"/Users/eklavya/Projects/ProjectEklavya/BlueCollar/lang/hi/pagination.php",
+		"/Users/eklavya/Projects/ProjectEklavya/BlueCollar/lang/ka/pagination.php",
+		"/Users/eklavya/Projects/ProjectEklavya/BlueCollar/lang/hi/signup.php",
+		"/Users/eklavya/Projects/ProjectEklavya/BlueCollar/lang/en/signup.php",
+		"/Users/eklavya/Projects/ProjectEklavya/BlueCollar/lang/en/logIn.php",
+		"/Users/eklavya/Projects/ProjectEklavya/BlueCollar/lang/en/contactus.php",
+		"/Users/eklavya/Projects/ProjectEklavya/BlueCollar/lang/en/auth.php",
+		"/Users/eklavya/Projects/ProjectEklavya/BlueCollar/lang/gu/auth.php",
+		"/Users/eklavya/.spacemacs",
+		"/Users/eklavya/Projects/ProjectEklavya/Eklavya/orgBox/perfect-spacemacs.el",
+		"/Users/eklavya/Projects/ProjectEklavya/Eklavya/orgBox/spacmacs.el",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/_experiments/learnJuliaTest.jl",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/_experiments/parse_reverse_test.jl",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/_experiments/parse_reverse.jl",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/_experiments/reverse_parse.jl",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/_experiments/stackOverflow.jl",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/ReadMe.md",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/project-2/README.md",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/ProgressLog.org",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/_experiments/julia-0.6.0-src/test/iostream.jlir",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/_experiments/julia-0.6.0-src/test/euler.jlir",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/_experiments/julia-0.6.0-src/test/abstractarray.jl",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/_experiments/julia-0.6.0-src/test/asmvariant.jlir",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/_experiments/julia-0.6.0-src/test/asmvariant.jl",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/childProjects/julia-layer-spacemacs/README.org",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/childProjects/julia-layer-spacemacs/ReadMe.org",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/childProjects/julia-layer-spacemacs/README 2.org",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/childProjects/julia-layer-spacemacs/_resources/racket/config.el",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/childProjects/julia-layer-spacemacs/_resources/racket/packages.el",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/childProjects/julia-layer-spacemacs/_resources/lua/config.el",
+		"/Users/eklavya/Projects/ProjectEklavya/Eklavya/Code/goGitFolder/ReadMe.md",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/_experiments/string_to_expression.jl",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/_experiments/LearnJulia.jl",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/_experiments/learnJuliaTest.jlir",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/_resources/clojurec-master/src/clj/cljc/core.clj",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/_resources/clojurec-master/src/cljc/cljc/objc.cljc",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/ClojureJL_from_CLJS/src/main/clojure/cljs/repl.cljc",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/project-1/src/project_1/core.clj",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/_experiments/untokenize.jl",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/project-1/README.md",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/_experiments/mal-julia/step0_repl.jlir",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/_experiments/mal-julia/step0_repl.jl",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/_resources/mal-julia/step6_file.jl",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/_resources/mal-julia/Dockerfile",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/_resources/mal-julia/printer.jl",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/ClojureJL_1/src/main/clojure/cljs/module_graph.cljc",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/ClojureJL_1/src/main/clojure/cljs/repl/node.clj",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/ClojureJL_1/src/main/clojure/cljs/repl/browser.clj",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/ClojureJL_1/src/main/clojure/cljs/repl/nashorn.clj",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/ClojureJL_1/src/main/clojure/cljs/repl/node_repl.js",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/ClojureJL_1/src/main/cljs/cljs/pprint.cljs",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/ClojureJL_1/src/main/clojure/cljs/tagged_literals.cljc",
+		"/Users/eklavya/Projects/ProjectEklavya/Artemis/BOOKS/LearnHyTheHardWay/LearnHyTheHardWay.hy",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/ClojureJL_1/src/main/cljs/cljs/js.cljs",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/ClojureJL_1/src/main/cljs/cljs/js.clj",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/ClojureJL_1/src/main/cljs/cljs/core.cljs",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/ClojureJL_1/src/main/cljs/cljs/externs.js",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/ClojureJL_1/src/main/cljs/cljs/reader.cljs",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/ClojureJL_1/src/main/cljs/cljs/stacktrace.cljc",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/ClojureJL_1/src/main/cljs/cljs/spec/gen/alpha.cljs",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/ClojureJL_1/src/main/cljs/clojure/core/reducers.cljs",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/ClojureJL_1/src/main/cljs/clojure/browser/repl/preload.cljs",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/ClojureJL_1/src/main/cljs/process/env.cljs",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/ClojureJL_1/project.clj",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/ClojureJL/benchmark/cljs/benchmark_runner.cljs",
+		"/Users/eklavya/Projects/ProjectEklavya/Artemis/BOOKS/LearnHyTheHardWay/_resources/learnhy.hy",
+		"/Users/eklavya/Projects/ProjectEklavya/BlueCollar/HyPeRiana/_resources/Hy/hy-src-0.13.0/hy/completer.py",
+		"/Users/eklavya/Projects/ProjectEklavya/BlueCollar/HyPeRiana/_resources/Hy/hy-src-0.13.0/hy/contrib/multi.hy",
+		"/Users/eklavya/Projects/ProjectEklavya/BlueCollar/HyPeRiana/_resources/Hy/hy-src-0.13.0/hy/lex/parser.py",
+		"/Users/eklavya/Projects/ProjectEklavya/BlueCollar/HyPeRiana/_resources/Hy/hy-src-0.13.0/hy/core/bootstrap.hy",
+		"/Users/eklavya/Projects/ProjectEklavya/BlueCollar/HyPeRiana/_resources/Hy/hy-src-0.13.0/hy/core/shadow.hy",
+		"/Users/eklavya/Projects/ProjectEklavya/BlueCollar/HyPeRiana/_resources/Hy/hy-src-0.13.0/hy/core/language.hy",
+		"/Users/eklavya/Projects/ProjectEklavya/BlueCollar/HyPeRiana/_resources/Hy/hy-src-0.13.0/hy/compiler.py",
+		"/Users/eklavya/Projects/ProjectEklavya/BlueCollar/HyPeRiana/_resources/Hy/hy-src-0.13.0/hy/core/macros.hy",
+		"/Users/eklavya/Projects/ProjectEklavya/BlueCollar/HyPeRiana/_resources/Hy/hy-src-0.13.0/tests/native_tests/language.hy",
+		"/Users/eklavya/Projects/ProjectEklavya/BlueCollar/HyPeRiana/_resources/Hy/hy-src-0.13.0/tests/native_tests/core.hy",
+		"/Users/eklavya/Projects/ProjectEklavya/BlueCollar/HyPeRiana/_resources/Hy/hy-src-0.13.0/tests/native_tests/contrib/walk.hy",
+		"/Users/eklavya/Projects/ProjectEklavya/BlueCollar/HyPeRiana/_resources/Hy/hy-src-0.13.0/tests/native_tests/cons.hy",
+		"/Users/eklavya/Projects/ProjectEklavya/BlueCollar/HyPeRiana/_resources/Hy/hy-src-0.13.0/tests/native_tests/py3_only_tests.hy",
+		"/Users/eklavya/Projects/ProjectEklavya/Artemis/BOOKS/LearnHyTheHardWay/ReadMe.md",
+		"/Users/eklavya/Projects/ProjectEklavya/BlueCollar/HyPeRiana/_resources/Hy/hy-mode-master/hy-mode.el",
+		"/Users/eklavya/Projects/ProjectEklavya/Eklavya/orgBox/.spacemacs",
+		"/Users/eklavya/spacemacs.el",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/childProjects/julia_edn/_resources/EDN.jl-master/test/write.jl",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/childProjects/julia_edn/_resources/EDN.jl-master/test/read.jl",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/childProjects/julia_to_clojure/ReadMe.md",
+		"/Users/eklavya/Projects/ProjectEklavya/Artemis/BOOKS/LearnClojureScriptTheHardWay/LearnClojureScriptTheHardWay.cljs",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/_resources/julia-0.5.2/src/ast.scm",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/_resources/mal-clojure/src/stepA_mal.clj",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/_resources/mal-clojure/src/step9_try.clj",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/_resources/mal-clojure/src/step8_macros.clj",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/_resources/mal-clojure/src/step7_quote.clj",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/_resources/mal-clojure/src/step6_file.clj",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/_resources/mal-clojure/src/step5_tco.clj",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/_resources/mal-clojure/src/step4_if_fn_do.clj",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/_resources/mal-clojure/src/step3_env.clj",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/_resources/mal-clojure/src/step2_eval.clj",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/_resources/mal-clojure/src/step1_read_print.clj",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/_resources/mal-clojure/src/readline.clj",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/_resources/mal-clojure/src/reader.clj",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/_resources/mal-clojure/src/core.clj",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/_resources/mal-clojure/src/env.clj",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/_resources/mal-clojure/src/printer.clj",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/_resources/mal-clojure/src/step0_repl.clj",
+		"/Users/eklavya/Projects/ProjectEklavya/Mordor/Clojewel/project-1/build.boot"
+	],
+	"find":
+	{
+		"height": 36.0
+	},
+	"find_in_files":
+	{
+		"height": 167.0,
+		"where_history":
+		[
+			"",
+			"contents",
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			"Expr1",
+			"B",
+			"/reader",
+			"print",
+			"relat",
+			"relate",
+			"relati",
+			"asyn",
+			"asy",
+			"cider",
+			"todo",
+			"pet_cat",
+			"ASCII",
+			"super",
+			"help",
+			"dog is a",
+			"grrr",
+			"mammal",
+			"inf",
+			"infe",
+			"﹖",
+			">",
+			"\"old\"",
+			"\"new\"",
+			"}",
+			"♀",
+			"？",
+			"?",
+			"〉",
+			"check",
+			"♀",
+			"chinesepod_E0201网络游戏.txt",
+			"check",
+			"♀",
+			"��",
+			">",
+			"nbsp",
+			"481",
+			">",
+			"ﬂ",
+			"ﬁi",
+			"check",
+			"»",
+			"«",
+			"————",
+			"CHECK",
+			"1220",
+			"派对",
+			"排队",
+			"(♀",
+			"CHECKPOINT",
+			"CHECK",
+			"//Che",
+			"checkpo",
+			"check",
+			":dev",
+			"alert",
+			"inf-clojure",
+			"inf-cl",
+			"inf-clo",
+			"dpi",
+			"fileHash",
+			"sentencesq",
+			"formal",
+			"o",
+			"—>",
+			"ZT",
+			"NL",
+			"PL",
+			"PB",
+			"NL",
+			"ROM",
+			"KR",
+			"IT",
+			"/IT/",
+			"IT",
+			"ID",
+			"FR",
+			"ESM",
+			"DE",
+			"techno",
+			"struc",
+			"building",
+			"math",
+			"google",
+			"programming",
+			"output",
+			"sobject",
+			"concat",
+			"checkErr",
+			"print",
+			"files",
+			"megumi",
+			"doing",
+			"fine",
+			"a little",
+			"late",
+			"am i late",
+			"new york",
+			"ine",
+			"fine",
+			"Where were you",
+			"read",
+			"fi",
+			"%gt;",
+			">",
+			"&gt",
+			">",
+			"token",
+			"FjBcuwJJnegQS8HnyYXYJ3UqSg5bjgPO7jz3hG0s84",
+			"3pt18MUluZ5Ux924W2xrA",
+			"GmEDVoulASu1k8qqiOibw",
+			"getbook",
+			"getdata",
+			"getRequ",
+			"http",
+			"shelf",
+			"user"
+		],
+		"highlight": false,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"expr",
+			"buffer",
+			"supertype",
+			"？",
+			"\"+\"",
+			"\"-\"",
+			"},",
+			"",
+			" ？",
+			"？",
+			">",
+			"",
+			" chinesepod_E0276十一旅游高峰期.txt",
+			" ",
+			"fl",
+			"fü",
+			"console.log",
+			"dpi_value",
+			"contents",
+			"sentencesQ",
+			"EN",
+			"ZT",
+			"VNN",
+			"TR",
+			"RU",
+			"PL",
+			"PB",
+			"EN",
+			"NL",
+			"KR",
+			"IT",
+			"ID",
+			"FR",
+			"FA",
+			"ESM",
+			"HollMBXCfEuPTjWEJzZqXxtNMWBQBr28Y0sckBkr3w",
+			"GmEDVoulASu1k8qqiOibw"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "scratch.jl",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 12,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								12,
+								12
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+									"1":
+									[
+										11,
+										12
+									]
+								},
+								"icon":
+								{
+									"1":
+									[
+										"Packages/BracketHighlighter/icons/round_bracket.png",
+										"brackethighlighter.default"
+									]
+								},
+								"open":
+								{
+									"1":
+									[
+										7,
+										8
+									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content"
+							],
+							"origin_encoding": "ASCII",
+							"syntax": "Packages/Julia/Julia.sublime-syntax",
+							"vintage":
+							{
+								"action": null,
+								"action_count": "",
+								"mode": "mode_normal",
+								"motion": null,
+								"motion_count": "",
+								"must_capture_register_name": false,
+								"partial_sequence": "",
+								"register": "\"",
+								"sequence": "",
+								"xpos": 0
+							}
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 1,
+					"file": "scratch.jlir",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 86,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								86,
+								86
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+									"1":
+									[
+										85,
+										86
+									]
+								},
+								"icon":
+								{
+									"1":
+									[
+										"Packages/BracketHighlighter/icons/round_bracket.png",
+										"brackethighlighter.default"
+									]
+								},
+								"open":
+								{
+									"1":
+									[
+										0,
+										1
+									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content"
+							],
+							"syntax": "Packages/Lisp/Lisp.sublime-syntax",
+							"vintage":
+							{
+								"action": null,
+								"action_count": "",
+								"mode": "mode_normal",
+								"motion": null,
+								"motion_count": "",
+								"must_capture_register_name": false,
+								"partial_sequence": "",
+								"register": "\"",
+								"sequence": "",
+								"xpos": 0
+							}
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 36.0
+	},
+	"input":
+	{
+		"height": 67.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			],
+			[
+				0,
+				1,
+				1,
+				2
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			0.5,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "",
+	"replace":
+	{
+		"height": 68.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 81.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 374.0
+	},
+	"selected_group": 1,
+	"settings":
+	{
+		"vintage":
+		{
+		}
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": false,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

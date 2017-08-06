@@ -16,6 +16,7 @@
   (do
     (sh/programs cat)
     (sh/programs echo)
+    (sh/programs subl)
     (sh/programs julia)
 ;    (julia "--version" {:seq true})
     (sh/programs ls)))
@@ -44,7 +45,7 @@
 (defn jl-save-string-to-scratch [julia-expression]
   (spit scratch-jl julia-expression))
 
-;(jl-save-string-to-scratch  "println(1+1)" )
+(jl-save-string-to-scratch  "println(1+1)" )
 
 ;(def expr "eval(Expr(:call, :print, Expr(:call, :+, 1, 1)))")
 ;(jl-save-string-to-scratch expr)
@@ -66,15 +67,10 @@
 (jl-eval-scratch)
 
 ; DONE How to execute ` julia file_to_jlir.jl scratch.jl > scratch.jlir`
-(julia {:in [file-to-jlir scratch-jl] :out (java.io.File. scratch-jlir) :verbose false})
-
-
-
-
-
+;(julia {:in [file-to-jlir scratch-jl] :out (java.io.File. scratch-jlir) :verbose false})
 ; (sh-ll/proc "julia")
 
-(julia file-to-jlir scratch-jl {:out (java.io.File. scratch-jlir)})
+;(julia file-to-jlir scratch-jl {:out (java.io.File. scratch-jlir)})
 
 ;(echo "foo" {:out (java.io.File. "conch")})
 
@@ -89,6 +85,14 @@
 (sh-file-content scratch-jlir)
 
 
+;(subl "--version")
+
+(defn sh-open-in-sublime []
+  (subl scratch-jlir scratch-jl))
+
+
+
+(sh-open-in-sublime)
 (defn -main
   "I don't do a whole lot ... yet."
   [& args]
