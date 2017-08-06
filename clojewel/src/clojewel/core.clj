@@ -1,11 +1,13 @@
-;; DONE : Need to understand how to get the classpath right.
+;; TODO : Need to understand how to get the classpath right.
 
 (ns clojewel.core
   (:gen-class))
-;  (require '[me.raynes.conch :refer [programs with-programs let-programs] :as sh]))
+
+(require '[clojewel.pseudo_repl :as pseudo)
+;(require '[me.raynes.conch :refer [programs with-programs let-programs] :as sh]))
 
 
-(use '[me.raynes.conch :refer [programs with-programs let-programs] :as sh])
+;(use '[me.raynes.conch :refer [programs with-programs let-programs] :as sh])
 ;(use '[me.raynes.conch.low-level :as sh-ll])
 
 
@@ -16,18 +18,22 @@
 
 ;; Import and Check the julia version
 
-(defn init-shell-functions []
-  (do
-    (sh/programs cat)
-    (sh/programs echo)
-    (sh/programs subl)
-    (sh/programs julia)
+;(defn init-shell-functions []
+;  (do
+;    (sh/programs cat)
+;    (sh/programs echo)
+;    (sh/programs subl)
+;    (sh/programs julia)
 ;    (julia "--version" {:seq true})
-    (sh/programs ls)))
+;    (sh/programs ls)))
+
+;(init-shell-functions)
 
 (init-shell-functions)
 
-; Clearly this can be converted into a Julia expression symbolically.
+                                        ;
+
+;;Clearly this can be converted into a Julia expression symbolically.
 
 ;;  (julia "-e" "println(1+1)")
 ;;  (def expr "eval(Expr(:call, :print, Expr(:call, :+, 1, 1)))")
