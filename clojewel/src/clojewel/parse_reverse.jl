@@ -18,7 +18,9 @@ end
 
 #expr = :(length([1, 2, 3]) == 3)
 
-expr = :(function add9( x) x + 9 end );            # the expr we want to generate an s_expr for
+expr = parse("function add9( x) x + 9 end ");
+            # the expr we want to generate an s_expr for
+#expr = :(function add9( x) x + 9 end );            # the expr we want to generate an s_expr for
 #show(expr)
 
 

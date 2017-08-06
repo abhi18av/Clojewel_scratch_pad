@@ -6,8 +6,11 @@
 
 
 (use '[me.raynes.conch :refer [programs with-programs let-programs] :as sh])
-(use '[me.raynes.conch.low-level :as sh-ll])
+;(use '[me.raynes.conch.low-level :as sh-ll])
 
+
+
+;; Use this to actually move to the file's namespace
 (ns clojewel.core)
 
 
