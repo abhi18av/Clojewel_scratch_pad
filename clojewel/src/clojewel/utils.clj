@@ -43,13 +43,9 @@
 
 
 
+;(clojewel.utils/julia-eval-file-with-driver "./src/clojewel/file_to_jlir.jl" "./src/clojewel/scratch.jl" "./src/clojewel/scratch.jlir")
 (defn julia-eval-file-with-driver
-  "
-
-  Example:
-  (clojewel.utils/julia-eval-file-with-driver "./src/clojewel/file_to_jlir.jl" "./src/clojewel/scratch.jl" "./src/clojewel/scratch.jlir")
-
-  "
+ "This function executes the form of >> julia driver.jl source.jl output.jl"
   [driver-file source-file output-file]
   (julia driver-file source-file {:out (java.io.File. output-file)}))
 
