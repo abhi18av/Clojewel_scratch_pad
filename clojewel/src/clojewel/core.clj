@@ -4,9 +4,16 @@
 (require '[clojewel.pseudo_repl :as pseudo])
 
 
+(def jl-source-file "./src/clojewel/learnJuliaTest.jl")
+;; Read julia source file as a string
+(def jl-source-file-content (slurp jl-source-file) )
+
+
 (pseudo/sh-julia-eval-string "println(1+1)")
 
 (pseudo/sh-julia-eval-string "eval(Expr(:call, :print, Expr(:call, :+, 1, 1)))")
+
+(pseudo/jl-show-s-expr "println(\"Hello, Julia! \") ")
 
 (pseudo/jl-show-s-expr "function add9( x) x + 9 end ")
 
@@ -16,7 +23,9 @@
 
 (pseudo/jl-from-s-expr "(:call, :+, 1, 1)")
 
-(pseudo/jl-expr-from-s-expr "(:call, :(==), /"1 + 2 = 3/", Expr(:string, /"1 + 2 = /", Expr(:call, :+, 1, 2)))" )
+(pseudo/jl-from-s-expr "(:call, :+, 1, 1)")
+
+;(pseudo/jl-expr-from-s-expr "(:call, :(==), \"1 + 2 = 3\", (:string, \"1 + 2 = \", (:call, :+, 1, 2)))" )
 
 (pseudo/jl-eval-scratch)
 
