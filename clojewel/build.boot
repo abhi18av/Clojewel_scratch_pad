@@ -3,9 +3,38 @@
 
 (set-env! :resource-paths #{"resources" "src"}
           :source-paths   #{"test"}
-          :dependencies   '[[org.clojure/clojure "RELEASE"]
+          :dependencies   '[[org.clojure/clojure "1.9.0-alpha17"]
                             [adzerk/boot-test "RELEASE" :scope "test"]
-                              [me.raynes/conch "0.8.0"]])
+                            ;; Matrix stuff
+                            [net.mikera/core.matrix "0.60.3"]
+                            [net.mikera/vectorz-clj "0.47.0"]
+
+                            ;; Asynchronous stuff
+                            [org.clojure/core.async "0.3.443"]
+
+                            ;; Pattern matching in clojure
+                            [org.clojure/core.match "0.3.0-alpha5"]
+
+
+
+                            ;; Typed clojure
+                            ;; TODO Creates an issue with cider's nrepl - probably transitive dependency
+                            ;[org.clojure/core.typed "0.4.0"]
+
+                            ;; TODO Middleware - might help to mitige the cider error caused by core.typed
+                            ;[org.clojure/tools.nrepl "0.2.12" :scope "test"]
+
+
+
+
+                            ;; MiniKanren
+                            [org.clojure/core.logic "0.8.11"]
+
+                            ;; Clojure reader in clojure
+                            [org.clojure/tools.reader "1.0.5"]
+
+                            ;; Shell library
+                            [me.raynes/conch "0.8.0"]])
 
 (task-options!
  aot {:namespace   #{'clojewel.core}}

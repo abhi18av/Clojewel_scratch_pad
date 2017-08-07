@@ -9,9 +9,9 @@
 (def jl-source-file-content (slurp jl-source-file) )
 
 
-(pseudo/sh-julia-eval-string "println(1+1)")
+(pseudo/jl-eval-string "println(1+1)")
 
-(pseudo/sh-julia-eval-string "eval(Expr(:call, :print, Expr(:call, :+, 1, 1)))")
+(pseudo/jl-eval-string "eval(Expr(:call, :print, Expr(:call, :+, 1, 1)))")
 
 (pseudo/jl-show-s-expr "println(\"Hello, Julia! \") ")
 
@@ -21,10 +21,7 @@
 
 (pseudo/jl-eval-expr "function add9( x) x + 9 end ; add9(9)")
 
-(pseudo/jl-from-s-expr "(:call, :+, 1, 1)")
-
-
-;(pseudo/jl-expr-from-s-expr "(:call, :(==), \"1 + 2 = 3\", (:string, \"1 + 2 = \", (:call, :+, 1, 2)))" )
+(pseudo/jl-fromt-s-expr "(:call, :+, 1, 1)")
 
 (pseudo/jl-eval-scratch)
 
