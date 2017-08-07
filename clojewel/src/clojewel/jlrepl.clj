@@ -15,7 +15,8 @@
 
 ;; Prefer the let form and move the variables closer to where they are used.
 
-(defn julia-save-string-to-scratch [julia-expression])
+(defn julia-save-string-to-scratch
+  [julia-expression])
 
 (defn julia-show-s-expr
   "This function saves the julia expression to a file and then evals the file using the file convertor script and yields the s-expr"
@@ -34,5 +35,6 @@
 ; (julia {:in (str "./src/clojewel/file_to_jlir.jl" " " scratch-jl ) :seq true :verbose true}))
  [])
 
-(defn shell-open-scratch-files-in-sublime [])
+(defn shell-open-scratch-files-in-sublime
+  [])
 
