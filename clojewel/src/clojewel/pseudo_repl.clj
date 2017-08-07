@@ -30,11 +30,11 @@
 ;;  (def expr "eval(Expr(:call, :print, Expr(:call, :+, 1, 1)))")
 ;;  (julia "-e" expr)
 
-(defn sh-julia-eval-string [julia-expression]
+(defn jl-eval-string [julia-expression]
   (julia "-e" julia-expression))
 
-;(sh-julia-eval-string "println(1+1)")
-;(sh-julia-eval-string "eval(Expr(:call, :print, Expr(:call, :+, 1, 1)))")
+;(jl-eval-string "println(1+1)")
+;(jl-eval-string "eval(Expr(:call, :print, Expr(:call, :+, 1, 1)))")
 
 
 
