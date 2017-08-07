@@ -1,8 +1,46 @@
 # clojewel
 
 ### ToDo
-- [ ] The next step is to clearly make a proper repl experience for Clojewel
+- [x] The next step is to clearly make a proper repl experience for Clojewel
+    This has been resolved using the ad-hoc file based repl system.
 - [ ] The repl implementation is based on the ClojureScript nodejs repl
+
+
+### Library based priority
+Only focus on the most relevant or fundamental libraries shipped with clojure.
+
+- clojure.core
+- clojure.spec
+- clojure.data
+- clojure.edn
+- clojure.inspector
+- clojure.instant
+- clojure.java.io
+- clojure.java.shell
+- clojure.main
+- clojure.pprint
+- clojure.reflect
+- clojure.repl
+- clojure.set
+- clojure.stacktrace
+- clojure.string
+- clojure.template
+- clojure.test
+- clojure.walk
+- clojure.xml
+- clojure.zip
+
+
+- data.csv 
+- data.json
+- algo.monads
+- algo.generic
+
+
+- core.matrix
+- core.async
+- core.match
+- core.logic
 
 FIXME: description
 

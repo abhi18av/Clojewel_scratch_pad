@@ -21,17 +21,34 @@
                             ;; TODO Creates an issue with cider's nrepl - probably transitive dependency
                             ;[org.clojure/core.typed "0.4.0"]
 
-                            ;; TODO Middleware - might help to mitige the cider error caused by core.typed
+                            ;; TODO Middleware - might help to mitigate the cider error caused by core.typed
                             ;[org.clojure/tools.nrepl "0.2.12" :scope "test"]
 
-
-
+                            ; Quickcheck
+                            [org.clojure/test.check "0.10.0-alpha2"]
 
                             ;; MiniKanren
                             [org.clojure/core.logic "0.8.11"]
 
                             ;; Clojure reader in clojure
                             [org.clojure/tools.reader "1.0.5"]
+
+                            ;; CLI functionality for clojure
+                            [org.clojure/tools.cli "0.3.5"]
+
+                            ;; Namespace resolution functionality in clojure
+                            [org.clojure/tools.namespace "0.2.11"]
+
+                            ;; Clojure AST to EDn
+                            [org.clojure/tools.analyzer "0.6.9"]
+
+
+                            ;; Combinatorics library
+                            [org.clojure/math.combinatorics "0.1.4"]
+
+                            ;; Dependency resolution
+                            [org.clojure/tools.deps.alpha "0.1.29"]
+
 
                             ;; Shell library
                             [me.raynes/conch "0.8.0"]])
