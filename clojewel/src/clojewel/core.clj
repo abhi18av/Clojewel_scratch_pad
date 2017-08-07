@@ -7,7 +7,7 @@
 
 (use '[me.raynes.conch :refer [programs with-programs let-programs] :as sh])
 ;(use '[me.raynes.conch.low-level :as sh-ll])
-
+(require '[clojewel.pseudo_repl :as pseudo])
 
 
 ;; Use this to actually move to the file's namespace
