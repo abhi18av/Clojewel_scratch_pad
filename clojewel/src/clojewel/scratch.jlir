@@ -1,0 +1,4 @@
+(:quote, (:block,
+    (:line, 1, :none),
+    (:(=), :a, 9)
+  ))
