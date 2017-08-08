@@ -31,6 +31,15 @@
   [driver-file source-file output-file]
   (julia driver-file source-file {:out (java.io.File. output-file)}))
 
+; EXAMPLE
+;(clojewel.utils/julia-eval-file-with-driver "./src/clojewel/eval_expr.jl" julia-expression)
+(defn julia-eval-expr-and-print-cli
+  "This function executes the cli of the form => julia driver.jl source.jl output.jl"
+  [driver-file source-file julia-expression]
+  (julia driver-file source-file julia-expression {:out true}))
+
+
+
 (defn shell-save-to-file [file-name julia-expression]
   (spit file-name julia-expression))
 

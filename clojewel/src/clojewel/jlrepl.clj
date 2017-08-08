@@ -6,12 +6,6 @@
 
 ;; TODO Prefer the let form and move the variables closer to where they are used.
 
-(defn julia-eval-string
-"This function evaluates the julia-expression using the << julia -e >> command line switch"
-  [julia-expression]
-  (utils/julia-eval-cli julia-expression))
-
-
 (defn julia-eval-scratch
   "This function evaluates the scratch file using << julia scratch.jl >>"
   []
@@ -32,10 +26,6 @@
     (julia-save-string-to-scratch julia-expression)
     (utils/julia-eval-file-with-driver "./src/clojewel/file_to_jlir.jl" "./src/clojewel/scratch.jl" "./src/clojewel/scratch.jlir")
     (utils/shell-show-file-content "./src/clojewel/scratch.jlir")))
-
-(defn julia-eval-expr
-  "This function saves the julia expression to a file and then evals the file using the file convertor script and yields the evaluated form."
-  [expr])
 
 (defn julia-from-s-expr
   "This function saves the s-expression to a file and then evals the file using the script and yields the julia-expression."
