@@ -24,10 +24,10 @@
   (julia julia-file-name))
 
 
-
+; EXAMPLE
 ;(clojewel.utils/julia-eval-file-with-driver "./src/clojewel/file_to_jlir.jl" "./src/clojewel/scratch.jl" "./src/clojewel/scratch.jlir")
 (defn julia-eval-file-with-driver
-  "This function executes the cli of the form >> julia driver.jl source.jl output.jl"
+  "This function executes the cli of the form => julia driver.jl source.jl output.jl"
   [driver-file source-file output-file]
   (julia driver-file source-file {:out (java.io.File. output-file)}))
 
