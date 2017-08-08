@@ -36,7 +36,7 @@
 (defn julia-eval-expr-with-driver
   "This function executes the cli of the form => julia driver.jl source.jl output.jl"
   [driver-file julia-expression]
-  (julia driver-file julia-expression {:out (java.io.StringWriter.)}))
+  (julia driver-file julia-expression))
 
 
 
