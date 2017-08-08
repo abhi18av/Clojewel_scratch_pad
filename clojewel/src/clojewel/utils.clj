@@ -33,10 +33,10 @@
 
 ; EXAMPLE
 ;(clojewel.utils/julia-eval-file-with-driver "./src/clojewel/eval_expr.jl" julia-expression)
-(defn julia-eval-expr-and-print-cli
+(defn julia-eval-expr-with-driver
   "This function executes the cli of the form => julia driver.jl source.jl output.jl"
-  [driver-file source-file julia-expression]
-  (julia driver-file source-file julia-expression {:out true}))
+  [driver-file julia-expression]
+  (julia driver-file julia-expression {:out (java.io.StringWriter.)}))
 
 
 

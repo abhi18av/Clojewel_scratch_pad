@@ -49,6 +49,11 @@
                             ;; Dependency resolution
                             [org.clojure/tools.deps.alpha "0.1.29"]
 
+                            ;; Documentation using marginalia
+                            [it.frbracch/boot-marginalia "0.1.3-1"]
+
+                            ;; Boot documenataion tool Codox
+                            [boot-codox "0.10.3" :scope "test"]
 
                             ;; Shell library
                             [me.raynes/conch "0.8.0"]])

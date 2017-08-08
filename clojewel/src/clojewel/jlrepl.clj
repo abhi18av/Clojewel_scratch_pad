@@ -42,10 +42,10 @@
     (utils/julia-eval-file scratch-jl)))
 
 
-;;;; IN MEMORY RELATED EXPRESSIONS
+;;;; IN-MEMORY RELATED EXPRESSIONS
 
-(defn shell-create-jl-from-jlir
+(defn shell-create-jl-expr-from-jlir
 "This function takes in the julia JLIR form and uses a driver script to print out the JL "
   [julia-expression]
-
-  )
+  (let [driver-file "./src/clojewel/jl_expr_from_s_expr.jl"]
+  (utils/julia-eval-expr-with-driver driver-file julia-expression)))

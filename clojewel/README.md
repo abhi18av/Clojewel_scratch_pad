@@ -42,7 +42,9 @@ Only focus on the most relevant or fundamental libraries shipped with clojure.
 - core.match
 - core.logic
 
-FIXME: description
+### Cider Integration - spacemacs
+
+` ,: => cider-jack-in-clojewel`
 
 ## Installation
 
