@@ -3,8 +3,15 @@
 
 (set-env! :resource-paths #{"resources" "src"}
           :source-paths   #{"test"}
-          :dependencies   '[[org.clojure/clojure "1.9.0-alpha17"]
-                            [adzerk/boot-test "RELEASE" :scope "test"]
+          :dependencies   '[
+
+                            ;; Frozen clojure version
+                            [org.clojure/clojure "1.9.0-alpha17"]
+                            
+                            ;; Testing
+                            [adzerk/boot-test "1.2.0" :scope "test"]
+
+
                             ;; Matrix stuff
                             [net.mikera/core.matrix "0.60.3"]
                             [net.mikera/vectorz-clj "0.47.0"]
@@ -57,6 +64,10 @@
 
                             ;; Shell library
                             [me.raynes/conch "0.8.0"]])
+
+
+(require '[adzerk.boot-test :refer :all])
+
 
 (task-options!
  aot {:namespace   #{'clojewel.core}}
