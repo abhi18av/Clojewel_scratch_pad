@@ -41,6 +41,13 @@
   (let [scratch-jl "./src/clojewel/scratch.jl"]
     (utils/julia-eval-file scratch-jl)))
 
+(defn julia-eval-scratch-jlir
+  "This function evaluates the scratch file using << julia scratch.jl >>"
+  []
+  (let [scratch-jlir "./src/clojewel/scratch.jlir"]
+    (utils/julia-eval-file scratch-jlir)))
+
+
 
 ;;;; IN-MEMORY RELATED EXPRESSIONS
 

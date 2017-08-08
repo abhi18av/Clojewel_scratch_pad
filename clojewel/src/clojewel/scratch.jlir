@@ -1,4 +1,9 @@
 (:quote, (:block,
     (:line, 1, :none),
-    (:(=), :a, 9)
+    (:quote, (:$, (:call, :Expr, (:quote, #QuoteNode
+            :quote
+          ), (:quote, (:block,
+              (:line, 2, :none),
+              (:(=), :a, 9)
+            )))))
   ))
